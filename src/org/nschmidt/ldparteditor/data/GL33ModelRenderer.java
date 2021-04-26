@@ -299,441 +299,455 @@ public class GL33ModelRenderer {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        new Thread(this::renderThread).start();
+    }
 
-                float[] normal;
+    private void renderThread() {
 
-                final Vector4f nv = new Vector4f(0, 0, 0, 1f);
-                final Matrix4f mm = new Matrix4f();
-                Matrix4f.setIdentity(mm);
+        float[] normal;
 
-                final Set<GDataCSG> oldCsgData = new HashSet<>();
-                final Set<GData> selectionSet = new HashSet<>();
-                final Set<GData> hiddenSet = new HashSet<>();
-                final List<GDataAndWinding> dataInOrder = new ArrayList<>();
-                final Map<GData, Vertex[]> vertexMap = new HashMap<>();
-                final Map<GData, Vertex[]> vertexMap2 = new HashMap<>();
-                final Map<GData, float[]> normalMap = new HashMap<>();
-                final ThreadsafeHashMap<GData1, Matrix4f> cacheViewByProjection = new ThreadsafeHashMap<>(1000);
-                final Map<GData1, Matrix4f> matrixMap = new HashMap<>();
-                final Integer myID = idGen.getAndIncrement();
-                matrixMap.put(View.DUMMY_REFERENCE, View.ID);
-                idList.add(myID);
-                while (isRunning.get()) {
+        final Vector4f nv = new Vector4f(0, 0, 0, 1f);
+        final Matrix4f mm = new Matrix4f();
+        Matrix4f.setIdentity(mm);
 
-                    boolean myTurn;
-                    try {
-                        myTurn = myID.equals(idList.get(idCount.get()));
-                    } catch (IndexOutOfBoundsException iob) {
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException ie) {
-                            Thread.currentThread().interrupt();
-                            throw new LDPartEditorException(ie);
-                        }
-                        continue;
-                    }
+        final Set<GDataCSG> oldCsgData = new HashSet<>();
+        final Set<GData> selectionSet = new HashSet<>();
+        final Set<GData> hiddenSet = new HashSet<>();
+        final List<GDataAndWinding> dataInOrder = new ArrayList<>();
+        final Map<GData, Vertex[]> vertexMap = new HashMap<>();
+        final Map<GData, Vertex[]> vertexMap2 = new HashMap<>();
+        final Map<GData, float[]> normalMap = new HashMap<>();
+        final ThreadsafeHashMap<GData1, Matrix4f> cacheViewByProjection = new ThreadsafeHashMap<>(1000);
+        final Map<GData1, Matrix4f> matrixMap = new HashMap<>();
+        final Integer myID = idGen.getAndIncrement();
+        matrixMap.put(View.DUMMY_REFERENCE, View.ID);
+        idList.add(myID);
+        while (isRunning.get()) {
 
-                    if (!myTurn) {
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException ie) {
-                            Thread.currentThread().interrupt();
-                            throw new LDPartEditorException(ie);
-                        }
-                        continue;
-                    }
+            boolean myTurn;
+            try {
+                myTurn = myID.equals(idList.get(idCount.get()));
+            } catch (IndexOutOfBoundsException iob) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new LDPartEditorException(ie);
+                }
+                continue;
+            }
 
-                    final int renderMode = c3d.getRenderMode();
+            if (!myTurn) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new LDPartEditorException(ie);
+                }
+                continue;
+            }
 
-                    // Skip render mode 5
-                    if (renderMode != 5) try {
-                        staticLock.lock();
+            final int renderMode = c3d.getRenderMode();
 
-                        // First we have to get links to the sets from the model
-                        final DatFile df = c3d.getLockableDatFileReference();
-                        // Just to speed up things in some cases...
-                        if (df == null || !df.isDrawSelection()) {
-                            continue; // static_lock.unlock(); on finally
-                        }
-                        final VertexManager vm = df.getVertexManager();
-                        final Lock maniLock = vm.getManifestationLock();
-                        final Set<GData> mainFileContent = vm.lineLinkedToVertices.keySet();
-                        // For the declared vertices, we have to use shallow copy
-                        maniLock.lock();
-                        final List<Vertex> vertices = new ArrayList<>(vm.vertexLinkedToPositionInFile.size());
-                        vertices.addAll(vm.vertexLinkedToPositionInFile.keySet());
-                        maniLock.unlock();
+            // Skip render mode 5
+            if (renderMode != 5) try {
+                staticLock.lock();
 
-                        if (calculateCondlineControlPoints.compareAndSet(true, false)) {
-                            CompletableFuture.runAsync( () -> {
-                                final SortedSet<Vertex> tmpPureCondlineControlPoints = new TreeSet<>();
-                                for (Vertex v : vertices) {
-                                    Set<VertexManifestation> manis = vm.vertexLinkedToPositionInFile.get(v);
-                                    if (manis != null) {
-                                        boolean pureControlPoint = true;
-                                        maniLock.lock();
-                                        for (VertexManifestation m : manis) {
-                                            if (m.getPosition() < 2 || m.getGdata().type() != 5) {
-                                                pureControlPoint = false;
-                                                break;
-                                            }
-                                        }
-                                        maniLock.unlock();
-                                        if (pureControlPoint) {
-                                            tmpPureCondlineControlPoints.add(v);
-                                        }
+                // First we have to get links to the sets from the model
+                final DatFile df = c3d.getLockableDatFileReference();
+                // Just to speed up things in some cases...
+                if (df == null || !df.isDrawSelection()) {
+                    continue; // static_lock.unlock(); on finally
+                }
+                final VertexManager vm = df.getVertexManager();
+                final Lock maniLock = vm.getManifestationLock();
+                final Set<GData> mainFileContent = vm.lineLinkedToVertices.keySet();
+                // For the declared vertices, we have to use shallow copy
+                maniLock.lock();
+                final List<Vertex> vertices = new ArrayList<>(vm.vertexLinkedToPositionInFile.size());
+                vertices.addAll(vm.vertexLinkedToPositionInFile.keySet());
+                maniLock.unlock();
+
+                if (calculateCondlineControlPoints.compareAndSet(true, false)) {
+                    CompletableFuture.runAsync( () -> {
+                        final SortedSet<Vertex> tmpPureCondlineControlPoints = new TreeSet<>();
+                        for (Vertex v : vertices) {
+                            Set<VertexManifestation> manis = vm.vertexLinkedToPositionInFile.get(v);
+                            if (manis != null) {
+                                boolean pureControlPoint = true;
+                                maniLock.lock();
+                                for (VertexManifestation m : manis) {
+                                    if (m.getPosition() < 2 || m.getGdata().type() != 5) {
+                                        pureControlPoint = false;
+                                        break;
                                     }
                                 }
-                                pureCondlineControlPoints = tmpPureCondlineControlPoints;
-                                calculateCondlineControlPoints.set(true);
-                            });
+                                maniLock.unlock();
+                                if (pureControlPoint) {
+                                    tmpPureCondlineControlPoints.add(v);
+                                }
+                            }
                         }
+                        pureCondlineControlPoints = tmpPureCondlineControlPoints;
+                        calculateCondlineControlPoints.set(true);
+                    });
+                }
 
-                        // The links are sufficient
-                        final Set<GData> selectedData = vm.selectedData;
-                        final Set<Vertex> selectedVertices = vm.selectedVertices;
-                        final ThreadsafeHashMap<GData, Set<VertexInfo>> ltv = vm.lineLinkedToVertices;
-                        Set<Vertex> tmpSelectedVertices = null;
-                        SortedMap<Integer, List<Integer>> smoothVertexAdjacency = null;
-                        SortedMap<Vertex, Integer> smoothVertexIndmap = null;
-                        final Set<Vertex> hiddenVertices = vm.hiddenVertices;
-                        final ThreadsafeHashMap<GData2, Vertex[]> lines = vm.lines;
-                        final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
-                        final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
-                        final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
-                        final List<GDataCSG> csgData = new ArrayList<>();
-                        final boolean drawStudLogo = c3d.isShowingLogo();
-                        final List<GDataPNG> pngImages = new ArrayList<>();
-                        final List<GData2> tmpDistanceMeters = new ArrayList<>();
-                        final List<GData3> tmpProtractors = new ArrayList<>();
-                        final Set<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
-                        final boolean drawWireframe = renderMode == -1;
+                // The links are sufficient
+                final Set<GData> selectedData = vm.selectedData;
+                final Set<Vertex> selectedVertices = vm.selectedVertices;
+                final ThreadsafeHashMap<GData, Set<VertexInfo>> ltv = vm.lineLinkedToVertices;
+                Set<Vertex> tmpSelectedVertices = null;
+                SortedMap<Integer, List<Integer>> smoothVertexAdjacency = null;
+                SortedMap<Vertex, Integer> smoothVertexIndmap = null;
+                final Set<Vertex> hiddenVertices = vm.hiddenVertices;
+                final ThreadsafeHashMap<GData2, Vertex[]> lines = vm.lines;
+                final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
+                final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
+                final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
+                final List<GDataCSG> csgData = new ArrayList<>();
+                final boolean drawStudLogo = c3d.isShowingLogo();
+                final List<GDataPNG> pngImages = new ArrayList<>();
+                final List<GData2> tmpDistanceMeters = new ArrayList<>();
+                final List<GData3> tmpProtractors = new ArrayList<>();
+                final Set<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
+                final boolean drawWireframe = renderMode == -1;
 
-                        // Build the list of the data from the datfile
-                        dataInOrder.clear();
-                        normalMap.clear();
-                        selectionSet.clear();
-                        hiddenSet.clear();
-                        cacheViewByProjection.clear();
+                // Build the list of the data from the datfile
+                dataInOrder.clear();
+                normalMap.clear();
+                selectionSet.clear();
+                hiddenSet.clear();
+                cacheViewByProjection.clear();
 
-                        usesCSG = loadBFCinfo(
-                                dataInOrder, csgData, vertexMap, matrixMap, df,
-                                lines, triangles, quads, condlines, drawStudLogo,
-                                pngImages, tmpDistanceMeters, tmpProtractors);
+                usesCSG = loadBFCinfo(
+                        dataInOrder, csgData, vertexMap, matrixMap, df,
+                        lines, triangles, quads, condlines, drawStudLogo,
+                        pngImages, tmpDistanceMeters, tmpProtractors);
 
-                        final boolean smoothShading = c3d.isSmoothShading() && !drawWireframe;
-                        final Map<GData, Vector3f[]> vertexNormals;
-                        if (smoothShading) {
-                            // MARK Calculate normals here...
-                            vertexNormals = new HashMap<>();
-                            final List<GDataAndWinding> data;
-                            data = dataInOrder;
-                            final Map<GData, Vector3f> surfaceNormals = new HashMap<>();
-                            for (GDataAndWinding gw : data) {
-                                final GData gd = gw.data;
-                                Vector3f normalv = null;
-                                if (gd.type() == 3) {
-                                    GData3 gd3 = (GData3) gd;
-                                    nv.x = gd3.xn;
-                                    nv.y = gd3.yn;
-                                    nv.z = gd3.zn;
-                                    nv.w = 1f;
-                                    Matrix4f loc = matrixMap.get(gd3.parent);
-                                    Matrix4f.transform(loc, nv, nv);
-                                    normalv = new Vector3f(nv.x, nv.y, nv.z);
-                                } else if (gd.type() == 4) {
-                                    GData4 gd4 = (GData4) gd;
-                                    nv.x = gd4.xn;
-                                    nv.y = gd4.yn;
-                                    nv.z = gd4.zn;
-                                    nv.w = 1f;
-                                    Matrix4f loc = matrixMap.get(gd4.parent);
-                                    Matrix4f.transform(loc, nv, nv);
-                                    normalv = new Vector3f(nv.x, nv.y, nv.z);
+                final boolean smoothShading = c3d.isSmoothShading() && !drawWireframe;
+                final Map<GData, Vector3f[]> vertexNormals;
+                if (smoothShading) {
+                    // MARK Calculate normals here...
+                    vertexNormals = new HashMap<>();
+                    final List<GDataAndWinding> data;
+                    data = dataInOrder;
+                    final Map<GData, Vector3f> surfaceNormals = new HashMap<>();
+                    for (GDataAndWinding gw : data) {
+                        final GData gd = gw.data;
+                        Vector3f normalv = null;
+                        if (gd.type() == 3) {
+                            GData3 gd3 = (GData3) gd;
+                            nv.x = gd3.xn;
+                            nv.y = gd3.yn;
+                            nv.z = gd3.zn;
+                            nv.w = 1f;
+                            Matrix4f loc = matrixMap.get(gd3.parent);
+                            Matrix4f.transform(loc, nv, nv);
+                            normalv = new Vector3f(nv.x, nv.y, nv.z);
+                        } else if (gd.type() == 4) {
+                            GData4 gd4 = (GData4) gd;
+                            nv.x = gd4.xn;
+                            nv.y = gd4.yn;
+                            nv.z = gd4.zn;
+                            nv.w = 1f;
+                            Matrix4f loc = matrixMap.get(gd4.parent);
+                            Matrix4f.transform(loc, nv, nv);
+                            normalv = new Vector3f(nv.x, nv.y, nv.z);
+                        }
+                        if (normalv != null) {
+                            // Flip the normal in case of determinant or INVERTNEXT
+                            if (renderMode > 3 && renderMode < 6) {
+                                if (!(gw.winding == BFC.CCW ^ gw.invertNext)) {
+                                    normalv.negate();
                                 }
-                                if (normalv != null) {
-                                    // Flip the normal in case of determinant or INVERTNEXT
-                                    if (renderMode > 3 && renderMode < 6) {
-                                        if (!(gw.winding == BFC.CCW ^ gw.invertNext)) {
-                                            normalv.negate();
-                                        }
-                                    } else if (!gw.negativeDeterminant) {
-                                        normalv.negate();
-                                    }
-                                    surfaceNormals.put(gd, normalv);
-                                }
+                            } else if (!gw.negativeDeterminant) {
+                                normalv.negate();
                             }
-                            surfaceNormals.values().parallelStream().forEach(n -> {
-                                if (n.lengthSquared() > 0f) n.normalise();
-                            });
-                            // Now calculate vertex normals (based on adjacent condlines)...
-                            for (GDataAndWinding gw : data) {
-                                final GData gd = gw.data;
-                                final int t = gd.type();
-                                if (t == 3) {
-                                    final Vector3f norm = surfaceNormals.get(gd);
-                                    final Vector3f[] normals = new Vector3f[]{new Vector3f(norm), new Vector3f(norm), new Vector3f(norm)};
-                                    vertexNormals.put(gd, normals);
-                                } else if (t == 4) {
-                                    final Vector3f norm = surfaceNormals.get(gd);
-                                    final Vector3f[] normals = new Vector3f[]{new Vector3f(norm), new Vector3f(norm), new Vector3f(norm), new Vector3f(norm)};
-                                    vertexNormals.put(gd, normals);
-                                }
-                            }
-                            for (GDataAndWinding gw : data) {
-                                final GData gd = gw.data;
-                                final int t = gd.type();
-                                if (t > 2 && t < 5) {
-                                    final Vector3f[] normals = vertexNormals.get(gd);
-                                    final Vertex[] v = vertexMap.get(gd);
-                                    for (int i = 0; i < t; i++) {
-                                        final int j = (i + 1) % t;
-                                        if (vm.hasCondlineAndNoEdge(v[i], v[j])) {
-                                            for (GData s : vm.linkedCommonFaces(v[i], v[j])) {
-                                                if (s != gd) {
-                                                    if (vertexMap.get(s) != null && surfaceNormals.get(s) != null) for (Vertex w : vertexMap.get(s)) {
-                                                        if (w.equals(v[i])) {
-                                                            Vector3f.add(normals[i], surfaceNormals.get(s), normals[i]);
-                                                        } else if (w.equals(v[j])) {
-                                                            Vector3f.add(normals[j], surfaceNormals.get(s), normals[j]);
-                                                        }
-                                                    }
-                                                    break;
+                            surfaceNormals.put(gd, normalv);
+                        }
+                    }
+                    surfaceNormals.values().parallelStream().forEach(n -> {
+                        if (n.lengthSquared() > 0f) n.normalise();
+                    });
+                    // Now calculate vertex normals (based on adjacent condlines)...
+                    for (GDataAndWinding gw : data) {
+                        final GData gd = gw.data;
+                        final int t = gd.type();
+                        if (t == 3) {
+                            final Vector3f norm = surfaceNormals.get(gd);
+                            final Vector3f[] normals = new Vector3f[]{new Vector3f(norm), new Vector3f(norm), new Vector3f(norm)};
+                            vertexNormals.put(gd, normals);
+                        } else if (t == 4) {
+                            final Vector3f norm = surfaceNormals.get(gd);
+                            final Vector3f[] normals = new Vector3f[]{new Vector3f(norm), new Vector3f(norm), new Vector3f(norm), new Vector3f(norm)};
+                            vertexNormals.put(gd, normals);
+                        }
+                    }
+                    for (GDataAndWinding gw : data) {
+                        final GData gd = gw.data;
+                        final int t = gd.type();
+                        if (t > 2 && t < 5) {
+                            final Vector3f[] normals = vertexNormals.get(gd);
+                            final Vertex[] v = vertexMap.get(gd);
+                            for (int i = 0; i < t; i++) {
+                                final int j = (i + 1) % t;
+                                if (vm.hasCondlineAndNoEdge(v[i], v[j])) {
+                                    for (GData s : vm.linkedCommonFaces(v[i], v[j])) {
+                                        if (s != gd) {
+                                            if (vertexMap.get(s) != null && surfaceNormals.get(s) != null) for (Vertex w : vertexMap.get(s)) {
+                                                if (w.equals(v[i])) {
+                                                    Vector3f.add(normals[i], surfaceNormals.get(s), normals[i]);
+                                                } else if (w.equals(v[j])) {
+                                                    Vector3f.add(normals[j], surfaceNormals.get(s), normals[j]);
                                                 }
                                             }
+                                            break;
                                         }
                                     }
-                                    vertexNormals.put(gd, normals);
                                 }
                             }
-                            vertexNormals.values().parallelStream().forEach(normals -> {
-                                for (Vector3f n : normals) if (n.lengthSquared() > 0f) n.normalise();
-                            });
-                        } else {
-                            vertexNormals = null;
+                            vertexNormals.put(gd, normals);
                         }
+                    }
+                    vertexNormals.values().parallelStream().forEach(normals -> {
+                        for (Vector3f n : normals) if (n.lengthSquared() > 0f) n.normalise();
+                    });
+                } else {
+                    vertexNormals = null;
+                }
 
-                        // CSG Selection
-                        int csgSelectionVertexSize = 0;
-                        final float[] tmpCsgSelectionData;
-                        {
-                            int csgSelectionIndex = 0;
-                            Set<GData3> selection = GDataCSG.getSelectionData(df);
-                            csgSelectionVertexSize += selection.size() * 6;
-                            tmpCsgSelectionData = new float[csgSelectionVertexSize * 7];
-                            for (GData3 gd3 : selection) {
-                                pointAt7(0, gd3.x1, gd3.y1, gd3.z1, tmpCsgSelectionData, csgSelectionIndex);
-                                pointAt7(1, gd3.x2, gd3.y2, gd3.z2, tmpCsgSelectionData, csgSelectionIndex);
-                                pointAt7(2, gd3.x3, gd3.y3, gd3.z3, tmpCsgSelectionData, csgSelectionIndex);
-                                pointAt7(3, gd3.x1, gd3.y1, gd3.z1, tmpCsgSelectionData, csgSelectionIndex);
-                                pointAt7(4, gd3.x3, gd3.y3, gd3.z3, tmpCsgSelectionData, csgSelectionIndex);
-                                pointAt7(5, gd3.x2, gd3.y2, gd3.z2, tmpCsgSelectionData, csgSelectionIndex);
-                                colourise7(0, 6, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, tmpCsgSelectionData, csgSelectionIndex);
-                                csgSelectionIndex += 6;
+                // CSG Selection
+                int csgSelectionVertexSize = 0;
+                final float[] tmpCsgSelectionData;
+                {
+                    int csgSelectionIndex = 0;
+                    Set<GData3> selection = GDataCSG.getSelectionData(df);
+                    csgSelectionVertexSize += selection.size() * 6;
+                    tmpCsgSelectionData = new float[csgSelectionVertexSize * 7];
+                    for (GData3 gd3 : selection) {
+                        pointAt7(0, gd3.x1, gd3.y1, gd3.z1, tmpCsgSelectionData, csgSelectionIndex);
+                        pointAt7(1, gd3.x2, gd3.y2, gd3.z2, tmpCsgSelectionData, csgSelectionIndex);
+                        pointAt7(2, gd3.x3, gd3.y3, gd3.z3, tmpCsgSelectionData, csgSelectionIndex);
+                        pointAt7(3, gd3.x1, gd3.y1, gd3.z1, tmpCsgSelectionData, csgSelectionIndex);
+                        pointAt7(4, gd3.x3, gd3.y3, gd3.z3, tmpCsgSelectionData, csgSelectionIndex);
+                        pointAt7(5, gd3.x2, gd3.y2, gd3.z2, tmpCsgSelectionData, csgSelectionIndex);
+                        colourise7(0, 6, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, tmpCsgSelectionData, csgSelectionIndex);
+                        csgSelectionIndex += 6;
+                    }
+                }
+
+                if (calculateCSG.compareAndSet(true, false)) {
+                    boolean modified2 = true;
+                    if (!c3d.getManipulator().isModified()) {
+                        modified2 = false;
+                        for (GDataCSG csg : csgData) {
+                            if (!oldCsgData.contains(csg)) {
+                                modified2 = true;
+                                oldCsgData.clear();
+                                oldCsgData.addAll(csgData);
                             }
                         }
+                    }
+                    final boolean modified = modified2;
+                    final List<GDataCSG> csgData2 = csgData;
+                    CompletableFuture.runAsync( () -> {
+                        // Do asynchronous CSG calculations here...
+                        int csgDataSize = 0;
+                        int csgSolidVertexCount = 0;
+                        int csgTransVertexCount = 0;
 
-                        if (calculateCSG.compareAndSet(true, false)) {
-                            boolean modified2 = true;
-                            if (!c3d.getManipulator().isModified()) {
-                                modified2 = false;
-                                for (GDataCSG csg : csgData) {
-                                    if (!oldCsgData.contains(csg)) {
-                                        modified2 = true;
-                                        oldCsgData.clear();
-                                        oldCsgData.addAll(csgData);
-                                    }
-                                }
+                        try {
+                            GDataCSG.staticLock.lock();
+                            if (modified) GDataCSG.resetCSG(df, true);
+                            // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
+                            for (GDataCSG csg : csgData2) {
+                                if (modified) csg.drawAndParse(c3d, df, false);
+                                csg.cacheResult(df);
+                                final int[] size = csg.getDataSize();
+                                csgDataSize += size[0];
+                                csgSolidVertexCount += size[1];
+                                csgTransVertexCount += size[2];
                             }
-                            final boolean modified = modified2;
-                            final List<GDataCSG> csgData2 = csgData;
-                            CompletableFuture.runAsync( () -> {
-                                // Do asynchronous CSG calculations here...
-                                int csgDataSize = 0;
-                                int csgSolidVertexCount = 0;
-                                int csgTransVertexCount = 0;
+                            GDataCSG.rebuildSelection(df);
+                            int csgIndex = 0;
+                            int transparentCSGindex = csgSolidVertexCount;
+                            float[] tmpCsgData = new float[csgDataSize];
+                            // Fill array here!
+                            final Vector4f[] v = new Vector4f[]{
+                                    new Vector4f(0f, 0f, 0f, 1f),
+                                    new Vector4f(0f, 0f, 0f, 1f),
+                                    new Vector4f(0f, 0f, 0f, 1f),
+                                    new Vector4f(0f, 0f, 0f, 1f)
+                            };
 
-                                try {
-                                    GDataCSG.staticLock.lock();
-                                    if (modified) GDataCSG.resetCSG(df, true);
-                                    // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
-                                    for (GDataCSG csg : csgData2) {
-                                        if (modified) csg.drawAndParse(c3d, df, false);
-                                        csg.cacheResult(df);
-                                        final int[] size = csg.getDataSize();
-                                        csgDataSize += size[0];
-                                        csgSolidVertexCount += size[1];
-                                        csgTransVertexCount += size[2];
+                            for (GDataCSG csg : csgData2) {
+                                for (GData3 gd3 : csg.getSurfaces()) {
+                                    final boolean transparent = gd3.a < 1f;
+                                    int tempIndex = csgIndex;
+                                    if (transparent) {
+                                        tempIndex = transparentCSGindex;
                                     }
-                                    GDataCSG.rebuildSelection(df);
-                                    int csgIndex = 0;
-                                    int transparentCSGindex = csgSolidVertexCount;
-                                    float[] tmpCsgData = new float[csgDataSize];
-                                    // Fill array here!
-                                    final Vector4f[] v = new Vector4f[]{
-                                            new Vector4f(0f, 0f, 0f, 1f),
-                                            new Vector4f(0f, 0f, 0f, 1f),
-                                            new Vector4f(0f, 0f, 0f, 1f),
-                                            new Vector4f(0f, 0f, 0f, 1f)
-                                    };
+                                    if (csg.parent == View.DUMMY_REFERENCE) {
+                                        final float xn = gd3.xn;
+                                        final float yn = gd3.yn;
+                                        final float zn = gd3.zn;
+                                        pointAt(0, gd3.x1, gd3.y1, gd3.z1, tmpCsgData, tempIndex);
+                                        pointAt(1, gd3.x2, gd3.y2, gd3.z2, tmpCsgData, tempIndex);
+                                        pointAt(2, gd3.x3, gd3.y3, gd3.z3, tmpCsgData, tempIndex);
+                                        pointAt(3, gd3.x1, gd3.y1, gd3.z1, tmpCsgData, tempIndex);
+                                        pointAt(4, gd3.x3, gd3.y3, gd3.z3, tmpCsgData, tempIndex);
+                                        pointAt(5, gd3.x2, gd3.y2, gd3.z2, tmpCsgData, tempIndex);
+                                        normal(0, 3, -xn, -yn, -zn, tmpCsgData, tempIndex);
+                                        normal(3, 3, xn, yn, zn, tmpCsgData, tempIndex);
+                                    } else {
+                                        final Matrix4f m = csg.parent.productMatrix;
 
-                                    for (GDataCSG csg : csgData2) {
-                                        for (GData3 gd3 : csg.getSurfaces()) {
-                                            final boolean transparent = gd3.a < 1f;
-                                            int tempIndex = csgIndex;
-                                            if (transparent) {
-                                                tempIndex = transparentCSGindex;
-                                            }
-                                            if (csg.parent == View.DUMMY_REFERENCE) {
-                                                final float xn = gd3.xn;
-                                                final float yn = gd3.yn;
-                                                final float zn = gd3.zn;
-                                                pointAt(0, gd3.x1, gd3.y1, gd3.z1, tmpCsgData, tempIndex);
-                                                pointAt(1, gd3.x2, gd3.y2, gd3.z2, tmpCsgData, tempIndex);
-                                                pointAt(2, gd3.x3, gd3.y3, gd3.z3, tmpCsgData, tempIndex);
-                                                pointAt(3, gd3.x1, gd3.y1, gd3.z1, tmpCsgData, tempIndex);
-                                                pointAt(4, gd3.x3, gd3.y3, gd3.z3, tmpCsgData, tempIndex);
-                                                pointAt(5, gd3.x2, gd3.y2, gd3.z2, tmpCsgData, tempIndex);
-                                                normal(0, 3, -xn, -yn, -zn, tmpCsgData, tempIndex);
-                                                normal(3, 3, xn, yn, zn, tmpCsgData, tempIndex);
-                                            } else {
-                                                final Matrix4f m = csg.parent.productMatrix;
-
-                                                v[0].x = gd3.x1;
-                                                v[0].y = gd3.y1;
-                                                v[0].z = gd3.z1;
-                                                v[0].w = 1f;
-                                                v[1].x = gd3.x2;
-                                                v[1].y = gd3.y2;
-                                                v[1].z = gd3.z2;
-                                                v[1].w = 1f;
-                                                v[2].x = gd3.x3;
-                                                v[2].y = gd3.y3;
-                                                v[2].z = gd3.z3;
-                                                v[2].w = 1f;
-                                                v[3].x = gd3.xn;
-                                                v[3].y = gd3.yn;
-                                                v[3].z = gd3.zn;
-                                                v[3].w = 1f;
-                                                Matrix4f.transform(m, v[0], v[0]);
-                                                Matrix4f.transform(m, v[1], v[1]);
-                                                Matrix4f.transform(m, v[2], v[2]);
-                                                Matrix4f.transform(m, v[3], v[3]);
-                                                // No normalization necessary (the shader does the job)!
-                                                final float xn = v[3].x;
-                                                final float yn = v[3].y;
-                                                final float zn = v[3].z;
-                                                pointAt(0, v[0].x, v[0].y, v[0].z, tmpCsgData, tempIndex);
-                                                pointAt(1, v[1].x, v[1].y, v[1].z, tmpCsgData, tempIndex);
-                                                pointAt(2, v[2].x, v[2].y, v[2].z, tmpCsgData, tempIndex);
-                                                pointAt(3, v[0].x, v[0].y, v[0].z, tmpCsgData, tempIndex);
-                                                pointAt(4, v[2].x, v[2].y, v[2].z, tmpCsgData, tempIndex);
-                                                pointAt(5, v[1].x, v[1].y, v[1].z, tmpCsgData, tempIndex);
-                                                if (m.determinant() < 0f) {
-                                                    normal(0, 3, xn, yn, zn, tmpCsgData, tempIndex);
-                                                    normal(3, 3, -xn, -yn, -zn, tmpCsgData, tempIndex);
-                                                } else {
-                                                    normal(0, 3, -xn, -yn, -zn, tmpCsgData, tempIndex);
-                                                    normal(3, 3, xn, yn, zn, tmpCsgData, tempIndex);
-                                                }
-                                            }
-                                            colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.a, tmpCsgData, tempIndex);
-                                            if (transparent) {
-                                                transparentCSGindex += 6;
-                                            } else {
-                                                csgIndex += 6;
-                                            }
+                                        v[0].x = gd3.x1;
+                                        v[0].y = gd3.y1;
+                                        v[0].z = gd3.z1;
+                                        v[0].w = 1f;
+                                        v[1].x = gd3.x2;
+                                        v[1].y = gd3.y2;
+                                        v[1].z = gd3.z2;
+                                        v[1].w = 1f;
+                                        v[2].x = gd3.x3;
+                                        v[2].y = gd3.y3;
+                                        v[2].z = gd3.z3;
+                                        v[2].w = 1f;
+                                        v[3].x = gd3.xn;
+                                        v[3].y = gd3.yn;
+                                        v[3].z = gd3.zn;
+                                        v[3].w = 1f;
+                                        Matrix4f.transform(m, v[0], v[0]);
+                                        Matrix4f.transform(m, v[1], v[1]);
+                                        Matrix4f.transform(m, v[2], v[2]);
+                                        Matrix4f.transform(m, v[3], v[3]);
+                                        // No normalization necessary (the shader does the job)!
+                                        final float xn = v[3].x;
+                                        final float yn = v[3].y;
+                                        final float zn = v[3].z;
+                                        pointAt(0, v[0].x, v[0].y, v[0].z, tmpCsgData, tempIndex);
+                                        pointAt(1, v[1].x, v[1].y, v[1].z, tmpCsgData, tempIndex);
+                                        pointAt(2, v[2].x, v[2].y, v[2].z, tmpCsgData, tempIndex);
+                                        pointAt(3, v[0].x, v[0].y, v[0].z, tmpCsgData, tempIndex);
+                                        pointAt(4, v[2].x, v[2].y, v[2].z, tmpCsgData, tempIndex);
+                                        pointAt(5, v[1].x, v[1].y, v[1].z, tmpCsgData, tempIndex);
+                                        if (m.determinant() < 0f) {
+                                            normal(0, 3, xn, yn, zn, tmpCsgData, tempIndex);
+                                            normal(3, 3, -xn, -yn, -zn, tmpCsgData, tempIndex);
+                                        } else {
+                                            normal(0, 3, -xn, -yn, -zn, tmpCsgData, tempIndex);
+                                            normal(3, 3, xn, yn, zn, tmpCsgData, tempIndex);
                                         }
                                     }
-                                    lock.lock();
-                                    dataCSG = tmpCsgData;
-                                    solidCSGsize= csgIndex;
-                                    transparentCSGoffset = csgIndex;
-                                    transparentCSGsize = csgTransVertexCount;
-                                    lock.unlock();
-                                } catch (Exception ex) {
-                                    NLogger.error(getClass(), ex);
-                                } finally {
-                                    GDataCSG.staticLock.unlock();
-                                    calculateCSG.set(true);
-                                }
-                            });
-                        }
-
-                        final boolean smoothVertices = OpenGLRenderer.getSmoothing().get();
-                        if (smoothVertices) {
-                            tmpSelectedVertices = new TreeSet<>();
-                            for (Vertex vertex : vertices) {
-                                if (selectedVertices.contains(vertex)) {
-                                    tmpSelectedVertices.add(vertex);
+                                    colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.a, tmpCsgData, tempIndex);
+                                    if (transparent) {
+                                        transparentCSGindex += 6;
+                                    } else {
+                                        csgIndex += 6;
+                                    }
                                 }
                             }
+                            lock.lock();
+                            dataCSG = tmpCsgData;
+                            solidCSGsize= csgIndex;
+                            transparentCSGoffset = csgIndex;
+                            transparentCSGsize = csgTransVertexCount;
+                            lock.unlock();
+                        } catch (Exception ex) {
+                            NLogger.error(getClass(), ex);
+                        } finally {
+                            GDataCSG.staticLock.unlock();
+                            calculateCSG.set(true);
                         }
-                        final Object[] smoothObj = smoothVertices ? vm.getSmoothedVertices(tmpSelectedVertices) : null;
-                        final int lineMode = c3d.getLineMode();
-                        final boolean meshLines = c3d.isMeshLines();
-                        final boolean subfileMeshLines = c3d.isSubMeshLines();
-                        final boolean condlineMode = renderMode == 6;
-                        final boolean hideCondlines = !condlineMode && lineMode > 1;
-                        final boolean hideLines = !condlineMode && lineMode > 2;
-                        final float zoom = c3d.getZoom();
-                        final Matrix4f viewport = c3d.getViewport();
-                        final Manipulator manipulator = c3d.getManipulator();
-                        final Matrix4f transform = manipulator.getTempTransformation4f();
-                        final boolean isTransforming = manipulator.isModified();
-                        final boolean moveAdjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
+                    });
+                }
 
-                        final List<Matrix4f> stud1Matrices;
-                        final List<Matrix4f> stud2Matrices;
-
-                        if (drawStudLogo) {
-                            stud1Matrices = new ArrayList<>();
-                            stud2Matrices = new ArrayList<>();
-                        } else {
-                            stud1Matrices = null;
-                            stud2Matrices = null;
+                final boolean smoothVertices = OpenGLRenderer.getSmoothing().get();
+                if (smoothVertices) {
+                    tmpSelectedVertices = new TreeSet<>();
+                    for (Vertex vertex : vertices) {
+                        if (selectedVertices.contains(vertex)) {
+                            tmpSelectedVertices.add(vertex);
                         }
+                    }
+                }
+                final Object[] smoothObj = smoothVertices ? vm.getSmoothedVertices(tmpSelectedVertices) : null;
+                final int lineMode = c3d.getLineMode();
+                final boolean meshLines = c3d.isMeshLines();
+                final boolean subfileMeshLines = c3d.isSubMeshLines();
+                final boolean condlineMode = renderMode == 6;
+                final boolean hideCondlines = !condlineMode && lineMode > 1;
+                final boolean hideLines = !condlineMode && lineMode > 2;
+                final float zoom = c3d.getZoom();
+                final Matrix4f viewport = c3d.getViewport();
+                final Manipulator manipulator = c3d.getManipulator();
+                final Matrix4f transform = manipulator.getTempTransformation4f();
+                final boolean isTransforming = manipulator.isModified();
+                final boolean moveAdjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
 
-                        int localTriangleSize = 0;
-                        int localLineSize = 0;
-                        int localCondlineSize = 0;
-                        int localTempLineSize = 0;
-                        @SuppressWarnings("unchecked")
-                        int localVerticesSize = vertices.size() + (smoothVertices ? ((List<Vertex>) smoothObj[0]).size() : 0);
-                        int localSelectionLineSize = 0;
+                final List<Matrix4f> stud1Matrices;
+                final List<Matrix4f> stud2Matrices;
 
-                        int triangleVertexCount = 0;
-                        int transparentTriangleVertexCount = 0;
-                        int lineVertexCount = 0;
-                        int condlineVertexCount = 0;
-                        int tempLineVertexCount = 0;
-                        int selectionLineVertexCount = 0;
+                if (drawStudLogo) {
+                    stud1Matrices = new ArrayList<>();
+                    stud2Matrices = new ArrayList<>();
+                } else {
+                    stud1Matrices = null;
+                    stud2Matrices = null;
+                }
 
-                        if (smoothVertices) {
-                            @SuppressWarnings("unchecked")
-                            SortedMap<Integer, List<Integer>> tmpAdjacency = (TreeMap<Integer, List<Integer>>) smoothObj[2];
-                            @SuppressWarnings("unchecked")
-                            SortedMap<Vertex, Integer> tmpIndex = (TreeMap<Vertex, Integer>) smoothObj[1];
-                            smoothVertexAdjacency = tmpAdjacency;
-                            smoothVertexIndmap = tmpIndex;
-                            for (List<Integer> lst : smoothVertexAdjacency.values()) {
-                                final int size = lst.size();
-                                localSelectionLineSize += 14 * size;
-                                selectionLineVertexCount += 2 * size;
+                int localTriangleSize = 0;
+                int localLineSize = 0;
+                int localCondlineSize = 0;
+                int localTempLineSize = 0;
+                @SuppressWarnings("unchecked")
+                int localVerticesSize = vertices.size() + (smoothVertices ? ((List<Vertex>) smoothObj[0]).size() : 0);
+                int localSelectionLineSize = 0;
+
+                int triangleVertexCount = 0;
+                int transparentTriangleVertexCount = 0;
+                int lineVertexCount = 0;
+                int condlineVertexCount = 0;
+                int tempLineVertexCount = 0;
+                int selectionLineVertexCount = 0;
+
+                if (smoothVertices) {
+                    @SuppressWarnings("unchecked")
+                    SortedMap<Integer, List<Integer>> tmpAdjacency = (TreeMap<Integer, List<Integer>>) smoothObj[2];
+                    @SuppressWarnings("unchecked")
+                    SortedMap<Vertex, Integer> tmpIndex = (TreeMap<Vertex, Integer>) smoothObj[1];
+                    smoothVertexAdjacency = tmpAdjacency;
+                    smoothVertexIndmap = tmpIndex;
+                    for (List<Integer> lst : smoothVertexAdjacency.values()) {
+                        final int size = lst.size();
+                        localSelectionLineSize += 14 * size;
+                        selectionLineVertexCount += 2 * size;
+                    }
+                }
+
+                // Pre-compute vertex transformations for Move Adjacent Data
+                SortedMap<Vertex, Vector4f> transformedVerts = null;
+                List<Vertex> transformedVertices = null;
+                if (isTransforming && moveAdjacentData) {
+                    transformedVerts = new TreeMap<>();
+                    transformedVertices = new ArrayList<>();
+                    for (Vertex v : vertices) {
+                        if (selectedVertices.contains(v)) {
+                            if (!transformedVerts.containsKey(v)) {
+                                Vector4f tv = Matrix4f.transform(transform, v.toVector4f(), new Vector4f());
+                                transformedVerts.put(v, tv);
+                                transformedVertices.add(new Vertex(tv.x, tv.y, tv.z, true));
                             }
                         }
-
-                        // Pre-compute vertex transformations for Move Adjacent Data
-                        SortedMap<Vertex, Vector4f> transformedVerts = null;
-                        List<Vertex> transformedVertices = null;
-                        if (isTransforming && moveAdjacentData) {
-                            transformedVerts = new TreeMap<>();
-                            transformedVertices = new ArrayList<>();
-                            for (Vertex v : vertices) {
-                                if (selectedVertices.contains(v)) {
+                    }
+                    for (GDataAndWinding gw : dataInOrder) {
+                        final GData gd = gw.data;
+                        if (selectedData.contains(gd)) {
+                            Vertex[] verts = vertexMap.get(gd);
+                            if (verts != null) {
+                                for (Vertex v : verts) {
                                     if (!transformedVerts.containsKey(v)) {
                                         Vector4f tv = Matrix4f.transform(transform, v.toVector4f(), new Vector4f());
                                         transformedVerts.put(v, tv);
@@ -741,111 +755,47 @@ public class GL33ModelRenderer {
                                     }
                                 }
                             }
-                            for (GDataAndWinding gw : dataInOrder) {
-                                final GData gd = gw.data;
-                                if (selectedData.contains(gd)) {
-                                    Vertex[] verts = vertexMap.get(gd);
-                                    if (verts != null) {
-                                        for (Vertex v : verts) {
-                                            if (!transformedVerts.containsKey(v)) {
-                                                Vector4f tv = Matrix4f.transform(transform, v.toVector4f(), new Vector4f());
-                                                transformedVerts.put(v, tv);
-                                                transformedVertices.add(new Vertex(tv.x, tv.y, tv.z, true));
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            localVerticesSize += transformedVertices.size();
                         }
+                    }
+                    localVerticesSize += transformedVertices.size();
+                }
 
-                        // Only do "heavy" CPU condline computing with the special condline mode
-                        // (if the condline was not shown before)
-                        if (condlineMode) {
-                            dataInOrder.parallelStream().forEach((GDataAndWinding gw) -> {
-                                GData gd = gw.data;
-                                if (gd.type() == 5) {
-                                    ((GData5) gd).isShown(viewport, cacheViewByProjection, zoom);
-                                }
-                            });
+                // Only do "heavy" CPU condline computing with the special condline mode
+                // (if the condline was not shown before)
+                if (condlineMode) {
+                    dataInOrder.parallelStream().forEach((GDataAndWinding gw) -> {
+                        GData gd = gw.data;
+                        if (gd.type() == 5) {
+                            ((GData5) gd).isShown(viewport, cacheViewByProjection, zoom);
                         }
+                    });
+                }
 
-                        // Calculate the buffer sizes
-                        // Lines are never transparent!
-                        for (GDataAndWinding gw : dataInOrder) {
+                // Calculate the buffer sizes
+                // Lines are never transparent!
+                for (GDataAndWinding gw : dataInOrder) {
 
-                            final GData gd = gw.data;
-                            final boolean selected = selectedData.contains(gd);
-                            final int type = gd.type();
+                    final GData gd = gw.data;
+                    final boolean selected = selectedData.contains(gd);
+                    final int type = gd.type();
 
-                            dataToRemove.remove(gd);
+                    dataToRemove.remove(gd);
 
-                            // If anything is transformed, transform it here
-                            // and update the vertex positions (vertexMap) and normals for it (normalMap)
-                            if (isTransforming && type > 1) {
-                                if (moveAdjacentData) {
-                                    if (selected || ltv.containsKey(gd)) {
-                                        boolean needNormal = false;
-                                        Vertex[] verts = vertexMap.get(gd);
-                                        Vertex[] nverts = new Vertex[verts.length];
-                                        for (int i = 0; i < verts.length; i++) {
-                                            Vector4f v = transformedVerts.getOrDefault(verts[i], verts[i].toVector4fm());
-                                            needNormal = needNormal || verts[i].toVector4fm() != v;
-                                            nverts[i] = new Vertex(v.x, v.y, v.z, true);
-                                        }
-                                        vertexMap.put(gd, nverts);
-                                        if (needNormal) {
-                                            switch (type) {
-                                            case 3:
-                                            {
-                                                float xn = (nverts[2].y - nverts[0].y) * (nverts[1].z - nverts[0].z) - (nverts[2].z - nverts[0].z) * (nverts[1].y - nverts[0].y);
-                                                float yn = (nverts[2].z - nverts[0].z) * (nverts[1].x - nverts[0].x) - (nverts[2].x - nverts[0].x) * (nverts[1].z - nverts[0].z);
-                                                float zn = (nverts[2].x - nverts[0].x) * (nverts[1].y - nverts[0].y) - (nverts[2].y - nverts[0].y) * (nverts[1].x - nverts[0].x);
-                                                normalMap.put(gd, new float[]{
-                                                        xn, yn, zn,
-                                                        xn, yn, zn,
-                                                        xn, yn, zn});
-                                            }
-                                            break;
-                                            case 4:
-                                            {
-                                                final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
-                                                {
-                                                    final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
-                                                    Vector3f.sub(new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), lineVectors[0]);
-                                                    Vector3f.sub(new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), lineVectors[1]);
-                                                    Vector3f.sub(new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), lineVectors[2]);
-                                                    Vector3f.sub(new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), lineVectors[3]);
-                                                    Vector3f.cross(lineVectors[0], lineVectors[1], normals[0]);
-                                                    Vector3f.cross(lineVectors[1], lineVectors[2], normals[1]);
-                                                    Vector3f.cross(lineVectors[2], lineVectors[3], normals[2]);
-                                                    Vector3f.cross(lineVectors[3], lineVectors[0], normals[3]);
-                                                }
-                                                Vector3f quadNormal = new Vector3f();
-                                                for (int i = 0; i < 4; i++) {
-                                                    Vector3f.add(normals[i], quadNormal, quadNormal);
-                                                }
-                                                quadNormal.negate();
-                                                normalMap.put(gd, new float[]{
-                                                        quadNormal.x, quadNormal.y, quadNormal.z,
-                                                        quadNormal.x, quadNormal.y, quadNormal.z,
-                                                        quadNormal.x, quadNormal.y, quadNormal.z,
-                                                        quadNormal.x, quadNormal.y, quadNormal.z});
-                                            }
-                                            break;
-                                            default:
-                                                break;
-                                            }
-                                        }
-                                    }
-                                } else if (selected) {
-                                    Vertex[] verts = vertexMap.get(gd);
-                                    Vertex[] nverts = new Vertex[verts.length];
-                                    for (int i = 0; i < verts.length; i++) {
-                                        Vector4f v = Matrix4f.transform(transform, verts[i].toVector4f(), new Vector4f());
-                                        nverts[i] = new Vertex(v.x, v.y, v.z, true);
-                                    }
-                                    vertexMap.put(gd, nverts);
+                    // If anything is transformed, transform it here
+                    // and update the vertex positions (vertexMap) and normals for it (normalMap)
+                    if (isTransforming && type > 1) {
+                        if (moveAdjacentData) {
+                            if (selected || ltv.containsKey(gd)) {
+                                boolean needNormal = false;
+                                Vertex[] verts = vertexMap.get(gd);
+                                Vertex[] nverts = new Vertex[verts.length];
+                                for (int i = 0; i < verts.length; i++) {
+                                    Vector4f v = transformedVerts.getOrDefault(verts[i], verts[i].toVector4fm());
+                                    needNormal = needNormal || verts[i].toVector4fm() != v;
+                                    nverts[i] = new Vertex(v.x, v.y, v.z, true);
+                                }
+                                vertexMap.put(gd, nverts);
+                                if (needNormal) {
                                     switch (type) {
                                     case 3:
                                     {
@@ -889,1323 +839,1372 @@ public class GL33ModelRenderer {
                                     }
                                 }
                             }
-
-                            // Calculate the buffer size for selected objects
-                            if (selected) {
-                                selectionSet.add(gd);
-
-                                switch (type) {
-                                case 2:
-                                    localSelectionLineSize += 14;
-                                    selectionLineVertexCount += 2;
-                                    break;
-                                case 3:
-                                    localSelectionLineSize += 42;
-                                    selectionLineVertexCount += 6;
-                                    break;
-                                case 4:
-                                    localSelectionLineSize += 56;
-                                    selectionLineVertexCount += 8;
-                                    break;
-                                case 5:
-                                    localSelectionLineSize += 42;
-                                    selectionLineVertexCount += 6;
-                                    break;
-                                default:
-                                    break;
-                                }
+                        } else if (selected) {
+                            Vertex[] verts = vertexMap.get(gd);
+                            Vertex[] nverts = new Vertex[verts.length];
+                            for (int i = 0; i < verts.length; i++) {
+                                Vector4f v = Matrix4f.transform(transform, verts[i].toVector4f(), new Vector4f());
+                                nverts[i] = new Vertex(v.x, v.y, v.z, true);
                             }
-
-
-                            if (!gd.visible) {
-                                hiddenSet.add(gd);
-                                continue;
-                            }
-
+                            vertexMap.put(gd, nverts);
                             switch (type) {
-                            case 1:
-                                // Collect stud matrices here...
-                                if (drawStudLogo) {
-                                    GData1 gd1 = (GData1) gd;
-                                    // Well, it is better to use one VAO for each logo and
-                                    // iterate with different matrices over the VAO!
-                                    if (filesWithLogo1.contains(gd1.shortName)) {
-                                        stud1Matrices.add(gd1.productMatrix);
-                                    } else if (filesWithLogo2.contains(gd1.shortName)) {
-                                        stud2Matrices.add(gd1.productMatrix);
-                                    }
-                                }
-                                continue;
-                            case 2:
-                                if (hideLines) {
-                                    continue;
-                                }
-                                final GData2 gd2 = (GData2) gd;
-                                if (gd2.isLine) {
-                                    localLineSize += 14;
-                                    lineVertexCount += 2;
-                                } else {
-                                    localLineSize += 28;
-                                    lineVertexCount += 4;
-                                }
-                                continue;
                             case 3:
-                                final GData3 gd3 = (GData3) gd;
-                                if (gd3.isTriangle) {
-                                    if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
-                                        localTempLineSize += 42;
-                                        tempLineVertexCount += 6;
-                                    }
-                                    switch (renderMode) {
-                                    case -1:
-                                        continue;
-                                    case 0:
-                                    case 1:
-                                    case 2:
-                                    case 3:
-                                    case 6:
-                                    case 7:
-                                        localTriangleSize += 60;
-                                        if (gd3.a < 1f) {
-                                            transparentTriangleVertexCount += 6;
-                                        } else {
-                                            triangleVertexCount += 6;
-                                        }
-                                        continue;
-                                    case 4:
-                                        if (gw.noclip) {
-                                            localTriangleSize += 60;
-                                            if (gd3.a < 1f) {
-                                                transparentTriangleVertexCount += 6;
-                                            } else {
-                                                triangleVertexCount += 6;
-                                            }
-                                        } else {
-                                            localTriangleSize += 30;
-                                            if (gd3.a < 1f) {
-                                                transparentTriangleVertexCount += 3;
-                                            } else {
-                                                triangleVertexCount += 3;
-                                            }
-                                        }
-                                        continue;
-                                    default:
-                                        continue;
-                                    }
+                            {
+                                float xn = (nverts[2].y - nverts[0].y) * (nverts[1].z - nverts[0].z) - (nverts[2].z - nverts[0].z) * (nverts[1].y - nverts[0].y);
+                                float yn = (nverts[2].z - nverts[0].z) * (nverts[1].x - nverts[0].x) - (nverts[2].x - nverts[0].x) * (nverts[1].z - nverts[0].z);
+                                float zn = (nverts[2].x - nverts[0].x) * (nverts[1].y - nverts[0].y) - (nverts[2].y - nverts[0].y) * (nverts[1].x - nverts[0].x);
+                                normalMap.put(gd, new float[]{
+                                        xn, yn, zn,
+                                        xn, yn, zn,
+                                        xn, yn, zn});
+                            }
+                            break;
+                            case 4:
+                            {
+                                final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+                                {
+                                    final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+                                    Vector3f.sub(new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), lineVectors[0]);
+                                    Vector3f.sub(new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), new Vector3f(nverts[1].x, nverts[1].y, nverts[1].z), lineVectors[1]);
+                                    Vector3f.sub(new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), new Vector3f(nverts[2].x, nverts[2].y, nverts[2].z), lineVectors[2]);
+                                    Vector3f.sub(new Vector3f(nverts[0].x, nverts[0].y, nverts[0].z), new Vector3f(nverts[3].x, nverts[3].y, nverts[3].z), lineVectors[3]);
+                                    Vector3f.cross(lineVectors[0], lineVectors[1], normals[0]);
+                                    Vector3f.cross(lineVectors[1], lineVectors[2], normals[1]);
+                                    Vector3f.cross(lineVectors[2], lineVectors[3], normals[2]);
+                                    Vector3f.cross(lineVectors[3], lineVectors[0], normals[3]);
+                                }
+                                Vector3f quadNormal = new Vector3f();
+                                for (int i = 0; i < 4; i++) {
+                                    Vector3f.add(normals[i], quadNormal, quadNormal);
+                                }
+                                quadNormal.negate();
+                                normalMap.put(gd, new float[]{
+                                        quadNormal.x, quadNormal.y, quadNormal.z,
+                                        quadNormal.x, quadNormal.y, quadNormal.z,
+                                        quadNormal.x, quadNormal.y, quadNormal.z,
+                                        quadNormal.x, quadNormal.y, quadNormal.z});
+                            }
+                            break;
+                            default:
+                                break;
+                            }
+                        }
+                    }
+
+                    // Calculate the buffer size for selected objects
+                    if (selected) {
+                        selectionSet.add(gd);
+
+                        switch (type) {
+                        case 2:
+                            localSelectionLineSize += 14;
+                            selectionLineVertexCount += 2;
+                            break;
+                        case 3:
+                            localSelectionLineSize += 42;
+                            selectionLineVertexCount += 6;
+                            break;
+                        case 4:
+                            localSelectionLineSize += 56;
+                            selectionLineVertexCount += 8;
+                            break;
+                        case 5:
+                            localSelectionLineSize += 42;
+                            selectionLineVertexCount += 6;
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+
+
+                    if (!gd.visible) {
+                        hiddenSet.add(gd);
+                        continue;
+                    }
+
+                    switch (type) {
+                    case 1:
+                        // Collect stud matrices here...
+                        if (drawStudLogo) {
+                            GData1 gd1 = (GData1) gd;
+                            // Well, it is better to use one VAO for each logo and
+                            // iterate with different matrices over the VAO!
+                            if (filesWithLogo1.contains(gd1.shortName)) {
+                                stud1Matrices.add(gd1.productMatrix);
+                            } else if (filesWithLogo2.contains(gd1.shortName)) {
+                                stud2Matrices.add(gd1.productMatrix);
+                            }
+                        }
+                        continue;
+                    case 2:
+                        if (hideLines) {
+                            continue;
+                        }
+                        final GData2 gd2 = (GData2) gd;
+                        if (gd2.isLine) {
+                            localLineSize += 14;
+                            lineVertexCount += 2;
+                        } else {
+                            localLineSize += 28;
+                            lineVertexCount += 4;
+                        }
+                        continue;
+                    case 3:
+                        final GData3 gd3 = (GData3) gd;
+                        if (gd3.isTriangle) {
+                            if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
+                                localTempLineSize += 42;
+                                tempLineVertexCount += 6;
+                            }
+                            switch (renderMode) {
+                            case -1:
+                                continue;
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 6:
+                            case 7:
+                                localTriangleSize += 60;
+                                if (gd3.a < 1f) {
+                                    transparentTriangleVertexCount += 6;
                                 } else {
-                                    localLineSize += 168;
-                                    lineVertexCount += 24;
+                                    triangleVertexCount += 6;
                                 }
                                 continue;
                             case 4:
-                                final GData4 gd4 = (GData4) gd;
-                                if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
-                                    localTempLineSize += 56;
-                                    tempLineVertexCount += 8;
-                                }
-                                switch (renderMode) {
-                                case -1:
-                                    continue;
-                                case 0:
-                                case 1:
-                                case 2:
-                                case 3:
-                                case 6:
-                                case 7:
-                                    localTriangleSize += 120;
-                                    if (gd4.a < 1f) {
-                                        transparentTriangleVertexCount += 12;
+                                if (gw.noclip) {
+                                    localTriangleSize += 60;
+                                    if (gd3.a < 1f) {
+                                        transparentTriangleVertexCount += 6;
                                     } else {
-                                        triangleVertexCount += 12;
+                                        triangleVertexCount += 6;
                                     }
-                                    continue;
-                                case 4:
-                                    if (gw.noclip) {
-                                        localTriangleSize += 120;
-                                        if (gd4.a < 1f) {
-                                            transparentTriangleVertexCount += 12;
-                                        } else {
-                                            triangleVertexCount += 12;
-                                        }
+                                } else {
+                                    localTriangleSize += 30;
+                                    if (gd3.a < 1f) {
+                                        transparentTriangleVertexCount += 3;
                                     } else {
-                                        localTriangleSize += 60;
-                                        if (gd4.a < 1f) {
-                                            transparentTriangleVertexCount += 6;
-                                        } else {
-                                            triangleVertexCount += 6;
-                                        }
+                                        triangleVertexCount += 3;
                                     }
-                                    continue;
-                                default:
-                                    continue;
                                 }
-                            case 5:
-                                if (hideCondlines) {
-                                    continue;
-                                }
-                                // Condlines are tricky, since I have to calculate their visibility
-                                localCondlineSize += 30;
-                                condlineVertexCount += 2;
                                 continue;
                             default:
                                 continue;
                             }
+                        } else {
+                            localLineSize += 168;
+                            lineVertexCount += 24;
                         }
-
-                        // for GL_TRIANGLES
-                        float[] triangleData = new float[localTriangleSize];
-                        // for GL_LINES
-                        float[] lineData = new float[localLineSize];
-                        float[] condlineData = new float[localCondlineSize];
-                        float[] tempLineData = new float[localTempLineSize];
-                        float[] selectionLineData = new float[localSelectionLineSize];
-
-                        // for GL_POINTS
-                        float[] vertexData = new float[localVerticesSize * 7];
-
-                        // Build the vertex array
-                        {
-                            final float r = View.VERTEX_COLOUR_R[0];
-                            final float g = View.VERTEX_COLOUR_G[0];
-                            final float b = View.VERTEX_COLOUR_B[0];
-                            final float r2 = View.VERTEX_SELECTED_COLOUR_R[0];
-                            final float g2 = View.VERTEX_SELECTED_COLOUR_G[0];
-                            final float b2 = View.VERTEX_SELECTED_COLOUR_B[0];
-                            int i = 0;
-
-                            if (isTransforming && moveAdjacentData) {
-                                for(Vertex v : transformedVertices) {
-                                    vertexData[i] = v.x;
-                                    vertexData[i + 1] = v.y;
-                                    vertexData[i + 2] = v.z;
-                                    vertexData[i + 3] = r2;
-                                    vertexData[i + 4] = g2;
-                                    vertexData[i + 5] = b2;
-                                    vertexData[i + 6] = 7f;
-                                    i += 7;
-                                }
+                        continue;
+                    case 4:
+                        final GData4 gd4 = (GData4) gd;
+                        if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
+                            localTempLineSize += 56;
+                            tempLineVertexCount += 8;
+                        }
+                        switch (renderMode) {
+                        case -1:
+                            continue;
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 6:
+                        case 7:
+                            localTriangleSize += 120;
+                            if (gd4.a < 1f) {
+                                transparentTriangleVertexCount += 12;
+                            } else {
+                                triangleVertexCount += 12;
                             }
-                            if (smoothVertices) {
-
-                                for(Vertex v : vertices) {
-                                    vertexData[i] = v.x;
-                                    vertexData[i + 1] = v.y;
-                                    vertexData[i + 2] = v.z;
-                                    vertexData[i + 3] = r;
-                                    vertexData[i + 4] = g;
-                                    vertexData[i + 5] = b;
-                                    if (c3d.isShowingCondlineControlPoints()) {
-                                        vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
-                                    } else {
-                                        vertexData[i + 6] = hiddenVertices.contains(v) || pureCondlineControlPoints.contains(v) ? 0f : 7f;
-                                    }
-                                    i += 7;
-                                }
-
-                                @SuppressWarnings("unchecked")
-                                List<Vertex> verts = (List<Vertex>) smoothObj[0];
-                                for(Vertex v : verts) {
-                                    vertexData[i] = v.x;
-                                    vertexData[i + 1] = v.y;
-                                    vertexData[i + 2] = v.z;
-                                    vertexData[i + 3] = r2;
-                                    vertexData[i + 4] = g2;
-                                    vertexData[i + 5] = b2;
-                                    vertexData[i + 6] = 7f;
-                                    i += 7;
+                            continue;
+                        case 4:
+                            if (gw.noclip) {
+                                localTriangleSize += 120;
+                                if (gd4.a < 1f) {
+                                    transparentTriangleVertexCount += 12;
+                                } else {
+                                    triangleVertexCount += 12;
                                 }
                             } else {
-                                for(Vertex v : vertices) {
-                                    vertexData[i] = v.x;
-                                    vertexData[i + 1] = v.y;
-                                    vertexData[i + 2] = v.z;
-
-                                    if (selectedVertices.contains(v)) {
-                                        vertexData[i + 3] = r2;
-                                        vertexData[i + 4] = g2;
-                                        vertexData[i + 5] = b2;
-                                        vertexData[i + 6] = 7f;
-                                    } else {
-                                        vertexData[i + 3] = r;
-                                        vertexData[i + 4] = g;
-                                        vertexData[i + 5] = b;
-
-                                        if (c3d.isShowingCondlineControlPoints()) {
-                                            vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
-                                        } else {
-                                            vertexData[i + 6] = hiddenVertices.contains(v) || pureCondlineControlPoints.contains(v) ? 0f : 7f;
-                                        }
-                                    }
-                                    i += 7;
-                                }
-
-                            }
-                        }
-
-
-                        Vertex[] v;
-                        int triangleIndex = 0;
-                        int transparentTriangleIndex = triangleVertexCount;
-                        int lineIndex = 0;
-                        int condlineIndex = 0;
-                        int tempLineIndex = 0;
-                        int selectionLineIndex = 0;
-
-                        if (smoothVertices) {
-                            @SuppressWarnings("unchecked")
-                            List<Vertex> verts = (List<Vertex>) smoothObj[0];
-                            for (Vertex v1 : verts) {
-                                if (smoothVertexAdjacency.containsKey(smoothVertexIndmap.get(v1))) {
-                                    for (Integer i : smoothVertexAdjacency.get(smoothVertexIndmap.get(v1))) {
-                                        Vertex v2 = verts.get(i);
-                                        pointAt7(0, v1.x, v1.y, v1.z, selectionLineData, selectionLineIndex);
-                                        pointAt7(1, v2.x, v2.y, v2.z, selectionLineData, selectionLineIndex);
-                                        colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
-                                        selectionLineIndex += 2;
-                                    }
+                                localTriangleSize += 60;
+                                if (gd4.a < 1f) {
+                                    transparentTriangleVertexCount += 6;
+                                } else {
+                                    triangleVertexCount += 6;
                                 }
                             }
+                            continue;
+                        default:
+                            continue;
+                        }
+                    case 5:
+                        if (hideCondlines) {
+                            continue;
+                        }
+                        // Condlines are tricky, since I have to calculate their visibility
+                        localCondlineSize += 30;
+                        condlineVertexCount += 2;
+                        continue;
+                    default:
+                        continue;
+                    }
+                }
+
+                // for GL_TRIANGLES
+                float[] triangleData = new float[localTriangleSize];
+                // for GL_LINES
+                float[] lineData = new float[localLineSize];
+                float[] condlineData = new float[localCondlineSize];
+                float[] tempLineData = new float[localTempLineSize];
+                float[] selectionLineData = new float[localSelectionLineSize];
+
+                // for GL_POINTS
+                float[] vertexData = new float[localVerticesSize * 7];
+
+                // Build the vertex array
+                {
+                    final float r = View.VERTEX_COLOUR_R[0];
+                    final float g = View.VERTEX_COLOUR_G[0];
+                    final float b = View.VERTEX_COLOUR_B[0];
+                    final float r2 = View.VERTEX_SELECTED_COLOUR_R[0];
+                    final float g2 = View.VERTEX_SELECTED_COLOUR_G[0];
+                    final float b2 = View.VERTEX_SELECTED_COLOUR_B[0];
+                    int i = 0;
+
+                    if (isTransforming && moveAdjacentData) {
+                        for(Vertex v : transformedVertices) {
+                            vertexData[i] = v.x;
+                            vertexData[i + 1] = v.y;
+                            vertexData[i + 2] = v.z;
+                            vertexData[i + 3] = r2;
+                            vertexData[i + 4] = g2;
+                            vertexData[i + 5] = b2;
+                            vertexData[i + 6] = 7f;
+                            i += 7;
+                        }
+                    }
+                    if (smoothVertices) {
+
+                        for(Vertex v : vertices) {
+                            vertexData[i] = v.x;
+                            vertexData[i + 1] = v.y;
+                            vertexData[i + 2] = v.z;
+                            vertexData[i + 3] = r;
+                            vertexData[i + 4] = g;
+                            vertexData[i + 5] = b;
+                            if (c3d.isShowingCondlineControlPoints()) {
+                                vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
+                            } else {
+                                vertexData[i + 6] = hiddenVertices.contains(v) || pureCondlineControlPoints.contains(v) ? 0f : 7f;
+                            }
+                            i += 7;
                         }
 
-                        float xn = 0f;
-                        float yn = 0f;
-                        float zn = 0f;
-                        float xn1 = 0f;
-                        float yn1 = 0f;
-                        float zn1 = 0f;
-                        float xn2 = 0f;
-                        float yn2 = 0f;
-                        float zn2 = 0f;
-                        float xn3 = 0f;
-                        float yn3 = 0f;
-                        float zn3 = 0f;
-                        float xn4 = 0f;
-                        float yn4 = 0f;
-                        float zn4 = 0f;
+                        @SuppressWarnings("unchecked")
+                        List<Vertex> verts = (List<Vertex>) smoothObj[0];
+                        for(Vertex v : verts) {
+                            vertexData[i] = v.x;
+                            vertexData[i + 1] = v.y;
+                            vertexData[i + 2] = v.z;
+                            vertexData[i + 3] = r2;
+                            vertexData[i + 4] = g2;
+                            vertexData[i + 5] = b2;
+                            vertexData[i + 6] = 7f;
+                            i += 7;
+                        }
+                    } else {
+                        for(Vertex v : vertices) {
+                            vertexData[i] = v.x;
+                            vertexData[i + 1] = v.y;
+                            vertexData[i + 2] = v.z;
 
-                        // Iterate the objects and generate the buffer data
-                        // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals / materials
-                        for (GDataAndWinding gw : dataInOrder) {
-                            final GData gd = gw.data;
+                            if (selectedVertices.contains(v)) {
+                                vertexData[i + 3] = r2;
+                                vertexData[i + 4] = g2;
+                                vertexData[i + 5] = b2;
+                                vertexData[i + 6] = 7f;
+                            } else {
+                                vertexData[i + 3] = r;
+                                vertexData[i + 4] = g;
+                                vertexData[i + 5] = b;
 
-                            final int type = gd.type();
-                            final boolean selected = selectionSet.contains(gd);
+                                if (c3d.isShowingCondlineControlPoints()) {
+                                    vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
+                                } else {
+                                    vertexData[i + 6] = hiddenVertices.contains(v) || pureCondlineControlPoints.contains(v) ? 0f : 7f;
+                                }
+                            }
+                            i += 7;
+                        }
 
-                            if (selected) {
-                                v = vertexMap.get(gd);
-                                switch (type) {
-                                case 2:
-                                    pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
-                                    colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
-                                    selectionLineIndex += 2;
-                                    break;
-                                case 3:
-                                    pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(2, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(3, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(4, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(5, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                                    if (((GData3) gd).isTriangle) {
-                                        colourise7(0, 6, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
-                                    } else {
-                                        colourise7(0, 4, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
+                    }
+                }
+
+
+                Vertex[] v;
+                int triangleIndex = 0;
+                int transparentTriangleIndex = triangleVertexCount;
+                int lineIndex = 0;
+                int condlineIndex = 0;
+                int tempLineIndex = 0;
+                int selectionLineIndex = 0;
+
+                if (smoothVertices) {
+                    @SuppressWarnings("unchecked")
+                    List<Vertex> verts = (List<Vertex>) smoothObj[0];
+                    for (Vertex v1 : verts) {
+                        if (smoothVertexAdjacency.containsKey(smoothVertexIndmap.get(v1))) {
+                            for (Integer i : smoothVertexAdjacency.get(smoothVertexIndmap.get(v1))) {
+                                Vertex v2 = verts.get(i);
+                                pointAt7(0, v1.x, v1.y, v1.z, selectionLineData, selectionLineIndex);
+                                pointAt7(1, v2.x, v2.y, v2.z, selectionLineData, selectionLineIndex);
+                                colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
+                                selectionLineIndex += 2;
+                            }
+                        }
+                    }
+                }
+
+                float xn = 0f;
+                float yn = 0f;
+                float zn = 0f;
+                float xn1 = 0f;
+                float yn1 = 0f;
+                float zn1 = 0f;
+                float xn2 = 0f;
+                float yn2 = 0f;
+                float zn2 = 0f;
+                float xn3 = 0f;
+                float yn3 = 0f;
+                float zn3 = 0f;
+                float xn4 = 0f;
+                float yn4 = 0f;
+                float zn4 = 0f;
+
+                // Iterate the objects and generate the buffer data
+                // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals / materials
+                for (GDataAndWinding gw : dataInOrder) {
+                    final GData gd = gw.data;
+
+                    final int type = gd.type();
+                    final boolean selected = selectionSet.contains(gd);
+
+                    if (selected) {
+                        v = vertexMap.get(gd);
+                        switch (type) {
+                        case 2:
+                            pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                            pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
+                            colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
+                            selectionLineIndex += 2;
+                            break;
+                        case 3:
+                            pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                            pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
+                            pointAt7(2, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
+                            pointAt7(3, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
+                            pointAt7(4, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
+                            pointAt7(5, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                            if (((GData3) gd).isTriangle) {
+                                colourise7(0, 6, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
+                            } else {
+                                colourise7(0, 4, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
+                            }
+                            selectionLineIndex += 6;
+                            break;
+                        case 4:
+                            pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                            pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
+                            pointAt7(2, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
+                            pointAt7(3, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
+                            pointAt7(4, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
+                            pointAt7(5, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
+                            pointAt7(6, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
+                            pointAt7(7, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                            colourise7(0, 8, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
+                            selectionLineIndex += 8;
+                            break;
+                        case 5:
+                            pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                            pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
+                            pointAt7(2, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                            pointAt7(3, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
+                            pointAt7(4, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
+                            pointAt7(5, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
+                            colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
+                            colourise7(2, 2, View.CONDLINE_SELECTED_COLOUR_R[0], View.CONDLINE_SELECTED_COLOUR_G[0], View.CONDLINE_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
+                            colourise7(4, 2, View.CONDLINE_SELECTED_COLOUR_R[0] / 2f, View.CONDLINE_SELECTED_COLOUR_G[0] / 2f, View.CONDLINE_SELECTED_COLOUR_B[0] / 2f, 7f, selectionLineData, selectionLineIndex);
+                            selectionLineIndex += 6;
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+
+                    if (hiddenSet.contains(gd)) {
+                        continue;
+                    }
+                    switch (type) {
+                    case 2:
+                        if (hideLines) {
+                            continue;
+                        }
+                        GData2 gd2 = (GData2) gd;
+                        v = vertexMap.get(gd);
+                        if (gd2.isLine) {
+                            pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
+                            pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
+                            if (renderMode != 1) {
+                                colourise7(0, 2, gd2.r, gd2.g, gd2.b, 7f, lineData, lineIndex);
+                            } else {
+                                final float r = MathHelper.randomFloat(gd2.id, 0);
+                                final float g = MathHelper.randomFloat(gd2.id, 1);
+                                final float b = MathHelper.randomFloat(gd2.id, 2);
+                                colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+                            }
+                            lineIndex += 2;
+                        } else {
+                            lineIndex += gd2.insertDistanceMeter(v, lineData, lineIndex);
+                        }
+                        continue;
+                    case 3:
+                        GData3 gd3 = (GData3) gd;
+                        v = vertexMap.get(gd);
+                        if (gd3.isTriangle) {
+                            final boolean transparent = gd3.a < 1f;
+                            int tempIndex = triangleIndex;
+                            if (transparent) {
+                                tempIndex = transparentTriangleIndex;
+                            }
+
+                            if (smoothShading) {
+                                if ((normal = normalMap.get(gd)) != null) {
+                                    xn1 = normal[0];
+                                    yn1 = normal[1];
+                                    zn1 = normal[2];
+                                    xn2 = xn1; yn2 = yn1; zn2 = zn1;
+                                    xn3 = xn1; yn3 = yn1; zn3 = zn1;
+                                } else {
+                                    final Vector3f[] normals = vertexNormals.get(gd);
+                                    {
+                                        final Vector3f n = normals[0];
+                                        xn1 = n.x;
+                                        yn1 = n.y;
+                                        zn1 = n.z;
                                     }
-                                    selectionLineIndex += 6;
+                                    {
+                                        final Vector3f n = normals[1];
+                                        xn2 = n.x;
+                                        yn2 = n.y;
+                                        zn2 = n.z;
+                                    }
+                                    {
+                                        final Vector3f n = normals[2];
+                                        xn3 = n.x;
+                                        yn3 = n.y;
+                                        zn3 = n.z;
+                                    }
+                                }
+                            } else {
+                                if ((normal = normalMap.get(gd)) != null) {
+                                    xn = normal[0];
+                                    yn = normal[1];
+                                    zn = normal[2];
+                                } else {
+                                    nv.x = gd3.xn;
+                                    nv.y = gd3.yn;
+                                    nv.z = gd3.zn;
+                                    nv.w = 1f;
+                                    Matrix4f loc = matrixMap.get(gd3.parent);
+                                    Matrix4f.transform(loc, nv, nv);
+                                    xn = nv.x;
+                                    yn = nv.y;
+                                    zn = nv.z;
+                                }
+                            }
+
+                            if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
+                                pointAt7(0, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
+                                pointAt7(1, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
+                                pointAt7(2, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
+                                pointAt7(3, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
+                                pointAt7(4, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
+                                pointAt7(5, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
+                                colourise7(0, 6, View.MESHLINE_COLOUR_R[0], View.MESHLINE_COLOUR_G[0], View.MESHLINE_COLOUR_B[0], 7f, tempLineData, tempLineIndex);
+                                tempLineIndex += 6;
+                            }
+                            int tmpRenderMode = renderMode;
+                            if (tmpRenderMode < 6  && tmpRenderMode > 1 && gw.noclip) {
+                                tmpRenderMode = 0;
+                            }
+                            switch (tmpRenderMode) {
+                            case -1:
+                                continue;
+                            case 0:
+                            {
+                                pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
+                                if (smoothShading) {
+                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                    normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                    normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                    normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                    normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                    normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                } else {
+                                    if (gw.negativeDeterminant) {
+                                        normal(0, 3, xn, yn, zn, triangleData, tempIndex);
+                                        normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                    } else {
+                                        normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                        normal(3, 3, xn, yn, zn, triangleData, tempIndex);
+                                    }
+                                }
+                                if (transparent) {
+                                    transparentTriangleIndex += 6;
+                                } else {
+                                    triangleIndex += 6;
+                                }
+                                continue;
+                            }
+                            case 1:
+                            {
+                                final float r = MathHelper.randomFloat(gd3.id, 0);
+                                final float g = MathHelper.randomFloat(gd3.id, 1);
+                                final float b = MathHelper.randomFloat(gd3.id, 2);
+                                pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                colourise(0, 6, r, g, b, gd3.a, triangleData, tempIndex);
+                                if (smoothShading) {
+                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                    normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                    normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                    normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                    normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                    normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                } else {
+                                    if (gw.negativeDeterminant) {
+                                        normal(0, 3, xn, yn, zn, triangleData, tempIndex);
+                                        normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                    } else {
+                                        normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                        normal(3, 3, xn, yn, zn, triangleData, tempIndex);
+                                    }
+                                }
+                                if (transparent) {
+                                    transparentTriangleIndex += 6;
+                                } else {
+                                    triangleIndex += 6;
+                                }
+                                continue;
+                            }
+                            case 2:
+                            case 6:
+                            {
+                                pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+
+
+                                switch (gw.winding) {
+                                case CW:
+                                    if (gw.negativeDeterminant ^ gw.invertNext) {
+                                        colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                        colourise(3, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                    } else {
+                                        colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                        colourise(0, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                    }
                                     break;
-                                case 4:
-                                    pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(2, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(3, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(4, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(5, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(6, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(7, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                                    colourise7(0, 8, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
-                                    selectionLineIndex += 8;
+                                case CCW:
+                                    if (gw.negativeDeterminant ^ gw.invertNext) {
+                                        colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                        colourise(0, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                    } else {
+                                        colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                        colourise(3, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                    }
                                     break;
-                                case 5:
-                                    pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(2, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(3, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(4, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                                    pointAt7(5, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
-                                    colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
-                                    colourise7(2, 2, View.CONDLINE_SELECTED_COLOUR_R[0], View.CONDLINE_SELECTED_COLOUR_G[0], View.CONDLINE_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
-                                    colourise7(4, 2, View.CONDLINE_SELECTED_COLOUR_R[0] / 2f, View.CONDLINE_SELECTED_COLOUR_G[0] / 2f, View.CONDLINE_SELECTED_COLOUR_B[0] / 2f, 7f, selectionLineData, selectionLineIndex);
-                                    selectionLineIndex += 6;
+                                case NOCERTIFY:
+                                    colourise(0, 6, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                     break;
                                 default:
                                     break;
                                 }
-                            }
-
-                            if (hiddenSet.contains(gd)) {
-                                continue;
-                            }
-                            switch (type) {
-                            case 2:
-                                if (hideLines) {
-                                    continue;
-                                }
-                                GData2 gd2 = (GData2) gd;
-                                v = vertexMap.get(gd);
-                                if (gd2.isLine) {
-                                    pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
-                                    pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
-                                    if (renderMode != 1) {
-                                        colourise7(0, 2, gd2.r, gd2.g, gd2.b, 7f, lineData, lineIndex);
-                                    } else {
-                                        final float r = MathHelper.randomFloat(gd2.id, 0);
-                                        final float g = MathHelper.randomFloat(gd2.id, 1);
-                                        final float b = MathHelper.randomFloat(gd2.id, 2);
-                                        colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
-                                    }
-                                    lineIndex += 2;
+                                if (smoothShading) {
+                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                    normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                    normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                    normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                    normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                    normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
                                 } else {
-                                    lineIndex += gd2.insertDistanceMeter(v, lineData, lineIndex);
-                                }
-                                continue;
-                            case 3:
-                                GData3 gd3 = (GData3) gd;
-                                v = vertexMap.get(gd);
-                                if (gd3.isTriangle) {
-                                    final boolean transparent = gd3.a < 1f;
-                                    int tempIndex = triangleIndex;
-                                    if (transparent) {
-                                        tempIndex = transparentTriangleIndex;
-                                    }
-
-                                    if (smoothShading) {
-                                        if ((normal = normalMap.get(gd)) != null) {
-                                            xn1 = normal[0];
-                                            yn1 = normal[1];
-                                            zn1 = normal[2];
-                                            xn2 = xn1; yn2 = yn1; zn2 = zn1;
-                                            xn3 = xn1; yn3 = yn1; zn3 = zn1;
-                                        } else {
-                                            final Vector3f[] normals = vertexNormals.get(gd);
-                                            {
-                                                final Vector3f n = normals[0];
-                                                xn1 = n.x;
-                                                yn1 = n.y;
-                                                zn1 = n.z;
-                                            }
-                                            {
-                                                final Vector3f n = normals[1];
-                                                xn2 = n.x;
-                                                yn2 = n.y;
-                                                zn2 = n.z;
-                                            }
-                                            {
-                                                final Vector3f n = normals[2];
-                                                xn3 = n.x;
-                                                yn3 = n.y;
-                                                zn3 = n.z;
-                                            }
-                                        }
+                                    if (gw.negativeDeterminant) {
+                                        normal(0, 3, xn, yn, zn, triangleData, tempIndex);
+                                        normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
                                     } else {
-                                        if ((normal = normalMap.get(gd)) != null) {
-                                            xn = normal[0];
-                                            yn = normal[1];
-                                            zn = normal[2];
-                                        } else {
-                                            nv.x = gd3.xn;
-                                            nv.y = gd3.yn;
-                                            nv.z = gd3.zn;
-                                            nv.w = 1f;
-                                            Matrix4f loc = matrixMap.get(gd3.parent);
-                                            Matrix4f.transform(loc, nv, nv);
-                                            xn = nv.x;
-                                            yn = nv.y;
-                                            zn = nv.z;
-                                        }
+                                        normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                        normal(3, 3, xn, yn, zn, triangleData, tempIndex);
                                     }
-
-                                    if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
-                                        pointAt7(0, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
-                                        pointAt7(1, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
-                                        pointAt7(2, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
-                                        pointAt7(3, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
-                                        pointAt7(4, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
-                                        pointAt7(5, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
-                                        colourise7(0, 6, View.MESHLINE_COLOUR_R[0], View.MESHLINE_COLOUR_G[0], View.MESHLINE_COLOUR_B[0], 7f, tempLineData, tempLineIndex);
-                                        tempLineIndex += 6;
-                                    }
-                                    int tmpRenderMode = renderMode;
-                                    if (tmpRenderMode < 6  && tmpRenderMode > 1 && gw.noclip) {
-                                        tmpRenderMode = 0;
-                                    }
-                                    switch (tmpRenderMode) {
-                                    case -1:
-                                        continue;
-                                    case 0:
-                                    {
-                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                        colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
-                                        if (smoothShading) {
-                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
-                                            normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                            normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
-                                            normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
-                                        } else {
-                                            if (gw.negativeDeterminant) {
-                                                normal(0, 3, xn, yn, zn, triangleData, tempIndex);
-                                                normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                            } else {
-                                                normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                                normal(3, 3, xn, yn, zn, triangleData, tempIndex);
-                                            }
-                                        }
-                                        if (transparent) {
-                                            transparentTriangleIndex += 6;
-                                        } else {
-                                            triangleIndex += 6;
-                                        }
-                                        continue;
-                                    }
-                                    case 1:
-                                    {
-                                        final float r = MathHelper.randomFloat(gd3.id, 0);
-                                        final float g = MathHelper.randomFloat(gd3.id, 1);
-                                        final float b = MathHelper.randomFloat(gd3.id, 2);
-                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                        colourise(0, 6, r, g, b, gd3.a, triangleData, tempIndex);
-                                        if (smoothShading) {
-                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
-                                            normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                            normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
-                                            normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
-                                        } else {
-                                            if (gw.negativeDeterminant) {
-                                                normal(0, 3, xn, yn, zn, triangleData, tempIndex);
-                                                normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                            } else {
-                                                normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                                normal(3, 3, xn, yn, zn, triangleData, tempIndex);
-                                            }
-                                        }
-                                        if (transparent) {
-                                            transparentTriangleIndex += 6;
-                                        } else {
-                                            triangleIndex += 6;
-                                        }
-                                        continue;
-                                    }
-                                    case 2:
-                                    case 6:
-                                    {
-                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-
-
-                                        switch (gw.winding) {
-                                        case CW:
-                                            if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                                colourise(3, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                            } else {
-                                                colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                                colourise(0, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                            }
-                                            break;
-                                        case CCW:
-                                            if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                                colourise(0, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                            } else {
-                                                colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                                colourise(3, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                            }
-                                            break;
-                                        case NOCERTIFY:
-                                            colourise(0, 6, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                            break;
-                                        default:
-                                            break;
-                                        }
-                                        if (smoothShading) {
-                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
-                                            normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                            normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
-                                            normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
-                                        } else {
-                                            if (gw.negativeDeterminant) {
-                                                normal(0, 3, xn, yn, zn, triangleData, tempIndex);
-                                                normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                            } else {
-                                                normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                                normal(3, 3, xn, yn, zn, triangleData, tempIndex);
-                                            }
-                                        }
-                                        if (transparent) {
-                                            transparentTriangleIndex += 6;
-                                        } else {
-                                            triangleIndex += 6;
-                                        }
-                                        continue;
-                                    }
-                                    case 7:
-                                    {
-                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-
-                                        colourise(0, 6, 0f, 0f, 1f, gd3.a, triangleData, tempIndex);
-
-                                        if (smoothShading) {
-                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
-                                            normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                            normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
-                                            normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
-                                        } else {
-                                            if (gw.negativeDeterminant) {
-                                                normal(0, 3, xn, yn, zn, triangleData, tempIndex);
-                                                normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                            } else {
-                                                normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                                normal(3, 3, xn, yn, zn, triangleData, tempIndex);
-                                            }
-                                        }
-                                        if (transparent) {
-                                            transparentTriangleIndex += 6;
-                                        } else {
-                                            triangleIndex += 6;
-                                        }
-                                        continue;
-                                    }
-                                    case 3:
-                                    {
-                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-
-
-                                        switch (gw.winding) {
-                                        case CW:
-                                            if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                                colourise(3, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
-                                            } else {
-                                                colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                                colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
-                                            }
-                                            break;
-                                        case CCW:
-                                            if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                                colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
-                                            } else {
-                                                colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                                colourise(3, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
-                                            }
-                                            break;
-                                        case NOCERTIFY:
-                                            colourise(0, 6, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd3.a, triangleData, tempIndex);
-                                            break;
-                                        default:
-                                            break;
-                                        }
-                                        if (smoothShading) {
-                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
-                                            normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                            normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
-                                            normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
-                                        } else {
-                                            if (gw.negativeDeterminant) {
-                                                normal(0, 3, xn, yn, zn, triangleData, tempIndex);
-                                                normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                            } else {
-                                                normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                                normal(3, 3, xn, yn, zn, triangleData, tempIndex);
-                                            }
-                                        }
-                                        if (transparent) {
-                                            transparentTriangleIndex += 6;
-                                        } else {
-                                            triangleIndex += 6;
-                                        }
-                                        continue;
-                                    }
-                                    case 4:
-                                    {
-                                        colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
-
-                                        switch (gw.winding) {
-                                        case CW:
-                                            if (smoothShading) {
-                                                if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                                    normal(1, 1, xn3, yn3, zn3, triangleData, tempIndex);
-                                                    normal(2, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                                } else {
-                                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                                    normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                                    normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
-                                                }
-                                            } else {
-                                                if (gw.invertNext) {
-                                                    normal(0, 3, xn, yn, zn, triangleData, tempIndex);
-                                                } else {
-                                                    normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                                }
-                                            }
-                                            if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                                pointAt(1, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                                pointAt(2, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                            } else {
-                                                pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                                pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                                pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            }
-                                            break;
-                                        case CCW:
-                                            if (smoothShading) {
-                                                if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                                    normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                                    normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
-                                                } else {
-                                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                                    normal(1, 1, xn3, yn3, zn3, triangleData, tempIndex);
-                                                    normal(2, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                                }
-                                            } else {
-                                                if (gw.invertNext) {
-                                                    normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
-                                                } else {
-                                                    normal(0, 3, xn, yn, zn, triangleData, tempIndex);
-                                                }
-                                            }
-                                            if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                                pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                                pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            } else {
-                                                pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                                pointAt(1, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                                pointAt(2, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                            }
-                                            break;
-                                        case NOCERTIFY:
-                                            pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                            pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                            pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            colourise(0, 3, 0f, 0f, 0f, 0f, triangleData, tempIndex);
-                                            break;
-                                        default:
-                                            break;
-                                        }
-                                        if (transparent) {
-                                            transparentTriangleIndex += 3;
-                                        } else {
-                                            triangleIndex += 3;
-                                        }
-                                        continue;
-                                    }
-                                    default:
-                                        continue;
-                                    }
-                                } else {
-                                    lineIndex += gd3.insertProtractor(v, lineData, lineIndex);
                                 }
-                                continue;
-                            case 4:
-                                v = vertexMap.get(gd);
-                                GData4 gd4 = (GData4) gd;
-                                final boolean transparent = gd4.a < 1f;
-                                int tempIndex = triangleIndex;
                                 if (transparent) {
-                                    tempIndex = transparentTriangleIndex;
+                                    transparentTriangleIndex += 6;
+                                } else {
+                                    triangleIndex += 6;
                                 }
+                                continue;
+                            }
+                            case 7:
+                            {
+                                pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+
+                                colourise(0, 6, 0f, 0f, 1f, gd3.a, triangleData, tempIndex);
 
                                 if (smoothShading) {
-                                    if ((normal = normalMap.get(gd)) != null) {
-                                        xn1 = normal[0];
-                                        yn1 = normal[1];
-                                        zn1 = normal[2];
-                                        xn2 = xn1; yn2 = yn1; zn2 = zn1;
-                                        xn3 = xn1; yn3 = yn1; zn3 = zn1;
-                                        xn4 = xn1; yn4 = yn1; zn4 = zn1;
-                                    } else {
-                                        final Vector3f[] normals = vertexNormals.get(gd);
-                                        {
-                                            final Vector3f n = normals[0];
-                                            xn1 = n.x;
-                                            yn1 = n.y;
-                                            zn1 = n.z;
-                                        }
-                                        {
-                                            final Vector3f n = normals[1];
-                                            xn2 = n.x;
-                                            yn2 = n.y;
-                                            zn2 = n.z;
-                                        }
-                                        {
-                                            final Vector3f n = normals[2];
-                                            xn3 = n.x;
-                                            yn3 = n.y;
-                                            zn3 = n.z;
-                                        }
-                                        {
-                                            final Vector3f n = normals[3];
-                                            xn4 = n.x;
-                                            yn4 = n.y;
-                                            zn4 = n.z;
-                                        }
-                                    }
+                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                    normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                    normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                    normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                    normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                    normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
                                 } else {
-                                    if ((normal = normalMap.get(gd)) != null) {
-                                        xn = normal[0];
-                                        yn = normal[1];
-                                        zn = normal[2];
+                                    if (gw.negativeDeterminant) {
+                                        normal(0, 3, xn, yn, zn, triangleData, tempIndex);
+                                        normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
                                     } else {
-                                        nv.x = gd4.xn;
-                                        nv.y = gd4.yn;
-                                        nv.z = gd4.zn;
-                                        nv.w = 1f;
-                                        Matrix4f loc = matrixMap.get(gd4.parent);
-                                        Matrix4f.transform(loc, nv, nv);
-                                        xn = nv.x;
-                                        yn = nv.y;
-                                        zn = nv.z;
+                                        normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                        normal(3, 3, xn, yn, zn, triangleData, tempIndex);
                                     }
                                 }
-
-                                if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
-                                    pointAt7(0, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
-                                    pointAt7(1, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
-                                    pointAt7(2, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
-                                    pointAt7(3, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
-                                    pointAt7(4, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
-                                    pointAt7(5, v[3].x, v[3].y, v[3].z, tempLineData, tempLineIndex);
-                                    pointAt7(6, v[3].x, v[3].y, v[3].z, tempLineData, tempLineIndex);
-                                    pointAt7(7, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
-                                    colourise7(0, 8, View.MESHLINE_COLOUR_R[0], View.MESHLINE_COLOUR_G[0], View.MESHLINE_COLOUR_B[0], 7f, tempLineData, tempLineIndex);
-                                    tempLineIndex += 8;
+                                if (transparent) {
+                                    transparentTriangleIndex += 6;
+                                } else {
+                                    triangleIndex += 6;
                                 }
+                                continue;
+                            }
+                            case 3:
+                            {
+                                pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
 
-                                int tmpRenderMode = renderMode;
-                                if (tmpRenderMode < 6  && tmpRenderMode > 1 && gw.noclip) {
-                                    tmpRenderMode = 0;
+
+                                switch (gw.winding) {
+                                case CW:
+                                    if (gw.negativeDeterminant ^ gw.invertNext) {
+                                        colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                        colourise(3, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
+                                    } else {
+                                        colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                        colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
+                                    }
+                                    break;
+                                case CCW:
+                                    if (gw.negativeDeterminant ^ gw.invertNext) {
+                                        colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                        colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
+                                    } else {
+                                        colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                        colourise(3, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
+                                    }
+                                    break;
+                                case NOCERTIFY:
+                                    colourise(0, 6, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                    break;
+                                default:
+                                    break;
                                 }
-                                switch (tmpRenderMode) {
-                                case -1:
-                                    continue;
-                                case 0:
-                                {
-                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                if (smoothShading) {
+                                    normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                    normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                    normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                    normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                    normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                    normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                } else {
+                                    if (gw.negativeDeterminant) {
+                                        normal(0, 3, xn, yn, zn, triangleData, tempIndex);
+                                        normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                    } else {
+                                        normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                        normal(3, 3, xn, yn, zn, triangleData, tempIndex);
+                                    }
+                                }
+                                if (transparent) {
+                                    transparentTriangleIndex += 6;
+                                } else {
+                                    triangleIndex += 6;
+                                }
+                                continue;
+                            }
+                            case 4:
+                            {
+                                colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
 
-                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-
-                                    colourise(0, 12, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                                switch (gw.winding) {
+                                case CW:
                                     if (smoothShading) {
-                                        normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                        normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                        normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
-                                        normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
-                                        normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                        normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                        normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
-                                        normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
-                                        normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
-                                        normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                        if (gw.negativeDeterminant ^ gw.invertNext) {
+                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                            normal(1, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                            normal(2, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                        } else {
+                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                        }
                                     } else {
-                                        if (gw.negativeDeterminant) {
-                                            normal(0, 6, xn, yn, zn, triangleData, tempIndex);
-                                            normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                        if (gw.invertNext) {
+                                            normal(0, 3, xn, yn, zn, triangleData, tempIndex);
                                         } else {
-                                            normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                            normal(6, 6, xn, yn, zn, triangleData, tempIndex);
+                                            normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
                                         }
                                     }
-                                    if (transparent) {
-                                        transparentTriangleIndex += 12;
+                                    if (gw.negativeDeterminant ^ gw.invertNext) {
+                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(1, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        pointAt(2, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                     } else {
-                                        triangleIndex += 12;
-                                    }
-                                    continue;
-                                }
-                                case 1:
-                                {
-                                    final float r = MathHelper.randomFloat(gd4.id, 0);
-                                    final float g = MathHelper.randomFloat(gd4.id, 1);
-                                    final float b = MathHelper.randomFloat(gd4.id, 2);
-                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-
-                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-
-                                    colourise(0, 12, r, g, b, gd4.a, triangleData, tempIndex);
-                                    if (smoothShading) {
-                                        normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                        normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                        normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
-                                        normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
-                                        normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                        normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                        normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
-                                        normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
-                                        normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
-                                        normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                    } else {
-                                        if (gw.negativeDeterminant) {
-                                            normal(0, 6, xn, yn, zn, triangleData, tempIndex);
-                                            normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                        } else {
-                                            normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                            normal(6, 6, xn, yn, zn, triangleData, tempIndex);
-                                        }
-                                    }
-                                    if (transparent) {
-                                        transparentTriangleIndex += 12;
-                                    } else {
-                                        triangleIndex += 12;
-                                    }
-                                    continue;
-                                }
-                                case 2:
-                                case 6:
-                                {
-                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-
-                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-
-                                    switch (gw.winding) {
-                                    case CW:
-                                        if (gw.invertNext  ^ gw.negativeDeterminant) {
-                                            colourise(6, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                            colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                        } else {
-                                            colourise(0, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                            colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                        }
-                                        break;
-                                    case CCW:
-                                        if (gw.invertNext  ^ gw.negativeDeterminant) {
-                                            colourise(0, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                            colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                        } else {
-                                            colourise(6, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                            colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                        }
-                                        break;
-                                    case NOCERTIFY:
-                                        colourise(0, 12, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                        break;
-                                    default:
-                                        break;
-                                    }
-                                    if (smoothShading) {
-                                        normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                        normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                        normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
-                                        normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
-                                        normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                        normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                        normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
-                                        normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
-                                        normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
-                                        normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                    } else {
-                                        if (gw.negativeDeterminant) {
-                                            normal(0, 6, xn, yn, zn, triangleData, tempIndex);
-                                            normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                        } else {
-                                            normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                            normal(6, 6, xn, yn, zn, triangleData, tempIndex);
-                                        }
-                                    }
-                                    if (transparent) {
-                                        transparentTriangleIndex += 12;
-                                    } else {
-                                        triangleIndex += 12;
-                                    }
-                                    continue;
-                                }
-                                case 7:
-                                {
-                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-
-                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-
-                                    final double angle = gd4.calculateAngle();
-                                    float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarityAngleWarning) / Threshold.coplanarityAngleError);
-
-                                    float r = 0f;
-                                    float g;
-                                    float b = 0f;
-
-                                    if (f < .5) {
-                                        g = f / .5f;
-                                        b = (1f - g);
-                                    } else {
-                                        r = (f - .5f) / .5f;
-                                        g = (1f - r);
-                                    }
-
-                                    colourise(0, 12, r, g, b, gd4.a, triangleData, tempIndex);
-
-                                    if (smoothShading) {
-                                        normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                        normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                        normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
-                                        normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
-                                        normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                        normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                        normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
-                                        normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
-                                        normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
-                                        normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                    } else {
-                                        if (gw.negativeDeterminant) {
-                                            normal(0, 6, xn, yn, zn, triangleData, tempIndex);
-                                            normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                        } else {
-                                            normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                            normal(6, 6, xn, yn, zn, triangleData, tempIndex);
-                                        }
-                                    }
-                                    if (transparent) {
-                                        transparentTriangleIndex += 12;
-                                    } else {
-                                        triangleIndex += 12;
-                                    }
-                                    continue;
-                                }
-                                case 3:
-                                {
-                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-
-                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-
-                                    switch (gw.winding) {
-                                    case CW:
-                                        if (gw.invertNext  ^ gw.negativeDeterminant) {
-                                            colourise(6, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                            colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                        } else {
-                                            colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                            colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                        }
-                                        break;
-                                    case CCW:
-                                        if (gw.invertNext  ^ gw.negativeDeterminant) {
-                                            colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                            colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                        } else {
-                                            colourise(6, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                            colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                        }
-                                        break;
-                                    case NOCERTIFY:
-                                        colourise(0, 12, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd4.a, triangleData, tempIndex);
-                                        break;
-                                    default:
-                                        break;
-                                    }
-                                    if (smoothShading) {
-                                        normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                        normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                        normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
-                                        normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
-                                        normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                        normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                        normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
-                                        normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
-                                        normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
-                                        normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
-                                    } else {
-                                        if (gw.negativeDeterminant) {
-                                            normal(0, 6, xn, yn, zn, triangleData, tempIndex);
-                                            normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                        } else {
-                                            normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                            normal(6, 6, xn, yn, zn, triangleData, tempIndex);
-                                        }
-                                    }
-                                    if (transparent) {
-                                        transparentTriangleIndex += 12;
-                                    } else {
-                                        triangleIndex += 12;
-                                    }
-                                    continue;
-                                }
-                                case 4:
-                                {
-                                    colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                    switch (gw.winding) {
-                                    case CW:
-                                        if (smoothShading) {
-                                            if (gw.invertNext ^ gw.negativeDeterminant) {
-                                                normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                                normal(1, 1, xn4, yn4, zn4, triangleData, tempIndex);
-                                                normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
-                                                normal(4, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                                normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                            } else {
-                                                normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                                normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                                normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
-                                                normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
-                                                normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                            }
-                                        } else {
-                                            if (gw.invertNext) {
-                                                normal(0, 6, xn, yn, zn, triangleData, tempIndex);
-                                            } else {
-                                                normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                            }
-                                        }
-                                        if (gw.invertNext ^ gw.negativeDeterminant) {
-                                            pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                            pointAt(1, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                            pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            pointAt(4, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                            pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        } else {
-                                            pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                            pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                            pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                            pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        }
-                                        break;
-                                    case CCW:
-                                        if (smoothShading) {
-                                            if (gw.invertNext ^ gw.negativeDeterminant) {
-                                                normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                                normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                                normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
-                                                normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
-                                                normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                            } else {
-                                                normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                                normal(1, 1, xn4, yn4, zn4, triangleData, tempIndex);
-                                                normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
-                                                normal(4, 1, xn2, yn2, zn2, triangleData, tempIndex);
-                                                normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
-                                            }
-                                        } else {
-                                            if (gw.invertNext) {
-                                                normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
-                                            } else {
-                                                normal(0, 6, xn, yn, zn, triangleData, tempIndex);
-                                            }
-                                        }
-                                        if (gw.invertNext ^ gw.negativeDeterminant) {
-                                            pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                            pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                            pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                            pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        } else {
-                                            pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                            pointAt(1, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                            pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                            pointAt(4, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
-                                            pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        }
-                                        break;
-                                    case NOCERTIFY:
-                                        colourise(0, 6, 0f, 0f, 0f, 0f, triangleData, tempIndex);
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                         pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                         pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
-                                        pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
-                                        pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                                        break;
-                                    default:
-                                        break;
                                     }
-                                    if (transparent) {
-                                        transparentTriangleIndex += 6;
+                                    break;
+                                case CCW:
+                                    if (smoothShading) {
+                                        if (gw.negativeDeterminant ^ gw.invertNext) {
+                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                        } else {
+                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                            normal(1, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                            normal(2, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                        }
                                     } else {
-                                        triangleIndex += 6;
+                                        if (gw.invertNext) {
+                                            normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                        } else {
+                                            normal(0, 3, xn, yn, zn, triangleData, tempIndex);
+                                        }
                                     }
-                                    continue;
-                                }
+                                    if (gw.negativeDeterminant ^ gw.invertNext) {
+                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    } else {
+                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(1, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        pointAt(2, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    }
+                                    break;
+                                case NOCERTIFY:
+                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    colourise(0, 3, 0f, 0f, 0f, 0f, triangleData, tempIndex);
+                                    break;
                                 default:
-                                    continue;
+                                    break;
                                 }
-                            case 5:
-                                if (hideCondlines) {
-                                    continue;
-                                }
-                                GData5 gd5 = (GData5) gd;
-                                v = vertexMap.get(gd);
-                                pointAt15(0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
-                                pointAt15(1, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);
-                                controlPointAt15(0, 0, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);
-                                controlPointAt15(0, 1, v[2].x, v[2].y, v[2].z, condlineData, condlineIndex);
-                                controlPointAt15(0, 2, v[3].x, v[3].y, v[3].z, condlineData, condlineIndex);
-                                controlPointAt15(1, 0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
-                                controlPointAt15(1, 1, v[2].x, v[2].y, v[2].z, condlineData, condlineIndex);
-                                controlPointAt15(1, 2, v[3].x, v[3].y, v[3].z, condlineData, condlineIndex);
-                                if (condlineMode) {
-                                    if (gd5.wasShown()) {
-                                        colourise15(0, 2, View.CONDLINE_SHOWN_COLOUR_R[0], View.CONDLINE_SHOWN_COLOUR_G[0], View.CONDLINE_SHOWN_COLOUR_B[0], condlineData, condlineIndex);
-                                    } else {
-                                        colourise15(0, 2, View.CONDLINE_HIDDEN_COLOUR_R[0], View.CONDLINE_HIDDEN_COLOUR_G[0], View.CONDLINE_HIDDEN_COLOUR_B[0], condlineData, condlineIndex);
-                                    }
+                                if (transparent) {
+                                    transparentTriangleIndex += 3;
                                 } else {
-                                    if (renderMode != 1) {
-                                        colourise15(0, 2, gd5.r, gd5.g, gd5.b, condlineData, condlineIndex);
-                                    } else {
-                                        final float r = MathHelper.randomFloat(gd5.id, 0);
-                                        final float g = MathHelper.randomFloat(gd5.id, 1);
-                                        final float b = MathHelper.randomFloat(gd5.id, 2);
-                                        colourise15(0, 2, r, g, b, condlineData, condlineIndex);
-                                    }
+                                    triangleIndex += 3;
                                 }
-                                condlineIndex += 2;
                                 continue;
+                            }
                             default:
                                 continue;
                             }
+                        } else {
+                            lineIndex += gd3.insertProtractor(v, lineData, lineIndex);
+                        }
+                        continue;
+                    case 4:
+                        v = vertexMap.get(gd);
+                        GData4 gd4 = (GData4) gd;
+                        final boolean transparent = gd4.a < 1f;
+                        int tempIndex = triangleIndex;
+                        if (transparent) {
+                            tempIndex = transparentTriangleIndex;
                         }
 
-                        if (drawStudLogo) {
-                            lock.lock();
-                            stud1MatricesResult = stud1Matrices;
-                            stud2MatricesResult = stud2Matrices;
-                            lock.unlock();
-                        }
-
-                        if (vertexMap2.size() != vertexMap.size() || !dataToRemove.isEmpty() || isTransforming) {
-                            for (GData gd : dataToRemove) {
-                                vertexMap.remove(gd);
-                                vertexMap2.remove(gd);
+                        if (smoothShading) {
+                            if ((normal = normalMap.get(gd)) != null) {
+                                xn1 = normal[0];
+                                yn1 = normal[1];
+                                zn1 = normal[2];
+                                xn2 = xn1; yn2 = yn1; zn2 = zn1;
+                                xn3 = xn1; yn3 = yn1; zn3 = zn1;
+                                xn4 = xn1; yn4 = yn1; zn4 = zn1;
+                            } else {
+                                final Vector3f[] normals = vertexNormals.get(gd);
+                                {
+                                    final Vector3f n = normals[0];
+                                    xn1 = n.x;
+                                    yn1 = n.y;
+                                    zn1 = n.z;
+                                }
+                                {
+                                    final Vector3f n = normals[1];
+                                    xn2 = n.x;
+                                    yn2 = n.y;
+                                    zn2 = n.z;
+                                }
+                                {
+                                    final Vector3f n = normals[2];
+                                    xn3 = n.x;
+                                    yn3 = n.y;
+                                    zn3 = n.z;
+                                }
+                                {
+                                    final Vector3f n = normals[3];
+                                    xn4 = n.x;
+                                    yn4 = n.y;
+                                    zn4 = n.z;
+                                }
                             }
-                            vertexMap2.putAll(vertexMap);
-                            sharedVertexMap = vertexMap2;
+                        } else {
+                            if ((normal = normalMap.get(gd)) != null) {
+                                xn = normal[0];
+                                yn = normal[1];
+                                zn = normal[2];
+                            } else {
+                                nv.x = gd4.xn;
+                                nv.y = gd4.yn;
+                                nv.z = gd4.zn;
+                                nv.w = 1f;
+                                Matrix4f loc = matrixMap.get(gd4.parent);
+                                Matrix4f.transform(loc, nv, nv);
+                                xn = nv.x;
+                                yn = nv.y;
+                                zn = nv.z;
+                            }
                         }
-                        lock.lock();
-                        images = pngImages;
-                        distanceMeters = tmpDistanceMeters;
-                        protractors = tmpProtractors;
-                        dataTriangles = triangleData;
-                        solidTriangleSize = triangleVertexCount;
-                        transparentTriangleSize = transparentTriangleVertexCount;
-                        transparentTriangleOffset = triangleVertexCount;
-                        vertexSize = localVerticesSize;
-                        dataVertices = vertexData;
-                        lineSize = lineVertexCount;
-                        dataLines = lineData;
-                        condlineSize = condlineVertexCount;
-                        dataCondlines = condlineData;
-                        tempLineSize = tempLineVertexCount;
-                        dataTempLines = tempLineData;
-                        selectionSize = selectionLineVertexCount;
-                        dataSelectionLines = selectionLineData;
-                        dataSelectionCSG = tmpCsgSelectionData;
-                        selectionCSGsize = csgSelectionVertexSize;
-                        lock.unlock();
 
-                    } catch (Exception ex) {
-                        if (NLogger.debugging) {
-                            System.out.println("Exception: " + ex.getMessage()); //$NON-NLS-1$
+                        if (drawWireframe || meshLines && (subfileMeshLines || mainFileContent.contains(gw.data))) {
+                            pointAt7(0, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
+                            pointAt7(1, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
+                            pointAt7(2, v[1].x, v[1].y, v[1].z, tempLineData, tempLineIndex);
+                            pointAt7(3, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
+                            pointAt7(4, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
+                            pointAt7(5, v[3].x, v[3].y, v[3].z, tempLineData, tempLineIndex);
+                            pointAt7(6, v[3].x, v[3].y, v[3].z, tempLineData, tempLineIndex);
+                            pointAt7(7, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
+                            colourise7(0, 8, View.MESHLINE_COLOUR_R[0], View.MESHLINE_COLOUR_G[0], View.MESHLINE_COLOUR_B[0], 7f, tempLineData, tempLineIndex);
+                            tempLineIndex += 8;
                         }
-                    } finally {
-                        staticLock.unlock();
-                    }
-                    if (idCount.incrementAndGet() >= idList.size()) {
-                        idCount.set(0);
+
+                        int tmpRenderMode = renderMode;
+                        if (tmpRenderMode < 6  && tmpRenderMode > 1 && gw.noclip) {
+                            tmpRenderMode = 0;
+                        }
+                        switch (tmpRenderMode) {
+                        case -1:
+                            continue;
+                        case 0:
+                        {
+                            pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                            pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                            pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                            pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                            pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                            pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                            colourise(0, 12, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                            if (smoothShading) {
+                                normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
+                                normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
+                                normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
+                                normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                            } else {
+                                if (gw.negativeDeterminant) {
+                                    normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                    normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                } else {
+                                    normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                    normal(6, 6, xn, yn, zn, triangleData, tempIndex);
+                                }
+                            }
+                            if (transparent) {
+                                transparentTriangleIndex += 12;
+                            } else {
+                                triangleIndex += 12;
+                            }
+                            continue;
+                        }
+                        case 1:
+                        {
+                            final float r = MathHelper.randomFloat(gd4.id, 0);
+                            final float g = MathHelper.randomFloat(gd4.id, 1);
+                            final float b = MathHelper.randomFloat(gd4.id, 2);
+                            pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                            pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                            pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                            pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                            pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                            pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                            colourise(0, 12, r, g, b, gd4.a, triangleData, tempIndex);
+                            if (smoothShading) {
+                                normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
+                                normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
+                                normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
+                                normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                            } else {
+                                if (gw.negativeDeterminant) {
+                                    normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                    normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                } else {
+                                    normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                    normal(6, 6, xn, yn, zn, triangleData, tempIndex);
+                                }
+                            }
+                            if (transparent) {
+                                transparentTriangleIndex += 12;
+                            } else {
+                                triangleIndex += 12;
+                            }
+                            continue;
+                        }
+                        case 2:
+                        case 6:
+                        {
+                            pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                            pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                            pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                            pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                            pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                            pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                            switch (gw.winding) {
+                            case CW:
+                                if (gw.invertNext  ^ gw.negativeDeterminant) {
+                                    colourise(6, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                    colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                } else {
+                                    colourise(0, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                    colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                }
+                                break;
+                            case CCW:
+                                if (gw.invertNext  ^ gw.negativeDeterminant) {
+                                    colourise(0, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                    colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                } else {
+                                    colourise(6, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                    colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                }
+                                break;
+                            case NOCERTIFY:
+                                colourise(0, 12, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                break;
+                            default:
+                                break;
+                            }
+                            if (smoothShading) {
+                                normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
+                                normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
+                                normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
+                                normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                            } else {
+                                if (gw.negativeDeterminant) {
+                                    normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                    normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                } else {
+                                    normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                    normal(6, 6, xn, yn, zn, triangleData, tempIndex);
+                                }
+                            }
+                            if (transparent) {
+                                transparentTriangleIndex += 12;
+                            } else {
+                                triangleIndex += 12;
+                            }
+                            continue;
+                        }
+                        case 7:
+                        {
+                            pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                            pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                            pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                            pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                            pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                            pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                            final double angle = gd4.calculateAngle();
+                            float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarityAngleWarning) / Threshold.coplanarityAngleError);
+
+                            float r = 0f;
+                            float g;
+                            float b = 0f;
+
+                            if (f < .5) {
+                                g = f / .5f;
+                                b = (1f - g);
+                            } else {
+                                r = (f - .5f) / .5f;
+                                g = (1f - r);
+                            }
+
+                            colourise(0, 12, r, g, b, gd4.a, triangleData, tempIndex);
+
+                            if (smoothShading) {
+                                normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
+                                normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
+                                normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
+                                normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                            } else {
+                                if (gw.negativeDeterminant) {
+                                    normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                    normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                } else {
+                                    normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                    normal(6, 6, xn, yn, zn, triangleData, tempIndex);
+                                }
+                            }
+                            if (transparent) {
+                                transparentTriangleIndex += 12;
+                            } else {
+                                triangleIndex += 12;
+                            }
+                            continue;
+                        }
+                        case 3:
+                        {
+                            pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                            pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                            pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                            pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                            pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                            pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                            pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                            switch (gw.winding) {
+                            case CW:
+                                if (gw.invertNext  ^ gw.negativeDeterminant) {
+                                    colourise(6, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                                    colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                } else {
+                                    colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                                    colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                }
+                                break;
+                            case CCW:
+                                if (gw.invertNext  ^ gw.negativeDeterminant) {
+                                    colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                                    colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                } else {
+                                    colourise(6, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                                    colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                }
+                                break;
+                            case NOCERTIFY:
+                                colourise(0, 12, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                break;
+                            default:
+                                break;
+                            }
+                            if (smoothShading) {
+                                normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
+                                normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
+                                normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
+                                normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                            } else {
+                                if (gw.negativeDeterminant) {
+                                    normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                    normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                } else {
+                                    normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                    normal(6, 6, xn, yn, zn, triangleData, tempIndex);
+                                }
+                            }
+                            if (transparent) {
+                                transparentTriangleIndex += 12;
+                            } else {
+                                triangleIndex += 12;
+                            }
+                            continue;
+                        }
+                        case 4:
+                        {
+                            colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
+                            switch (gw.winding) {
+                            case CW:
+                                if (smoothShading) {
+                                    if (gw.invertNext ^ gw.negativeDeterminant) {
+                                        normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                        normal(1, 1, xn4, yn4, zn4, triangleData, tempIndex);
+                                        normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
+                                        normal(4, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                        normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                    } else {
+                                        normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                        normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                        normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
+                                        normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
+                                        normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                    }
+                                } else {
+                                    if (gw.invertNext) {
+                                        normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                    } else {
+                                        normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                    }
+                                }
+                                if (gw.invertNext ^ gw.negativeDeterminant) {
+                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(1, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(4, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                } else {
+                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                }
+                                break;
+                            case CCW:
+                                if (smoothShading) {
+                                    if (gw.invertNext ^ gw.negativeDeterminant) {
+                                        normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                        normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                        normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
+                                        normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
+                                        normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                    } else {
+                                        normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                        normal(1, 1, xn4, yn4, zn4, triangleData, tempIndex);
+                                        normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
+                                        normal(4, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                        normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                    }
+                                } else {
+                                    if (gw.invertNext) {
+                                        normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                    } else {
+                                        normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                    }
+                                }
+                                if (gw.invertNext ^ gw.negativeDeterminant) {
+                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                } else {
+                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(1, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(4, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                }
+                                break;
+                            case NOCERTIFY:
+                                colourise(0, 6, 0f, 0f, 0f, 0f, triangleData, tempIndex);
+                                pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                break;
+                            default:
+                                break;
+                            }
+                            if (transparent) {
+                                transparentTriangleIndex += 6;
+                            } else {
+                                triangleIndex += 6;
+                            }
+                            continue;
+                        }
+                        default:
+                            continue;
+                        }
+                    case 5:
+                        if (hideCondlines) {
+                            continue;
+                        }
+                        GData5 gd5 = (GData5) gd;
+                        v = vertexMap.get(gd);
+                        pointAt15(0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
+                        pointAt15(1, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);
+                        controlPointAt15(0, 0, v[1].x, v[1].y, v[1].z, condlineData, condlineIndex);
+                        controlPointAt15(0, 1, v[2].x, v[2].y, v[2].z, condlineData, condlineIndex);
+                        controlPointAt15(0, 2, v[3].x, v[3].y, v[3].z, condlineData, condlineIndex);
+                        controlPointAt15(1, 0, v[0].x, v[0].y, v[0].z, condlineData, condlineIndex);
+                        controlPointAt15(1, 1, v[2].x, v[2].y, v[2].z, condlineData, condlineIndex);
+                        controlPointAt15(1, 2, v[3].x, v[3].y, v[3].z, condlineData, condlineIndex);
+                        if (condlineMode) {
+                            if (gd5.wasShown()) {
+                                colourise15(0, 2, View.CONDLINE_SHOWN_COLOUR_R[0], View.CONDLINE_SHOWN_COLOUR_G[0], View.CONDLINE_SHOWN_COLOUR_B[0], condlineData, condlineIndex);
+                            } else {
+                                colourise15(0, 2, View.CONDLINE_HIDDEN_COLOUR_R[0], View.CONDLINE_HIDDEN_COLOUR_G[0], View.CONDLINE_HIDDEN_COLOUR_B[0], condlineData, condlineIndex);
+                            }
+                        } else {
+                            if (renderMode != 1) {
+                                colourise15(0, 2, gd5.r, gd5.g, gd5.b, condlineData, condlineIndex);
+                            } else {
+                                final float r = MathHelper.randomFloat(gd5.id, 0);
+                                final float g = MathHelper.randomFloat(gd5.id, 1);
+                                final float b = MathHelper.randomFloat(gd5.id, 2);
+                                colourise15(0, 2, r, g, b, condlineData, condlineIndex);
+                            }
+                        }
+                        condlineIndex += 2;
+                        continue;
+                    default:
+                        continue;
                     }
                 }
-                idCount.set(0);
-                idList.remove(myID);
+
+                if (drawStudLogo) {
+                    lock.lock();
+                    stud1MatricesResult = stud1Matrices;
+                    stud2MatricesResult = stud2Matrices;
+                    lock.unlock();
+                }
+
+                if (vertexMap2.size() != vertexMap.size() || !dataToRemove.isEmpty() || isTransforming) {
+                    for (GData gd : dataToRemove) {
+                        vertexMap.remove(gd);
+                        vertexMap2.remove(gd);
+                    }
+                    vertexMap2.putAll(vertexMap);
+                    sharedVertexMap = vertexMap2;
+                }
+                lock.lock();
+                images = pngImages;
+                distanceMeters = tmpDistanceMeters;
+                protractors = tmpProtractors;
+                dataTriangles = triangleData;
+                solidTriangleSize = triangleVertexCount;
+                transparentTriangleSize = transparentTriangleVertexCount;
+                transparentTriangleOffset = triangleVertexCount;
+                vertexSize = localVerticesSize;
+                dataVertices = vertexData;
+                lineSize = lineVertexCount;
+                dataLines = lineData;
+                condlineSize = condlineVertexCount;
+                dataCondlines = condlineData;
+                tempLineSize = tempLineVertexCount;
+                dataTempLines = tempLineData;
+                selectionSize = selectionLineVertexCount;
+                dataSelectionLines = selectionLineData;
+                dataSelectionCSG = tmpCsgSelectionData;
+                selectionCSGsize = csgSelectionVertexSize;
+                lock.unlock();
+
+            } catch (Exception ex) {
+                if (NLogger.debugging) {
+                    System.out.println("Exception: " + ex.getMessage()); //$NON-NLS-1$
+                }
+            } finally {
+                staticLock.unlock();
+            }
+            if (idCount.incrementAndGet() >= idList.size()) {
                 idCount.set(0);
             }
-        }).start();
+        }
+        idCount.set(0);
+        idList.remove(myID);
+        idCount.set(0);
     }
 
     public void dispose() {

@@ -59,287 +59,12 @@ class HistoryManager {
         this.df = df;
     }
 
+
     void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, Map<String, List<Boolean>> selectedData, Map<String, List<Boolean>> hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
         if (df.isReadOnly()) return;
         if (hasNoThread) {
             hasNoThread = false;
-            new Thread(new Runnable() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public void run() {
-
-                    final int MAX_ITEM_COUNT = 100; // default is 100
-
-                    int pointer = 0;
-                    int pointerMax = 0;
-
-                    final List<Integer> historySelectionStart = new ArrayList<>();
-                    final List<Integer> historySelectionEnd = new ArrayList<>();
-                    final List<Integer> historyTopIndex = new ArrayList<>();
-                    final List<String> historyFullText = new ArrayList<>();
-                    final List<String[]> historyText = new ArrayList<>();
-                    final List<Map<String, List<Boolean>>> historySelectedData = new ArrayList<>();
-                    final List<Map<String, List<Boolean>>> historyHiddenData = new ArrayList<>();
-                    final List<Vertex[]> historySelectedVertices = new ArrayList<>();
-                    final List<Vertex[]> historyHiddenVertices = new ArrayList<>();
-
-                    while (isRunning.get() && Editor3DWindow.getAlive().get()) {
-                        try {
-                            Object[] newEntry = workQueue.poll();
-                            if (newEntry != null) {
-                                final String[] result;
-                                final String resultFullText;
-                                String text = (String) newEntry[0];
-                                GData[] data = (GData[]) newEntry[3];
-                                if (text != null && !text.isEmpty()) {
-                                    if (text.charAt(text.length() - 1) == '\r') {
-                                        text = text.substring(0, text.length() - 1);
-                                    }
-                                    if (text.length() > 0 && text.charAt(text.length() - 1) == '\n') {
-                                        text = text.substring(0, text.length() - 1);
-                                    }
-                                    if (text.length() > 0 && text.charAt(text.length() - 1) == '\r') {
-                                        text = text.substring(0, text.length() - 1);
-                                    }
-                                    if (text.length() > 0 && text.charAt(text.length() - 1) == '\n') {
-                                        text = text.substring(0, text.length() - 1);
-                                    }
-                                    String[] result2 = pattern.split(text);
-                                    if (result2.length == 0) {
-                                        result = new String[]{""}; //$NON-NLS-1$
-                                    } else {
-                                        result = result2;
-                                    }
-                                    resultFullText = text;
-                                } else if (data != null) {
-                                    final int size = data.length;
-                                    if (size > 0) {
-                                        final String ld = StringHelper.getLineDelimiter();
-                                        final StringBuilder sb = new StringBuilder();
-                                        result = new String[size];
-                                        for (int i = 0; i < size; i++) {
-                                            if (i > 0) {
-                                                sb.append(ld);
-                                            }
-                                            result[i] = data[i].toString();
-                                            sb.append(result[i]);
-                                        }
-                                        resultFullText = sb.toString();
-                                    } else {
-                                        result = new String[]{""}; //$NON-NLS-1$
-                                        resultFullText = result[0];
-                                    }
-                                } else {
-                                    // throw new AssertionError("There must be data to backup!"); //$NON-NLS-1$
-                                    continue;
-                                }
-
-                                NLogger.debug(getClass(), "Pointer   : {0}", pointer); //$NON-NLS-1$
-                                NLogger.debug(getClass(), "PointerMax: {0}", pointerMax); //$NON-NLS-1$
-                                NLogger.debug(getClass(), "Item Count: {0}", historyText.size()); //$NON-NLS-1$
-
-                                if (pointer != pointerMax) {
-                                    // Delete old entries
-                                    removeFromListAboveOrEqualIndex(historySelectionStart, pointer + 1);
-                                    removeFromListAboveOrEqualIndex(historySelectionEnd, pointer + 1);
-                                    removeFromListAboveOrEqualIndex(historySelectedData, pointer + 1);
-                                    removeFromListAboveOrEqualIndex(historyHiddenData, pointer + 1);
-                                    removeFromListAboveOrEqualIndex(historySelectedVertices, pointer + 1);
-                                    removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer + 1);
-                                    removeFromListAboveOrEqualIndex(historyText, pointer + 1);
-                                    removeFromListAboveOrEqualIndex(historyFullText, pointer + 1);
-                                    removeFromListAboveOrEqualIndex(historyTopIndex, pointer + 1);
-                                    pointerMax = pointer + 1;
-                                }
-                                // Dont store more than MAX_ITEM_COUNT undo/redo entries
-                                {
-                                    final int item_count = historyText.size();
-                                    if (item_count > MAX_ITEM_COUNT) {
-                                        int delta = item_count - MAX_ITEM_COUNT;
-                                        removeFromListLessIndex(historySelectionStart, delta + 1);
-                                        removeFromListLessIndex(historySelectionEnd, delta + 1);
-                                        removeFromListLessIndex(historySelectedData, delta + 1);
-                                        removeFromListLessIndex(historyHiddenData, delta + 1);
-                                        removeFromListLessIndex(historySelectedVertices, delta + 1);
-                                        removeFromListLessIndex(historyHiddenVertices, delta + 1);
-                                        removeFromListLessIndex(historyText, delta + 1);
-                                        removeFromListLessIndex(historyFullText, delta + 1);
-                                        removeFromListLessIndex(historyTopIndex, delta + 1);
-                                        pointerMax = pointerMax - delta;
-                                        if (pointer > MAX_ITEM_COUNT) {
-                                            pointer = pointer - delta;
-                                        }
-                                    }
-                                }
-
-                                historySelectionStart.add((Integer) newEntry[1]);
-                                historySelectionEnd.add((Integer) newEntry[2]);
-                                historySelectedData.add((Map<String, List<Boolean>>) newEntry[4]);
-                                historySelectedVertices.add((Vertex[]) newEntry[5]);
-                                historyTopIndex.add((Integer) newEntry[6]);
-                                historyHiddenData.add((Map<String, List<Boolean>>) newEntry[7]);
-                                historyHiddenVertices.add((Vertex[]) newEntry[8]);
-                                historyText.add(result);
-                                historyFullText.add(resultFullText);
-
-                                // 1. Cleanup duplicated text entries
-
-                                if (pointer > 0) {
-                                    int pStart = historySelectionStart.get(pointer - 1);
-                                    String[] previous = historyText.get(pointer - 1);
-                                    if (Arrays.equals(previous, result) && !Editor3DWindow.getWindow().isAddingSomething()) {
-                                        if (pStart != -1) {
-                                            if ((Integer) newEntry[2] == 0) {
-                                                // Skip saving this entry since only the cursor was moved
-                                                removeFromListAboveOrEqualIndex(historySelectionStart, pointer);
-                                                removeFromListAboveOrEqualIndex(historySelectionEnd, pointer);
-                                                removeFromListAboveOrEqualIndex(historySelectedData, pointer);
-                                                removeFromListAboveOrEqualIndex(historyHiddenData, pointer);
-                                                removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
-                                                removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer);
-                                                removeFromListAboveOrEqualIndex(historyText, pointer);
-                                                removeFromListAboveOrEqualIndex(historyFullText, pointer);
-                                                removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
-                                            } else {
-                                                // Remove the previous entry, because it only contains a new text selection
-                                                historySelectionStart.remove(pointer - 1);
-                                                historySelectionEnd.remove(pointer - 1);
-                                                historySelectedData.remove(pointer - 1);
-                                                historyHiddenData.remove(pointer - 1);
-                                                historySelectedVertices.remove(pointer - 1);
-                                                historyHiddenVertices.remove(pointer - 1);
-                                                historyText.remove(pointer - 1);
-                                                historyFullText.remove(pointer - 1);
-                                                historyTopIndex.remove(pointer - 1);
-                                            }
-                                            pointerMax--;
-                                            pointer--;
-                                        }
-                                    }
-                                }
-
-                                // FIXME 2. There is still more cleanup work to do
-
-                                pointerMax++;
-                                pointer++;
-                                NLogger.debug(getClass(), "Added undo/redo data"); //$NON-NLS-1$
-                                if (workQueue.isEmpty()) Thread.sleep(100);
-                            } else {
-                                final int action2 = action.get();
-                                int delta = 0;
-                                if (action2 > 0 && action2 < 3) {
-                                    boolean doRestore = false;
-                                    switch (action2) {
-                                    case 1:
-                                        // Undo
-                                        if (pointer > 0) {
-                                            if (pointerMax == pointer && pointer > 1) pointer--;
-                                            NLogger.debug(getClass(), "Requested undo."); //$NON-NLS-1$
-                                            pointer--;
-                                            delta = -1;
-                                            doRestore = true;
-                                        }
-                                        break;
-                                    case 2:
-                                        // Redo
-                                        if (pointer < pointerMax - 1 && pointer + 1 < historySelectionStart.size()) {
-                                            NLogger.debug(getClass(), "Requested redo."); //$NON-NLS-1$
-                                            pointer++;
-                                            delta = 1;
-                                            doRestore = true;
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                    }
-                                    if (doRestore) {
-                                        df.getVertexManager().setSkipSyncWithTextEditor(true);
-
-                                        final boolean openTextEditor = historySelectionStart.get(pointer) != -1;
-                                        boolean hasTextEditor = false;
-                                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                            for (final CTabItem t : w.getTabFolder().getItems()) {
-                                                final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
-                                                if (txtDat != null && txtDat.equals(df)) {
-                                                    hasTextEditor = true;
-                                                    break;
-                                                }
-                                            }
-                                            if (hasTextEditor) break;
-                                        }
-                                        while (!hasTextEditor && pointer + delta > -1 && pointer + delta < historySelectionStart.size() && historySelectionStart.get(pointer) != -1 && pointer > 0 && pointer < pointerMax - 1) {
-                                            pointer += delta;
-                                        }
-                                        final int start = historySelectionStart.get(pointer);
-                                        final int end = historySelectionEnd.get(pointer);
-                                        final int topIndex = historyTopIndex.get(pointer);
-                                        final String fullText = historyFullText.get(pointer);
-                                        final String[] lines = historyText.get(pointer);
-                                        Map<String, List<Boolean>> selection = historySelectedData.get(pointer);
-                                        Map<String, List<Boolean>> hiddenSelection = historyHiddenData.get(pointer);
-                                        final Vertex[] verts = historySelectedVertices.get(pointer);
-                                        final Vertex[] verts2 = historyHiddenVertices.get(pointer);
-                                        while (!answerQueue.offer(new Object[]{
-                                                openTextEditor,
-                                                start,
-                                                end,
-                                                topIndex,
-                                                fullText,
-                                                lines,
-                                                selection,
-                                                hiddenSelection,
-                                                verts,
-                                                verts2,
-                                                false
-                                        })) {
-                                            try {
-                                                Thread.sleep(100);
-                                            } catch (InterruptedException ie) {
-                                                Thread.currentThread().interrupt();
-                                                throw new LDPartEditorException(ie);
-                                            }
-                                        }
-                                    } else {
-                                        while (!answerQueue.offer(new Object[]{
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                true
-                                        })) {
-                                            try {
-                                                Thread.sleep(100);
-                                            } catch (InterruptedException ie) {
-                                                Thread.currentThread().interrupt();
-                                                throw new LDPartEditorException(ie);
-                                            }
-                                        }
-                                    }
-                                    action.set(0);
-                                } else {
-                                    if (workQueue.isEmpty()) Thread.sleep(100);
-                                }
-                            }
-                        } catch (InterruptedException ie) {
-                            Thread.currentThread().interrupt();
-                            throw new LDPartEditorException(ie);
-                        } catch (Exception e) {
-                            // We want to know what can go wrong here
-                            // because it SHOULD be avoided!!
-                            NLogger.error(getClass(), "The HistoryManager cycle was throwing an exception :("); //$NON-NLS-1$
-                            NLogger.error(getClass(), e);
-                        }
-
-                    }
-                    action.set(0);
-                }
-            }).start();
+            new Thread(this::processHistory).start();
         }
 
         while (!workQueue.offer(new Object[]{text, selectionStart, selectionEnd, data, selectedData, selectedVertices, topIndex, hiddenData, hiddenVertices})) {
@@ -351,6 +76,280 @@ class HistoryManager {
             }
         }
 
+    }
+
+    @SuppressWarnings("unchecked")
+    private void processHistory() {
+        final int MAX_ITEM_COUNT = 100; // default is 100
+
+        int pointer = 0;
+        int pointerMax = 0;
+
+        final List<Integer> historySelectionStart = new ArrayList<>();
+        final List<Integer> historySelectionEnd = new ArrayList<>();
+        final List<Integer> historyTopIndex = new ArrayList<>();
+        final List<String> historyFullText = new ArrayList<>();
+        final List<String[]> historyText = new ArrayList<>();
+        final List<Map<String, List<Boolean>>> historySelectedData = new ArrayList<>();
+        final List<Map<String, List<Boolean>>> historyHiddenData = new ArrayList<>();
+        final List<Vertex[]> historySelectedVertices = new ArrayList<>();
+        final List<Vertex[]> historyHiddenVertices = new ArrayList<>();
+
+        while (isRunning.get() && Editor3DWindow.getAlive().get()) {
+            try {
+                Object[] newEntry = workQueue.poll();
+                if (newEntry != null) {
+                    final String[] result;
+                    final String resultFullText;
+                    String text = (String) newEntry[0];
+                    GData[] data = (GData[]) newEntry[3];
+                    if (text != null && !text.isEmpty()) {
+                        if (text.charAt(text.length() - 1) == '\r') {
+                            text = text.substring(0, text.length() - 1);
+                        }
+                        if (text.length() > 0 && text.charAt(text.length() - 1) == '\n') {
+                            text = text.substring(0, text.length() - 1);
+                        }
+                        if (text.length() > 0 && text.charAt(text.length() - 1) == '\r') {
+                            text = text.substring(0, text.length() - 1);
+                        }
+                        if (text.length() > 0 && text.charAt(text.length() - 1) == '\n') {
+                            text = text.substring(0, text.length() - 1);
+                        }
+                        String[] result2 = pattern.split(text);
+                        if (result2.length == 0) {
+                            result = new String[]{""}; //$NON-NLS-1$
+                        } else {
+                            result = result2;
+                        }
+                        resultFullText = text;
+                    } else if (data != null) {
+                        final int size = data.length;
+                        if (size > 0) {
+                            final String ld = StringHelper.getLineDelimiter();
+                            final StringBuilder sb = new StringBuilder();
+                            result = new String[size];
+                            for (int i = 0; i < size; i++) {
+                                if (i > 0) {
+                                    sb.append(ld);
+                                }
+                                result[i] = data[i].toString();
+                                sb.append(result[i]);
+                            }
+                            resultFullText = sb.toString();
+                        } else {
+                            result = new String[]{""}; //$NON-NLS-1$
+                            resultFullText = result[0];
+                        }
+                    } else {
+                        // throw new AssertionError("There must be data to backup!"); //$NON-NLS-1$
+                        continue;
+                    }
+
+                    NLogger.debug(getClass(), "Pointer   : {0}", pointer); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "PointerMax: {0}", pointerMax); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "Item Count: {0}", historyText.size()); //$NON-NLS-1$
+
+                    if (pointer != pointerMax) {
+                        // Delete old entries
+                        removeFromListAboveOrEqualIndex(historySelectionStart, pointer + 1);
+                        removeFromListAboveOrEqualIndex(historySelectionEnd, pointer + 1);
+                        removeFromListAboveOrEqualIndex(historySelectedData, pointer + 1);
+                        removeFromListAboveOrEqualIndex(historyHiddenData, pointer + 1);
+                        removeFromListAboveOrEqualIndex(historySelectedVertices, pointer + 1);
+                        removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer + 1);
+                        removeFromListAboveOrEqualIndex(historyText, pointer + 1);
+                        removeFromListAboveOrEqualIndex(historyFullText, pointer + 1);
+                        removeFromListAboveOrEqualIndex(historyTopIndex, pointer + 1);
+                        pointerMax = pointer + 1;
+                    }
+                    // Dont store more than MAX_ITEM_COUNT undo/redo entries
+                    {
+                        final int item_count = historyText.size();
+                        if (item_count > MAX_ITEM_COUNT) {
+                            int delta = item_count - MAX_ITEM_COUNT;
+                            removeFromListLessIndex(historySelectionStart, delta + 1);
+                            removeFromListLessIndex(historySelectionEnd, delta + 1);
+                            removeFromListLessIndex(historySelectedData, delta + 1);
+                            removeFromListLessIndex(historyHiddenData, delta + 1);
+                            removeFromListLessIndex(historySelectedVertices, delta + 1);
+                            removeFromListLessIndex(historyHiddenVertices, delta + 1);
+                            removeFromListLessIndex(historyText, delta + 1);
+                            removeFromListLessIndex(historyFullText, delta + 1);
+                            removeFromListLessIndex(historyTopIndex, delta + 1);
+                            pointerMax = pointerMax - delta;
+                            if (pointer > MAX_ITEM_COUNT) {
+                                pointer = pointer - delta;
+                            }
+                        }
+                    }
+
+                    historySelectionStart.add((Integer) newEntry[1]);
+                    historySelectionEnd.add((Integer) newEntry[2]);
+                    historySelectedData.add((Map<String, List<Boolean>>) newEntry[4]);
+                    historySelectedVertices.add((Vertex[]) newEntry[5]);
+                    historyTopIndex.add((Integer) newEntry[6]);
+                    historyHiddenData.add((Map<String, List<Boolean>>) newEntry[7]);
+                    historyHiddenVertices.add((Vertex[]) newEntry[8]);
+                    historyText.add(result);
+                    historyFullText.add(resultFullText);
+
+                    // 1. Cleanup duplicated text entries
+
+                    if (pointer > 0) {
+                        int pStart = historySelectionStart.get(pointer - 1);
+                        String[] previous = historyText.get(pointer - 1);
+                        if (Arrays.equals(previous, result) && !Editor3DWindow.getWindow().isAddingSomething()) {
+                            if (pStart != -1) {
+                                if ((Integer) newEntry[2] == 0) {
+                                    // Skip saving this entry since only the cursor was moved
+                                    removeFromListAboveOrEqualIndex(historySelectionStart, pointer);
+                                    removeFromListAboveOrEqualIndex(historySelectionEnd, pointer);
+                                    removeFromListAboveOrEqualIndex(historySelectedData, pointer);
+                                    removeFromListAboveOrEqualIndex(historyHiddenData, pointer);
+                                    removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
+                                    removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer);
+                                    removeFromListAboveOrEqualIndex(historyText, pointer);
+                                    removeFromListAboveOrEqualIndex(historyFullText, pointer);
+                                    removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
+                                } else {
+                                    // Remove the previous entry, because it only contains a new text selection
+                                    historySelectionStart.remove(pointer - 1);
+                                    historySelectionEnd.remove(pointer - 1);
+                                    historySelectedData.remove(pointer - 1);
+                                    historyHiddenData.remove(pointer - 1);
+                                    historySelectedVertices.remove(pointer - 1);
+                                    historyHiddenVertices.remove(pointer - 1);
+                                    historyText.remove(pointer - 1);
+                                    historyFullText.remove(pointer - 1);
+                                    historyTopIndex.remove(pointer - 1);
+                                }
+                                pointerMax--;
+                                pointer--;
+                            }
+                        }
+                    }
+
+                    // FIXME 2. There is still more cleanup work to do
+
+                    pointerMax++;
+                    pointer++;
+                    NLogger.debug(getClass(), "Added undo/redo data"); //$NON-NLS-1$
+                    if (workQueue.isEmpty()) Thread.sleep(100);
+                } else {
+                    final int action2 = action.get();
+                    int delta = 0;
+                    if (action2 > 0 && action2 < 3) {
+                        boolean doRestore = false;
+                        switch (action2) {
+                        case 1:
+                            // Undo
+                            if (pointer > 0) {
+                                if (pointerMax == pointer && pointer > 1) pointer--;
+                                NLogger.debug(getClass(), "Requested undo."); //$NON-NLS-1$
+                                pointer--;
+                                delta = -1;
+                                doRestore = true;
+                            }
+                            break;
+                        case 2:
+                            // Redo
+                            if (pointer < pointerMax - 1 && pointer + 1 < historySelectionStart.size()) {
+                                NLogger.debug(getClass(), "Requested redo."); //$NON-NLS-1$
+                                pointer++;
+                                delta = 1;
+                                doRestore = true;
+                            }
+                            break;
+                        default:
+                            break;
+                        }
+                        if (doRestore) {
+                            df.getVertexManager().setSkipSyncWithTextEditor(true);
+
+                            final boolean openTextEditor = historySelectionStart.get(pointer) != -1;
+                            boolean hasTextEditor = false;
+                            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                for (final CTabItem t : w.getTabFolder().getItems()) {
+                                    final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                                    if (txtDat != null && txtDat.equals(df)) {
+                                        hasTextEditor = true;
+                                        break;
+                                    }
+                                }
+                                if (hasTextEditor) break;
+                            }
+                            while (!hasTextEditor && pointer + delta > -1 && pointer + delta < historySelectionStart.size() && historySelectionStart.get(pointer) != -1 && pointer > 0 && pointer < pointerMax - 1) {
+                                pointer += delta;
+                            }
+                            final int start = historySelectionStart.get(pointer);
+                            final int end = historySelectionEnd.get(pointer);
+                            final int topIndex = historyTopIndex.get(pointer);
+                            final String fullText = historyFullText.get(pointer);
+                            final String[] lines = historyText.get(pointer);
+                            Map<String, List<Boolean>> selection = historySelectedData.get(pointer);
+                            Map<String, List<Boolean>> hiddenSelection = historyHiddenData.get(pointer);
+                            final Vertex[] verts = historySelectedVertices.get(pointer);
+                            final Vertex[] verts2 = historyHiddenVertices.get(pointer);
+                            while (!answerQueue.offer(new Object[]{
+                                    openTextEditor,
+                                    start,
+                                    end,
+                                    topIndex,
+                                    fullText,
+                                    lines,
+                                    selection,
+                                    hiddenSelection,
+                                    verts,
+                                    verts2,
+                                    false
+                            })) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException ie) {
+                                    Thread.currentThread().interrupt();
+                                    throw new LDPartEditorException(ie);
+                                }
+                            }
+                        } else {
+                            while (!answerQueue.offer(new Object[]{
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    true
+                            })) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException ie) {
+                                    Thread.currentThread().interrupt();
+                                    throw new LDPartEditorException(ie);
+                                }
+                            }
+                        }
+                        action.set(0);
+                    } else {
+                        if (workQueue.isEmpty()) Thread.sleep(100);
+                    }
+                }
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
+            } catch (Exception e) {
+                // We want to know what can go wrong here
+                // because it SHOULD be avoided!!
+                NLogger.error(getClass(), "The HistoryManager cycle was throwing an exception :("); //$NON-NLS-1$
+                NLogger.error(getClass(), e);
+            }
+
+        }
+        action.set(0);
     }
 
     void deleteHistory() {

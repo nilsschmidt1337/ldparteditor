@@ -37,45 +37,44 @@ enum DescriptionManager {
 
         if (hasNoThread) {
             hasNoThread = false;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (Editor3DWindow.getAlive().get()) {
-                        try {
-                            final TreeItem newEntry = workQueue.poll();
-                            if (newEntry != null) {
-                                DatFile df = (DatFile) newEntry.getData();
-                                NLogger.debug(getClass(), "Register description for {0}", df.getOldName()); //$NON-NLS-1$
-                                final StringBuilder titleSb = new StringBuilder();
-                                try (UTF8BufferedReader reader = new UTF8BufferedReader(df.getOldName())) {
-                                    String title = reader.readLine();
-                                    if (title != null) {
-                                        title = title.trim();
-                                        if (title.length() > 0) {
-                                            titleSb.append(" -"); //$NON-NLS-1$
-                                            titleSb.append(title.substring(1));
-                                        }
-                                    }
-                                } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
-                                    NLogger.debug(DescriptionManager.class, ex);
-                                }
-                                String d = titleSb.toString();
-                                newEntry.setText(df.getShortName() + d);
-                                df.setDescription(d);
-                            } else {
-                                Thread.sleep(100);
-                            }
-                        } catch (InterruptedException ie) {
-                            Thread.currentThread().interrupt();
-                            throw new LDPartEditorException(ie);
-                        } catch (Exception e) {
-                            NLogger.debug(getClass(), e);
-                        }
-                    }
-                }
-            }).start();
+            new Thread(DescriptionManager::scanForDescriptions).start();
         }
 
         workQueue.offer(ti);
+    }
+
+    private static void scanForDescriptions() {
+        while (Editor3DWindow.getAlive().get()) {
+            try {
+                final TreeItem newEntry = workQueue.poll();
+                if (newEntry != null) {
+                    DatFile df = (DatFile) newEntry.getData();
+                    NLogger.debug(DescriptionManager.class, "Register description for {0}", df.getOldName()); //$NON-NLS-1$
+                    final StringBuilder titleSb = new StringBuilder();
+                    try (UTF8BufferedReader reader = new UTF8BufferedReader(df.getOldName())) {
+                        String title = reader.readLine();
+                        if (title != null) {
+                            title = title.trim();
+                            if (title.length() > 0) {
+                                titleSb.append(" -"); //$NON-NLS-1$
+                                titleSb.append(title.substring(1));
+                            }
+                        }
+                    } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
+                        NLogger.debug(DescriptionManager.class, ex);
+                    }
+                    String d = titleSb.toString();
+                    newEntry.setText(df.getShortName() + d);
+                    df.setDescription(d);
+                } else {
+                    Thread.sleep(100);
+                }
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
+            } catch (Exception e) {
+                NLogger.debug(DescriptionManager.class, e);
+            }
+        }
     }
 }

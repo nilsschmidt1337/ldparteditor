@@ -232,118 +232,114 @@ class VM00Base {
                 return;
             }
             final AtomicInteger tid2 = new AtomicInteger(tid.incrementAndGet());
-            final Thread syncThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    openThreads.incrementAndGet();
-                    do {
-                        if (skipTimer.get()) {
-                            break;
-                        }
-                        resetTimer.set(false);
-                        for(int i = 0; i < 4; i++) {
-                            try {
-                                Thread.sleep(450);
-                            } catch (InterruptedException ie) {
-                                Thread.currentThread().interrupt();
-                                throw new LDPartEditorException(ie);
-                            }
-                            if (tid2.get() != tid.get()) break;
-                        }
-                    } while (resetTimer.get());
-                    skipTimer.set(false);
-                    openThreads.decrementAndGet();
-                    if (tid2.get() != tid.get() || isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
-                    boolean notFound = true;
-                    boolean tryToUnlockLock2 = false;
-                    Lock lock2 = null;
-                    try {
-                        lock2 = linkedDatFile.getHistory().getLock();
-                        // "lock2" will be locked, if undo/redo tries to restore the state.
-                        // Any attempt to broke the data structure with an old synchronisation state will be
-                        // prevented with this lock.
-                        if (lock2.tryLock()) {
-                            tryToUnlockLock2 = true;
-                            try {
-                                // A lot of stuff can throw an exception here, since the thread waits two seconds and
-                                // the state of the program may not allow a synchronisation anymore
-                                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                    for (final CTabItem t : w.getTabFolder().getItems()) {
-                                        // FIXME Implement a solid solution against this NullPointer errors here...
-                                        final CompositeTab ctab = ((CompositeTab) t);
-                                        if (ctab == null) continue;
-                                        final CompositeTabState state = ctab.getState();
-                                        if (state == null) continue;
-                                        final DatFile txtDat = state.getFileNameObj();
-                                        if (txtDat != null && txtDat.equals(linkedDatFile)) {
-                                            notFound = false;
-                                            final String txt;
-                                            if (isModified()) {
-                                                txt = txtDat.getText();
-                                            } else {
-                                                txt = null;
-                                            }
-                                            Display.getDefault().asyncExec(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    try {
-                                                        int ti = ctab.getTextComposite().getTopIndex();
-                                                        Point r = ctab.getTextComposite().getSelectionRange();
-                                                        ctab.getState().setSync(true);
-                                                        if (isModified() && txt != null) {
-                                                            ctab.getTextComposite().setText(txt);
-                                                        }
-                                                        ctab.getTextComposite().setTopIndex(ti);
-                                                        try {
-                                                            ctab.getTextComposite().setSelectionRange(r.x, r.y);
-                                                        } catch (IllegalArgumentException consumed) {}
-                                                        ctab.getTextComposite().redraw();
-                                                        ctab.getControl().redraw();
-                                                        ctab.getState().setSync(false);
-                                                    } catch (SWTException ex) {
-                                                        // The text editor widget could be disposed
-                                                        NLogger.error(getClass(), ex);
-                                                    } finally {
-                                                        setUpdated(true);
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    }
-                                }
-                            } catch (Exception consumed) {
-
-                                // We want to know what can go wrong here
-                                // because it SHOULD be avoided!!
-                                NLogger.error(getClass(), "Synchronisation with the text editor failed."); //$NON-NLS-1$
-                                NLogger.error(getClass(), consumed);
-
-                                setUpdated(true);
-                            } finally {
-                                if (notFound) setUpdated(true);
-                            }
-                            if (WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get()) {
-                                while (!isUpdated() && Editor3DWindow.getAlive().get()) {
-                                    try {
-                                        Thread.sleep(100);
-                                    } catch (InterruptedException ie) {
-                                        Thread.currentThread().interrupt();
-                                        throw new LDPartEditorException(ie);
-                                    }
-                                }
-                                Display.getDefault().asyncExec(() ->
-                                    SubfileCompiler.compile(linkedDatFile, true, true)
-                                );
-                            }
-                        } else {
-                            NLogger.debug(getClass(), "Synchronisation was skipped due to undo/redo."); //$NON-NLS-1$
-                        }
-                    } finally {
+            final Thread syncThread = new Thread(() -> {
+                openThreads.incrementAndGet();
+                do {
+                    if (skipTimer.get()) {
+                        break;
+                    }
+                    resetTimer.set(false);
+                    for(int i = 0; i < 4; i++) {
                         try {
-                            if (lock2 != null && tryToUnlockLock2) lock2.unlock();
-                        } catch (Exception e) {
-                            NLogger.error(getClass(), e);
+                            Thread.sleep(450);
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            throw new LDPartEditorException(ie);
                         }
+                        if (tid2.get() != tid.get()) break;
+                    }
+                } while (resetTimer.get());
+                skipTimer.set(false);
+                openThreads.decrementAndGet();
+                if (tid2.get() != tid.get() || isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
+                boolean notFound = true;
+                boolean tryToUnlockLock2 = false;
+                final Lock lock2 = linkedDatFile.getHistory().getLock();
+                try {
+                    // "lock2" will be locked, if undo/redo tries to restore the state.
+                    // Any attempt to broke the data structure with an old synchronisation state will be
+                    // prevented with this lock.
+                    tryToUnlockLock2 = lock2.tryLock();
+                    if (tryToUnlockLock2) {
+                        try {
+                            // A lot of stuff can throw an exception here, since the thread waits two seconds and
+                            // the state of the program may not allow a synchronisation anymore
+                            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                for (final CTabItem t : w.getTabFolder().getItems()) {
+                                    // FIXME Implement a solid solution against this NullPointer errors here...
+                                    final CompositeTab ctab = ((CompositeTab) t);
+                                    if (ctab == null) continue;
+                                    final CompositeTabState state = ctab.getState();
+                                    if (state == null) continue;
+                                    final DatFile txtDat = state.getFileNameObj();
+                                    if (txtDat != null && txtDat.equals(linkedDatFile)) {
+                                        notFound = false;
+                                        final String txt;
+                                        if (isModified()) {
+                                            txt = txtDat.getText();
+                                        } else {
+                                            txt = null;
+                                        }
+                                        Display.getDefault().asyncExec(() -> {
+                                            try {
+                                                int ti = ctab.getTextComposite().getTopIndex();
+                                                Point r = ctab.getTextComposite().getSelectionRange();
+                                                ctab.getState().setSync(true);
+                                                if (isModified() && txt != null) {
+                                                    ctab.getTextComposite().setText(txt);
+                                                }
+                                                ctab.getTextComposite().setTopIndex(ti);
+                                                try {
+                                                    ctab.getTextComposite().setSelectionRange(r.x, r.y);
+                                                } catch (IllegalArgumentException iae) {
+                                                    // It is not critical, just print it during debug mode.
+                                                    NLogger.debug(VM00Base.class, iae);
+                                                }
+                                                ctab.getTextComposite().redraw();
+                                                ctab.getControl().redraw();
+                                                ctab.getState().setSync(false);
+                                            } catch (SWTException ex) {
+                                                // The text editor widget could be disposed
+                                                NLogger.error(getClass(), ex);
+                                            } finally {
+                                                setUpdated(true);
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        } catch (Exception criticalException) {
+
+                            // We want to know what can go wrong here
+                            // because it SHOULD be avoided!!
+                            NLogger.error(getClass(), "Synchronisation with the text editor failed."); //$NON-NLS-1$
+                            NLogger.error(getClass(), criticalException);
+
+                            setUpdated(true);
+                        } finally {
+                            if (notFound) setUpdated(true);
+                        }
+                        if (WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get()) {
+                            while (!isUpdated() && Editor3DWindow.getAlive().get()) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException ie) {
+                                    Thread.currentThread().interrupt();
+                                    throw new LDPartEditorException(ie);
+                                }
+                            }
+                            Display.getDefault().asyncExec(() ->
+                                SubfileCompiler.compile(linkedDatFile, true, true)
+                            );
+                        }
+                    } else {
+                        NLogger.debug(getClass(), "Synchronisation was skipped due to undo/redo."); //$NON-NLS-1$
+                    }
+                } finally {
+                    try {
+                        if (tryToUnlockLock2) lock2.unlock();
+                    } catch (Exception e) {
+                        NLogger.error(getClass(), e);
                     }
                 }
             });

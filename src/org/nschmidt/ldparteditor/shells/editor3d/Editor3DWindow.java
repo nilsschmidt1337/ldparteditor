@@ -7372,58 +7372,55 @@ public class Editor3DWindow extends Editor3DDesign {
             updatingSelectionTab = false;
         } else {
             NLogger.error(getClass(), new SWTException(SWT.ERROR_THREAD_INVALID_ACCESS, "A wrong thread tries to access the GUI!")); //$NON-NLS-1$
-            Display.getDefault().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        updatingSelectionTab = true;
-                        txtLinePtr[0].setText(""); //$NON-NLS-1$
-                        btnMoveAdjacentData2Ptr[0].setSelection(false);
-                        spnSelectionAnglePtr[0].setEnabled(false);
-                        spnSelectionLengthPtr[0].setEnabled(false);
-                        spnSelectionX1Ptr[0].setEnabled(false);
-                        spnSelectionY1Ptr[0].setEnabled(false);
-                        spnSelectionZ1Ptr[0].setEnabled(false);
-                        spnSelectionX2Ptr[0].setEnabled(false);
-                        spnSelectionY2Ptr[0].setEnabled(false);
-                        spnSelectionZ2Ptr[0].setEnabled(false);
-                        spnSelectionX3Ptr[0].setEnabled(false);
-                        spnSelectionY3Ptr[0].setEnabled(false);
-                        spnSelectionZ3Ptr[0].setEnabled(false);
-                        spnSelectionX4Ptr[0].setEnabled(false);
-                        spnSelectionY4Ptr[0].setEnabled(false);
-                        spnSelectionZ4Ptr[0].setEnabled(false);
-                        spnSelectionX1Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionY1Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionZ1Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionX2Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionY2Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionZ2Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionX3Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionY3Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionZ3Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionX4Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionY4Ptr[0].setValue(BigDecimal.ZERO);
-                        spnSelectionZ4Ptr[0].setValue(BigDecimal.ZERO);
-                        lblSelectionAnglePtr[0].setText(I18n.E3D_PROTRACTOR_ANGLE);
-                        lblSelectionLengthPtr[0].setText(I18n.E3D_PROTRACTOR_LENGTH);
-                        lblSelectionX1Ptr[0].setText(I18n.E3D_POSITION_X1);
-                        lblSelectionY1Ptr[0].setText(I18n.E3D_POSITION_Y1);
-                        lblSelectionZ1Ptr[0].setText(I18n.E3D_POSITION_Z1);
-                        lblSelectionX2Ptr[0].setText(I18n.E3D_POSITION_X2);
-                        lblSelectionY2Ptr[0].setText(I18n.E3D_POSITION_Y2);
-                        lblSelectionZ2Ptr[0].setText(I18n.E3D_POSITION_Z2);
-                        lblSelectionX3Ptr[0].setText(I18n.E3D_POSITION_X3);
-                        lblSelectionY3Ptr[0].setText(I18n.E3D_POSITION_Y3);
-                        lblSelectionZ3Ptr[0].setText(I18n.E3D_POSITION_Z3);
-                        lblSelectionX4Ptr[0].setText(I18n.E3D_POSITION_X4);
-                        lblSelectionY4Ptr[0].setText(I18n.E3D_POSITION_Y4);
-                        lblSelectionZ4Ptr[0].setText(I18n.E3D_POSITION_Z4);
-                        lblSelectionZ4Ptr[0].getParent().layout();
-                        updatingSelectionTab = false;
-                    } catch (Exception ex) {
-                        NLogger.error(getClass(), ex);
-                    }
+            Display.getDefault().asyncExec(() -> {
+                try {
+                    updatingSelectionTab = true;
+                    txtLinePtr[0].setText(""); //$NON-NLS-1$
+                    btnMoveAdjacentData2Ptr[0].setSelection(false);
+                    spnSelectionAnglePtr[0].setEnabled(false);
+                    spnSelectionLengthPtr[0].setEnabled(false);
+                    spnSelectionX1Ptr[0].setEnabled(false);
+                    spnSelectionY1Ptr[0].setEnabled(false);
+                    spnSelectionZ1Ptr[0].setEnabled(false);
+                    spnSelectionX2Ptr[0].setEnabled(false);
+                    spnSelectionY2Ptr[0].setEnabled(false);
+                    spnSelectionZ2Ptr[0].setEnabled(false);
+                    spnSelectionX3Ptr[0].setEnabled(false);
+                    spnSelectionY3Ptr[0].setEnabled(false);
+                    spnSelectionZ3Ptr[0].setEnabled(false);
+                    spnSelectionX4Ptr[0].setEnabled(false);
+                    spnSelectionY4Ptr[0].setEnabled(false);
+                    spnSelectionZ4Ptr[0].setEnabled(false);
+                    spnSelectionX1Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionY1Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionZ1Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionX2Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionY2Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionZ2Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionX3Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionY3Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionZ3Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionX4Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionY4Ptr[0].setValue(BigDecimal.ZERO);
+                    spnSelectionZ4Ptr[0].setValue(BigDecimal.ZERO);
+                    lblSelectionAnglePtr[0].setText(I18n.E3D_PROTRACTOR_ANGLE);
+                    lblSelectionLengthPtr[0].setText(I18n.E3D_PROTRACTOR_LENGTH);
+                    lblSelectionX1Ptr[0].setText(I18n.E3D_POSITION_X1);
+                    lblSelectionY1Ptr[0].setText(I18n.E3D_POSITION_Y1);
+                    lblSelectionZ1Ptr[0].setText(I18n.E3D_POSITION_Z1);
+                    lblSelectionX2Ptr[0].setText(I18n.E3D_POSITION_X2);
+                    lblSelectionY2Ptr[0].setText(I18n.E3D_POSITION_Y2);
+                    lblSelectionZ2Ptr[0].setText(I18n.E3D_POSITION_Z2);
+                    lblSelectionX3Ptr[0].setText(I18n.E3D_POSITION_X3);
+                    lblSelectionY3Ptr[0].setText(I18n.E3D_POSITION_Y3);
+                    lblSelectionZ3Ptr[0].setText(I18n.E3D_POSITION_Z3);
+                    lblSelectionX4Ptr[0].setText(I18n.E3D_POSITION_X4);
+                    lblSelectionY4Ptr[0].setText(I18n.E3D_POSITION_Y4);
+                    lblSelectionZ4Ptr[0].setText(I18n.E3D_POSITION_Z4);
+                    lblSelectionZ4Ptr[0].getParent().layout();
+                    updatingSelectionTab = false;
+                } catch (Exception ex) {
+                    NLogger.error(getClass(), ex);
                 }
             });
         }
