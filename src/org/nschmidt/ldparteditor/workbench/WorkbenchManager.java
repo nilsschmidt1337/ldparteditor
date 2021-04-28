@@ -28,6 +28,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.security.SerialKiller;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
@@ -78,7 +79,7 @@ public enum WorkbenchManager {
     public static boolean loadWorkbench(String path) {
         File configGzFile = new File(path);
         if (configGzFile.exists()) {
-            try (ObjectInputStream configFileStream = new ObjectInputStream(new GZIPInputStream(new FileInputStream(path)))){
+            try (ObjectInputStream configFileStream = new SerialKiller(new GZIPInputStream(new FileInputStream(path)))){
                 WorkbenchManager.editor3DWindowState = (Editor3DWindowState) configFileStream.readObject();
                 WorkbenchManager.editorTextWindowState = (EditorTextWindowState) configFileStream.readObject();
                 WorkbenchManager.userSettingState = (UserSettingState) configFileStream.readObject();
