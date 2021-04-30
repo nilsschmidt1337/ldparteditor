@@ -562,11 +562,9 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                             int j = (i + 1) % verts.length;
                                             BigDecimal di = verts[i].zp.subtract(o);
                                             BigDecimal dj = verts[j].zp.subtract(o);
-                                            if (di.signum() != dj.signum()) {
-                                                if (di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
-                                                    isSymmetrical = false;
-                                                    break;
-                                                }
+                                            if (di.signum() != dj.signum() && di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
+                                                isSymmetrical = false;
+                                                break;
                                             }
                                         }
                                         break;
@@ -576,11 +574,9 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                             int j = (i + 1) % verts.length;
                                             BigDecimal di = verts[i].yp.subtract(o);
                                             BigDecimal dj = verts[j].yp.subtract(o);
-                                            if (di.signum() != dj.signum()) {
-                                                if (di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
-                                                    isSymmetrical = false;
-                                                    break;
-                                                }
+                                            if (di.signum() != dj.signum() && di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
+                                                isSymmetrical = false;
+                                                break;
                                             }
                                         }
                                         break;
@@ -590,11 +586,9 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                             int j = (i + 1) % verts.length;
                                             BigDecimal di = verts[i].xp.subtract(o);
                                             BigDecimal dj = verts[j].xp.subtract(o);
-                                            if (di.signum() != dj.signum()) {
-                                                if (di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
-                                                    isSymmetrical = false;
-                                                    break;
-                                                }
+                                            if (di.signum() != dj.signum() && di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
+                                                isSymmetrical = false;
+                                                break;
                                             }
                                         }
                                         break;

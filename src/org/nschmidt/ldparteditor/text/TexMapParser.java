@@ -82,208 +82,206 @@ public enum TexMapParser {
             float a = 0f;
             float b = 0f;
             TexMeta meta = dataSegments[2].equals("START") ? TexMeta.START : dataSegments[2].equals("NEXT") ? TexMeta.NEXT : null; //$NON-NLS-1$ //$NON-NLS-2$
-            if (meta != null && dataSegments[3].equals("PLANAR") || dataSegments[3].equals("CYLINDRICAL") || dataSegments[3].equals("SPHERICAL")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                if (segs > 13) {
-                    String texture = ""; //$NON-NLS-1$
-                    String glossmap = null;
-                    TexType type;
-                    try {
-                        v1.setX(Float.parseFloat(dataSegments[4]) * 1000f);
-                        v1.setY(Float.parseFloat(dataSegments[5]) * 1000f);
-                        v1.setZ(Float.parseFloat(dataSegments[6]) * 1000f);
-                        v1.setW(1f);
-                        v2.setX(Float.parseFloat(dataSegments[7]) * 1000f);
-                        v2.setY(Float.parseFloat(dataSegments[8]) * 1000f);
-                        v2.setZ(Float.parseFloat(dataSegments[9]) * 1000f);
-                        v2.setW(1f);
-                        v3.setX(Float.parseFloat(dataSegments[10]) * 1000f);
-                        v3.setY(Float.parseFloat(dataSegments[11]) * 1000f);
-                        v3.setZ(Float.parseFloat(dataSegments[12]) * 1000f);
-                        v3.setW(1f);
-                    } catch (Exception e) {
+            if (meta != null && (dataSegments[3].equals("PLANAR") || dataSegments[3].equals("CYLINDRICAL") || dataSegments[3].equals("SPHERICAL")) && segs > 13) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                String texture = ""; //$NON-NLS-1$
+                String glossmap = null;
+                TexType type;
+                try {
+                    v1.setX(Float.parseFloat(dataSegments[4]) * 1000f);
+                    v1.setY(Float.parseFloat(dataSegments[5]) * 1000f);
+                    v1.setZ(Float.parseFloat(dataSegments[6]) * 1000f);
+                    v1.setW(1f);
+                    v2.setX(Float.parseFloat(dataSegments[7]) * 1000f);
+                    v2.setY(Float.parseFloat(dataSegments[8]) * 1000f);
+                    v2.setZ(Float.parseFloat(dataSegments[9]) * 1000f);
+                    v2.setW(1f);
+                    v3.setX(Float.parseFloat(dataSegments[10]) * 1000f);
+                    v3.setY(Float.parseFloat(dataSegments[11]) * 1000f);
+                    v3.setZ(Float.parseFloat(dataSegments[12]) * 1000f);
+                    v3.setW(1f);
+                } catch (Exception e) {
+                    return null;
+                }
+
+                Matrix4f.transform(parent.getProductMatrix(), v1, v1);
+                Matrix4f.transform(parent.getProductMatrix(), v2, v2);
+                Matrix4f.transform(parent.getProductMatrix(), v3, v3);
+
+                StringBuilder tex = new StringBuilder();
+                StringBuilder gloss = new StringBuilder();
+                final int len = line.length();
+                final int target;
+                boolean whitespace1 = false;
+                boolean whitespace2 = false;
+                if (dataSegments[3].equals("PLANAR")) { //$NON-NLS-1$
+                    type = TexType.PLANAR;
+                    target = 14;
+                } else if (dataSegments[3].equals("CYLINDRICAL")) { //$NON-NLS-1$
+                    if (segs > 14) {
+                        try {
+                            a = (float) (Float.parseFloat(dataSegments[13]) / 360f * Math.PI);
+                            if (a <= 0f || a > Math.PI * 2f)
+                                return null;
+                        } catch (Exception e) {
+                            return null;
+                        }
+                    } else {
                         return null;
                     }
-
-                    Matrix4f.transform(parent.getProductMatrix(), v1, v1);
-                    Matrix4f.transform(parent.getProductMatrix(), v2, v2);
-                    Matrix4f.transform(parent.getProductMatrix(), v3, v3);
-
-                    StringBuilder tex = new StringBuilder();
-                    StringBuilder gloss = new StringBuilder();
-                    final int len = line.length();
-                    final int target;
-                    boolean whitespace1 = false;
-                    boolean whitespace2 = false;
-                    if (dataSegments[3].equals("PLANAR")) { //$NON-NLS-1$
-                        type = TexType.PLANAR;
-                        target = 14;
-                    } else if (dataSegments[3].equals("CYLINDRICAL")) { //$NON-NLS-1$
-                        if (segs > 14) {
-                            try {
-                                a = (float) (Float.parseFloat(dataSegments[13]) / 360f * Math.PI);
-                                if (a <= 0f || a > Math.PI * 2f)
-                                    return null;
-                            } catch (Exception e) {
+                    type = TexType.CYLINDRICAL;
+                    target = 15;
+                } else {
+                    if (segs > 15) {
+                        try {
+                            a = (float) (Float.parseFloat(dataSegments[13]) / 360f * Math.PI);
+                            if (a <= 0f || a > Math.PI * 2f)
                                 return null;
-                            }
-                        } else {
+                            b = (float) (Float.parseFloat(dataSegments[14]) / 360f * Math.PI);
+                            if (b <= 0f || b > Math.PI * 2f)
+                                return null;
+                        } catch (Exception e) {
                             return null;
                         }
-                        type = TexType.CYLINDRICAL;
-                        target = 15;
                     } else {
-                        if (segs > 15) {
-                            try {
-                                a = (float) (Float.parseFloat(dataSegments[13]) / 360f * Math.PI);
-                                if (a <= 0f || a > Math.PI * 2f)
-                                    return null;
-                                b = (float) (Float.parseFloat(dataSegments[14]) / 360f * Math.PI);
-                                if (b <= 0f || b > Math.PI * 2f)
-                                    return null;
-                            } catch (Exception e) {
-                                return null;
-                            }
-                        } else {
-                            return null;
-                        }
-                        type = TexType.SPHERICAL;
-                        target = 16;
+                        return null;
                     }
+                    type = TexType.SPHERICAL;
+                    target = 16;
+                }
 
-                    int mode = 0;
-                    int counter = 0;
-                    for (int i = 0; i < len; i++) {
-                        String sub = line.substring(i, i + 1);
-                        switch (mode) {
-                        case 0: // Parse initial whitespace
-                            if (sub.matches("\\S")) { //$NON-NLS-1$
-                                mode = 1;
-                            }
-                        case 1: // Parse non-whitespace (first letter)
-                            if (sub.matches("\\S")) { //$NON-NLS-1$
-                                counter++;
-                                if (counter == target) {
-                                    if (sub.equals("\"")) { //$NON-NLS-1$
-                                        mode = 4;
-                                        sub = ""; //$NON-NLS-1$
-                                    } else {
-                                        mode = 3;
-                                    }
-                                } else {
-                                    mode = 2;
-                                }
-                            }
-                            break;
-                        case 2: // Parse non-whitespace (rest)
-                            if (sub.matches("\\s")) { //$NON-NLS-1$
-                                mode = 1;
-                            }
-                            break;
-                        default:
-                            break;
+                int mode = 0;
+                int counter = 0;
+                for (int i = 0; i < len; i++) {
+                    String sub = line.substring(i, i + 1);
+                    switch (mode) {
+                    case 0: // Parse initial whitespace
+                        if (sub.matches("\\S")) { //$NON-NLS-1$
+                            mode = 1;
                         }
-                        switch (mode) {
-                        case 3: // Parse texture till whitespace
-                            if (sub.matches("\\S")) { //$NON-NLS-1$
-                                tex.append(sub);
-                            } else {
-                                whitespace1 = true;
-                                mode = 5;
-                            }
-                            break;
-                        case 4: // Parse texture till "
-                            if (sub.equals("\"")) { //$NON-NLS-1$
-                                mode = 5;
-                            } else {
-                                tex.append(sub);
-                            }
-                            break;
-                        case 5: // Additional whitespace
-                            if (sub.matches("\\S")) { //$NON-NLS-1$
-                                if (whitespace1)
-                                    mode = 6;
-                            } else {
-                                whitespace1 = true;
-                                break;
-                            }
-                        case 6: // GLOSSMAP
-                            if (sub.equals("G"))mode = 7; //$NON-NLS-1$
-                            break;
-                        case 7: // GLOSSMAP
-                            if (sub.equals("L"))mode = 8; //$NON-NLS-1$
-                            break;
-                        case 8: // GLOSSMAP
-                            if (sub.equals("O"))mode = 9; //$NON-NLS-1$
-                            break;
-                        case 9: // GLOSSMAP
-                            if (sub.equals("S"))mode = 10; //$NON-NLS-1$
-                            break;
-                        case 10: // GLOSSMAP
-                            if (sub.equals("S"))mode = 11; //$NON-NLS-1$
-                            break;
-                        case 11: // GLOSSMAP
-                            if (sub.equals("M"))mode = 12; //$NON-NLS-1$
-                            break;
-                        case 12: // GLOSSMAP
-                            if (sub.equals("A"))mode = 13; //$NON-NLS-1$
-                            break;
-                        case 13: // GLOSSMAP
-                            if (sub.equals("P"))mode = 14; //$NON-NLS-1$
-                            break;
-                        case 14: // Additional whitespace between GLOSSMAP and
-                            // glossmap-path
-                            if (sub.matches("\\S")) { //$NON-NLS-1$
-                                if (whitespace2)
-                                    mode = 15;
-                            } else {
-                                whitespace2 = true;
-                            }
-                            break;
-                        default:
-                            break;
-                        }
-                        switch (mode) {
-                        case 15:
-                            if (sub.matches("\\S")) { //$NON-NLS-1$
+                    case 1: // Parse non-whitespace (first letter)
+                        if (sub.matches("\\S")) { //$NON-NLS-1$
+                            counter++;
+                            if (counter == target) {
                                 if (sub.equals("\"")) { //$NON-NLS-1$
-                                    mode = 17;
+                                    mode = 4;
                                     sub = ""; //$NON-NLS-1$
                                 } else {
-                                    mode = 16;
+                                    mode = 3;
                                 }
-                            }
-                            break;
-                        default:
-                            break;
-                        }
-                        switch (mode) {
-                        case 16: // Parse texture till whitespace
-                            if (sub.matches("\\S")) { //$NON-NLS-1$
-                                gloss.append(sub);
                             } else {
-                                mode = 18;
+                                mode = 2;
                             }
-                            break;
-                        case 17: // Parse texture till "
-                            if (sub.equals("\"")) { //$NON-NLS-1$
-                                mode = 18;
-                            } else {
-                                gloss.append(sub);
-                            }
-                            break;
-                        default:
-                            break;
                         }
+                        break;
+                    case 2: // Parse non-whitespace (rest)
+                        if (sub.matches("\\s")) { //$NON-NLS-1$
+                            mode = 1;
+                        }
+                        break;
+                    default:
+                        break;
                     }
-
-                    texture = tex.toString();
-                    glossmap = gloss.toString();
-
-                    if (glossmap.isEmpty())
-                        glossmap = null;
-
-                    return new GDataTEX(null, line, meta, new GTexture(type, texture, glossmap, 1, new Vector3f(v1.x, v1.y, v1.z), new Vector3f(v2.x, v2.y, v2.z), new Vector3f(v3.x, v3.y, v3.z), a, b), parent);
+                    switch (mode) {
+                    case 3: // Parse texture till whitespace
+                        if (sub.matches("\\S")) { //$NON-NLS-1$
+                            tex.append(sub);
+                        } else {
+                            whitespace1 = true;
+                            mode = 5;
+                        }
+                        break;
+                    case 4: // Parse texture till "
+                        if (sub.equals("\"")) { //$NON-NLS-1$
+                            mode = 5;
+                        } else {
+                            tex.append(sub);
+                        }
+                        break;
+                    case 5: // Additional whitespace
+                        if (sub.matches("\\S")) { //$NON-NLS-1$
+                            if (whitespace1)
+                                mode = 6;
+                        } else {
+                            whitespace1 = true;
+                            break;
+                        }
+                    case 6: // GLOSSMAP
+                        if (sub.equals("G"))mode = 7; //$NON-NLS-1$
+                        break;
+                    case 7: // GLOSSMAP
+                        if (sub.equals("L"))mode = 8; //$NON-NLS-1$
+                        break;
+                    case 8: // GLOSSMAP
+                        if (sub.equals("O"))mode = 9; //$NON-NLS-1$
+                        break;
+                    case 9: // GLOSSMAP
+                        if (sub.equals("S"))mode = 10; //$NON-NLS-1$
+                        break;
+                    case 10: // GLOSSMAP
+                        if (sub.equals("S"))mode = 11; //$NON-NLS-1$
+                        break;
+                    case 11: // GLOSSMAP
+                        if (sub.equals("M"))mode = 12; //$NON-NLS-1$
+                        break;
+                    case 12: // GLOSSMAP
+                        if (sub.equals("A"))mode = 13; //$NON-NLS-1$
+                        break;
+                    case 13: // GLOSSMAP
+                        if (sub.equals("P"))mode = 14; //$NON-NLS-1$
+                        break;
+                    case 14: // Additional whitespace between GLOSSMAP and
+                        // glossmap-path
+                        if (sub.matches("\\S")) { //$NON-NLS-1$
+                            if (whitespace2)
+                                mode = 15;
+                        } else {
+                            whitespace2 = true;
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                    switch (mode) {
+                    case 15:
+                        if (sub.matches("\\S")) { //$NON-NLS-1$
+                            if (sub.equals("\"")) { //$NON-NLS-1$
+                                mode = 17;
+                                sub = ""; //$NON-NLS-1$
+                            } else {
+                                mode = 16;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                    switch (mode) {
+                    case 16: // Parse texture till whitespace
+                        if (sub.matches("\\S")) { //$NON-NLS-1$
+                            gloss.append(sub);
+                        } else {
+                            mode = 18;
+                        }
+                        break;
+                    case 17: // Parse texture till "
+                        if (sub.equals("\"")) { //$NON-NLS-1$
+                            mode = 18;
+                        } else {
+                            gloss.append(sub);
+                        }
+                        break;
+                    default:
+                        break;
+                    }
                 }
+
+                texture = tex.toString();
+                glossmap = gloss.toString();
+
+                if (glossmap.isEmpty())
+                    glossmap = null;
+
+                return new GDataTEX(null, line, meta, new GTexture(type, texture, glossmap, 1, new Vector3f(v1.x, v1.y, v1.z), new Vector3f(v2.x, v2.y, v2.z), new Vector3f(v3.x, v3.y, v3.z), a, b), parent);
             }
         }
         return null;

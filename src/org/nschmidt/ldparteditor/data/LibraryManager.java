@@ -441,71 +441,71 @@ public enum LibraryManager {
             }
 
             // Special cases: Primitive fractions
-            if (this.comparePrimitives && other.comparePrimitives) {
-                if (segsThis[0].length() > 2 && segsOther[0].length() > 2 && (segsThis[0].charAt(1) == '-' || segsThis[0].charAt(2) == '-')
-                        && (segsOther[0].charAt(1) == '-' || segsOther[0].charAt(2) == '-')) {
-                    StringBuilder upperThis = new StringBuilder();
-                    StringBuilder upperOther = new StringBuilder();
-                    StringBuilder lowerThis = new StringBuilder();
-                    StringBuilder lowerOther = new StringBuilder();
-                    String suffixThis = ""; //$NON-NLS-1$
-                    String suffixOther = ""; //$NON-NLS-1$
-                    boolean readUpper = true;
-                    int charCount = 0;
-                    char[] charsThis = segsThis[0].toCharArray();
-                    for (char c : charsThis) {
-                        if (Character.isDigit(c)) {
-                            if (readUpper) {
-                                upperThis.append(c);
-                            } else {
-                                lowerThis.append(c);
-                            }
+            if (this.comparePrimitives && other.comparePrimitives
+                    && segsThis[0].length() > 2 && segsOther[0].length() > 2
+                    && (segsThis[0].charAt(1) == '-' || segsThis[0].charAt(2) == '-')
+                    && (segsOther[0].charAt(1) == '-' || segsOther[0].charAt(2) == '-')) {
+                StringBuilder upperThis = new StringBuilder();
+                StringBuilder upperOther = new StringBuilder();
+                StringBuilder lowerThis = new StringBuilder();
+                StringBuilder lowerOther = new StringBuilder();
+                String suffixThis = ""; //$NON-NLS-1$
+                String suffixOther = ""; //$NON-NLS-1$
+                boolean readUpper = true;
+                int charCount = 0;
+                char[] charsThis = segsThis[0].toCharArray();
+                for (char c : charsThis) {
+                    if (Character.isDigit(c)) {
+                        if (readUpper) {
+                            upperThis.append(c);
                         } else {
-                            if (readUpper) {
-                                readUpper = false;
-                            } else {
-                                suffixThis = segsThis[0].substring(charCount, segsThis[0].length());
-                                break;
-                            }
+                            lowerThis.append(c);
                         }
-                        charCount++;
-                    }
-                    readUpper = true;
-                    charCount = 0;
-                    char[] charsOther = segsOther[0].toCharArray();
-                    for (char c : charsOther) {
-                        if (Character.isDigit(c)) {
-                            if (readUpper) {
-                                upperOther.append(c);
-                            } else {
-                                lowerOther.append(c);
-                            }
+                    } else {
+                        if (readUpper) {
+                            readUpper = false;
                         } else {
-                            if (readUpper) {
-                                readUpper = false;
-                            } else {
-                                suffixOther = segsOther[0].substring(charCount, segsOther[0].length());
-                                break;
-                            }
+                            suffixThis = segsThis[0].substring(charCount, segsThis[0].length());
+                            break;
                         }
-                        charCount++;
                     }
-                    try {
+                    charCount++;
+                }
+                readUpper = true;
+                charCount = 0;
+                char[] charsOther = segsOther[0].toCharArray();
+                for (char c : charsOther) {
+                    if (Character.isDigit(c)) {
+                        if (readUpper) {
+                            upperOther.append(c);
+                        } else {
+                            lowerOther.append(c);
+                        }
+                    } else {
+                        if (readUpper) {
+                            readUpper = false;
+                        } else {
+                            suffixOther = segsOther[0].substring(charCount, segsOther[0].length());
+                            break;
+                        }
+                    }
+                    charCount++;
+                }
+                try {
 
-                        float fractionThis = Float.parseFloat(upperThis.toString()) / Float.parseFloat(lowerThis.toString());
-                        float fractionOther = Float.parseFloat(upperOther.toString()) / Float.parseFloat(lowerOther.toString());
+                    float fractionThis = Float.parseFloat(upperThis.toString()) / Float.parseFloat(lowerThis.toString());
+                    float fractionOther = Float.parseFloat(upperOther.toString()) / Float.parseFloat(lowerOther.toString());
 
-                        if (!suffixThis.equals(suffixOther)) {
-                            return suffixThis.compareTo(suffixOther);
+                    if (!suffixThis.equals(suffixOther)) {
+                        return suffixThis.compareTo(suffixOther);
+                    } else {
+                        if (fractionThis > fractionOther) {
+                            return 1;
                         } else {
-                            if (fractionThis > fractionOther) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
+                            return -1;
                         }
-                    } catch (NumberFormatException consumed) {
                     }
+                } catch (NumberFormatException consumed) {
                 }
             }
 

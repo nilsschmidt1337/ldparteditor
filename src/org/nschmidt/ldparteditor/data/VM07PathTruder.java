@@ -545,9 +545,8 @@ class VM07PathTruder extends VM06Edger2 {
                                     nsplit2 = (int) (dist(q1, q2) / maxlength) + 1;
 
                                     // don't split endings segments
-                                    if (endings) {
-                                        if (i == 0 || i == path1Len - 1)
-                                            nsplit1 = nsplit2 = 1;
+                                    if (endings && (i == 0 || i == path1Len - 1)) {
+                                        nsplit1 = nsplit2 = 1;
                                     }
 
                                     nsplit1 = nsplit1 > nsplit2 ? nsplit1 : nsplit2;
@@ -765,14 +764,12 @@ class VM07PathTruder extends VM06Edger2 {
                                     }
                                     // Generate tri/quad sheet
                                     for (int j = 0; j < shape1Len; j++) {
-                                        if (!lineIndicators.isEmpty()) {
-                                            if (dist(shape1Arr[j][0], shape1Arr[j][1]) < EPSILON && dist(shape2Arr[j][0], shape2Arr[j][1]) < EPSILON) {
-                                                // Null lenth segment in shape file
-                                                // -> generate line at that place
-                                                Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                                Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                                newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
-                                            }
+                                        if (!lineIndicators.isEmpty() && dist(shape1Arr[j][0], shape1Arr[j][1]) < EPSILON && dist(shape2Arr[j][0], shape2Arr[j][1]) < EPSILON) {
+                                            // Null lenth segment in shape file
+                                            // -> generate line at that place
+                                            Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                                            Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
+                                            newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
                                         }
                                         if (dist(curShape[j][0], curShape[j][1]) < vertmerge) {
                                             if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge || dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
@@ -1155,9 +1152,8 @@ class VM07PathTruder extends VM06Edger2 {
                     nsplit2 = (int) (dist(q1, q2) / maxlength) + 1;
 
                     // don't split endings segments
-                    if (endings) {
-                        if (i == 0 || i == path1Len - 1)
-                            nsplit1 = nsplit2 = 1;
+                    if (endings && (i == 0 || i == path1Len - 1)) {
+                        nsplit1 = nsplit2 = 1;
                     }
 
                     nsplit1 = nsplit1 > nsplit2 ? nsplit1 : nsplit2;

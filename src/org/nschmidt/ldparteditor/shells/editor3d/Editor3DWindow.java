@@ -783,10 +783,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     } else if (treeParts[0].getSelection()[0].getData() instanceof String) {
                         if (treeParts[0].getSelection()[0].equals(treeItemProjectPtr[0])) {
                             NLogger.debug(getClass(), "Save the project..."); //$NON-NLS-1$
-                            if (Project.isDefaultProject()) {
-                                if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
-                                    Project.setLastVisitedPath(Project.getProjectPath());
-                                }
+                            if (Project.isDefaultProject() && ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
+                                Project.setLastVisitedPath(Project.getProjectPath());
                             }
                             iterateOverItems(treeItemProjectPartsPtr[0]);
                             iterateOverItems(treeItemProjectSubpartsPtr[0]);
@@ -804,10 +802,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 } else {
                     NLogger.debug(getClass(), "Save the project..."); //$NON-NLS-1$
-                    if (Project.isDefaultProject()) {
-                        if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
-                            Project.setLastVisitedPath(Project.getProjectPath());
-                        }
+                    if (Project.isDefaultProject() && ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
+                        Project.setLastVisitedPath(Project.getProjectPath());
                     }
                 }
                 regainFocus();
@@ -850,10 +846,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 }
             }
-            if (Project.isDefaultProject()) {
-                if (ProjectActions.createNewProject(getWindow(), true)) {
-                    addRecentFile(Project.getProjectPath());
-                }
+            if (Project.isDefaultProject() && ProjectActions.createNewProject(getWindow(), true)) {
+                addRecentFile(Project.getProjectPath());
             }
             Editor3DWindow.getWindow().updateTreeUnsavedEntries();
             regainFocus();
@@ -1625,8 +1619,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
         widgetUtil(btnRoundSelectionPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
-                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
-                    if (new RoundDialog(getShell()).open() == IDialogConstants.CANCEL_ID) return;
+                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask) && new RoundDialog(getShell()).open() == IDialogConstants.CANCEL_ID) {
+                    return;
                 }
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().backupHideShowState();
@@ -2713,20 +2707,18 @@ public class Editor3DWindow extends Editor3DDesign {
             getCompositePrimitive().getOpenGL().drawScene(-1, -1);
         });
         widgetUtil(btnHidePtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                if (!Project.getFileToEdit().getVertexManager().getSelectedData().isEmpty()) {
-                    Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().getVertexManager().hideSelection();
-                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                        for (CTabItem t : w.getTabFolder().getItems()) {
-                            if (Project.getFileToEdit().equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                StyledText st = ((CompositeTab) t).getTextComposite();
-                                st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
-                            }
+            if (Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedData().isEmpty()) {
+                Project.getFileToEdit().getVertexManager().addSnapshot();
+                Project.getFileToEdit().getVertexManager().hideSelection();
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        if (Project.getFileToEdit().equals(((CompositeTab) t).getState().getFileNameObj())) {
+                            StyledText st = ((CompositeTab) t).getTextComposite();
+                            st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
                         }
                     }
-                    Project.getFileToEdit().addHistory();
                 }
+                Project.getFileToEdit().addHistory();
             }
             regainFocus();
         });
@@ -3540,24 +3532,22 @@ public class Editor3DWindow extends Editor3DDesign {
                             String line = vertex.toString();
                             line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                             String[] dataSegments = line.split("\\s+"); //$NON-NLS-1$
-                            if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
-                                if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
-                                    Vector3d start = new Vector3d();
-                                    boolean numberError = false;
-                                    if (dataSegments.length == 6) {
-                                        try {
-                                            start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
-                                            start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
-                                            start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
-                                        } catch (NumberFormatException nfe) {
-                                            numberError = true;
-                                        }
-                                    } else {
+                            if (line.startsWith("0 !LPE") && line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$ //$NON-NLS-2$
+                                Vector3d start = new Vector3d();
+                                boolean numberError = false;
+                                if (dataSegments.length == 6) {
+                                    try {
+                                        start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
+                                        start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
+                                        start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
+                                    } catch (NumberFormatException nfe) {
                                         numberError = true;
                                     }
-                                    if (!numberError) {
-                                        clipboard.add(new Vertex(start));
-                                    }
+                                } else {
+                                    numberError = true;
+                                }
+                                if (!numberError) {
+                                    clipboard.add(new Vertex(start));
                                 }
                             }
                         }
@@ -3604,24 +3594,22 @@ public class Editor3DWindow extends Editor3DDesign {
                             String line = vertex.toString();
                             line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                             String[] dataSegments = line.split("\\s+"); //$NON-NLS-1$
-                            if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
-                                if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
-                                    Vector3d start = new Vector3d();
-                                    boolean numberError = false;
-                                    if (dataSegments.length == 6) {
-                                        try {
-                                            start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
-                                            start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
-                                            start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
-                                        } catch (NumberFormatException nfe) {
-                                            numberError = true;
-                                        }
-                                    } else {
+                            if (line.startsWith("0 !LPE") && line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$ //$NON-NLS-2$
+                                Vector3d start = new Vector3d();
+                                boolean numberError = false;
+                                if (dataSegments.length == 6) {
+                                    try {
+                                        start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
+                                        start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
+                                        start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
+                                    } catch (NumberFormatException nfe) {
                                         numberError = true;
                                     }
-                                    if (!numberError) {
-                                        clipboard.add(new Vertex(start));
-                                    }
+                                } else {
+                                    numberError = true;
+                                }
+                                if (!numberError) {
+                                    clipboard.add(new Vertex(start));
                                 }
                             }
                         }
@@ -7055,25 +7043,23 @@ public class Editor3DWindow extends Editor3DDesign {
                 // FIXME Needs code cleanup!!
                 df = original;
 
-                if (canRevert && Project.getUnsavedFiles().contains(df)) {
-                    if (Editor3DWindow.getWindow().revert(df)) {
-                        updateTreeUnsavedEntries();
-                        boolean foundTab = false;
-                        for (EditorTextWindow win : Project.getOpenTextWindows()) {
-                            for (CTabItem ci : win.getTabFolder().getItems()) {
-                                CompositeTab ct = (CompositeTab) ci;
-                                if (df.equals(ct.getState().getFileNameObj())) {
-                                    foundTab = true;
-                                    break;
-                                }
-                            }
-                            if (foundTab) {
+                if (canRevert && Project.getUnsavedFiles().contains(df) && Editor3DWindow.getWindow().revert(df)) {
+                    updateTreeUnsavedEntries();
+                    boolean foundTab = false;
+                    for (EditorTextWindow win : Project.getOpenTextWindows()) {
+                        for (CTabItem ci : win.getTabFolder().getItems()) {
+                            CompositeTab ct = (CompositeTab) ci;
+                            if (df.equals(ct.getState().getFileNameObj())) {
+                                foundTab = true;
                                 break;
                             }
                         }
-                        if (foundTab && OpenInWhat.EDITOR_3D != where) {
-                            return null;
+                        if (foundTab) {
+                            break;
                         }
+                    }
+                    if (foundTab && OpenInWhat.EDITOR_3D != where) {
+                        return null;
                     }
                 }
 
@@ -7185,25 +7171,23 @@ public class Editor3DWindow extends Editor3DDesign {
             ti.setText(nameSb.toString());
             ti.setData(df);
 
-            if (canRevert && Project.getUnsavedFiles().contains(df)) {
-                if (Editor3DWindow.getWindow().revert(df)) {
-                    boolean foundTab = false;
-                    for (EditorTextWindow win : Project.getOpenTextWindows()) {
-                        for (CTabItem ci : win.getTabFolder().getItems()) {
-                            CompositeTab ct = (CompositeTab) ci;
-                            if (df.equals(ct.getState().getFileNameObj())) {
-                                foundTab = true;
-                                break;
-                            }
-                        }
-                        if (foundTab) {
+            if (canRevert && Project.getUnsavedFiles().contains(df) && Editor3DWindow.getWindow().revert(df)) {
+                boolean foundTab = false;
+                for (EditorTextWindow win : Project.getOpenTextWindows()) {
+                    for (CTabItem ci : win.getTabFolder().getItems()) {
+                        CompositeTab ct = (CompositeTab) ci;
+                        if (df.equals(ct.getState().getFileNameObj())) {
+                            foundTab = true;
                             break;
                         }
                     }
-                    if (foundTab && OpenInWhat.EDITOR_3D != where) {
-                        updateTreeUnsavedEntries();
-                        return null;
+                    if (foundTab) {
+                        break;
                     }
+                }
+                if (foundTab && OpenInWhat.EDITOR_3D != where) {
+                    updateTreeUnsavedEntries();
+                    return null;
                 }
             }
 
@@ -7483,10 +7467,8 @@ public class Editor3DWindow extends Editor3DDesign {
             @SuppressWarnings("unchecked")
             List<DatFile> cachedReferences =(List<DatFile>) folder.getData();
             for (DatFile d : cachedReferences) {
-                if (createNew || !df.equals(d)) {
-                    if (dir.equals(d.getOldName()) || dir.equals(d.getNewName())) {
-                        return true;
-                    }
+                if ((createNew || !df.equals(d)) && (dir.equals(d.getOldName()) || dir.equals(d.getNewName()))) {
+                    return true;
                 }
             }
         }
@@ -7604,11 +7586,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void regainFocus() {
         for (OpenGLRenderer r : renders) {
-            if (r.getC3D().getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                if (!r.getC3D().isDisposed() && !r.getC3D().getCanvas().isDisposed()) {
-                    r.getC3D().getCanvas().setFocus();
-                    return;
-                }
+            if (r.getC3D().getLockableDatFileReference().equals(Project.getFileToEdit()) && !r.getC3D().isDisposed() && !r.getC3D().getCanvas().isDisposed()) {
+                r.getC3D().getCanvas().setFocus();
+                return;
             }
         }
 

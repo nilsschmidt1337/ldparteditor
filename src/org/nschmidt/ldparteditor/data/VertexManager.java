@@ -896,13 +896,11 @@ public final class VertexManager extends VM99Clipboard {
                 triQuadVerts[i] = tvertex;
                 i++;
             }
-            if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
-                if (dist[0] < minDist) {
-                    minDist = dist[0];
-                    minPoint.set(point);
-                    objectSelected = true;
-                    selectedObject = triangle;
-                }
+            if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist) && dist[0] < minDist) {
+                minDist = dist[0];
+                minPoint.set(point);
+                objectSelected = true;
+                selectedObject = triangle;
             }
         }
 
@@ -913,13 +911,11 @@ public final class VertexManager extends VM99Clipboard {
                 triQuadVerts[1] = new Vertex(triangle.x2, triangle.y2, triangle.z2);
                 triQuadVerts[2] = new Vertex(triangle.x3, triangle.y3, triangle.z3);
 
-                if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
-                    if (dist[0] < minDist) {
-                        minDist = dist[0];
-                        minPoint.set(point);
-                        objectSelected = true;
-                        selectedObject = triangle;
-                    }
+                if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist) && dist[0] < minDist) {
+                    minDist = dist[0];
+                    minPoint.set(point);
+                    objectSelected = true;
+                    selectedObject = triangle;
                 }
             }
         }
@@ -934,14 +930,13 @@ public final class VertexManager extends VM99Clipboard {
                 triQuadVerts[i] = tvertex;
                 i++;
             }
-            if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)
-                    || powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0], point, dist)) {
-                if (dist[0] < minDist) {
-                    minDist = dist[0];
-                    minPoint.set(point);
-                    objectSelected = true;
-                    selectedObject = quad;
-                }
+            if ((powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)
+                    || powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0], point, dist))
+                    && dist[0] < minDist) {
+                minDist = dist[0];
+                minPoint.set(point);
+                objectSelected = true;
+                selectedObject = quad;
             }
         }
 

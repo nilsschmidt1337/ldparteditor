@@ -1288,44 +1288,42 @@ public class GL33ModelRendererLDrawStandard {
         }
 
         // Draw condlines here
-        if (drawSolidMaterials) {
-            if (drawLines) {
-                condlineShader.use();
-                stack.setShader(condlineShader);
+        if (drawSolidMaterials && drawLines) {
+            condlineShader.use();
+            stack.setShader(condlineShader);
 
-                GL20.glUniform1f(condlineShader.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
-                GL20.glUniform1f(condlineShader.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
+            GL20.glUniform1f(condlineShader.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
+            GL20.glUniform1f(condlineShader.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
 
-                GL30.glBindVertexArray(vaoCondlines);
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
-                lock.lock();
-                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataCondlines, GL15.GL_STATIC_DRAW);
-                final int cls = condlineSize;
-                lock.unlock();
+            GL30.glBindVertexArray(vaoCondlines);
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
+            lock.lock();
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataCondlines, GL15.GL_STATIC_DRAW);
+            final int cls = condlineSize;
+            lock.unlock();
 
-                GL20.glEnableVertexAttribArray(0);
-                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 15 * 4, 0);
-                GL20.glEnableVertexAttribArray(1);
-                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 15 * 4, 3 * 4l);
-                GL20.glEnableVertexAttribArray(2);
-                GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 15 * 4, 6 * 4l);
-                GL20.glEnableVertexAttribArray(3);
-                GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 15 * 4, 9 * 4l);
-                GL20.glEnableVertexAttribArray(4);
-                GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 15 * 4, 12 * 4l);
+            GL20.glEnableVertexAttribArray(0);
+            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 15 * 4, 0);
+            GL20.glEnableVertexAttribArray(1);
+            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 15 * 4, 3 * 4l);
+            GL20.glEnableVertexAttribArray(2);
+            GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 15 * 4, 6 * 4l);
+            GL20.glEnableVertexAttribArray(3);
+            GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 15 * 4, 9 * 4l);
+            GL20.glEnableVertexAttribArray(4);
+            GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 15 * 4, 12 * 4l);
 
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
-                Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
-                Matrix4f.transform(ivm, tr, tr);
-                stack.glPushMatrix();
-                stack.glTranslatef(tr.x, tr.y, tr.z);
-                GL11.glLineWidth(View.lineWidthGL);
-                GL11.glDrawArrays(GL11.GL_LINES, 0, cls);
-                stack.glPopMatrix();
-                mainShader.use();
-                stack.setShader(mainShader);
-            }
+            Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
+            Matrix4f.transform(ivm, tr, tr);
+            stack.glPushMatrix();
+            stack.glTranslatef(tr.x, tr.y, tr.z);
+            GL11.glLineWidth(View.lineWidthGL);
+            GL11.glDrawArrays(GL11.GL_LINES, 0, cls);
+            stack.glPopMatrix();
+            mainShader.use();
+            stack.setShader(mainShader);
         }
 
         GL30.glBindVertexArray(0);

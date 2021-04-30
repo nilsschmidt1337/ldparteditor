@@ -96,38 +96,36 @@ public enum SubfileCompiler {
      */
     public static void compile(final DatFile datFile, boolean preserveSelection, boolean forceParsing) {
         final VertexManager vm = datFile.getVertexManager();
-        if (!vm.isUpdated()) {
-            if (vm.isSyncWithTextEditor()) {
-                final boolean[] doNotWait = new boolean[]{false};
-                try
+        if (!vm.isUpdated() && vm.isSyncWithTextEditor()) {
+            final boolean[] doNotWait = new boolean[]{false};
+            try
+            {
+                new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
                 {
-                    new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
+                    @Override
+                    public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                     {
-                        @Override
-                        public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
-                        {
-                            monitor.beginTask(I18n.E3D_WAIT_FOR_UPDATE, IProgressMonitor.UNKNOWN);
-                            while (!vm.isUpdated()) {
-                                if (monitor.isCanceled()) break;
-                                try {
-                                    Thread.sleep(100);
-                                } catch (InterruptedException ie) {
-                                    Thread.currentThread().interrupt();
-                                    throw new LDPartEditorException(ie);
-                                }
+                        monitor.beginTask(I18n.E3D_WAIT_FOR_UPDATE, IProgressMonitor.UNKNOWN);
+                        while (!vm.isUpdated()) {
+                            if (monitor.isCanceled()) break;
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException ie) {
+                                Thread.currentThread().interrupt();
+                                throw new LDPartEditorException(ie);
                             }
-                            doNotWait[0] = monitor.isCanceled();
                         }
-                    });
-                } catch (InvocationTargetException consumed) {
-                    return;
-                } catch (InterruptedException ie) {
-                    Thread.currentThread().interrupt();
-                    throw new LDPartEditorException(ie);
-                }
-                if (doNotWait[0]) {
-                    return;
-                }
+                        doNotWait[0] = monitor.isCanceled();
+                    }
+                });
+            } catch (InvocationTargetException consumed) {
+                return;
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
+            }
+            if (doNotWait[0]) {
+                return;
             }
         }
         Set<Integer> selectedDataIndices = new HashSet<>();
@@ -141,8 +139,8 @@ public enum SubfileCompiler {
             for (Integer l : dpl.keySet()) {
                 GData gd = datFile.getDrawPerLineNoClone().getValue(l);
                 int type = gd.type();
-                if (type != 1) {
-                    if (vm.getSelectedData().contains(gd)) selectedDataIndices.add(l);
+                if (type != 1 && vm.getSelectedData().contains(gd)) {
+                    selectedDataIndices.add(l);
                 }
             }
         }
@@ -460,13 +458,11 @@ public enum SubfileCompiler {
                 df.updateLastModified();
 
             } else if (!skipCompile) {
-                if (dataSegments.length > 2 && dataSegments[1].equals("!LDRAW_ORG")) { //$NON-NLS-1$
-                    if (dataSegments[2].equals("Primitive") || dataSegments[2].equals("48_Primitive") //$NON-NLS-1$ //$NON-NLS-2$
-                            || dataSegments[2].equals("Unofficial_Primitive") || dataSegments[2].equals("Unofficial_48_Primitive")) { //$NON-NLS-1$ //$NON-NLS-2$
-                        toFolderStack.pop();
-                        toFolderStack.push(false);
-                        writeToPartFolder = false;
-                    }
+                if ((dataSegments.length > 2 && dataSegments[1].equals("!LDRAW_ORG")) && (dataSegments[2].equals("Primitive") || dataSegments[2].equals("48_Primitive") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            || dataSegments[2].equals("Unofficial_Primitive") || dataSegments[2].equals("Unofficial_48_Primitive"))) { //$NON-NLS-1$ //$NON-NLS-2$
+                    toFolderStack.pop();
+                    toFolderStack.push(false);
+                    writeToPartFolder = false;
                 }
                 builder.append(gd.transformAndColourReplace(colour, matrixInv));
                 builder.append(StringHelper.getLineDelimiter());

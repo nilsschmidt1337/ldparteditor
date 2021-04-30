@@ -1068,13 +1068,9 @@ public class CompositePrimitive extends Composite {
                             if (r.isFunction()) continue;
                             boolean match = r.matches(p) ^ r.isNot();
                             // OR *match* -> Criteria is valid
-                            if (!match && !r.isAnd()) {
-                                if (index + 1 < rules.size()) {
-                                    if (rules.get(index + 1).isAnd()) {
-                                        andCummulative = false;
-                                        continue;
-                                    }
-                                }
+                            if (!match && !r.isAnd() && index + 1 < rules.size() && rules.get(index + 1).isAnd()) {
+                                andCummulative = false;
+                                continue;
                             }
                             if (match && !r.isAnd()) {
                                 if (index + 1 < rules.size()) {

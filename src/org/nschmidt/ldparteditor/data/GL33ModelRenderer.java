@@ -735,12 +735,10 @@ public class GL33ModelRenderer {
                     transformedVerts = new TreeMap<>();
                     transformedVertices = new ArrayList<>();
                     for (Vertex v : vertices) {
-                        if (selectedVertices.contains(v)) {
-                            if (!transformedVerts.containsKey(v)) {
-                                Vector4f tv = Matrix4f.transform(transform, v.toVector4f(), new Vector4f());
-                                transformedVerts.put(v, tv);
-                                transformedVertices.add(new Vertex(tv.x, tv.y, tv.z, true));
-                            }
+                        if (selectedVertices.contains(v) && !transformedVerts.containsKey(v)) {
+                            Vector4f tv = Matrix4f.transform(transform, v.toVector4f(), new Vector4f());
+                            transformedVerts.put(v, tv);
+                            transformedVertices.add(new Vertex(tv.x, tv.y, tv.z, true));
                         }
                     }
                     for (GDataAndWinding gw : dataInOrder) {

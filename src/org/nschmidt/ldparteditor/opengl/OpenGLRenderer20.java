@@ -854,10 +854,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                                 hit = true;
                                                                                 break;
                                                                             }
-                                                                            if (buildable) {
-                                                                                if (dist * 0.5 < radi) {
-                                                                                    buildable = false;
-                                                                                }
+                                                                            if (buildable && dist * 0.5 < radi) {
+                                                                                buildable = false;
                                                                             }
                                                                         }
                                                                     }
@@ -924,10 +922,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                                 hit = true;
                                                                                 break;
                                                                             }
-                                                                            if (buildable) {
-                                                                                if (dist * 0.5 < radi) {
-                                                                                    buildable = false;
-                                                                                }
+                                                                            if (buildable && dist * 0.5 < radi) {
+                                                                                buildable = false;
                                                                             }
                                                                         }
                                                                     }
@@ -1125,10 +1121,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                                     hit = true;
                                                                                     break;
                                                                                 }
-                                                                                if (buildable) {
-                                                                                    if (dist * 0.5 < radi) {
-                                                                                        buildable = false;
-                                                                                    }
+                                                                                if (buildable && dist * 0.5 < radi) {
+                                                                                    buildable = false;
                                                                                 }
                                                                             }
                                                                         }
@@ -1194,10 +1188,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                                     hit = true;
                                                                                     break;
                                                                                 }
-                                                                                if (buildable) {
-                                                                                    if (dist * 0.5 < radi) {
-                                                                                        buildable = false;
-                                                                                    }
+                                                                                if (buildable && dist * 0.5 < radi) {
+                                                                                    buildable = false;
                                                                                 }
                                                                             }
                                                                         }

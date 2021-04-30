@@ -41,11 +41,9 @@ public class LDPartEditor {
         NLogger.init();
 
         // Check if LDPartEditor should open a file
-        if (args.length > 0) {
-            if (TryToOpen.file(args[0]) == DELEGATED_TO_ANOTHER_INSTANCE) {
-                NLogger.flushErrorStream();
-                return;
-            }
+        if (args.length > 0 && TryToOpen.file(args[0]) == DELEGATED_TO_ANOTHER_INSTANCE) {
+            NLogger.flushErrorStream();
+            return;
         }
 
         // Show the SplashScreen

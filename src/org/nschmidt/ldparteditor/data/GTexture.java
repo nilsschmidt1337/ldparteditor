@@ -149,21 +149,19 @@ public class GTexture {
     private void calcUVcoords(float x, float y, float z, GData1 parent, int i, GData id) {
         if (cacheTriggered)
             return;
-        if (i == 0) {
-            if (id != null && uvCache.containsKey(id)) {
-                cacheUsage.add(id);
-                cacheTriggered = true;
-                float[] cacheUV = uvCache.get(id).getUV();
-                tU[0] = cacheUV[0];
-                tU[1] = cacheUV[1];
-                tU[2] = cacheUV[2];
-                tU[3] = cacheUV[3];
-                tV[0] = cacheUV[4];
-                tV[1] = cacheUV[5];
-                tV[2] = cacheUV[6];
-                tV[3] = cacheUV[7];
-                return;
-            }
+        if (i == 0 && id != null && uvCache.containsKey(id)) {
+            cacheUsage.add(id);
+            cacheTriggered = true;
+            float[] cacheUV = uvCache.get(id).getUV();
+            tU[0] = cacheUV[0];
+            tU[1] = cacheUV[1];
+            tU[2] = cacheUV[2];
+            tU[3] = cacheUV[3];
+            tV[0] = cacheUV[4];
+            tV[1] = cacheUV[5];
+            tV[2] = cacheUV[6];
+            tV[3] = cacheUV[7];
+            return;
         }
         Vector4f realPos = new Vector4f(x, y, z, 1f);
         Matrix4f.transform(parent.productMatrix, realPos, realPos);

@@ -123,33 +123,31 @@ public final class GData0 extends GData {
     @Override
     public String transformAndColourReplace(String colour, Matrix matrix) {
         // Check for special VERTEX meta command
-        if (text.startsWith("0 !LPE")) { //$NON-NLS-1$
-            if (text.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
-                boolean numberError = false;
-                final Vector3d start = new Vector3d();
-                String[] dataSegments = text.trim().split("\\s+"); //$NON-NLS-1$
-                if (dataSegments.length == 6) {
-                    try {
-                        start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
-                        start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
-                        start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
-                    } catch (NumberFormatException nfe) {
-                        numberError = true;
-                    }
-                } else {
+        if (text.startsWith("0 !LPE") && text.startsWith("VERTEX ", 7)) { //$NON-NLS-1$ //$NON-NLS-2$
+            boolean numberError = false;
+            final Vector3d start = new Vector3d();
+            String[] dataSegments = text.trim().split("\\s+"); //$NON-NLS-1$
+            if (dataSegments.length == 6) {
+                try {
+                    start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
+                    start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
+                    start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
+                } catch (NumberFormatException nfe) {
                     numberError = true;
                 }
-                if (!numberError) {
-                    BigDecimal[] vert = matrix.transform(start.x, start.y, start.z);
-                    StringBuilder lineBuilder = new StringBuilder();
-                    lineBuilder.append("0 !LPE VERTEX "); //$NON-NLS-1$
-                    lineBuilder.append(bigDecimalToString(vert[0]));
-                    lineBuilder.append(" "); //$NON-NLS-1$
-                    lineBuilder.append(bigDecimalToString(vert[1]));
-                    lineBuilder.append(" "); //$NON-NLS-1$
-                    lineBuilder.append(bigDecimalToString(vert[2]));
-                    return  lineBuilder.toString();
-                }
+            } else {
+                numberError = true;
+            }
+            if (!numberError) {
+                BigDecimal[] vert = matrix.transform(start.x, start.y, start.z);
+                StringBuilder lineBuilder = new StringBuilder();
+                lineBuilder.append("0 !LPE VERTEX "); //$NON-NLS-1$
+                lineBuilder.append(bigDecimalToString(vert[0]));
+                lineBuilder.append(" "); //$NON-NLS-1$
+                lineBuilder.append(bigDecimalToString(vert[1]));
+                lineBuilder.append(" "); //$NON-NLS-1$
+                lineBuilder.append(bigDecimalToString(vert[2]));
+                return  lineBuilder.toString();
             }
         }
         return text;
@@ -163,25 +161,23 @@ public final class GData0 extends GData {
      */
     public Vertex getVertex() {
         // Check for special VERTEX meta command
-        if (text.startsWith("0 !LPE")) { //$NON-NLS-1$
-            if (text.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
-                boolean numberError = false;
-                final Vector3d start = new Vector3d();
-                String[] dataSegments = text.trim().split("\\s+"); //$NON-NLS-1$
-                if (dataSegments.length == 6) {
-                    try {
-                        start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
-                        start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
-                        start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
-                    } catch (NumberFormatException nfe) {
-                        numberError = true;
-                    }
-                } else {
+        if (text.startsWith("0 !LPE") && text.startsWith("VERTEX ", 7)) { //$NON-NLS-1$ //$NON-NLS-2$
+            boolean numberError = false;
+            final Vector3d start = new Vector3d();
+            String[] dataSegments = text.trim().split("\\s+"); //$NON-NLS-1$
+            if (dataSegments.length == 6) {
+                try {
+                    start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
+                    start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
+                    start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
+                } catch (NumberFormatException nfe) {
                     numberError = true;
                 }
-                if (!numberError) {
-                    return new Vertex(start.x, start.y, start.z);
-                }
+            } else {
+                numberError = true;
+            }
+            if (!numberError) {
+                return new Vertex(start.x, start.y, start.z);
             }
         }
         return null;

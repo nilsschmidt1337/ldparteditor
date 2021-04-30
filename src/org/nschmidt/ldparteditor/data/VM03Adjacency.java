@@ -709,50 +709,40 @@ class VM03Adjacency extends VM02Add {
                             GData0 meta = (GData0) g;
                             boolean idCheck = !lineLinkedToVertices.containsKey(meta);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 1) {
-                                if (!idCheck) {
-                                    effSelectedVertices.add(meta);
-                                }
+                            if (val == 1 && !idCheck) {
+                                effSelectedVertices.add(meta);
                             }
                             break;
                         case 2:
                             GData2 line = (GData2) g;
                             idCheck = !line.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 2) {
-                                if (!idCheck) {
-                                    selectedLines.add(line);
-                                }
+                            if (val == 2 && !idCheck) {
+                                selectedLines.add(line);
                             }
                             break;
                         case 3:
                             GData3 triangle = (GData3) g;
                             idCheck = !triangle.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 3) {
-                                if (!idCheck) {
-                                    selectedTriangles.add(triangle);
-                                }
+                            if (val == 3 && !idCheck) {
+                                selectedTriangles.add(triangle);
                             }
                             break;
                         case 4:
                             GData4 quad = (GData4) g;
                             idCheck = !quad.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 4) {
-                                if (!idCheck) {
-                                    selectedQuads.add(quad);
-                                }
+                            if (val == 4 && !idCheck) {
+                                selectedQuads.add(quad);
                             }
                             break;
                         case 5:
                             GData5 condline = (GData5) g;
                             idCheck = !condline.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 4) {
-                                if (!idCheck) {
-                                    selectedCondlines.add(condline);
-                                }
+                            if (val == 4 && !idCheck) {
+                                selectedCondlines.add(condline);
                             }
                             break;
                         default:

@@ -1586,10 +1586,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
         int index = -1;
         if (!result.contains(".") && !result.equals("0")) { //$NON-NLS-1$ //$NON-NLS-2$
             result = result + ".00"; //$NON-NLS-1$
-        } else if ((index = result.indexOf(".")) != -1) { //$NON-NLS-1$
-            if (result.length() - index < 2) {
-                result = result + "0"; //$NON-NLS-1$
-            }
+        } else if ((index = result.indexOf(".")) != -1 && result.length() - index < 2) { //$NON-NLS-1$
+            result = result + "0"; //$NON-NLS-1$
         }
         return result;
     }

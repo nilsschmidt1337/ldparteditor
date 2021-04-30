@@ -276,75 +276,107 @@ public class CompositeTab extends CompositeTabDesign {
                 tabState.setDoingPaste(event.text.length() > 1 && compositeTextPtr[0].isFocusControl() && tabState.getFileNameObj().getVertexManager().isUpdated());
                 final DatFile dat = tabState.getFileNameObj();
                 final VertexManager vm = dat.getVertexManager();
-                if (vm.getVertexToReplace() != null) {
-                    if (!vm.isModified() && tabState.isReplacingVertex()) {
-                        // Replaced vertex manipulation check
-                        NLogger.debug(getClass(), "Vertex Manipulation is ACTIVE"); //$NON-NLS-1$
+                if (vm.getVertexToReplace() != null && !vm.isModified() && tabState.isReplacingVertex()) {
+                    // Replaced vertex manipulation check
+                    NLogger.debug(getClass(), "Vertex Manipulation is ACTIVE"); //$NON-NLS-1$
 
-                        event.start = compositeTextPtr[0].getSelection().x;
-                        event.end = compositeTextPtr[0].getSelection().y;
+                    event.start = compositeTextPtr[0].getSelection().x;
+                    event.end = compositeTextPtr[0].getSelection().y;
 
-                        final boolean doReplace = event.start != event.end;
-                        boolean foundVertexMetacommand = false;
+                    final boolean doReplace = event.start != event.end;
+                    boolean foundVertexMetacommand = false;
 
-                        if (doReplace) {
-                            NLogger.debug(getClass(), "Did a text replace!"); //$NON-NLS-1$
-                        } else {
-                            if (event.text.isEmpty()) {
-                                NLogger.debug(getClass(), "Did a text deletion!"); //$NON-NLS-1$
-                                if (isDelPressed[0])
-                                    NLogger.debug(getClass(), "with DEL"); //$NON-NLS-1$
+                    if (doReplace) {
+                        NLogger.debug(getClass(), "Did a text replace!"); //$NON-NLS-1$
+                    } else {
+                        if (event.text.isEmpty()) {
+                            NLogger.debug(getClass(), "Did a text deletion!"); //$NON-NLS-1$
+                            if (isDelPressed[0])
+                                NLogger.debug(getClass(), "with DEL"); //$NON-NLS-1$
 
+                        }
+                    }
+
+                    tabState.currentCaretPositionLine = compositeTextPtr[0].getLineAtOffset(event.start);
+                    tabState.currentCaretPositionChar = compositeTextPtr[0].getCaretOffset() - compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine);
+                    tabState.currentCaretTopIndex = compositeTextPtr[0].getTopIndex();
+
+                    String oldLine = compositeTextPtr[0].getLine(tabState.currentCaretPositionLine);
+                    String newLine;
+                    NLogger.debug(getClass(), "Old Line {0}", oldLine); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "Key Char {0}", event.character); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "State Mask {0}", event.stateMask); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "Key Code {0}", event.keyCode); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "Key Location {0}", event.keyLocation); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "Text [null] {0}", event.text); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "Start {0}", event.start); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "End {0}", event.end); //$NON-NLS-1$
+
+                    if (event.text.indexOf(StringHelper.getLineDelimiter()) != -1) {
+                        NLogger.debug(getClass(), "Return, because new text contains a line delimiter."); //$NON-NLS-1$
+                        return;
+                    }
+
+                    GData dataInLine = dat.getDrawPerLine().getValue(tabState.currentCaretPositionLine + 1);
+                    final int type = dataInLine.type();
+                    String[] dataSegments = oldLine.trim().split("\\s+"); //$NON-NLS-1$
+                    final boolean isDistanceOrProtractor = type == 2 && !((GData2) dataInLine).isLine
+                            || type == 3 && !((GData3) dataInLine).isTriangle;
+
+                    Vertex vertexToReplace = null;
+                    boolean foundValidVertex = false;
+                    switch (type) {
+                    case 0:
+                        if (dataSegments.length == 6 && "0".equals(dataSegments[0]) && "!LPE".equals(dataSegments[1]) && "VERTEX".equals(dataSegments[2]) && tabState.currentCaretPositionChar > oldLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                            Vertex[] verts = vm.getDeclaredVertices().get(dataInLine);
+                            if (verts != null) {
+                                vertexToReplace = verts[0];
+                                foundVertexMetacommand = true;
+                                foundValidVertex = true;
+                                NLogger.debug(getClass(), "Vertex I"); //$NON-NLS-1$
                             }
                         }
-
-                        tabState.currentCaretPositionLine = compositeTextPtr[0].getLineAtOffset(event.start);
-                        tabState.currentCaretPositionChar = compositeTextPtr[0].getCaretOffset() - compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine);
-                        tabState.currentCaretTopIndex = compositeTextPtr[0].getTopIndex();
-
-                        String oldLine = compositeTextPtr[0].getLine(tabState.currentCaretPositionLine);
-                        String newLine;
-                        NLogger.debug(getClass(), "Old Line {0}", oldLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Key Char {0}", event.character); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "State Mask {0}", event.stateMask); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Key Code {0}", event.keyCode); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Key Location {0}", event.keyLocation); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Text [null] {0}", event.text); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Start {0}", event.start); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "End {0}", event.end); //$NON-NLS-1$
-
-                        if (event.text.indexOf(StringHelper.getLineDelimiter()) != -1) {
-                            NLogger.debug(getClass(), "Return, because new text contains a line delimiter."); //$NON-NLS-1$
-                            return;
-                        }
-
-                        GData dataInLine = dat.getDrawPerLine().getValue(tabState.currentCaretPositionLine + 1);
-                        final int type = dataInLine.type();
-                        String[] dataSegments = oldLine.trim().split("\\s+"); //$NON-NLS-1$
-                        final boolean isDistanceOrProtractor = type == 2 && !((GData2) dataInLine).isLine
-                                || type == 3 && !((GData3) dataInLine).isTriangle;
-
-                        Vertex vertexToReplace = null;
-                        boolean foundValidVertex = false;
-                        switch (type) {
-                        case 0:
-                            if (dataSegments.length == 6 && "0".equals(dataSegments[0]) && "!LPE".equals(dataSegments[1]) && "VERTEX".equals(dataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                if (tabState.currentCaretPositionChar > oldLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$
-                                    Vertex[] verts = vm.getDeclaredVertices().get(dataInLine);
-                                    if (verts != null) {
-                                        vertexToReplace = verts[0];
-                                        foundVertexMetacommand = true;
-                                        foundValidVertex = true;
-                                        NLogger.debug(getClass(), "Vertex I"); //$NON-NLS-1$
-                                    }
-                                }
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                        int index2 = StringHelper.getIndexFromWhitespaces(oldLine, tabState.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
+                        if (index2 > 1) {
+                            if (type > 3 && index2 > 10) {
+                                if (type == 4)
+                                    vertexToReplace = vm.getQuads().get(dataInLine)[3];
+                                else if (type == 5)
+                                    vertexToReplace = vm.getCondlines().get(dataInLine)[3];
+                            } else if (type > 2 && index2 > 7) {
+                                if (type == 3)
+                                    vertexToReplace = vm.getTriangles().get(dataInLine)[2];
+                                else if (type == 4)
+                                    vertexToReplace = vm.getQuads().get(dataInLine)[2];
+                                else if (type == 5)
+                                    vertexToReplace = vm.getCondlines().get(dataInLine)[2];
+                            } else if (index2 > 4) {
+                                if (type == 2)
+                                    vertexToReplace = vm.getLines().get(dataInLine)[1];
+                                else if (type == 3)
+                                    vertexToReplace = vm.getTriangles().get(dataInLine)[1];
+                                else if (type == 4)
+                                    vertexToReplace = vm.getQuads().get(dataInLine)[1];
+                                else if (type == 5)
+                                    vertexToReplace = vm.getCondlines().get(dataInLine)[1];
+                            } else {
+                                if (type == 2)
+                                    vertexToReplace = vm.getLines().get(dataInLine)[0];
+                                else if (type == 3)
+                                    vertexToReplace = vm.getTriangles().get(dataInLine)[0];
+                                else if (type == 4)
+                                    vertexToReplace = vm.getQuads().get(dataInLine)[0];
+                                else if (type == 5)
+                                    vertexToReplace = vm.getCondlines().get(dataInLine)[0];
                             }
-                            break;
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 5:
-                            int index2 = StringHelper.getIndexFromWhitespaces(oldLine, tabState.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
+                        }
+                        if (!(vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace))) {
+                            index2 = StringHelper.getIndexFromWhitespaces(oldLine, tabState.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
                             if (index2 > 1) {
                                 if (type > 3 && index2 > 10) {
                                     if (type == 4)
@@ -378,324 +410,282 @@ public class CompositeTab extends CompositeTabDesign {
                                         vertexToReplace = vm.getCondlines().get(dataInLine)[0];
                                 }
                             }
-                            if (!(vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace))) {
-                                index2 = StringHelper.getIndexFromWhitespaces(oldLine, tabState.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
-                                if (index2 > 1) {
-                                    if (type > 3 && index2 > 10) {
-                                        if (type == 4)
-                                            vertexToReplace = vm.getQuads().get(dataInLine)[3];
-                                        else if (type == 5)
-                                            vertexToReplace = vm.getCondlines().get(dataInLine)[3];
-                                    } else if (type > 2 && index2 > 7) {
-                                        if (type == 3)
-                                            vertexToReplace = vm.getTriangles().get(dataInLine)[2];
-                                        else if (type == 4)
-                                            vertexToReplace = vm.getQuads().get(dataInLine)[2];
-                                        else if (type == 5)
-                                            vertexToReplace = vm.getCondlines().get(dataInLine)[2];
-                                    } else if (index2 > 4) {
-                                        if (type == 2)
-                                            vertexToReplace = vm.getLines().get(dataInLine)[1];
-                                        else if (type == 3)
-                                            vertexToReplace = vm.getTriangles().get(dataInLine)[1];
-                                        else if (type == 4)
-                                            vertexToReplace = vm.getQuads().get(dataInLine)[1];
-                                        else if (type == 5)
-                                            vertexToReplace = vm.getCondlines().get(dataInLine)[1];
-                                    } else {
-                                        if (type == 2)
-                                            vertexToReplace = vm.getLines().get(dataInLine)[0];
-                                        else if (type == 3)
-                                            vertexToReplace = vm.getTriangles().get(dataInLine)[0];
-                                        else if (type == 4)
-                                            vertexToReplace = vm.getQuads().get(dataInLine)[0];
-                                        else if (type == 5)
-                                            vertexToReplace = vm.getCondlines().get(dataInLine)[0];
-                                    }
-                                }
-                            }
-
-                            if (!(vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace))) {
-                                index2 = StringHelper.getIndexFromWhitespaces(oldLine, tabState.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
-                                if (index2 > 1) {
-                                    if (type > 3 && index2 > 10) {
-                                        if (type == 4)
-                                            vertexToReplace = vm.getQuads().get(dataInLine)[3];
-                                        else if (type == 5)
-                                            vertexToReplace = vm.getCondlines().get(dataInLine)[3];
-                                    } else if (type > 2 && index2 > 7) {
-                                        if (type == 3)
-                                            vertexToReplace = vm.getTriangles().get(dataInLine)[2];
-                                        else if (type == 4)
-                                            vertexToReplace = vm.getQuads().get(dataInLine)[2];
-                                        else if (type == 5)
-                                            vertexToReplace = vm.getCondlines().get(dataInLine)[2];
-                                    } else if (index2 > 4) {
-                                        if (type == 2)
-                                            vertexToReplace = vm.getLines().get(dataInLine)[1];
-                                        else if (type == 3)
-                                            vertexToReplace = vm.getTriangles().get(dataInLine)[1];
-                                        else if (type == 4)
-                                            vertexToReplace = vm.getQuads().get(dataInLine)[1];
-                                        else if (type == 5)
-                                            vertexToReplace = vm.getCondlines().get(dataInLine)[1];
-                                    } else {
-                                        if (type == 2)
-                                            vertexToReplace = vm.getLines().get(dataInLine)[0];
-                                        else if (type == 3)
-                                            vertexToReplace = vm.getTriangles().get(dataInLine)[0];
-                                        else if (type == 4)
-                                            vertexToReplace = vm.getQuads().get(dataInLine)[0];
-                                        else if (type == 5)
-                                            vertexToReplace = vm.getCondlines().get(dataInLine)[0];
-                                    }
-                                }
-                            }
-                        default:
-                            break;
                         }
 
-                        if (vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace)) {
-
-                            NLogger.debug(getClass(), "VerifyEvent.Text {0}", event.text); //$NON-NLS-1$
-                            if (doReplace) {
-                                int off = compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine);
-                                newLine = oldLine.substring(0, Math.max(0, event.start - off)) + event.text + oldLine.substring(Math.max(0, event.end - off));
-                            } else if (event.text.length() == 0 && tabState.currentCaretPositionChar > 0) {
-                                if (!isDelPressed[0])
-                                    tabState.currentCaretPositionChar--;
-                                newLine = oldLine.substring(0, tabState.currentCaretPositionChar) + oldLine.substring(tabState.currentCaretPositionChar + 1);
-                            } else if (oldLine.length() > tabState.currentCaretPositionChar) {
-                                newLine = oldLine.substring(0, tabState.currentCaretPositionChar) + event.text + oldLine.substring(tabState.currentCaretPositionChar);
-                            } else {
-                                newLine = oldLine.substring(0, tabState.currentCaretPositionChar) + event.text + oldLine.substring(Math.min(tabState.currentCaretPositionChar, oldLine.length()));
+                        if (!(vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace))) {
+                            index2 = StringHelper.getIndexFromWhitespaces(oldLine, tabState.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
+                            if (index2 > 1) {
+                                if (type > 3 && index2 > 10) {
+                                    if (type == 4)
+                                        vertexToReplace = vm.getQuads().get(dataInLine)[3];
+                                    else if (type == 5)
+                                        vertexToReplace = vm.getCondlines().get(dataInLine)[3];
+                                } else if (type > 2 && index2 > 7) {
+                                    if (type == 3)
+                                        vertexToReplace = vm.getTriangles().get(dataInLine)[2];
+                                    else if (type == 4)
+                                        vertexToReplace = vm.getQuads().get(dataInLine)[2];
+                                    else if (type == 5)
+                                        vertexToReplace = vm.getCondlines().get(dataInLine)[2];
+                                } else if (index2 > 4) {
+                                    if (type == 2)
+                                        vertexToReplace = vm.getLines().get(dataInLine)[1];
+                                    else if (type == 3)
+                                        vertexToReplace = vm.getTriangles().get(dataInLine)[1];
+                                    else if (type == 4)
+                                        vertexToReplace = vm.getQuads().get(dataInLine)[1];
+                                    else if (type == 5)
+                                        vertexToReplace = vm.getCondlines().get(dataInLine)[1];
+                                } else {
+                                    if (type == 2)
+                                        vertexToReplace = vm.getLines().get(dataInLine)[0];
+                                    else if (type == 3)
+                                        vertexToReplace = vm.getTriangles().get(dataInLine)[0];
+                                    else if (type == 4)
+                                        vertexToReplace = vm.getQuads().get(dataInLine)[0];
+                                    else if (type == 5)
+                                        vertexToReplace = vm.getCondlines().get(dataInLine)[0];
+                                }
                             }
+                        }
+                    default:
+                        break;
+                    }
 
-                            NLogger.debug(getClass(), "New Line {0}", newLine); //$NON-NLS-1$
+                    if (vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace)) {
 
-                            int off2 = 0;
+                        NLogger.debug(getClass(), "VerifyEvent.Text {0}", event.text); //$NON-NLS-1$
+                        if (doReplace) {
+                            int off = compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine);
+                            newLine = oldLine.substring(0, Math.max(0, event.start - off)) + event.text + oldLine.substring(Math.max(0, event.end - off));
+                        } else if (event.text.length() == 0 && tabState.currentCaretPositionChar > 0) {
+                            if (!isDelPressed[0])
+                                tabState.currentCaretPositionChar--;
+                            newLine = oldLine.substring(0, tabState.currentCaretPositionChar) + oldLine.substring(tabState.currentCaretPositionChar + 1);
+                        } else if (oldLine.length() > tabState.currentCaretPositionChar) {
+                            newLine = oldLine.substring(0, tabState.currentCaretPositionChar) + event.text + oldLine.substring(tabState.currentCaretPositionChar);
+                        } else {
+                            newLine = oldLine.substring(0, tabState.currentCaretPositionChar) + event.text + oldLine.substring(Math.min(tabState.currentCaretPositionChar, oldLine.length()));
+                        }
 
-                            {
-                                int minLen = Math.min(oldLine.length(), newLine.length());
-                                int i = 0;
-                                for (; i < minLen; i++) {
-                                    char oc = oldLine.charAt(i);
-                                    char nc = newLine.charAt(i);
-                                    if (oc == nc) {
-                                        off2++;
+                        NLogger.debug(getClass(), "New Line {0}", newLine); //$NON-NLS-1$
+
+                        int off2 = 0;
+
+                        {
+                            int minLen = Math.min(oldLine.length(), newLine.length());
+                            int i = 0;
+                            for (; i < minLen; i++) {
+                                char oc = oldLine.charAt(i);
+                                char nc = newLine.charAt(i);
+                                if (oc == nc) {
+                                    off2++;
+                                } else {
+                                    if (newLine.length() < oldLine.length() && nc == ' ' && i > 0 && newLine.charAt(i - 1) == '.') {
+                                        off2--;
+                                    }
+                                    off2 += event.text.length();
+                                    break;
+                                }
+                            }
+                            if (oldLine.length() < newLine.length() & i == minLen) {
+                                off2 = newLine.length();
+                            }
+                        }
+
+                        String[] newDataSegments = newLine.trim().split("\\s+"); //$NON-NLS-1$
+
+                        // Parse new coordinates from new line
+                        BigDecimal x = null;
+                        BigDecimal y = null;
+                        BigDecimal z = null;
+
+                        try {
+                            switch (type) {
+                            case 0:
+                                if (newDataSegments.length == 6 && "0".equals(newDataSegments[0]) && "!LPE".equals(newDataSegments[1]) && "VERTEX".equals(newDataSegments[2]) && tabState.currentCaretPositionChar > newLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                                    x = new BigDecimal(newDataSegments[3]);
+                                    y = new BigDecimal(newDataSegments[4]);
+                                    z = new BigDecimal(newDataSegments[5]);
+                                    foundValidVertex = true;
+                                    foundVertexMetacommand = true;
+                                    NLogger.debug(getClass(), "Vertex II"); //$NON-NLS-1$
+                                }
+                                break;
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                                int index2;
+                                index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
+                                if (index2 > 0) {
+                                    if (type > 3 && index2 > 10) {
+                                        x = new BigDecimal(newDataSegments[11]);
+                                        y = new BigDecimal(newDataSegments[12]);
+                                        z = new BigDecimal(newDataSegments[13]);
+                                        foundValidVertex = true;
+                                    } else if (type > 2 && index2 > 7) {
+                                        x = new BigDecimal(newDataSegments[8 + (isDistanceOrProtractor ? 2 : 0)]);
+                                        y = new BigDecimal(newDataSegments[9 + (isDistanceOrProtractor ? 2 : 0)]);
+                                        z = new BigDecimal(newDataSegments[10 + (isDistanceOrProtractor ? 2 : 0)]);
+                                        foundValidVertex = true;
+                                    } else if (index2 > 4) {
+                                        x = new BigDecimal(newDataSegments[5 + (isDistanceOrProtractor ? 2 : 0)]);
+                                        y = new BigDecimal(newDataSegments[6 + (isDistanceOrProtractor ? 2 : 0)]);
+                                        z = new BigDecimal(newDataSegments[7 + (isDistanceOrProtractor ? 2 : 0)]);
+                                        foundValidVertex = true;
                                     } else {
-                                        if (newLine.length() < oldLine.length() && nc == ' ' && i > 0 && newLine.charAt(i - 1) == '.') {
-                                            off2--;
-                                        }
-                                        off2 += event.text.length();
-                                        break;
+                                        x = new BigDecimal(newDataSegments[2 + (isDistanceOrProtractor ? 2 : 0)]);
+                                        y = new BigDecimal(newDataSegments[3 + (isDistanceOrProtractor ? 2 : 0)]);
+                                        z = new BigDecimal(newDataSegments[4 + (isDistanceOrProtractor ? 2 : 0)]);
+                                        foundValidVertex = true;
                                     }
                                 }
-                                if (oldLine.length() < newLine.length() & i == minLen) {
-                                    off2 = newLine.length();
-                                }
+                            default:
+                                break;
                             }
+                        } catch (Exception nfe) {
+                            return;
+                        }
+                        if (foundValidVertex && x != null && y != null && z != null) {
+                            // Do this only, if the replacement can be done!
+                            Vertex newVertex = new Vertex(x, y, z);
+                            if (vm.changeVertexDirect(vertexToReplace, newVertex, !foundVertexMetacommand)) {
+                                vm.setVertexToReplace(newVertex);
+                                tabState.setToReplaceX(x);
+                                tabState.setToReplaceY(y);
+                                tabState.setToReplaceZ(z);
+                                event.doit = false;
+                                vm.setModifiedNoSync();
+                                tabState.currentCaretPositionChar = off2;
+                                compositeTextPtr[0].setText(tabState.getFileNameObj().getText()); // This has always to be the last line here!
 
-                            String[] newDataSegments = newLine.trim().split("\\s+"); //$NON-NLS-1$
-
-                            // Parse new coordinates from new line
-                            BigDecimal x = null;
-                            BigDecimal y = null;
-                            BigDecimal z = null;
-
-                            try {
-                                switch (type) {
-                                case 0:
-                                    if (newDataSegments.length == 6 && "0".equals(newDataSegments[0]) && "!LPE".equals(newDataSegments[1]) && "VERTEX".equals(newDataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                        if (tabState.currentCaretPositionChar > newLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$
+                            } else {
+                                foundValidVertex = false;
+                                try {
+                                    switch (type) {
+                                    case 0:
+                                        if (newDataSegments.length == 6
+                                        && "0".equals(newDataSegments[0]) && "!LPE".equals(newDataSegments[1]) && "VERTEX".equals(newDataSegments[2]) && tabState.currentCaretPositionChar > newLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                                             x = new BigDecimal(newDataSegments[3]);
                                             y = new BigDecimal(newDataSegments[4]);
                                             z = new BigDecimal(newDataSegments[5]);
                                             foundValidVertex = true;
                                             foundVertexMetacommand = true;
-                                            NLogger.debug(getClass(), "Vertex II"); //$NON-NLS-1$
+                                            NLogger.debug(getClass(), "Vertex III"); //$NON-NLS-1$
                                         }
-                                    }
-                                    break;
-                                case 2:
-                                case 3:
-                                case 4:
-                                case 5:
-                                    int index2;
-                                    index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
-                                    if (index2 > 0) {
-                                        if (type > 3 && index2 > 10) {
-                                            x = new BigDecimal(newDataSegments[11]);
-                                            y = new BigDecimal(newDataSegments[12]);
-                                            z = new BigDecimal(newDataSegments[13]);
-                                            foundValidVertex = true;
-                                        } else if (type > 2 && index2 > 7) {
-                                            x = new BigDecimal(newDataSegments[8 + (isDistanceOrProtractor ? 2 : 0)]);
-                                            y = new BigDecimal(newDataSegments[9 + (isDistanceOrProtractor ? 2 : 0)]);
-                                            z = new BigDecimal(newDataSegments[10 + (isDistanceOrProtractor ? 2 : 0)]);
-                                            foundValidVertex = true;
-                                        } else if (index2 > 4) {
-                                            x = new BigDecimal(newDataSegments[5 + (isDistanceOrProtractor ? 2 : 0)]);
-                                            y = new BigDecimal(newDataSegments[6 + (isDistanceOrProtractor ? 2 : 0)]);
-                                            z = new BigDecimal(newDataSegments[7 + (isDistanceOrProtractor ? 2 : 0)]);
-                                            foundValidVertex = true;
-                                        } else {
-                                            x = new BigDecimal(newDataSegments[2 + (isDistanceOrProtractor ? 2 : 0)]);
-                                            y = new BigDecimal(newDataSegments[3 + (isDistanceOrProtractor ? 2 : 0)]);
-                                            z = new BigDecimal(newDataSegments[4 + (isDistanceOrProtractor ? 2 : 0)]);
-                                            foundValidVertex = true;
+                                        break;
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                        int index2;
+                                        index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
+                                        if (index2 > 1) {
+                                            if (type > 3 && index2 > 10) {
+                                                x = new BigDecimal(newDataSegments[11]);
+                                                y = new BigDecimal(newDataSegments[12]);
+                                                z = new BigDecimal(newDataSegments[13]);
+                                                foundValidVertex = true;
+                                            } else if (type > 2 && index2 > 7) {
+                                                x = new BigDecimal(newDataSegments[8 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                y = new BigDecimal(newDataSegments[9 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                z = new BigDecimal(newDataSegments[10 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                foundValidVertex = true;
+                                            } else if (index2 > 4) {
+                                                x = new BigDecimal(newDataSegments[5 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                y = new BigDecimal(newDataSegments[6 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                z = new BigDecimal(newDataSegments[7 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                foundValidVertex = true;
+                                            } else {
+                                                x = new BigDecimal(newDataSegments[2 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                y = new BigDecimal(newDataSegments[3 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                z = new BigDecimal(newDataSegments[4 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                foundValidVertex = true;
+                                            }
                                         }
+                                    default:
+                                        break;
                                     }
-                                default:
-                                    break;
+                                } catch (Exception nfe) {
+                                    return;
                                 }
-                            } catch (Exception nfe) {
-                                return;
-                            }
-                            if (foundValidVertex && x != null && y != null && z != null) {
-                                // Do this only, if the replacement can be done!
-                                Vertex newVertex = new Vertex(x, y, z);
-                                if (vm.changeVertexDirect(vertexToReplace, newVertex, !foundVertexMetacommand)) {
-                                    vm.setVertexToReplace(newVertex);
-                                    tabState.setToReplaceX(x);
-                                    tabState.setToReplaceY(y);
-                                    tabState.setToReplaceZ(z);
-                                    event.doit = false;
-                                    vm.setModifiedNoSync();
-                                    tabState.currentCaretPositionChar = off2;
-                                    compositeTextPtr[0].setText(tabState.getFileNameObj().getText()); // This has always to be the last line here!
-
-                                } else {
-                                    foundValidVertex = false;
-                                    try {
-                                        switch (type) {
-                                        case 0:
-                                            if (newDataSegments.length == 6
-                                            && "0".equals(newDataSegments[0]) && "!LPE".equals(newDataSegments[1]) && "VERTEX".equals(newDataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                                if (tabState.currentCaretPositionChar > newLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$
+                                if (foundValidVertex && x != null && y != null && z != null) {
+                                    // Do this only, if the replacement can
+                                    // be done!
+                                    newVertex = new Vertex(x, y, z);
+                                    if (vm.changeVertexDirect(vertexToReplace, newVertex, !foundVertexMetacommand)) {
+                                        vm.setVertexToReplace(newVertex);
+                                        tabState.setToReplaceX(x);
+                                        tabState.setToReplaceY(y);
+                                        tabState.setToReplaceZ(z);
+                                        event.doit = false;
+                                        vm.setModifiedNoSync();
+                                        tabState.currentCaretPositionChar = off2;
+                                        compositeTextPtr[0].setText(tabState.getFileNameObj().getText()); // This has always to be the last line here!
+                                    } else {
+                                        foundValidVertex = false;
+                                        try {
+                                            switch (type) {
+                                            case 0:
+                                                if (newDataSegments.length == 6
+                                                && "0".equals(newDataSegments[0]) && "!LPE".equals(newDataSegments[1]) && "VERTEX".equals(newDataSegments[2]) && tabState.currentCaretPositionChar > newLine.indexOf("VERTEX") + 5) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                                                     x = new BigDecimal(newDataSegments[3]);
                                                     y = new BigDecimal(newDataSegments[4]);
                                                     z = new BigDecimal(newDataSegments[5]);
                                                     foundValidVertex = true;
                                                     foundVertexMetacommand = true;
-                                                    NLogger.debug(getClass(), "Vertex III"); //$NON-NLS-1$
+                                                    NLogger.debug(getClass(), "Vertex IV"); //$NON-NLS-1$
                                                 }
-                                            }
-                                            break;
-                                        case 2:
-                                        case 3:
-                                        case 4:
-                                        case 5:
-                                            int index2;
-                                            index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
-                                            if (index2 > 1) {
-                                                if (type > 3 && index2 > 10) {
-                                                    x = new BigDecimal(newDataSegments[11]);
-                                                    y = new BigDecimal(newDataSegments[12]);
-                                                    z = new BigDecimal(newDataSegments[13]);
-                                                    foundValidVertex = true;
-                                                } else if (type > 2 && index2 > 7) {
-                                                    x = new BigDecimal(newDataSegments[8 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                    y = new BigDecimal(newDataSegments[9 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                    z = new BigDecimal(newDataSegments[10 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                    foundValidVertex = true;
-                                                } else if (index2 > 4) {
-                                                    x = new BigDecimal(newDataSegments[5 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                    y = new BigDecimal(newDataSegments[6 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                    z = new BigDecimal(newDataSegments[7 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                    foundValidVertex = true;
-                                                } else {
-                                                    x = new BigDecimal(newDataSegments[2 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                    y = new BigDecimal(newDataSegments[3 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                    z = new BigDecimal(newDataSegments[4 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                    foundValidVertex = true;
+                                                break;
+                                            case 2:
+                                            case 3:
+                                            case 4:
+                                            case 5:
+                                                int index2;
+                                                index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
+                                                if (index2 > 1) {
+                                                    if (type > 3 && index2 > 10) {
+                                                        x = new BigDecimal(newDataSegments[11]);
+                                                        y = new BigDecimal(newDataSegments[12]);
+                                                        z = new BigDecimal(newDataSegments[13]);
+                                                        foundValidVertex = true;
+                                                    } else if (type > 2 && index2 > 7) {
+                                                        x = new BigDecimal(newDataSegments[8 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                        y = new BigDecimal(newDataSegments[9 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                        z = new BigDecimal(newDataSegments[10 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                        foundValidVertex = true;
+                                                    } else if (index2 > 4) {
+                                                        x = new BigDecimal(newDataSegments[5 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                        y = new BigDecimal(newDataSegments[6 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                        z = new BigDecimal(newDataSegments[7 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                        foundValidVertex = true;
+                                                    } else {
+                                                        x = new BigDecimal(newDataSegments[2 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                        y = new BigDecimal(newDataSegments[3 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                        z = new BigDecimal(newDataSegments[4 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                        foundValidVertex = true;
+                                                    }
                                                 }
+                                            default:
+                                                break;
                                             }
-                                        default:
-                                            break;
+                                        } catch (Exception nfe) {
+                                            return;
                                         }
-                                    } catch (Exception nfe) {
-                                        return;
-                                    }
-                                    if (foundValidVertex && x != null && y != null && z != null) {
-                                        // Do this only, if the replacement can
-                                        // be done!
-                                        newVertex = new Vertex(x, y, z);
-                                        if (vm.changeVertexDirect(vertexToReplace, newVertex, !foundVertexMetacommand)) {
-                                            vm.setVertexToReplace(newVertex);
-                                            tabState.setToReplaceX(x);
-                                            tabState.setToReplaceY(y);
-                                            tabState.setToReplaceZ(z);
-                                            event.doit = false;
-                                            vm.setModifiedNoSync();
-                                            tabState.currentCaretPositionChar = off2;
-                                            compositeTextPtr[0].setText(tabState.getFileNameObj().getText()); // This has always to be the last line here!
-                                        } else {
-                                            foundValidVertex = false;
-                                            try {
-                                                switch (type) {
-                                                case 0:
-                                                    if (newDataSegments.length == 6
-                                                    && "0".equals(newDataSegments[0]) && "!LPE".equals(newDataSegments[1]) && "VERTEX".equals(newDataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                                        if (tabState.currentCaretPositionChar > newLine.indexOf("VERTEX") + 5) { //$NON-NLS-1$
-                                                            x = new BigDecimal(newDataSegments[3]);
-                                                            y = new BigDecimal(newDataSegments[4]);
-                                                            z = new BigDecimal(newDataSegments[5]);
-                                                            foundValidVertex = true;
-                                                            foundVertexMetacommand = true;
-                                                            NLogger.debug(getClass(), "Vertex IV"); //$NON-NLS-1$
-                                                        }
-                                                    }
-                                                    break;
-                                                case 2:
-                                                case 3:
-                                                case 4:
-                                                case 5:
-                                                    int index2;
-                                                    index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
-                                                    if (index2 > 1) {
-                                                        if (type > 3 && index2 > 10) {
-                                                            x = new BigDecimal(newDataSegments[11]);
-                                                            y = new BigDecimal(newDataSegments[12]);
-                                                            z = new BigDecimal(newDataSegments[13]);
-                                                            foundValidVertex = true;
-                                                        } else if (type > 2 && index2 > 7) {
-                                                            x = new BigDecimal(newDataSegments[8 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                            y = new BigDecimal(newDataSegments[9 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                            z = new BigDecimal(newDataSegments[10 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                            foundValidVertex = true;
-                                                        } else if (index2 > 4) {
-                                                            x = new BigDecimal(newDataSegments[5 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                            y = new BigDecimal(newDataSegments[6 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                            z = new BigDecimal(newDataSegments[7 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                            foundValidVertex = true;
-                                                        } else {
-                                                            x = new BigDecimal(newDataSegments[2 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                            y = new BigDecimal(newDataSegments[3 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                            z = new BigDecimal(newDataSegments[4 + (isDistanceOrProtractor ? 2 : 0)]);
-                                                            foundValidVertex = true;
-                                                        }
-                                                    }
-                                                default:
-                                                    break;
-                                                }
-                                            } catch (Exception nfe) {
-                                                return;
-                                            }
-                                            if (foundValidVertex && x != null && y != null && z != null) {
-                                                // Do this only, if the
-                                                // replacement can be done!
-                                                newVertex = new Vertex(x, y, z);
-                                                if (vm.changeVertexDirect(vertexToReplace, newVertex, !foundVertexMetacommand)) {
-                                                    vm.setVertexToReplace(newVertex);
-                                                    tabState.setToReplaceX(x);
-                                                    tabState.setToReplaceY(y);
-                                                    tabState.setToReplaceZ(z);
-                                                    event.doit = false;
-                                                    vm.setModifiedNoSync();
-                                                    tabState.currentCaretPositionChar = off2;
-                                                    compositeTextPtr[0].setText(tabState.getFileNameObj().getText()); // This has always to be the last line here!
-                                                }
+                                        if (foundValidVertex && x != null && y != null && z != null) {
+                                            // Do this only, if the
+                                            // replacement can be done!
+                                            newVertex = new Vertex(x, y, z);
+                                            if (vm.changeVertexDirect(vertexToReplace, newVertex, !foundVertexMetacommand)) {
+                                                vm.setVertexToReplace(newVertex);
+                                                tabState.setToReplaceX(x);
+                                                tabState.setToReplaceY(y);
+                                                tabState.setToReplaceZ(z);
+                                                event.doit = false;
+                                                vm.setModifiedNoSync();
+                                                tabState.currentCaretPositionChar = off2;
+                                                compositeTextPtr[0].setText(tabState.getFileNameObj().getText()); // This has always to be the last line here!
                                             }
                                         }
                                     }
@@ -769,32 +759,30 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                 }
                 // Reset the caret position when a vertex was modified
-                if (vm.getVertexToReplace() != null) {
-                    if (vm.isModified()) {
-                        try {
-                            compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine) + tabState.currentCaretPositionChar);
-                        } catch (IllegalArgumentException iae) {
-                            int diff = 1;
-                            int trys = 0;
-                            while (true) {
-                                try {
-                                    compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine) + tabState.currentCaretPositionChar - diff);
+                if (vm.getVertexToReplace() != null && vm.isModified()) {
+                    try {
+                        compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine) + tabState.currentCaretPositionChar);
+                    } catch (IllegalArgumentException iae) {
+                        int diff = 1;
+                        int trys = 0;
+                        while (true) {
+                            try {
+                                compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine) + tabState.currentCaretPositionChar - diff);
+                                break;
+                            } catch (IllegalArgumentException iae2) {
+                                trys++;
+                                diff++;
+                                if (trys > 10) {
+                                    compositeTextPtr[0].setCaretOffset(0);
                                     break;
-                                } catch (IllegalArgumentException iae2) {
-                                    trys++;
-                                    diff++;
-                                    if (trys > 10) {
-                                        compositeTextPtr[0].setCaretOffset(0);
-                                        break;
-                                    }
                                 }
                             }
                         }
-                        compositeTextPtr[0].setTopIndex(tabState.currentCaretTopIndex);
-                        NLogger.debug(getClass(), "Caret Reset"); //$NON-NLS-1$
-                        vm.getSelectedVertices().clear();
-                        vm.getSelectedVertices().add(vm.getVertexToReplace());
                     }
+                    compositeTextPtr[0].setTopIndex(tabState.currentCaretTopIndex);
+                    NLogger.debug(getClass(), "Caret Reset"); //$NON-NLS-1$
+                    vm.getSelectedVertices().clear();
+                    vm.getSelectedVertices().add(vm.getVertexToReplace());
                 }
 
                 if (tabState.isSync()) {
@@ -1976,9 +1964,8 @@ public class CompositeTab extends CompositeTabDesign {
             if (index == index2)
                 return this.tabState.getTab();
         }
-        if (index != 0) {
-            if (!this.tabState.getTab().getParent().equals(folder))
-                index--;
+        if (index != 0 && !this.tabState.getTab().getParent().equals(folder)) {
+            index--;
         }
         final CompositeTab ct = new CompositeTab(folder, SWT.CLOSE, index);
         ct.setText(this.tabState.getTab().getText());

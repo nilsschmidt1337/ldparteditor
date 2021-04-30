@@ -744,10 +744,8 @@ public class EditorTextWindow extends EditorTextDesign {
                 int s2 = s1 + st.getSelectionRange().y;
                 int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
                 int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                if (fromLine != toLine) {
-                    if (s2 == st.getOffsetAtLine(toLine)) {
-                        toLine -= 1;
-                    }
+                if (fromLine != toLine && s2 == st.getOffsetAtLine(toLine)) {
+                    toLine -= 1;
                 }
                 fromLine++;
                 toLine++;
@@ -770,10 +768,8 @@ public class EditorTextWindow extends EditorTextDesign {
                 int s2 = s1 + st.getSelectionRange().y;
                 int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
                 int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                if (fromLine != toLine) {
-                    if (s2 == st.getOffsetAtLine(toLine)) {
-                        toLine -= 1;
-                    }
+                if (fromLine != toLine && s2 == st.getOffsetAtLine(toLine)) {
+                    toLine -= 1;
                 }
                 fromLine++;
                 toLine++;
@@ -1009,8 +1005,8 @@ public class EditorTextWindow extends EditorTextDesign {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                     return;
                 }
-                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
-                    if (new RoundDialog(btnRoundSelectionPtr[0].getShell()).open() == IDialogConstants.CANCEL_ID) return;
+                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask) && new RoundDialog(btnRoundSelectionPtr[0].getShell()).open() == IDialogConstants.CANCEL_ID) {
+                    return;
                 }
                 NLogger.debug(getClass(), "Rounding.."); //$NON-NLS-1$
                 final StyledText st = selection.getTextComposite();

@@ -162,148 +162,146 @@ public enum LDConfig {
                        break;
                    }
                    String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
-                   if (dataSegments.length > 6) {
-                       if ("!COLOUR".equals(dataSegments[1])) { //$NON-NLS-1$
-                           int index = Integer.parseInt(dataSegments[4]);
+                   if (dataSegments.length > 6 && "!COLOUR".equals(dataSegments[1])) { //$NON-NLS-1$
+                       int index = Integer.parseInt(dataSegments[4]);
 
-                           float magicIndexNumber = index;
-                           while (magicIndexNumber > 512f) {
-                               magicIndexNumber = magicIndexNumber / 13.37f;
-                           }
-
-                           float r = Integer.parseInt(dataSegments[6].substring(1, 3), 16) / 255f + .000001f * magicIndexNumber;
-                           float g = Integer.parseInt(dataSegments[6].substring(3, 5), 16) / 255f + .000001f * magicIndexNumber;
-                           float b = Integer.parseInt(dataSegments[6].substring(5, 7), 16) / 255f + .000001f * magicIndexNumber;
-
-                           float r2 = Integer.parseInt(dataSegments[8].substring(1, 3), 16) / 255f;
-                           float g2 = Integer.parseInt(dataSegments[8].substring(3, 5), 16) / 255f;
-                           float b2 = Integer.parseInt(dataSegments[8].substring(5, 7), 16) / 255f;
-
-                           Matcher m = pAlpha.matcher(line);
-
-                           if (m.find()) {
-                               String alphaStr = m.group().replace("ALPHA", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                               float alpha = Float.parseFloat(alphaStr) / 255f;
-                               GColour colour = new GColour(index, r, g, b, alpha);
-                               if (line.contains(" MATERIAL")) { //$NON-NLS-1$
-                                   try {
-
-                                       Matcher m2 = pFraction.matcher(line);
-                                       Matcher m3 = pSize.matcher(line);
-                                       Matcher m4 = pMinSize.matcher(line);
-                                       Matcher m5 = pMaxSize.matcher(line);
-
-                                       m2.find();
-
-                                       float fraction = Float.parseFloat(m2.group().replaceAll("FRACTION\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
-                                       float minSize = 0f;
-                                       float maxSize = 0f;
-                                       if (!m4.find()) {
-                                           m3.find();
-                                           minSize = Float.parseFloat(m3.group().replaceAll("SIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
-                                           maxSize = minSize;
-                                       } else {
-                                           m5.find();
-                                           minSize = Float.parseFloat(m4.group().replaceAll("MINSIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
-                                           maxSize = Float.parseFloat(m5.group().replaceAll("MAXSIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
-                                       }
-
-                                       if (line.contains(" GLITTER")) { //$NON-NLS-1$
-                                           Matcher m6 = pGlitter.matcher(line);
-                                           m6.find();
-                                           String valStr = m6.group().replaceAll("GLITTER\\s+VALUE\\s+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                           float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
-                                           float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
-                                           float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                           colour = new GColour(index, r, g, b, Math.min(alpha, .99f), new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
-                                       } else if (line.contains(" SPECKLE")) { //$NON-NLS-1$
-                                           Matcher m6 = pSpeckle.matcher(line);
-                                           m6.find();
-                                           String valStr = m6.group().replaceAll("SPECKLE\\s+VALUE\\s+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                           float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
-                                           float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
-                                           float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                           colour = new GColour(index, r, g, b, Math.min(alpha, .99f), new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
-                                       }
-                                   } catch (Exception e) {
-                                       NLogger.error(View.class, "Line: " + line); //$NON-NLS-1$
-                                       NLogger.error(View.class, e);
-                                   }
-                               }
-                               colourFromIndex.put(index, colour);
-                           } else if (line.contains(" CHROME")) { //$NON-NLS-1$
-                               GColour colour = new GColour(index, r, g, b, 1f, new GCChrome());
-                               colourFromIndex.put(index, colour);
-                           } else if (line.contains(" RUBBER")) { //$NON-NLS-1$
-                               GColour colour = new GColour(index, r, g, b, 1f, new GCRubber());
-                               colourFromIndex.put(index, colour);
-                           } else if (line.contains(" MATTE_METALLIC")) { //$NON-NLS-1$
-                               GColour colour = new GColour(index, r, g, b, 1f, new GCMatteMetal());
-                               colourFromIndex.put(index, colour);
-                           } else if (line.contains(" METAL")) { //$NON-NLS-1$
-                               GColour colour = new GColour(index, r, g, b, 1f, new GCMetal());
-                               colourFromIndex.put(index, colour);
-                           } else if (line.contains(" PEARLESCENT")) { //$NON-NLS-1$
-                               GColour colour = new GColour(index, r, g, b, .99f, new GCPearl());
-                               colourFromIndex.put(index, colour);
-                           } else {
-                               GColour colour = new GColour(index, r, g, b, 1f);
-                               if (line.contains(" MATERIAL")) { //$NON-NLS-1$
-                                   try {
-
-                                       Matcher m2 = pFraction.matcher(line);
-                                       Matcher m3 = pSize.matcher(line);
-                                       Matcher m4 = pMinSize.matcher(line);
-                                       Matcher m5 = pMaxSize.matcher(line);
-
-                                       m2.find();
-
-                                       float fraction = Float.parseFloat(m2.group().replaceAll("FRACTION\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
-                                       float minSize = 0f;
-                                       float maxSize = 0f;
-                                       if (!m4.find()) {
-                                           m3.find();
-                                           minSize = Float.parseFloat(m3.group().replaceAll("SIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
-                                           maxSize = minSize;
-                                       } else {
-                                           m5.find();
-                                           minSize = Float.parseFloat(m4.group().replaceAll("MINSIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
-                                           maxSize = Float.parseFloat(m5.group().replaceAll("MAXSIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
-                                       }
-
-                                       if (line.contains(" GLITTER")) { //$NON-NLS-1$
-                                           Matcher m6 = pGlitter.matcher(line);
-                                           m6.find();
-                                           String valStr = m6.group().replaceAll("GLITTER\\s+VALUE\\s+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                           float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
-                                           float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
-                                           float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                           colour = new GColour(index, r, g, b, 99f, new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
-                                       } else if (line.contains(" SPECKLE")) { //$NON-NLS-1$
-                                           Matcher m6 = pSpeckle.matcher(line);
-                                           m6.find();
-                                           String valStr = m6.group().replaceAll("SPECKLE\\s+VALUE\\s+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                           float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
-                                           float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
-                                           float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                           colour = new GColour(index, r, g, b, .99f, new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
-                                       }
-                                   } catch (Exception e) {
-                                       NLogger.error(View.class, "Line: " + line); //$NON-NLS-1$
-                                       NLogger.error(View.class, e);
-                                   }
-                               }
-                               colourFromIndex.put(index, colour);
-                           }
-                           IndexedEntry entry = new IndexedEntry(r, g, b);
-                           if (index == 16) {
-                               LDConfig.col16IndexedEntry = entry;
-                               LDConfig.originalColour16 = colourFromIndex.get(16).createClone();
-                           }
-                           indexFromColour.put(entry, index);
-                           edgeColourFromIndex.put(index, new GColour(index, r2, g2, b2, 1f));
-                           colourNameFromIndex.put(index, dataSegments[2].replace('_', ' ' ));
+                       float magicIndexNumber = index;
+                       while (magicIndexNumber > 512f) {
+                           magicIndexNumber = magicIndexNumber / 13.37f;
                        }
+
+                       float r = Integer.parseInt(dataSegments[6].substring(1, 3), 16) / 255f + .000001f * magicIndexNumber;
+                       float g = Integer.parseInt(dataSegments[6].substring(3, 5), 16) / 255f + .000001f * magicIndexNumber;
+                       float b = Integer.parseInt(dataSegments[6].substring(5, 7), 16) / 255f + .000001f * magicIndexNumber;
+
+                       float r2 = Integer.parseInt(dataSegments[8].substring(1, 3), 16) / 255f;
+                       float g2 = Integer.parseInt(dataSegments[8].substring(3, 5), 16) / 255f;
+                       float b2 = Integer.parseInt(dataSegments[8].substring(5, 7), 16) / 255f;
+
+                       Matcher m = pAlpha.matcher(line);
+
+                       if (m.find()) {
+                           String alphaStr = m.group().replace("ALPHA", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                           float alpha = Float.parseFloat(alphaStr) / 255f;
+                           GColour colour = new GColour(index, r, g, b, alpha);
+                           if (line.contains(" MATERIAL")) { //$NON-NLS-1$
+                               try {
+
+                                   Matcher m2 = pFraction.matcher(line);
+                                   Matcher m3 = pSize.matcher(line);
+                                   Matcher m4 = pMinSize.matcher(line);
+                                   Matcher m5 = pMaxSize.matcher(line);
+
+                                   m2.find();
+
+                                   float fraction = Float.parseFloat(m2.group().replaceAll("FRACTION\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
+                                   float minSize = 0f;
+                                   float maxSize = 0f;
+                                   if (!m4.find()) {
+                                       m3.find();
+                                       minSize = Float.parseFloat(m3.group().replaceAll("SIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
+                                       maxSize = minSize;
+                                   } else {
+                                       m5.find();
+                                       minSize = Float.parseFloat(m4.group().replaceAll("MINSIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
+                                       maxSize = Float.parseFloat(m5.group().replaceAll("MAXSIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
+                                   }
+
+                                   if (line.contains(" GLITTER")) { //$NON-NLS-1$
+                                       Matcher m6 = pGlitter.matcher(line);
+                                       m6.find();
+                                       String valStr = m6.group().replaceAll("GLITTER\\s+VALUE\\s+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                       float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
+                                       float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
+                                       float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
+                                       colour = new GColour(index, r, g, b, Math.min(alpha, .99f), new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
+                                   } else if (line.contains(" SPECKLE")) { //$NON-NLS-1$
+                                       Matcher m6 = pSpeckle.matcher(line);
+                                       m6.find();
+                                       String valStr = m6.group().replaceAll("SPECKLE\\s+VALUE\\s+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                       float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
+                                       float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
+                                       float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
+                                       colour = new GColour(index, r, g, b, Math.min(alpha, .99f), new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
+                                   }
+                               } catch (Exception e) {
+                                   NLogger.error(View.class, "Line: " + line); //$NON-NLS-1$
+                                   NLogger.error(View.class, e);
+                               }
+                           }
+                           colourFromIndex.put(index, colour);
+                       } else if (line.contains(" CHROME")) { //$NON-NLS-1$
+                           GColour colour = new GColour(index, r, g, b, 1f, new GCChrome());
+                           colourFromIndex.put(index, colour);
+                       } else if (line.contains(" RUBBER")) { //$NON-NLS-1$
+                           GColour colour = new GColour(index, r, g, b, 1f, new GCRubber());
+                           colourFromIndex.put(index, colour);
+                       } else if (line.contains(" MATTE_METALLIC")) { //$NON-NLS-1$
+                           GColour colour = new GColour(index, r, g, b, 1f, new GCMatteMetal());
+                           colourFromIndex.put(index, colour);
+                       } else if (line.contains(" METAL")) { //$NON-NLS-1$
+                           GColour colour = new GColour(index, r, g, b, 1f, new GCMetal());
+                           colourFromIndex.put(index, colour);
+                       } else if (line.contains(" PEARLESCENT")) { //$NON-NLS-1$
+                           GColour colour = new GColour(index, r, g, b, .99f, new GCPearl());
+                           colourFromIndex.put(index, colour);
+                       } else {
+                           GColour colour = new GColour(index, r, g, b, 1f);
+                           if (line.contains(" MATERIAL")) { //$NON-NLS-1$
+                               try {
+
+                                   Matcher m2 = pFraction.matcher(line);
+                                   Matcher m3 = pSize.matcher(line);
+                                   Matcher m4 = pMinSize.matcher(line);
+                                   Matcher m5 = pMaxSize.matcher(line);
+
+                                   m2.find();
+
+                                   float fraction = Float.parseFloat(m2.group().replaceAll("FRACTION\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
+                                   float minSize = 0f;
+                                   float maxSize = 0f;
+                                   if (!m4.find()) {
+                                       m3.find();
+                                       minSize = Float.parseFloat(m3.group().replaceAll("SIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
+                                       maxSize = minSize;
+                                   } else {
+                                       m5.find();
+                                       minSize = Float.parseFloat(m4.group().replaceAll("MINSIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
+                                       maxSize = Float.parseFloat(m5.group().replaceAll("MAXSIZE\\s+", "").trim()); //$NON-NLS-1$ //$NON-NLS-2$
+                                   }
+
+                                   if (line.contains(" GLITTER")) { //$NON-NLS-1$
+                                       Matcher m6 = pGlitter.matcher(line);
+                                       m6.find();
+                                       String valStr = m6.group().replaceAll("GLITTER\\s+VALUE\\s+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                       float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
+                                       float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
+                                       float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
+                                       colour = new GColour(index, r, g, b, 99f, new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
+                                   } else if (line.contains(" SPECKLE")) { //$NON-NLS-1$
+                                       Matcher m6 = pSpeckle.matcher(line);
+                                       m6.find();
+                                       String valStr = m6.group().replaceAll("SPECKLE\\s+VALUE\\s+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                       float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
+                                       float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
+                                       float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
+                                       colour = new GColour(index, r, g, b, .99f, new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
+                                   }
+                               } catch (Exception e) {
+                                   NLogger.error(View.class, "Line: " + line); //$NON-NLS-1$
+                                   NLogger.error(View.class, e);
+                               }
+                           }
+                           colourFromIndex.put(index, colour);
+                       }
+                       IndexedEntry entry = new IndexedEntry(r, g, b);
+                       if (index == 16) {
+                           LDConfig.col16IndexedEntry = entry;
+                           LDConfig.originalColour16 = colourFromIndex.get(16).createClone();
+                       }
+                       indexFromColour.put(entry, index);
+                       edgeColourFromIndex.put(index, new GColour(index, r2, g2, b2, 1f));
+                       colourNameFromIndex.put(index, dataSegments[2].replace('_', ' ' ));
                    }
                }
                return true;

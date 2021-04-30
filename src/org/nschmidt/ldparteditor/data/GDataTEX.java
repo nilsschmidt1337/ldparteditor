@@ -105,16 +105,14 @@ public final class GDataTEX extends GData {
                 GData.globalTextureStack.pop();
                 GData.globalFoundTEXMAPStack.push(false);
                 GData.globalDrawObjects = true;
-            } else if (!foundLocalTEXMAP) {
-                if (meta == TexMeta.START || meta == TexMeta.NEXT) {
-                    GData.globalFoundTEXMAPStack.pop();
-                    GData.globalFoundTEXMAPStack.push(true);
-                    GData.globalTextureStack.push(linkedTexture);
-                    linkedTexture.refreshCache();
-                    if (meta == TexMeta.NEXT)
-                        GData.globalFoundTEXMAPNEXT = true;
-                    GData.globalDrawObjects = true;
-                }
+            } else if (!foundLocalTEXMAP && (meta == TexMeta.START || meta == TexMeta.NEXT)) {
+                GData.globalFoundTEXMAPStack.pop();
+                GData.globalFoundTEXMAPStack.push(true);
+                GData.globalTextureStack.push(linkedTexture);
+                linkedTexture.refreshCache();
+                if (meta == TexMeta.NEXT)
+                    GData.globalFoundTEXMAPNEXT = true;
+                GData.globalDrawObjects = true;
             }
         }
     }
@@ -258,16 +256,14 @@ public final class GDataTEX extends GData {
                 state.globalTextureStack.pop();
                 state.globalFoundTEXMAPStack.push(false);
                 state.globalDrawObjects = true;
-            } else if (!foundLocalTEXMAP) {
-                if (meta == TexMeta.START || meta == TexMeta.NEXT) {
-                    state.globalFoundTEXMAPStack.pop();
-                    state.globalFoundTEXMAPStack.push(true);
-                    state.globalTextureStack.push(linkedTexture);
-                    linkedTexture.refreshCache();
-                    if (meta == TexMeta.NEXT)
-                        state.globalFoundTEXMAPNEXT = true;
-                    state.globalDrawObjects = true;
-                }
+            } else if (!foundLocalTEXMAP && (meta == TexMeta.START || meta == TexMeta.NEXT)) {
+                state.globalFoundTEXMAPStack.pop();
+                state.globalFoundTEXMAPStack.push(true);
+                state.globalTextureStack.push(linkedTexture);
+                linkedTexture.refreshCache();
+                if (meta == TexMeta.NEXT)
+                    state.globalFoundTEXMAPNEXT = true;
+                state.globalDrawObjects = true;
             }
         }
     }
@@ -292,16 +288,14 @@ public final class GDataTEX extends GData {
                 state.globalTextureStack.pop();
                 state.globalFoundTEXMAPStack.push(false);
                 state.globalDrawObjects = true;
-            } else if (!foundLocalTEXMAP) {
-                if (meta == TexMeta.START || meta == TexMeta.NEXT) {
-                    state.globalFoundTEXMAPStack.pop();
-                    state.globalFoundTEXMAPStack.push(true);
-                    state.globalTextureStack.push(linkedTexture);
-                    linkedTexture.refreshCache();
-                    if (meta == TexMeta.NEXT)
-                        state.globalFoundTEXMAPNEXT = true;
-                    state.globalDrawObjects = true;
-                }
+            } else if (!foundLocalTEXMAP && (meta == TexMeta.START || meta == TexMeta.NEXT)) {
+                state.globalFoundTEXMAPStack.pop();
+                state.globalFoundTEXMAPStack.push(true);
+                state.globalTextureStack.push(linkedTexture);
+                linkedTexture.refreshCache();
+                if (meta == TexMeta.NEXT)
+                    state.globalFoundTEXMAPNEXT = true;
+                state.globalDrawObjects = true;
             }
         }
     }
@@ -326,16 +320,14 @@ public final class GDataTEX extends GData {
                 state.globalTextureStack.pop();
                 state.globalFoundTEXMAPStack.push(false);
                 state.globalDrawObjects = true;
-            } else if (!foundLocalTEXMAP) {
-                if (meta == TexMeta.START || meta == TexMeta.NEXT) {
-                    state.globalFoundTEXMAPStack.pop();
-                    state.globalFoundTEXMAPStack.push(true);
-                    state.globalTextureStack.push(linkedTexture);
-                    linkedTexture.refreshCache();
-                    if (meta == TexMeta.NEXT)
-                        state.globalFoundTEXMAPNEXT = true;
-                    state.globalDrawObjects = true;
-                }
+            } else if (!foundLocalTEXMAP && (meta == TexMeta.START || meta == TexMeta.NEXT)) {
+                state.globalFoundTEXMAPStack.pop();
+                state.globalFoundTEXMAPStack.push(true);
+                state.globalTextureStack.push(linkedTexture);
+                linkedTexture.refreshCache();
+                if (meta == TexMeta.NEXT)
+                    state.globalFoundTEXMAPNEXT = true;
+                state.globalDrawObjects = true;
             }
         }
     }

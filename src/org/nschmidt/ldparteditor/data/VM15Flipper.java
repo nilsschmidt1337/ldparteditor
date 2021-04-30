@@ -88,12 +88,10 @@ class VM15Flipper extends VM14Splitter {
             if (effSelectedTriangles.size() == 2) {
                 for (GData3 s1 : effSelectedTriangles) {
                     for (GData3 s2 : effSelectedTriangles) {
-                        if (j > i && !surfsToIgnore.contains(s2)) {
-                            if (hasSameEdge(s1, s2)) {
-                                surfsToIgnore.add(s1);
-                                surfsToIgnore.add(s2);
-                                trianglePair.put(s1, s2);
-                            }
+                        if (j > i && !surfsToIgnore.contains(s2) && hasSameEdge(s1, s2)) {
+                            surfsToIgnore.add(s1);
+                            surfsToIgnore.add(s2);
+                            trianglePair.put(s1, s2);
                         }
                         j++;
                     }
@@ -102,12 +100,10 @@ class VM15Flipper extends VM14Splitter {
             } else {
                 for (GData3 s1 : effSelectedTriangles) {
                     for (GData3 s2 : effSelectedTriangles) {
-                        if (j > i && !surfsToIgnore.contains(s2)) {
-                            if (s1.colourNumber != 16 && s1.colourNumber == s2.colourNumber && s1.r == s2.r && s1.g == s2.g && s1.b == s2.b && hasSameEdge(s1, s2)) {
-                                surfsToIgnore.add(s1);
-                                surfsToIgnore.add(s2);
-                                trianglePair.put(s1, s2);
-                            }
+                        if (j > i && !surfsToIgnore.contains(s2) && s1.colourNumber != 16 && s1.colourNumber == s2.colourNumber && s1.r == s2.r && s1.g == s2.g && s1.b == s2.b && hasSameEdge(s1, s2)) {
+                            surfsToIgnore.add(s1);
+                            surfsToIgnore.add(s2);
+                            trianglePair.put(s1, s2);
                         }
                         j++;
                     }

@@ -47,10 +47,8 @@ public class UTF8BufferedReader implements AutoCloseable {
         char[] bom = new char[3];
         try {
             myReader.mark(3);
-            if (3 == myReader.read(bom, 0, 3)) {
-                if (bom[0] != (char) 0xEF || bom[1] != (char) 0xBB || bom[2] != (char) 0xBF) {
-                    myReader.reset();
-                }
+            if (3 == myReader.read(bom, 0, 3) && (bom[0] != (char) 0xEF || bom[1] != (char) 0xBB || bom[2] != (char) 0xBF)) {
+                myReader.reset();
             }
         } catch (IOException e) {
             throw new LDParsingException();

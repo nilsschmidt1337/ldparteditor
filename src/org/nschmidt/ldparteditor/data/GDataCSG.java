@@ -1117,20 +1117,16 @@ public final class GDataCSG extends GData {
                 triQuadVerts[1] = new Vertex(triangle.x2, triangle.y2, triangle.z2);
                 triQuadVerts[2] = new Vertex(triangle.x3, triangle.y3, triangle.z3);
 
-                if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
-                    if (dist[0] < minDist) {
-                        Integer result2 = pair.getValue().id;
-                        if (result2 != null) {
-                            for (GDataCSG c : registeredData.get(df)) {
-                                if (dpl.containsValue(c) && idToGDataCSG.putIfAbsent(df, new HashBiMap<>()).containsKey(result2)) {
-                                    if (c.type == CSG.TRANSFORM && c.ref1 != null && c.ref2 != null || c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSG.COMPILE) {
-                                        resultObj = idToGDataCSG.get(df).getValue(result2);
-                                        if (resultObj != null && resultObj.ref1 != null && resultObj.ref1.endsWith("#>null")) { //$NON-NLS-1$
-                                            minDist = dist[0];
-                                            result = result2;
-                                            break;
-                                        }
-                                    }
+                if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist) && dist[0] < minDist) {
+                    Integer result2 = pair.getValue().id;
+                    if (result2 != null) {
+                        for (GDataCSG c : registeredData.get(df)) {
+                            if (dpl.containsValue(c) && idToGDataCSG.putIfAbsent(df, new HashBiMap<>()).containsKey(result2) && (c.type == CSG.TRANSFORM && c.ref1 != null && c.ref2 != null || c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSG.COMPILE)) {
+                                resultObj = idToGDataCSG.get(df).getValue(result2);
+                                if (resultObj != null && resultObj.ref1 != null && resultObj.ref1.endsWith("#>null")) { //$NON-NLS-1$
+                                    minDist = dist[0];
+                                    result = result2;
+                                    break;
                                 }
                             }
                         }
@@ -1168,12 +1164,7 @@ public final class GDataCSG extends GData {
     }
 
     synchronized boolean canSelect() {
-        if (ref1 != null && ref2 == null && ref3 == null && type != CSG.COMPILE) {
-            if (ref1.endsWith("#>null") && type != CSG.QUALITY && type != CSG.EPSILON && type != CSG.TJUNCTION && type != CSG.COLLAPSE && type != CSG.DONTOPTIMIZE) { //$NON-NLS-1$
-                return true;
-            }
-        }
-        return false;
+        return ref1 != null && ref2 == null && ref3 == null && type != CSG.COMPILE && ref1.endsWith("#>null") && type != CSG.QUALITY && type != CSG.EPSILON && type != CSG.TJUNCTION && type != CSG.COLLAPSE && type != CSG.DONTOPTIMIZE; //$NON-NLS-1$
     }
 
     static synchronized Set<GColour> getSelectedColours(DatFile df) {

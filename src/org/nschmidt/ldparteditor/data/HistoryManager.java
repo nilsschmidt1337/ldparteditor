@@ -199,34 +199,32 @@ class HistoryManager {
                     if (pointer > 0) {
                         int pStart = historySelectionStart.get(pointer - 1);
                         String[] previous = historyText.get(pointer - 1);
-                        if (Arrays.equals(previous, result) && !Editor3DWindow.getWindow().isAddingSomething()) {
-                            if (pStart != -1) {
-                                if ((Integer) newEntry[2] == 0) {
-                                    // Skip saving this entry since only the cursor was moved
-                                    removeFromListAboveOrEqualIndex(historySelectionStart, pointer);
-                                    removeFromListAboveOrEqualIndex(historySelectionEnd, pointer);
-                                    removeFromListAboveOrEqualIndex(historySelectedData, pointer);
-                                    removeFromListAboveOrEqualIndex(historyHiddenData, pointer);
-                                    removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
-                                    removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer);
-                                    removeFromListAboveOrEqualIndex(historyText, pointer);
-                                    removeFromListAboveOrEqualIndex(historyFullText, pointer);
-                                    removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
-                                } else {
-                                    // Remove the previous entry, because it only contains a new text selection
-                                    historySelectionStart.remove(pointer - 1);
-                                    historySelectionEnd.remove(pointer - 1);
-                                    historySelectedData.remove(pointer - 1);
-                                    historyHiddenData.remove(pointer - 1);
-                                    historySelectedVertices.remove(pointer - 1);
-                                    historyHiddenVertices.remove(pointer - 1);
-                                    historyText.remove(pointer - 1);
-                                    historyFullText.remove(pointer - 1);
-                                    historyTopIndex.remove(pointer - 1);
-                                }
-                                pointerMax--;
-                                pointer--;
+                        if (Arrays.equals(previous, result) && !Editor3DWindow.getWindow().isAddingSomething() && pStart != -1) {
+                            if ((Integer) newEntry[2] == 0) {
+                                // Skip saving this entry since only the cursor was moved
+                                removeFromListAboveOrEqualIndex(historySelectionStart, pointer);
+                                removeFromListAboveOrEqualIndex(historySelectionEnd, pointer);
+                                removeFromListAboveOrEqualIndex(historySelectedData, pointer);
+                                removeFromListAboveOrEqualIndex(historyHiddenData, pointer);
+                                removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
+                                removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer);
+                                removeFromListAboveOrEqualIndex(historyText, pointer);
+                                removeFromListAboveOrEqualIndex(historyFullText, pointer);
+                                removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
+                            } else {
+                                // Remove the previous entry, because it only contains a new text selection
+                                historySelectionStart.remove(pointer - 1);
+                                historySelectionEnd.remove(pointer - 1);
+                                historySelectedData.remove(pointer - 1);
+                                historyHiddenData.remove(pointer - 1);
+                                historySelectedVertices.remove(pointer - 1);
+                                historyHiddenVertices.remove(pointer - 1);
+                                historyText.remove(pointer - 1);
+                                historyFullText.remove(pointer - 1);
+                                historyTopIndex.remove(pointer - 1);
                             }
+                            pointerMax--;
+                            pointer--;
                         }
                     }
 

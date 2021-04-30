@@ -1572,16 +1572,12 @@ public final class DatFile {
                 oldFile.delete();
             }
         } else {
-            if (newFile.exists()) {
-                if (checkFileCollision(newFile)) {
-                    return true;
-                }
+            if (newFile.exists() && checkFileCollision(newFile)) {
+                return true;
             }
             File oldFile = new File(oldName);
-            if (oldFile.exists()) {
-                if (oldFile.lastModified() == lastModified) {
-                    oldFile.delete();
-                }
+            if (oldFile.exists() && oldFile.lastModified() == lastModified) {
+                oldFile.delete();
             }
         }
         if (!newFile.getParentFile().exists()) {
@@ -1802,10 +1798,8 @@ public final class DatFile {
             }
         } else {
             File newFile = new File(newName);
-            if (newFile.exists()) {
-                if (checkFileCollision(newFile)) {
-                    lastModified = newFile.lastModified();
-                }
+            if (newFile.exists() && checkFileCollision(newFile)) {
+                lastModified = newFile.lastModified();
             }
         }
     }

@@ -287,10 +287,8 @@ public final class GData1 extends GData {
             }
 
             GData description = myGData.next;
-            if (description != null && description.type() == 0) {
-                if (((GData0) description).text.trim().startsWith("0 ~Moved to")) { //$NON-NLS-1$
-                    this.firstRef.setMovedTo(true);
-                }
+            if (description != null && description.type() == 0 && ((GData0) description).text.trim().startsWith("0 ~Moved to")) { //$NON-NLS-1$
+                this.firstRef.setMovedTo(true);
             }
 
         } else {
@@ -1758,13 +1756,11 @@ public final class GData1 extends GData {
         float tmpG = this.g;
         float tmpB = this.b;
         int tmpColourNumber = this.colourNumber;
-        if (Inliner.recursively) {
-            if (this.colourNumber == 16) {
-                tmpR = colour.getR();
-                tmpG = colour.getG();
-                tmpB = colour.getB();
-                tmpColourNumber = colour.getColourNumber();
-            }
+        if (Inliner.recursively && this.colourNumber == 16) {
+            tmpR = colour.getR();
+            tmpG = colour.getG();
+            tmpB = colour.getB();
+            tmpColourNumber = colour.getColourNumber();
         }
 
         if (Inliner.withSubfileReference) {

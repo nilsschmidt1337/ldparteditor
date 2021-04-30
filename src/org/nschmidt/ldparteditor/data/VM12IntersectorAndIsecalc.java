@@ -2038,11 +2038,10 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                             List<Vector3dh> l = li.next();
                                             Vector3dh v3 = l.get(0);
                                             Vector3dh v4 = l.get(1);
-                                            if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4)) {
-                                                if (intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, v3,  v4)) {
-                                                    intersect = true;
-                                                    break;
-                                                }
+                                            if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4)
+                                                    && intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, v3,  v4)) {
+                                                intersect = true;
+                                                break;
                                             }
                                         }
                                         if (!intersect) {
@@ -2296,11 +2295,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                             if (n1.contains(fixed)) nc += 1;
                                                             if (n2.contains(fixed)) nc += 1;
                                                             if (n3.contains(fixed)) nc += 1;
-                                                            if (nc > 1) {
-                                                                if (intersectRayTriangle(fixed, normal, triVerts[0], triVerts[1], triVerts[2])) {
-                                                                    isInsideTriangle = true;
-                                                                    break;
-                                                                }
+                                                            if (nc > 1 && intersectRayTriangle(fixed, normal, triVerts[0], triVerts[1], triVerts[2])) {
+                                                                isInsideTriangle = true;
+                                                                break;
                                                             }
                                                         }
                                                         if (isInsideTriangle) continue;
@@ -2357,11 +2354,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                                             allVertices1.add(line.get(l1));
                                                                             allVertices1.add(line2.get(l1));
                                                                         }
-                                                                        if (allVertices1.size() == 4) {
-                                                                            if (intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, line2.get(0), line2.get(1))) {
-                                                                                intersected = line2;
-                                                                                break;
-                                                                            }
+                                                                        if (allVertices1.size() == 4 && intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, line2.get(0), line2.get(1))) {
+                                                                            intersected = line2;
+                                                                            break;
                                                                         }
                                                                     }
                                                                 }

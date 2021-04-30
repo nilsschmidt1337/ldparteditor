@@ -310,10 +310,8 @@ public class VM20Manipulator extends VM19ColourChanger {
         }
         if (updateSelection && moveAdjacentData) {
             for (Vertex nv : oldToNewVertex.values()) {
-                if (nv != null) {
-                    if (vertexLinkedToPositionInFile.containsKey(nv)) {
-                        selectedVertices.add(nv);
-                    }
+                if (nv != null && vertexLinkedToPositionInFile.containsKey(nv)) {
+                    selectedVertices.add(nv);
                 }
             }
         }
@@ -408,55 +406,45 @@ public class VM20Manipulator extends VM19ColourChanger {
                             GData0 meta = (GData0) g;
                             boolean idCheck = !lineLinkedToVertices.containsKey(meta);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 1) {
-                                if (!idCheck) {
-                                    effSelectedVertices.add(meta);
-                                    newSelectedData.add(meta);
-                                }
+                            if (val == 1 && !idCheck) {
+                                effSelectedVertices.add(meta);
+                                newSelectedData.add(meta);
                             }
                             break;
                         case 2:
                             GData2 line = (GData2) g;
                             idCheck = !line.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 2) {
-                                if (!idCheck) {
-                                    effSelectedLines.add(line);
-                                    newSelectedData.add(line);
-                                }
+                            if (val == 2 && !idCheck) {
+                                effSelectedLines.add(line);
+                                newSelectedData.add(line);
                             }
                             break;
                         case 3:
                             GData3 triangle = (GData3) g;
                             idCheck = !triangle.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 3) {
-                                if (!idCheck) {
-                                    effSelectedTriangles.add(triangle);
-                                    newSelectedData.add(triangle);
-                                }
+                            if (val == 3 && !idCheck) {
+                                effSelectedTriangles.add(triangle);
+                                newSelectedData.add(triangle);
                             }
                             break;
                         case 4:
                             GData4 quad = (GData4) g;
                             idCheck = !quad.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 4) {
-                                if (!idCheck) {
-                                    effSelectedQuads.add(quad);
-                                    newSelectedData.add(quad);
-                                }
+                            if (val == 4 && !idCheck) {
+                                effSelectedQuads.add(quad);
+                                newSelectedData.add(quad);
                             }
                             break;
                         case 5:
                             GData5 condline = (GData5) g;
                             idCheck = !condline.parent.equals(View.DUMMY_REFERENCE);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (val == 4) {
-                                if (!idCheck) {
-                                    effSelectedCondlines.add(condline);
-                                    newSelectedData.add(condline);
-                                }
+                            if (val == 4 && !idCheck) {
+                                effSelectedCondlines.add(condline);
+                                newSelectedData.add(condline);
                             }
                             break;
                         default:

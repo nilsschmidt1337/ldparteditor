@@ -796,11 +796,9 @@ class VM01SelectHelper extends VM01Select {
                 if (noTrans && triangle.a < 1f || hiddenData.contains(triangle))
                     continue;
                 Vertex[] tverts = triangles.get(triangle);
-                if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex)) {
-                    if (powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])) {
-                        vertexIsShown = false;
-                        break;
-                    }
+                if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex) && powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])) {
+                    vertexIsShown = false;
+                    break;
                 }
             }
             if (vertexIsShown) {
@@ -808,12 +806,10 @@ class VM01SelectHelper extends VM01Select {
                     if (noTrans && quad.a < 1f || hiddenData.contains(quad))
                         continue;
                     Vertex[] tverts = quads.get(quad);
-                    if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex) && !tverts[3].equals(vertex)) {
-                        if (powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])
-                                || powerRay.triangleIntersect(point, rayDirection, tverts[2], tverts[3], tverts[0])) {
-                            vertexIsShown = false;
-                            break;
-                        }
+                    if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex) && !tverts[3].equals(vertex) && (powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])
+                                || powerRay.triangleIntersect(point, rayDirection, tverts[2], tverts[3], tverts[0]))) {
+                        vertexIsShown = false;
+                        break;
                     }
                 }
             }
@@ -842,11 +838,9 @@ class VM01SelectHelper extends VM01Select {
                 if (noTrans && triangle.a < 1f || hiddenData.contains(triangle))
                     continue;
                 Vertex[] tverts = triangles.get(triangle);
-                if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex)) {
-                    if (powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])) {
-                        vertexIsShown = false;
-                        break;
-                    }
+                if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex) && powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])) {
+                    vertexIsShown = false;
+                    break;
                 }
             }
             if (vertexIsShown) {
@@ -854,12 +848,10 @@ class VM01SelectHelper extends VM01Select {
                     if (noTrans && quad.a < 1f || hiddenData.contains(quad))
                         continue;
                     Vertex[] tverts = quads.get(quad);
-                    if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex) && !tverts[3].equals(vertex)) {
-                        if (powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])
-                                || powerRay.triangleIntersect(point, rayDirection, tverts[2], tverts[3], tverts[0])) {
-                            vertexIsShown = false;
-                            break;
-                        }
+                    if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex) && !tverts[3].equals(vertex) && (powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])
+                                || powerRay.triangleIntersect(point, rayDirection, tverts[2], tverts[3], tverts[0]))) {
+                        vertexIsShown = false;
+                        break;
                     }
                 }
             }
@@ -884,10 +876,8 @@ class VM01SelectHelper extends VM01Select {
                     triQuadVerts[i] = tvertex;
                     i++;
                 }
-                if (!triQuadVerts[0].equals(vertex) && !triQuadVerts[1].equals(vertex) && !triQuadVerts[2].equals(vertex)) {
-                    if (powerRay.triangleIntersect(point, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2])) {
-                        return false;
-                    }
+                if (!triQuadVerts[0].equals(vertex) && !triQuadVerts[1].equals(vertex) && !triQuadVerts[2].equals(vertex) && powerRay.triangleIntersect(point, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2])) {
+                    return false;
                 }
             }
 
@@ -901,11 +891,9 @@ class VM01SelectHelper extends VM01Select {
                     triQuadVerts[i] = tvertex;
                     i++;
                 }
-                if (!triQuadVerts[0].equals(vertex) && !triQuadVerts[1].equals(vertex) && !triQuadVerts[2].equals(vertex) && !triQuadVerts[3].equals(vertex)) {
-                    if (powerRay.triangleIntersect(point, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2])
-                            || powerRay.triangleIntersect(point, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0])) {
-                        return false;
-                    }
+                if (!triQuadVerts[0].equals(vertex) && !triQuadVerts[1].equals(vertex) && !triQuadVerts[2].equals(vertex) && !triQuadVerts[3].equals(vertex) && (powerRay.triangleIntersect(point, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2])
+                            || powerRay.triangleIntersect(point, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0]))) {
+                    return false;
                 }
             }
         }
@@ -1627,11 +1615,9 @@ class VM01SelectHelper extends VM01Select {
                 i++;
             }
 
-            if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
-                if (dist[0] < minDist) {
-                    if (triangle.isTriangle) minDist = dist[0];
-                    if (triangle.isTriangle || result == null) result = triangle;
-                }
+            if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist) && dist[0] < minDist) {
+                if (triangle.isTriangle) minDist = dist[0];
+                if (triangle.isTriangle || result == null) result = triangle;
             }
         }
         for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
@@ -1646,12 +1632,10 @@ class VM01SelectHelper extends VM01Select {
                 triQuadVerts[i] = tvertex;
                 i++;
             }
-            if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)
-                    || powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0], point, dist)) {
-                if (dist[0] < minDist) {
-                    minDist = dist[0];
-                    result = quad;
-                }
+            if ((powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)
+                    || powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0], point, dist)) && dist[0] < minDist) {
+                minDist = dist[0];
+                result = quad;
             }
         }
         return result;

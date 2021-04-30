@@ -54,10 +54,8 @@ class VM14Splitter extends VM13SymSplitter {
 
             for (Vertex v1 : selectedVertices) {
                 for (Vertex v2 : selectedVertices) {
-                    if (j > i) {
-                        if (isNeighbour(v1, v2)) {
-                            edgesToSplit.add(new AccurateEdge(v1, v2));
-                        }
+                    if (j > i && isNeighbour(v1, v2)) {
+                        edgesToSplit.add(new AccurateEdge(v1, v2));
                     }
                     j++;
                 }

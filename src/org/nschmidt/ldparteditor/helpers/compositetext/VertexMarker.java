@@ -66,14 +66,12 @@ public enum VertexMarker {
                 try {
                     switch (type) {
                     case 0:
-                        if (dataSegments.length == 6 && "0".equals(dataSegments[0]) && "!LPE".equals(dataSegments[1]) && "VERTEX".equals(dataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            if (caretStart > line.indexOf("VERTEX") + 6) { //$NON-NLS-1$
-                                x = new BigDecimal(dataSegments[3]);
-                                y = new BigDecimal(dataSegments[4]);
-                                z = new BigDecimal(dataSegments[5]);
-                                state.setReplacingVertex(true);
-                                vertexToReplace = vm.getDeclaredVertices().get(dataInLine)[0];
-                            }
+                        if (dataSegments.length == 6 && "0".equals(dataSegments[0]) && "!LPE".equals(dataSegments[1]) && "VERTEX".equals(dataSegments[2]) && caretStart > line.indexOf("VERTEX") + 6) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                            x = new BigDecimal(dataSegments[3]);
+                            y = new BigDecimal(dataSegments[4]);
+                            z = new BigDecimal(dataSegments[5]);
+                            state.setReplacingVertex(true);
+                            vertexToReplace = vm.getDeclaredVertices().get(dataInLine)[0];
                         }
                         break;
                     case 2:

@@ -335,11 +335,9 @@ public enum DatParser {
                 }
                 if (numberError) {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                } else if (!errorCheckOnly) {
-                    if (depth == 0) {
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.x, start.y, start.z, end.x, end.y, end.z, parent, datFile, false)));
-                    }
+                } else if (!errorCheckOnly && depth == 0) {
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.x, start.y, start.z, end.x, end.y, end.z, parent, datFile, false)));
                 }
             } else if (line.startsWith("PROTRACTOR ", 7)) { //$NON-NLS-1$
                 boolean numberError = false;
@@ -369,11 +367,9 @@ public enum DatParser {
                 }
                 if (numberError) {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                } else if (!errorCheckOnly) {
-                    if (depth == 0) {
-                        result.remove(0);
-                        result.add(0, new ParsingResult(new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z, vertexC.x, vertexC.y, vertexC.z, parent, datFile, false)));
-                    }
+                } else if (!errorCheckOnly && depth == 0) {
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z, vertexC.x, vertexC.y, vertexC.z, parent, datFile, false)));
                 }
             } else if (line.startsWith("CSG_", 7)) { //$NON-NLS-1$
                 if (line.startsWith("UNION", 11)) { //$NON-NLS-1$

@@ -467,13 +467,11 @@ public class Composite3D extends ScalableComposite {
                 DatFile df = lockableDatFileReference;
                 if (df.equals(View.DUMMY_DATFILE)) return;
                 MemorySnapshot[] retVal = new MemorySnapshot[1];
-                if (new SnapshotDialog(getShell(), df.getVertexManager().getSnapshots(), retVal).open() == IDialogConstants.OK_ID) {
-                    if (retVal[0] != null) {
-                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                            w.closeTabWithDatfile(df);
-                        }
-                        df.getVertexManager().loadSnapshot(retVal[0]);
+                if (new SnapshotDialog(getShell(), df.getVertexManager().getSnapshots(), retVal).open() == IDialogConstants.OK_ID && retVal[0] != null) {
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        w.closeTabWithDatfile(df);
                     }
+                    df.getVertexManager().loadSnapshot(retVal[0]);
                 }
             });
             mntmOpenSnapshot.setText("Open Snapshot (DEBUG ONLY)"); //$NON-NLS-1$

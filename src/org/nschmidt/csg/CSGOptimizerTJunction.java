@@ -59,44 +59,38 @@ public enum CSGOptimizerTJunction {
                     if (triverts[0].compareTo(v) == 0 || triverts[1].compareTo(v) == 0 || triverts[2].compareTo(v) == 0) continue;
                     {
                         double d =  MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[0], triverts[1], v, epsilon);
-                        if (d < epsilon) {
-                            // Make sure that the new edge generates no T-Junction!
-                            if (isValidEdge(v, triverts[2], vertices)) {
-                                final IdAndPlane oldId = optimization.get(tri);
-                                optimization.remove(tri);
-                                optimization.put(createTriangle(tri, triverts[0], v, triverts[2]), oldId);
-                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2]), oldId);
-                                result = true;
-                                break;
-                            }
+                        // Make sure that the new edge generates no T-Junction!
+                        if (d < epsilon && isValidEdge(v, triverts[2], vertices)) {
+                            final IdAndPlane oldId = optimization.get(tri);
+                            optimization.remove(tri);
+                            optimization.put(createTriangle(tri, triverts[0], v, triverts[2]), oldId);
+                            optimization.put(createTriangle(tri, v, triverts[1], triverts[2]), oldId);
+                            result = true;
+                            break;
                         }
                     }
 
                     {
                         double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[1], triverts[2], v, epsilon);
-                        if (d < epsilon) {
-                            if (isValidEdge(v, triverts[0], vertices)) {
-                                final IdAndPlane oldId = optimization.get(tri);
-                                optimization.remove(tri);
-                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0]), oldId);
-                                optimization.put(createTriangle(tri, v, triverts[2], triverts[0]), oldId);
-                                result = true;
-                                break;
-                            }
+                        if (d < epsilon && isValidEdge(v, triverts[0], vertices)) {
+                            final IdAndPlane oldId = optimization.get(tri);
+                            optimization.remove(tri);
+                            optimization.put(createTriangle(tri, triverts[1], v, triverts[0]), oldId);
+                            optimization.put(createTriangle(tri, v, triverts[2], triverts[0]), oldId);
+                            result = true;
+                            break;
                         }
                     }
 
                     {
                         double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[2], triverts[0], v, epsilon);
-                        if (d < epsilon) {
-                            if (isValidEdge(v, triverts[1], vertices)) {
-                                final IdAndPlane oldId = optimization.get(tri);
-                                optimization.remove(tri);
-                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0]), oldId);
-                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2]), oldId);
-                                result = true;
-                                break;
-                            }
+                        if (d < epsilon && isValidEdge(v, triverts[1], vertices)) {
+                            final IdAndPlane oldId = optimization.get(tri);
+                            optimization.remove(tri);
+                            optimization.put(createTriangle(tri, triverts[1], v, triverts[0]), oldId);
+                            optimization.put(createTriangle(tri, v, triverts[1], triverts[2]), oldId);
+                            result = true;
+                            break;
                         }
                     }
                 }
