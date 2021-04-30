@@ -37,8 +37,8 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
-import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
+import org.nschmidt.ldparteditor.enums.TextEditorColour;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -290,8 +290,8 @@ class PrimGen2Design extends Dialog {
         StyledText txtData = new StyledText(sashForm, SWT.V_SCROLL | SWT.H_SCROLL);
         this.txtDataPtr[0] = txtData;
         txtData.setText(""); //$NON-NLS-1$
-        txtData.setBackground(Colour.textBackground[0]);
-        txtData.setForeground(Colour.textForeground[0]);
+        txtData.setBackground(TextEditorColour.getTextBackground());
+        txtData.setForeground(TextEditorColour.getTextForeground());
         txtData.setFont(Font.MONOSPACE);
         txtData.setLineSpacing(0);
 
@@ -299,8 +299,8 @@ class PrimGen2Design extends Dialog {
             StyledText txtData2 = new StyledText(sashForm, SWT.V_SCROLL | SWT.H_SCROLL);
             this.txtData2Ptr[0] = txtData2;
             txtData2.setText(""); //$NON-NLS-1$
-            txtData2.setBackground(Colour.textBackground[0]);
-            txtData2.setForeground(Colour.textForeground[0]);
+            txtData2.setBackground(TextEditorColour.getTextBackground());
+            txtData2.setForeground(TextEditorColour.getTextForeground());
             txtData2.setFont(Font.MONOSPACE);
             txtData2.setLineSpacing(0);
         } else {

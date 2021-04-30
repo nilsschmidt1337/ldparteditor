@@ -40,6 +40,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.StudLogo;
@@ -751,7 +752,7 @@ public class GL33ModelRendererLDrawStandard {
                                     triangleIndex += 6;
                                 }
                             } else {
-                                GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd3.r, gd3.g, gd3.b));
+                                GColour c = LDConfig.getColour(LDConfig.getIndex(gd3.r, gd3.g, gd3.b));
                                 GColourType ct = c.getType();
                                 boolean hasColourType = ct != null;
                                 if (hasColourType) {
@@ -955,7 +956,7 @@ public class GL33ModelRendererLDrawStandard {
                                 triangleIndex += 12;
                             }
                         } else {
-                            GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd4.r, gd4.g, gd4.b));
+                            GColour c = LDConfig.getColour(LDConfig.getIndex(gd4.r, gd4.g, gd4.b));
                             GColourType ct = c.getType();
                             boolean hasColourType = ct != null;
                             if (hasColourType) {
@@ -1168,7 +1169,7 @@ public class GL33ModelRendererLDrawStandard {
         }
 
         final float zoom = c3d.getZoom();
-        final boolean drawLines = View.LINE_WIDTH_GL[0] > 0.01f;
+        final boolean drawLines = View.lineWidthGL > 0.01f;
         final boolean studlogo = c3d.isShowingLogo();
 
         CUBEMAP_TEXTURE.bindGL33(renderer, mainShader);
@@ -1240,7 +1241,7 @@ public class GL33ModelRendererLDrawStandard {
                 GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4l);
 
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
+                GL11.glLineWidth(View.lineWidthGL);
 
                 Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
                 Matrix4f.transform(ivm, tr, tr);
@@ -1319,7 +1320,7 @@ public class GL33ModelRendererLDrawStandard {
                 Matrix4f.transform(ivm, tr, tr);
                 stack.glPushMatrix();
                 stack.glTranslatef(tr.x, tr.y, tr.z);
-                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
+                GL11.glLineWidth(View.lineWidthGL);
                 GL11.glDrawArrays(GL11.GL_LINES, 0, cls);
                 stack.glPopMatrix();
                 mainShader.use();

@@ -35,8 +35,8 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.enums.IconSize;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -140,7 +140,7 @@ class ColourDesign extends ApplicationWindow {
             lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
-        SortedSet<Integer> ldConfIndices = new TreeSet<>(View.getColourMap().keySet());
+        SortedSet<Integer> ldConfIndices = new TreeSet<>(LDConfig.getColourMap().keySet());
 
         int counter = 0;
         ToolItem toolItemColours = new ToolItem(cmpContainer, Cocoa.getStyle(), true);
@@ -149,7 +149,7 @@ class ColourDesign extends ApplicationWindow {
                 toolItemColours = new ToolItem(cmpContainer, Cocoa.getStyle(), true);
                 counter = 0;
             }
-            final GColour gColour2 = View.getLDConfigColour(index);
+            final GColour gColour2 = LDConfig.getColour(index);
             addColorButton(toolItemColours, gColour2);
             counter++;
         }
@@ -167,8 +167,8 @@ class ColourDesign extends ApplicationWindow {
 
     private void addColorButton(ToolItem toolItemColours, GColour gColour) {
         int cn = gColour.getColourNumber();
-        if (cn != -1 && View.hasLDConfigColour(cn)) {
-            gColour = View.getLDConfigColour(cn);
+        if (cn != -1 && LDConfig.hasColour(cn)) {
+            gColour = LDConfig.getColour(cn);
         }
         final int imgSize = IconSize.getImageSizeFromIconSize();
         final GColour[] gColour2 = new GColour[] { gColour };
@@ -178,12 +178,12 @@ class ColourDesign extends ApplicationWindow {
         final NButton btnCol = new NButton(toolItemColours, Cocoa.getStyle());
         btnCol.setData(gColour);
         int num = gColour2[0].getColourNumber();
-        if (!View.hasLDConfigColour(num)) {
+        if (!LDConfig.hasColour(num)) {
             num = -1;
         }
         if (num != -1) {
 
-            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+            Object[] messageArguments = {num, LDConfig.getColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1);

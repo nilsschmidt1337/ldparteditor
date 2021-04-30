@@ -38,13 +38,13 @@ import org.nschmidt.ldparteditor.composites.ScalableComposite;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.KeyBoardHelper;
@@ -594,8 +594,8 @@ public class KeyStateManager {
                         multi /= 10;
                         if (multi == 0) {
                             multi = 100;
-                            if (View.hasLDConfigColour(colourNumber)) {
-                                win.setLastUsedColour2(View.getLDConfigColour(colourNumber));
+                            if (LDConfig.hasColour(colourNumber)) {
+                                win.setLastUsedColour2(LDConfig.getColour(colourNumber));
                             }
                             colourNumber = 0;
                         }

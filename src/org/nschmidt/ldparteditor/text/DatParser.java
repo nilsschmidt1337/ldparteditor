@@ -49,6 +49,8 @@ import org.nschmidt.ldparteditor.data.ResultType;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.colour.GCDithered;
 import org.nschmidt.ldparteditor.data.colour.GCType;
+import org.nschmidt.ldparteditor.enums.Colour;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -152,18 +154,18 @@ public enum DatParser {
                 cValue.set(16, r, g, b, a);
                 break;
             case 24:
-                cValue.set(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
+                cValue.set(24, Colour.lineColourR, Colour.lineColourG, Colour.lineColourB, 1f);
                 break;
             default:
-                if (View.hasLDConfigColour(colourValue)) {
-                    GColour colour = View.getLDConfigColour(colourValue);
+                if (LDConfig.hasColour(colourValue)) {
+                    GColour colour = LDConfig.getColour(colourValue);
                     cValue.set(colour);
                 } else {
                     int colourIndexA = colourValue - 256 >> 4;
                     int colourIndexB = colourValue - 256 & 0x0F;
-                    if (View.hasLDConfigColour(colourIndexA) && View.hasLDConfigColour(colourIndexB)) {
-                        GColour colourA = View.getLDConfigColour(colourIndexA);
-                        GColour colourB = View.getLDConfigColour(colourIndexB);
+                    if (LDConfig.hasColour(colourIndexA) && LDConfig.hasColour(colourIndexB)) {
+                        GColour colourA = LDConfig.getColour(colourIndexA);
+                        GColour colourB = LDConfig.getColour(colourIndexB);
                         GColour ditheredColour = new GColour(
                                 colourValue,
                                 (colourA.getR() + colourB.getR()) / 2f,
@@ -213,18 +215,18 @@ public enum DatParser {
             cValue.set(16, r, g, b, a);
             break;
         case 24:
-            cValue.set(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
+            cValue.set(24, Colour.lineColourR, Colour.lineColourG, Colour.lineColourB, 1f);
             break;
         default:
-            if (View.hasLDConfigColour(arg)) {
-                GColour colour = View.getLDConfigColour(arg);
+            if (LDConfig.hasColour(arg)) {
+                GColour colour = LDConfig.getColour(arg);
                 cValue.set(colour);
             } else {
                 int colourIndexA = arg - 256 >> 4;
                 int colourIndexB = arg - 256 & 0x0F;
-                if (View.hasLDConfigColour(colourIndexA) && View.hasLDConfigColour(colourIndexB)) {
-                    GColour colourA = View.getLDConfigColour(colourIndexA);
-                    GColour colourB = View.getLDConfigColour(colourIndexB);
+                if (LDConfig.hasColour(colourIndexA) && LDConfig.hasColour(colourIndexB)) {
+                    GColour colourA = LDConfig.getColour(colourIndexA);
+                    GColour colourB = LDConfig.getColour(colourIndexB);
                     GColour ditheredColour = new GColour(
                             arg,
                             (colourA.getR() + colourB.getR()) / 2f,

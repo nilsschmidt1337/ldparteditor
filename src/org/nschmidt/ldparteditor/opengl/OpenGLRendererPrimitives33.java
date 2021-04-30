@@ -27,6 +27,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.Primitive;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Arrow;
 
@@ -51,7 +52,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         shaderProgram.use();
 
         GL11.glClearDepth(1.0f);
-        GL11.glClearColor(View.PRIMITIVE_BACKGROUND_COLOUR_R[0], View.PRIMITIVE_BACKGROUND_COLOUR_G[0], View.PRIMITIVE_BACKGROUND_COLOUR_B[0], 1.0f);
+        GL11.glClearColor(Colour.primitiveBackgroundColourR, Colour.primitiveBackgroundColourG, Colour.primitiveBackgroundColourB, 1.0f);
     }
 
     @Override
@@ -222,9 +223,9 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         stack.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
         stack.glMultMatrixf(rotation);
 
-        new Arrow(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], -.5f,0f, 0f, .00015f, .00004f, 2f).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
-        new Arrow(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], 0f, .5f,0f, .00015f, .00004f, 2f).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
-        new Arrow(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], 0f, 0f, .5f,.00015f, .00004f, 2f).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
+        new Arrow(Colour.xAxisColourR, Colour.xAxisColourG, Colour.xAxisColourB, -.5f,0f, 0f, .00015f, .00004f, 2f).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
+        new Arrow(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, 0f, .5f,0f, .00015f, .00004f, 2f).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
+        new Arrow(Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB, 0f, 0f, .5f,.00015f, .00004f, 2f).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
 
         stack.glPopMatrix();
 
@@ -250,18 +251,18 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
     private void drawCell(float x, float y, boolean selected, boolean category, boolean focused) {
         if (selected) {
-            drawRoundRectangle(x, y, 20f, 20f, 5f, View.PRIMITIVE_SELECTED_CELL_COLOUR_R[0], View.PRIMITIVE_SELECTED_CELL_COLOUR_G[0], View.PRIMITIVE_SELECTED_CELL_COLOUR_B[0]);
+            drawRoundRectangle(x, y, 20f, 20f, 5f, Colour.primitiveSelectedCellColourR, Colour.primitiveSelectedCellColourG, Colour.primitiveSelectedCellColourB);
         } else if (focused) {
-            drawRoundRectangle(x, y, 20f, 20f, 5f, View.PRIMITIVE_FOCUSED_CELL_COLOUR_R[0], View.PRIMITIVE_FOCUSED_CELL_COLOUR_G[0], View.PRIMITIVE_FOCUSED_CELL_COLOUR_B[0]);
+            drawRoundRectangle(x, y, 20f, 20f, 5f, Colour.primitiveFocusedCellColourR, Colour.primitiveFocusedCellColourG, Colour.primitiveFocusedCellColourB);
         } else {
-            drawRoundRectangle(x, y, 20f, 20f, 5f, View.PRIMITIVE_NORMAL_CELL_COLOUR_R[0], View.PRIMITIVE_NORMAL_CELL_COLOUR_G[0], View.PRIMITIVE_NORMAL_CELL_COLOUR_B[0]);
+            drawRoundRectangle(x, y, 20f, 20f, 5f, Colour.primitiveNormalCellColourR, Colour.primitiveNormalCellColourG, Colour.primitiveNormalCellColourB);
         }
         if (category) {
-            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, View.PRIMITIVE_CATEGORYCELL_1_COLOUR_R[0], View.PRIMITIVE_CATEGORYCELL_1_COLOUR_G[0], View.PRIMITIVE_CATEGORYCELL_1_COLOUR_B[0]);
-            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, View.PRIMITIVE_CATEGORYCELL_2_COLOUR_R[0], View.PRIMITIVE_CATEGORYCELL_2_COLOUR_G[0], View.PRIMITIVE_CATEGORYCELL_2_COLOUR_B[0]);
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, Colour.primitiveCategoryCell1ColourR, Colour.primitiveCategoryCell1ColourG, Colour.primitiveCategoryCell1ColourB);
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, Colour.primitiveCategoryCell2ColourR, Colour.primitiveCategoryCell2ColourG, Colour.primitiveCategoryCell2ColourB);
         } else {
-            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, View.PRIMITIVE_CELL_1_COLOUR_R[0], View.PRIMITIVE_CELL_1_COLOUR_G[0], View.PRIMITIVE_CELL_1_COLOUR_B[0]);
-            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, View.PRIMITIVE_CELL_2_COLOUR_R[0], View.PRIMITIVE_CELL_2_COLOUR_G[0], View.PRIMITIVE_CELL_2_COLOUR_B[0]);
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, Colour.primitiveCell1ColourR, Colour.primitiveCell1ColourG, Colour.primitiveCell1ColourB);
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, Colour.primitiveCell2ColourR, Colour.primitiveCell2ColourG, Colour.primitiveCell2ColourB);
         }
     }
 
@@ -276,21 +277,21 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
         float[] vertexData = new float[] {
                 x + 14f, y + 15.75f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0],
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB,
                 x + 14f, y + 15.25f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0],
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB,
                 x + 16f, y + 15.25f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0],
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB,
                 x + 16f, y + 15.75f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0],
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB,
                 x + 14.75f, y + 16.4f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0],
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB,
                 x + 14.75f, y + 14.6f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0],
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB,
                 x + 15.25f, y + 14.6f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0],
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB,
                 x + 15.25f, y + 16.4f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0]};
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB};
 
         helper.drawTrianglesIndexedRGBgeneral(vertexData, indices);
     }
@@ -305,20 +306,20 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         float[] vertexData = new float[] {
 
                 x + 14f, y + 15.75f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0],
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB,
                 x + 14f, y + 15.25f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0],
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB,
                 x + 16f, y + 15.25f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0],
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB,
                 x + 16f, y + 15.75f, 0f,
-                View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0]};
+                Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB};
 
         helper.drawTrianglesIndexedRGBgeneral(vertexData, indices);
     }
 
     private void drawSignBackground(float x, float y) {
-        drawRoundRectangle(x + 13.2f, y + 13.6f, 4f, 4f, .5f, View.PRIMITIVE_SIGN_BG_COLOUR_R[0], View.PRIMITIVE_SIGN_BG_COLOUR_G[0], View.PRIMITIVE_SIGN_BG_COLOUR_B[0]);
-        drawRoundRectangle(x + 13.3f, y + 13.7f, 3.6f, 3.6f, .5f, View.PRIMITIVE_SIGN_FG_COLOUR_R[0], View.PRIMITIVE_SIGN_FG_COLOUR_G[0], View.PRIMITIVE_SIGN_FG_COLOUR_B[0]);
+        drawRoundRectangle(x + 13.2f, y + 13.6f, 4f, 4f, .5f, Colour.primitiveSignBgColourR, Colour.primitiveSignBgColourG, Colour.primitiveSignBgColourB);
+        drawRoundRectangle(x + 13.3f, y + 13.7f, 3.6f, 3.6f, .5f, Colour.primitiveSignFgColourR, Colour.primitiveSignFgColourG, Colour.primitiveSignFgColourB);
     }
     private void drawRoundRectangle(float x, float y,float width, float height, float radius, float r, float g, float b) {
 

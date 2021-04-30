@@ -46,7 +46,7 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 
 /**
  * Represents a convex polygon.
@@ -172,7 +172,7 @@ public final class Polygon {
     public Map<GData3, IdAndPlane> toLDrawTriangles(GData1 parent) {
         Map<GData3, IdAndPlane> result = new HashMap<>();
         if (this.vertices.size() >= 3) {
-            final GColour c16 = View.getLDConfigColour(16);
+            final GColour c16 = LDConfig.getColour16();
             VectorCSGd dv1 = this.vertices.get(0);
             for (int i = 0; i < this.vertices.size() - 2; i++) {
                 VectorCSGd dv2 = this.vertices.get(i + 1);

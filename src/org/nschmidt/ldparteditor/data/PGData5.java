@@ -18,7 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.io.Serializable;
 
 import org.lwjgl.opengl.GL11;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
@@ -57,7 +57,7 @@ public final class PGData5 extends PGData implements Serializable {
     public void drawBFCprimitiveGL20(int drawOnlyMode) {
         if (drawOnlyMode == 1) return;
         GL11.glLineWidth(1f);
-        GL11.glColor4f(View.PRIMITIVE_CONDLINE_COLOUR_R[0], View.PRIMITIVE_CONDLINE_COLOUR_G[0], View.PRIMITIVE_CONDLINE_COLOUR_B[0], 1f);
+        GL11.glColor4f(Colour.primitiveCondlineColourR, Colour.primitiveCondlineColourG, Colour.primitiveCondlineColourB, 1f);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(x1, y1, z1);
         GL11.glVertex3f(x2, y2, z2);
@@ -67,9 +67,9 @@ public final class PGData5 extends PGData implements Serializable {
     public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 1) return;
         GL11.glLineWidth(1f);
-        edgeData[3] = View.PRIMITIVE_CONDLINE_COLOUR_R[0];
-        edgeData[4] = View.PRIMITIVE_CONDLINE_COLOUR_G[0];
-        edgeData[5] = View.PRIMITIVE_CONDLINE_COLOUR_B[0];
+        edgeData[3] = Colour.primitiveCondlineColourR;
+        edgeData[4] = Colour.primitiveCondlineColourG;
+        edgeData[5] = Colour.primitiveCondlineColourB;
         edgeData[9] = edgeData[3];
         edgeData[10] = edgeData[4];
         edgeData[11] = edgeData[5];

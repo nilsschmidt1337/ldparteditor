@@ -51,7 +51,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.PGData;
 import org.nschmidt.ldparteditor.data.PGTimestamp;
 import org.nschmidt.ldparteditor.dialogs.startup.StartupDialog;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.ProgressHelper;
@@ -396,7 +396,7 @@ public class SplashScreen extends ApplicationWindow {
                 ldcPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "ldconfig.ldr"; //$NON-NLS-1$
                 WorkbenchManager.getUserSettingState().setLdConfigPath(ldcPath);
             }
-            View.loadLDConfig(ldcPath);
+            LDConfig.loadConfig(ldcPath);
 
             // Finally, open the editor window!
 

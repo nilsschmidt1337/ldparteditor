@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.nschmidt.ldparteditor.enums.Colour;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -50,7 +52,7 @@ class VM19ColourChanger extends VM18LineConverter {
         final Set<GData4> subSelectedQuads = new HashSet<>();
         final Set<GData5> subSelectedCondlines = new HashSet<>();
 
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
 
         selectedData.clear();
         selectedVertices.clear();
@@ -281,7 +283,7 @@ class VM19ColourChanger extends VM18LineConverter {
 
     private final synchronized void changeColour(int index, float r, float g, float b, float a, Set<GData> dataToModify) {
         Set<GData> newData = new HashSet<>();
-        GColour colour = View.getLDConfigColour(index);
+        GColour colour = LDConfig.getColour(index);
         final float cr = colour.getR();
         final float cg = colour.getG();
         final float cb = colour.getB();
@@ -300,9 +302,9 @@ class VM19ColourChanger extends VM18LineConverter {
                 case 2:
                 case 5:
                     if (index == 24) {
-                        r = View.LINE_COLOUR_R[0];
-                        g = View.LINE_COLOUR_G[0];
-                        b = View.LINE_COLOUR_B[0];
+                        r = Colour.lineColourR;
+                        g = Colour.lineColourG;
+                        b = Colour.lineColourB;
                         a = 1f;
                     } else {
                         r = cr;

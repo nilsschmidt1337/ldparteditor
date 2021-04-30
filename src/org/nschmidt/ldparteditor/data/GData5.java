@@ -24,7 +24,9 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.GL20Primitives;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
@@ -455,7 +457,7 @@ public final class GData5 extends GData {
                 GL11.glPopMatrix();
 
             } else {
-                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
+                GL11.glLineWidth(View.lineWidthGL);
                 GL11.glColor4f(r, g, b, a);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glVertex3f(x1, y1, z1);
@@ -591,7 +593,7 @@ public final class GData5 extends GData {
                 GL11.glPopMatrix();
 
             } else {
-                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
+                GL11.glLineWidth(View.lineWidthGL);
                 GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glVertex3f(x1, y1, z1);
@@ -645,9 +647,9 @@ public final class GData5 extends GData {
                 wasShown = true;
             } else {
                 if (wasShown) {
-                    GL11.glColor4f(View.CONDLINE_SHOWN_COLOUR_R[0], View.CONDLINE_SHOWN_COLOUR_G[0], View.CONDLINE_SHOWN_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.condlineShownColourR, Colour.condlineShownColourG, Colour.condlineShownColourB, 1f);
                 } else {
-                    GL11.glColor4f(View.CONDLINE_HIDDEN_COLOUR_R[0], View.CONDLINE_HIDDEN_COLOUR_G[0], View.CONDLINE_HIDDEN_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.condlineHiddenColourR, Colour.condlineHiddenColourG, Colour.condlineHiddenColourB, 1f);
                 }
             }
 
@@ -714,15 +716,15 @@ public final class GData5 extends GData {
             GL11.glPopMatrix();
 
         } else {
-            GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
+            GL11.glLineWidth(View.lineWidthGL);
             if (result > -1e-20f) {
                 GL11.glColor4f(0f, 0f, 0f, 1f);
                 wasShown = true;
             } else {
                 if (wasShown) {
-                    GL11.glColor4f(View.CONDLINE_SHOWN_COLOUR_R[0], View.CONDLINE_SHOWN_COLOUR_G[0], View.CONDLINE_SHOWN_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.condlineShownColourR, Colour.condlineShownColourG, Colour.condlineShownColourB, 1f);
                 } else {
-                    GL11.glColor4f(View.CONDLINE_HIDDEN_COLOUR_R[0], View.CONDLINE_HIDDEN_COLOUR_G[0], View.CONDLINE_HIDDEN_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.condlineHiddenColourR, Colour.condlineHiddenColourG, Colour.condlineHiddenColourB, 1f);
                 }
             }
             GL11.glBegin(GL11.GL_LINES);
@@ -805,8 +807,8 @@ public final class GData5 extends GData {
                 float g2;
                 float b2;
                 int cn;
-                if (colourNumber == 24 && (cn = parent.r == .5f && parent.g == .5f && parent.b == .5f && (parent.a == 1.1f || parent.a == -1)  ? 16 : View.getLDConfigIndex(parent.r,  parent.g,  parent.b)) != 16) {
-                    GColour c = View.getLDConfigEdgeColour(cn, c3d);
+                if (colourNumber == 24 && (cn = parent.r == .5f && parent.g == .5f && parent.b == .5f && (parent.a == 1.1f || parent.a == -1)  ? 16 : LDConfig.getIndex(parent.r,  parent.g,  parent.b)) != 16) {
+                    GColour c = LDConfig.getEdgeColour(cn, c3d);
                     r2 = c.getR();
                     g2 = c.getG();
                     b2 = c.getB();
@@ -816,7 +818,7 @@ public final class GData5 extends GData {
                     b2 = this.b;
                 }
 
-                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
+                GL11.glLineWidth(View.lineWidthGL);
                 GL11.glColor4f(r2, g2, b2, 1f);
                 GL11.glBegin(GL11.GL_LINES);
                 GraphicalDataTools.setVertex(x1, y1, z1, this, true);

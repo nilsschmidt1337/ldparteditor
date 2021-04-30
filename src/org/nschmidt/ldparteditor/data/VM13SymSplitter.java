@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
@@ -467,12 +468,12 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
             // Colourise only before and between
 
             final GData tail = linkedDatFile.getDrawChainTail();
-            GColour blue = View.hasLDConfigColour(1) ? View.getLDConfigColour(1) : new GColour(-1, 0f, 0f, 1f, 1f);
-            GColour yellow = View.hasLDConfigColour(14) ? View.getLDConfigColour(14) : new GColour(-1, 1f, 1f, 0f, 1f);
-            GColour red = View.hasLDConfigColour(4) ? View.getLDConfigColour(4) : new GColour(-1, 1f, 0f, 0f, 1f);
-            GColour lightBlue = View.hasLDConfigColour(9) ? View.getLDConfigColour(9) : new GColour(-1, 1f, .5f, .5f, 1f);
-            GColour lightGreen = View.hasLDConfigColour(10) ? View.getLDConfigColour(10) : new GColour(-1, .5f, 1f, .5f, 1f);
-            GColour violet = View.hasLDConfigColour(5) ? View.getLDConfigColour(5) : new GColour(-1, 1f, 0f, 1f, 1f);
+            GColour blue = LDConfig.hasColour(1) ? LDConfig.getColour(1) : new GColour(-1, 0f, 0f, 1f, 1f);
+            GColour yellow = LDConfig.hasColour(14) ? LDConfig.getColour(14) : new GColour(-1, 1f, 1f, 0f, 1f);
+            GColour red = LDConfig.hasColour(4) ? LDConfig.getColour(4) : new GColour(-1, 1f, 0f, 0f, 1f);
+            GColour lightBlue = LDConfig.hasColour(9) ? LDConfig.getColour(9) : new GColour(-1, 1f, .5f, .5f, 1f);
+            GColour lightGreen = LDConfig.hasColour(10) ? LDConfig.getColour(10) : new GColour(-1, .5f, 1f, .5f, 1f);
+            GColour violet = LDConfig.hasColour(5) ? LDConfig.getColour(5) : new GColour(-1, 1f, 0f, 1f, 1f);
             {
                 GData g = lastHeaderLine;
                 while ((g = g.getNext()) != null) {

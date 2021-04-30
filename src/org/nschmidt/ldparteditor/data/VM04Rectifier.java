@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
@@ -84,7 +85,7 @@ class VM04Rectifier extends VM03Adjacency {
 
         final boolean noAdjacentCondlines = rs.isNoRectConversationOnAdjacentCondlines();
         final boolean replaceQuads = !rs.isNoQuadConversation();
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
 
         if (showProgressMonitor) {
             try
@@ -350,7 +351,7 @@ class VM04Rectifier extends VM03Adjacency {
                                             }
 
                                             if (colourise) {
-                                                GColour yellow = View.hasLDConfigColour(14) ? View.getLDConfigColour(14) : new GColour(-1, 1f, 1f, 0f, 1f);
+                                                GColour yellow = LDConfig.hasColour(14) ? LDConfig.getColour(14) : new GColour(-1, 1f, 1f, 0f, 1f);
 
                                                 quad = new GData4(yellow.getColourNumber(), yellow.getR(), yellow.getG(), yellow.getB(), yellow.getA(), first, second, third, fourth, View.DUMMY_REFERENCE, linkedDatFile);
 
@@ -846,7 +847,7 @@ class VM04Rectifier extends VM03Adjacency {
                             }
 
                             if (colourise) {
-                                GColour yellow = View.hasLDConfigColour(14) ? View.getLDConfigColour(14) : new GColour(-1, 1f, 1f, 0f, 1f);
+                                GColour yellow = LDConfig.hasColour(14) ? LDConfig.getColour(14) : new GColour(-1, 1f, 1f, 0f, 1f);
 
                                 quad = new GData4(yellow.getColourNumber(), yellow.getR(), yellow.getG(), yellow.getB(), yellow.getA(), first, second, third, fourth, View.DUMMY_REFERENCE, linkedDatFile);
 

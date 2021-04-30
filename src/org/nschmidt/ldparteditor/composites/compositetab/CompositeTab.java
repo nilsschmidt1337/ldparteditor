@@ -70,9 +70,9 @@ import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.dnd.PrimitiveDragAndDropTransfer;
-import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
+import org.nschmidt.ldparteditor.enums.TextEditorColour;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
@@ -1266,7 +1266,7 @@ public class CompositeTab extends CompositeTabDesign {
             tabState.currentLineIndex = compositeTextPtr[0].getLineAtOffset(caretOffset);
             if (compositeTextPtr[0].getSelectionCount() == 0) {
                 try {
-                    compositeTextPtr[0].setLineBackground(tabState.currentLineIndex, 1, Colour.lineHighlightBackground[0]);
+                    compositeTextPtr[0].setLineBackground(tabState.currentLineIndex, 1, TextEditorColour.getLineHighlightBackground());
                 } catch (Exception a) {
                 }
             }
@@ -2029,8 +2029,8 @@ public class CompositeTab extends CompositeTabDesign {
     }
 
     public void updateColours() {
-        this.tabState.getTab().compositeTextPtr[0].setBackground(Colour.textBackground[0]);
-        this.tabState.getTab().compositeTextPtr[0].setForeground(Colour.textForeground[0]);
+        this.tabState.getTab().compositeTextPtr[0].setBackground(TextEditorColour.getTextBackground());
+        this.tabState.getTab().compositeTextPtr[0].setForeground(TextEditorColour.getTextForeground());
         this.tabState.getTab().compositeTextPtr[0].redrawRange(0, this.tabState.getTab().compositeTextPtr[0].getText().length(), false);
     }
 

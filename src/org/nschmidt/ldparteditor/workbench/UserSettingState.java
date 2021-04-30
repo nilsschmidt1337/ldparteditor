@@ -28,9 +28,10 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.ToolItemState;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.enums.Colour;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.Task;
+import org.nschmidt.ldparteditor.enums.TextEditorColour;
 import org.nschmidt.ldparteditor.enums.TextTask;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 
@@ -141,265 +142,72 @@ public class UserSettingState implements Serializable {
     private boolean disableMAD3D = false;
     private boolean disableMADtext = false;
 
-    private float[] color16OverrideR = null;
-    private float[] color16OverrideG = null;
-    private float[] color16OverrideB = null;
-
-    private float[] bfcFrontColourR = null;
-    private float[] bfcFrontColourG = null;
-    private float[] bfcFrontColourB = null;
-
-    private float[] bfcBackColourR = null;
-    private float[] bfcBackColourG = null;
-    private float[] bfcBackColourB = null;
-
-    private float[] bfcUncertifiedColourR = null;
-    private float[] bfcUncertifiedColourG = null;
-    private float[] bfcUncertifiedColourB = null;
-
-    private float[] vertexColourR = null;
-    private float[] vertexColourG = null;
-    private float[] vertexColourB = null;
-
-    private float[] vertexSelectedColourR = null;
-    private float[] vertexSelectedColourG = null;
-    private float[] vertexSelectedColourB = null;
-
-    private float[] condlineSelectedColourR = null;
-    private float[] condlineSelectedColourG = null;
-    private float[] condlineSelectedColourB = null;
-
-    private float[] lineColourR = null;
-    private float[] lineColourG = null;
-    private float[] lineColourB = null;
-
-    private float[] meshlineColourR = null;
-    private float[] meshlineColourG = null;
-    private float[] meshlineColourB = null;
-
-    private float[] condlineColourR = null;
-    private float[] condlineColourG = null;
-    private float[] condlineColourB = null;
-
-    private float[] condlineHiddenColourR = null;
-    private float[] condlineHiddenColourG = null;
-    private float[] condlineHiddenColourB = null;
-
-    private float[] condlineShownColourR = null;
-    private float[] condlineShownColourG = null;
-    private float[] condlineShownColourB = null;
-
-    private float[] backgroundColourR = null;
-    private float[] backgroundColourG = null;
-    private float[] backgroundColourB = null;
-
-    private float[] light1ColourR = null;
-    private float[] light1ColourG = null;
-    private float[] light1ColourB = null;
-
-    private float[] light1SpecularColourR = null;
-    private float[] light1SpecularColourG = null;
-    private float[] light1SpecularColourB = null;
-
-    private float[] light2ColourR = null;
-    private float[] light2ColourG = null;
-    private float[] light2ColourB = null;
-
-    private float[] light2SpecularColourR = null;
-    private float[] light2SpecularColourG = null;
-    private float[] light2SpecularColourB = null;
-
-    private float[] light3ColourR = null;
-    private float[] light3ColourG = null;
-    private float[] light3ColourB = null;
-
-    private float[] light3SpecularColourR = null;
-    private float[] light3SpecularColourG = null;
-    private float[] light3SpecularColourB = null;
-
-    private float[] light4ColourR = null;
-    private float[] light4ColourG = null;
-    private float[] light4ColourB = null;
-
-    private float[] light4SpecularColourR = null;
-    private float[] light4SpecularColourG = null;
-    private float[] light4SpecularColourB = null;
-
-    private float[] manipulatorSelectedColourR = null;
-    private float[] manipulatorSelectedColourG = null;
-    private float[] manipulatorSelectedColourB = null;
-
-    private float[] manipulatorInnerCircleColourR = null;
-    private float[] manipulatorInnerCircleColourG = null;
-    private float[] manipulatorInnerCircleColourB = null;
-
-    private float[] manipulatorOuterCircleColourR = null;
-    private float[] manipulatorOuterCircleColourG = null;
-    private float[] manipulatorOuterCircleColourB = null;
-
-    private float[] manipulatorXAxisColourR = null;
-    private float[] manipulatorXAxisColourG = null;
-    private float[] manipulatorXAxisColourB = null;
-
-    private float[] manipulatorYAxisColourR = null;
-    private float[] manipulatorYAxisColourG = null;
-    private float[] manipulatorYAxisColourB = null;
-
-    private float[] manipulatorZAxisColourR = null;
-    private float[] manipulatorZAxisColourG = null;
-    private float[] manipulatorZAxisColourB = null;
-
-    private float[] addObjectColourR = null;
-    private float[] addObjectColourG = null;
-    private float[] addObjectColourB = null;
-
-    private float[] originColourR = null;
-    private float[] originColourG = null;
-    private float[] originColourB = null;
-
-    private float[] grid10ColourR = null;
-    private float[] grid10ColourG = null;
-    private float[] grid10ColourB = null;
-
-    private float[] gridColourR = null;
-    private float[] gridColourG = null;
-    private float[] gridColourB = null;
-
-    private float[] rubberBandColourR = null;
-    private float[] rubberBandColourG = null;
-    private float[] rubberBandColourB = null;
-
-    private float[] textColourR = null;
-    private float[] textColourG = null;
-    private float[] textColourB = null;
-
-    private float[] xAxisColourR = null;
-    private float[] xAxisColourG = null;
-    private float[] xAxisColourB = null;
-
-    private float[] yAxisColourR = null;
-    private float[] yAxisColourG = null;
-    private float[] yAxisColourB = null;
-
-    private float[] zAxisColourR = null;
-    private float[] zAxisColourG = null;
-    private float[] zAxisColourB = null;
-
-    private float[] primitiveBackgroundColourR = null;
-    private float[] primitiveBackgroundColourG = null;
-    private float[] primitiveBackgroundColourB = null;
-
-    private float[] primitiveSignFGColourR = null;
-    private float[] primitiveSignFGColourG = null;
-    private float[] primitiveSignFGColourB = null;
-
-    private float[] primitiveSignBGColourR = null;
-    private float[] primitiveSignBGColourG = null;
-    private float[] primitiveSignBGColourB = null;
-
-    private float[] primitivePlusAndMinusColourR = null;
-    private float[] primitivePlusAndMinusColourG = null;
-    private float[] primitivePlusAndMinusColourB = null;
-
-    private float[] primitiveSelectedCellColourR = null;
-    private float[] primitiveSelectedCellColourG = null;
-    private float[] primitiveSelectedCellColourB = null;
-
-    private float[] primitiveFocusedCellColourR = null;
-    private float[] primitiveFocusedCellColourG = null;
-    private float[] primitiveFocusedCellColourB = null;
-
-    private float[] primitiveNormalCellColourR = null;
-    private float[] primitiveNormalCellColourG = null;
-    private float[] primitiveNormalCellColourB = null;
-
-    private float[] primitiveCell1ColourR = null;
-    private float[] primitiveCell1ColourG = null;
-    private float[] primitiveCell1ColourB = null;
-
-    private float[] primitiveCell2ColourR = null;
-    private float[] primitiveCell2ColourG = null;
-    private float[] primitiveCell2ColourB = null;
-
-    private float[] primitiveCategoryCell1ColourR = null;
-    private float[] primitiveCategoryCell1ColourG = null;
-    private float[] primitiveCategoryCell1ColourB = null;
-
-    private float[] primitiveCategoryCell2ColourR = null;
-    private float[] primitiveCategoryCell2ColourG = null;
-    private float[] primitiveCategoryCell2ColourB = null;
-
-    private float[] primitiveEdgeColourR = null;
-    private float[] primitiveEdgeColourG = null;
-    private float[] primitiveEdgeColourB = null;
-
-    private float[] primitiveCondlineColourR = null;
-    private float[] primitiveCondlineColourG = null;
-    private float[] primitiveCondlineColourB = null;
-
-    private int[] lineBoxFontR = null;
-    private int[] lineBoxFontG = null;
-    private int[] lineBoxFontB = null;
-
-    private int[] lineColourAttrFontR = null;
-    private int[] lineColourAttrFontG = null;
-    private int[] lineColourAttrFontB = null;
-
-    private int[] lineCommentFontR = null;
-    private int[] lineCommentFontG = null;
-    private int[] lineCommentFontB = null;
-
-    private int[] lineErrorUnderlineR = null;
-    private int[] lineErrorUnderlineG = null;
-    private int[] lineErrorUnderlineB = null;
-
-    private int[] lineHighlightBackgroundR = null;
-    private int[] lineHighlightBackgroundG = null;
-    private int[] lineHighlightBackgroundB = null;
-
-    private int[] lineHighlightSelectedBackgroundR = null;
-    private int[] lineHighlightSelectedBackgroundG = null;
-    private int[] lineHighlightSelectedBackgroundB = null;
-
-    private int[] lineHintUnderlineR = null;
-    private int[] lineHintUnderlineG = null;
-    private int[] lineHintUnderlineB = null;
-
-    private int[] linePrimaryFontR = null;
-    private int[] linePrimaryFontG = null;
-    private int[] linePrimaryFontB = null;
-
-    private int[] lineQuadFontR = null;
-    private int[] lineQuadFontG = null;
-    private int[] lineQuadFontB = null;
-
-    private int[] lineSecondaryFontR = null;
-    private int[] lineSecondaryFontG = null;
-    private int[] lineSecondaryFontB = null;
-
-    private int[] lineWarningUnderlineR = null;
-    private int[] lineWarningUnderlineG = null;
-    private int[] lineWarningUnderlineB = null;
-
-    private int[] textBackgroundR = null;
-    private int[] textBackgroundG = null;
-    private int[] textBackgroundB = null;
-
-    private int[] textForegroundR = null;
-    private int[] textForegroundG = null;
-    private int[] textForegroundB = null;
-
-    private int[] textForegroundHiddenR = null;
-    private int[] textForegroundHiddenG = null;
-    private int[] textForegroundHiddenB = null;
-
-    private float[] cursor1ColourR = null;
-    private float[] cursor1ColourG = null;
-    private float[] cursor1ColourB = null;
-
-    private float[] cursor2ColourR = null;
-    private float[] cursor2ColourG = null;
-    private float[] cursor2ColourB = null;
+    //  I need the arrays to detect if the value was not initialised before.
+    // Otherwise it would be just 0 on new fields.
+    private float[] color16OverrideColour = null;
+    private float[] bfcFrontColour = null;
+    private float[] bfcBackColour = null;
+    private float[] bfcUncertifiedColour = null;
+    private float[] vertexColour = null;
+    private float[] vertexSelectedColour = null;
+    private float[] condlineSelectedColour = null;
+    private float[] lineColour = null;
+    private float[] meshlineColour = null;
+    private float[] condlineHiddenColour = null;
+    private float[] condlineShownColour = null;
+    private float[] backgroundColour = null;
+    private float[] light1Colour = null;
+    private float[] light1SpecularColour = null;
+    private float[] light2Colour = null;
+    private float[] light2SpecularColour = null;
+    private float[] light3Colour = null;
+    private float[] light3SpecularColour = null;
+    private float[] light4Colour = null;
+    private float[] light4SpecularColour = null;
+    private float[] manipulatorSelectedColour = null;
+    private float[] manipulatorInnerCircleColour = null;
+    private float[] manipulatorOuterCircleColour = null;
+    private float[] manipulatorXAxisColour = null;
+    private float[] manipulatorYAxisColour = null;
+    private float[] manipulatorZAxisColour = null;
+    private float[] addObjectColour = null;
+    private float[] originColour = null;
+    private float[] grid10Colour = null;
+    private float[] gridColour = null;
+    private float[] rubberBandColour = null;
+    private float[] textColour = null;
+    private float[] xAxisColour = null;
+    private float[] yAxisColour = null;
+    private float[] zAxisColour = null;
+    private float[] primitiveBackgroundColour = null;
+    private float[] primitiveSignFGColour = null;
+    private float[] primitiveSignBGColour = null;
+    private float[] primitivePlusAndMinusColour = null;
+    private float[] primitiveSelectedCellColour = null;
+    private float[] primitiveFocusedCellColour = null;
+    private float[] primitiveNormalCellColour = null;
+    private float[] primitiveCell1Colour = null;
+    private float[] primitiveCell2Colour = null;
+    private float[] primitiveCategoryCell1Colour = null;
+    private float[] primitiveCategoryCell2Colour = null;
+    private float[] primitiveEdgeColour = null;
+    private float[] primitiveCondlineColour = null;
+    private int[] lineBoxFontColour = null;
+    private int[] lineColourAttrFontColour = null;
+    private int[] lineCommentFontColour = null;
+    private int[] lineErrorUnderlineColour = null;
+    private int[] lineHighlightBackgroundColour = null;
+    private int[] lineHighlightSelectedBackgroundColour = null;
+    private int[] lineHintUnderlineColour = null;
+    private int[] linePrimaryFontColour = null;
+    private int[] lineQuadFontColour = null;
+    private int[] lineSecondaryFontColour = null;
+    private int[] lineWarningUnderlineColour = null;
+    private int[] textBackgroundColour = null;
+    private int[] textForegroundColour = null;
+    private int[] textForegroundHiddenColour = null;
+    private float[] cursor1ColourColour = null;
+    private float[] cursor2ColourColour = null;
 
     private boolean syncingTabs = false;
 
@@ -823,527 +631,460 @@ public class UserSettingState implements Serializable {
 
     void saveColours() {
 
-        color16OverrideR = View.COLOUR16_OVERRIDE_R;
-        color16OverrideG = View.COLOUR16_OVERRIDE_G;
-        color16OverrideB = View.COLOUR16_OVERRIDE_B;
-
-        bfcFrontColourR = View.BFC_FRONT_COLOUR_R;
-        bfcFrontColourG = View.BFC_FRONT_COLOUR_G;
-        bfcFrontColourB = View.BFC_FRONT_COLOUR_B;
-
-        bfcBackColourR = View.BFC_BACK__COLOUR_R;
-        bfcBackColourG = View.BFC_BACK__COLOUR_G;
-        bfcBackColourB = View.BFC_BACK__COLOUR_B;
-
-        bfcUncertifiedColourR = View.BFC_UNCERTIFIED_COLOUR_R;
-        bfcUncertifiedColourG = View.BFC_UNCERTIFIED_COLOUR_G;
-        bfcUncertifiedColourB = View.BFC_UNCERTIFIED_COLOUR_B;
-
-        vertexColourR = View.VERTEX_COLOUR_R;
-        vertexColourG = View.VERTEX_COLOUR_G;
-        vertexColourB = View.VERTEX_COLOUR_B;
-
-        vertexSelectedColourR = View.VERTEX_SELECTED_COLOUR_R;
-        vertexSelectedColourG = View.VERTEX_SELECTED_COLOUR_G;
-        vertexSelectedColourB = View.VERTEX_SELECTED_COLOUR_B;
-
-        condlineSelectedColourR = View.CONDLINE_SELECTED_COLOUR_R;
-        condlineSelectedColourG = View.CONDLINE_SELECTED_COLOUR_G;
-        condlineSelectedColourB = View.CONDLINE_SELECTED_COLOUR_B;
-
-        lineColourR = View.LINE_COLOUR_R;
-        lineColourG = View.LINE_COLOUR_G;
-        lineColourB = View.LINE_COLOUR_B;
-
-        meshlineColourR = View.MESHLINE_COLOUR_R;
-        meshlineColourG = View.MESHLINE_COLOUR_G;
-        meshlineColourB = View.MESHLINE_COLOUR_B;
-
-        condlineColourR = View.CONDLINE_COLOUR_R;
-        condlineColourG = View.CONDLINE_COLOUR_G;
-        condlineColourB = View.CONDLINE_COLOUR_B;
-
-        condlineHiddenColourR = View.CONDLINE_HIDDEN_COLOUR_R;
-        condlineHiddenColourG = View.CONDLINE_HIDDEN_COLOUR_G;
-        condlineHiddenColourB = View.CONDLINE_HIDDEN_COLOUR_B;
-
-        condlineShownColourR = View.CONDLINE_SHOWN_COLOUR_R;
-        condlineShownColourG = View.CONDLINE_SHOWN_COLOUR_G;
-        condlineShownColourB = View.CONDLINE_SHOWN_COLOUR_B;
-
-        backgroundColourR = View.BACKGROUND_COLOUR_R;
-        backgroundColourG = View.BACKGROUND_COLOUR_G;
-        backgroundColourB = View.BACKGROUND_COLOUR_B;
-
-        light1ColourR = View.LIGHT1_COLOUR_R;
-        light1ColourG = View.LIGHT1_COLOUR_G;
-        light1ColourB = View.LIGHT1_COLOUR_B;
-
-        light1SpecularColourR = View.LIGHT1_SPECULAR_COLOUR_R;
-        light1SpecularColourG = View.LIGHT1_SPECULAR_COLOUR_G;
-        light1SpecularColourB = View.LIGHT1_SPECULAR_COLOUR_B;
-
-        light2ColourR = View.LIGHT2_COLOUR_R;
-        light2ColourG = View.LIGHT2_COLOUR_G;
-        light2ColourB = View.LIGHT2_COLOUR_B;
-
-        light2SpecularColourR = View.LIGHT2_SPECULAR_COLOUR_R;
-        light2SpecularColourG = View.LIGHT2_SPECULAR_COLOUR_G;
-        light2SpecularColourB = View.LIGHT2_SPECULAR_COLOUR_B;
-
-        light3ColourR = View.LIGHT3_COLOUR_R;
-        light3ColourG = View.LIGHT3_COLOUR_G;
-        light3ColourB = View.LIGHT3_COLOUR_B;
-
-        light3SpecularColourR = View.LIGHT3_SPECULAR_COLOUR_R;
-        light3SpecularColourG = View.LIGHT3_SPECULAR_COLOUR_G;
-        light3SpecularColourB = View.LIGHT3_SPECULAR_COLOUR_B;
-
-        light4ColourR = View.LIGHT4_COLOUR_R;
-        light4ColourG = View.LIGHT4_COLOUR_G;
-        light4ColourB = View.LIGHT4_COLOUR_B;
-
-        light4SpecularColourR = View.LIGHT4_SPECULAR_COLOUR_R;
-        light4SpecularColourG = View.LIGHT4_SPECULAR_COLOUR_G;
-        light4SpecularColourB = View.LIGHT4_SPECULAR_COLOUR_B;
-
-        manipulatorSelectedColourR = View.MANIPULATOR_SELECTED_COLOUR_R;
-        manipulatorSelectedColourG = View.MANIPULATOR_SELECTED_COLOUR_G;
-        manipulatorSelectedColourB = View.MANIPULATOR_SELECTED_COLOUR_B;
-
-        manipulatorInnerCircleColourR = View.MANIPULATOR_INNERCIRCLE_COLOUR_R;
-        manipulatorInnerCircleColourG = View.MANIPULATOR_INNERCIRCLE_COLOUR_G;
-        manipulatorInnerCircleColourB = View.MANIPULATOR_INNERCIRCLE_COLOUR_B;
-
-        manipulatorOuterCircleColourR = View.MANIPULATOR_OUTERCIRCLE_COLOUR_R;
-        manipulatorOuterCircleColourG = View.MANIPULATOR_OUTERCIRCLE_COLOUR_G;
-        manipulatorOuterCircleColourB = View.MANIPULATOR_OUTERCIRCLE_COLOUR_B;
-
-        manipulatorXAxisColourR = View.MANIPULATOR_X_AXIS_COLOUR_R;
-        manipulatorXAxisColourG = View.MANIPULATOR_X_AXIS_COLOUR_G;
-        manipulatorXAxisColourB = View.MANIPULATOR_X_AXIS_COLOUR_B;
-
-        manipulatorYAxisColourR = View.MANIPULATOR_Y_AXIS_COLOUR_R;
-        manipulatorYAxisColourG = View.MANIPULATOR_Y_AXIS_COLOUR_G;
-        manipulatorYAxisColourB = View.MANIPULATOR_Y_AXIS_COLOUR_B;
-
-        manipulatorZAxisColourR = View.MANIPULATOR_Z_AXIS_COLOUR_R;
-        manipulatorZAxisColourG = View.MANIPULATOR_Z_AXIS_COLOUR_G;
-        manipulatorZAxisColourB = View.MANIPULATOR_Z_AXIS_COLOUR_B;
-
-        addObjectColourR = View.ADD_OBJECT_COLOUR_R;
-        addObjectColourG = View.ADD_OBJECT_COLOUR_G;
-        addObjectColourB = View.ADD_OBJECT_COLOUR_B;
-
-        originColourR = View.ORIGIN_COLOUR_R;
-        originColourG = View.ORIGIN_COLOUR_G;
-        originColourB = View.ORIGIN_COLOUR_B;
-
-        grid10ColourR = View.GRID10_COLOUR_R;
-        grid10ColourG = View.GRID10_COLOUR_G;
-        grid10ColourB = View.GRID10_COLOUR_B;
-
-        gridColourR = View.GRID_COLOUR_R;
-        gridColourG = View.GRID_COLOUR_B;
-        gridColourB = View.GRID_COLOUR_B;
-
-        rubberBandColourR = View.RUBBER_BAND_COLOUR_R;
-        rubberBandColourG = View.RUBBER_BAND_COLOUR_G;
-        rubberBandColourB = View.RUBBER_BAND_COLOUR_B;
-
-        textColourR = View.TEXT_COLOUR_R;
-        textColourG = View.TEXT_COLOUR_G;
-        textColourB = View.TEXT_COLOUR_B;
-
-        xAxisColourR = View.X_AXIS_COLOUR_R;
-        xAxisColourG = View.X_AXIS_COLOUR_G;
-        xAxisColourB = View.X_AXIS_COLOUR_B;
-
-        yAxisColourR = View.Y_AXIS_COLOUR_R;
-        yAxisColourG = View.Y_AXIS_COLOUR_G;
-        yAxisColourB = View.Y_AXIS_COLOUR_B;
-
-        zAxisColourR = View.Z_AXIS_COLOUR_R;
-        zAxisColourG = View.Z_AXIS_COLOUR_G;
-        zAxisColourB = View.Z_AXIS_COLOUR_B;
-
-        primitiveBackgroundColourR = View.PRIMITIVE_BACKGROUND_COLOUR_R;
-        primitiveBackgroundColourG = View.PRIMITIVE_BACKGROUND_COLOUR_G;
-        primitiveBackgroundColourB = View.PRIMITIVE_BACKGROUND_COLOUR_B;
-
-        primitiveSignFGColourR = View.PRIMITIVE_SIGN_FG_COLOUR_R;
-        primitiveSignFGColourG = View.PRIMITIVE_SIGN_FG_COLOUR_G;
-        primitiveSignFGColourB = View.PRIMITIVE_SIGN_FG_COLOUR_B;
-
-        primitiveSignBGColourR = View.PRIMITIVE_SIGN_BG_COLOUR_R;
-        primitiveSignBGColourG = View.PRIMITIVE_SIGN_BG_COLOUR_G;
-        primitiveSignBGColourB = View.PRIMITIVE_SIGN_BG_COLOUR_B;
-
-        primitivePlusAndMinusColourR = View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R;
-        primitivePlusAndMinusColourG = View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G;
-        primitivePlusAndMinusColourB = View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B;
-
-        primitiveSelectedCellColourR = View.PRIMITIVE_SELECTED_CELL_COLOUR_R;
-        primitiveSelectedCellColourG = View.PRIMITIVE_SELECTED_CELL_COLOUR_G;
-        primitiveSelectedCellColourB = View.PRIMITIVE_SELECTED_CELL_COLOUR_B;
-
-        primitiveFocusedCellColourR = View.PRIMITIVE_FOCUSED_CELL_COLOUR_R;
-        primitiveFocusedCellColourG = View.PRIMITIVE_FOCUSED_CELL_COLOUR_G;
-        primitiveFocusedCellColourB = View.PRIMITIVE_FOCUSED_CELL_COLOUR_B;
-
-        primitiveNormalCellColourR = View.PRIMITIVE_NORMAL_CELL_COLOUR_R;
-        primitiveNormalCellColourG = View.PRIMITIVE_NORMAL_CELL_COLOUR_G;
-        primitiveNormalCellColourB = View.PRIMITIVE_NORMAL_CELL_COLOUR_B;
-
-        primitiveCell1ColourR = View.PRIMITIVE_CELL_1_COLOUR_R;
-        primitiveCell1ColourG = View.PRIMITIVE_CELL_1_COLOUR_G;
-        primitiveCell1ColourB = View.PRIMITIVE_CELL_1_COLOUR_B;
-
-        primitiveCell2ColourR = View.PRIMITIVE_CELL_2_COLOUR_R;
-        primitiveCell2ColourG = View.PRIMITIVE_CELL_2_COLOUR_G;
-        primitiveCell2ColourB = View.PRIMITIVE_CELL_2_COLOUR_B;
-
-        primitiveCategoryCell1ColourR = View.PRIMITIVE_CATEGORYCELL_1_COLOUR_R;
-        primitiveCategoryCell1ColourG = View.PRIMITIVE_CATEGORYCELL_1_COLOUR_G;
-        primitiveCategoryCell1ColourB = View.PRIMITIVE_CATEGORYCELL_1_COLOUR_B;
-
-        primitiveCategoryCell2ColourR = View.PRIMITIVE_CATEGORYCELL_2_COLOUR_R;
-        primitiveCategoryCell2ColourG = View.PRIMITIVE_CATEGORYCELL_2_COLOUR_G;
-        primitiveCategoryCell2ColourB = View.PRIMITIVE_CATEGORYCELL_2_COLOUR_B;
-
-        primitiveEdgeColourR = View.PRIMITIVE_EDGE_COLOUR_R;
-        primitiveEdgeColourG = View.PRIMITIVE_EDGE_COLOUR_G;
-        primitiveEdgeColourB = View.PRIMITIVE_EDGE_COLOUR_B;
-
-        primitiveCondlineColourR = View.PRIMITIVE_CONDLINE_COLOUR_R;
-        primitiveCondlineColourG = View.PRIMITIVE_CONDLINE_COLOUR_G;
-        primitiveCondlineColourB = View.PRIMITIVE_CONDLINE_COLOUR_B;
-
-        lineBoxFontR = new int[]{Colour.lineBoxFont[0].getRed()};
-        lineBoxFontG = new int[]{Colour.lineBoxFont[0].getGreen()};
-        lineBoxFontB = new int[]{Colour.lineBoxFont[0].getBlue()};
-
-        lineColourAttrFontR = new int[]{Colour.lineColourAttrFont[0].getRed()};
-        lineColourAttrFontG = new int[]{Colour.lineColourAttrFont[0].getGreen()};
-        lineColourAttrFontB = new int[]{Colour.lineColourAttrFont[0].getBlue()};
-
-        lineCommentFontR = new int[]{Colour.lineCommentFont[0].getRed()};
-        lineCommentFontG = new int[]{Colour.lineCommentFont[0].getGreen()};
-        lineCommentFontB = new int[]{Colour.lineCommentFont[0].getBlue()};
-
-        lineErrorUnderlineR = new int[]{Colour.lineErrorUnderline[0].getRed()};
-        lineErrorUnderlineG = new int[]{Colour.lineErrorUnderline[0].getGreen()};
-        lineErrorUnderlineB = new int[]{Colour.lineErrorUnderline[0].getBlue()};
-
-        lineHighlightBackgroundR = new int[]{Colour.lineHighlightBackground[0].getRed()};
-        lineHighlightBackgroundG = new int[]{Colour.lineHighlightBackground[0].getGreen()};
-        lineHighlightBackgroundB = new int[]{Colour.lineHighlightBackground[0].getBlue()};
-
-        lineHighlightSelectedBackgroundR = new int[]{Colour.lineHighlightSelectedBackground[0].getRed()};
-        lineHighlightSelectedBackgroundG = new int[]{Colour.lineHighlightSelectedBackground[0].getGreen()};
-        lineHighlightSelectedBackgroundB = new int[]{Colour.lineHighlightSelectedBackground[0].getBlue()};
-
-        lineHintUnderlineR = new int[]{Colour.lineHintUnderline[0].getRed()};
-        lineHintUnderlineG = new int[]{Colour.lineHintUnderline[0].getGreen()};
-        lineHintUnderlineB = new int[]{Colour.lineHintUnderline[0].getBlue()};
-
-        linePrimaryFontR = new int[]{Colour.linePrimaryFont[0].getRed()};
-        linePrimaryFontG = new int[]{Colour.linePrimaryFont[0].getGreen()};
-        linePrimaryFontB = new int[]{Colour.linePrimaryFont[0].getBlue()};
-
-        lineQuadFontR = new int[]{Colour.lineQuadFont[0].getRed()};
-        lineQuadFontG = new int[]{Colour.lineQuadFont[0].getGreen()};
-        lineQuadFontB = new int[]{Colour.lineQuadFont[0].getBlue()};
-
-        lineSecondaryFontR = new int[]{Colour.lineSecondaryFont[0].getRed()};
-        lineSecondaryFontG = new int[]{Colour.lineSecondaryFont[0].getGreen()};
-        lineSecondaryFontB = new int[]{Colour.lineSecondaryFont[0].getBlue()};
-
-        lineWarningUnderlineR = new int[]{Colour.lineWarningUnderline[0].getRed()};
-        lineWarningUnderlineG = new int[]{Colour.lineWarningUnderline[0].getGreen()};
-        lineWarningUnderlineB = new int[]{Colour.lineWarningUnderline[0].getBlue()};
-
-        textBackgroundR = new int[]{Colour.textBackground[0].getRed()};
-        textBackgroundG = new int[]{Colour.textBackground[0].getGreen()};
-        textBackgroundB = new int[]{Colour.textBackground[0].getBlue()};
-
-        textForegroundR = new int[]{Colour.textForeground[0].getRed()};
-        textForegroundG = new int[]{Colour.textForeground[0].getGreen()};
-        textForegroundB = new int[]{Colour.textForeground[0].getBlue()};
-
-        textForegroundHiddenR = new int[]{Colour.textForegroundHidden[0].getRed()};
-        textForegroundHiddenG = new int[]{Colour.textForegroundHidden[0].getGreen()};
-        textForegroundHiddenB = new int[]{Colour.textForegroundHidden[0].getBlue()};
-
-        cursor1ColourR = View.CURSOR1_COLOUR_R;
-        cursor1ColourG = View.CURSOR1_COLOUR_G;
-        cursor1ColourB = View.CURSOR1_COLOUR_B;
-
-        cursor2ColourR = View.CURSOR2_COLOUR_R;
-        cursor2ColourG = View.CURSOR2_COLOUR_G;
-        cursor2ColourB = View.CURSOR2_COLOUR_B;
+        color16OverrideColour = new float[] {LDConfig.colour16overrideR,LDConfig.colour16overrideG,LDConfig.colour16overrideB};
+
+        bfcFrontColour = new float[] {Colour.bfcFrontColourR,Colour.bfcFrontColourG,Colour.bfcFrontColourB};
+        bfcBackColour = new float[] {Colour.bfcBackColourR,Colour.bfcBackColourG,Colour.bfcBackColourB};
+        bfcUncertifiedColour = new float[] {Colour.bfcUncertifiedColourR,Colour.bfcUncertifiedColourG,Colour.bfcUncertifiedColourB};
+
+        vertexColour = new float[] {Colour.vertexColourR,Colour.vertexColourG,Colour.vertexColourB};
+        vertexSelectedColour = new float[] {Colour.vertexSelectedColourR,Colour.vertexSelectedColourG,Colour.vertexSelectedColourB};
+
+        condlineSelectedColour = new float[] {Colour.condlineSelectedColourR,Colour.condlineSelectedColourG,Colour.condlineSelectedColourB};
+
+        lineColour = new float[] {Colour.lineColourR,Colour.lineColourG,Colour.lineColourB};
+
+        meshlineColour = new float[] {Colour.meshlineColourR,Colour.meshlineColourG,Colour.meshlineColourB};
+
+        condlineHiddenColour = new float[] {Colour.condlineHiddenColourR,Colour.condlineHiddenColourG,Colour.condlineHiddenColourB};
+        condlineShownColour = new float[] {Colour.condlineShownColourR,Colour.condlineShownColourG,Colour.condlineShownColourB};
+
+        backgroundColour = new float[] {Colour.backgroundColourR,Colour.backgroundColourG,Colour.backgroundColourB};
+
+        light1Colour = new float[] {Colour.light1ColourR,Colour.light1ColourG,Colour.light1ColourB};
+        light1SpecularColour = new float[] {Colour.light1SpecularColourR,Colour.light1SpecularColourG,Colour.light1SpecularColourB};
+        light2Colour = new float[] {Colour.light2ColourR,Colour.light2ColourG,Colour.light2ColourB};
+        light2SpecularColour = new float[] {Colour.light2SpecularColourR,Colour.light2SpecularColourG,Colour.light2SpecularColourB};
+        light3Colour = new float[] {Colour.light3ColourR,Colour.light3ColourG,Colour.light3ColourB};
+        light3SpecularColour = new float[] {Colour.light3SpecularColourR,Colour.light3SpecularColourG,Colour.light3SpecularColourB};
+        light4Colour = new float[] {Colour.light4ColourR,Colour.light4ColourG,Colour.light4ColourB};
+        light4SpecularColour = new float[] {Colour.light4SpecularColourR,Colour.light4SpecularColourG,Colour.light4SpecularColourB};
+
+        manipulatorSelectedColour = new float[] {Colour.manipulatorSelectedColourR,Colour.manipulatorSelectedColourG,Colour.manipulatorSelectedColourB};
+        manipulatorInnerCircleColour = new float[] {Colour.manipulatorInnerCircleColourR,Colour.manipulatorInnerCircleColourG,Colour.manipulatorInnerCircleColourB};
+        manipulatorOuterCircleColour = new float[] {Colour.manipulatorOuterCircleColourR,Colour.manipulatorOuterCircleColourG,Colour.manipulatorOuterCircleColourB};
+
+        manipulatorXAxisColour = new float[] {Colour.manipulatorXAxisColourR,Colour.manipulatorXAxisColourG,Colour.manipulatorXAxisColourB};
+        manipulatorYAxisColour = new float[] {Colour.manipulatorYAxisColourR,Colour.manipulatorYAxisColourG,Colour.manipulatorYAxisColourB};
+        manipulatorZAxisColour = new float[] {Colour.manipulatorZAxisColourR,Colour.manipulatorZAxisColourG,Colour.manipulatorZAxisColourB};
+
+        addObjectColour = new float[] {Colour.addObjectColourR,Colour.addObjectColourG,Colour.addObjectColourB};
+
+        originColour = new float[] {Colour.originColourR,Colour.originColourG,Colour.originColourB};
+
+        grid10Colour = new float[] {Colour.grid10ColourR,Colour.grid10ColourG,Colour.grid10ColourB};
+        gridColour = new float[] {Colour.gridColourR,Colour.gridColourB,Colour.gridColourB};
+
+        rubberBandColour = new float[] {Colour.rubberBandColourR,Colour.rubberBandColourG,Colour.rubberBandColourB};
+
+        textColour = new float[] {Colour.textColourR,Colour.textColourG,Colour.textColourB};
+
+        xAxisColour = new float[] {Colour.xAxisColourR,Colour.xAxisColourG,Colour.xAxisColourB};
+        yAxisColour = new float[] {Colour.yAxisColourR,Colour.yAxisColourG,Colour.yAxisColourB};
+        zAxisColour = new float[] {Colour.zAxisColourR,Colour.zAxisColourG,Colour.zAxisColourB};
+
+        primitiveBackgroundColour = new float[] {Colour.primitiveBackgroundColourR,Colour.primitiveBackgroundColourG,Colour.primitiveBackgroundColourB};
+        primitiveSignFGColour = new float[] {Colour.primitiveSignFgColourR,Colour.primitiveSignFgColourG,Colour.primitiveSignFgColourB};
+        primitiveSignBGColour = new float[] {Colour.primitiveSignBgColourR,Colour.primitiveSignBgColourG,Colour.primitiveSignBgColourB};
+        primitivePlusAndMinusColour = new float[] {Colour.primitivePlusNMinusColourR,Colour.primitivePlusNMinusColourG,Colour.primitivePlusNMinusColourB};
+
+        primitiveSelectedCellColour = new float[] {Colour.primitiveSelectedCellColourR,Colour.primitiveSelectedCellColourG,Colour.primitiveSelectedCellColourB};
+        primitiveFocusedCellColour = new float[] {Colour.primitiveFocusedCellColourR,Colour.primitiveFocusedCellColourG,Colour.primitiveFocusedCellColourB};
+        primitiveNormalCellColour = new float[] {Colour.primitiveNormalCellColourR,Colour.primitiveNormalCellColourG,Colour.primitiveNormalCellColourB};
+
+        primitiveCell1Colour = new float[] {Colour.primitiveCell1ColourR,Colour.primitiveCell1ColourG,Colour.primitiveCell1ColourB};
+        primitiveCell2Colour = new float[] {Colour.primitiveCell2ColourR,Colour.primitiveCell2ColourG,Colour.primitiveCell2ColourB};
+
+        primitiveCategoryCell1Colour = new float[] {Colour.primitiveCategoryCell1ColourR,Colour.primitiveCategoryCell1ColourG,Colour.primitiveCategoryCell1ColourB};
+        primitiveCategoryCell2Colour = new float[] {Colour.primitiveCategoryCell2ColourR,Colour.primitiveCategoryCell2ColourG,Colour.primitiveCategoryCell2ColourB};
+
+        primitiveEdgeColour = new float[] {Colour.primitiveEdgeColourR,Colour.primitiveEdgeColourG,Colour.primitiveEdgeColourB};
+        primitiveCondlineColour = new float[] {Colour.primitiveCondlineColourR,Colour.primitiveCondlineColourG,Colour.primitiveCondlineColourB};
+
+        lineBoxFontColour = new int[]{TextEditorColour.getLineBoxFont().getRed(),TextEditorColour.getLineBoxFont().getGreen(),TextEditorColour.getLineBoxFont().getBlue()};
+
+        lineColourAttrFontColour = new int[]{TextEditorColour.getLineColourAttrFont().getRed(),TextEditorColour.getLineColourAttrFont().getGreen(),TextEditorColour.getLineColourAttrFont().getBlue()};
+
+        lineCommentFontColour = new int[]{TextEditorColour.getLineCommentFont().getRed(),TextEditorColour.getLineCommentFont().getGreen(),TextEditorColour.getLineCommentFont().getBlue()};
+
+        lineWarningUnderlineColour = new int[]{TextEditorColour.getLineWarningUnderline().getRed(),TextEditorColour.getLineWarningUnderline().getGreen(),TextEditorColour.getLineWarningUnderline().getBlue()};
+        lineErrorUnderlineColour = new int[]{TextEditorColour.getLineErrorUnderline().getRed(),TextEditorColour.getLineErrorUnderline().getGreen(),TextEditorColour.getLineErrorUnderline().getBlue()};
+
+        lineHighlightBackgroundColour = new int[]{TextEditorColour.getLineHighlightBackground().getRed(),TextEditorColour.getLineHighlightBackground().getGreen(),TextEditorColour.getLineHighlightBackground().getBlue()};
+        lineHighlightSelectedBackgroundColour = new int[]{TextEditorColour.getLineHighlightSelectedBackground().getRed(),TextEditorColour.getLineHighlightSelectedBackground().getGreen(),TextEditorColour.getLineHighlightSelectedBackground().getBlue()};
+        lineHintUnderlineColour = new int[]{TextEditorColour.getLineHintUnderline().getRed(),TextEditorColour.getLineHintUnderline().getGreen(),TextEditorColour.getLineHintUnderline().getBlue()};
+
+        linePrimaryFontColour = new int[]{TextEditorColour.getLinePrimaryFont().getRed(),TextEditorColour.getLinePrimaryFont().getGreen(),TextEditorColour.getLinePrimaryFont().getBlue()};
+        lineSecondaryFontColour = new int[]{TextEditorColour.getLineSecondaryFont().getRed(),TextEditorColour.getLineSecondaryFont().getGreen(),TextEditorColour.getLineSecondaryFont().getBlue()};
+
+        lineQuadFontColour = new int[]{TextEditorColour.getLineQuadFont().getRed(),TextEditorColour.getLineQuadFont().getGreen(),TextEditorColour.getLineQuadFont().getBlue()};
+
+        textBackgroundColour = new int[]{TextEditorColour.getTextBackground().getRed(),TextEditorColour.getTextBackground().getGreen(),TextEditorColour.getTextBackground().getBlue()};
+        textForegroundColour = new int[]{TextEditorColour.getTextForeground().getRed(),TextEditorColour.getTextForeground().getGreen(),TextEditorColour.getTextForeground().getBlue()};
+
+        textForegroundHiddenColour = new int[]{TextEditorColour.getTextForegroundHidden().getRed(),TextEditorColour.getTextForegroundHidden().getGreen(),TextEditorColour.getTextForegroundHidden().getBlue()};
+
+        cursor1ColourColour = new float[] {Colour.cursor1ColourR,Colour.cursor1ColourG,Colour.cursor1ColourB};
+        cursor2ColourColour = new float[] {Colour.cursor2ColourR,Colour.cursor2ColourG,Colour.cursor2ColourB};
     }
 
+    @SuppressWarnings("java:S2696")
     public void loadColours() {
 
-        if (color16OverrideR != null) View.COLOUR16_OVERRIDE_R[0] = color16OverrideR[0];
-        if (color16OverrideG != null) View.COLOUR16_OVERRIDE_G[0] = color16OverrideG[0];
-        if (color16OverrideB != null) View.COLOUR16_OVERRIDE_B[0] = color16OverrideB[0];
-
-        if (bfcFrontColourR != null) View.BFC_FRONT_COLOUR_R[0] = bfcFrontColourR[0];
-        if (bfcFrontColourG != null) View.BFC_FRONT_COLOUR_G[0] = bfcFrontColourG[0];
-        if (bfcFrontColourB != null) View.BFC_FRONT_COLOUR_B[0] = bfcFrontColourB[0];
-
-        if (bfcBackColourR != null) View.BFC_BACK__COLOUR_R[0] = bfcBackColourR[0];
-        if (bfcBackColourG != null) View.BFC_BACK__COLOUR_G[0] = bfcBackColourG[0];
-        if (bfcBackColourB != null) View.BFC_BACK__COLOUR_B[0] = bfcBackColourB[0];
-
-        if (bfcUncertifiedColourR != null) View.BFC_UNCERTIFIED_COLOUR_R[0] = bfcUncertifiedColourR[0];
-        if (bfcUncertifiedColourG != null) View.BFC_UNCERTIFIED_COLOUR_G[0] = bfcUncertifiedColourG[0];
-        if (bfcUncertifiedColourB != null) View.BFC_UNCERTIFIED_COLOUR_B[0] = bfcUncertifiedColourB[0];
-
-        if (vertexColourR != null) View.VERTEX_COLOUR_R[0] = vertexColourR[0];
-        if (vertexColourG != null) View.VERTEX_COLOUR_G[0] = vertexColourG[0];
-        if (vertexColourB != null) View.VERTEX_COLOUR_B[0] = vertexColourB[0];
-
-        if (vertexSelectedColourR != null) View.VERTEX_SELECTED_COLOUR_R[0] = vertexSelectedColourR[0];
-        if (vertexSelectedColourG != null) View.VERTEX_SELECTED_COLOUR_G[0] = vertexSelectedColourG[0];
-        if (vertexSelectedColourB != null) View.VERTEX_SELECTED_COLOUR_B[0] = vertexSelectedColourB[0];
-
-        if (condlineSelectedColourR != null) View.CONDLINE_SELECTED_COLOUR_R[0] = condlineSelectedColourR[0];
-        if (condlineSelectedColourG != null) View.CONDLINE_SELECTED_COLOUR_G[0] = condlineSelectedColourG[0];
-        if (condlineSelectedColourB != null) View.CONDLINE_SELECTED_COLOUR_B[0] = condlineSelectedColourB[0];
-
-        if (lineColourR != null) View.LINE_COLOUR_R[0] = lineColourR[0];
-        if (lineColourG != null) View.LINE_COLOUR_G[0] = lineColourG[0];
-        if (lineColourB != null) View.LINE_COLOUR_B[0] = lineColourB[0];
-
-        if (meshlineColourR != null) View.MESHLINE_COLOUR_R[0] = meshlineColourR[0];
-        if (meshlineColourG != null) View.MESHLINE_COLOUR_G[0] = meshlineColourG[0];
-        if (meshlineColourB != null) View.MESHLINE_COLOUR_B[0] = meshlineColourB[0];
-
-        if (condlineColourR != null) View.CONDLINE_COLOUR_R[0] = condlineColourR[0];
-        if (condlineColourG != null) View.CONDLINE_COLOUR_G[0] = condlineColourG[0];
-        if (condlineColourB != null) View.CONDLINE_COLOUR_B[0] = condlineColourB[0];
-
-        if (condlineHiddenColourR != null) View.CONDLINE_HIDDEN_COLOUR_R[0] = condlineHiddenColourR[0];
-        if (condlineHiddenColourG != null) View.CONDLINE_HIDDEN_COLOUR_G[0] = condlineHiddenColourG[0];
-        if (condlineHiddenColourB != null) View.CONDLINE_HIDDEN_COLOUR_B[0] = condlineHiddenColourB[0];
-
-        if (condlineShownColourR != null) View.CONDLINE_SHOWN_COLOUR_R[0] = condlineShownColourR[0];
-        if (condlineShownColourG != null) View.CONDLINE_SHOWN_COLOUR_G[0] = condlineShownColourG[0];
-        if (condlineShownColourB != null) View.CONDLINE_SHOWN_COLOUR_B[0] = condlineShownColourB[0];
-
-        if (backgroundColourR != null) View.BACKGROUND_COLOUR_R[0] = backgroundColourR[0];
-        if (backgroundColourG != null) View.BACKGROUND_COLOUR_G[0] = backgroundColourG[0];
-        if (backgroundColourB != null) View.BACKGROUND_COLOUR_B[0] = backgroundColourB[0];
-
-        if (light1ColourR != null) View.LIGHT1_COLOUR_R[0] = light1ColourR[0];
-        if (light1ColourG != null) View.LIGHT1_COLOUR_G[0] = light1ColourG[0];
-        if (light1ColourB != null) View.LIGHT1_COLOUR_B[0] = light1ColourB[0];
-
-        if (light1SpecularColourR != null) View.LIGHT1_SPECULAR_COLOUR_R[0] = light1SpecularColourR[0];
-        if (light1SpecularColourG != null) View.LIGHT1_SPECULAR_COLOUR_G[0] = light1SpecularColourG[0];
-        if (light1SpecularColourB != null) View.LIGHT1_SPECULAR_COLOUR_B[0] = light1SpecularColourB[0];
-
-        if (light2ColourR != null) View.LIGHT2_COLOUR_R[0] = light2ColourR[0];
-        if (light2ColourG != null) View.LIGHT2_COLOUR_G[0] = light2ColourG[0];
-        if (light2ColourB != null) View.LIGHT2_COLOUR_B[0] = light2ColourB[0];
-
-        if (light2SpecularColourR != null) View.LIGHT2_SPECULAR_COLOUR_R[0] = light2SpecularColourR[0];
-        if (light2SpecularColourG != null) View.LIGHT2_SPECULAR_COLOUR_G[0] = light2SpecularColourG[0];
-        if (light2SpecularColourB != null) View.LIGHT2_SPECULAR_COLOUR_B[0] = light2SpecularColourB[0];
-
-        if (light3ColourR != null) View.LIGHT3_COLOUR_R[0] = light3ColourR[0];
-        if (light3ColourG != null) View.LIGHT3_COLOUR_G[0] = light3ColourG[0];
-        if (light3ColourB != null) View.LIGHT3_COLOUR_B[0] = light3ColourB[0];
-
-        if (light3SpecularColourR != null) View.LIGHT3_SPECULAR_COLOUR_R[0] = light3SpecularColourR[0];
-        if (light3SpecularColourG != null) View.LIGHT3_SPECULAR_COLOUR_G[0] = light3SpecularColourG[0];
-        if (light3SpecularColourB != null) View.LIGHT3_SPECULAR_COLOUR_B[0] = light3SpecularColourB[0];
-
-        if (light4ColourR != null) View.LIGHT4_COLOUR_R[0] = light4ColourR[0];
-        if (light4ColourG != null) View.LIGHT4_COLOUR_G[0] = light4ColourG[0];
-        if (light4ColourB != null) View.LIGHT4_COLOUR_B[0] = light4ColourB[0];
-
-        if (light4SpecularColourR != null) View.LIGHT4_SPECULAR_COLOUR_R[0] = light4SpecularColourR[0];
-        if (light4SpecularColourG != null) View.LIGHT4_SPECULAR_COLOUR_G[0] = light4SpecularColourG[0];
-        if (light4SpecularColourB != null) View.LIGHT4_SPECULAR_COLOUR_B[0] = light4SpecularColourB[0];
-
-        if (manipulatorSelectedColourR != null) View.MANIPULATOR_SELECTED_COLOUR_R[0] = manipulatorSelectedColourR[0];
-        if (manipulatorSelectedColourG != null) View.MANIPULATOR_SELECTED_COLOUR_G[0] = manipulatorSelectedColourG[0];
-        if (manipulatorSelectedColourB != null) View.MANIPULATOR_SELECTED_COLOUR_B[0] = manipulatorSelectedColourB[0];
-
-        if (manipulatorInnerCircleColourR != null) View.MANIPULATOR_INNERCIRCLE_COLOUR_R[0] = manipulatorInnerCircleColourR[0];
-        if (manipulatorInnerCircleColourG != null) View.MANIPULATOR_INNERCIRCLE_COLOUR_G[0] = manipulatorInnerCircleColourG[0];
-        if (manipulatorInnerCircleColourB != null) View.MANIPULATOR_INNERCIRCLE_COLOUR_B[0] = manipulatorInnerCircleColourB[0];
-
-        if (manipulatorOuterCircleColourR != null) View.MANIPULATOR_OUTERCIRCLE_COLOUR_R[0] = manipulatorOuterCircleColourR[0];
-        if (manipulatorOuterCircleColourG != null) View.MANIPULATOR_OUTERCIRCLE_COLOUR_G[0] = manipulatorOuterCircleColourG[0];
-        if (manipulatorOuterCircleColourB != null) View.MANIPULATOR_OUTERCIRCLE_COLOUR_B[0] = manipulatorOuterCircleColourB[0];
-
-        if (manipulatorXAxisColourR != null) View.MANIPULATOR_X_AXIS_COLOUR_R[0] = manipulatorXAxisColourR[0];
-        if (manipulatorXAxisColourG != null) View.MANIPULATOR_X_AXIS_COLOUR_G[0] = manipulatorXAxisColourG[0];
-        if (manipulatorXAxisColourB != null) View.MANIPULATOR_X_AXIS_COLOUR_B[0] = manipulatorXAxisColourB[0];
-
-        if (manipulatorYAxisColourR != null) View.MANIPULATOR_Y_AXIS_COLOUR_R[0] = manipulatorYAxisColourR[0];
-        if (manipulatorYAxisColourG != null) View.MANIPULATOR_Y_AXIS_COLOUR_G[0] = manipulatorYAxisColourG[0];
-        if (manipulatorYAxisColourB != null) View.MANIPULATOR_Y_AXIS_COLOUR_B[0] = manipulatorYAxisColourB[0];
-
-        if (manipulatorZAxisColourR != null) View.MANIPULATOR_Z_AXIS_COLOUR_R[0] = manipulatorZAxisColourR[0];
-        if (manipulatorZAxisColourG != null) View.MANIPULATOR_Z_AXIS_COLOUR_G[0] = manipulatorZAxisColourG[0];
-        if (manipulatorZAxisColourB != null) View.MANIPULATOR_Z_AXIS_COLOUR_B[0] = manipulatorZAxisColourB[0];
-
-        if (addObjectColourR != null) View.ADD_OBJECT_COLOUR_R[0] = addObjectColourR[0];
-        if (addObjectColourG != null) View.ADD_OBJECT_COLOUR_G[0] = addObjectColourG[0];
-        if (addObjectColourB != null) View.ADD_OBJECT_COLOUR_B[0] = addObjectColourB[0];
-
-        if (originColourR != null) View.ORIGIN_COLOUR_R[0] = originColourR[0];
-        if (originColourG != null) View.ORIGIN_COLOUR_G[0] = originColourG[0];
-        if (originColourB != null) View.ORIGIN_COLOUR_B[0] = originColourB[0];
-
-        if (grid10ColourR != null) View.GRID10_COLOUR_R[0] = grid10ColourR[0];
-        if (grid10ColourG != null) View.GRID10_COLOUR_G[0] = grid10ColourG[0];
-        if (grid10ColourB != null) View.GRID10_COLOUR_B[0] = grid10ColourB[0];
-
-        if (gridColourR != null) View.GRID_COLOUR_R[0] = gridColourR[0];
-        if (gridColourG != null) View.GRID_COLOUR_G[0] = gridColourG[0];
-        if (gridColourB != null) View.GRID_COLOUR_B[0] = gridColourB[0];
-
-        if (rubberBandColourR != null) View.RUBBER_BAND_COLOUR_R[0] = rubberBandColourR[0];
-        if (rubberBandColourG != null) View.RUBBER_BAND_COLOUR_G[0] = rubberBandColourG[0];
-        if (rubberBandColourB != null) View.RUBBER_BAND_COLOUR_B[0] = rubberBandColourB[0];
-
-        if (textColourR != null) View.TEXT_COLOUR_R[0] = textColourR[0];
-        if (textColourG != null) View.TEXT_COLOUR_G[0] = textColourG[0];
-        if (textColourB != null) View.TEXT_COLOUR_B[0] = textColourB[0];
-
-        if (xAxisColourR != null) View.X_AXIS_COLOUR_R[0] = xAxisColourR[0];
-        if (xAxisColourG != null) View.X_AXIS_COLOUR_G[0] = xAxisColourG[0];
-        if (xAxisColourB != null) View.X_AXIS_COLOUR_B[0] = xAxisColourB[0];
-
-        if (yAxisColourR != null) View.Y_AXIS_COLOUR_R[0] = yAxisColourR[0];
-        if (yAxisColourG != null) View.Y_AXIS_COLOUR_G[0] = yAxisColourG[0];
-        if (yAxisColourB != null) View.Y_AXIS_COLOUR_B[0] = yAxisColourB[0];
-
-        if (zAxisColourR != null) View.Z_AXIS_COLOUR_R[0] = zAxisColourR[0];
-        if (zAxisColourG != null) View.Z_AXIS_COLOUR_G[0] = zAxisColourG[0];
-        if (zAxisColourB != null) View.Z_AXIS_COLOUR_B[0] = zAxisColourB[0];
-
-        if (primitiveBackgroundColourR != null) View.PRIMITIVE_BACKGROUND_COLOUR_R[0] = primitiveBackgroundColourR[0];
-        if (primitiveBackgroundColourG != null) View.PRIMITIVE_BACKGROUND_COLOUR_G[0] = primitiveBackgroundColourG[0];
-        if (primitiveBackgroundColourB != null) View.PRIMITIVE_BACKGROUND_COLOUR_B[0] = primitiveBackgroundColourB[0];
-
-        if (primitiveSignFGColourR != null) View.PRIMITIVE_SIGN_FG_COLOUR_R[0] = primitiveSignFGColourR[0];
-        if (primitiveSignFGColourG != null) View.PRIMITIVE_SIGN_FG_COLOUR_G[0] = primitiveSignFGColourG[0];
-        if (primitiveSignFGColourB != null) View.PRIMITIVE_SIGN_FG_COLOUR_B[0] = primitiveSignFGColourB[0];
-
-        if (primitiveSignBGColourR != null) View.PRIMITIVE_SIGN_BG_COLOUR_R[0] = primitiveSignBGColourR[0];
-        if (primitiveSignBGColourG != null) View.PRIMITIVE_SIGN_BG_COLOUR_G[0] = primitiveSignBGColourG[0];
-        if (primitiveSignBGColourB != null) View.PRIMITIVE_SIGN_BG_COLOUR_B[0] = primitiveSignBGColourB[0];
-
-        if (primitivePlusAndMinusColourR != null) View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0] = primitivePlusAndMinusColourR[0];
-        if (primitivePlusAndMinusColourG != null) View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0] = primitivePlusAndMinusColourG[0];
-        if (primitivePlusAndMinusColourB != null) View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0] = primitivePlusAndMinusColourB[0];
-
-        if (primitiveSelectedCellColourR != null) View.PRIMITIVE_SELECTED_CELL_COLOUR_R[0] = primitiveSelectedCellColourR[0];
-        if (primitiveSelectedCellColourG != null) View.PRIMITIVE_SELECTED_CELL_COLOUR_G[0] = primitiveSelectedCellColourG[0];
-        if (primitiveSelectedCellColourB != null) View.PRIMITIVE_SELECTED_CELL_COLOUR_B[0] = primitiveSelectedCellColourB[0];
-
-        if (primitiveFocusedCellColourR != null) View.PRIMITIVE_FOCUSED_CELL_COLOUR_R[0] = primitiveFocusedCellColourR[0];
-        if (primitiveFocusedCellColourG != null) View.PRIMITIVE_FOCUSED_CELL_COLOUR_G[0] = primitiveFocusedCellColourG[0];
-        if (primitiveFocusedCellColourB != null) View.PRIMITIVE_FOCUSED_CELL_COLOUR_B[0] = primitiveFocusedCellColourB[0];
-
-        if (primitiveNormalCellColourR != null) View.PRIMITIVE_NORMAL_CELL_COLOUR_R[0] = primitiveNormalCellColourR[0];
-        if (primitiveNormalCellColourG != null) View.PRIMITIVE_NORMAL_CELL_COLOUR_G[0] = primitiveNormalCellColourG[0];
-        if (primitiveNormalCellColourB != null) View.PRIMITIVE_NORMAL_CELL_COLOUR_B[0] = primitiveNormalCellColourB[0];
-
-        if (primitiveCell1ColourR != null) View.PRIMITIVE_CELL_1_COLOUR_R[0] = primitiveCell1ColourR[0];
-        if (primitiveCell1ColourG != null) View.PRIMITIVE_CELL_1_COLOUR_G[0] = primitiveCell1ColourG[0];
-        if (primitiveCell1ColourB != null) View.PRIMITIVE_CELL_1_COLOUR_B[0] = primitiveCell1ColourB[0];
-
-        if (primitiveCell2ColourR != null) View.PRIMITIVE_CELL_2_COLOUR_R[0] = primitiveCell2ColourR[0];
-        if (primitiveCell2ColourG != null) View.PRIMITIVE_CELL_2_COLOUR_G[0] = primitiveCell2ColourG[0];
-        if (primitiveCell2ColourB != null) View.PRIMITIVE_CELL_2_COLOUR_B[0] = primitiveCell2ColourB[0];
-
-        if (primitiveCategoryCell1ColourR != null) View.PRIMITIVE_CATEGORYCELL_1_COLOUR_R[0] = primitiveCategoryCell1ColourR[0];
-        if (primitiveCategoryCell1ColourG != null) View.PRIMITIVE_CATEGORYCELL_1_COLOUR_G[0] = primitiveCategoryCell1ColourG[0];
-        if (primitiveCategoryCell1ColourB != null) View.PRIMITIVE_CATEGORYCELL_1_COLOUR_B[0] = primitiveCategoryCell1ColourB[0];
-
-        if (primitiveCategoryCell2ColourR != null) View.PRIMITIVE_CATEGORYCELL_2_COLOUR_R[0] = primitiveCategoryCell2ColourR[0];
-        if (primitiveCategoryCell2ColourG != null) View.PRIMITIVE_CATEGORYCELL_2_COLOUR_G[0] = primitiveCategoryCell2ColourG[0];
-        if (primitiveCategoryCell2ColourB != null) View.PRIMITIVE_CATEGORYCELL_2_COLOUR_B[0] = primitiveCategoryCell2ColourB[0];
-
-        if (primitiveEdgeColourR != null) View.PRIMITIVE_EDGE_COLOUR_R[0] = primitiveEdgeColourR[0];
-        if (primitiveEdgeColourG != null) View.PRIMITIVE_EDGE_COLOUR_G[0] = primitiveEdgeColourG[0];
-        if (primitiveEdgeColourB != null) View.PRIMITIVE_EDGE_COLOUR_B[0] = primitiveEdgeColourB[0];
-
-        if (primitiveCondlineColourR != null) View.PRIMITIVE_CONDLINE_COLOUR_R[0] = primitiveCondlineColourR[0];
-        if (primitiveCondlineColourG != null) View.PRIMITIVE_CONDLINE_COLOUR_G[0] = primitiveCondlineColourG[0];
-        if (primitiveCondlineColourB != null) View.PRIMITIVE_CONDLINE_COLOUR_B[0] = primitiveCondlineColourB[0];
-
-        if (cursor1ColourR != null) View.CURSOR1_COLOUR_R[0] = cursor1ColourR[0];
-        if (cursor1ColourG != null) View.CURSOR1_COLOUR_G[0] = cursor1ColourG[0];
-        if (cursor1ColourB != null) View.CURSOR1_COLOUR_B[0] = cursor1ColourB[0];
-
-        if (cursor2ColourR != null) View.CURSOR2_COLOUR_R[0] = cursor2ColourR[0];
-        if (cursor2ColourG != null) View.CURSOR2_COLOUR_G[0] = cursor2ColourG[0];
-        if (cursor2ColourB != null) View.CURSOR2_COLOUR_B[0] = cursor2ColourB[0];
-
-        if (lineBoxFontR != null) {
-            Colour.lineBoxFont[0] = SWTResourceManager.getColor(lineBoxFontR[0], lineBoxFontG[0], lineBoxFontB[0]);
+        if (color16OverrideColour != null) {
+            LDConfig.colour16overrideR = color16OverrideColour[0];
+            LDConfig.colour16overrideG = color16OverrideColour[1];
+            LDConfig.colour16overrideB = color16OverrideColour[2];
         }
 
-        if (lineColourAttrFontR != null) {
-            Colour.lineColourAttrFont[0] = SWTResourceManager.getColor(lineColourAttrFontR[0], lineColourAttrFontG[0], lineColourAttrFontB[0]);
+        if (bfcFrontColour != null) {
+            Colour.bfcFrontColourR = bfcFrontColour[0];
+            Colour.bfcFrontColourG = bfcFrontColour[1];
+            Colour.bfcFrontColourB = bfcFrontColour[2];
         }
 
-        if (lineCommentFontR != null) {
-            Colour.lineCommentFont[0] = SWTResourceManager.getColor(lineCommentFontR[0], lineCommentFontG[0], lineCommentFontB[0]);
+        if (bfcBackColour != null) {
+            Colour.bfcBackColourR = bfcBackColour[0];
+            Colour.bfcBackColourG = bfcBackColour[1];
+            Colour.bfcBackColourB = bfcBackColour[2];
         }
 
-        if (lineErrorUnderlineR != null) {
-            Colour.lineErrorUnderline[0] = SWTResourceManager.getColor(lineErrorUnderlineR[0], lineErrorUnderlineG[0], lineErrorUnderlineB[0]);
+        if (bfcUncertifiedColour != null) {
+            Colour.bfcUncertifiedColourR = bfcUncertifiedColour[0];
+            Colour.bfcUncertifiedColourG = bfcUncertifiedColour[1];
+            Colour.bfcUncertifiedColourB = bfcUncertifiedColour[2];
         }
 
-        if (lineHighlightBackgroundR != null) {
-            Colour.lineHighlightBackground[0] = SWTResourceManager.getColor(lineHighlightBackgroundR[0], lineHighlightBackgroundG[0], lineHighlightBackgroundB[0]);
+        if (vertexColour != null) {
+            Colour.vertexColourR = vertexColour[0];
+            Colour.vertexColourG = vertexColour[1];
+            Colour.vertexColourB = vertexColour[2];
         }
 
-        if (lineHighlightSelectedBackgroundR != null) {
-            Colour.lineHighlightSelectedBackground[0] = SWTResourceManager.getColor(lineHighlightSelectedBackgroundR[0], lineHighlightSelectedBackgroundG[0], lineHighlightSelectedBackgroundB[0]);
+        if (vertexSelectedColour != null) {
+            Colour.vertexSelectedColourR = vertexSelectedColour[0];
+            Colour.vertexSelectedColourG = vertexSelectedColour[1];
+            Colour.vertexSelectedColourB = vertexSelectedColour[2];
         }
 
-        if (lineHintUnderlineR != null) {
-            Colour.lineHintUnderline[0] = SWTResourceManager.getColor(lineHintUnderlineR[0], lineHintUnderlineG[0], lineHintUnderlineB[0]);
+        if (condlineSelectedColour != null) {
+            Colour.condlineSelectedColourR = condlineSelectedColour[0];
+            Colour.condlineSelectedColourG = condlineSelectedColour[1];
+            Colour.condlineSelectedColourB = condlineSelectedColour[2];
         }
 
-        if (linePrimaryFontR != null) {
-            Colour.linePrimaryFont[0] = SWTResourceManager.getColor(linePrimaryFontR[0], linePrimaryFontG[0], linePrimaryFontB[0]);
+        if (lineColour != null) {
+            Colour.lineColourR = lineColour[0];
+            Colour.lineColourG = lineColour[1];
+            Colour.lineColourB = lineColour[2];
         }
 
-        if (lineQuadFontR != null) {
-            Colour.lineQuadFont[0] = SWTResourceManager.getColor(lineQuadFontR[0], lineQuadFontG[0], lineQuadFontB[0]);
+        if (meshlineColour != null) {
+            Colour.meshlineColourR = meshlineColour[0];
+            Colour.meshlineColourG = meshlineColour[1];
+            Colour.meshlineColourB = meshlineColour[2];
         }
 
-        if (lineSecondaryFontR != null) {
-            Colour.lineSecondaryFont[0] = SWTResourceManager.getColor(lineSecondaryFontR[0], lineSecondaryFontG[0], lineSecondaryFontB[0]);
+        if (condlineHiddenColour != null) {
+            Colour.condlineHiddenColourR = condlineHiddenColour[0];
+            Colour.condlineHiddenColourG = condlineHiddenColour[1];
+            Colour.condlineHiddenColourB = condlineHiddenColour[2];
         }
 
-        if (lineWarningUnderlineR != null) {
-            Colour.lineWarningUnderline[0] = SWTResourceManager.getColor(lineWarningUnderlineR[0], lineWarningUnderlineG[0], lineWarningUnderlineB[0]);
+        if (condlineShownColour != null) {
+            Colour.condlineShownColourR = condlineShownColour[0];
+            Colour.condlineShownColourG = condlineShownColour[1];
+            Colour.condlineShownColourB = condlineShownColour[2];
         }
 
-        if (textBackgroundR != null) {
-            Colour.textBackground[0] = SWTResourceManager.getColor(textBackgroundR[0], textBackgroundG[0], textBackgroundB[0]);
+        if (backgroundColour != null) {
+            Colour.backgroundColourR = backgroundColour[0];
+            Colour.backgroundColourG = backgroundColour[1];
+            Colour.backgroundColourB = backgroundColour[2];
         }
 
-        if (textForegroundR != null) {
-            Colour.textForeground[0] = SWTResourceManager.getColor(textForegroundR[0], textForegroundG[0], textForegroundB[0]);
+        if (light1Colour != null) {
+            Colour.light1ColourR = light1Colour[0];
+            Colour.light1ColourG = light1Colour[1];
+            Colour.light1ColourB = light1Colour[2];
         }
 
-        if (textForegroundHiddenR != null) {
-            Colour.textForegroundHidden[0] = SWTResourceManager.getColor(textForegroundHiddenR[0], textForegroundHiddenG[0], textForegroundHiddenB[0]);
+        if (light1SpecularColour != null) {
+            Colour.light1SpecularColourR = light1SpecularColour[0];
+            Colour.light1SpecularColourG = light1SpecularColour[1];
+            Colour.light1SpecularColourB = light1SpecularColour[2];
+        }
+
+        if (light2Colour != null) {
+            Colour.light2ColourR = light2Colour[0];
+            Colour.light2ColourG = light2Colour[1];
+            Colour.light2ColourB = light2Colour[2];
+        }
+
+        if (light2SpecularColour != null) {
+            Colour.light2SpecularColourR = light2SpecularColour[0];
+            Colour.light2SpecularColourG = light2SpecularColour[1];
+            Colour.light2SpecularColourB = light2SpecularColour[2];
+        }
+
+        if (light3Colour != null) {
+            Colour.light3ColourR = light3Colour[0];
+            Colour.light3ColourG = light3Colour[1];
+            Colour.light3ColourB = light3Colour[2];
+        }
+
+        if (light3SpecularColour != null) {
+            Colour.light3SpecularColourR = light3SpecularColour[0];
+            Colour.light3SpecularColourG = light3SpecularColour[1];
+            Colour.light3SpecularColourB = light3SpecularColour[2];
+        }
+
+        if (light4Colour != null) {
+            Colour.light4ColourR = light4Colour[0];
+            Colour.light4ColourG = light4Colour[1];
+            Colour.light4ColourB = light4Colour[2];
+        }
+
+        if (light4SpecularColour != null) {
+            Colour.light4SpecularColourR = light4SpecularColour[0];
+            Colour.light4SpecularColourG = light4SpecularColour[1];
+            Colour.light4SpecularColourB = light4SpecularColour[2];
+        }
+
+        if (manipulatorSelectedColour != null) {
+            Colour.manipulatorSelectedColourR = manipulatorSelectedColour[0];
+            Colour.manipulatorSelectedColourG = manipulatorSelectedColour[1];
+            Colour.manipulatorSelectedColourB = manipulatorSelectedColour[2];
+        }
+
+        if (manipulatorInnerCircleColour != null) {
+            Colour.manipulatorInnerCircleColourR = manipulatorInnerCircleColour[0];
+            Colour.manipulatorInnerCircleColourG = manipulatorInnerCircleColour[1];
+            Colour.manipulatorInnerCircleColourB = manipulatorInnerCircleColour[2];
+        }
+
+        if (manipulatorOuterCircleColour != null) {
+            Colour.manipulatorOuterCircleColourR = manipulatorOuterCircleColour[0];
+            Colour.manipulatorOuterCircleColourG = manipulatorOuterCircleColour[1];
+            Colour.manipulatorOuterCircleColourB = manipulatorOuterCircleColour[2];
+        }
+
+        if (manipulatorXAxisColour != null) {
+            Colour.manipulatorXAxisColourR = manipulatorXAxisColour[0];
+            Colour.manipulatorXAxisColourG = manipulatorXAxisColour[1];
+            Colour.manipulatorXAxisColourB = manipulatorXAxisColour[2];
+        }
+
+        if (manipulatorYAxisColour != null) {
+            Colour.manipulatorYAxisColourR = manipulatorYAxisColour[0];
+            Colour.manipulatorYAxisColourG = manipulatorYAxisColour[1];
+            Colour.manipulatorYAxisColourB = manipulatorYAxisColour[2];
+        }
+
+        if (manipulatorZAxisColour != null) {
+            Colour.manipulatorZAxisColourR = manipulatorZAxisColour[0];
+            Colour.manipulatorZAxisColourG = manipulatorZAxisColour[1];
+            Colour.manipulatorZAxisColourB = manipulatorZAxisColour[2];
+        }
+
+        if (addObjectColour != null) {
+            Colour.addObjectColourR = addObjectColour[0];
+            Colour.addObjectColourG = addObjectColour[1];
+            Colour.addObjectColourB = addObjectColour[2];
+        }
+
+        if (originColour != null) {
+            Colour.originColourR = originColour[0];
+            Colour.originColourG = originColour[1];
+            Colour.originColourB = originColour[2];
+        }
+
+        if (grid10Colour != null) {
+            Colour.grid10ColourR = grid10Colour[0];
+            Colour.grid10ColourG = grid10Colour[1];
+            Colour.grid10ColourB = grid10Colour[2];
+        }
+
+        if (gridColour != null) {
+            Colour.gridColourR = gridColour[0];
+            Colour.gridColourG = gridColour[1];
+            Colour.gridColourB = gridColour[2];
+        }
+
+        if (rubberBandColour != null) {
+            Colour.rubberBandColourR = rubberBandColour[0];
+            Colour.rubberBandColourG = rubberBandColour[1];
+            Colour.rubberBandColourB = rubberBandColour[2];
+        }
+
+        if (textColour != null) {
+            Colour.textColourR = textColour[0];
+            Colour.textColourG = textColour[1];
+            Colour.textColourB = textColour[2];
+        }
+
+        if (xAxisColour != null) {
+            Colour.xAxisColourR = xAxisColour[0];
+            Colour.xAxisColourG = xAxisColour[1];
+            Colour.xAxisColourB = xAxisColour[2];
+        }
+
+        if (yAxisColour != null) {
+            Colour.yAxisColourR = yAxisColour[0];
+            Colour.yAxisColourG = yAxisColour[1];
+            Colour.yAxisColourB = yAxisColour[2];
+        }
+
+        if (zAxisColour != null) {
+            Colour.zAxisColourR = zAxisColour[0];
+            Colour.zAxisColourG = zAxisColour[1];
+            Colour.zAxisColourB = zAxisColour[2];
+        }
+
+        if (primitiveBackgroundColour != null) {
+            Colour.primitiveBackgroundColourR = primitiveBackgroundColour[0];
+            Colour.primitiveBackgroundColourG = primitiveBackgroundColour[1];
+            Colour.primitiveBackgroundColourB = primitiveBackgroundColour[2];
+        }
+
+        if (primitiveSignFGColour != null) {
+            Colour.primitiveSignFgColourR = primitiveSignFGColour[0];
+            Colour.primitiveSignFgColourG = primitiveSignFGColour[1];
+            Colour.primitiveSignFgColourB = primitiveSignFGColour[2];
+        }
+
+        if (primitiveSignBGColour != null) {
+            Colour.primitiveSignBgColourR = primitiveSignBGColour[0];
+            Colour.primitiveSignBgColourG = primitiveSignBGColour[1];
+            Colour.primitiveSignBgColourB = primitiveSignBGColour[2];
+        }
+
+        if (primitivePlusAndMinusColour != null) {
+            Colour.primitivePlusNMinusColourR = primitivePlusAndMinusColour[0];
+            Colour.primitivePlusNMinusColourG = primitivePlusAndMinusColour[1];
+            Colour.primitivePlusNMinusColourB = primitivePlusAndMinusColour[2];
+        }
+
+        if (primitiveSelectedCellColour != null) {
+            Colour.primitiveSelectedCellColourR = primitiveSelectedCellColour[0];
+            Colour.primitiveSelectedCellColourG = primitiveSelectedCellColour[1];
+            Colour.primitiveSelectedCellColourB = primitiveSelectedCellColour[2];
+        }
+
+        if (primitiveFocusedCellColour != null) {
+            Colour.primitiveFocusedCellColourR = primitiveFocusedCellColour[0];
+            Colour.primitiveFocusedCellColourG = primitiveFocusedCellColour[1];
+            Colour.primitiveFocusedCellColourB = primitiveFocusedCellColour[2];
+        }
+
+        if (primitiveNormalCellColour != null) {
+            Colour.primitiveNormalCellColourR = primitiveNormalCellColour[0];
+            Colour.primitiveNormalCellColourG = primitiveNormalCellColour[1];
+            Colour.primitiveNormalCellColourB = primitiveNormalCellColour[2];
+        }
+
+        if (primitiveCell1Colour != null) {
+            Colour.primitiveCell1ColourR = primitiveCell1Colour[0];
+            Colour.primitiveCell1ColourG = primitiveCell1Colour[1];
+            Colour.primitiveCell1ColourB = primitiveCell1Colour[2];
+        }
+
+        if (primitiveCell2Colour != null) {
+            Colour.primitiveCell2ColourR = primitiveCell2Colour[0];
+            Colour.primitiveCell2ColourG = primitiveCell2Colour[1];
+            Colour.primitiveCell2ColourB = primitiveCell2Colour[2];
+        }
+
+        if (primitiveCategoryCell1Colour != null) {
+            Colour.primitiveCategoryCell1ColourR = primitiveCategoryCell1Colour[0];
+            Colour.primitiveCategoryCell1ColourG = primitiveCategoryCell1Colour[1];
+            Colour.primitiveCategoryCell1ColourB = primitiveCategoryCell1Colour[2];
+        }
+
+        if (primitiveCategoryCell2Colour != null) {
+            Colour.primitiveCategoryCell2ColourR = primitiveCategoryCell2Colour[0];
+            Colour.primitiveCategoryCell2ColourG = primitiveCategoryCell2Colour[1];
+            Colour.primitiveCategoryCell2ColourB = primitiveCategoryCell2Colour[2];
+        }
+
+        if (primitiveEdgeColour != null) {
+            Colour.primitiveEdgeColourR = primitiveEdgeColour[0];
+            Colour.primitiveEdgeColourG = primitiveEdgeColour[1];
+            Colour.primitiveEdgeColourB = primitiveEdgeColour[2];
+        }
+
+        if (primitiveCondlineColour != null) {
+            Colour.primitiveCondlineColourR = primitiveCondlineColour[0];
+            Colour.primitiveCondlineColourG = primitiveCondlineColour[1];
+            Colour.primitiveCondlineColourB = primitiveCondlineColour[2];
+        }
+
+        if (cursor1ColourColour != null) {
+            Colour.cursor1ColourR = cursor1ColourColour[0];
+            Colour.cursor1ColourG = cursor1ColourColour[1];
+            Colour.cursor1ColourB = cursor1ColourColour[2];
+        }
+
+        if (cursor2ColourColour != null) {
+            Colour.cursor2ColourR = cursor2ColourColour[0];
+            Colour.cursor2ColourG = cursor2ColourColour[1];
+            Colour.cursor2ColourB = cursor2ColourColour[2];
+        }
+
+        if (lineBoxFontColour != null) {
+            TextEditorColour.loadLineBoxFont(SWTResourceManager.getColor(lineBoxFontColour[0], lineBoxFontColour[1], lineBoxFontColour[2]));
+        }
+
+        if (lineColourAttrFontColour != null) {
+            TextEditorColour.loadLineColourAttrFont(SWTResourceManager.getColor(lineColourAttrFontColour[0], lineColourAttrFontColour[1], lineColourAttrFontColour[2]));
+        }
+
+        if (lineCommentFontColour != null) {
+            TextEditorColour.loadLineCommentFont(SWTResourceManager.getColor(lineCommentFontColour[0], lineCommentFontColour[1], lineCommentFontColour[2]));
+        }
+
+        if (lineErrorUnderlineColour != null) {
+            TextEditorColour.loadLineErrorUnderline(SWTResourceManager.getColor(lineErrorUnderlineColour[0], lineErrorUnderlineColour[1], lineErrorUnderlineColour[2]));
+        }
+
+        if (lineHighlightBackgroundColour != null) {
+            TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(lineHighlightBackgroundColour[0], lineHighlightBackgroundColour[1], lineHighlightBackgroundColour[2]));
+        }
+
+        if (lineHighlightSelectedBackgroundColour != null) {
+            TextEditorColour.loadLineHighlightSelectedBackground(SWTResourceManager.getColor(lineHighlightSelectedBackgroundColour[0], lineHighlightSelectedBackgroundColour[1], lineHighlightSelectedBackgroundColour[2]));
+        }
+
+        if (lineHintUnderlineColour != null) {
+            TextEditorColour.loadLineHintUnderline(SWTResourceManager.getColor(lineHintUnderlineColour[0], lineHintUnderlineColour[1], lineHintUnderlineColour[2]));
+        }
+
+        if (linePrimaryFontColour != null) {
+            TextEditorColour.loadLinePrimaryFont(SWTResourceManager.getColor(linePrimaryFontColour[0], linePrimaryFontColour[1], linePrimaryFontColour[2]));
+        }
+
+        if (lineQuadFontColour != null) {
+            TextEditorColour.loadLineQuadFont(SWTResourceManager.getColor(lineQuadFontColour[0], lineQuadFontColour[1], lineQuadFontColour[2]));
+        }
+
+        if (lineSecondaryFontColour != null) {
+            TextEditorColour.loadLineSecondaryFont(SWTResourceManager.getColor(lineSecondaryFontColour[0], lineSecondaryFontColour[1], lineSecondaryFontColour[2]));
+        }
+
+        if (lineWarningUnderlineColour != null) {
+            TextEditorColour.loadLineWarningUnderline(SWTResourceManager.getColor(lineWarningUnderlineColour[0], lineWarningUnderlineColour[1], lineWarningUnderlineColour[2]));
+        }
+
+        if (textBackgroundColour != null) {
+            TextEditorColour.loadTextBackground(SWTResourceManager.getColor(textBackgroundColour[0], textBackgroundColour[1], textBackgroundColour[2]));
+        }
+
+        if (textForegroundColour != null) {
+            TextEditorColour.loadTextForeground(SWTResourceManager.getColor(textForegroundColour[0], textForegroundColour[1], textForegroundColour[2]));
+        }
+
+        if (textForegroundHiddenColour != null) {
+            TextEditorColour.loadTextForegroundHidden(SWTResourceManager.getColor(textForegroundHiddenColour[0], textForegroundHiddenColour[1], textForegroundHiddenColour[2]));
         }
     }
 

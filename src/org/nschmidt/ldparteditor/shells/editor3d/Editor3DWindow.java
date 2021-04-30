@@ -152,6 +152,7 @@ import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.dialogs.ytruder.YTruderDialog;
 import org.nschmidt.ldparteditor.enums.GL20Primitives;
 import org.nschmidt.ldparteditor.enums.IconSize;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MergeTo;
@@ -271,7 +272,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private WorkingMode workingAction = WorkingMode.SELECT;
     private ManipulatorAxisMode workingLayer = ManipulatorAxisMode.NONE;
 
-    private GColour lastUsedColour = View.getLDConfigColour(16);
+    private GColour lastUsedColour = LDConfig.getColour16();
 
     private ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
@@ -367,7 +368,7 @@ public class Editor3DWindow extends Editor3DDesign {
         window = this;
         // Load colours
         WorkbenchManager.getUserSettingState().loadColours();
-        View.overrideColour16();
+        LDConfig.overrideColour16();
         // Load recent files
         recentItems = WorkbenchManager.getUserSettingState().getRecentItems();
         if (recentItems == null) recentItems = new ArrayList<>();
@@ -1332,7 +1333,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             // Insert a reference to the subfile in the old file
                                             Set<String> alreadyParsed = new HashSet<>();
                                             alreadyParsed.add(Project.getFileToEdit().getShortName());
-                                            final GColour col16 = View.getLDConfigColour(16);
+                                            final GColour col16 = LDConfig.getColour16();
                                             List<ParsingResult> subfileLine = DatParser
                                                     .parseLine(
                                                             "1 16 0 0 0 1 0 0 0 1 0 0 0 1 s\\" + new File(selected).getName(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, Project.getFileToEdit(), false, alreadyParsed); //$NON-NLS-1$
@@ -1644,7 +1645,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 {
                     GColour gColour3 = vm.getRandomSelectedColour(lastUsedColour);
                     if (gColour3.getColourNumber() == 16) {
-                        gColour2 = View.getLDConfigColour(16);
+                        gColour2 = LDConfig.getColour16();
                     } else {
                         gColour2 = gColour3;
                     }
@@ -1673,7 +1674,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 widgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e1 -> {
                     if (Project.getFileToEdit() != null) {
                         int num1 = gColour2.getColourNumber();
-                        if (!View.hasLDConfigColour(num1)) {
+                        if (!LDConfig.hasColour(num1)) {
                             num1 = -1;
                         }
                         Project.getFileToEdit().getVertexManager().addSnapshot();
@@ -1683,7 +1684,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 });
                 if (num != -1) {
 
-                    Object[] messageArguments1 = {num, View.getLDConfigColourName(num)};
+                    Object[] messageArguments1 = {num, LDConfig.getColourName(num)};
                     MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
                     formatter1.setLocale(MyLanguage.getLocale());
                     formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1);
@@ -1714,7 +1715,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 vm.addSnapshot();
                 vm.selectAll(new SelectorSettings(), true);
                 GDataCSG.clearSelection(Project.getFileToEdit());
-                GColour c = View.getLDConfigColour(16);
+                GColour c = LDConfig.getColour16();
                 vm.colourChangeSelection(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), false);
                 vm.getSelectedData().removeAll(vm.getTriangles().keySet());
                 vm.getSelectedData().removeAll(vm.getQuads().keySet());
@@ -1722,7 +1723,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 vm.getSelectedSubfiles().clear();
                 vm.getSelectedTriangles().removeAll(vm.getTriangles().keySet());
                 vm.getSelectedQuads().removeAll(vm.getQuads().keySet());
-                c = View.getLDConfigColour(24);
+                c = LDConfig.getColour(24);
                 vm.colourChangeSelection(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), true);
             }
         });
@@ -4348,7 +4349,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 WorkbenchManager.getUserSettingState().loadColours();
                 // Override colour 16
-                View.overrideColour16();
+                LDConfig.overrideColour16();
                 // Recompile
                 Editor3DWindow.getWindow().compileAll(true);
                 // Restore the viewport
@@ -4531,12 +4532,12 @@ public class Editor3DWindow extends Editor3DDesign {
                     while (frac[0] > colours.size()) {
                         if (colours.size() < 17) {
                             if (colours.size() == 8) {
-                                colours.add(View.getLDConfigColour(72));
+                                colours.add(LDConfig.getColour(72));
                             } else {
-                                colours.add(View.getLDConfigColour(colours.size()));
+                                colours.add(LDConfig.getColour(colours.size()));
                             }
                         } else {
-                            colours.add(View.getLDConfigColour(16));
+                            colours.add(LDConfig.getColour16());
                         }
                     }
                 } else {
@@ -4560,9 +4561,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
             while (colours.size() < 17) {
                 if (colours.size() == 8) {
-                    colours.add(View.getLDConfigColour(72));
+                    colours.add(LDConfig.getColour(72));
                 } else {
-                    colours.add(View.getLDConfigColour(colours.size()));
+                    colours.add(LDConfig.getColour(colours.size()));
                 }
             }
 
@@ -6569,8 +6570,8 @@ public class Editor3DWindow extends Editor3DDesign {
         final int imgSize = IconSize.getImageSizeFromIconSize();
         final GColour[] gColour2 = new GColour[] { lastUsedColour };
         int num = gColour2[0].getColourNumber();
-        if (View.hasLDConfigColour(num)) {
-            gColour2[0] = View.getLDConfigColour(num);
+        if (LDConfig.hasColour(num)) {
+            gColour2[0] = LDConfig.getColour(num);
         } else {
             num = -1;
         }
@@ -6598,7 +6599,7 @@ public class Editor3DWindow extends Editor3DDesign {
             if (Project.getFileToEdit() != null) {
                 Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
                 int num1 = gColour2[0].getColourNumber();
-                if (!View.hasLDConfigColour(num1)) {
+                if (!LDConfig.hasColour(num1)) {
                     num1 = -1;
                 }
                 Project.getFileToEdit().getVertexManager().colourChangeSelection(num1, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
@@ -6606,7 +6607,7 @@ public class Editor3DWindow extends Editor3DDesign {
         });
         if (num != -1) {
 
-            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+            Object[] messageArguments = {num, LDConfig.getColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1);
@@ -7560,9 +7561,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
     private void setLineSize(SphereGL20 sp, SphereGL20 spInv, float lineWidth1000, float lineWidth, float lineWidthGL, NButton btn) {
         final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;
-        View.LINE_WIDTH_1000[0] = lineWidth1000;
-        View.LINE_WIDTH[0] = lineWidth;
-        View.LINE_WIDTH_GL[0] = lineWidthGL;
+        View.lineWidth1000 = lineWidth1000;
+        View.lineWidth = lineWidth;
+        View.lineWidthGL = lineWidthGL;
         if (useLegacyGL) {
             GL20Primitives.sphere = sp;
             GL20Primitives.sphereInv = spInv;
@@ -8946,7 +8947,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (gColour2[0] != null) {
                     setLastUsedColour(gColour2[0]);
                     int num = gColour2[0].getColourNumber();
-                    if (!View.hasLDConfigColour(num)) {
+                    if (!LDConfig.hasColour(num)) {
                         num = -1;
                     }
                     Project.getFileToEdit().getVertexManager().addSnapshot();
@@ -8975,7 +8976,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     widgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e1 -> {
                         if (Project.getFileToEdit() != null) {
                             int num1 = gColour2[0].getColourNumber();
-                            if (!View.hasLDConfigColour(num1)) {
+                            if (!LDConfig.hasColour(num1)) {
                                 num1 = -1;
                             }
                             Project.getFileToEdit().getVertexManager().addSnapshot();
@@ -8985,7 +8986,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     });
                     if (num != -1) {
 
-                        Object[] messageArguments1 = {num, View.getLDConfigColourName(num)};
+                        Object[] messageArguments1 = {num, LDConfig.getColourName(num)};
                         MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
                         formatter1.setLocale(MyLanguage.getLocale());
                         formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1);

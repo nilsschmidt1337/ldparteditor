@@ -67,9 +67,9 @@ import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialogs.sort.SortDialog;
 import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropTransfer;
 import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropType;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.Version;
@@ -920,7 +920,7 @@ public class EditorTextWindow extends EditorTextDesign {
             new ColourDialog(btnPalettePtr[0].getShell(), gColour2, true).run();
             if (gColour2[0] != null) {
                 int num = gColour2[0].getColourNumber();
-                if (!View.hasLDConfigColour(num)) {
+                if (!LDConfig.hasColour(num)) {
                     num = -1;
                 }
 

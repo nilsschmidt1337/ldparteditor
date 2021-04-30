@@ -54,6 +54,8 @@ import org.nschmidt.csg.IdAndPlane;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.csg.Polygon;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.Colour;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
@@ -181,7 +183,7 @@ public final class GDataCSG extends GData {
         fullClearPolygonCache.put(df, false);
         registeredData.putIfAbsent(df, new HashSet<>()).add(this);
         String[] dataSegments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
         this.type = type;
         this.text = csgLine;
         switch (type) {
@@ -210,7 +212,7 @@ public final class GDataCSG extends GData {
                 if (c != null) {
                     colour = c.createClone();
                 } else {
-                    colour = View.getLDConfigColour(16);
+                    colour = LDConfig.getColour16();
                 }
                 matrix = MathHelper.matrixFromStrings(dataSegments[5], dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[11], dataSegments[14], dataSegments[9],
                         dataSegments[12], dataSegments[15], dataSegments[10], dataSegments[13], dataSegments[16]);
@@ -245,7 +247,7 @@ public final class GDataCSG extends GData {
                 if (c != null) {
                     colour = c.createClone();
                 } else {
-                    colour = View.getLDConfigColour(16);
+                    colour = LDConfig.getColour16();
                 }
                 matrix = MathHelper.matrixFromStrings(dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[9], dataSegments[10], dataSegments[11], dataSegments[12],
                         dataSegments[13], dataSegments[14], dataSegments[15], dataSegments[16], dataSegments[17]);
@@ -1042,7 +1044,7 @@ public final class GDataCSG extends GData {
     static synchronized void drawSelectionCSG(Composite3D c3d) {
         final Set<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(c3d.getLockableDatFileReference(), new HashSet<>());
         if (!selectedTriangles.isEmpty()) {
-            GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
+            GL11.glColor3f(Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB);
             GL11.glBegin(GL11.GL_LINES);
             for (GData3 tri : selectedTriangles) {
                 GL11.glVertex3f(tri.x1, tri.y1, tri.z1);

@@ -32,6 +32,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -1482,7 +1483,7 @@ public final class GData1 extends GData {
                     newOrigin.z == null ? BigDecimal.ZERO : newOrigin.z.subtract(this.accurateLocalMatrix.m32) });
         }
 
-        GColour col16 = View.getLDConfigColour(16);
+        GColour col16 = LDConfig.getColour16();
         Matrix tmpAccurateLocalMatrix = new Matrix(this.accurateLocalMatrix);
         BigDecimal tx = this.accurateLocalMatrix.m30.add(BigDecimal.ZERO);
         BigDecimal ty = this.accurateLocalMatrix.m31.add(BigDecimal.ZERO);

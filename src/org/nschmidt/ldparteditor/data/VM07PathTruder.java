@@ -28,6 +28,7 @@ import java.util.TreeSet;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
@@ -255,7 +256,7 @@ class VM07PathTruder extends VM06Edger2 {
                         try {
                             monitor.beginTask(I18n.VM_PATH_TRUDER, IProgressMonitor.UNKNOWN);
 
-                            final GColour col16 = View.getLDConfigColour(16);
+                            final GColour col16 = LDConfig.getColour16();
                             final Thread[] threads = new Thread[1];
                             threads[0] = new Thread(() -> {
 
@@ -871,7 +872,7 @@ class VM07PathTruder extends VM06Edger2 {
                 throw new LDPartEditorException(ie);
             }
         } else {
-            final GColour col16 = View.getLDConfigColour(16);
+            final GColour col16 = LDConfig.getColour16();
             final Thread[] threads = new Thread[1];
             threads[0] = new Thread(() -> {
 

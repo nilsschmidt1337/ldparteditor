@@ -157,7 +157,6 @@ public final class I18n {
     public static final String COLOUR_BFC_FRONT_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_BFC_UNCERTIFIED = COLOUR.getString(getProperty());
     public static final String COLOUR_COLOUR = COLOUR.getString(getProperty());
-    public static final String COLOUR_CONDLINE_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_CURSOR_1_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_CURSOR_2_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_CUSTOMISE_COLOURS = COLOUR.getString(getProperty());

@@ -30,6 +30,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.csg.CSG;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
@@ -654,7 +655,7 @@ class VM03Adjacency extends VM02Add {
         final Set<GData4> effSelectedQuads = new HashSet<>();
         final Set<GData5> effSelectedCondlines = new HashSet<>();
 
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
 
         selectedData.clear();
 

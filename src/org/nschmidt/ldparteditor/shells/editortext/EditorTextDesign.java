@@ -42,10 +42,10 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.enums.IconSize;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -187,8 +187,8 @@ class EditorTextDesign extends ApplicationWindow {
 
     private void addColorButton(ToolItem toolItemColours, GColour gColour, final int index) {
         int cn = gColour.getColourNumber();
-        if (cn != -1 && View.hasLDConfigColour(cn)) {
-            gColour = View.getLDConfigColour(cn);
+        if (cn != -1 && LDConfig.hasColour(cn)) {
+            gColour = LDConfig.getColour(cn);
         }
         final int imgSize = IconSize.getImageSizeFromIconSize();
         final GColour[] gColour2 = new GColour[] { gColour };
@@ -198,12 +198,12 @@ class EditorTextDesign extends ApplicationWindow {
         final NButton btnCol = new NButton(toolItemColours, Cocoa.getStyle());
         btnCol.setData(gColour2);
         int num = gColour2[0].getColourNumber();
-        if (!View.hasLDConfigColour(num)) {
+        if (!LDConfig.hasColour(num)) {
             num = -1;
         }
         if (num != -1) {
 
-            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+            Object[] messageArguments = {num, LDConfig.getColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
@@ -234,13 +234,13 @@ class EditorTextDesign extends ApplicationWindow {
                 WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
                 col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
                 int num1 = gColour2[0].getColourNumber();
-                if (View.hasLDConfigColour(num1)) {
-                    gColour2[0] = View.getLDConfigColour(num1);
+                if (LDConfig.hasColour(num1)) {
+                    gColour2[0] = LDConfig.getColour(num1);
                 } else {
                     num1 = -1;
                 }
                 if (num1 != -1) {
-                    Object[] messageArguments1 = {num1, View.getLDConfigColourName(num1)};
+                    Object[] messageArguments1 = {num1, LDConfig.getColourName(num1)};
                     MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
                     formatter1.setLocale(MyLanguage.getLocale());
                     formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
@@ -264,8 +264,8 @@ class EditorTextDesign extends ApplicationWindow {
                 Editor3DWindow.reloadAllColours();
             } else {
                 int num2 = gColour2[0].getColourNumber();
-                if (View.hasLDConfigColour(num2)) {
-                    gColour2[0] = View.getLDConfigColour(num2);
+                if (LDConfig.hasColour(num2)) {
+                    gColour2[0] = LDConfig.getColour(num2);
                 } else {
                     num2 = -1;
                 }

@@ -29,8 +29,9 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.util.vector.Matrix3f;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
-import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.DatKeyword;
+import org.nschmidt.ldparteditor.enums.LDConfig;
+import org.nschmidt.ldparteditor.enums.TextEditorColour;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -91,7 +92,7 @@ public class SyntaxFormatter {
             errStyleRange.start = e.lineOffset;
             errStyleRange.length = e.lineText.length();
             errStyleRange.underline = true;
-            errStyleRange.underlineColor = Colour.lineErrorUnderline[0];
+            errStyleRange.underlineColor = TextEditorColour.getLineErrorUnderline();
             errStyleRange.underlineStyle = SWT.UNDERLINE_ERROR;
             styles.add(errStyleRange);
             e.styles = styles.toArray(new StyleRange[0]);
@@ -116,7 +117,7 @@ public class SyntaxFormatter {
                     errStyleRange.start = e.lineOffset;
                     errStyleRange.length = e.lineText.length();
                     errStyleRange.underline = true;
-                    errStyleRange.underlineColor = Colour.lineErrorUnderline[0];
+                    errStyleRange.underlineColor = TextEditorColour.getLineErrorUnderline();
                     errStyleRange.underlineStyle = SWT.UNDERLINE_ERROR;
                     styles.add(errStyleRange);
                     e.styles = styles.toArray(new StyleRange[0]);
@@ -150,20 +151,20 @@ public class SyntaxFormatter {
             errStyleRange.start = e.lineOffset;
             errStyleRange.length = e.lineText.length();
             errStyleRange.underline = true;
-            errStyleRange.underlineColor = Colour.lineErrorUnderline[0];
+            errStyleRange.underlineColor = TextEditorColour.getLineErrorUnderline();
             errStyleRange.underlineStyle = SWT.UNDERLINE_ERROR;
             styles.add(errStyleRange);
             break;
         }
         if (!isVisible) {
             for (StyleRange sr : styles) {
-                sr.foreground = Colour.textForegroundHidden[0];
+                sr.foreground = TextEditorColour.getTextForegroundHidden();
             }
         }
         if (isSelected) {
             for (StyleRange sr : styles) {
                 if (sr.background == null) {
-                    sr.background = Colour.lineHighlightSelectedBackground[0];
+                    sr.background = TextEditorColour.getLineHighlightSelectedBackground();
                 } else if (replaceVertex) {
                     sr.fontStyle = SWT.BOLD;
                 }
@@ -185,7 +186,7 @@ public class SyntaxFormatter {
     private void setErrorStyle(StyleRange range) {
         range.underline = true;
         range.underlineStyle = SWT.UNDERLINE_ERROR;
-        range.underlineColor = Colour.lineErrorUnderline[0];
+        range.underlineColor = TextEditorColour.getLineErrorUnderline();
         range.length = range.length - 1;
     }
 
@@ -197,7 +198,7 @@ public class SyntaxFormatter {
      */
     private void setBorderStyle(StyleRange range) {
         range.borderStyle = SWT.BORDER_SOLID;
-        range.borderColor = Colour.lineBoxFont[0];
+        range.borderColor = TextEditorColour.getLineBoxFont();
     }
 
     /**
@@ -209,7 +210,7 @@ public class SyntaxFormatter {
     private void setWarningStyle(StyleRange range) {
         range.underline = true;
         range.underlineStyle = SWT.UNDERLINE_SQUIGGLE;
-        range.underlineColor = Colour.lineWarningUnderline[0];
+        range.underlineColor = TextEditorColour.getLineWarningUnderline();
         range.length = range.length - 1;
     }
 
@@ -228,10 +229,10 @@ public class SyntaxFormatter {
             colourValue = Integer.parseInt(arg);
             if (colourValue < 0) {
                 setErrorStyle(range);
-            } else if (!View.hasLDConfigColour(colourValue)) {
+            } else if (!LDConfig.hasColour(colourValue)) {
                 setErrorStyle(range);
             } else {
-                colour = View.getLDConfigColour(colourValue);
+                colour = LDConfig.getColour(colourValue);
                 final int r = (int) (colour.getR() * 255);
                 final int g = (int) (colour.getG() * 255);
                 final int b = (int) (colour.getB() * 255);
@@ -285,7 +286,7 @@ public class SyntaxFormatter {
         StyleRange commentStyleRange = new StyleRange();
         commentStyleRange.start = offset;
         commentStyleRange.length = e.lineText.length();
-        commentStyleRange.foreground = Colour.lineCommentFont[0];
+        commentStyleRange.foreground = TextEditorColour.getLineCommentFont();
         styles.add(commentStyleRange);
 
         if (offset == 0)
@@ -304,7 +305,7 @@ public class SyntaxFormatter {
                 metaStyleRange.start = offset;
                 metaStyleRange.length = segment.length();
                 metaStyleRange.fontStyle = SWT.BOLD | SWT.ITALIC;
-                metaStyleRange.foreground = Colour.lineCommentFont[0];
+                metaStyleRange.foreground = TextEditorColour.getLineCommentFont();
                 styles.add(metaStyleRange);
                 return;
             } else if (segment.equals("VERTEX")) { //$NON-NLS-1$
@@ -332,7 +333,7 @@ public class SyntaxFormatter {
                         metaStyleRange.start = offset;
                         metaStyleRange.length = segment.length();
                         metaStyleRange.fontStyle = SWT.BOLD | SWT.ITALIC;
-                        metaStyleRange.foreground = Colour.lineCommentFont[0];
+                        metaStyleRange.foreground = TextEditorColour.getLineCommentFont();
                         switch (checkForVertexCounter) {
                         case 0:
                             if (segment.equals("!LPE"))checkForVertexCounter++; //$NON-NLS-1$
@@ -348,7 +349,7 @@ public class SyntaxFormatter {
                         StyleRange metaStyleRange = new StyleRange();
                         metaStyleRange.start = offset;
                         metaStyleRange.length = segment.length();
-                        metaStyleRange.foreground = Colour.lineCommentFont[0];
+                        metaStyleRange.foreground = TextEditorColour.getLineCommentFont();
                         switch (checkForVertexCounter) {
                         case 2:
                             try {
@@ -399,7 +400,7 @@ public class SyntaxFormatter {
                         metaStyleRange.start = offset;
                         metaStyleRange.length = segment.length();
                         metaStyleRange.fontStyle = SWT.BOLD | SWT.ITALIC;
-                        metaStyleRange.foreground = Colour.lineCommentFont[0];
+                        metaStyleRange.foreground = TextEditorColour.getLineCommentFont();
                         styles.add(metaStyleRange);
                         switch (checkForProtractorAndDistanceCounter) {
                         case 0:
@@ -435,7 +436,7 @@ public class SyntaxFormatter {
                         case 9:
                         case 10:
                             metaStyleRange.fontStyle = SWT.NORMAL;
-                            metaStyleRange.foreground = Colour.lineSecondaryFont[0];
+                            metaStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                             styles.add(metaStyleRange);
                             checkForProtractorAndDistanceCounter++;
                             break;
@@ -444,7 +445,7 @@ public class SyntaxFormatter {
                         case 6:
                         case 7:
                             metaStyleRange.fontStyle = SWT.NORMAL;
-                            metaStyleRange.foreground = Colour.linePrimaryFont[0];
+                            metaStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                             styles.add(metaStyleRange);
                             checkForProtractorAndDistanceCounter++;
                             break;
@@ -486,7 +487,7 @@ public class SyntaxFormatter {
         StyleRange lineStyleRange = new StyleRange();
         lineStyleRange.start = offset;
         lineStyleRange.length = e.lineText.length();
-        lineStyleRange.foreground = Colour.linePrimaryFont[0];
+        lineStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
         styles.add(lineStyleRange);
 
         boolean parseError = false;
@@ -505,27 +506,27 @@ public class SyntaxFormatter {
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
                 case 1: // colour
-                    segmentStyleRange.foreground = Colour.lineColourAttrFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineColourAttrFont();
                     break;
                 case 2: // *fall through*
                 case 3:
                 case 4: // x,y,z offset
-                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
                 case 5: // *fall through*
                 case 6:
                 case 7: // 1st matrix row
-                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 case 8: // *fall through*
                 case 9:
                 case 10: // 2nd matrix row
-                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
                 case 11: // *fall through*
                 case 12:
                 case 13: // 3rd matrix row
-                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 default: // dat file reference
                     segmentStyleRange.foreground = compositeText.getForeground();
@@ -700,7 +701,7 @@ public class SyntaxFormatter {
             for (StyleRange style : styles) {
                 style.underline = true;
                 style.underlineStyle = SWT.UNDERLINE_ERROR;
-                style.underlineColor = Colour.lineErrorUnderline[0];
+                style.underlineColor = TextEditorColour.getLineErrorUnderline();
             }
         }
     }
@@ -725,7 +726,7 @@ public class SyntaxFormatter {
         StyleRange lineStyleRange = new StyleRange();
         lineStyleRange.start = offset;
         lineStyleRange.length = e.lineText.length();
-        lineStyleRange.foreground = Colour.linePrimaryFont[0];
+        lineStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
         styles.add(lineStyleRange);
 
         boolean parseError = false;
@@ -744,17 +745,17 @@ public class SyntaxFormatter {
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
                 case 1: // colour
-                    segmentStyleRange.foreground = Colour.lineColourAttrFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineColourAttrFont();
                     break;
                 case 2: // *fall through*
                 case 3:
                 case 4: // start vertex
-                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
                 case 5: // *fall through*
                 case 6:
                 case 7: // end vertex
-                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 default: // error
                     break;
@@ -831,7 +832,7 @@ public class SyntaxFormatter {
             for (StyleRange style : styles) {
                 style.underline = true;
                 style.underlineStyle = SWT.UNDERLINE_ERROR;
-                style.underlineColor = Colour.lineErrorUnderline[0];
+                style.underlineColor = TextEditorColour.getLineErrorUnderline();
             }
         }
     }
@@ -856,7 +857,7 @@ public class SyntaxFormatter {
         StyleRange lineStyleRange = new StyleRange();
         lineStyleRange.start = offset;
         lineStyleRange.length = e.lineText.length();
-        lineStyleRange.foreground = Colour.linePrimaryFont[0];
+        lineStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
         styles.add(lineStyleRange);
 
         boolean parseError = false;
@@ -875,22 +876,22 @@ public class SyntaxFormatter {
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
                 case 1: // colour
-                    segmentStyleRange.foreground = Colour.lineColourAttrFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineColourAttrFont();
                     break;
                 case 2: // *fall through*
                 case 3:
                 case 4: // 1st vertex
-                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
                 case 5: // *fall through*
                 case 6:
                 case 7: // 2nd vertex
-                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 case 8: // *fall through*
                 case 9:
                 case 10: // 3rd vertex
-                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
                 default: // error
                     break;
@@ -1014,7 +1015,7 @@ public class SyntaxFormatter {
             for (StyleRange style : styles) {
                 style.underline = true;
                 style.underlineStyle = SWT.UNDERLINE_ERROR;
-                style.underlineColor = Colour.lineErrorUnderline[0];
+                style.underlineColor = TextEditorColour.getLineErrorUnderline();
             }
         }
     }
@@ -1039,7 +1040,7 @@ public class SyntaxFormatter {
         StyleRange lineStyleRange = new StyleRange();
         lineStyleRange.start = offset;
         lineStyleRange.length = e.lineText.length();
-        lineStyleRange.foreground = Colour.linePrimaryFont[0];
+        lineStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
         styles.add(lineStyleRange);
 
         boolean parseError = false;
@@ -1056,30 +1057,30 @@ public class SyntaxFormatter {
                 segmentStyleRange.length = segmentLength;
                 switch (segmentNumber) {
                 case 0: // type
-                    segmentStyleRange.foreground = Colour.lineQuadFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineQuadFont();
                     break;
                 case 1: // colour
-                    segmentStyleRange.foreground = Colour.lineColourAttrFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineColourAttrFont();
                     break;
                 case 2: // *fall through*
                 case 3:
                 case 4: // 1st vertex
-                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
                 case 5: // *fall through*
                 case 6:
                 case 7: // 2nd vertex
-                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 case 8: // *fall through*
                 case 9:
                 case 10: // 3rd vertex
-                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
                 case 11: // *fall through*
                 case 12:
                 case 13: // 4th vertex
-                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 default: // error
                     break;
@@ -1264,14 +1265,14 @@ public class SyntaxFormatter {
             for (StyleRange style : styles) {
                 style.underline = true;
                 style.underlineStyle = SWT.UNDERLINE_ERROR;
-                style.underlineColor = Colour.lineErrorUnderline[0];
+                style.underlineColor = TextEditorColour.getLineErrorUnderline();
             }
         } else {
             if (parseWarning) {
                 for (StyleRange style : styles) {
                     style.underline = true;
                     style.underlineStyle = SWT.UNDERLINE_ERROR;
-                    style.underlineColor = Colour.lineWarningUnderline[0];
+                    style.underlineColor = TextEditorColour.getLineWarningUnderline();
                 }
             }
         }
@@ -1297,7 +1298,7 @@ public class SyntaxFormatter {
         StyleRange lineStyleRange = new StyleRange();
         lineStyleRange.start = offset;
         lineStyleRange.length = e.lineText.length();
-        lineStyleRange.foreground = Colour.linePrimaryFont[0];
+        lineStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
         styles.add(lineStyleRange);
 
         boolean parseError = false;
@@ -1317,27 +1318,27 @@ public class SyntaxFormatter {
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
                 case 1: // colour
-                    segmentStyleRange.foreground = Colour.lineColourAttrFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineColourAttrFont();
                     break;
                 case 2: // *fall through*
                 case 3:
                 case 4: // start vertex
-                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
                 case 5: // *fall through*
                 case 6:
                 case 7: // end vertex
-                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 case 8: // *fall through*
                 case 9:
                 case 10: // control vertex I
-                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
                 case 11: // *fall through*
                 case 12:
                 case 13: // control vertex II
-                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
+                    segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 default: // error
                     break;
@@ -1466,14 +1467,14 @@ public class SyntaxFormatter {
             for (StyleRange style : styles) {
                 style.underline = true;
                 style.underlineStyle = SWT.UNDERLINE_ERROR;
-                style.underlineColor = Colour.lineErrorUnderline[0];
+                style.underlineColor = TextEditorColour.getLineErrorUnderline();
             }
         } else {
             if (parseWarning) {
                 for (StyleRange style : styles) {
                     style.underline = true;
                     style.underlineStyle = SWT.UNDERLINE_ERROR;
-                    style.underlineColor = Colour.lineWarningUnderline[0];
+                    style.underlineColor = TextEditorColour.getLineWarningUnderline();
                 }
             }
         }

@@ -27,7 +27,9 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.GL20Primitives;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
@@ -319,7 +321,7 @@ public final class GData2 extends GData {
             GL11.glPopMatrix();
 
         } else {
-            GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
+            GL11.glLineWidth(View.lineWidthGL);
             GL11.glColor4f(r, g, b, a);
             GL11.glBegin(GL11.GL_LINES);
             GL11.glVertex3f(x1, y1, z1);
@@ -427,7 +429,7 @@ public final class GData2 extends GData {
             GL11.glPopMatrix();
 
         } else {
-            GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
+            GL11.glLineWidth(View.lineWidthGL);
             GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
             GL11.glBegin(GL11.GL_LINES);
             GL11.glVertex3f(x1, y1, z1);
@@ -501,8 +503,8 @@ public final class GData2 extends GData {
             float g2;
             float b2;
             int cn;
-            if (colourNumber == 24 && (cn = parent.r == .5f && parent.g == .5f && parent.b == .5f && (parent.a == 1.1f || parent.a == -1)  ? 16 : View.getLDConfigIndex(parent.r,  parent.g,  parent.b)) != 16) {
-                GColour c = View.getLDConfigEdgeColour(cn, c3d);
+            if (colourNumber == 24 && (cn = parent.r == .5f && parent.g == .5f && parent.b == .5f && (parent.a == 1.1f || parent.a == -1)  ? 16 : LDConfig.getIndex(parent.r,  parent.g,  parent.b)) != 16) {
+                GColour c = LDConfig.getEdgeColour(cn, c3d);
                 r2 = c.getR();
                 g2 = c.getG();
                 b2 = c.getB();
@@ -512,7 +514,7 @@ public final class GData2 extends GData {
                 b2 = this.b;
             }
 
-            GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
+            GL11.glLineWidth(View.lineWidthGL);
             GL11.glColor4f(r2, g2, b2, 1f);
             GL11.glBegin(GL11.GL_LINES);
             GraphicalDataTools.setVertex(x1, y1, z1, this, true);
@@ -711,7 +713,7 @@ public final class GData2 extends GData {
         final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
-        GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
+        GL11.glLineWidth(View.lineWidthGL);
         GL11.glColor4f(r, g, b, 1f);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(x1, y1, z1);
@@ -900,7 +902,7 @@ public final class GData2 extends GData {
 
         GL33Helper.pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
         GL33Helper.pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
-        GL33Helper.colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, lineData, lineIndex);
 
         return 4;
     }

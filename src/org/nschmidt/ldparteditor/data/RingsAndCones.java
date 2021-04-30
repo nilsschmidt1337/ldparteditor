@@ -37,6 +37,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -63,7 +64,7 @@ public enum RingsAndCones {
         if (df.isReadOnly()) return;
 
         final VertexManager vm = df.getVertexManager();
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
 
         vm.clearSelection2();
 

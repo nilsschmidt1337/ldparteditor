@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.YTruderSettings;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -56,7 +57,7 @@ class VM27YTruder extends VM26LineIntersector {
         final Set<GData4> newQuads = new HashSet<>();
         final Set<GData5> newCondlines = new HashSet<>();
 
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
         final GColour lineColour = DatParser.validateColour(24, .5f, .5f, .5f, 1f).createClone();
         final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).createClone();
 

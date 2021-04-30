@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.GColour;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
@@ -68,7 +68,7 @@ public class ColourDialog extends ColourDesign {
             me.close();
         });
         if (randomColours) widgetUtil(btnRandomColours[0]).addSelectionListener(e -> {
-            refCol[0] = View.RANDOM_COLOUR;
+            refCol[0] = Colour.RANDOM_COLOUR;
             me.close();
         });
         this.open();

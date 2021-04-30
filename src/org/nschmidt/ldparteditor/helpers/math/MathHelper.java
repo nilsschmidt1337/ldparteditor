@@ -126,7 +126,7 @@ public enum MathHelper {
             q.z = 0f;
         }
 
-        float r1 = View.LINE_WIDTH[0];
+        float r1 = View.lineWidth;
         float r2 = r1;
 
         float twoPI = (float) Math.PI / 4f;
@@ -239,7 +239,7 @@ public enum MathHelper {
             q.z = 0f;
         }
 
-        float r1 = View.LINE_WIDTH_1000[0];
+        float r1 = View.lineWidth1000;
         float r2 = r1;
 
         float twoPI = (float) Math.PI / 4f;

@@ -22,7 +22,7 @@ import java.util.Map;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -97,7 +97,7 @@ enum GL33TexmapRenderer {
                     lastTexture.calcUVcoords2(gd3.x2, gd3.y2, gd3.z2, gd3.parent);
                     lastTexture.calcUVcoords3(gd3.x3, gd3.y3, gd3.z3, gd3.parent);
                     uv = lastTexture.getUVcoords(true, gd);
-                    GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd3.r, gd3.g, gd3.b));
+                    GColour c = LDConfig.getColour(LDConfig.getIndex(gd3.r, gd3.g, gd3.b));
                     GColourType ct = c.getType();
                     boolean hasColourType = ct != null;
                     if (hasColourType) {
@@ -244,7 +244,7 @@ enum GL33TexmapRenderer {
                     lastTexture.calcUVcoords3(gd4.x3, gd4.y3, gd4.z3, gd4.parent);
                     lastTexture.calcUVcoords4(gd4.x4, gd4.y4, gd4.z4, gd4.parent);
                     uv = lastTexture.getUVcoords(false, gd);
-                    GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd4.r, gd4.g, gd4.b));
+                    GColour c = LDConfig.getColour(LDConfig.getIndex(gd4.r, gd4.g, gd4.b));
                     GColourType ct = c.getType();
                     boolean hasColourType = ct != null;
                     if (hasColourType) {

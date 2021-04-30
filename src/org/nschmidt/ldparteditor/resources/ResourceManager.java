@@ -23,7 +23,7 @@ import java.util.Map;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.nschmidt.ldparteditor.enums.Colour;
+import org.nschmidt.ldparteditor.enums.TextEditorColour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.IconSize;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
@@ -170,7 +170,7 @@ public enum ResourceManager {
         Font.SYSTEM.dispose();
         Font.MONOSPACE.dispose();
         // Dispose all colors
-        Colour.dispose();
+        TextEditorColour.dispose();
     }
 
     /**

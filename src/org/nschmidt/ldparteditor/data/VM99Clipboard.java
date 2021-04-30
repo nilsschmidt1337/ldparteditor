@@ -37,6 +37,7 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -487,7 +488,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         final boolean insertTriangles = sels == null || sels.isTriangles();
         final boolean insertQuads = sels == null || sels.isQuads();
         final boolean insertCondlines = sels == null || sels.isCondlines();
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
         if (!CLIPBOARD.isEmpty()) {
             clearSelection();
             if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
@@ -670,7 +671,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
     public void pasteToJoin(GData g2) {
         if (linkedDatFile.isReadOnly())
             return;
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
         if (!CLIPBOARD.isEmpty()) {
             clearSelection();
             final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();

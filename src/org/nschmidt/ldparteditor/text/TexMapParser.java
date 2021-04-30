@@ -45,6 +45,8 @@ import org.nschmidt.ldparteditor.data.TexMeta;
 import org.nschmidt.ldparteditor.data.TexType;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.colour.GCDithered;
+import org.nschmidt.ldparteditor.enums.Colour;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.project.Project;
@@ -341,18 +343,18 @@ public enum TexMapParser {
                 cValue.set(16, r, g, b, a);
                 break;
             case 24:
-                cValue.set(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
+                cValue.set(24, Colour.lineColourR, Colour.lineColourG, Colour.lineColourB, 1f);
                 break;
             default:
-                if (View.hasLDConfigColour(colourValue)) {
-                    GColour colour = View.getLDConfigColour(colourValue);
+                if (LDConfig.hasColour(colourValue)) {
+                    GColour colour = LDConfig.getColour(colourValue);
                     cValue.set(colour);
                 } else {
                     int indexA = colourValue - 256 >> 4;
                     int indexB = colourValue - 256 & 0x0F;
-                    if (View.hasLDConfigColour(indexA) && View.hasLDConfigColour(indexB)) {
-                        GColour colourA = View.getLDConfigColour(indexA);
-                        GColour colourB = View.getLDConfigColour(indexB);
+                    if (LDConfig.hasColour(indexA) && LDConfig.hasColour(indexB)) {
+                        GColour colourA = LDConfig.getColour(indexA);
+                        GColour colourB = LDConfig.getColour(indexB);
                         GColour ditheredColour = new GColour(
                                 colourValue,
                                 (colourA.getR() + colourB.getR()) / 2f,

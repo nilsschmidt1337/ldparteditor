@@ -64,6 +64,7 @@ import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.enums.IconSize;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.Task;
@@ -2017,7 +2018,7 @@ class Editor3DDesign extends ApplicationWindow {
             btnLastUsedColour.setToolTipText(I18n.E3D_COLOUR_16);
             btnLastUsedColour.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
-            final GColour col16 = View.getLDConfigColour(16);
+            final GColour col16 = LDConfig.getColour16();
             final Color col = SWTResourceManager.getColor((int) (255f * col16.getR()), (int) (255f * col16.getG()), (int) (255f * col16.getB()));
             final Point size = btnLastUsedColour.computeSize(SWT.DEFAULT, SWT.DEFAULT);
             final int x = Math.round(size.x / 5f);
@@ -2032,7 +2033,7 @@ class Editor3DDesign extends ApplicationWindow {
             widgetUtil(btnLastUsedColour).addSelectionListener(e -> {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
-                    GColour col1 = View.getLDConfigColour(16);
+                    GColour col1 = LDConfig.getColour16();
                     Project.getFileToEdit().getVertexManager().colourChangeSelection(16, col1.getR(), col1.getG(), col1.getB(), 1f, true);
                 }
                 Editor3DWindow.getWindow().regainFocus();
@@ -3421,8 +3422,8 @@ class Editor3DDesign extends ApplicationWindow {
 
     void addColorButton(ToolItem toolItemColours, GColour gColour, final int index) {
         int cn = gColour.getColourNumber();
-        if (cn != -1 && View.hasLDConfigColour(cn)) {
-            gColour = View.getLDConfigColour(cn);
+        if (cn != -1 && LDConfig.hasColour(cn)) {
+            gColour = LDConfig.getColour(cn);
         }
 
         final int imgSize = IconSize.getImageSizeFromIconSize();
@@ -3433,12 +3434,12 @@ class Editor3DDesign extends ApplicationWindow {
         final NButton btnCol = new NButton(toolItemColours, Cocoa.getStyle());
         btnCol.setData(gColour2);
         int num = gColour2[0].getColourNumber();
-        if (!View.hasLDConfigColour(num)) {
+        if (!LDConfig.hasColour(num)) {
             num = -1;
         }
         if (num != -1) {
 
-            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+            Object[] messageArguments = {num, LDConfig.getColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
@@ -3468,14 +3469,14 @@ class Editor3DDesign extends ApplicationWindow {
                 WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
                 col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
                 int num2 = gColour2[0].getColourNumber();
-                if (View.hasLDConfigColour(num2)) {
-                    gColour2[0] = View.getLDConfigColour(num2);
+                if (LDConfig.hasColour(num2)) {
+                    gColour2[0] = LDConfig.getColour(num2);
                 } else {
                     num2 = -1;
                 }
                 if (num2 != -1) {
 
-                    Object[] messageArguments1 = {num2, View.getLDConfigColourName(num2)};
+                    Object[] messageArguments1 = {num2, LDConfig.getColourName(num2)};
                     MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
                     formatter1.setLocale(MyLanguage.getLocale());
                     formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
@@ -3498,8 +3499,8 @@ class Editor3DDesign extends ApplicationWindow {
                 Editor3DWindow.reloadAllColours();
             } else {
                 int num3 = gColour2[0].getColourNumber();
-                if (View.hasLDConfigColour(num3)) {
-                    gColour2[0] = View.getLDConfigColour(num3);
+                if (LDConfig.hasColour(num3)) {
+                    gColour2[0] = LDConfig.getColour(num3);
                 } else {
                     num3 = -1;
                 }
@@ -3529,8 +3530,8 @@ class Editor3DDesign extends ApplicationWindow {
                     if (Project.getFileToEdit() != null) {
                         Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
                         int num1 = gColour2[0].getColourNumber();
-                        if (View.hasLDConfigColour(num1)) {
-                            gColour2[0] = View.getLDConfigColour(num1);
+                        if (LDConfig.hasColour(num1)) {
+                            gColour2[0] = LDConfig.getColour(num1);
                         } else {
                             num1 = -1;
                         }
@@ -3540,7 +3541,7 @@ class Editor3DDesign extends ApplicationWindow {
                     Editor3DWindow.getWindow().regainFocus();
                 });
                 if (num3 != -1) {
-                    Object[] messageArguments3 = {num3, View.getLDConfigColourName(num3)};
+                    Object[] messageArguments3 = {num3, LDConfig.getColourName(num3)};
                     MessageFormat formatter3 = new MessageFormat(""); //$NON-NLS-1$
                     formatter3.setLocale(MyLanguage.getLocale());
                     formatter3.applyPattern(I18n.EDITORTEXT_COLOUR_1);

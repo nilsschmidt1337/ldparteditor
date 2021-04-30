@@ -23,6 +23,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
@@ -357,7 +358,7 @@ class VM01Select extends VM00Snapshot {
                 final GData before = selectedLine.getBefore();
                 final GData next = selectedLine.getNext();
                 final HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
-                final GColour col16 = View.getLDConfigColour(16);
+                final GColour col16 = LDConfig.getColour16();
 
                 GData newData = null;
                 GData1 g1 = (GData1) selectedLine;

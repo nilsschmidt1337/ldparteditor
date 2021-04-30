@@ -81,6 +81,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.snapshot.SnapshotDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dnd.PrimitiveDragAndDropTransfer;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.Task;
@@ -1246,7 +1247,7 @@ public class Composite3D extends ScalableComposite {
                     NLogger.debug(getClass(), "Primitive: {0}", p); //$NON-NLS-1$
                     String ref = p.getName();
                     final BigDecimal[] cur = getCursorSnapped3Dprecise();
-                    final GColour col16 = View.getLDConfigColour(16);
+                    final GColour col16 = LDConfig.getColour16();
                     Set<String> alreadyParsed = new HashSet<>();
                     alreadyParsed.add(datfile.getShortName());
                     List<ParsingResult> subfileLine = DatParser

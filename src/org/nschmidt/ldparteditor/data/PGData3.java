@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
@@ -87,23 +87,23 @@ public final class PGData3 extends PGData implements Serializable {
         case CCW:
             if (PGData.globalNegativeDeterminant) {
                 if (PGData.globalInvertNext) {
-                    GL11.glColor4f(View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glEnd();
                 } else {
-                    GL11.glColor4f(View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
@@ -111,23 +111,23 @@ public final class PGData3 extends PGData implements Serializable {
                 }
             } else {
                 if (PGData.globalInvertNext) {
-                    GL11.glColor4f(View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glEnd();
                 } else {
-                    GL11.glColor4f(View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
@@ -138,23 +138,23 @@ public final class PGData3 extends PGData implements Serializable {
         case CW:
             if (PGData.globalNegativeDeterminant) {
                 if (PGData.globalInvertNext) {
-                    GL11.glColor4f(View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glEnd();
                 } else {
-                    GL11.glColor4f(View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
@@ -162,23 +162,23 @@ public final class PGData3 extends PGData implements Serializable {
                 }
             } else {
                 if (PGData.globalInvertNext) {
-                    GL11.glColor4f(View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glEnd();
                 } else {
-                    GL11.glColor4f(View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_TRIANGLES);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
@@ -187,7 +187,7 @@ public final class PGData3 extends PGData implements Serializable {
             }
             break;
         case NOCERTIFY:
-            GL11.glColor4f(View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], 1f);
+            GL11.glColor4f(Colour.bfcUncertifiedColourR, Colour.bfcUncertifiedColourG, Colour.bfcUncertifiedColourB, 1f);
             GL11.glBegin(GL11.GL_TRIANGLES);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x3, y3, z3);
@@ -198,7 +198,7 @@ public final class PGData3 extends PGData implements Serializable {
             GL11.glEnd();
             break;
         case NOCLIP:
-            GL11.glColor4f(View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+            GL11.glColor4f(Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
             GL11.glBegin(GL11.GL_TRIANGLES);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x2, y2, z2);
@@ -286,18 +286,18 @@ public final class PGData3 extends PGData implements Serializable {
                     }
                 }
             }
-            vertices[3] = View.BFC_FRONT_COLOUR_R[0];
-            vertices[4] = View.BFC_FRONT_COLOUR_G[0];
-            vertices[5] = View.BFC_FRONT_COLOUR_B[0];
+            vertices[3] = Colour.bfcFrontColourR;
+            vertices[4] = Colour.bfcFrontColourG;
+            vertices[5] = Colour.bfcFrontColourB;
             vertices[9] = vertices[3];
             vertices[10] = vertices[4];
             vertices[11] = vertices[5];
             vertices[15] = vertices[3];
             vertices[16] = vertices[4];
             vertices[17] = vertices[5];
-            vertices[21] = View.BFC_BACK__COLOUR_R[0];
-            vertices[22] = View.BFC_BACK__COLOUR_G[0];
-            vertices[23] = View.BFC_BACK__COLOUR_B[0];
+            vertices[21] = Colour.bfcBackColourR;
+            vertices[22] = Colour.bfcBackColourG;
+            vertices[23] = Colour.bfcBackColourB;
             vertices[27] = vertices[21];
             vertices[28] = vertices[22];
             vertices[29] = vertices[23];
@@ -313,9 +313,9 @@ public final class PGData3 extends PGData implements Serializable {
             indices[3] = 3;
             indices[4] = 4;
             indices[5] = 5;
-            vertices[3] = View.BFC_UNCERTIFIED_COLOUR_R[0];
-            vertices[4] = View.BFC_UNCERTIFIED_COLOUR_G[0];
-            vertices[5] = View.BFC_UNCERTIFIED_COLOUR_B[0];
+            vertices[3] = Colour.bfcUncertifiedColourR;
+            vertices[4] = Colour.bfcUncertifiedColourG;
+            vertices[5] = Colour.bfcUncertifiedColourB;
             vertices[9] = vertices[3];
             vertices[10] = vertices[4];
             vertices[11] = vertices[5];
@@ -340,9 +340,9 @@ public final class PGData3 extends PGData implements Serializable {
             indices[3] = 3;
             indices[4] = 5;
             indices[5] = 4;
-            vertices[3] = View.BFC_FRONT_COLOUR_R[0];
-            vertices[4] = View.BFC_FRONT_COLOUR_G[0];
-            vertices[5] = View.BFC_FRONT_COLOUR_B[0];
+            vertices[3] = Colour.bfcFrontColourR;
+            vertices[4] = Colour.bfcFrontColourG;
+            vertices[5] = Colour.bfcFrontColourB;
             vertices[9] = vertices[3];
             vertices[10] = vertices[4];
             vertices[11] = vertices[5];
@@ -365,7 +365,7 @@ public final class PGData3 extends PGData implements Serializable {
     }
 
     public static void beginDrawText() {
-        GL11.glColor4f(View.TEXT_COLOUR_R[0], View.TEXT_COLOUR_G[0], View.TEXT_COLOUR_B[0], 1f);
+        GL11.glColor4f(Colour.textColourR, Colour.textColourG, Colour.textColourB, 1f);
         GL11.glBegin(GL11.GL_TRIANGLES);
     }
 
@@ -388,7 +388,7 @@ public final class PGData3 extends PGData implements Serializable {
     public static void beginDrawTextGL33(GLShader shader) {
         shader.use();
         final int colour = shader.getUniformLocation("color"); //$NON-NLS-1$
-        GL20.glUniform3f(colour, View.TEXT_COLOUR_R[0], View.TEXT_COLOUR_G[0], View.TEXT_COLOUR_B[0]);
+        GL20.glUniform3f(colour, Colour.textColourR, Colour.textColourG, Colour.textColourB);
     }
 
     public void drawTextGL33(float x, float y, float z) {

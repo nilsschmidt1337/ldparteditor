@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.data.GColour;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeColumn;
@@ -70,7 +70,7 @@ class ColourTableDesign extends ApplicationWindow {
         gridLayout.horizontalSpacing = 10;
         cmpContainer.setLayout(gridLayout);
 
-        final SortedSet<String> names = new TreeSet<>(View.getNameMap().values());
+        final SortedSet<String> names = new TreeSet<>(LDConfig.getNameMap().values());
         final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, names.size());
         tree.setLinesVisible(true);
         tree.setHeaderVisible(true);
@@ -87,17 +87,17 @@ class ColourTableDesign extends ApplicationWindow {
         trclmnColour.setWidth(100);
         trclmnColour.setText(I18n.COLOUR_COLOUR);
 
-        Set<Integer> ldConfIndices = View.getColourMap().keySet();
+        Set<Integer> ldConfIndices = LDConfig.getColourMap().keySet();
         Map<String, Integer> nameToIndex = new HashMap<>();
         for (Integer index : ldConfIndices) {
-            nameToIndex.put(View.getLDConfigColourName(index), index);
+            nameToIndex.put(LDConfig.getColourName(index), index);
         }
         for (String name : names) {
             TreeItem trtmColour = new TreeItem(tree);
             Integer id = nameToIndex.get(name);
             trtmColour.setText(new String[] { name, id + "", ""  }); //$NON-NLS-1$ //$NON-NLS-2$
             trtmColour.setVisible(true);
-            final GColour gColour2 = View.getLDConfigColour(id);
+            final GColour gColour2 = LDConfig.getColour(id);
             final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
             trtmColour.setData(new Object[] {gColour2, col});
         }

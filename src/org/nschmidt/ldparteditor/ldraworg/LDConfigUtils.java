@@ -32,8 +32,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -105,8 +105,8 @@ public enum LDConfigUtils {
     }
 
     public static void reloadLDConfig(String path) {
-        if (path != null && View.loadLDConfig(path)) {
-            View.overrideColour16();
+        if (path != null && LDConfig.loadConfig(path)) {
+            LDConfig.overrideColour16();
             GData.CACHE_warningsAndErrors.clear();
             WorkbenchManager.getUserSettingState().setLdConfigPath(path);
             Set<DatFile> dfs = new HashSet<>();

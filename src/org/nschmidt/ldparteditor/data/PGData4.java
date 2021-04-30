@@ -18,7 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.io.Serializable;
 
 import org.lwjgl.opengl.GL11;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
@@ -99,13 +99,13 @@ public final class PGData4 extends PGData implements Serializable {
             if (PGData.globalNegativeDeterminant) {
                 if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 111
-                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                            Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_QUADS);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
@@ -113,13 +113,13 @@ public final class PGData4 extends PGData implements Serializable {
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f( // 110
-                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                            Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_QUADS);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
@@ -129,13 +129,13 @@ public final class PGData4 extends PGData implements Serializable {
             } else {
                 if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 101
-                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                            Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_QUADS);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
@@ -143,13 +143,13 @@ public final class PGData4 extends PGData implements Serializable {
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f( // 100
-                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                            Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_QUADS);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
@@ -162,13 +162,13 @@ public final class PGData4 extends PGData implements Serializable {
             if (PGData.globalNegativeDeterminant) {
                 if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 011
-                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                            Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_QUADS);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
@@ -176,13 +176,13 @@ public final class PGData4 extends PGData implements Serializable {
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f( // 010
-                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                            Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_QUADS);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
@@ -192,13 +192,13 @@ public final class PGData4 extends PGData implements Serializable {
             } else {
                 if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 001
-                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                            Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_QUADS);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
@@ -206,13 +206,13 @@ public final class PGData4 extends PGData implements Serializable {
                     GL11.glEnd();
                 } else {
                     GL11.glColor4f( // 000
-                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+                            Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
                     GL11.glBegin(GL11.GL_QUADS);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], 1f);
+                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
@@ -222,7 +222,7 @@ public final class PGData4 extends PGData implements Serializable {
             }
             break;
         case NOCERTIFY:
-            GL11.glColor4f(View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], 1f);
+            GL11.glColor4f(Colour.bfcUncertifiedColourR, Colour.bfcUncertifiedColourG, Colour.bfcUncertifiedColourB, 1f);
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x4, y4, z4);
@@ -235,7 +235,7 @@ public final class PGData4 extends PGData implements Serializable {
             GL11.glEnd();
             break;
         case NOCLIP:
-            GL11.glColor4f(View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], 1f);
+            GL11.glColor4f(Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x4, y4, z4);
@@ -374,9 +374,9 @@ public final class PGData4 extends PGData implements Serializable {
                     }
                 }
             }
-            vertices[3] = View.BFC_FRONT_COLOUR_R[0];
-            vertices[4] = View.BFC_FRONT_COLOUR_G[0];
-            vertices[5] = View.BFC_FRONT_COLOUR_B[0];
+            vertices[3] = Colour.bfcFrontColourR;
+            vertices[4] = Colour.bfcFrontColourG;
+            vertices[5] = Colour.bfcFrontColourB;
             vertices[9] = vertices[3];
             vertices[10] = vertices[4];
             vertices[11] = vertices[5];
@@ -386,9 +386,9 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[21] = vertices[3];
             vertices[22] = vertices[4];
             vertices[23] = vertices[5];
-            vertices[27] = View.BFC_BACK__COLOUR_R[0];
-            vertices[28] = View.BFC_BACK__COLOUR_G[0];
-            vertices[29] = View.BFC_BACK__COLOUR_B[0];
+            vertices[27] = Colour.bfcBackColourR;
+            vertices[28] = Colour.bfcBackColourG;
+            vertices[29] = Colour.bfcBackColourB;
             vertices[33] = vertices[27];
             vertices[34] = vertices[28];
             vertices[35] = vertices[29];
@@ -413,9 +413,9 @@ public final class PGData4 extends PGData implements Serializable {
             indices[9] = 3;
             indices[10] = 4;
             indices[11] = 5;
-            vertices[3] = View.BFC_UNCERTIFIED_COLOUR_R[0];
-            vertices[4] = View.BFC_UNCERTIFIED_COLOUR_G[0];
-            vertices[5] = View.BFC_UNCERTIFIED_COLOUR_B[0];
+            vertices[3] = Colour.bfcUncertifiedColourR;
+            vertices[4] = Colour.bfcUncertifiedColourG;
+            vertices[5] = Colour.bfcUncertifiedColourB;
             vertices[9] = vertices[3];
             vertices[10] = vertices[4];
             vertices[11] = vertices[5];
@@ -452,9 +452,9 @@ public final class PGData4 extends PGData implements Serializable {
             indices[9] = 3;
             indices[10] = 4;
             indices[11] = 5;
-            vertices[3] = View.BFC_FRONT_COLOUR_R[0];
-            vertices[4] = View.BFC_FRONT_COLOUR_G[0];
-            vertices[5] = View.BFC_FRONT_COLOUR_B[0];
+            vertices[3] = Colour.bfcFrontColourR;
+            vertices[4] = Colour.bfcFrontColourG;
+            vertices[5] = Colour.bfcFrontColourB;
             vertices[9] = vertices[3];
             vertices[10] = vertices[4];
             vertices[11] = vertices[5];

@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Event;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -1890,7 +1891,7 @@ class VM01SelectHelper extends VM01Select {
         int[] offsetCorrection = new int[]{0, 0};
         boolean firstToken = true;
         final String token2 = token.substring(0, 4);
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
         HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();
         for (GData g : selectedData) {
             final GData b = g.getBefore();

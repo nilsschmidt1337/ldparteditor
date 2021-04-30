@@ -42,6 +42,8 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.tools.FlipTriangleOptimizer;
+import org.nschmidt.ldparteditor.enums.Colour;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -224,7 +226,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     }
                                     GData2 l1 = newLines.get(i);
                                     GData2 l2 = newLines.get(j);
-                                    GColour c = new GColour(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
+                                    GColour c = new GColour(24, Colour.lineColourR, Colour.lineColourG, Colour.lineColourB, 1f);
                                     GData2 nl;
                                     if (a == 1) {
                                         if (b == 1) {
@@ -660,7 +662,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
     private Set<GData2> intersectionLines(final Set<GData5> clinesToDelete, final Set<GData2> linesToDelete, GData g1, GData g2) {
 
-        GColour c = new GColour(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
+        GColour c = new GColour(24, Colour.lineColourR, Colour.lineColourG, Colour.lineColourB, 1f);
 
         Set<GData2> result = new HashSet<>();
         Set<Vector3d> points = new HashSet<>();
@@ -997,11 +999,11 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                             resultIsLine.add(2);
                         }
                         if (intersectionCount == 1) {
-                            resultColours.add(View.getLDConfigColour(0));
+                            resultColours.add(LDConfig.getColour(0));
                         } else if (intersectionCount % 2 == 0) {
-                            resultColours.add(View.getLDConfigColour(28));
+                            resultColours.add(LDConfig.getColour(28));
                         } else {
-                            resultColours.add(View.getLDConfigColour(1));
+                            resultColours.add(LDConfig.getColour(1));
                         }
 
                     } else {
@@ -1350,11 +1352,11 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     }
 
                                     if (intersectionCount == 1) {
-                                        resultColours.add(View.getLDConfigColour(7));
+                                        resultColours.add(LDConfig.getColour(7));
                                     } else if (intersectionCount % 2 == 0) {
-                                        resultColours.add(View.getLDConfigColour(14));
+                                        resultColours.add(LDConfig.getColour(14));
                                     } else {
-                                        resultColours.add(View.getLDConfigColour(11));
+                                        resultColours.add(LDConfig.getColour(11));
                                     }
 
                                 } else {
@@ -2380,9 +2382,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                             }
 
                                                             if (intersected != null) {
-                                                                resultColours.add(colours.get(intersected) != null ? colours.get(intersected) : View.getLDConfigColour(16));
+                                                                resultColours.add(colours.get(intersected) != null ? colours.get(intersected) : LDConfig.getColour16());
                                                             } else {
-                                                                resultColours.add(View.getLDConfigColour(16));
+                                                                resultColours.add(LDConfig.getColour16());
                                                             }
                                                             resultIsLine.add(0);
                                                             rlock.unlock();

@@ -20,8 +20,8 @@ import java.util.Locale;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 
@@ -62,9 +62,9 @@ enum WarningFixer {
                     int colourValue = Integer.parseInt(dataSegments[1]);
                     int indexA = colourValue - 256 >> 4;
                     int indexB = colourValue - 256 & 0x0F;
-                    if (View.hasLDConfigColour(indexA) && View.hasLDConfigColour(indexB)) {
-                        GColour colourA = View.getLDConfigColour(indexA);
-                        GColour colourB = View.getLDConfigColour(indexB);
+                    if (LDConfig.hasColour(indexA) && LDConfig.hasColour(indexB)) {
+                        GColour colourA = LDConfig.getColour(indexA);
+                        GColour colourB = LDConfig.getColour(indexB);
                         colourBuilder.append("0x2"); //$NON-NLS-1$
                         colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getR() + colourB.getR()) / 2f))).toUpperCase());
                         colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getG() + colourB.getG()) / 2f))).toUpperCase());

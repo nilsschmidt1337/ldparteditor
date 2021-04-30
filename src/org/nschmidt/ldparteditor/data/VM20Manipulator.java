@@ -32,6 +32,7 @@ import java.util.TreeSet;
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
@@ -802,7 +803,7 @@ public class VM20Manipulator extends VM19ColourChanger {
     public void transformSubfile(GData1 g, Matrix m, boolean clearSelection, boolean syncWithTextEditor) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
         StringBuilder colourBuilder = new StringBuilder();
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
         if (g.colourNumber == -1) {
             colourBuilder.append("0x2"); //$NON-NLS-1$
             colourBuilder.append(MathHelper.toHex((int) (255f * g.r)).toUpperCase());

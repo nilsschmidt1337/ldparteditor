@@ -7,9 +7,9 @@ import java.util.Locale;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -169,7 +169,7 @@ public class OptionsDialog extends OptionsDesign {
 
     private void closingProcedure() {
         // Override colour 16
-        View.overrideColour16();
+        LDConfig.overrideColour16();
         // Recompile
         Editor3DWindow.getWindow().compileAll(true);
         // Re-initialise the renderer

@@ -29,6 +29,7 @@ import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -47,7 +48,7 @@ enum ErrorFixer {
 
     public static String fix(int lineNumber, String sort, String line, String text, DatFile datFile, Shell tWinShell) {
         int s = Integer.parseInt(sort, 16);
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
         switch (s) {
         case 1: // Duplicated line
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$

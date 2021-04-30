@@ -49,6 +49,7 @@ import org.nschmidt.ldparteditor.data.colour.GCChrome;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
 import org.nschmidt.ldparteditor.enums.Axis;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
@@ -569,7 +570,7 @@ public final class DatFile {
         int position = startOffset;
 
         List<ParsingResult> results;
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
 
         // Clear the cache..
         GData.parsedLines.clear();
@@ -772,7 +773,7 @@ public final class DatFile {
         int position = startOffset;
 
         List<ParsingResult> results;
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
 
         // Clear the cache..
         GData.parsedLines.clear();
@@ -1057,7 +1058,7 @@ public final class DatFile {
         Set<String> alreadyParsed = new HashSet<>();
         alreadyParsed.add(getShortName());
 
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
 
         // Clear the cache..
         GData.parsedLines.clear();
@@ -1190,7 +1191,7 @@ public final class DatFile {
         GData targetData = null;
 
         List<ParsingResult> results;
-        final GColour col16 = View.getLDConfigColour(16);
+        final GColour col16 = LDConfig.getColour16();
 
         // Clear the cache..
         GData.parsedLines.clear();

@@ -56,6 +56,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
@@ -444,7 +445,7 @@ public class CSG {
     public GData1 compile() {
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
-        GColour col = View.getLDConfigColour(16);
+        GColour col = LDConfig.getColour16();
         GData1 g1 = new GData1(-1, col.getR(), col.getG(), col.getB(), 1f, id, View.ACCURATE_ID, new ArrayList<>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
                 new HashSet<>(), View.DUMMY_REFERENCE);
         this.csgResult = toLDrawTriangles(g1);

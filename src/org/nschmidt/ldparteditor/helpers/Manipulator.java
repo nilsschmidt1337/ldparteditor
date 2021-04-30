@@ -26,6 +26,7 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.Matrix;
+import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.RotationSnap;
@@ -519,7 +520,7 @@ public class Manipulator {
 
     public GColour checkManipulatorStatus(float r, float g, float b, int type, Composite3D c3d, float zoom) {
         GColour resultColour = manipulatorStatusHelper(r, g, b, type, c3d, zoom);
-        if (View.MANIPULATOR_SELECTED_COLOUR_R[0] == resultColour.getR() && View.MANIPULATOR_SELECTED_COLOUR_G[0] == resultColour.getG() && View.MANIPULATOR_SELECTED_COLOUR_B[0] == resultColour.getB()) {
+        if (Colour.manipulatorSelectedColourR == resultColour.getR() && Colour.manipulatorSelectedColourG == resultColour.getG() && Colour.manipulatorSelectedColourB == resultColour.getB()) {
             switch (Editor3DWindow.getWindow().getWorkingLayer()) {
             case NONE:
             case TEMP_X:
@@ -545,7 +546,7 @@ public class Manipulator {
                 }
                 return resultColour;
             default:
-                return new GColour(-1, View.MANIPULATOR_OUTERCIRCLE_COLOUR_R[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_G[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_B[0], 1f);
+                return new GColour(-1, Colour.manipulatorOuterCircleColourR, Colour.manipulatorOuterCircleColourG, Colour.manipulatorOuterCircleColourB, 1f);
             }
         }
         switch (Editor3DWindow.getWindow().getWorkingLayer()) {
@@ -554,7 +555,7 @@ public class Manipulator {
             case X_TRANSLATE:
             case X_SCALE:
             case X_ROTATE:
-                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
@@ -563,7 +564,7 @@ public class Manipulator {
             case Y_TRANSLATE:
             case Y_SCALE:
             case Y_ROTATE:
-                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
@@ -572,7 +573,7 @@ public class Manipulator {
             case Z_TRANSLATE:
             case Z_SCALE:
             case Z_ROTATE:
-                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
@@ -584,7 +585,7 @@ public class Manipulator {
             case Y_TRANSLATE:
             case Y_SCALE:
             case Y_ROTATE:
-                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
@@ -596,7 +597,7 @@ public class Manipulator {
             case Z_TRANSLATE:
             case Z_SCALE:
             case Z_ROTATE:
-                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
@@ -608,12 +609,12 @@ public class Manipulator {
             case Z_TRANSLATE:
             case Z_SCALE:
             case Z_ROTATE:
-                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
         case XYZ:
-            return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+            return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
         case NONE:
         default:
             break;
@@ -654,7 +655,7 @@ public class Manipulator {
             case X_ROTATE:
                 if (lock) {
                     if (xRotate) {
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -666,7 +667,7 @@ public class Manipulator {
             case Y_ROTATE:
                 if (lock) {
                     if (yRotate) {
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -678,7 +679,7 @@ public class Manipulator {
             case Z_ROTATE:
                 if (lock) {
                     if (zRotate) {
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -690,7 +691,7 @@ public class Manipulator {
             case V_ROTATE:
                 if (lock) {
                     if (vRotate) {
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -752,7 +753,7 @@ public class Manipulator {
                         default:
                             break;
                         }
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     }
                 }
                 Matrix4f.transform(rotMatrix, vector, vector);
@@ -765,7 +766,7 @@ public class Manipulator {
             case X_SCALE:
                 if (lock) {
                     if (xScale) {
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -775,7 +776,7 @@ public class Manipulator {
             case Y_SCALE:
                 if (lock) {
                     if (yScale) {
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -785,7 +786,7 @@ public class Manipulator {
             case Z_SCALE:
                 if (lock) {
                     if (zScale) {
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -797,7 +798,7 @@ public class Manipulator {
             case X_TRANSLATE:
                 if (lock) {
                     if (xTranslate) {
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -807,7 +808,7 @@ public class Manipulator {
             case Y_TRANSLATE:
                 if (lock) {
                     if (yTranslate) {
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -817,7 +818,7 @@ public class Manipulator {
             case Z_TRANSLATE:
                 if (lock) {
                     if (zTranslate) {
-                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -1049,7 +1050,7 @@ public class Manipulator {
                     default:
                         break;
                     }
-                    return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                    return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                 } else {
                     return new GColour(-1, r, g, b, 1f);
                 }
@@ -1080,7 +1081,7 @@ public class Manipulator {
                     default:
                         break;
                     }
-                    return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
+                    return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
                 } else {
                     return new GColour(-1, r, g, b, 1f);
                 }

@@ -29,7 +29,7 @@ import org.nschmidt.ldparteditor.data.BFC;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataBFC;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.StringHelper;
@@ -371,7 +371,7 @@ public enum Inliner {
         }
 
         if (removeTrailingBreak) {
-            String inlinedString = gd.inlinedString(bfcStatusTarget, View.getLDConfigColour(16));
+            String inlinedString = gd.inlinedString(bfcStatusTarget, LDConfig.getColour16());
             int end = inlinedString.length();
             if (inlinedString.endsWith("<br>")) { //$NON-NLS-1$
                 end -= 4;
@@ -379,7 +379,7 @@ public enum Inliner {
             inlinedString = inlinedString.substring(0, end);
             source = setLine(lineNumber, inlinedString, source);
         } else {
-            source = setLine(lineNumber, gd.inlinedString(bfcStatusTarget, View.getLDConfigColour(16)), source);
+            source = setLine(lineNumber, gd.inlinedString(bfcStatusTarget, LDConfig.getColour16()), source);
         }
 
         if (hasINVERTNEXT && gd.type() == 1) {

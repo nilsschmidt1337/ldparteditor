@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.nschmidt.ldparteditor.enums.LDConfig;
 import org.nschmidt.ldparteditor.enums.SlantingMatrixStatus;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlantingMatrixProjectorSettings;
@@ -299,7 +300,7 @@ class VM28SlantingMatrixProjector extends VM27YTruder {
                 }
                 lineBuilder.append(" 0 0 0 1 0 0 0 1 0 0 0 1 "); //$NON-NLS-1$
                 lineBuilder.append(s.shortName);
-                final GColour col16 = View.getLDConfigColour(16);
+                final GColour col16 = LDConfig.getColour16();
                 Set<String> alreadyParsed = new HashSet<>();
                 alreadyParsed.add(linkedDatFile.getShortName());
                 List<ParsingResult> subfileLine = DatParser
