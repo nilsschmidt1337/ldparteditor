@@ -26,11 +26,16 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
-public abstract class OpenGLRenderer implements IRenderer {
+public abstract class OpenGLRenderer {
 
     private static final AtomicBoolean smoothing = new AtomicBoolean(false);
     /** The 3D Composite */
     protected final Composite3D c3d;
+
+    public abstract Composite3D getC3D();
+    public abstract void dispose();
+    public abstract void init();
+    public abstract void drawScene();
 
     protected OpenGLRenderer(Composite3D c3d) {
         this.c3d = c3d;
@@ -56,7 +61,6 @@ public abstract class OpenGLRenderer implements IRenderer {
     /**
      * Disposes all textures
      */
-    @Override
     public void disposeAllTextures() {
         final GLCanvas canvas = c3d.getCanvas();
         if (!canvas.isCurrent()) {
@@ -74,7 +78,6 @@ public abstract class OpenGLRenderer implements IRenderer {
     /**
      * Disposes old textures
      */
-    @Override
     public synchronized void disposeOldTextures() {
         final GLCanvas canvas = c3d.getCanvas();
         if (!canvas.isCurrent()) {

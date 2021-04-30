@@ -31,7 +31,7 @@ import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Arrow;
 
-public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
+public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
 
     /** The Primitive Composite */
     private final CompositePrimitive cp;
