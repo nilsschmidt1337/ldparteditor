@@ -74,7 +74,7 @@ public enum ReferenceParser {
 
 
      */
-    public static List<List<DatFile>> checkForReferences(DatFile df, References refMode, TreeItem origin, TreeItem target, TreeItem secondSource) {
+    public static List<List<DatFile>> checkForReferences(DatFile df, References refMode, TreeItem origin) {
         List<List<DatFile>> result = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             result.add(new ArrayList<>());

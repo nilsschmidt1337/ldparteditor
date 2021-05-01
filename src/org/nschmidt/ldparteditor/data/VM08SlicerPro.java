@@ -38,7 +38,6 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
-import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Rational;
 import org.nschmidt.ldparteditor.helpers.math.RationalMatrix;
@@ -55,7 +54,7 @@ class VM08SlicerPro extends VM07PathTruder {
         super(linkedDatFile);
     }
 
-    public void slicerpro(final SlicerProSettings ss) {
+    public void slicerpro() {
         if (linkedDatFile.isReadOnly()) return;
         Composite3D c3d =  linkedDatFile.getLastSelectedComposite();
         NLogger.debug(getClass(), "SlicerPro2 - (C) Nils Schmidt 2015"); //$NON-NLS-1$
@@ -172,7 +171,7 @@ class VM08SlicerPro extends VM07PathTruder {
                                             }
                                             counter2.incrementAndGet();
                                             for (GData t : targetSurfs) {
-                                                List<IntersectionInfo> ii = getIntersectionInfo(o, t, dir, dirN, m, minv, pc, ss);
+                                                List<IntersectionInfo> ii = getIntersectionInfo(o, t, dirN, m, minv, pc);
                                                 if (!ii.isEmpty()) {
                                                     intersectionSet.add(ii);
                                                     switch (t.type()) {
@@ -428,7 +427,7 @@ class VM08SlicerPro extends VM07PathTruder {
         return true;
     }
 
-    private IntersectionInfo getTriangleTriangleIntersection(Vector3r[] ov, Vector3r[] tv, GData origin, GData target, Vector3r dir, Vector3r dirN, RationalMatrix m, RationalMatrix minv, PerspectiveCalculator pc, SlicerProSettings ss) {
+    private IntersectionInfo getTriangleTriangleIntersection(Vector3r[] ov, Vector3r[] tv, GData origin, GData target, Vector3r dirN, RationalMatrix m, RationalMatrix minv, PerspectiveCalculator pc) {
 
         List<Vector3r> insideTarget = new ArrayList<>();
         List<Vector3r> insideOrigin = new ArrayList<>();
@@ -702,7 +701,7 @@ class VM08SlicerPro extends VM07PathTruder {
         }
     }
 
-    private List<IntersectionInfo> getIntersectionInfo(GData origin, GData target, Vector3r dir, Vector3r dirN, RationalMatrix m, RationalMatrix minv, PerspectiveCalculator pc, SlicerProSettings ss) {
+    private List<IntersectionInfo> getIntersectionInfo(GData origin, GData target, Vector3r dirN, RationalMatrix m, RationalMatrix minv, PerspectiveCalculator pc) {
         final int ot = origin.type();
         final int tt = target.type();
 
@@ -716,7 +715,7 @@ class VM08SlicerPro extends VM07PathTruder {
             Vector3r[] ov1 = new Vector3r[]{new Vector3r(ov[0]), new Vector3r(ov[1]), new Vector3r(ov[2])};
             Vector3r[] tv1 = new Vector3r[]{new Vector3r(tv[0]), new Vector3r(tv[1]), new Vector3r(tv[2])};
 
-            IntersectionInfo tti = getTriangleTriangleIntersection(ov1, tv1, origin, target, dir, dirN, m, minv, pc, ss);
+            IntersectionInfo tti = getTriangleTriangleIntersection(ov1, tv1, origin, target, dirN, m, minv, pc);
             if (tti != null) {
                 result.add(tti);
             }
@@ -730,10 +729,10 @@ class VM08SlicerPro extends VM07PathTruder {
             Vector3r[] tv1 = new Vector3r[]{new Vector3r(tv[0]), new Vector3r(tv[1]), new Vector3r(tv[2])};
             Vector3r[] tv2 = new Vector3r[]{new Vector3r(tv[2]), new Vector3r(tv[3]), new Vector3r(tv[0])};
 
-            IntersectionInfo tti1 = getTriangleTriangleIntersection(ov1, tv1, origin, target, dir, dirN, m, minv, pc, ss);
-            IntersectionInfo tti2 = getTriangleTriangleIntersection(ov1, tv2, origin, target, dir, dirN, m, minv, pc, ss);
-            IntersectionInfo tti3 = getTriangleTriangleIntersection(ov2, tv1, origin, target, dir, dirN, m, minv, pc, ss);
-            IntersectionInfo tti4 = getTriangleTriangleIntersection(ov2, tv2, origin, target, dir, dirN, m, minv, pc, ss);
+            IntersectionInfo tti1 = getTriangleTriangleIntersection(ov1, tv1, origin, target, dirN, m, minv, pc);
+            IntersectionInfo tti2 = getTriangleTriangleIntersection(ov1, tv2, origin, target, dirN, m, minv, pc);
+            IntersectionInfo tti3 = getTriangleTriangleIntersection(ov2, tv1, origin, target, dirN, m, minv, pc);
+            IntersectionInfo tti4 = getTriangleTriangleIntersection(ov2, tv2, origin, target, dirN, m, minv, pc);
 
             if (tti1 != null) {
                 result.add(tti1);
@@ -755,8 +754,8 @@ class VM08SlicerPro extends VM07PathTruder {
             Vector3r[] ov1 = new Vector3r[]{new Vector3r(ov[0]), new Vector3r(ov[1]), new Vector3r(ov[2])};
             Vector3r[] ov2 = new Vector3r[]{new Vector3r(ov[2]), new Vector3r(ov[3]), new Vector3r(ov[0])};
 
-            IntersectionInfo tti1 = getTriangleTriangleIntersection(ov1, tv1, origin, target, dir, dirN, m, minv, pc, ss);
-            IntersectionInfo tti2 = getTriangleTriangleIntersection(ov2, tv1, origin, target, dir, dirN, m, minv, pc, ss);
+            IntersectionInfo tti1 = getTriangleTriangleIntersection(ov1, tv1, origin, target, dirN, m, minv, pc);
+            IntersectionInfo tti2 = getTriangleTriangleIntersection(ov2, tv1, origin, target, dirN, m, minv, pc);
 
             if (tti1 != null) {
                 result.add(tti1);
@@ -773,8 +772,8 @@ class VM08SlicerPro extends VM07PathTruder {
             Vector3r[] tv1 = new Vector3r[]{new Vector3r(tv[0]), new Vector3r(tv[1]), new Vector3r(tv[2])};
             Vector3r[] tv2 = new Vector3r[]{new Vector3r(tv[2]), new Vector3r(tv[3]), new Vector3r(tv[0])};
 
-            IntersectionInfo tti1 = getTriangleTriangleIntersection(ov1, tv1, origin, target, dir, dirN, m, minv, pc, ss);
-            IntersectionInfo tti2 = getTriangleTriangleIntersection(ov1, tv2, origin, target, dir, dirN, m, minv, pc, ss);
+            IntersectionInfo tti1 = getTriangleTriangleIntersection(ov1, tv1, origin, target, dirN, m, minv, pc);
+            IntersectionInfo tti2 = getTriangleTriangleIntersection(ov1, tv2, origin, target, dirN, m, minv, pc);
 
             if (tti1 != null) {
                 result.add(tti1);

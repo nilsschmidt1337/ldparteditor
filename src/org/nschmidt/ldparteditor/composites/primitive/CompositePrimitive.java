@@ -496,31 +496,29 @@ public class CompositePrimitive extends Composite {
      * Zooming in
      */
     public void zoomIn() {
-        float old = getZoom();
         zoomExponent++;
         if (zoomExponent > 20) {
             zoomExponent = 20;
         }
         setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
         this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
-        adjustTranslate(old, getZoom());
+        adjustTranslate();
     }
 
     /**
      * Zooming out
      */
     public void zoomOut() {
-        float old = getZoom();
         zoomExponent--;
         if (zoomExponent < 3) {
             zoomExponent = 3;
         }
         setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
         this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
-        adjustTranslate(old, getZoom());
+        adjustTranslate();
     }
 
-    private void adjustTranslate(float old, float zoom2) {
+    private void adjustTranslate() {
         float dx = 0;
         float dy = 0;
         dx = 0f / viewportPixelPerLDU;

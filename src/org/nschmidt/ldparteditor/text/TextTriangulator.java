@@ -58,8 +58,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 public enum TextTriangulator {
     INSTANCE;
 
-    public static Set<GData> triangulateText(Font font, final float r, final float g, final float b, final String text, final double flatness, final double interpolateFlatness, final GData1 parent, final DatFile datFile, int fontHeight,
-            final double deltaAngle) {
+    public static Set<GData> triangulateText(Font font, final float r, final float g, final float b, final String text, final double flatness, final double interpolateFlatness, final GData1 parent, final DatFile datFile, int fontHeight) {
         final GlyphVector vector = font.createGlyphVector(new FontRenderContext(null, false, false), text);
 
         final Set<GData> finalTriangleSet = Collections.synchronizedSet(new HashSet<>());
@@ -96,7 +95,7 @@ public enum TextTriangulator {
                             threads[j] = new Thread(() -> {
                                 Shape characterShape = vector.getGlyphOutline(i[0]);
                                 NLogger.debug(TextTriangulator.class, "Triangulating {0}", text.charAt(i[0])); //$NON-NLS-1$
-                                Set<GData> characterTriangleSet = triangulateShape(monitor, characterShape, flatness, interpolateFlatness, parent, datFile, scale, deltaAngle, counter, lock, lock2, r, g, b);
+                                Set<GData> characterTriangleSet = triangulateShape(monitor, characterShape, flatness, interpolateFlatness, parent, datFile, scale, lock2, r, g, b);
                                 if (characterTriangleSet.isEmpty()) {
                                     counter.decrementAndGet();
                                 }
@@ -146,8 +145,8 @@ public enum TextTriangulator {
         return finalTriangleSet;
     }
 
-    private static Set<GData> triangulateShape(IProgressMonitor monitor, Shape shape, double flatness, double interpolateFlatness, GData1 parent, DatFile datFile, double scale, double deltaAngle, AtomicInteger counter,
-            Lock lock, Lock lock2, float r, float g, float b) {
+    private static Set<GData> triangulateShape(IProgressMonitor monitor, Shape shape, double flatness, double interpolateFlatness, GData1 parent, DatFile datFile, double scale, Lock lock2, float r,
+            float g, float b) {
         lock2.lock();
         PathIterator shapePathIterator = shape.getPathIterator(null, flatness);
 

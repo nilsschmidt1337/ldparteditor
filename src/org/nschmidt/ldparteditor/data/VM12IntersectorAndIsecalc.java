@@ -79,10 +79,6 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         if (linkedDatFile.isReadOnly()) return;
 
         final List<GData2> newLines = new ArrayList<>();
-
-        final Set<GData2> linesToDelete = new HashSet<>();
-        final Set<GData5> clinesToDelete = new HashSet<>();
-
         final List<GData> surfsToParse;
 
         if (is.getScope() == 0) {
@@ -117,7 +113,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 GData s1 = surfsToParse.get(i);
                                 GData s2 = surfsToParse.get(j);
                                 if (isConnected2(s1, s2)) continue;
-                                newLines.addAll(intersectionLines(clinesToDelete, linesToDelete, s1, s2));
+                                newLines.addAll(intersectionLines(s1, s2));
                             }
                         }
                     }
@@ -282,8 +278,6 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             setModifiedNoSync();
         }
 
-        selectedLines.addAll(linesToDelete);
-        selectedCondlines.addAll(clinesToDelete);
         selectedData.addAll(selectedLines);
         selectedData.addAll(selectedCondlines);
         delete(false, false);
@@ -660,7 +654,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         }
     }
 
-    private Set<GData2> intersectionLines(final Set<GData5> clinesToDelete, final Set<GData2> linesToDelete, GData g1, GData g2) {
+    private Set<GData2> intersectionLines(GData g1, GData g2) {
 
         GColour c = new GColour(24, Colour.lineColourR, Colour.lineColourG, Colour.lineColourB, 1f);
 

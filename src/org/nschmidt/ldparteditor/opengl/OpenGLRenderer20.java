@@ -832,7 +832,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                 boolean hit = false;
                                                                 final int glitterCount = 30000;
                                                                 boolean buildable = sSize < glitterCount;
-                                                                Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, cw, ch, vInverse);
+                                                                Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, vInverse);
                                                                 final float px = v.x;
                                                                 final float py = v.y;
                                                                 final float pz = v.z;
@@ -900,7 +900,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                 boolean hit = false;
                                                                 final int speckleCount = 30000;
                                                                 boolean buildable = sSize < speckleCount;
-                                                                Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, cw, ch, vInverse);
+                                                                Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, vInverse);
                                                                 final float px = v.x;
                                                                 final float py = v.y;
                                                                 final float pz = v.z;
@@ -1099,7 +1099,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                     boolean hit = false;
                                                                     final int glitterCount = 30000;
                                                                     boolean buildable = sSize < glitterCount;
-                                                                    Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, cw, ch, vInverse);
+                                                                    Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, vInverse);
                                                                     final float px = v.x;
                                                                     final float py = v.y;
                                                                     final float pz = v.z;
@@ -1166,7 +1166,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                     boolean hit = false;
                                                                     final int speckleCount = 30000;
                                                                     boolean buildable = sSize < speckleCount;
-                                                                    Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, cw, ch, vInverse);
+                                                                    Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, vInverse);
                                                                     final float px = v.x;
                                                                     final float py = v.y;
                                                                     final float pz = v.z;
@@ -2142,7 +2142,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         return relPos;
     }
 
-    private Vector4f get3DCoordinatesFromScreen(float x, float y, float z, int w, int h, Matrix4f vInverse) {
+    private Vector4f get3DCoordinatesFromScreen(float x, float y, float z, Matrix4f vInverse) {
         Vector4f relPos = new Vector4f();
         relPos.x = x;
         relPos.y = y;

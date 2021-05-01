@@ -1159,7 +1159,7 @@ public class GL33ModelRendererLDrawStandard {
     private int to;
     private int ls;
 
-    public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, GLShader glyphShader, boolean drawSolidMaterials, DatFile df) {
+    public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, boolean drawSolidMaterials) {
 
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewportInverse();

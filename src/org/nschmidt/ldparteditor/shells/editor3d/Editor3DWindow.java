@@ -186,7 +186,6 @@ import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlantingMatrixProjectorSettings;
-import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.TJunctionSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.TreeData;
@@ -283,7 +282,6 @@ public class Editor3DWindow extends Editor3DDesign {
     private Edger2Settings es = new Edger2Settings();
     private RectifierSettings rs = new RectifierSettings();
     private IsecalcSettings is = new IsecalcSettings();
-    private SlicerProSettings ss = new SlicerProSettings();
     private IntersectorSettings ins = new IntersectorSettings();
     private PathTruderSettings ps = new PathTruderSettings();
     private YTruderSettings ys = new YTruderSettings();
@@ -4028,7 +4026,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new SlicerProDialog(getShell()).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
-                        vm.slicerpro(ss);
+                        vm.slicerpro();
                     }
                     regainFocus();
                     return;
@@ -4249,7 +4247,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         GData anchorData = df.getDrawChainTail();
                         int lineNumber = df.getDrawPerLineNoClone().getKey(anchorData);
-                        Set<GData> triangleSet = TextTriangulator.triangulateText(myFont, r, g, b, ts.getText().trim(), ts.getFlatness().doubleValue(), ts.getInterpolateFlatness().doubleValue(), View.DUMMY_REFERENCE, df, ts.getFontHeight().intValue(), ts.getDeltaAngle().doubleValue());
+                        Set<GData> triangleSet = TextTriangulator.triangulateText(myFont, r, g, b, ts.getText().trim(), ts.getFlatness().doubleValue(), ts.getInterpolateFlatness().doubleValue(), View.DUMMY_REFERENCE, df, ts.getFontHeight().intValue());
                         for (GData gda3 : triangleSet) {
                             lineNumber++;
                             df.getDrawPerLineNoClone().put(lineNumber, gda3);
@@ -8781,17 +8779,17 @@ public class Editor3DWindow extends Editor3DDesign {
                     case IDialogConstants.NO_ID:
                         // Copy File and required and related
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemProjectPtr[0], treeItemUnofficialPtr[0], treeItemOfficialPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemProjectPtr[0]);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemOfficialPtr[0], treeItemUnofficialPtr[0], treeItemProjectPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemOfficialPtr[0]);
                         }
                         break;
                     case IDialogConstants.YES_ID:
                         // Copy File and required
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemProjectPtr[0], treeItemUnofficialPtr[0], treeItemOfficialPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemProjectPtr[0]);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemOfficialPtr[0], treeItemUnofficialPtr[0], treeItemProjectPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemOfficialPtr[0]);
                         }
                         break;
                     default:
@@ -8824,17 +8822,17 @@ public class Editor3DWindow extends Editor3DDesign {
                     case IDialogConstants.NO_ID:
                         // Copy File and required and related
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemProjectPtr[0], treeItemUnofficialPtr[0], treeItemOfficialPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemProjectPtr[0]);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemOfficialPtr[0], treeItemUnofficialPtr[0], treeItemProjectPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemOfficialPtr[0]);
                         }
                         break;
                     case IDialogConstants.YES_ID:
                         // Copy File and required
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemProjectPtr[0], treeItemUnofficialPtr[0], treeItemOfficialPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemProjectPtr[0]);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemOfficialPtr[0], treeItemUnofficialPtr[0], treeItemProjectPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemOfficialPtr[0]);
                         }
                         break;
                     default:
