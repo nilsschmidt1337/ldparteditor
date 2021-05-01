@@ -1078,4 +1078,16 @@ public final class VertexManager extends VM99Clipboard {
             ((ScalableComposite) c3d.getParent()).redrawScales(event.x, event.y);
         }
     }
+
+    public static void copySingleVertexIntoClipboard(final Vertex vertex) {
+        copySingleVertexIntoClipboardContent(vertex);
+    }
+
+    public static Vertex getSingleVertexFromClipboard() {
+        return getSingleVertexFromClipboardContent();
+    }
+
+    public static List<GData> getClipboard() {
+        return getClipboardContent();
+    }
 }

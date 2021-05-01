@@ -1204,14 +1204,14 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 intersect = true;
                                 break;
                             }
-                            if (Vector3dd.manhattan(v1, v3).compareTo(minDist) < 0 && Vector3dd.manhattan(v2, v4).compareTo(minDist) < 0 ||
-                                    Vector3dd.manhattan(v2, v3).compareTo(minDist) < 0 && Vector3dd.manhattan(v1, v4).compareTo(minDist) < 0) {
+                            if (Vector3d.manhattan(v1, v3).compareTo(minDist) < 0 && Vector3d.manhattan(v2, v4).compareTo(minDist) < 0 ||
+                                    Vector3d.manhattan(v2, v3).compareTo(minDist) < 0 && Vector3d.manhattan(v1, v4).compareTo(minDist) < 0) {
                                 intersect = true;
                                 break;
                             }
                         }
                         if (!intersect) {
-                            BigDecimal dist = Vector3dd.manhattan(v1, v2);
+                            BigDecimal dist = Vector3d.manhattan(v1, v2);
                             if (dist.compareTo(minDist) > 0) {
                                 List<Vector3dd> nl = new ArrayList<>();
                                 nl.add(v1);
@@ -1882,7 +1882,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                 for (int vi = 0; vi < vc2; vi++) {
                                                     boolean intersect = false;
                                                     Vector3dd v2 = fixedVertices.get(vi);
-                                                    Vector3d sp = Vector3dd.sub(v2, v1);
+                                                    Vector3d sp = Vector3d.sub(v2, v1);
                                                     Vector3d dir = new Vector3d();
                                                     BigDecimal len = sp.normalise(dir);
                                                     int lc = fixedLinesToParse.size();
@@ -1898,7 +1898,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                     if (intersect) {
                                                         continue;
                                                     } else {
-                                                        BigDecimal dist = Vector3dd.manhattan(v1, v2);
+                                                        BigDecimal dist = Vector3d.manhattan(v1, v2);
                                                         if (dist.compareTo(minDist) > 0) {
                                                             if (vertexColour.containsKey(v1) && vertexColour.get(v1) != null) {
                                                                 List<Vector3dd> nl = new ArrayList<>();
@@ -2030,7 +2030,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                         boolean intersect = false;
                                         Vector3dh v2 = fixedVertices2.get(j);
 
-                                        Vector3d sp = Vector3dd.sub(v2, v1);
+                                        Vector3d sp = Vector3d.sub(v2, v1);
                                         Vector3d dir = new Vector3d();
                                         BigDecimal len = sp.normalise(dir);
                                         Iterator<List<Vector3dh>> li = linesToParseHashed.iterator();
@@ -2045,7 +2045,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                             }
                                         }
                                         if (!intersect) {
-                                            BigDecimal dist = Vector3dd.manhattan(v1, v2);
+                                            BigDecimal dist = Vector3d.manhattan(v1, v2);
                                             if (dist.compareTo(minDist) > 0) {
                                                 List<Vector3dh> nl = new ArrayList<>();
                                                 nl.add(v1);
@@ -2344,7 +2344,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                                 List<Vector3dd> line = iterator.next();
                                                                 Vector3dd v1 = line.get(0);
                                                                 Vector3dd v2 = line.get(1);
-                                                                Vector3d sp = Vector3dd.sub(v2, v1);
+                                                                Vector3d sp = Vector3d.sub(v2, v1);
                                                                 Vector3d dir = new Vector3d();
                                                                 BigDecimal len = sp.normalise(dir);
                                                                 for (List<Vector3dd> line2 : colourLines) {

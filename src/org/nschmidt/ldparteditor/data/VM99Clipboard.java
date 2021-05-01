@@ -61,7 +61,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         super(linkedDatFile);
     }
 
-    public static List<GData> getClipboard() {
+    protected static List<GData> getClipboardContent() {
         return CLIPBOARD;
     }
 
@@ -882,7 +882,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         return result == null ? "" : result; //$NON-NLS-1$
     }
 
-    public static void copySingleVertexIntoClipboard(final Vertex vertex) {
+    protected static void copySingleVertexIntoClipboardContent(final Vertex vertex) {
         CLIPBOARD.clear();
         CLIPBOARD_InvNext.clear();
         final StringBuilder sb = new StringBuilder();
@@ -895,7 +895,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         CLIPBOARD.add(new GData0(sb.toString(), View.DUMMY_REFERENCE));
     }
 
-    public static Vertex getSingleVertexFromClipboard() {
+    protected static Vertex getSingleVertexFromClipboardContent() {
         Vertex result = null;
         if (VertexManager.getClipboard().size() == 1) {
             GData vertex = VertexManager.getClipboard().get(0);

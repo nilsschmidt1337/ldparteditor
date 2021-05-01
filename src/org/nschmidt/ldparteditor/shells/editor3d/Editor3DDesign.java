@@ -120,7 +120,7 @@ class Editor3DDesign extends ApplicationWindow {
     private Composite cmpNorth;
     private Composite cmpEast;
     private Composite cmpWest;
-    private static Composite status;
+    protected static Composite status;
 
     final NButton[] btnSyncPtr = new NButton[1];
     final NButton[] btnLastOpenPtr = new NButton[1];
@@ -474,7 +474,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     ToolItem toolItemColourBar;
 
-    private static SashForm sashForm;
+    protected static SashForm sashForm;
     final SashForm[] editorSashForm = new SashForm[]{null};
     final SashForm[] leftSash = new SashForm[1];
     final SashForm[] splitSash = new SashForm[1];
@@ -3607,14 +3607,6 @@ class Editor3DDesign extends ApplicationWindow {
     @Override
     protected Point getInitialSize() {
         return new Point(916, 578);
-    }
-
-    public static Label getStatusLabel() {
-        return (Label) Editor3DDesign.status.getChildren()[0];
-    }
-
-    public static SashForm getSashForm() {
-        return sashForm;
     }
 
     public SashForm getSplitSashForm() {

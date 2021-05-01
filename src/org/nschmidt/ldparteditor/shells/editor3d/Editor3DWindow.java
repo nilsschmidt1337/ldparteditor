@@ -79,6 +79,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -4288,8 +4289,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (editorSashForm[0] != null) {
                     winState.setEditorSashWeights(editorSashForm[0].getWeights());
                 }
-                winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
-                winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights());
+                winState.setLeftSashWeights(((SashForm) getSashForm().getChildren()[0]).getWeights());
+                winState.setLeftSashWidth(getSashForm().getWeights());
                 winState.setPrimitiveZoom(cmpPrimitivesPtr[0].getZoom());
                 winState.setPrimitiveZoomExponent(cmpPrimitivesPtr[0].getZoomExponent());
                 winState.setPrimitiveViewport(cmpPrimitivesPtr[0].getViewport2());
@@ -5737,8 +5738,8 @@ public class Editor3DWindow extends Editor3DDesign {
         if (editorSashForm[0] != null) {
             winState.setEditorSashWeights(editorSashForm[0].getWeights());
         }
-        winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
-        winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights());
+        winState.setLeftSashWeights(((SashForm) getSashForm().getChildren()[0]).getWeights());
+        winState.setLeftSashWidth(getSashForm().getWeights());
         winState.setPrimitiveZoom(cmpPrimitivesPtr[0].getZoom());
         winState.setPrimitiveZoomExponent(cmpPrimitivesPtr[0].getZoomExponent());
         winState.setPrimitiveViewport(cmpPrimitivesPtr[0].getViewport2());
@@ -9031,7 +9032,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public List<Composite3DState> getC3DStates() {
         // Traverse the sash forms to store the 3D configuration
         final List<Composite3DState> result = new ArrayList<>();
-        Control c = Editor3DDesign.getSashForm().getChildren()[1];
+        Control c = getSashForm().getChildren()[1];
         if (c != null) {
             if (c instanceof SashForm|| c instanceof CompositeContainer) {
                 // c instanceof CompositeContainer: Simple case, since its only one 3D view open -> No recursion!
@@ -9047,5 +9048,13 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public VertexWindow getVertexWindow() {
         return vertexWindow;
+    }
+
+    public static SashForm getSashForm() {
+        return sashForm;
+    }
+
+    public static Label getStatusLabel() {
+        return (Label) Editor3DDesign.status.getChildren()[0];
     }
 }
