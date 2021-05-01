@@ -73,7 +73,6 @@ public enum TextTriangulator {
                 maxHeight = height;
         }
 
-        final Lock lock = new ReentrantLock();
         final Lock lock2 = new ReentrantLock();
         final double scale = fontHeight / maxHeight;
         final Thread[] threads = new Thread[vector.getNumGlyphs()];

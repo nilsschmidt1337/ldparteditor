@@ -173,7 +173,7 @@ class VM00Base {
         setUpdated(false);
     }
 
-    public final boolean isModified() {
+    public final synchronized boolean isModified() {
         return modified;
     }
 
@@ -185,7 +185,7 @@ class VM00Base {
         this.modified = modified;
     }
 
-    public final boolean isUpdated() {
+    public final synchronized boolean isUpdated() {
         return updated;
     }
 
