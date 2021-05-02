@@ -47,7 +47,6 @@ import org.nschmidt.ldparteditor.composites.ToolItemDrawLocation;
 import org.nschmidt.ldparteditor.composites.ToolItemDrawMode;
 import org.nschmidt.ldparteditor.composites.ToolItemState;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
-import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.PGData;
 import org.nschmidt.ldparteditor.data.PGTimestamp;
 import org.nschmidt.ldparteditor.dialogs.startup.StartupDialog;
@@ -399,11 +398,6 @@ public class SplashScreen extends ApplicationWindow {
             LDConfig.loadConfig(ldcPath);
 
             // Finally, open the editor window!
-
-            if (NLogger.debugging) {
-                DatFile fileToEdit = new DatFile(Project.getProjectPath() + File.separator + "parts" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
-                Project.setFileToEdit(fileToEdit);
-            }
             new Editor3DWindow().run();
         }
     }

@@ -54,7 +54,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
@@ -1226,11 +1225,9 @@ public class CompositeTab extends CompositeTabDesign {
         //
         compositeTextPtr[0].addCaretListener(event -> {
             ViewIdleManager.pause[0].compareAndSet(false, true);
-            Point r = compositeTextPtr[0].getSelectionRange();
             tabState.setOldLineIndex(-1);
             if (!tabState.isSync()) {
                 DatFile df = tabState.getFileNameObj();
-                df.addHistory(compositeTextPtr[0].getText(), r.x, r.y, compositeTextPtr[0].getTopIndex());
                 if (df.updateDuplicatesErrors(compositeTextPtr[0], treeItemDuplicatesPtr[0])) {
                     df.getDuplicate().pushDuplicateCheck(df.getDrawChainStart());
                     int errorCount = treeItemErrorsPtr[0].getItems().size();

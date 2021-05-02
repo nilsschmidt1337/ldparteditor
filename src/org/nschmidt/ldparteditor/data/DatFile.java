@@ -733,7 +733,8 @@ public final class DatFile {
 
         NLogger.debug(getClass(), "Total time to parse: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
         vertices.validateState();
-        NLogger.debug(getClass(), "Total time to parse + validate: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
+        addHistory(compositeText.getText(), startOffsetPos + length, 0 , compositeText.getTopIndex());
+        NLogger.debug(getClass(), "Total time to parse + validate + backup history: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
     }
 
     /**
@@ -1072,7 +1073,6 @@ public final class DatFile {
         int oldLineCount = drawPerLine.size();
         drawChainTail = drawChainAnchor;
 
-        Map<String, GData> candidateForRemoval = new HashMap<>();
         for (String line : lines) {
             if (oldG == null) {
                 if (isNotBlank(line)) {
@@ -1090,35 +1090,29 @@ public final class DatFile {
             } else {
                 String oldS = oldG.toString();
                 if (!line.equals(oldS)) {
-                    candidateForRemoval.put(oldS, oldG);
-                    if (candidateForRemoval.containsKey(line)) {
-                        newG = candidateForRemoval.get(line);
-                        candidateForRemoval.remove(line);
-                    } else {
-                        if (isNotBlank(line)) {
-                            List<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed);
-                            newG = results.get(0).getGraphicalData();
-                            if (newG == null) {
-                                newG = new GData0(line, View.DUMMY_REFERENCE);
-                            } else {
-                                newG.setText(line);
-                            }
-                        } else {
+                    GData next = oldG.next;
+                    vertices.remove(oldG);
+                    oldG = next;
+                    if (isNotBlank(line)) {
+                        List<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed);
+                        newG = results.get(0).getGraphicalData();
+                        if (newG == null) {
                             newG = new GData0(line, View.DUMMY_REFERENCE);
+                        } else {
+                            newG.setText(line);
                         }
+                    } else {
+                        newG = new GData0(line, View.DUMMY_REFERENCE);
                     }
                     drawPerLine.put(lineNumber, newG);
                 } else {
                     drawPerLine.put(lineNumber, oldG);
+                    oldG = oldG.next;
                 }
-                oldG = oldG.next;
             }
             lineNumber++;
         }
 
-        for(GData dataToRemove : candidateForRemoval.values()) {
-            vertices.remove(dataToRemove);
-        }
         for (int l = lines.length + 1; l <= oldLineCount; l++) {
             vertices.remove(drawPerLine.getValue(l));
             drawPerLine.removeByKey(l);
@@ -1924,7 +1918,7 @@ public final class DatFile {
         Map<String, List<Boolean>> backupHiddenData = null;
         Map<String, List<Boolean>> backupSelectedData = null;
         int count = 0;
-        GData data2draw = drawChainAnchor;
+        GData data2draw = drawChainAnchor.getNext();
         final boolean isBackupHiddenData = !vertices.hiddenData.isEmpty();
         final boolean isBackupSelectedData = !vertices.selectedData.isEmpty();
         if (isBackupHiddenData && isBackupSelectedData) {
@@ -1944,15 +1938,11 @@ public final class DatFile {
             }
         }
         while (count < objCount) {
-            if (data2draw == null) {
-                backup[count] = new GData0("", false, View.DUMMY_REFERENCE);     //$NON-NLS-1$
-            } else {
-                data2draw = data2draw.getNext();
-            }
             if (data2draw != null) {
                 backup[count] = data2draw;
+                data2draw = data2draw.getNext();
             } else {
-                backup[count] = new GData0("", false, View.DUMMY_REFERENCE);     //$NON-NLS-1$
+                backup[count] = new GData0("", false, View.DUMMY_REFERENCE); //$NON-NLS-1$
             }
             count++;
         }
@@ -1976,12 +1966,25 @@ public final class DatFile {
     public void addHistory(String text, int selectionStart, int selectionEnd, int topIndex) {
         final long start = System.currentTimeMillis();
         vertices.storeAxisForSlantingMatrixProjector();
-        NLogger.debug(getClass(), "Added history entry for {0}", getShortName()); //$NON-NLS-1$
+        NLogger.debug(getClass(), "Added text editor history entry for {0}", getShortName()); //$NON-NLS-1$
+        final int objCount = drawPerLine.size();
+        GData[] backup = new GData[objCount];
+        int count = 0;
+        GData data2draw = drawChainAnchor.getNext();
+        while (count < objCount) {
+            if (data2draw != null) {
+                backup[count] = data2draw;
+                data2draw = data2draw.getNext();
+            } else {
+                backup[count] = new GData0("", false, View.DUMMY_REFERENCE); //$NON-NLS-1$
+            }
+            count++;
+        }
         history.pushHistory(
                 text,
                 selectionStart,
                 selectionEnd,
-                null,
+                backup,
                 null,
                 null,
                 null,

@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.regex.Pattern;
 
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
@@ -42,8 +41,6 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 class HistoryManager {
-
-    private static final Pattern pattern = Pattern.compile("\r?\n|\r"); //$NON-NLS-1$
 
     private DatFile df;
 
@@ -104,25 +101,17 @@ class HistoryManager {
                     String text = (String) newEntry[0];
                     GData[] data = (GData[]) newEntry[3];
                     if (text != null && !text.isEmpty()) {
-                        if (text.charAt(text.length() - 1) == '\r') {
-                            text = text.substring(0, text.length() - 1);
-                        }
-                        if (text.length() > 0 && text.charAt(text.length() - 1) == '\n') {
-                            text = text.substring(0, text.length() - 1);
-                        }
-                        if (text.length() > 0 && text.charAt(text.length() - 1) == '\r') {
-                            text = text.substring(0, text.length() - 1);
-                        }
-                        if (text.length() > 0 && text.charAt(text.length() - 1) == '\n') {
-                            text = text.substring(0, text.length() - 1);
-                        }
-                        String[] result2 = pattern.split(text);
-                        if (result2.length == 0) {
-                            result = new String[]{""}; //$NON-NLS-1$
+                        final int size = data.length;
+                        if (size > 0) {
+                            result = new String[size];
+                            for (int i = 0; i < size; i++) {
+                                result[i] = data[i].toString();
+                            }
+                            resultFullText = text;
                         } else {
-                            result = result2;
+                            result = new String[]{""}; //$NON-NLS-1$
+                            resultFullText = result[0];
                         }
-                        resultFullText = text;
                     } else if (data != null) {
                         final int size = data.length;
                         if (size > 0) {
