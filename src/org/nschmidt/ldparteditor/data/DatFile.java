@@ -530,7 +530,7 @@ public final class DatFile {
                         anchorData = newAnchor;
 
                     // And the old line data has to be removed
-                    tailRemoved = vertices.remove(drawPerLine.getValue(startLine)) | tailRemoved;
+                    tailRemoved = vertices.remove(drawPerLine.getValue(startLine)) || tailRemoved;
                     drawPerLine.removeByKey(startLine);
                 }
             } else {
@@ -545,7 +545,7 @@ public final class DatFile {
                     }
 
                     // And the old line data has to be moved
-                    tailRemoved = vertices.remove(drawPerLine.getValue(startLine)) | tailRemoved;
+                    tailRemoved = vertices.remove(drawPerLine.getValue(startLine)) || tailRemoved;
                     drawPerLine.removeByKey(startLine);
 
                     int lcount = compositeText.getLineCount() - newLineCount + 1;

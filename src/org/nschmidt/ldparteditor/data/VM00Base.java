@@ -902,7 +902,7 @@ class VM00Base {
                 GData0 gd0 = (GData0) gData;
                 Vertex[] v0 = declaredVertices.get(gd0);
 
-                updateTail = remove(gData) | updateTail;
+                updateTail = remove(gData) || updateTail;
 
                 if (v0[0].equals(oldVertex))
                     v0[0] = newVertex;
@@ -916,7 +916,7 @@ class VM00Base {
                 GData2 gd2 = (GData2) gData;
                 Vertex[] v2 = lines.get(gd2);
 
-                updateTail = remove(gData) | updateTail;
+                updateTail = remove(gData) || updateTail;
 
                 if (v2[0].equals(oldVertex))
                     v2[0] = newVertex;
@@ -932,7 +932,7 @@ class VM00Base {
                 GData3 gd3 = (GData3) gData;
                 Vertex[] v3 = triangles.get(gd3);
 
-                updateTail = remove(gData) | updateTail;
+                updateTail = remove(gData) || updateTail;
 
                 if (v3[0].equals(oldVertex))
                     v3[0] = newVertex;
@@ -950,7 +950,7 @@ class VM00Base {
                 GData4 gd4 = (GData4) gData;
                 Vertex[] v4 = quads.get(gd4);
 
-                updateTail = remove(gData) | updateTail;
+                updateTail = remove(gData) || updateTail;
 
                 if (v4[0].equals(oldVertex))
                     v4[0] = newVertex;
@@ -970,7 +970,7 @@ class VM00Base {
                 GData5 gd5 = (GData5) gData;
                 Vertex[] v5 = condlines.get(gd5);
 
-                updateTail = remove(gData) | updateTail;
+                updateTail = remove(gData) || updateTail;
 
                 if (v5[0].equals(oldVertex))
                     v5[0] = newVertex;

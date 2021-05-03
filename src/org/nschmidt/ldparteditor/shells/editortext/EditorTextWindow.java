@@ -314,7 +314,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 if (result == SWT.NO) {
                     // Skip file
                     Project.removeUnsavedFile(df);
-                } if (result == SWT.YES) {
+                } else if (result == SWT.YES) {
                     if (df.save()) {
                         Editor3DWindow.getWindow().addRecentFile(df);
                         ((CompositeTab) tabFolderPtr[0].getSelection()).getTextComposite().setText(df.getText());

@@ -487,7 +487,7 @@ public class CompositeTab extends CompositeTabDesign {
                                     break;
                                 }
                             }
-                            if (oldLine.length() < newLine.length() & i == minLen) {
+                            if (oldLine.length() < newLine.length() && i == minLen) {
                                 off2 = newLine.length();
                             }
                         }

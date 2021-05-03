@@ -957,7 +957,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             double objdatLinePoint4X;
             double objdatLinePoint4Y;
             double objdatLinePoint4Z;
-            if (divisions == segments | num != 0 & num != segments)
+            if (divisions == segments || num != 0 && num != segments)
             {
                 objdatLinePoint3X = Math.cos((num - 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
                 objdatLinePoint3Y = 1.0;
@@ -1092,7 +1092,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             double objdatLinePoint4X;
             double objdatLinePoint4Y;
             double objdatLinePoint4Z;
-            if (divisions == segments | num != 0 & num != segments)
+            if (divisions == segments || num != 0 && num != segments)
             {
                 objdatLinePoint3X = round4f(Math.cos((num - 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
                 objdatLinePoint3Y = 1.0;
@@ -1336,7 +1336,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint2X = round4f(Math.cos((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
                     objdatLinePoint2Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
                     objdatLinePoint2Z = round4f(Math.sin((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    if (divisions == segments & num3 != num5 & num3 != num | type == TUBE)
+                    if (divisions == segments && num3 != num5 && num3 != num || type == TUBE)
                     {
                         objdatLinePoint3X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
                         objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
@@ -1345,7 +1345,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                         objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d)) * minor * 1.0 / major;
                         objdatLinePoint4Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
                     }
-                    else if (num3 != num5 & num3 != num)
+                    else if (num3 != num5 && num3 != num)
                     {
                         objdatLinePoint3X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
                         objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
@@ -1399,7 +1399,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint2X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
                     objdatLinePoint2Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
                     objdatLinePoint2Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
-                    if (divisions == segments | num2 != 0 & num2 != segments)
+                    if (divisions == segments || num2 != 0 && num2 != segments)
                     {
                         objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
                         objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
@@ -1408,7 +1408,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                         objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
                         objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
                     }
-                    else if (num2 != 0 & num2 != segments)
+                    else if (num2 != 0 && num2 != segments)
                     {
                         objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
                         objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
