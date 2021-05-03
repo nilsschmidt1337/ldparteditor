@@ -40,7 +40,6 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.FocusAdapter;
@@ -1163,10 +1162,9 @@ public class Composite3D extends ScalableComposite {
             }
         });
 
-        Transfer[] types = new Transfer[] { PrimitiveDragAndDropTransfer.getInstance(), FileTransfer.getInstance() };
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
         DropTarget target = new DropTarget(this, operations);
-        target.setTransfer(types);
+        widgetUtil(target).setTransfer(PrimitiveDragAndDropTransfer.getInstance(), FileTransfer.getInstance());
         target.addDropListener(new DropTargetAdapter() {
 
             volatile AtomicBoolean newMouseMove = new AtomicBoolean(true);

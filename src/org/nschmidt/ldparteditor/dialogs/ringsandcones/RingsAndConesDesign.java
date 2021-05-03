@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.ringsandcones;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
 
@@ -95,7 +97,7 @@ class RingsAndConesDesign extends Dialog {
         {
             Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbShapePtr[0] = cmb;
-            cmb.setItems(I18n.RCONES_RING, I18n.RCONES_CONE, I18n.RCONES_RING_48, I18n.RCONES_CONE_48);
+            widgetUtil(cmb).setItems(I18n.RCONES_RING, I18n.RCONES_CONE, I18n.RCONES_RING_48, I18n.RCONES_CONE_48);
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select((rs.isUsingCones() ? 1 : 0) + (rs.isUsingHiRes() ? 2 : 0));
         }
@@ -144,7 +146,7 @@ class RingsAndConesDesign extends Dialog {
         {
             Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbAnglePtr[0] = cmb;
-            cmb.setItems(
+            widgetUtil(cmb).setItems(
                     I18n.RCONES_ANGLE_01,
                     I18n.RCONES_ANGLE_02,
                     I18n.RCONES_ANGLE_03,
@@ -208,14 +210,14 @@ class RingsAndConesDesign extends Dialog {
         {
             Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbExistingOnlyPtr[0] = cmb;
-            cmb.setItems(I18n.RCONES_PRIMS_1, I18n.RCONES_PRIMS_2);
+            widgetUtil(cmb).setItems(I18n.RCONES_PRIMS_1, I18n.RCONES_PRIMS_2);
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isUsingExistingPrimitives() ? 0 : 1);
         }
         {
             Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbCreateWhatPtr[0] = cmb;
-            cmb.setItems(I18n.RCONES_CREATE_1, I18n.RCONES_CREATE_2);
+            widgetUtil(cmb).setItems(I18n.RCONES_CREATE_1, I18n.RCONES_CREATE_2);
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isCreatingNothingOnNoSolution() ? 0 : 1);
         }

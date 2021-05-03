@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.sort;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -88,7 +90,7 @@ class SortDesign extends Dialog {
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
-        cmbScope.setItems(I18n.SORT_SCOPE_FILE, I18n.SORT_SCOPE_SELECTION);
+        widgetUtil(cmbScope).setItems(I18n.SORT_SCOPE_FILE, I18n.SORT_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         if (fromLine == toLine) {
             cmbScope.select(0);
@@ -100,7 +102,7 @@ class SortDesign extends Dialog {
 
         Combo cmbSortCriteria = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbSortCriteriaPtr[0] = cmbSortCriteria;
-        cmbSortCriteria.setItems(I18n.SORT_BY_COLOUR_ASC, I18n.SORT_BY_COLOUR_DESC, I18n.SORT_BY_TYPE_ASC, I18n.SORT_BY_TYPE_DESC, I18n.SORT_BY_TYPE_COLOUR_ASC, I18n.SORT_BY_TYPE_COLOUR_DESC);
+        widgetUtil(cmbSortCriteria).setItems(I18n.SORT_BY_COLOUR_ASC, I18n.SORT_BY_COLOUR_DESC, I18n.SORT_BY_TYPE_ASC, I18n.SORT_BY_TYPE_DESC, I18n.SORT_BY_TYPE_COLOUR_ASC, I18n.SORT_BY_TYPE_COLOUR_DESC);
         cmbSortCriteria.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbSortCriteria.select(2);
         criteria = 2;

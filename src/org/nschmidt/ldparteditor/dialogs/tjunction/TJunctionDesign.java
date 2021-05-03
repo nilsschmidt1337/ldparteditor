@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.tjunction;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -73,7 +75,7 @@ class TJunctionDesign extends Dialog {
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
-        cmbScope.setItems(I18n.TJUNCTION_FIND, I18n.TJUNCTION_NORMAL, I18n.TJUNCTION_AGGRESSIVE);
+        widgetUtil(cmbScope).setItems(I18n.TJUNCTION_FIND, I18n.TJUNCTION_NORMAL, I18n.TJUNCTION_AGGRESSIVE);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(ts.getMode()));
         cmbScope.select(ts.getMode());

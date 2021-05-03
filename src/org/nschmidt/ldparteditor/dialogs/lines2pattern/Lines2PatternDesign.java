@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.lines2pattern;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -64,7 +66,7 @@ class Lines2PatternDesign extends Dialog {
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
-        cmbScope.setItems(I18n.LINES_SCOPE_SELECTION);
+        widgetUtil(cmbScope).setItems(I18n.LINES_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(0));
         cmbScope.select(0);

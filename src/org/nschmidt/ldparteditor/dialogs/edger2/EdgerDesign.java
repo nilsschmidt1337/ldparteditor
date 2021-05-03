@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.edger2;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
+
 import java.math.BigDecimal;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -96,14 +98,14 @@ class EdgerDesign extends TrayDialog {
 
         Combo cmbB = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbBPtr[0] = cmbB;
-        cmbB.setItems(I18n.EDGER_0_TO_90, I18n.EDGER_0_TO_180);
+        widgetUtil(cmbB).setItems(I18n.EDGER_0_TO_90, I18n.EDGER_0_TO_180);
         cmbB.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbB.setText(es.isExtendedRange() ? cmbB.getItem(1) : cmbB.getItem(0));
         cmbB.select(es.isExtendedRange() ? 1 : 0);
 
         Combo cmbC = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbCPtr[0] = cmbC;
-        cmbC.setItems(I18n.EDGER_CONDLINE_ON_QUAD_OFF, I18n.EDGER_CONDLINE_ON_QUAD_ON);
+        widgetUtil(cmbC).setItems(I18n.EDGER_CONDLINE_ON_QUAD_OFF, I18n.EDGER_CONDLINE_ON_QUAD_ON);
         cmbC.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbC.setText(es.isCondlineOnQuads() ? cmbC.getItem(1) : cmbC.getItem(0));
         cmbC.select(es.isCondlineOnQuads() ? 1 : 0);
@@ -140,14 +142,14 @@ class EdgerDesign extends TrayDialog {
 
         Combo cmbU = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbUPtr[0] = cmbU;
-        cmbU.setItems(I18n.EDGER_INCLUDE_UNMATCHED, I18n.EDGER_EXCLUDE_UNMATCHED, I18n.EDGER_UNMATCHED_ONLY);
+        widgetUtil(cmbU).setItems(I18n.EDGER_INCLUDE_UNMATCHED, I18n.EDGER_EXCLUDE_UNMATCHED, I18n.EDGER_UNMATCHED_ONLY);
         cmbU.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbU.setText(cmbU.getItem(es.getUnmatchedMode()));
         cmbU.select(es.getUnmatchedMode());
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
-        cmbScope.setItems(I18n.EDGER_SCOPE_FILE_SUBFILES, I18n.EDGER_SCOPE_FILE, I18n.EDGER_SCOPE_SELECTION);
+        widgetUtil(cmbScope).setItems(I18n.EDGER_SCOPE_FILE_SUBFILES, I18n.EDGER_SCOPE_FILE, I18n.EDGER_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(es.getScope()));
         cmbScope.select(es.getScope());

@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.unificator;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
+
 import java.math.BigDecimal;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -101,7 +103,7 @@ class UnificatorDesign extends Dialog {
         {
             Combo cmbSplitPlane = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbWhatToUnifyPtr[0] = cmbSplitPlane;
-            cmbSplitPlane.setItems(I18n.UNIFICATOR_VERTICES, I18n.UNIFICATOR_SUBPART_VERTICES, I18n.UNIFICATOR_VERTICES_SUBPART_VERTICES);
+            widgetUtil(cmbSplitPlane).setItems(I18n.UNIFICATOR_VERTICES, I18n.UNIFICATOR_SUBPART_VERTICES, I18n.UNIFICATOR_VERTICES_SUBPART_VERTICES);
             cmbSplitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbSplitPlane.setText(cmbSplitPlane.getItem(us.getSnapOn()));
             cmbSplitPlane.select(us.getSnapOn());
@@ -109,7 +111,7 @@ class UnificatorDesign extends Dialog {
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
-        cmbScope.setItems(I18n.UNIFICATOR_SCOPE_FILE, I18n.UNIFICATOR_SCOPE_SELECTION);
+        widgetUtil(cmbScope).setItems(I18n.UNIFICATOR_SCOPE_FILE, I18n.UNIFICATOR_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(us.getScope()));
         cmbScope.select(us.getScope());

@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.ytruder;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
+
 import java.math.BigDecimal;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -136,7 +138,7 @@ class YTruderDesign extends Dialog {
 
         Combo cmbAxis = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbAxisPtr[0] = cmbAxis;
-        cmbAxis.setItems(I18n.YTRUDER_X, I18n.YTRUDER_Y, I18n.YTRUDER_Z);
+        widgetUtil(cmbAxis).setItems(I18n.YTRUDER_X, I18n.YTRUDER_Y, I18n.YTRUDER_Z);
         cmbAxis.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbAxis.select(ys.getAxis());
 

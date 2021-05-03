@@ -146,7 +146,7 @@ public class CompositeTab extends CompositeTabDesign {
 
         {
             DropTarget dt = new DropTarget(compositeTextPtr[0], DND.DROP_DEFAULT | DND.DROP_MOVE );
-            dt.setTransfer(PrimitiveDragAndDropTransfer.getInstance(), FileTransfer.getInstance());
+            widgetUtil(dt).setTransfer(PrimitiveDragAndDropTransfer.getInstance(), FileTransfer.getInstance());
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
                 public void drop(DropTargetEvent event) {

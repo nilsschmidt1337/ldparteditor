@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.pathtruder;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
+
 import java.math.BigDecimal;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -148,7 +150,7 @@ class PathTruderDesign extends Dialog {
 
         Combo cmbShapeCompensation = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbShapeCompensationPtr[0] = cmbShapeCompensation;
-        cmbShapeCompensation.setItems(I18n.PATHTRUDER_SHAPE_COMP_1, I18n.PATHTRUDER_SHAPE_COMP_2);
+        widgetUtil(cmbShapeCompensation).setItems(I18n.PATHTRUDER_SHAPE_COMP_1, I18n.PATHTRUDER_SHAPE_COMP_2);
         cmbShapeCompensation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbShapeCompensation.setText(ps.isCompensation() ? cmbShapeCompensation.getItem(1) : cmbShapeCompensation.getItem(0));
         cmbShapeCompensation.select(ps.isCompensation() ? 1 : 0);
@@ -158,7 +160,7 @@ class PathTruderDesign extends Dialog {
 
         Combo cmbBfcInvert = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbBfcInvertPtr[0] = cmbBfcInvert;
-        cmbBfcInvert.setItems(I18n.PATHTRUDER_INVERT_SHAPE_1, I18n.PATHTRUDER_INVERT_SHAPE_2);
+        widgetUtil(cmbBfcInvert).setItems(I18n.PATHTRUDER_INVERT_SHAPE_1, I18n.PATHTRUDER_INVERT_SHAPE_2);
         cmbBfcInvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbBfcInvert.setText(ps.isInverted() ? cmbBfcInvert.getItem(1) : cmbBfcInvert.getItem(0));
         cmbBfcInvert.select(ps.isInverted() ? 1 : 0);

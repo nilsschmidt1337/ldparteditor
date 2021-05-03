@@ -41,7 +41,6 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
@@ -416,7 +415,7 @@ public class EditorTextWindow extends EditorTextDesign {
     public void registerEvents() {
         {
             DropTarget dt = new DropTarget(tabFolderPtr[0].getParent().getParent(), DND.DROP_DEFAULT | DND.DROP_MOVE );
-            dt.setTransfer(FileTransfer.getInstance());
+            widgetUtil(dt).setTransfer(FileTransfer.getInstance());
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
                 public void drop(DropTargetEvent event) {
@@ -1091,11 +1090,10 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
         widgetUtil(tabFolderPtr[0]).addSelectionListener(e -> ((CompositeTab) tabFolderPtr[0].getSelection()).getTextComposite().forceFocus());
-        Transfer[] types = new Transfer[] { TextTabDragAndDropTransfer.getInstance() };
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
 
         final DragSource source = new DragSource(tabFolderPtr[0], operations);
-        source.setTransfer(types);
+        widgetUtil(source).setTransfer(TextTabDragAndDropTransfer.getInstance());
         source.addDragListener(new DragSourceListener() {
             @Override
             public void dragStart(DragSourceEvent event) {
@@ -1113,9 +1111,8 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        Transfer[] types2 = new Transfer[] { TextTabDragAndDropTransfer.getInstance(), FileTransfer.getInstance()};
         DropTarget target = new DropTarget(tabFolderPtr[0], operations);
-        target.setTransfer(types2);
+        widgetUtil(target).setTransfer(TextTabDragAndDropTransfer.getInstance(), FileTransfer.getInstance());
         target.addDropListener(new DropTargetAdapter() {
             @Override
             public void dragOver(DropTargetEvent event) {

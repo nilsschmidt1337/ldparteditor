@@ -413,7 +413,7 @@ public class Composite3DModifier {
             nc.moveBelow(oldParentSashForm.getChildren()[0]);
 
             DropTarget dt = new DropTarget(nc, DND.DROP_DEFAULT | DND.DROP_MOVE );
-            dt.setTransfer(FileTransfer.getInstance());
+            widgetUtil(dt).setTransfer(FileTransfer.getInstance());
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
                 public void drop(DropTargetEvent event) {

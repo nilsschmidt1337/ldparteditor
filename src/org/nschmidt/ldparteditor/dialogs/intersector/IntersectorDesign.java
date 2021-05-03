@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.intersector;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -81,7 +83,7 @@ class IntersectorDesign extends Dialog {
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
-        cmbScope.setItems(I18n.INTERSECTOR_SCOPE_FILE, I18n.INTERSECTOR_SCOPE_SELECTION);
+        widgetUtil(cmbScope).setItems(I18n.INTERSECTOR_SCOPE_FILE, I18n.INTERSECTOR_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(ins.getScope()));
         cmbScope.select(ins.getScope());
@@ -90,7 +92,7 @@ class IntersectorDesign extends Dialog {
         {
             Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbColourisePtr[0] = cmbColourise;
-            cmbColourise.setItems(I18n.INTERSECTOR_NO_MODS, I18n.INTERSECTOR_COLOUR_MODS);
+            widgetUtil(cmbColourise).setItems(I18n.INTERSECTOR_NO_MODS, I18n.INTERSECTOR_COLOUR_MODS);
             cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbColourise.setText(cmbColourise.getItem(ins.isColourise() ? 1 : 0));
             cmbColourise.select(ins.isColourise() ? 1 : 0);

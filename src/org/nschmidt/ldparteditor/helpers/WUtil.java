@@ -16,6 +16,9 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helpers;
 
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -85,6 +88,24 @@ public class WUtil {
                     listener.widgetSelected(e);
                 }
             });
+        } else if (w != null){
+            NLogger.error(getClass(), "No mapping for type:" + w.getClass().getName()); //$NON-NLS-1$
+        }
+    }
+
+    public void setItems(String... items) {
+        if (w instanceof Combo) {
+            ((Combo)w).setItems(items);
+        } else if (w != null){
+            NLogger.error(getClass(), "No mapping for type:" + w.getClass().getName()); //$NON-NLS-1$
+        }
+    }
+
+    public void setTransfer(Transfer... transferAgents) {
+        if (w instanceof DragSource) {
+            ((DragSource)w).setTransfer(transferAgents);
+        } else if (w instanceof DropTarget) {
+            ((DropTarget)w).setTransfer(transferAgents);
         } else if (w != null){
             NLogger.error(getClass(), "No mapping for type:" + w.getClass().getName()); //$NON-NLS-1$
         }
