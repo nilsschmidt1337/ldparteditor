@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -186,18 +187,25 @@ public enum Project {
 
     public static void deleteFolder(File src)
             throws IOException{
-        if(src.isDirectory()){
+        if (src.isDirectory()){
             File[] files = src.listFiles();
             if (files != null) {
                 for (File file : files) {
                     deleteFolder(file);
                 }
             }
-            src.delete();
-            NLogger.debug(Project.class, "Directory deleted {0}", src); //$NON-NLS-1$
-        }else{
-            NLogger.debug(Project.class, "File deleted {0}", src); //$NON-NLS-1$
-            src.delete();
+
+            if (Files.deleteIfExists(src.toPath())) {
+                NLogger.debug(Project.class, "Directory deleted {0}", src); //$NON-NLS-1$
+            } else {
+                NLogger.error(Project.class, "Can't delete directory " + src.toPath()); //$NON-NLS-1$
+            }
+        } else {
+            if (Files.deleteIfExists(src.toPath())) {
+                NLogger.debug(Project.class, "File deleted {0}", src); //$NON-NLS-1$
+            } else {
+                NLogger.error(Project.class, "Can't delete file " + src.toPath()); //$NON-NLS-1$
+            }
         }
     }
 

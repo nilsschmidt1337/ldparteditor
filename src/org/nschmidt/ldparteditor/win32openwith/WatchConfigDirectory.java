@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
@@ -329,18 +330,15 @@ class WatchConfigDirectory {
                         String confirmationWatchId = null;
                         try (UTF8BufferedReader reader = new UTF8BufferedReader(doneFile)) {
                             confirmationWatchId = reader.readLine();
-                        } catch (LDParsingException ldpe) {
-                            NLogger.error(getClass(), ldpe);
+                            if (confirmationWatchId != null && confirmationWatchId.equals(targetWatchId)) {
+                                state = S3_DONE;
+                                result = DELEGATED_TO_ANOTHER_INSTANCE;
+                                cleanupStateFiles();
+                            }
+                        } catch (LDParsingException | UnsupportedEncodingException ex) {
+                            NLogger.error(getClass(), ex);
                         } catch (FileNotFoundException consumed) {
                             // Do nothing if the file was not found
-                        } catch (UnsupportedEncodingException uee) {
-                            NLogger.error(getClass(), uee);
-                        }
-
-                        if (confirmationWatchId != null && confirmationWatchId.equals(targetWatchId)) {
-                            state = S3_DONE;
-                            result = DELEGATED_TO_ANOTHER_INSTANCE;
-                            cleanupStateFiles();
                         }
                     }
                 }
@@ -355,29 +353,37 @@ class WatchConfigDirectory {
     }
 
     private void deleteRequest() {
-        for (int i = 0; i < 10; i++) {
-            final File fileOpenRequest = new File(FILE_OPEN_REQUEST + i);
-            if (fileOpenRequest.exists()) {
-                fileOpenRequest.delete();
+        try {
+            for (int i = 0; i < 10; i++) {
+                final File fileOpenRequest = new File(FILE_OPEN_REQUEST + i);
+                if (Files.deleteIfExists(fileOpenRequest.toPath())) {
+                    NLogger.debug(getClass(), "Deleted 'REQ' status file {0}", fileOpenRequest.toPath()); //$NON-NLS-1$
+                }
             }
+        } catch (IOException ex) {
+            NLogger.error(getClass(), ex);
         }
     }
 
     private void cleanupStateFiles() {
-        deleteRequest();
-        for (int i = 0; i < 10; i++) {
-            final File fileAck = new File(FILE_OPEN_ACKNOWLEDGEMENT + i);
-            if (fileAck.exists()) {
-                fileAck.delete();
+        try {
+            deleteRequest();
+            for (int i = 0; i < 10; i++) {
+                final File fileAck = new File(FILE_OPEN_ACKNOWLEDGEMENT + i);
+                if (Files.deleteIfExists(fileAck.toPath())) {
+                    NLogger.debug(getClass(), "Deleted 'ACK' status file {0}", fileAck.toPath()); //$NON-NLS-1$
+                }
+                final File fileSend = new File(FILE_OPEN_SEND + i);
+                if (Files.deleteIfExists(fileSend.toPath())) {
+                    NLogger.debug(getClass(), "Deleted 'SEND' status file {0}", fileSend.toPath()); //$NON-NLS-1$
+                }
+                final File fileDone = new File(FILE_OPEN_DONE + i);
+                if (Files.deleteIfExists(fileDone.toPath())) {
+                    NLogger.debug(getClass(), "Deleted 'DONE' status file {0}", fileDone.toPath()); //$NON-NLS-1$
+                }
             }
-            final File fileSend = new File(FILE_OPEN_SEND + i);
-            if (fileSend.exists()) {
-                fileSend.delete();
-            }
-            final File fileDone = new File(FILE_OPEN_DONE + i);
-            if (fileDone.exists()) {
-                fileDone.delete();
-            }
+        } catch (IOException ex) {
+            NLogger.error(getClass(), ex);
         }
     }
 }

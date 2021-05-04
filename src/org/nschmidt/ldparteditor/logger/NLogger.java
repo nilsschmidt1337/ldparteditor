@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.Locale;
 
@@ -67,11 +68,11 @@ public enum NLogger {
         try {
             if (!debugging) {
                 File log = new File(ERROR_LOG);
-                if (log.length() > 100000) {
-                    log.delete();
+                if (log.length() <= 100000 || Files.deleteIfExists(log.toPath())) {
+                    // Only log to a file when it is small enough or it can be safely deleted when it is too big.
+                    errorStream = new PrintStream(new FileOutputStream(ERROR_LOG, true));
+                    System.setErr(errorStream);
                 }
-                errorStream = new PrintStream(new FileOutputStream(ERROR_LOG, true));
-                System.setErr(errorStream);
             }
             StringBuilder sb = new StringBuilder();
             sb.append("[LDPartEditor "); //$NON-NLS-1$
@@ -284,11 +285,12 @@ public enum NLogger {
                     if (log2.length() > 100000) {
                         // if so, delete ERROR_LOG,
                         File log1 = new File(ERROR_LOG);
-                        log1.delete();
                         // rename ERROR_LOG2 to ERROR_LOG
-                        log2.renameTo(log1);
+                        if (!Files.deleteIfExists(log1.toPath()) || !log2.renameTo(log1)) {
+                            throw new SecurityException();
+                        }
                     }
-                } catch (SecurityException ex) {
+                } catch (IOException | SecurityException ex) {
                     System.err.println("[ERROR] Fatal logging error, caused by java.io.SecurityException. \n You have not enough rights to manipulate files within the application folder."); //$NON-NLS-1$
                 }
             } else {

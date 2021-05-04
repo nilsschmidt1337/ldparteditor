@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -136,7 +137,10 @@ public enum WorkbenchManager {
         try (ObjectOutputStream configFileStream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(path)))) {
             Editor3DWindow editor3DWindow = Editor3DWindow.getWindow();
             File configGzFile = new File(path);
-            configGzFile.delete();
+            if (Files.deleteIfExists(configGzFile.toPath())) {
+                NLogger.debug(WorkbenchManager.class, "Deleted the old configuration file at {0}", configGzFile.toPath()); //$NON-NLS-1$
+            }
+
             if (editor3DWindow == null) {
                 // Write defaults here..
                 configFileStream.writeObject(WorkbenchManager.editor3DWindowState);

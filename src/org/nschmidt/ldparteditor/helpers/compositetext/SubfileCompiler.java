@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.helpers.compositetext;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -490,12 +491,10 @@ public enum SubfileCompiler {
             if (file.getParentFile() != null && (!file.getParentFile().exists() || !file.getParentFile().isDirectory())) {
                 return false;
             }
-            file.createNewFile();
-            if (file.exists())
-                file.delete();
-            return true;
+
+            return file.createNewFile() && Files.deleteIfExists(file.toPath());
         } catch (Exception ex) {
+            return false;
         }
-        return false;
     }
 }

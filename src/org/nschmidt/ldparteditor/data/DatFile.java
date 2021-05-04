@@ -17,7 +17,9 @@ package org.nschmidt.ldparteditor.data;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1563,7 +1565,13 @@ public final class DatFile {
                 if (checkFileCollision(oldFile)) {
                     return true;
                 }
-                oldFile.delete();
+                try {
+                    if (Files.deleteIfExists(oldFile.toPath())) {
+                        NLogger.debug(getClass(), "Deleted old file before saving {0}", oldFile.toPath()); //$NON-NLS-1$
+                    }
+                } catch (IOException e) {
+                    NLogger.error(getClass(), e);
+                }
             }
         } else {
             if (newFile.exists() && checkFileCollision(newFile)) {
@@ -1571,11 +1579,17 @@ public final class DatFile {
             }
             File oldFile = new File(oldName);
             if (oldFile.exists() && oldFile.lastModified() == lastModified) {
-                oldFile.delete();
+                try {
+                    if (Files.deleteIfExists(oldFile.toPath())) {
+                        NLogger.debug(getClass(), "Deleted old file {0}", oldFile.toPath()); //$NON-NLS-1$
+                    }
+                } catch (IOException e) {
+                    NLogger.error(getClass(), e);
+                }
             }
         }
-        if (!newFile.getParentFile().exists()) {
-            newFile.getParentFile().mkdirs();
+        if (!newFile.getParentFile().exists() && newFile.getParentFile().mkdirs()) {
+            NLogger.debug(getClass(), "Created the parent directory for the part file."); //$NON-NLS-1$
         }
         List<String> lines = new ArrayList<>();
         lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
@@ -1598,7 +1612,9 @@ public final class DatFile {
 
             if (!deleteFirst) {
                 File oldFile = new File(oldName);
-                if (oldFile.exists()) oldFile.delete();
+                if (Files.deleteIfExists(oldFile.toPath())) {
+                    NLogger.debug(getClass(), "Deleted old file {0}", oldFile.toPath()); //$NON-NLS-1$
+                }
             }
             // File was saved. It is not virtual anymore.
             setVirtual(false);
@@ -1621,12 +1637,17 @@ public final class DatFile {
     public boolean saveForced() {
         text = getText();
         File newFile = new File(newName);
-        if (newFile.exists()) {
-            newFile.delete();
+
+        try {
+            if (Files.deleteIfExists(newFile.toPath())) {
+                NLogger.debug(getClass(), "Deleted new file (forced save) {0}", newFile.toPath()); //$NON-NLS-1$
+            }
+        } catch (IOException e) {
+            NLogger.error(getClass(), e);
         }
 
-        if (!newFile.getParentFile().exists()) {
-            newFile.getParentFile().mkdirs();
+        if (!newFile.getParentFile().exists() && newFile.getParentFile().mkdirs()) {
+            NLogger.debug(getClass(), "Created the parent directory for the part file (forced save)."); //$NON-NLS-1$
         }
 
         try (UTF8PrintWriter r = new UTF8PrintWriter(newName)) {
@@ -1667,10 +1688,16 @@ public final class DatFile {
         text = getText();
         File newFile = new File(newName);
         if (newFile.exists()) {
-            newFile.delete();
+            try {
+                if (Files.deleteIfExists(newFile.toPath())) {
+                    NLogger.debug(getClass(), "Deleted new file before saving {0}", newFile.toPath()); //$NON-NLS-1$
+                }
+            } catch (IOException ex) {
+                NLogger.error(getClass(), ex);
+            }
         }
-        if (!newFile.getParentFile().exists()) {
-            newFile.getParentFile().mkdirs();
+        if (!newFile.getParentFile().exists() && newFile.getParentFile().mkdirs()) {
+            NLogger.debug(getClass(), "Created the parent directory for the part file."); //$NON-NLS-1$
         }
         try (UTF8PrintWriter r = new UTF8PrintWriter(newName)) {
             List<String> lines = new ArrayList<>();

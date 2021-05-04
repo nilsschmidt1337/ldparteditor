@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -108,19 +109,20 @@ public enum FileHelper {
      *
      * @param dir
      *            the directory
+     * @throws IOException
      */
-    public static void deleteDirectory(File dir) {
-        try {
-            if (!dir.delete() && dir.isDirectory()) {
-                File[] files = dir.listFiles();
-                if (files != null) {
-                    for (File f : files) {
-                        deleteDirectory(f);
-                    }
+    public static void deleteDirectory(File dir) throws IOException {
+        if (dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    deleteDirectory(f);
                 }
-                dir.delete();
             }
-        } catch (SecurityException e) {
+        }
+
+        if (!Files.deleteIfExists(dir.toPath())) {
+            throw new IOException("Can't delete " + dir.toPath()); //$NON-NLS-1$
         }
     }
 

@@ -17,7 +17,9 @@ package org.nschmidt.ldparteditor.splash;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -114,7 +116,14 @@ public class SplashScreen extends ApplicationWindow {
                 // Save the changes, which are made by the user
                 WorkbenchManager.saveWorkbench(WorkbenchManager.CONFIG_GZ);
             } else {
-                configGzFile.delete();
+                try {
+                    if (Files.deleteIfExists(configGzFile.toPath())) {
+                        NLogger.error(getClass(), "Setup was aborted by the user. Deleted the config file at " + configGzFile.toPath()); //$NON-NLS-1$
+                    }
+                } catch (IOException ex) {
+                    NLogger.error(getClass(), ex);
+                }
+
                 // Oops..
                 // Kill the editors alive flag (the editor did not open. It is dead.)
                 Editor3DWindow.getAlive().set(false);
@@ -375,8 +384,11 @@ public class SplashScreen extends ApplicationWindow {
                     FileHelper.deleteDirectory(projectFolder);
                 }
                 // Well, it should be possible to create this w/o trouble at this time.
-                projectFolder.mkdir();
-            } catch (SecurityException consumed) {
+                if (!projectFolder.mkdir()) {
+                    throw new SecurityException("Can't create project folder."); //$NON-NLS-1$
+                }
+            } catch (SecurityException | IOException ex) {
+                NLogger.error(getClass(), ex);
             }
 
             String ldcPath = WorkbenchManager.getUserSettingState().getLdConfigPath();
