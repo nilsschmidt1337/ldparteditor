@@ -501,7 +501,7 @@ public class Composite3DModifier {
     public void zoomToFit() {
         final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
         float maxX = 0f;
-        float maxY = 0f;
+        float maxY = 0.0000001f;
         for (Vertex v : c3d.getLockableDatFileReference().getVertexManager().getVertices()) {
             float ax = Math.abs(v.x);
             float ay = Math.abs(v.y);

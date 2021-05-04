@@ -66,7 +66,7 @@ public enum TextTriangulator {
         if (vector.getNumGlyphs() == 0)
             return finalTriangleSet;
 
-        double maxHeight = 0d;
+        double maxHeight = 0.0000001d;
         for (int i = 0; i < vector.getNumGlyphs(); i++) {
             double height = vector.getGlyphMetrics(0).getBounds2D().getHeight();
             if (height > maxHeight)
