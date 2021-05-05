@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.workbench;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
@@ -134,12 +135,17 @@ public enum WorkbenchManager {
      * Saves the workbench to WorkbenchManager.CONFIG_GZ
      */
     public static boolean saveWorkbench(String path) {
-        try (ObjectOutputStream configFileStream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(path)))) {
-            Editor3DWindow editor3DWindow = Editor3DWindow.getWindow();
-            File configGzFile = new File(path);
+        final File configGzFile = new File(path);
+        try {
             if (Files.deleteIfExists(configGzFile.toPath())) {
                 NLogger.debug(WorkbenchManager.class, "Deleted the old configuration file at {0}", configGzFile.toPath()); //$NON-NLS-1$
             }
+        } catch (IOException ex) {
+            NLogger.error(WorkbenchManager.class, ex);
+        }
+
+        try (ObjectOutputStream configFileStream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(path)))) {
+            Editor3DWindow editor3DWindow = Editor3DWindow.getWindow();
 
             if (editor3DWindow == null) {
                 // Write defaults here..
