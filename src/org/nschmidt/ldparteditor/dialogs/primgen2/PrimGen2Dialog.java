@@ -218,12 +218,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
             if (task != null) {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
-                switch (task) {
-                case EDITORTEXT_SELECTALL:
+                if (task == TextTask.EDITORTEXT_SELECTALL) {
                     txtDataPtr[0].setSelection(0, txtDataPtr[0].getText().length());
-                    break;
-                default:
-                    break;
                 }
             }
         });
@@ -1594,12 +1590,10 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
     private String addExtraSpaces1(String str) {
         final int len = str.length();
-        switch (len) {
-        case 1:
+        if (len == 1) {
             return " " + str; //$NON-NLS-1$
-        default:
-            break;
         }
+
         return str;
     }
 

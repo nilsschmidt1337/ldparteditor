@@ -241,20 +241,16 @@ public enum TexMapParser {
                     default:
                         break;
                     }
-                    switch (mode) {
-                    case 15:
-                        if (sub.matches("\\S")) { //$NON-NLS-1$
-                            if (sub.equals("\"")) { //$NON-NLS-1$
-                                mode = 17;
-                                sub = ""; //$NON-NLS-1$
-                            } else {
-                                mode = 16;
-                            }
+
+                    if (mode == 15 && sub.matches("\\S")) { //$NON-NLS-1$
+                        if (sub.equals("\"")) { //$NON-NLS-1$
+                            mode = 17;
+                            sub = ""; //$NON-NLS-1$
+                        } else {
+                            mode = 16;
                         }
-                        break;
-                    default:
-                        break;
                     }
+
                     switch (mode) {
                     case 16: // Parse texture till whitespace
                         if (sub.matches("\\S")) { //$NON-NLS-1$

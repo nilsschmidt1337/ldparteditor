@@ -1004,16 +1004,13 @@ public final class GData3 extends GData {
                 GL20.glUniform1f(ren.getNoTextureSwitch(), 1f);
                 GL20.glUniform1f(ren.getNoLightSwitch(), c3d.isLightOn() && matLight ? 0f : 1f);
                 GL20.glUniform1f(ren.getCubeMapSwitch(), useCubeMap);
-                switch (GData.accumClip) {
-                case 0:
+                if (GData.accumClip == 0) {
                     drawBFCcolour2(c3d, tR, tG, tB, tA, useCubeMap);
-                    break;
-                default:
+                } else {
                     BFC tmp = GData.localWinding;
                     GData.localWinding = BFC.NOCERTIFY;
                     drawBFCcolour2(c3d, tR, tG, tB, tA, useCubeMap);
                     GData.localWinding = tmp;
-                    break;
                 }
             } else { // Draw the textured face
                 if (!visible)

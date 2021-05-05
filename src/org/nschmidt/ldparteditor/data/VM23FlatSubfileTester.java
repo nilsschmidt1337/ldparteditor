@@ -69,10 +69,8 @@ class VM23FlatSubfileTester extends VM22TJunctionFixer {
             return Axis.X;
         } else if (plainOnY) {
             return Axis.Y;
-        } else if (plainOnZ) {
-            return Axis.Z;
         } else {
-            return Axis.NONE;
+            return Axis.Z;
         }
     }
 

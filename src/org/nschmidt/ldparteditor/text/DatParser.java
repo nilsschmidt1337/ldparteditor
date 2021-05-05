@@ -1064,13 +1064,11 @@ public enum DatParser {
                     parseError = cnc > 0 && cnc < 4;
                     if (cnc == 2) {
                         // Hourglass
-                        switch (fcc) {
-                        case 1:
+                        if (fcc == 1) {
                             result.add(new ParsingResult(I18n.DATPARSER_HOURGLASS_QUADRILATERAL, "[E41] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                            break;
-                        default: // 2
+                        } else {
+                            // fcc is 2
                             result.add(new ParsingResult(I18n.DATPARSER_HOURGLASS_QUADRILATERAL, "[E42] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                            break;
                         }
                     } else if (cnc == 1 || cnc == 3) {
                         // Concave

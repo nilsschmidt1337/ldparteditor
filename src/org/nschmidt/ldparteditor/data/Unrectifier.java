@@ -51,14 +51,11 @@ public enum Unrectifier {
         GData data2draw = fileNameObj.getDrawChainStart();
         while ((data2draw = data2draw.getNext()) != null) {
             lineCount += 1;
-            switch (data2draw.type()) {
-            case 1:
+            if (data2draw.type() == 1) {
                 GData1 g1 = (GData1) data2draw;
                 if (rectPrimitives.contains(g1.shortName.trim().toLowerCase())) {
                     lineNumbers.add(lineCount);
                 }
-                break;
-            default:
             }
         }
 
@@ -76,11 +73,8 @@ public enum Unrectifier {
 
             data2draw = fileNameObj.getDrawChainStart();
             while ((data2draw = data2draw.getNext()) != null) {
-                switch (data2draw.type()) {
-                case 4:
+                if (data2draw.type() == 4) {
                     selectedQuads.add((GData4) data2draw);
-                    break;
-                default:
                 }
             }
 

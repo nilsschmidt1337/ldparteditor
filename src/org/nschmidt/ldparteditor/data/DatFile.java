@@ -209,39 +209,30 @@ public final class DatFile {
         case 2: // Front-Backface BFC
             data2draw.drawGL20BFC(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                switch (GData.accumClip) {
-                case 0:
+                if (GData.accumClip == 0) {
                     data2draw.drawGL20BFC(c3d);
-                    break;
-                default:
+                } else {
                     data2draw.drawGL20(c3d);
-                    break;
                 }
             }
             break;
         case 3: // Backface only BFC
             data2draw.drawGL20BFCbackOnly(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                switch (GData.accumClip) {
-                case 0:
+                if (GData.accumClip == 0) {
                     data2draw.drawGL20BFCbackOnly(c3d);
-                    break;
-                default:
+                } else {
                     data2draw.drawGL20(c3d);
-                    break;
                 }
             }
             break;
         case 4: // Real BFC
             data2draw.drawGL20BFCcolour(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                switch (GData.accumClip) {
-                case 0:
+                if (GData.accumClip == 0) {
                     data2draw.drawGL20BFCcolour(c3d);
-                    break;
-                default:
+                } else {
                     data2draw.drawGL20(c3d);
-                    break;
                 }
             }
             break;

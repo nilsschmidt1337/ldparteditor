@@ -671,13 +671,10 @@ public final class GData1 extends GData {
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
-                        switch (tempWinding) {
-                        case NOCERTIFY:
+                        if (tempWinding == BFC.NOCERTIFY) {
                             data2draw.drawGL20BFCuncertified(c3d);
-                            break;
-                        default:
+                        } else {
                             data2draw.drawGL20BFC(c3d);
-                            break;
                         }
                     }
                     if (GData.accumClip > 0)
@@ -867,13 +864,10 @@ public final class GData1 extends GData {
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
-                        switch (tempWinding) {
-                        case NOCERTIFY:
+                        if (tempWinding == BFC.NOCERTIFY) {
                             data2draw.drawGL20BFCuncertified(c3d);
-                            break;
-                        default:
+                        } else {
                             data2draw.drawGL20BFCbackOnly(c3d);
-                            break;
                         }
                     }
                     if (GData.accumClip > 0)
@@ -970,13 +964,10 @@ public final class GData1 extends GData {
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
-                        switch (tempWinding) {
-                        case NOCERTIFY:
+                        if (tempWinding == BFC.NOCERTIFY) {
                             data2draw.drawGL20BFCuncertified(c3d);
-                            break;
-                        default:
+                        } else {
                             data2draw.drawGL20BFCcolour(c3d);
-                            break;
                         }
                     }
                     if (GData.accumClip > 0)
@@ -1183,8 +1174,7 @@ public final class GData1 extends GData {
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
-                        switch (tempWinding) {
-                        case NOCERTIFY:
+                        if (tempWinding == BFC.NOCERTIFY) {
                             switch (data2draw.type()) {
                             case 1:
                             case 5:
@@ -1193,10 +1183,8 @@ public final class GData1 extends GData {
                             default:
                                 data2draw.drawGL20(c3d);
                             }
-                            break;
-                        default:
+                        } else {
                             data2draw.drawGL20WhileAddCondlines(c3d);
-                            break;
                         }
                     }
                     if (GData.accumClip > 0)
@@ -2693,13 +2681,10 @@ public final class GData1 extends GData {
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
-                        switch (GData.localWinding) {
-                        case NOCERTIFY:
+                        if (GData.localWinding == BFC.NOCERTIFY) {
                             data2draw.getBFCorientationMapNOCERTIFY(map);
-                            break;
-                        default:
+                        } else {
                             data2draw.getBFCorientationMap(map);
-                            break;
                         }
                     }
                     if (GData.accumClip > 0)
@@ -2776,13 +2761,10 @@ public final class GData1 extends GData {
                     state.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
-                        switch (state.localWinding) {
-                        case NOCERTIFY:
+                        if (state.localWinding == BFC.NOCERTIFY) {
                             data2draw.getVertexNormalMapNOCERTIFY(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
-                            break;
-                        default:
+                        } else {
                             data2draw.getVertexNormalMap(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
-                            break;
                         }
                     }
                     if (state.accumClip > 0)

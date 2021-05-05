@@ -660,8 +660,7 @@ public final class GDataCSG extends GData {
     public synchronized String inlinedString(final BFC bfc, final GColour colour) {
         try {
             staticLock.lock();
-            switch (type) {
-            case CSG.COMPILE:
+            if (type == CSG.COMPILE) {
 
                 if (compiledCSG == null) {
                     // Try to do a rebuild
@@ -744,7 +743,7 @@ public final class GDataCSG extends GData {
                 } else {
                     return getNiceString();
                 }
-            default:
+            } else {
                 return getNiceString();
             }
         } finally {

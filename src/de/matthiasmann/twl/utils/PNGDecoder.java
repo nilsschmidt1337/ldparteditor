@@ -225,11 +225,9 @@ public class PNGDecoder {
                     }
                     break;
                 case COLOR_GREYALPHA:
-                    switch (fmt) {
-                    case LUMINANCE_ALPHA:
+                    if (fmt == Format.LUMINANCE_ALPHA) {
                         copy(buffer, curLine);
-                        break;
-                    default:
+                    } else {
                         throw new UnsupportedOperationException("Unsupported format for this image"); //$NON-NLS-1$
                     }
                     break;
@@ -434,10 +432,10 @@ public class PNGDecoder {
     private void expand4(byte[] src, byte[] dst) {
         for (int i = 1, n = dst.length; i < n; i += 2) {
             int val = src[1 + (i >> 1)] & 255;
-            switch (n - i) {
-            default:
+            if ((n - i) == 1) {
+                dst[i] = (byte) (val >> 4);
+            } else {
                 dst[i + 1] = (byte) (val & 15);
-            case 1:
                 dst[i] = (byte) (val >> 4);
             }
         }
