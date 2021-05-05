@@ -31,7 +31,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.composites.ToolSeparator;
@@ -153,16 +152,6 @@ class EditorTextDesign extends ApplicationWindow {
     @Override
     protected StatusLineManager createStatusLineManager() {
         return new StatusLineManager();
-    }
-
-    /**
-     * Configure the shell.
-     *
-     * @param newShell
-     */
-    @Override
-    protected void configureShell(Shell newShell) {
-        super.configureShell(newShell);
     }
 
     /**

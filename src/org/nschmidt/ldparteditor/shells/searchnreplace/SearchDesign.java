@@ -177,22 +177,4 @@ class SearchDesign extends ApplicationWindow {
 
         return cmpContainer;
     }
-
-    /**
-     * Configure the shell.
-     *
-     * @param newShell
-     */
-    @Override
-    protected void configureShell(Shell newShell) {
-        super.configureShell(newShell);
-    }
-
-    /**
-     * Return the initial size of the window.
-     */
-    @Override
-    protected Point getInitialSize() {
-        return super.getInitialSize();
-    }
 }

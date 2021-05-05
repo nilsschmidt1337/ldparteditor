@@ -1383,9 +1383,4 @@ public class EditorTextWindow extends EditorTextDesign {
         }
         Editor3DWindow.getWindow().updateTreeSelectedDatFile(df);
     }
-
-    @Override
-    public Shell getShell() {
-        return super.getShell();
-    }
 }

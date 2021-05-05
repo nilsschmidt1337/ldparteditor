@@ -2381,11 +2381,6 @@ public class Composite3D extends ScalableComposite {
         getMntmWireframeMode().setSelection(renderMode == -1);
     }
 
-    @Override
-    public Rectangle getBounds() {
-        return super.getBounds();
-    }
-
     public Rectangle getScaledBounds() {
         final double factor = WorkbenchManager.getUserSettingState().getViewportScaleFactor();
         final Rectangle bounds = super.getBounds();

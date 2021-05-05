@@ -157,14 +157,6 @@ class ColourDesign extends ApplicationWindow {
         return cmpContainer;
     }
 
-    /**
-     * Return the initial size of the dialog.
-     */
-    @Override
-    protected Point getInitialSize() {
-        return super.getInitialSize();
-    }
-
     private void addColorButton(ToolItem toolItemColours, GColour gColour) {
         int cn = gColour.getColourNumber();
         if (cn != -1 && LDConfig.hasColour(cn)) {

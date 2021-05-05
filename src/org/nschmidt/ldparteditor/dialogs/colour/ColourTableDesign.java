@@ -28,7 +28,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -139,13 +138,5 @@ class ColourTableDesign extends ApplicationWindow {
         if (key != null && ti.getData() != null && ((Object[]) ti.getData()).length == 2) {
             key.setBackground(2, (Color) ((Object[]) ti.getData())[1]);
         }
-    }
-
-    /**
-     * Return the initial size of the dialog.
-     */
-    @Override
-    protected Point getInitialSize() {
-        return super.getInitialSize();
     }
 }

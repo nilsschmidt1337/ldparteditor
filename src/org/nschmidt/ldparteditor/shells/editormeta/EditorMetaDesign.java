@@ -28,7 +28,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -1436,13 +1435,5 @@ class EditorMetaDesign extends ApplicationWindow {
                 "Wing", //$NON-NLS-1$
                 "Znap" //$NON-NLS-1$
         );
-    }
-
-    /**
-     * Return the initial size of the window.
-     */
-    @Override
-    protected Point getInitialSize() {
-        return super.getInitialSize();
     }
 }

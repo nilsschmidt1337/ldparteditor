@@ -20,7 +20,6 @@ import java.text.MessageFormat;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -76,13 +75,4 @@ class OverwriteDesign extends Dialog {
         createButton(parent, IDialogConstants.NO_ID, I18n.DIALOG_NO, true);
         createButton(parent, IDialogConstants.SKIP_ID, I18n.DIALOG_SKIP_ALL, false);
     }
-
-    /**
-     * Return the initial size of the dialog.
-     */
-    @Override
-    protected Point getInitialSize() {
-        return super.getInitialSize();
-    }
-
 }

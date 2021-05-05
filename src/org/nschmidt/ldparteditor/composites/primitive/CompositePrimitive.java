@@ -1542,11 +1542,6 @@ public class CompositePrimitive extends Composite {
         return mousePosition;
     }
 
-    @Override
-    public Rectangle getBounds() {
-        return super.getBounds();
-    }
-
     public Rectangle getScaledBounds() {
         final double factor = WorkbenchManager.getUserSettingState().getViewportScaleFactor();
         final Rectangle bounds = super.getBounds();

@@ -50,7 +50,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.util.vector.Matrix4f;
@@ -3589,16 +3588,6 @@ class Editor3DDesign extends ApplicationWindow {
     @Override
     protected StatusLineManager createStatusLineManager() {
         return new StatusLineManager();
-    }
-
-    /**
-     * Configure the shell.
-     *
-     * @param newShell
-     */
-    @Override
-    protected void configureShell(Shell newShell) {
-        super.configureShell(newShell);
     }
 
     /**
