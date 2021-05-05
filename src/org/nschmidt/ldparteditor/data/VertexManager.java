@@ -871,8 +871,7 @@ public final class VertexManager extends VM99Clipboard {
         Vector4f rayDirection = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
         rayDirection.w = 1f;
 
-        Vertex[] triQuadVerts = new Vertex[4];
-        int i = 0;
+        Vertex[] triQuadVerts;
         boolean objectSelected = false;
         GData selectedObject = null;
         Vector4f orig;
@@ -890,12 +889,7 @@ public final class VertexManager extends VM99Clipboard {
             GData3 triangle = entry.getKey();
             if (hiddenData.contains(triangle))
                 continue;
-            i = 0;
-            // FIXME Think about potential use of System.arraycopy here
-            for (Vertex tvertex : entry.getValue()) {
-                triQuadVerts[i] = tvertex;
-                i++;
-            }
+            triQuadVerts = entry.getValue();
             if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist) && dist[0] < minDist) {
                 minDist = dist[0];
                 minPoint.set(point);
@@ -906,12 +900,10 @@ public final class VertexManager extends VM99Clipboard {
 
         for (CSG csg : GDataCSG.getCSGs(linkedDatFile)) {
             for(GData3 triangle : csg.getResult(linkedDatFile).keySet()) {
-
-                triQuadVerts[0] = new Vertex(triangle.x1, triangle.y1, triangle.z1);
-                triQuadVerts[1] = new Vertex(triangle.x2, triangle.y2, triangle.z2);
-                triQuadVerts[2] = new Vertex(triangle.x3, triangle.y3, triangle.z3);
-
-                if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist) && dist[0] < minDist) {
+                if (powerRay.triangleIntersect(orig, rayDirection,
+                        new Vertex(triangle.x1, triangle.y1, triangle.z1),
+                        new Vertex(triangle.x2, triangle.y2, triangle.z2),
+                        new Vertex(triangle.x3, triangle.y3, triangle.z3), point, dist) && dist[0] < minDist) {
                     minDist = dist[0];
                     minPoint.set(point);
                     objectSelected = true;
@@ -924,12 +916,7 @@ public final class VertexManager extends VM99Clipboard {
             GData4 quad = entry.getKey();
             if (hiddenData.contains(quad))
                 continue;
-            i = 0;
-            // FIXME Think about potential use of System.arraycopy here
-            for (Vertex tvertex : entry.getValue()) {
-                triQuadVerts[i] = tvertex;
-                i++;
-            }
+            triQuadVerts = entry.getValue();
             if ((powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)
                     || powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0], point, dist))
                     && dist[0] < minDist) {

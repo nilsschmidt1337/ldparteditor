@@ -864,18 +864,12 @@ class VM01SelectHelper extends VM01Select {
     private boolean isVertexVisible(Composite3D c3d, Vertex vertex, Vector4f rayDirection, boolean noTrans) {
         if (!c3d.isShowingHiddenVertices()) {
             final Vector4f point = vertex.toVector4f();
-            Vertex[] triQuadVerts = new Vertex[4];
-            int i = 0;
+            Vertex[] triQuadVerts;
             for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
                 GData3 triangle = entry.getKey();
                 if (noTrans && triangle.a < 1f || hiddenData.contains(triangle))
                     continue;
-                i = 0;
-                // FIXME Think about potential use of System.arraycopy here
-                for (Vertex tvertex : entry.getValue()) {
-                    triQuadVerts[i] = tvertex;
-                    i++;
-                }
+                triQuadVerts = entry.getValue();
                 if (!triQuadVerts[0].equals(vertex) && !triQuadVerts[1].equals(vertex) && !triQuadVerts[2].equals(vertex) && powerRay.triangleIntersect(point, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2])) {
                     return false;
                 }
@@ -885,12 +879,7 @@ class VM01SelectHelper extends VM01Select {
                 GData4 quad = entry.getKey();
                 if (noTrans && quad.a < 1f || hiddenData.contains(quad))
                     continue;
-                i = 0;
-                // FIXME Think about potential use of System.arraycopy here
-                for (Vertex tvertex : entry.getValue()) {
-                    triQuadVerts[i] = tvertex;
-                    i++;
-                }
+                triQuadVerts = entry.getValue();
                 if (!triQuadVerts[0].equals(vertex) && !triQuadVerts[1].equals(vertex) && !triQuadVerts[2].equals(vertex) && !triQuadVerts[3].equals(vertex) && (powerRay.triangleIntersect(point, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2])
                             || powerRay.triangleIntersect(point, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0]))) {
                     return false;
@@ -1593,9 +1582,7 @@ class VM01SelectHelper extends VM01Select {
         Vector4f rayDirection = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
         rayDirection.w = 1f;
 
-        Vertex[] triQuadVerts = new Vertex[4];
-        int i = 0;
-
+        Vertex[] triQuadVerts;
         Vector4f orig = perspective.get3DCoordinatesFromScreen(event.x, event.y);
         Vector4f point = new Vector4f(orig);
 
@@ -1608,13 +1595,7 @@ class VM01SelectHelper extends VM01Select {
                 continue;
             if (noTrans && triangle.a < 1f && !c3d.isShowingHiddenVertices())
                 continue;
-            i = 0;
-            // FIXME Think about potential use of System.arraycopy here
-            for (Vertex tvertex : entry.getValue()) {
-                triQuadVerts[i] = tvertex;
-                i++;
-            }
-
+            triQuadVerts = entry.getValue();
             if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist) && dist[0] < minDist) {
                 if (triangle.isTriangle) minDist = dist[0];
                 if (triangle.isTriangle || result == null) result = triangle;
@@ -1626,12 +1607,7 @@ class VM01SelectHelper extends VM01Select {
                 continue;
             if (noTrans && quad.a < 1f && !c3d.isShowingHiddenVertices())
                 continue;
-            i = 0;
-            // FIXME Think about potential use of System.arraycopy here
-            for (Vertex tvertex : entry.getValue()) {
-                triQuadVerts[i] = tvertex;
-                i++;
-            }
+            triQuadVerts = entry.getValue();
             if ((powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)
                     || powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0], point, dist)) && dist[0] < minDist) {
                 minDist = dist[0];
