@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.helpers.math;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.util.Objects;
 
 /**
  * Full immutable rational representation with lower and upper part
@@ -69,8 +70,8 @@ public class Rational implements Comparable<Rational> {
         return new BigDecimal(upper).divide(new BigDecimal(lower), mcloc);
     }
 
-    private static BigInteger sd = new BigInteger("1000000000000000"); //$NON-NLS-1$
-    private static BigDecimal sd2 = new BigDecimal("1000000000000000"); //$NON-NLS-1$
+    private static BigInteger sd = BigInteger.valueOf(1000000000000000L);
+    private static BigDecimal sd2 = new BigDecimal(1000000000000000L);
 
     public BigDecimal bigDecimalValue() {
         return new BigDecimal(upper.multiply(sd).divide(lower)).divide(sd2);
@@ -100,7 +101,10 @@ public class Rational implements Comparable<Rational> {
     public int compareTo(Rational other) {
         final int s = upper.signum() * lower.signum();
         final int os = other.upper.signum() * other.lower.signum();
-        if (s != os) Integer.compare(s, os);
+        if (s != os) {
+            return Integer.compare(s, os);
+        }
+
         switch (s) {
         case 0:
             return 0;
@@ -109,6 +113,21 @@ public class Rational implements Comparable<Rational> {
         default:
             return other.upper.abs().multiply(lower.abs()).compareTo(upper.abs().multiply(other.lower.abs()));
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lower, upper);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Rational))
+            return false;
+        Rational other = (Rational) obj;
+        return this.compareTo(other) == 0;
     }
 
     public Rational subtract(Rational x) {
@@ -123,5 +142,4 @@ public class Rational implements Comparable<Rational> {
     public String toString() {
         return Double.toString(this.doubleValue());
     }
-
 }

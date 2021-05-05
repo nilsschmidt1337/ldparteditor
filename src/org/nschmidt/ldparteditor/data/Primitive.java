@@ -19,6 +19,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.lwjgl.opengl.GL11;
@@ -642,5 +643,20 @@ public class Primitive implements Comparable<Primitive> {
         } else {
             return description.compareToIgnoreCase(o.description);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(category, description, name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Primitive))
+            return false;
+        Primitive other = (Primitive) obj;
+        return this.compareTo(other) == 0;
     }
 }

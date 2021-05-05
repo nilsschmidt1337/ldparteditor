@@ -669,7 +669,7 @@ public class GTexture {
         int tWidth = 1;
         int tHeight = 1;
 
-        if (filename == "") { //$NON-NLS-1$
+        if ("".equals(filename)) { //$NON-NLS-1$
             buf = ByteBuffer.allocateDirect(4);
             final byte[] bytes = new byte[] { 0, 0, 0, -1 };
             buf.put(bytes);
