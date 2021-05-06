@@ -29,8 +29,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -73,7 +71,6 @@ public enum TextTriangulator {
                 maxHeight = height;
         }
 
-        final Lock lock2 = new ReentrantLock();
         final double scale = fontHeight / maxHeight;
         final Thread[] threads = new Thread[vector.getNumGlyphs()];
         final AtomicInteger counter = new AtomicInteger(vector.getNumGlyphs());
@@ -94,7 +91,7 @@ public enum TextTriangulator {
                             threads[j] = new Thread(() -> {
                                 Shape characterShape = vector.getGlyphOutline(i[0]);
                                 NLogger.debug(TextTriangulator.class, "Triangulating {0}", text.charAt(i[0])); //$NON-NLS-1$
-                                Set<GData> characterTriangleSet = triangulateShape(monitor, characterShape, flatness, interpolateFlatness, parent, datFile, scale, lock2, r, g, b);
+                                Set<GData> characterTriangleSet = triangulateShape(monitor, characterShape, flatness, interpolateFlatness, parent, datFile, scale, r, g, b);
                                 if (characterTriangleSet.isEmpty()) {
                                     counter.decrementAndGet();
                                 }
@@ -144,9 +141,8 @@ public enum TextTriangulator {
         return finalTriangleSet;
     }
 
-    private static Set<GData> triangulateShape(IProgressMonitor monitor, Shape shape, double flatness, double interpolateFlatness, GData1 parent, DatFile datFile, double scale, Lock lock2, float r,
-            float g, float b) {
-        lock2.lock();
+    private static Set<GData> triangulateShape(IProgressMonitor monitor, Shape shape, double flatness, double interpolateFlatness, GData1 parent, DatFile datFile, double scale, float r, float g,
+            float b) {
         PathIterator shapePathIterator = shape.getPathIterator(null, flatness);
 
         /*
@@ -370,9 +366,6 @@ public enum TextTriangulator {
                 }
 
             }
-            lock2.unlock();
-        } else {
-            lock2.unlock();
         }
 
         return finalTriangleSet;

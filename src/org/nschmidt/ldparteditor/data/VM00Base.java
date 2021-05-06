@@ -219,8 +219,8 @@ class VM00Base {
 
         if (addHistory) linkedDatFile.addHistory();
 
+        lock.lock();
         try {
-            lock.lock();
 
             if (isSkipSyncWithTextEditor() || !isSyncWithTextEditor())  {
                 // lock.unlock() call on finally!

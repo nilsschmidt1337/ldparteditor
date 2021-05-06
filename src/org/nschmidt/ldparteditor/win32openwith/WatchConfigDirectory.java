@@ -189,13 +189,13 @@ class WatchConfigDirectory {
                             if (shouldOpenFile) {
                                 final String path = pathToOpen;
                                 CompletableFuture.runAsync(() -> {
+                                   fileOpenLock.lock();
                                    try {
-                                       fileOpenLock.lock();
                                        // Load file here
                                        final Editor3DWindow win = Editor3DWindow.getWindow();
                                        win.getShell().getDisplay().asyncExec(() -> {
+                                           fileOpenLock2.lock();
                                            try {
-                                               fileOpenLock2.lock();
                                                final boolean syncingTabs = WorkbenchManager.getUserSettingState().isSyncingTabs();
                                                WorkbenchManager.getUserSettingState().setSyncingTabs(false);
                                                try {

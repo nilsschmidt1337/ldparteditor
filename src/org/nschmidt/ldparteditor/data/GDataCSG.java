@@ -658,8 +658,8 @@ public final class GDataCSG extends GData {
 
     @Override
     public synchronized String inlinedString(final BFC bfc, final GColour colour) {
+        staticLock.lock();
         try {
-            staticLock.lock();
             if (type == CSG.COMPILE) {
 
                 if (compiledCSG == null) {
@@ -1058,8 +1058,8 @@ public final class GDataCSG extends GData {
     }
 
     public static void selectCSG(Composite3D c3d, Event event) {
+        staticLock.lock();
         try {
-            staticLock.lock();
             final DatFile df = c3d.getLockableDatFileReference();
             final Set<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
             if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {

@@ -837,8 +837,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                 final float py = v.y;
                                                                 final float pz = v.z;
                                                                 float[] newGlitter = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
+                                                                lockGlitter.lock();
                                                                 try {
-                                                                    lockGlitter.lock();
                                                                     final long now = System.currentTimeMillis();
                                                                     for (Iterator<float[]> iterator = glitters.iterator(); iterator.hasNext();) {
                                                                         float[] glitter = iterator.next();
@@ -905,8 +905,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                 final float py = v.y;
                                                                 final float pz = v.z;
                                                                 float[] newSpeckle = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
+                                                                lockSpeckle.lock();
                                                                 try {
-                                                                    lockSpeckle.lock();
                                                                     final long now = System.currentTimeMillis();
                                                                     for (Iterator<float[]> iterator = speckles.iterator(); iterator.hasNext();) {
                                                                         float[] speckle = iterator.next();
@@ -1104,8 +1104,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                     final float py = v.y;
                                                                     final float pz = v.z;
                                                                     float[] newGlitter = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
+                                                                    lockGlitter.lock();
                                                                     try {
-                                                                        lockGlitter.lock();
                                                                         final long now = System.currentTimeMillis();
                                                                         for (Iterator<float[]> iterator = glitters.iterator(); iterator.hasNext();) {
                                                                             float[] glitter = iterator.next();
@@ -1171,8 +1171,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                     final float py = v.y;
                                                                     final float pz = v.z;
                                                                     float[] newSpeckle = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
+                                                                    lockSpeckle.lock();
                                                                     try {
-                                                                        lockSpeckle.lock();
                                                                         final long now = System.currentTimeMillis();
                                                                         for (Iterator<float[]> iterator = speckles.iterator(); iterator.hasNext();) {
                                                                             float[] speckle = iterator.next();
@@ -1259,8 +1259,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                     r[k] = points2.get(k);
                                                 }
                                                 skip = size;
+                                                tmpLock.lock();
                                                 try {
-                                                    tmpLock.lock();
                                                     // Update renderedPoints here!
                                                     renderedPoints[0] = r;
                                                 } finally {
@@ -1269,8 +1269,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                             }
                                             i += 4 * cw * (chunks - 1);
                                         }
+
+                                        tmpLock.lock();
                                         try {
-                                            tmpLock.lock();
                                             points.addAll(points2);
                                         } finally {
                                             tmpLock.unlock();
@@ -1299,8 +1300,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             for (int j = 0; j < size; j++) {
                                 r[j] = points.get(j);
                             }
+
+                            lock.lock();
                             try {
-                                lock.lock();
                                 // Update renderedPoints here!
                                 renderedPoints[0] = r;
                                 ViewIdleManager.renderLDrawStandard[0].set(true);

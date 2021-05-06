@@ -558,8 +558,8 @@ public class GL33ModelRenderer {
                         int csgSolidVertexCount = 0;
                         int csgTransVertexCount = 0;
 
+                        GDataCSG.staticLock.lock();
                         try {
-                            GDataCSG.staticLock.lock();
                             if (modified) GDataCSG.resetCSG(df, true);
                             // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
                             for (GDataCSG csg : csgData2) {
@@ -650,6 +650,7 @@ public class GL33ModelRenderer {
                                     }
                                 }
                             }
+
                             lock.lock();
                             dataCSG = tmpCsgData;
                             solidCSGsize= csgIndex;
