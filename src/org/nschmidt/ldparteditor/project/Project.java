@@ -93,7 +93,6 @@ public enum Project {
         Editor3DWindow.getWindow().getProjectParts().getParent().build();
         Editor3DWindow.getWindow().getProjectParts().getParent().redraw();
         Editor3DWindow.getWindow().getProjectParts().getParent().update();
-        // TODO Needs implementation!
     }
 
     /**

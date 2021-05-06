@@ -8646,9 +8646,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         Project.updateEditor();
                         Editor3DWindow.getWindow().getShell().update();
                         Project.setLastVisitedPath(Project.getProjectPath());
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
+                    } catch (IOException ioe) {
+                        NLogger.error(getClass(), ioe);
                     }
                 }
             }

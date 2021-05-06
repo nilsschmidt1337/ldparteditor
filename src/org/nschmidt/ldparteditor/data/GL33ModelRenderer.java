@@ -2257,7 +2257,7 @@ public class GL33ModelRenderer {
             mainShader.setFactor(1f);
         }
 
-        // TODO Draw CSG VAOs here
+        // Draw CSG VAOs here
         if (usesCSG) {
             if (drawSolidMaterials) {
 

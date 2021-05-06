@@ -1889,12 +1889,6 @@ public class CompositeTab extends CompositeTabDesign {
         });
     }
 
-    /**
-     * Sets the current window of this tab
-     * @param cTabFolder TODO
-     * @param textEditorWindow
-     *            the window to set.
-     */
     public void setFolderAndWindow(CompositeTabFolder cTabFolder, ApplicationWindow textEditorWindow) {
         this.tabState.window[0] = textEditorWindow;
         this.tabState.folder[0] = cTabFolder;

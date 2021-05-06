@@ -309,7 +309,7 @@ public enum RingsAndCones {
             }
 
 
-            // TODO The solution needs to be evaluated here
+            // The solution needs to be evaluated here
             if (solutionAmount[0] == 0) {
                 if (!rs.isCreatingNothingOnNoSolution()) {
 

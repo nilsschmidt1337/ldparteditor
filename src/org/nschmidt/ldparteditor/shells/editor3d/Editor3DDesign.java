@@ -3615,9 +3615,6 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     void reloadC3DStates(List<Composite3DState> threeDconfig) {
-
-        // TODO Needs implementation!
-
         if (!threeDconfig.isEmpty()) {
             Collections.sort(threeDconfig, (o1, o2) -> {
                 final int cmp = Integer.compare(o1.getPath().length(), o2.getPath().length());

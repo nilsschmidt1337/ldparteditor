@@ -258,7 +258,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 float rx = 0;
                 double val = 0d;
                 if (zoom <= 1.0E-6)
-                    val = Math.PI / zoom / 2000000000f; // TODO 3D Constants need to be excluded / customisable
+                    val = Math.PI / zoom / 2000000000f;
                 else if (zoom > 1.0E-6 && zoom <= 5.0E-6)
                     val = Math.PI / zoom / 500000000f;
                 else if (zoom > 5.0E-6 && zoom <= 1.0E-5)

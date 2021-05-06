@@ -148,7 +148,6 @@ public final class GDataTEX extends GData {
             }
         case NEXT:
         case START:
-            // TODO Needs implementation!
             if (meta == TexMeta.NEXT) {
                 prefix = prefix + "NEXT "; //$NON-NLS-1$
             } else {

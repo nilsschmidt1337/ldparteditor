@@ -39,7 +39,6 @@ public enum KeyBoardHelper {
      *            The event to evaluate
      * @return The string representation of the triggered key
      */
-    // TODO Needs improvements!
     public static String getKeyString(Event event) {
         int accelerator = SWTKeySupport.convertEventToUnmodifiedAccelerator(event);
         KeyStroke keyStroke = SWTKeySupport.convertAcceleratorToKeyStroke(accelerator);

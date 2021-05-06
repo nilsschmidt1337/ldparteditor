@@ -1182,7 +1182,7 @@ public class GL33ModelRendererLDrawStandard {
             mainShader.setFactor(1f);
         }
 
-        // TODO Draw !TEXMAP VAOs here (slow)
+        // Draw !TEXMAP VAOs here (slow)
         if (usesTEXMAP) {
             mainShader.texmapOn();
             if (drawSolidMaterials) {

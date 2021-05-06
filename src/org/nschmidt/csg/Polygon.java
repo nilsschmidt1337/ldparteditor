@@ -185,7 +185,7 @@ public final class Polygon {
                     int dID = Primitive.idCounter.getAndIncrement();
                     result.put(new GData3(v1, v2, v3, parent, c16, true), new IdAndPlane(plane, dID));
                 } else {
-                    // TODO Debug-only: result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), new IdAndPlane(plane, colour.getIndex())); // only for test
+                    // Debug-only: result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(pseudoId % 16), true), new IdAndPlane(plane, colour.getIndex())); // only for test
                     result.put(new GData3(v1, v2, v3, parent, tmpColour.getColour(), true), new IdAndPlane(plane, tmpColour.getIndex()));
                 }
             }

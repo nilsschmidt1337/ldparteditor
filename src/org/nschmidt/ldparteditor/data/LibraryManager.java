@@ -50,7 +50,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * <li>The current project</li>
  * </ul>
  *
- * @author nils TODO Needs documentation
+ * @author nils
  */
 public enum LibraryManager {
     INSTANCE;

@@ -32,7 +32,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
@@ -77,26 +77,7 @@ public class NButton extends Canvas {
 
         super.addPaintListener(this::paint);
 
-        addListener(SWT.MouseDown, event -> {
-            pressed = true;
-            if (canToggle || canCheck) {
-                setSelection(!selected);
-            }
-            if (isRadio) {
-                setSelection(true);
-                for (NButton b : radioGroups.get(parent)) {
-                    if (this != b) {
-                        b.selected = false;
-                        b.redraw();
-                    }
-                }
-            }
-            redraw();
-            final SelectionEvent se = new SelectionEvent(event);
-            for (SelectionListener sl : selectors) {
-                sl.widgetSelected(se);
-            }
-        });
+        addListener(SWT.MouseDown, this::mouseDown);
         addListener(SWT.MouseUp, event -> {
             pressed = false;
             redraw();
@@ -111,18 +92,6 @@ public class NButton extends Canvas {
             hovered = false;
             redraw();
         });
-    }
-
-    @Override
-    @Deprecated
-    public void removeListener(int eventType, Listener listener) {
-        super.removeListener(eventType, listener);
-    }
-
-    @Override
-    @Deprecated
-    public Listener[] getListeners(int eventType) {
-        return super.getListeners(eventType);
     }
 
     public void clearSelectionListeners() {
@@ -153,6 +122,27 @@ public class NButton extends Canvas {
         });
     }
 
+    private void mouseDown(Event event) {
+        pressed = true;
+        if (canToggle || canCheck) {
+            setSelection(!selected);
+        }
+        if (isRadio) {
+            setSelection(true);
+            for (NButton b : radioGroups.get(getParent())) {
+                if (this != b) {
+                    b.selected = false;
+                    b.redraw();
+                }
+            }
+        }
+        redraw();
+        final SelectionEvent se = new SelectionEvent(event);
+        for (SelectionListener sl : selectors) {
+            sl.widgetSelected(se);
+        }
+    }
+
     private void paint(PaintEvent event) {
         final GC gc = event.gc;
         final Image tmpImg = this.img;
@@ -163,15 +153,13 @@ public class NButton extends Canvas {
         final int img_height = hasImage ? tmpImg.getImageData().height : 0;
         final int this_width = getBounds().width - 1;
 
+        // Calculate font size
         gc.setFont(Font.SYSTEM);
         // setFont before using textExtent, so that the size of the text
         // can be calculated correctly
         final Point textExtent = getText().isEmpty() ? new Point(0,0) : gc.textExtent(getText());
 
-        // TODO 1. Calculate sizes
-
-
-        // TODO 2. Draw Content
+        // Paint the button
 
         if (selected && (canToggle || isRadio)) {
             gc.setBackground(SWTResourceManager.getColor(160, 160, 200));
@@ -184,17 +172,17 @@ public class NButton extends Canvas {
         if (hovered || focused) {
             gc.setForeground(SWTResourceManager.getColor(0, 0, 0));
         }
+
         if (pressed) {
             gc.setForeground(SWTResourceManager.getColor(220, 220, 220));
         }
-
-
 
         if (!canCheck && !hasBorder) {
 
             if (!enabled) {
                 gc.setForeground(SWTResourceManager.getColor(200, 200, 200));
             }
+
             gc.drawRoundRectangle(0, 0, Math.max(img_width + 9 + textExtent.x, this_width), Math.max(textExtent.y, img_height) + 9, 5, 5);
 
             gc.setForeground(SWTResourceManager.getColor(60, 60, 60));
@@ -210,17 +198,19 @@ public class NButton extends Canvas {
                 gc.fillRoundRectangle(2, 2, Math.max(img_width + 9 + textExtent.x, this_width) - 3, Math.max(textExtent.y, img_height) + 9 - 3, 5, 5);
 
             }
+
             if (pressed) {
                 gc.setForeground(SWTResourceManager.getColor(30, 30, 30));
             }
+
             if (!enabled) {
                 gc.setForeground(SWTResourceManager.getColor(200, 200, 200));
             }
+
             gc.drawRoundRectangle(1, 1, Math.max(img_width + 9 + textExtent.x, this_width) - 1, Math.max(textExtent.y, img_height) + 9 - 1, 5, 5);
         }
 
         if (hasImage) {
-
             gc.drawImage(tmpImg, 5, 5);
         }
 
@@ -229,7 +219,7 @@ public class NButton extends Canvas {
         gc.drawString(getText(), img_width + 5, 5, true);
 
 
-        // 3. Paint custom forms
+        // Paint custom forms
         for (PaintListener pl : painters) {
             pl.paintControl(event);
         }

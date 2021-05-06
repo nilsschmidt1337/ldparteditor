@@ -472,7 +472,7 @@ public class DatHeaderManager {
                                 if (normalizedLine.startsWith("0 !HISTORY ") && normalizedLine.length() > 20) { //$NON-NLS-1$
                                     if (h.hasHISTORY()) {
                                         final String lh = h.getLastHistoryEntry();
-                                        if (lh != null && normalizedLine.substring(0, "0 !HISTORY YYYY-MM-DD".length()).compareTo(lh) == -1) { //$NON-NLS-1$
+                                        if (lh != null && normalizedLine.substring(0, "0 !HISTORY YYYY-MM-DD".length()).compareTo(lh) < 0) { //$NON-NLS-1$
                                             registerHint(lineNumber, "A3", I18n.DATPARSER_HISTORY_WRONG_ORDER, registered, allHints); //$NON-NLS-1$
                                         }
                                     } else {

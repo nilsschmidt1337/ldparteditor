@@ -27,7 +27,6 @@ import org.nschmidt.ldparteditor.enums.Perspective;
  *
  * @author nils
  */
-// TODO Needs java-doc
 public class CompositeContainer extends ScalableComposite {
 
     /**

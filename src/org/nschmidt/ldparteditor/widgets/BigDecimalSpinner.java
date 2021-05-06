@@ -302,8 +302,8 @@ public class BigDecimalSpinner extends Composite {
     }
 
     public void setValue(BigDecimal value) {
-        this.value = value.compareTo(maximum) == 1 ? maximum : value;
-        this.value = value.compareTo(minimum) == -1 ? minimum : value;
+        this.value = value.compareTo(maximum) > 0 ? maximum : value;
+        this.value = value.compareTo(minimum) < 0 ? minimum : value;
         txtVal[0].setText(numberFormat.format(this.value));
         if (myListener != null)
             myListener.valueChanged(this);
