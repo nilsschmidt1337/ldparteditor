@@ -36,8 +36,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     private final Lock wl = rwl.writeLock();
 
     public ThreadsafeHashMap() {
+        wl.lock();
         try {
-            wl.lock();
             map = new HashMap<>();
         } finally {
             wl.unlock();
@@ -45,8 +45,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     }
 
     public ThreadsafeHashMap(int initialCapacity) {
+        wl.lock();
         try {
-            wl.lock();
             map = new HashMap<>(initialCapacity);
         } finally {
             wl.unlock();
@@ -55,8 +55,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public void clear() {
+        wl.lock();
         try {
-            wl.lock();
             map.clear();
         } finally {
             wl.unlock();
@@ -64,19 +64,9 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public Object clone() {
-        try {
-            rl.lock();
-            return map.clone();
-        } finally {
-            rl.unlock();
-        }
-    }
-
-    @Override
     public boolean containsKey(Object key) {
+        rl.lock();
         try {
-            rl.lock();
             return map.containsKey(key);
         } finally {
             rl.unlock();
@@ -85,8 +75,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
+        rl.lock();
         try {
-            rl.lock();
             return map.containsValue(value);
         } finally {
             rl.unlock();
@@ -95,8 +85,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<java.util.Map.Entry<K, V>> entrySet() {
+        rl.lock();
         try {
-            rl.lock();
             return map.entrySet();
         } finally {
             rl.unlock();
@@ -105,8 +95,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(Object key) {
+        rl.lock();
         try {
-            rl.lock();
             return map.get(key);
         } finally {
             rl.unlock();
@@ -115,8 +105,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean isEmpty() {
+        rl.lock();
         try {
-            rl.lock();
             return map.isEmpty();
         } finally {
             rl.unlock();
@@ -126,21 +116,15 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     @Override
     public V putIfAbsent(K key, V value) {
         V entry = null;
+        wl.lock();
         try {
-            rl.lock();
-            entry = map.get(key);
-        } finally {
-            rl.unlock();
-        }
+            entry = map.putIfAbsent(key, value);
 
-        if (entry == null) {
-            try {
-                wl.lock();
-                map.put(key, value);
+            if (entry == null) {
                 entry = value;
-            } finally {
-                wl.unlock();
             }
+        } finally {
+            wl.unlock();
         }
 
         return entry;
@@ -148,8 +132,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
+        rl.lock();
         try {
-            rl.lock();
             return map.keySet();
         } finally {
             rl.unlock();
@@ -157,8 +141,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     }
 
     public Set<K> threadsafeKeySet() {
+        rl.lock();
         try {
-            rl.lock();
             final Set<K> val = map.keySet();
             final Set<K> result = new HashSet<>();
             for (K key : val) {
@@ -173,8 +157,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public V put(K key, V value) {
+        wl.lock();
         try {
-            wl.lock();
             return map.put(key, value);
         } finally {
             wl.unlock();
@@ -183,8 +167,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
+        wl.lock();
         try {
-            wl.lock();
             map.putAll(m);
         } finally {
             wl.unlock();
@@ -193,8 +177,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public V remove(Object key) {
+        wl.lock();
         try {
-            wl.lock();
             return map.remove(key);
         } finally {
             wl.unlock();
@@ -203,8 +187,8 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public int size() {
+        rl.lock();
         try {
-            rl.lock();
             return map.size();
         } finally {
             rl.unlock();
@@ -213,9 +197,20 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Collection<V> values() {
+        rl.lock();
         try {
-            rl.lock();
             return map.values();
+        } finally {
+            rl.unlock();
+        }
+    }
+
+    public ThreadsafeHashMap<K, V> copy() {
+        rl.lock();
+        try {
+            ThreadsafeHashMap<K, V> newMap = new ThreadsafeHashMap<>();
+            newMap.putAll(map);
+            return newMap;
         } finally {
             rl.unlock();
         }

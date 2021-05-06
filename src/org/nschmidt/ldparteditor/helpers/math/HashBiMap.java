@@ -56,15 +56,13 @@ public class HashBiMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    @Deprecated
     public Set<java.util.Map.Entry<K, V>> entrySet() {
-        throw new AssertionError();
+        return keyToValue.entrySet();
     }
 
     @Override
-    @Deprecated
-    public V get(Object arg0) {
-        throw new AssertionError();
+    public V get(Object key) {
+        return keyToValue.get(key);
     }
 
     public V getValue(K key) {
@@ -86,9 +84,11 @@ public class HashBiMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    @Deprecated
-    public V remove(Object arg0) {
-        throw new AssertionError();
+    public V remove(Object key) {
+        V value = keyToValue.get(key);
+        valueToKey.remove(value);
+        keyToValue.remove(key);
+        return value;
     }
 
     public V removeByKey(K key) {
@@ -125,13 +125,14 @@ public class HashBiMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    @Deprecated
-    public void putAll(@SuppressWarnings("rawtypes") Map m) {
-        throw new AssertionError();
+    public void putAll(Map<? extends K, ? extends V> m) {
+        keyToValue.putAll(m);
+        for (Entry<? extends K, ? extends V> entry : m.entrySet()) {
+            valueToKey.put(entry.getValue(), entry.getKey());
+        }
     }
 
     public HashBiMap<K, V> copy() {
         return new HashBiMap<>(keyToValue, valueToKey);
     }
-
 }

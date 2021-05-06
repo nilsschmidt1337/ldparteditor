@@ -36,8 +36,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
     private final Lock wl = rwl.writeLock();
 
     public ThreadsafeSortedMap() {
+        wl.lock();
         try {
-            wl.lock();
             map = new TreeMap<>();
         } finally {
             wl.unlock();
@@ -46,8 +46,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public void clear() {
+        wl.lock();
         try {
-            wl.lock();
             map.clear();
         } finally {
             wl.unlock();
@@ -55,19 +55,9 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public Object clone() {
-        try {
-            rl.lock();
-            return map.clone();
-        } finally {
-            rl.unlock();
-        }
-    }
-
-    @Override
     public boolean containsKey(Object key) {
+        rl.lock();
         try {
-            rl.lock();
             return map.containsKey(key);
         } finally {
             rl.unlock();
@@ -76,8 +66,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
+        rl.lock();
         try {
-            rl.lock();
             return map.containsValue(value);
         } finally {
             rl.unlock();
@@ -86,8 +76,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<java.util.Map.Entry<K, V>> entrySet() {
+        rl.lock();
         try {
-            rl.lock();
             return map.entrySet();
         } finally {
             rl.unlock();
@@ -95,8 +85,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
     }
 
     public Set<java.util.Map.Entry<K, V>> threadSafeEntrySet() {
+        rl.lock();
         try {
-            rl.lock();
             final Set<java.util.Map.Entry<K, V>> val = map.entrySet();
             final Set<java.util.Map.Entry<K, V>> result = new HashSet<>();
             for (Entry<K, V> entry : val) {
@@ -111,8 +101,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(Object key) {
+        rl.lock();
         try {
-            rl.lock();
             return map.get(key);
         } finally {
             rl.unlock();
@@ -121,8 +111,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean isEmpty() {
+        rl.lock();
         try {
-            rl.lock();
             return map.isEmpty();
         } finally {
             rl.unlock();
@@ -131,8 +121,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
+        rl.lock();
         try {
-            rl.lock();
             return map.keySet();
         } finally {
             rl.unlock();
@@ -141,8 +131,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public V put(K key, V value) {
+        wl.lock();
         try {
-            wl.lock();
             return map.put(key, value);
         } finally {
             wl.unlock();
@@ -151,8 +141,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
+        wl.lock();
         try {
-            wl.lock();
             map.putAll(m);
         } finally {
             wl.unlock();
@@ -161,8 +151,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public V remove(Object key) {
+        wl.lock();
         try {
-            wl.lock();
             return map.remove(key);
     } finally {
         wl.unlock();
@@ -171,8 +161,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public int size() {
+        rl.lock();
         try {
-            rl.lock();
             return map.size();
         } finally {
             rl.unlock();
@@ -180,8 +170,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
     }
 
     public K firstKey() {
+        rl.lock();
         try {
-            rl.lock();
             return map.firstKey();
         } finally {
             rl.unlock();
@@ -189,8 +179,8 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
     }
 
     public K lastKey() {
+        rl.lock();
         try {
-            rl.lock();
             return map.lastKey();
         } finally {
             rl.unlock();
@@ -199,9 +189,20 @@ public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     @Override
     public Collection<V> values() {
+        rl.lock();
         try {
-            rl.lock();
             return map.values();
+        } finally {
+            rl.unlock();
+        }
+    }
+
+    public ThreadsafeSortedMap<K, V> copy() {
+        rl.lock();
+        try {
+            ThreadsafeSortedMap<K, V> newMap = new ThreadsafeSortedMap<>();
+            newMap.putAll(map);
+            return newMap;
         } finally {
             rl.unlock();
         }
