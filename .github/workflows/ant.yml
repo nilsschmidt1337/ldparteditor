@@ -20,6 +20,10 @@ jobs:
         java-version: 1.8
     - name: Build with Ant
       run: ant -noinput -buildfile build.xml
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v2
+      with:
+        report_paths: '**/report/TEST-*.xml'
     - name: Archive windows executable for win32-x64
       uses: actions/upload-artifact@v1
       with:
