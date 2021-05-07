@@ -50,8 +50,8 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
@@ -1697,13 +1697,7 @@ public class CompositeTab extends CompositeTabDesign {
                 compositeContainerPtr[0].layout();
             }
         });
-        canvasLineNumberAreaPtr[0].addMouseListener(new MouseListener() {
-
-            @Override
-            public void mouseUp(MouseEvent e) {
-                // Implementation is not required.
-            }
-
+        canvasLineNumberAreaPtr[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
                 int yOffset = -compositeTextPtr[0].getVerticalBar().getSelection() % caretHeight;
@@ -1759,11 +1753,6 @@ public class CompositeTab extends CompositeTabDesign {
                         compositeTextPtr[0].setSelection(compositeTextPtr[0].getSelection().x, compositeTextPtr[0].getSelection().y - StringHelper.getLineDelimiter().length());
                     }
                 } catch (IllegalArgumentException consumed) {}
-            }
-
-            @Override
-            public void mouseDoubleClick(MouseEvent e) {
-                // Implementation is not required.
             }
         });
         canvasLineNumberAreaPtr[0].addPaintListener(e -> {

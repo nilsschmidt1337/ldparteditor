@@ -1767,19 +1767,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemCloseView(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemCloseView = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnCloseView = new NButton(toolItemCloseView, Cocoa.getStyle());
@@ -1791,19 +1779,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemPerspective(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemViewPerspective = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnPerspectiveFront = new NButton(toolItemViewPerspective, Cocoa.getStyle());
@@ -1851,19 +1827,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemRenderMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemRenderMode = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnRenderModeNoBackfaceCulling = new NButton(toolItemRenderMode, Cocoa.getStyle());
@@ -1923,19 +1887,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemLineThickness(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemLineThickness = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnLineSize0 = new NButton(toolItemLineThickness, SWT.TOGGLE | Cocoa.getStyle());
@@ -1978,19 +1930,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemColours(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemColours = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         toolItemColourBar = toolItemColours;
         List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
@@ -2053,20 +1993,25 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItemColourFunctions;
     }
 
-    private ToolItem createToolItemAdd(ToolItemDrawLocation location, ToolItemDrawMode mode) {
+    private Composite areaFromLocation(ToolItemDrawLocation location) {
         final Composite target;
         switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
         case EAST:
             target = cmpEast;
             break;
         case WEST:
             target = cmpWest;
             break;
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
         }
+        return target;
+    }
+
+    private ToolItem createToolItemAdd(ToolItemDrawLocation location, ToolItemDrawMode mode) {
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemAdd = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
 
         NButton btnAddComment = new NButton(toolItemAdd, Cocoa.getStyle());
@@ -2118,19 +2063,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemInsertAtCursorPosition(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemInsertAtCursorPosition = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         NButton btnInsertAtCursorPosition = new NButton(toolItemInsertAtCursorPosition, SWT.TOGGLE | Cocoa.getStyle());
         this.btnInsertAtCursorPositionPtr[0] = btnInsertAtCursorPosition;
@@ -2140,19 +2073,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemMode = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnVertices = new NButton(toolItemMode, SWT.TOGGLE | Cocoa.getStyle());
@@ -2183,19 +2104,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemCCPD(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemCCPD = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnCut = new NButton(toolItemCCPD, Cocoa.getStyle());
@@ -2820,19 +2729,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemManipulatorActions(ToolItemDrawLocation location, ToolItemDrawMode mode, ToolItem toolItem) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         if (mode == ToolItemDrawMode.DROP_DOWN) {
             if (toolItem == null) {
                 toolItem = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
@@ -3108,19 +3005,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemManipulatorMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemTransformationModes = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE | Cocoa.getStyle());
@@ -3139,19 +3024,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemTransformationMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemTransformationMode = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnSelect = new NButton(toolItemTransformationMode, SWT.TOGGLE | Cocoa.getStyle());
@@ -3188,19 +3061,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemUndoRedo(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemUndoRedo = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnUndo = new NButton(toolItemUndoRedo, Cocoa.getStyle());
@@ -3224,19 +3085,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemMiscToggle(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemMiscToggle = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnAdjacentMove = new NButton(toolItemMiscToggle, SWT.TOGGLE | Cocoa.getStyle());
@@ -3261,19 +3110,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemHideUnhide(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemHideUnhide = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnHide = new NButton(toolItemHideUnhide, Cocoa.getStyle());
@@ -3291,19 +3128,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemNewOpenDat(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemNewOpenDAT = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnNewDat = new NButton(toolItemNewOpenDAT, Cocoa.getStyle());
@@ -3340,19 +3165,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemNewOpenSave(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemNewOpenSave = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnNew = new NButton(toolItemNewOpenSave, Cocoa.getStyle());
@@ -3382,19 +3195,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemSync(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target;
-        switch (location) {
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        }
+        final Composite target = areaFromLocation(location);
         ToolItem toolItemSync = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
             NButton btnSync = new NButton(toolItemSync, Cocoa.getStyle());

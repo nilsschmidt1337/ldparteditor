@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -93,20 +93,10 @@ public class IntegerSpinner extends Composite {
         NButton dwn = new NButton(this, SWT.NONE);
         this.btnDownPtr[0] = dwn;
         dwn.setImage(ResourceManager.getImage("icon16_previous.png")); //$NON-NLS-1$
-        dwn.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
-                // Implementation is not required.
-            }
-
+        dwn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(org.eclipse.swt.events.MouseEvent e) {
                 setValue(value - 1);
-            }
-
-            @Override
-            public void mouseDoubleClick(org.eclipse.swt.events.MouseEvent e) {
-                // Implementation is not required.
             }
         });
 
@@ -230,20 +220,10 @@ public class IntegerSpinner extends Composite {
         NButton up = new NButton(this, SWT.NONE);
         this.btnUpPtr[0] = up;
         up.setImage(ResourceManager.getImage("icon16_next.png")); //$NON-NLS-1$
-        up.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
-                // Implementation is not required.
-            }
-
+        up.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(org.eclipse.swt.events.MouseEvent e) {
                 setValue(value + 1);
-            }
-
-            @Override
-            public void mouseDoubleClick(org.eclipse.swt.events.MouseEvent e) {
-                // Implementation is not required.
             }
         });
 

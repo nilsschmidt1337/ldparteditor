@@ -38,10 +38,6 @@ import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 
-/**
- * @author nils
- *
- */
 public class NButton extends Canvas {
 
     private final List<SelectionListener> selectors = new ArrayList<>();
@@ -57,6 +53,14 @@ public class NButton extends Canvas {
     private boolean pressed = false;
     private boolean selected = false;
     private static Map<Composite, List<NButton>> radioGroups = new HashMap<>();
+
+    public static NButton create(Composite parent, int style, NButton[] ptr, String toolTipText, String icon) {
+        NButton btn = new NButton(parent, style);
+        ptr[0] = btn;
+        btn.setToolTipText(toolTipText);
+        btn.setImage(ResourceManager.getImage(icon));
+        return btn;
+    }
 
     public NButton(Composite parent, int style) {
         super(parent, style);
