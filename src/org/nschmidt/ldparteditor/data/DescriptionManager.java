@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -60,7 +59,7 @@ enum DescriptionManager {
                                 titleSb.append(title.substring(1));
                             }
                         }
-                    } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
+                    } catch (LDParsingException | FileNotFoundException ex) {
                         NLogger.debug(DescriptionManager.class, ex);
                     }
                     String d = titleSb.toString();

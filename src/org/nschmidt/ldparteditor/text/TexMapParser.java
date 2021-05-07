@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -557,7 +556,7 @@ public enum TexMapParser {
 
                         lines.add(line);
                     }
-                } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e1) {
+                } catch (FileNotFoundException | LDParsingException e1) {
                     alreadyParsed.remove(shortFilename);
                     return null;
                 }

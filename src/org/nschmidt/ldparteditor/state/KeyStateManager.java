@@ -1231,29 +1231,29 @@ public class KeyStateManager {
     }
 
     public static void addTooltipText(final NButton btn, final String text, final TextTask t) {
-        btn.addMouseMoveListener(e -> {
-            btn.setToolTipText(text + " (" + textTaskKeyMap.get(t) +")"); //$NON-NLS-1$ //$NON-NLS-2$
-        });
+        btn.addMouseMoveListener(e ->
+            btn.setToolTipText(text + " (" + textTaskKeyMap.get(t) +")") //$NON-NLS-1$ //$NON-NLS-2$
+        );
     }
 
     public static void addTooltipText(final NButton btn, final String text, final Task t) {
-        btn.addMouseMoveListener(e -> {
-            btn.setToolTipText(text + " (" + taskKeyMap.get(t) +")"); //$NON-NLS-1$ //$NON-NLS-2$
-        });
+        btn.addMouseMoveListener(e ->
+            btn.setToolTipText(text + " (" + taskKeyMap.get(t) +")") //$NON-NLS-1$ //$NON-NLS-2$
+        );
     }
 
     public static void addKeyText(final MenuItem mntm, final String text, final Task t) {
         mntm.setText(text + "\t" + taskKeyMap.get(t)); //$NON-NLS-1$
-        mntm.addArmListener(e -> {
-            mntm.setText(text + "\t" + taskKeyMap.get(t)); //$NON-NLS-1$
-        });
+        mntm.addArmListener(e ->
+            mntm.setText(text + "\t" + taskKeyMap.get(t)) //$NON-NLS-1$
+        );
     }
 
     public static void addKeyText(final MenuItem mntm, final String text, final TextTask t) {
         mntm.setText(text + "\t" + textTaskKeyMap.get(t)); //$NON-NLS-1$
-        mntm.addArmListener(e -> {
-            mntm.setText(text + "\t" + textTaskKeyMap.get(t)); //$NON-NLS-1$
-        });
+        mntm.addArmListener(e ->
+            mntm.setText(text + "\t" + textTaskKeyMap.get(t)) //$NON-NLS-1$
+        );
     }
 
     public static void addKeyText(final MenuItem mntm, final String text) {

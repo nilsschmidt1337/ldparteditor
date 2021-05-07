@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.splash;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -301,7 +300,7 @@ public class SplashScreen extends ApplicationWindow {
                     }
                 } catch (FileNotFoundException e1) {
                     NLogger.debug(SplashScreen.class, e1);
-                } catch (LDParsingException | UnsupportedEncodingException e1) {
+                } catch (LDParsingException e1) {
                     NLogger.error(getClass(), e1);
                 }
 

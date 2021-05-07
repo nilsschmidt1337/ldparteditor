@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -732,7 +731,7 @@ public enum DatParser {
                         }
                         lines.add(line);
                     }
-                } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException ex) {
+                } catch (FileNotFoundException | LDParsingException ex) {
                     NLogger.debug(DatParser.class, ex);
                 }
 

@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.shells.editormeta;
 import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
@@ -303,7 +304,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                     try {
                         String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                        String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
+                        String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
                         decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
                         fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
                     } catch (Exception consumed) {
@@ -367,7 +368,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                     try {
                         String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                        String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
+                        String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
                         decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
                         fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
                     } catch (Exception consumed) {
@@ -433,7 +434,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                     try {
                         String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                        String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
+                        String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
                         decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
                         fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
                     } catch (Exception consumed) {
@@ -739,7 +740,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                     try {
                         String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                        String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
+                        String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
                         decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
                         fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
                     } catch (Exception consumed) {

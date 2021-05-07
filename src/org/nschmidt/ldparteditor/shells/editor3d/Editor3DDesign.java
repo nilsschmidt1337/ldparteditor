@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.shells.editor3d;
 import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.MessageFormat;
@@ -1460,7 +1459,7 @@ class Editor3DDesign extends ApplicationWindow {
                                     sb.append(StringHelper.getLineDelimiter());
                                 }
                                 Project.getFileToEdit().setText(sb.toString());
-                            } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                            } catch (LDParsingException | FileNotFoundException e) {
                                 NLogger.error(Editor3DDesign.class, e);
                             }
                         } else {
@@ -3000,7 +2999,7 @@ class Editor3DDesign extends ApplicationWindow {
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
             }
 
-            return null;
+            return toolItemManipulatorActions;
         }
     }
 

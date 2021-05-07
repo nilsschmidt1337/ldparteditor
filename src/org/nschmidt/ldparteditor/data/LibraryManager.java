@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.data;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -676,7 +675,7 @@ public enum LibraryManager {
                             default:
                                 break;
                             }
-                        } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                        } catch (LDParsingException | FileNotFoundException e) {
                             NLogger.error(LibraryManager.class, e);
                         }
                         DatFileName name = new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48  || type == DatType.PRIMITIVE8);
@@ -1183,7 +1182,7 @@ public enum LibraryManager {
                             default:
                                 break;
                             }
-                        } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                        } catch (LDParsingException | FileNotFoundException e) {
                             NLogger.error(LibraryManager.class, e);
                         }
 
@@ -1257,7 +1256,7 @@ public enum LibraryManager {
                                             titleSb.append(title.substring(1));
                                         }
                                     }
-                                } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                                } catch (LDParsingException | FileNotFoundException e) {
                                     NLogger.error(LibraryManager.class, e);
                                 }
 

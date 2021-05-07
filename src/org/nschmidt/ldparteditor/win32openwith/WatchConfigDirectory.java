@@ -27,7 +27,6 @@ import static org.nschmidt.ldparteditor.win32openwith.FileActionResult.WILL_OPEN
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -142,18 +141,14 @@ class WatchConfigDirectory {
                             NLogger.error(getClass(), ldpe);
                         } catch (FileNotFoundException consumed) {
                             // Do nothing if the file was not found
-                        } catch (UnsupportedEncodingException uee) {
-                            NLogger.error(getClass(), uee);
                         }
 
                         if (reqSignalMsg != null) {
                             final String ackFile = dir.resolve("ACK" + token).toString(); //$NON-NLS-1$
                             try (UTF8PrintWriter writer = new UTF8PrintWriter(ackFile)) {
                                 writer.println(watchId);
-                            } catch (FileNotFoundException fnfe) {
-                                NLogger.error(getClass(), fnfe);
-                            } catch (UnsupportedEncodingException uee) {
-                                NLogger.error(getClass(), uee);
+                            } catch (IOException ioe) {
+                                NLogger.error(getClass(), ioe);
                             }
                         }
                     }
@@ -169,8 +164,6 @@ class WatchConfigDirectory {
                             NLogger.error(getClass(), ldpe);
                         } catch (FileNotFoundException consumed) {
                             // Do nothing if the file was not found
-                        } catch (UnsupportedEncodingException uee) {
-                            NLogger.error(getClass(), uee);
                         }
 
                         if (targetWatchId != null && pathToOpen != null && watchId.equals(targetWatchId)) {
@@ -180,10 +173,8 @@ class WatchConfigDirectory {
                                 writer.println(watchId);
                                 shouldOpenFile = true;
                                 state = S3_DONE;
-                            } catch (FileNotFoundException fnfe) {
-                                NLogger.error(getClass(), fnfe);
-                            } catch (UnsupportedEncodingException uee) {
-                                NLogger.error(getClass(), uee);
+                            } catch (IOException ioe) {
+                                NLogger.error(getClass(), ioe);
                             }
 
                             if (shouldOpenFile) {
@@ -261,11 +252,9 @@ class WatchConfigDirectory {
                 try (UTF8PrintWriter writer = new UTF8PrintWriter(reqFile)) {
                     writer.println("REQ"); //$NON-NLS-1$
                     state = S1_ACK;
-                } catch (FileNotFoundException consumed) {
-                    // Do nothing if the file was not found
-                } catch (UnsupportedEncodingException uee) {
+                } catch (IOException ioe) {
                     if (cycles == 0) {
-                        NLogger.error(getClass(), uee);
+                        NLogger.error(getClass(), ioe);
                     }
                 }
             }
@@ -306,8 +295,6 @@ class WatchConfigDirectory {
                             NLogger.error(getClass(), ldpe);
                         } catch (FileNotFoundException consumed) {
                             // Do nothing if the file was not found
-                        } catch (UnsupportedEncodingException uee) {
-                            NLogger.error(getClass(), uee);
                         }
 
                         if (targetWatchId != null) {
@@ -317,10 +304,8 @@ class WatchConfigDirectory {
                                 writer.println(targetWatchId);
                                 writer.println(pathToOpen);
                                 state = S2_SEND;
-                            } catch (FileNotFoundException consumed) {
-                                // Do nothing if the file was not found
-                            } catch (UnsupportedEncodingException uee) {
-                                NLogger.error(getClass(), uee);
+                            } catch (IOException ioe) {
+                                NLogger.error(getClass(), ioe);
                             }
                         }
                     }
@@ -335,7 +320,7 @@ class WatchConfigDirectory {
                                 result = DELEGATED_TO_ANOTHER_INSTANCE;
                                 cleanupStateFiles();
                             }
-                        } catch (LDParsingException | UnsupportedEncodingException ex) {
+                        } catch (LDParsingException ex) {
                             NLogger.error(getClass(), ex);
                         } catch (FileNotFoundException consumed) {
                             // Do nothing if the file was not found

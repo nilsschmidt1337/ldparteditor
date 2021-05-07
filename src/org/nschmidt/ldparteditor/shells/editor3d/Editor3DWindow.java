@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -4482,7 +4481,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                     pal.clear();
                     pal.addAll(newPal);
-                } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
+                } catch (LDParsingException | FileNotFoundException ex) {
                     NLogger.error(Editor3DWindow.class, ex);
                 }
 
@@ -4681,7 +4680,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             output.write(query.getBytes(charset));
                         }
 
-                        BufferedReader response =new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8")); //$NON-NLS-1$
+                        BufferedReader response =new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
                         MessageBox messageBox4 = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                         messageBox4.setText(I18n.DIALOG_INFO);
                         Object[] messageArguments = {response.readLine()};
@@ -7030,7 +7029,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             break;
                         }
                     }
-                } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
+                } catch (LDParsingException | FileNotFoundException ex) {
                     NLogger.error(Editor3DWindow.class, ex);
                 }
 

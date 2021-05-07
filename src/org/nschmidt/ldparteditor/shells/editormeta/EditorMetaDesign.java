@@ -19,7 +19,6 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -398,7 +397,7 @@ class EditorMetaDesign extends ApplicationWindow {
                                     }
                                 }
                                 evCategoryCmbPtr[0].setItems(categories.toArray(new String[categories.size()]));
-                            } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                            } catch (LDParsingException | FileNotFoundException e) {
                                 NLogger.error(EditorMetaDesign.class, e);
                                 setDefaultCategories();
                             }

@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -144,7 +145,7 @@ public enum FileHelper {
         final StringBuilder sb = new StringBuilder();
         try {
             final URL url = new URL("https://www.ldraw.org/library/unofficial/" + name); //$NON-NLS-1$
-            try (InputStreamReader in = new InputStreamReader(url.openStream(), "UTF-8")) { //$NON-NLS-1$
+            try (InputStreamReader in = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
                 final int size = getFileSize(url);
                 monitor.beginTask(name, size);
                 int progress = 0;

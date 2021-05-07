@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.composites.compositetab;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 
@@ -138,15 +137,6 @@ public class CompositeTabState {
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
                 getTab().getTextComposite().setEditable(false);
                 NLogger.error(getClass(), e);
-            } catch (UnsupportedEncodingException e) {
-                Object[] messageArguments = {fileNameObj.getOldName()};
-                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.getLocale());
-                formatter.applyPattern(I18n.COMPOSITETAB_FILE_ENCODING_ERROR);
-                getTab().getTextComposite().setText(formatter.format(messageArguments));
-                datFileObj.setText(""); //$NON-NLS-1$
-                datFileObj.setOriginalText(""); //$NON-NLS-1$
-                getTab().getTextComposite().setEditable(false);
             }
         }
         getTab().getTextComposite().forceFocus();

@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -2073,7 +2074,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         int shaderID = 0;
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream("gloss.frag"), "UTF-8")); //$NON-NLS-1$ //$NON-NLS-2$
+            BufferedReader reader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream("gloss.frag"), StandardCharsets.UTF_8)); //$NON-NLS-1$
             String line;
             while ((line = reader.readLine()) != null) {
                 shaderSource.append(line).append("\n"); //$NON-NLS-1$
@@ -2101,7 +2102,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         int shaderID = 0;
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream("gloss.vert"), "UTF-8")); //$NON-NLS-1$ //$NON-NLS-2$
+            BufferedReader reader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream("gloss.vert"), StandardCharsets.UTF_8)); //$NON-NLS-1$
             String line;
             while ((line = reader.readLine()) != null) {
                 shaderSource.append(line).append("\n"); //$NON-NLS-1$

@@ -19,7 +19,6 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.FloatBuffer;
 import java.text.MessageFormat;
@@ -216,9 +215,9 @@ public class CompositePrimitive extends Composite {
         });
 
         GL.setCapabilities(capabilities);
-        canvas.addDisposeListener(e -> {
-            canvas.getCursor().dispose();
-        });
+        canvas.addDisposeListener(e ->
+            canvas.getCursor().dispose()
+        );
         // MARK Resize
         canvas.addListener(SWT.Resize, event -> {
             canvas.setCurrent();
@@ -884,7 +883,7 @@ public class CompositePrimitive extends Composite {
                                 }
                                 // line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                             }
-                        } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                        } catch (LDParsingException | FileNotFoundException e) {
                             NLogger.error(CompositePrimitive.class, e);
                         }
                     }
@@ -1010,7 +1009,7 @@ public class CompositePrimitive extends Composite {
                                             titleMap.put(newPrimitive.getName(), newPrimitive);
                                             isEmpty = false;
                                         }
-                                    } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                                    } catch (LDParsingException | FileNotFoundException e) {
                                         NLogger.error(CompositePrimitive.class, e);
                                     }
                                     newTs = new PGTimestamp(path, f.lastModified());
@@ -1372,7 +1371,7 @@ public class CompositePrimitive extends Composite {
                             }
                             lines.add(line);
                         }
-                    } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e1) {
+                    } catch (FileNotFoundException | LDParsingException e1) {
                         NLogger.error(CompositePrimitive.class, e1);
                         return null;
                     }

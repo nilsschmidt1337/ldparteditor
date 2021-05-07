@@ -16,10 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.ldraworg;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.MessageFormat;
@@ -123,7 +121,7 @@ public enum CategoriesUtils {
                 out.println(line);
             }
             out.flush();
-        } catch (FileNotFoundException | UnsupportedEncodingException ldpe) {
+        } catch (IOException ioe) {
             MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
             messageBoxError.setText(I18n.DIALOG_ERROR);
             messageBoxError.setMessage(I18n.E3D_FILE_WAS_REPLACED_ERROR);

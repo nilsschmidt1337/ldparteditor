@@ -20,7 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This is the standard {@code BufferedReader} for reading LDraw files
@@ -40,10 +40,9 @@ public class UTF8BufferedReader implements AutoCloseable {
      *            file to read from
      * @throws FileNotFoundException
      * @throws LDParsingException
-     * @throws UnsupportedEncodingException
      */
-    public UTF8BufferedReader(String fileName) throws FileNotFoundException, LDParsingException, UnsupportedEncodingException {
-        myReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "UTF-8")); //$NON-NLS-1$
+    public UTF8BufferedReader(String fileName) throws FileNotFoundException, LDParsingException {
+        myReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8));
         char[] bom = new char[3];
         try {
             myReader.mark(3);

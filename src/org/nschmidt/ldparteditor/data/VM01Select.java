@@ -70,16 +70,7 @@ class VM01Select extends VM00Snapshot {
     }
 
     public synchronized void clearSelection2() {
-        selectedItemIndex = -1;
-        selectedData.clear();
-        selectedVertices.clear();
-        selectedSubfiles.clear();
-        selectedLines.clear();
-        selectedTriangles.clear();
-        selectedQuads.clear();
-        selectedCondlines.clear();
-        lastSelectedVertex = null;
-        GDataCSG.clearSelection(linkedDatFile);
+        clearSelection3();
     }
 
     private void clearSelection3() {

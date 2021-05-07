@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.opengl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +65,7 @@ public class GLShader {
     private int createAndCompile(final String path, final int type) {
         final StringBuilder shaderSource = new StringBuilder();
 
-        try (BufferedReader shaderReader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream(path), "UTF-8"))) { //$NON-NLS-1$
+        try (BufferedReader shaderReader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream(path), StandardCharsets.UTF_8))) {
             String line;
             while ((line = shaderReader.readLine()) != null) {
                 shaderSource.append(line).append("\n"); //$NON-NLS-1$

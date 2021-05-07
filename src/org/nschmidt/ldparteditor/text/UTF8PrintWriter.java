@@ -15,9 +15,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.text;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This is the standard {@code PrintWriter} for writing LDraw files
@@ -35,11 +35,9 @@ public class UTF8PrintWriter implements AutoCloseable {
      *
      * @param fileName
      *            file to write in
-     * @throws FileNotFoundException
-     * @throws UnsupportedEncodingException
      */
-    public UTF8PrintWriter(String fileName) throws FileNotFoundException, UnsupportedEncodingException {
-        myWriter = new PrintWriter(fileName, "UTF-8"); //$NON-NLS-1$
+    public UTF8PrintWriter(String fileName) throws IOException {
+        myWriter = new PrintWriter(fileName, StandardCharsets.UTF_8.toString());
     }
 
     /**

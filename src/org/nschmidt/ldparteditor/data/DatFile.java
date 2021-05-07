@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.data;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -417,7 +416,7 @@ public final class DatFile {
                     }
                     result.add(line2);
                 }
-            } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e) {
+            } catch (FileNotFoundException | LDParsingException e) {
                 NLogger.error(DatFile.class, e);
             }
         } else {
@@ -1165,7 +1164,7 @@ public final class DatFile {
 
                 lastModified = new File(getOldName()).lastModified();
 
-            } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e) {
+            } catch (FileNotFoundException | LDParsingException e) {
                 NLogger.error(DatFile.class, e);
             }
             lines = lines2.toArray(new String[lines2.size()]);
@@ -1832,7 +1831,7 @@ public final class DatFile {
                         source.append(line2);
                     }
                 }
-            } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e) {
+            } catch (FileNotFoundException | LDParsingException e) {
                 NLogger.error(DatFile.class, e);
             }
         } else {
