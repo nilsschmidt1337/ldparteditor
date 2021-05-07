@@ -126,12 +126,6 @@
             destdir="${dependenciesFolder}"
             checksum="ac748de1c80f151753d89787eeb626ad0c63af55"
             dir="buildfiles" />
-        <!-- TODO do I really need org.eclipse.jface.text? -->
-        <get-and-checksum
-            file="org.eclipse.jface.text_3.16.100.v20191203-1634.jar"
-            destdir="${dependenciesFolder}"
-            checksum="51b79c4ce5b624390fadc51dd38a2e37df920be4"
-            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.osgi_3.15.100.v20191114-1701.jar"
             destdir="${dependenciesFolder}"
@@ -192,12 +186,6 @@
             file="org.eclipse.jface.databinding_1.8.100.v20170503-1507.jar"
             destdir="${dependenciesFolder}/${linuxGtk2Folder}"
             checksum="bb9ba7fa918f80edabac3f15fc24452796ef410d"
-            dir="buildfiles/gtk2-legacy" />
-        <!-- TODO do I really need org.eclipse.jface.text? -->
-        <get-and-checksum
-            file="org.eclipse.jface.text_3.12.0.v20170523-1043.jar"
-            destdir="${dependenciesFolder}/${linuxGtk2Folder}"
-            checksum="ec2586cb58ce2c9e3923c3b25f764c4b1c951fbc"
             dir="buildfiles/gtk2-legacy" />
         <get-and-checksum
             file="org.eclipse.osgi_3.12.0.v20170512-1932.jar"
@@ -359,10 +347,6 @@
             <fileset dir="${dependenciesFolder}"
                 includes="org.eclipse.jface.databinding_*.jar" />
         </pathconvert>
-        <pathconvert property="jface.text">
-            <fileset dir="${dependenciesFolder}"
-                includes="org.eclipse.jface.text_*.jar" />
-        </pathconvert>
         <pathconvert property="osgi">
             <fileset dir="${dependenciesFolder}"
                 includes="org.eclipse.osgi_*.jar" />
@@ -385,7 +369,6 @@
         <echo message="${equinox.common}" />
         <echo message="${jface}" />
         <echo message="${jface.databinding}" />
-        <echo message="${jface.text}" />
         <echo message="${osgi}" />
         <echo message="${ui.workbench}" />
         <echo message="${icu}" />
@@ -437,7 +420,6 @@
             <zipfileset excludes="META-INF/*.SF" src="${equinox.common}"/>
             <zipfileset excludes="META-INF/*.SF" src="${jface}"/>
             <zipfileset excludes="META-INF/*.SF" src="${jface.databinding}"/>
-            <zipfileset excludes="META-INF/*.SF" src="${jface.text}"/>
             <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
             <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
@@ -487,7 +469,6 @@
             <zipfileset excludes="META-INF/*.SF" src="${equinox.common}"/>
             <zipfileset excludes="META-INF/*.SF" src="${jface}"/>
             <zipfileset excludes="META-INF/*.SF" src="${jface.databinding}"/>
-            <zipfileset excludes="META-INF/*.SF" src="${jface.text}"/>
             <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
             <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
@@ -534,7 +515,6 @@
             <zipfileset excludes="META-INF/*.SF" src="${equinox.common}"/>
             <zipfileset excludes="META-INF/*.SF" src="${jface}"/>
             <zipfileset excludes="META-INF/*.SF" src="${jface.databinding}"/>
-            <zipfileset excludes="META-INF/*.SF" src="${jface.text}"/>
             <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
             <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
@@ -581,7 +561,6 @@
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk2Folder}/org.eclipse.equinox.common_3.9.0.v20170207-1454.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk2Folder}/org.eclipse.jface_3.13.0.v20170503-1507.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk2Folder}/org.eclipse.jface.databinding_1.8.100.v20170503-1507.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk2Folder}/org.eclipse.jface.text_3.12.0.v20170523-1043.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk2Folder}/org.eclipse.ui.workbench_3.110.0.v20170612-1255.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk2Folder}/org.eclipse.osgi_3.12.0.v20170512-1932.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk2Folder}/com.ibm.icu_58.2.0.v20170418-1837.jar"/>
