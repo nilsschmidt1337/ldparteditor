@@ -44,7 +44,7 @@ import org.nschmidt.ldparteditor.win32appdata.AppData;
 public enum WorkbenchManager {
     INSTANCE;
 
-    public static final String CONFIG_GZ = AppData.getPath() + "config.gz"; //$NON-NLS-1$
+    public static final String SETTINGS_GZ = AppData.getPath() + "settings.gz"; //$NON-NLS-1$
 
     /** The window state of the 3D editor */
     private static Editor3DWindowState editor3DWindowState;
@@ -55,7 +55,7 @@ public enum WorkbenchManager {
     /** The primitive cache */
     private static PrimitiveCache primitiveCache;
     /**
-     * Writes a default WorkbenchManager.CONFIG_GZ file
+     * Writes a default WorkbenchManager.SETTINGS_GZ file
      */
     public static void createDefaultWorkbench() {
         primitiveCache = new PrimitiveCache();
@@ -72,19 +72,19 @@ public enum WorkbenchManager {
         windowStateOfTextEditor.setCentered(true);
         windowStateOfTextEditor.setMaximized(false);
         windowStateOfTextEditor.setSizeAndPosition(new Rectangle(0, 0, 1024, 768));
-        saveWorkbench(WorkbenchManager.CONFIG_GZ);
+        saveWorkbench(WorkbenchManager.SETTINGS_GZ);
     }
 
     /**
-     * Loads the workbench from WorkbenchManager.CONFIG_GZ
+     * Loads the workbench from WorkbenchManager.SETTINGS_GZ
      */
     public static boolean loadWorkbench(String path) {
-        File configGzFile = new File(path);
-        if (configGzFile.exists()) {
-            try (ObjectInputStream configFileStream = new SerialKiller(new GZIPInputStream(new FileInputStream(path)))){
-                WorkbenchManager.editor3DWindowState = (Editor3DWindowState) configFileStream.readObject();
-                WorkbenchManager.editorTextWindowState = (EditorTextWindowState) configFileStream.readObject();
-                WorkbenchManager.userSettingState = (UserSettingState) configFileStream.readObject();
+        File settingsGzFile = new File(path);
+        if (settingsGzFile.exists()) {
+            try (ObjectInputStream settingsFileStream = new SerialKiller(new GZIPInputStream(new FileInputStream(path)))){
+                WorkbenchManager.editor3DWindowState = (Editor3DWindowState) settingsFileStream.readObject();
+                WorkbenchManager.editorTextWindowState = (EditorTextWindowState) settingsFileStream.readObject();
+                WorkbenchManager.userSettingState = (UserSettingState) settingsFileStream.readObject();
                 WorkbenchManager.userSettingState.loadShortkeys();
                 if (WorkbenchManager.userSettingState.getOpenGLVersion() == 0) {
                     WorkbenchManager.userSettingState.setOpenGLVersion(20);
@@ -92,7 +92,7 @@ public enum WorkbenchManager {
                 Manipulator.setSnap(WorkbenchManager.userSettingState.getMediumMoveSnap(), WorkbenchManager.userSettingState.getMediumRotateSnap(),
                         WorkbenchManager.userSettingState.getMediumScaleSnap());
                 try {
-                    WorkbenchManager.primitiveCache = (PrimitiveCache) configFileStream.readObject();
+                    WorkbenchManager.primitiveCache = (PrimitiveCache) settingsFileStream.readObject();
                 } catch (Exception e) {
                     WorkbenchManager.primitiveCache = new PrimitiveCache();
                     NLogger.debug(WorkbenchManager.class, "Could not load the primitive cache."); //$NON-NLS-1$
@@ -132,24 +132,24 @@ public enum WorkbenchManager {
     }
 
     /**
-     * Saves the workbench to WorkbenchManager.CONFIG_GZ
+     * Saves the workbench to WorkbenchManager.SETTINGS_GZ
      */
     public static boolean saveWorkbench(String path) {
-        final File configGzFile = new File(path);
+        final File settingsGzFile = new File(path);
         try {
-            if (Files.deleteIfExists(configGzFile.toPath())) {
-                NLogger.debug(WorkbenchManager.class, "Deleted the old configuration file at {0}", configGzFile.toPath()); //$NON-NLS-1$
+            if (Files.deleteIfExists(settingsGzFile.toPath())) {
+                NLogger.debug(WorkbenchManager.class, "Deleted the old settings file at {0}", settingsGzFile.toPath()); //$NON-NLS-1$
             }
         } catch (IOException ex) {
             NLogger.error(WorkbenchManager.class, ex);
         }
 
-        try (ObjectOutputStream configFileStream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(path)))) {
+        try (ObjectOutputStream settingsFileStream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(path)))) {
             Editor3DWindow editor3DWindow = Editor3DWindow.getWindow();
 
             if (editor3DWindow == null) {
                 // Write defaults here..
-                configFileStream.writeObject(WorkbenchManager.editor3DWindowState);
+                settingsFileStream.writeObject(WorkbenchManager.editor3DWindowState);
             } else {
                 // Write the data which was last set
                 Editor3DWindow win3D = editor3DWindow;
@@ -157,16 +157,16 @@ public enum WorkbenchManager {
                 state3D.getWindowState().setCentered(false);
                 state3D.getWindowState().setMaximized(win3D.getShell().getMaximized());
                 state3D.getWindowState().setSizeAndPosition(win3D.getShell().getBounds());
-                configFileStream.writeObject(state3D);
+                settingsFileStream.writeObject(state3D);
             }
-            configFileStream.writeObject(WorkbenchManager.editorTextWindowState);
+            settingsFileStream.writeObject(WorkbenchManager.editorTextWindowState);
             if (WorkbenchManager.userSettingState != null) {
                 WorkbenchManager.userSettingState.saveShortkeys();
                 WorkbenchManager.userSettingState.saveColours();
             }
-            configFileStream.writeObject(WorkbenchManager.userSettingState);
+            settingsFileStream.writeObject(WorkbenchManager.userSettingState);
             try {
-                configFileStream.writeObject(WorkbenchManager.primitiveCache);
+                settingsFileStream.writeObject(WorkbenchManager.primitiveCache);
             } catch (Exception e) {
                 NLogger.error(WorkbenchManager.class, e);
             }

@@ -51,7 +51,7 @@ public enum TryToOpen {
             final java.io.File file = new java.io.File(path);
             if (path != null && file.exists() && file.isFile()) {
                 try {
-                    final WatchConfigDirectory wcd = new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).toAbsolutePath().getParent(), Paths.get(path));
+                    final WatchSettingsDirectory wcd = new WatchSettingsDirectory(Paths.get(WorkbenchManager.SETTINGS_GZ).toAbsolutePath().getParent(), Paths.get(path));
                     result = wcd.callAnotherLDPartEditorInstance();
                 } catch (IOException ioe) {
                     NLogger.error(TryToOpen.class, ioe);
@@ -65,7 +65,7 @@ public enum TryToOpen {
         if (result != DELEGATED_TO_ANOTHER_INSTANCE) {
             new Thread(() -> {
                 try {
-                    new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).toAbsolutePath().getParent()).waitForCall();
+                    new WatchSettingsDirectory(Paths.get(WorkbenchManager.SETTINGS_GZ).toAbsolutePath().getParent()).waitForCall();
                 } catch (IOException ioe) {
                     NLogger.error(TryToOpen.class, ioe);
                 }
@@ -81,7 +81,7 @@ public enum TryToOpen {
     }
 
     public static String getFileToOpen() {
-        final Path path = WatchConfigDirectory.getFileToOpen();
+        final Path path = WatchSettingsDirectory.getFileToOpen();
         if (path != null) {
             return path.toString();
         }
@@ -101,7 +101,7 @@ public enum TryToOpen {
     }
 
     private static String getFileName() {
-        final Path path = WatchConfigDirectory.getFileToOpen();
+        final Path path = WatchSettingsDirectory.getFileToOpen();
         if (path != null) {
             Path fileName = path.getFileName();
             if (fileName != null) {

@@ -54,9 +54,9 @@ import org.nschmidt.ldparteditor.win32appdata.AppData;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
- * Watches the configuration directory to detect if a DAT file should be opened by LDPartEditor
+ * Watches the settings directory to detect if a DAT file should be opened by LDPartEditor
  */
-class WatchConfigDirectory {
+class WatchSettingsDirectory {
 
     private static final String FILE_OPEN_REQUEST = AppData.getPath() + "REQ"; //$NON-NLS-1$
     private static final String FILE_OPEN_ACKNOWLEDGEMENT = AppData.getPath() + "ACK"; //$NON-NLS-1$
@@ -78,15 +78,15 @@ class WatchConfigDirectory {
         return (WatchEvent<T>)event;
     }
 
-    public WatchConfigDirectory(Path dir, Path fileToOpen) throws IOException {
-        WatchConfigDirectory.fileToOpen = fileToOpen;
+    public WatchSettingsDirectory(Path dir, Path fileToOpen) throws IOException {
+        WatchSettingsDirectory.fileToOpen = fileToOpen;
         this.dir = dir;
         this.watcher = FileSystems.getDefault().newWatchService();
         this.dir.register(this.watcher, ENTRY_MODIFY);
         cleanupStateFiles();
     }
 
-    public WatchConfigDirectory(Path dir) throws IOException {
+    public WatchSettingsDirectory(Path dir) throws IOException {
         this.dir = dir;
         this.watcher = FileSystems.getDefault().newWatchService();
         this.dir.register(this.watcher, ENTRY_MODIFY);

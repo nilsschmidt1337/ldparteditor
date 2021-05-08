@@ -43,10 +43,10 @@ public enum AppData {
 
                     if (FileHelper.canReadFromPath(path) && FileHelper.canWriteToPath(path)) {
                         path = path + "LDPartEditor" + File.separator; //$NON-NLS-1$
-                        final File configFolder = new File(path);
-                        if (!configFolder.exists()) {
+                        final File settingsFolder = new File(path);
+                        if (!settingsFolder.exists()) {
                             // Try to create the directory
-                            if (!configFolder.mkdir()) {
+                            if (!settingsFolder.mkdir()) {
                                 path = ""; //$NON-NLS-1$
                             }
                         } else if (!FileHelper.canReadFromPath(path) || !FileHelper.canWriteToPath(path)) {

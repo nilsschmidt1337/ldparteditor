@@ -4319,9 +4319,9 @@ public class Editor3DWindow extends Editor3DDesign {
             if (selected != null) {
                 boolean issueDetected = false;
                 try {
-                    Files.delete(Paths.get(WorkbenchManager.CONFIG_GZ));
-                    Files.copy(Paths.get(selected), Paths.get(WorkbenchManager.CONFIG_GZ));
-                    issueDetected = !WorkbenchManager.loadWorkbench(WorkbenchManager.CONFIG_GZ);
+                    Files.delete(Paths.get(WorkbenchManager.SETTINGS_GZ));
+                    Files.copy(Paths.get(selected), Paths.get(WorkbenchManager.SETTINGS_GZ));
+                    issueDetected = !WorkbenchManager.loadWorkbench(WorkbenchManager.SETTINGS_GZ);
                 } catch (IOException ioe) {
                     NLogger.error(getClass(), ioe);
                     issueDetected = true;
@@ -5746,7 +5746,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         WorkbenchManager.getUserSettingState().setRecentItems(getRecentItems());
         // Save the workbench
-        WorkbenchManager.saveWorkbench(WorkbenchManager.CONFIG_GZ);
+        WorkbenchManager.saveWorkbench(WorkbenchManager.SETTINGS_GZ);
         setReturnCode(CANCEL);
         close();
     }

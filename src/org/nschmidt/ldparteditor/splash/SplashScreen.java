@@ -101,11 +101,11 @@ public class SplashScreen extends ApplicationWindow {
      */
     public void run() {
 
-        final File configGzFile = new File(WorkbenchManager.CONFIG_GZ);
+        final File settingsGzFile = new File(WorkbenchManager.SETTINGS_GZ);
 
-        // Load the workbench here if WorkbenchManager.CONFIG_GZ exists
-        final boolean successfulLoad = configGzFile.exists()
-                && WorkbenchManager.loadWorkbench(WorkbenchManager.CONFIG_GZ);
+        // Load the workbench here if WorkbenchManager.SETTINGS_GZ exists
+        final boolean successfulLoad = settingsGzFile.exists()
+                && WorkbenchManager.loadWorkbench(WorkbenchManager.SETTINGS_GZ);
 
         if (!successfulLoad || WorkbenchManager.getUserSettingState() == null || WorkbenchManager.getUserSettingState().isResetOnStart()) {
             WorkbenchManager.createDefaultWorkbench();
@@ -113,11 +113,11 @@ public class SplashScreen extends ApplicationWindow {
             // Start a little wizard for the user dependent properties.
             if (new StartupDialog(Display.getDefault().getActiveShell()).open() == IDialogConstants.OK_ID) {
                 // Save the changes, which are made by the user
-                WorkbenchManager.saveWorkbench(WorkbenchManager.CONFIG_GZ);
+                WorkbenchManager.saveWorkbench(WorkbenchManager.SETTINGS_GZ);
             } else {
                 try {
-                    if (Files.deleteIfExists(configGzFile.toPath())) {
-                        NLogger.error(getClass(), "Setup was aborted by the user. Deleted the config file at " + configGzFile.toPath()); //$NON-NLS-1$
+                    if (Files.deleteIfExists(settingsGzFile.toPath())) {
+                        NLogger.error(getClass(), "Setup was aborted by the user. Deleted the settings file at " + settingsGzFile.toPath()); //$NON-NLS-1$
                     }
                 } catch (IOException ex) {
                     NLogger.error(getClass(), ex);
@@ -226,7 +226,7 @@ public class SplashScreen extends ApplicationWindow {
                 // Now check the workbench
                 dequeueTask();
                 try {
-                    if (!configGzFile.exists()) {
+                    if (!settingsGzFile.exists()) {
                         // Return with a warning
                         threadReturn[0] = ReturnType.WRITE_ERROR;
                         return;
@@ -345,7 +345,7 @@ public class SplashScreen extends ApplicationWindow {
                 break;
             case WRITE_ERROR:
                 // Show a warning message, that the program cannot be used,
-                // because the configuration
+                // because the settings
                 // cannot be saved in/loaded from the application folder
                 messageBox.setText(I18n.DIALOG_ERROR);
                 messageBox.setMessage(I18n.SPLASH_NO_WRITE);
