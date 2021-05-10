@@ -167,7 +167,7 @@ public enum RingsAndCones {
                                             long r;
                                             // MARK Solver 1
                                             if (rs.isUsingExistingPrimitives()) {
-                                                r = rndSet[(int) (rnd.nextFloat() * size)];
+                                                r = rndSet[rnd.nextInt(size)];
                                                 if (!primitiveExists((int) r, angle)) {
                                                     continue;
                                                 }

@@ -191,9 +191,9 @@ class VM19ColourChanger extends VM18LineConverter {
                 if (isRandomColour) {
                     colourBuilder.setLength(0);
                     colourBuilder.append("0x2"); //$NON-NLS-1$
-                    colourBuilder.append(MathHelper.toHex((int) (255f * rnd.nextFloat())).toUpperCase());
-                    colourBuilder.append(MathHelper.toHex((int) (255f * rnd.nextFloat())).toUpperCase());
-                    colourBuilder.append(MathHelper.toHex((int) (255f * rnd.nextFloat())).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex(rnd.nextInt(255)).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex(rnd.nextInt(255)).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex(rnd.nextInt(255)).toUpperCase());
                     col = colourBuilder.toString();
                 }
                 String colouredString = subf.getColouredString(col);
