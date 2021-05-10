@@ -145,7 +145,7 @@ class VM01SelectHelper extends VM01Select {
                 int counter = 0;
                 while (isRunning) {
                     try {
-                        Thread.sleep(100);
+                        this.wait(100);
                         counter++;
                         if (counter == 50) break;
                     } catch (InterruptedException ie) {
@@ -300,7 +300,7 @@ class VM01SelectHelper extends VM01Select {
                 int counter = 0;
                 while (isRunning) {
                     try {
-                        Thread.sleep(100);
+                        this.wait(100);
                         counter++;
                         if (counter == 50) break;
                     } catch (InterruptedException ie) {
@@ -560,7 +560,7 @@ class VM01SelectHelper extends VM01Select {
                 int counter = 0;
                 while (isRunning) {
                     try {
-                        Thread.sleep(100);
+                        this.wait(100);
                         counter++;
                         if (counter == 50) break;
                     } catch (InterruptedException ie) {
@@ -712,7 +712,7 @@ class VM01SelectHelper extends VM01Select {
                 int counter = 0;
                 while (isRunning) {
                     try {
-                        Thread.sleep(100);
+                        this.wait(100);
                         counter++;
                         if (counter == 50) break;
                     } catch (InterruptedException ie) {
