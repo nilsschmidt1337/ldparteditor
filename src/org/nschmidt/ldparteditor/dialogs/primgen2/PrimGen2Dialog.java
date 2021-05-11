@@ -89,7 +89,6 @@ public class PrimGen2Dialog extends PrimGen2Design {
         CBO
     }
 
-    private SyntaxFormatter syntaxFormatter;
     private String resPrefix = ""; //$NON-NLS-1$
 
     /**
@@ -110,7 +109,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
         decformat4f.setRoundingMode(RoundingMode.HALF_UP);
 
-        syntaxFormatter = new SyntaxFormatter(txtDataPtr[0]);
+        final SyntaxFormatter syntaxFormatter = new SyntaxFormatter(txtDataPtr[0]);
 
         spnMajorPtr[0].setValue(2);
         spnMinorPtr[0].setValue(BigDecimal.ONE);
