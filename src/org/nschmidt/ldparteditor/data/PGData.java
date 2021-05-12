@@ -18,13 +18,15 @@ package org.nschmidt.ldparteditor.data;
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
+
 /**
  * Lightweight graphical data class
  *
  * @author nils
  *
  */
-public abstract class PGData implements IPGData, Serializable {
+public abstract class PGData implements Serializable {
     // Do not rename fields. It will break backwards compatibility!
 
     private static final long serialVersionUID = 1L;
@@ -36,6 +38,11 @@ public abstract class PGData implements IPGData, Serializable {
     static boolean globalInvertNext = false;
     static boolean globalInvertNextFound = false;
     static boolean globalNegativeDeterminant = false;
+
+    public abstract void drawBFCprimitiveGL20(int drawOnlyMode);
+    public abstract void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode);
+    public abstract int type();
+    public abstract PGData data();
 
     public PGData getNext() {
         return next;

@@ -15,12 +15,34 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.plugin;
 
+import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.data.DatFile;
+
 /**
- * The abstract plug-in class for all future plug-ins
+ * The plug-in interface, which has to be implemented by all plug-ins
  *
  * @author nils
  *
  */
-// Nothing more to do here..
-public abstract class Plugin implements IPluggable {
+public interface Plugin {
+
+    /** @return The name of the plug-in author */
+    public String getPlugInAuthor();
+
+    /** @return The name of the plug-in */
+    public String getPlugInName();
+
+    /**
+     * Performs the action on any active {@link Composite3D}.
+     *
+     * @param c3d
+     */
+    public void onCanvas(Composite3D c3d);
+
+    /**
+     * Performs the action on the active {@link DatFile}.
+     *
+     * @param data
+     */
+    public void onData(DatFile data);
 }

@@ -13,36 +13,42 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.plugin;
+package org.nschmidt.ldparteditor.composites;
 
-import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.data.DatFile;
+import org.eclipse.swt.custom.SashForm;
 
 /**
- * The plug-in interface, which has to be implemented by all plug-ins
+ * This is the interface which must be implemented by {@link CompositeContainer}
+ * , {@link CompositeScale} and {@link Composite3D}. It is helpful for object
+ * relations regarding horizontal and vertical scales.
  *
  * @author nils
  *
  */
-public interface IPluggable {
-
-    /** @return The name of the plug-in author */
-    public String getPlugInAuthor();
-
-    /** @return The name of the plug-in */
-    public String getPlugInName();
+interface Scalable {
 
     /**
-     * Performs the action on any active {@link Composite3D}.
+     * Hierarchy-Note: SashForm <- CompositeContainer <- [CompositeScale] <-
+     * Composite3D
      *
-     * @param c3d
+     * @return the {@link SashForm} in which this composite is nested.
      */
-    public void onCanvas(Composite3D c3d);
+    public SashForm getSashForm();
 
     /**
-     * Performs the action on the active {@link DatFile}.
+     * Hierarchy-Note: SashForm <- CompositeContainer <- [CompositeScale] <-
+     * Composite3D
      *
-     * @param data
+     * @return the {@link Composite3D} which displays all 3D stuff.
      */
-    public void onData(DatFile data);
+    public Composite3D getComposite3D();
+
+    /**
+     * Hierarchy-Note: SashForm <- CompositeContainer <- [CompositeScale] <-
+     * Composite3D
+     *
+     * @return the {@link CompositeContainer} which embeds a {@link Composite3D}
+     *         or a {@link CompositeScale}.
+     */
+    public CompositeContainer getCompositeContainer();
 }

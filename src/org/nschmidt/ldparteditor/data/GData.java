@@ -24,7 +24,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 
 /**
  * Lightweight graphical data class
@@ -32,7 +34,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
  * @author nils
  *
  */
-public abstract class GData implements IGData, Comparable<GData> {
+public abstract class GData implements Comparable<GData> {
 
     abstract String getNiceString();
 
@@ -69,6 +71,40 @@ public abstract class GData implements IGData, Comparable<GData> {
     public static final Map<GData, List<ParsingResult>> CACHE_warningsAndErrors = new HashMap<>(1000); // Cleared
     public static final ThreadsafeHashMap<GData, ParsingResult> CACHE_duplicates = new ThreadsafeHashMap<>(1000); // Cleared
 
+    public abstract void drawGL20(Composite3D c3d);
+
+    public abstract void drawGL20RandomColours(Composite3D c3d);
+
+    public abstract void drawGL20BFC(Composite3D c3d);
+
+    public abstract void drawGL20BFCuncertified(Composite3D c3d);
+
+    public abstract void drawGL20BFCbackOnly(Composite3D c3d);
+
+    public abstract void drawGL20BFCcolour(Composite3D c3d);
+
+    public abstract void drawGL20BFCtextured(Composite3D c3d);
+
+    public abstract void drawGL20WhileAddCondlines(Composite3D c3d);
+
+    public abstract void drawGL20CoplanarityHeatmap(Composite3D c3d);
+
+    public abstract void drawGL20Wireframe(Composite3D c3d);
+
+    public abstract void getBFCorientationMap(Map<GData,BFC> map);
+    public abstract void getBFCorientationMapNOCERTIFY(Map<GData, BFC> map);
+    public abstract void getBFCorientationMapNOCLIP(Map<GData, BFC> map);
+
+    public abstract void getVertexNormalMap(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
+    public abstract void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
+    public abstract void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
+
+    public abstract String inlinedString(BFC bfcStatusTarget, GColour colour);
+
+    public abstract String transformAndColourReplace(String colour, Matrix matrix);
+
+    public abstract int type();
+
     public GData getNext() {
         return next;
     }
@@ -81,10 +117,6 @@ public abstract class GData implements IGData, Comparable<GData> {
         CACHE_warningsAndErrors.remove(this);
         next = null;
         before = null;
-    }
-
-    public String getText() {
-        return text;
     }
 
     void show() {
