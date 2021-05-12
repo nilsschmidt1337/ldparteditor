@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.swt.opengl.GLCanvas;
 import org.lwjgl.opengl.GL;
-import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.logger.NLogger;
 

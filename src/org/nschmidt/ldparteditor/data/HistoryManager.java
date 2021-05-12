@@ -29,14 +29,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
-import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
-import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
-import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.helper.LDPartEditorException;
+import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 

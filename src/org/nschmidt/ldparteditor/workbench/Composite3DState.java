@@ -17,7 +17,7 @@ package org.nschmidt.ldparteditor.workbench;
 
 import java.io.Serializable;
 
-import org.nschmidt.ldparteditor.enums.Perspective;
+import org.nschmidt.ldparteditor.enumtype.Perspective;
 
 /**
  * @author nils

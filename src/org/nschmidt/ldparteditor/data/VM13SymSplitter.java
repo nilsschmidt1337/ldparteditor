@@ -23,15 +23,15 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.nschmidt.ldparteditor.enums.LDConfig;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
-import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.composite3d.IntersectorSettings;
+import org.nschmidt.ldparteditor.helper.composite3d.SymSplitterSettings;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
 class VM13SymSplitter extends VM12IntersectorAndIsecalc {

@@ -35,18 +35,18 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.FileHelper;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.FileHelper;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-import de.matthiasmann.twl.utils.PNGDecoder;
-import de.matthiasmann.twl.utils.PNGDecoder.Format;
+import de.matthiasmann.twl.util.PNGDecoder;
+import de.matthiasmann.twl.util.PNGDecoder.Format;
 
 /**
  * @author nils

@@ -20,15 +20,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.nschmidt.ldparteditor.enums.LDConfig;
-import org.nschmidt.ldparteditor.enums.SlantingMatrixStatus;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.composite3d.SlantingMatrixProjectorSettings;
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.SlantingMatrixStatus;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.composite3d.SlantingMatrixProjectorSettings;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM28SlantingMatrixProjector extends VM27YTruder {

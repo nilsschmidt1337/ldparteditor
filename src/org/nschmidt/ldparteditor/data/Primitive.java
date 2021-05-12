@@ -26,7 +26,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.ldparteditor.enums.Rule;
+import org.nschmidt.ldparteditor.enumtype.Rule;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 public class Primitive implements Comparable<Primitive> {

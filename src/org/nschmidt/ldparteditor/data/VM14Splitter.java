@@ -22,10 +22,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 
 class VM14Splitter extends VM13SymSplitter {
 

@@ -21,8 +21,8 @@ import java.util.Set;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.composite.Composite3D;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 
 class VM05Distance extends VM04Rectifier {
 

@@ -17,9 +17,9 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.Map;
 
-import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
+import org.nschmidt.ldparteditor.composite.Composite3D;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 
 /**
  * @author nils

@@ -30,8 +30,8 @@ import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.GDataTEX;
 import org.nschmidt.ldparteditor.data.VertexManager;
-import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
-import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
+import org.nschmidt.ldparteditor.helper.composite3d.PathTruderSettings;
+import org.nschmidt.ldparteditor.helper.math.HashBiMap;
 
 public class CSGExtrude implements Primitive {
 

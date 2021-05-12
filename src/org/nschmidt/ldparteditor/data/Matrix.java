@@ -19,10 +19,10 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.nschmidt.ldparteditor.enums.RotationSnap;
-import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.enumtype.RotationSnap;
+import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 
 /**
  * Immutable, high precision matrix class

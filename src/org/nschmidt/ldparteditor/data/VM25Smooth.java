@@ -26,8 +26,8 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.nschmidt.ldparteditor.dialogs.smooth.SmoothDialog;
-import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.dialog.smooth.SmoothDialog;
+import org.nschmidt.ldparteditor.enumtype.Threshold;
 
 class VM25Smooth extends VM24MeshReducer {
 

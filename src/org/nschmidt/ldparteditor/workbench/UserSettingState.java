@@ -25,13 +25,13 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.nschmidt.ldparteditor.composites.ToolItemState;
+import org.nschmidt.ldparteditor.composite.ToolItemState;
 import org.nschmidt.ldparteditor.data.GColour;
-import org.nschmidt.ldparteditor.enums.Colour;
-import org.nschmidt.ldparteditor.enums.LDConfig;
-import org.nschmidt.ldparteditor.enums.Task;
-import org.nschmidt.ldparteditor.enums.TextEditorColour;
-import org.nschmidt.ldparteditor.enums.TextTask;
+import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.Task;
+import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
+import org.nschmidt.ldparteditor.enumtype.TextTask;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 

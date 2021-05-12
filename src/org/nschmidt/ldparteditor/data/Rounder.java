@@ -18,12 +18,12 @@ package org.nschmidt.ldparteditor.data;
 import java.math.RoundingMode;
 
 import org.eclipse.swt.custom.CTabItem;
-import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
-import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabState;
-import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
+import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.composite.compositetab.CompositeTabState;
+import org.nschmidt.ldparteditor.helper.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 

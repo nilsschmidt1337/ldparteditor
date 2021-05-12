@@ -29,15 +29,15 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
-import org.nschmidt.ldparteditor.enums.MergeTo;
-import org.nschmidt.ldparteditor.enums.MyLanguage;
-import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
-import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
-import org.nschmidt.ldparteditor.helpers.composite3d.TJunctionSettings;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
+import org.nschmidt.ldparteditor.enumtype.MergeTo;
+import org.nschmidt.ldparteditor.enumtype.MyLanguage;
+import org.nschmidt.ldparteditor.helper.LDPartEditorException;
+import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
+import org.nschmidt.ldparteditor.helper.composite3d.TJunctionSettings;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 
 class VM22TJunctionFixer extends VM21Merger {
 

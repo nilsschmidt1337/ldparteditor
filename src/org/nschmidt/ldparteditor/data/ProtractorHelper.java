@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 
 public enum ProtractorHelper {
     INSTANCE;

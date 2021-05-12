@@ -18,7 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.io.Serializable;
 
 import org.lwjgl.opengl.GL11;
-import org.nschmidt.ldparteditor.enums.Colour;
+import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 

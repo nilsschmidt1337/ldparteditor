@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enumtype.View;
 
 class VM18LineConverter extends VM17Unificator {
 

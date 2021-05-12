@@ -21,11 +21,11 @@ import java.util.List;
 
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
-import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
-import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
+import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.helper.math.HashBiMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
 /**

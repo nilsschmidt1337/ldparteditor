@@ -28,10 +28,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.nschmidt.ldparteditor.data.DatFile;
-import org.nschmidt.ldparteditor.helpers.Version;
+import org.nschmidt.ldparteditor.helper.Version;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 

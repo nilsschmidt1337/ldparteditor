@@ -30,12 +30,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
-import org.nschmidt.ldparteditor.enums.LDConfig;
-import org.nschmidt.ldparteditor.enums.MyLanguage;
-import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.MyLanguage;
+import org.nschmidt.ldparteditor.helper.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 

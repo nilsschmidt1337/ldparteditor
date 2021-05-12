@@ -28,16 +28,16 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.custom.CTabItem;
-import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.composite.Composite3D;
+import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
-import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.widget.TreeItem;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**

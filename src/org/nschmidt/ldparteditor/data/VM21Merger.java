@@ -24,18 +24,18 @@ import java.util.TreeSet;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
-import org.nschmidt.ldparteditor.data.tools.Merger;
-import org.nschmidt.ldparteditor.dialogs.direction.DirectionDialog;
-import org.nschmidt.ldparteditor.enums.MergeTo;
-import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.Manipulator;
-import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
-import org.nschmidt.ldparteditor.helpers.math.Rational;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
-import org.nschmidt.ldparteditor.helpers.math.Vector3r;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.data.tool.IdenticalVertexRemover;
+import org.nschmidt.ldparteditor.data.tool.Merger;
+import org.nschmidt.ldparteditor.dialog.direction.DirectionDialog;
+import org.nschmidt.ldparteditor.enumtype.MergeTo;
+import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.Manipulator;
+import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
+import org.nschmidt.ldparteditor.helper.math.Rational;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
+import org.nschmidt.ldparteditor.helper.math.Vector3r;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 
 public class VM21Merger extends VM20Manipulator {
 

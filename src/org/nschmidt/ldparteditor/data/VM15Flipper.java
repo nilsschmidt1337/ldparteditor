@@ -25,8 +25,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 
 class VM15Flipper extends VM14Splitter {
 

@@ -30,19 +30,19 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
-import org.nschmidt.ldparteditor.enums.LDConfig;
-import org.nschmidt.ldparteditor.enums.ManipulatorScope;
-import org.nschmidt.ldparteditor.enums.RotationSnap;
-import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.enums.TransformationMode;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.Manipulator;
-import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.composite.Composite3D;
+import org.nschmidt.ldparteditor.data.tool.IdenticalVertexRemover;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
+import org.nschmidt.ldparteditor.enumtype.RotationSnap;
+import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.enumtype.TransformationMode;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.Manipulator;
+import org.nschmidt.ldparteditor.helper.math.HashBiMap;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 public class VM20Manipulator extends VM19ColourChanger {

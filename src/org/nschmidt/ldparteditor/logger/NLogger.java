@@ -27,7 +27,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.nschmidt.ldparteditor.helpers.Version;
+import org.nschmidt.ldparteditor.helper.Version;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 

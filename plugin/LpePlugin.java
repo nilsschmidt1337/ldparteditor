@@ -3,7 +3,7 @@ import org.nschmidt.ldparteditor.plugin.Plugin;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 
-public class LpePlugin extends Plugin {
+public class LpePlugin implements Plugin {
 
     public LpePlugin() {
 

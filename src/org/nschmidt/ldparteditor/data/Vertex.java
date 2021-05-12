@@ -19,8 +19,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
-import org.nschmidt.ldparteditor.helpers.math.Vector3r;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
+import org.nschmidt.ldparteditor.helper.math.Vector3r;
 
 /**
  * Full immutable vertex class

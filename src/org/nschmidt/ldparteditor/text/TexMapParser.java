@@ -44,10 +44,10 @@ import org.nschmidt.ldparteditor.data.TexMeta;
 import org.nschmidt.ldparteditor.data.TexType;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.colour.GCDithered;
-import org.nschmidt.ldparteditor.enums.Colour;
-import org.nschmidt.ldparteditor.enums.LDConfig;
-import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 

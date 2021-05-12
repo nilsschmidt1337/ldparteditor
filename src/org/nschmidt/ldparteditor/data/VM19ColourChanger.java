@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.nschmidt.ldparteditor.enums.Colour;
-import org.nschmidt.ldparteditor.enums.LDConfig;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.math.HashBiMap;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM19ColourChanger extends VM18LineConverter {

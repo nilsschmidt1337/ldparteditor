@@ -18,11 +18,11 @@ package org.nschmidt.ldparteditor.data;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.composite.Composite3D;
+import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 
 /**
  * @author nils

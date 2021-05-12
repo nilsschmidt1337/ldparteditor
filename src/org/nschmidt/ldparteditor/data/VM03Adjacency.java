@@ -30,10 +30,10 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.csg.CSG;
-import org.nschmidt.ldparteditor.enums.LDConfig;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.math.HashBiMap;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM03Adjacency extends VM02Add {

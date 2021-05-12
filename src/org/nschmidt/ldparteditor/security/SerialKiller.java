@@ -41,7 +41,7 @@ public class SerialKiller extends ObjectInputStream {
             "org.lwjgl.util.vector.Matrix", //$NON-NLS-1$
             "java.util.ArrayList", //$NON-NLS-1$
             "org.nschmidt.ldparteditor.workbench.Composite3DState", //$NON-NLS-1$
-            "org.nschmidt.ldparteditor.enums.Perspective", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.enumtype.Perspective", //$NON-NLS-1$
             "java.lang.Enum", //$NON-NLS-1$
             "org.nschmidt.ldparteditor.workbench.WindowState", //$NON-NLS-1$
             "org.eclipse.swt.graphics.Rectangle", //$NON-NLS-1$
@@ -53,10 +53,10 @@ public class SerialKiller extends ObjectInputStream {
             "java.math.BigInteger", //$NON-NLS-1$
             "\\[B", //$NON-NLS-1$
             "\\[Ljava.lang.String;", //$NON-NLS-1$
-            "\\[Lorg.nschmidt.ldparteditor.enums.Task;", //$NON-NLS-1$
-            "org.nschmidt.ldparteditor.enums.Task", //$NON-NLS-1$
-            "\\[Lorg.nschmidt.ldparteditor.enums.TextTask;", //$NON-NLS-1$
-            "org.nschmidt.ldparteditor.enums.TextTask", //$NON-NLS-1$
+            "\\[Lorg.nschmidt.ldparteditor.enumtype.Task;", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.enumtype.Task", //$NON-NLS-1$
+            "\\[Lorg.nschmidt.ldparteditor.enumtype.TextTask;", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.enumtype.TextTask", //$NON-NLS-1$
             "java.util.Locale", //$NON-NLS-1$
             "java.util.concurrent.atomic.AtomicBoolean", //$NON-NLS-1$
             "org.nschmidt.ldparteditor.data.GColour", //$NON-NLS-1$

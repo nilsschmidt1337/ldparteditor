@@ -14,7 +14,7 @@ package org.nschmidt.ldparteditor.win32appdata;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.nschmidt.ldparteditor.helpers.FileHelper;
+import org.nschmidt.ldparteditor.helper.FileHelper;
 
 public enum AppData {
     INSTANCE;

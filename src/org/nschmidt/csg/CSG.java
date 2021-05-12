@@ -51,15 +51,15 @@ import java.util.concurrent.Executors;
 
 import org.eclipse.swt.widgets.Display;
 import org.lwjgl.util.vector.Matrix4f;
-import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
-import org.nschmidt.ldparteditor.enums.LDConfig;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
-import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.LDPartEditorException;
+import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 
 /**
  * Constructive Solid Geometry (CSG).

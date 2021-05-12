@@ -17,8 +17,8 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.List;
 
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
 class VM00Snapshot extends VM00Base {

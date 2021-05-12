@@ -46,7 +46,7 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.enums.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
 
 /**
  * Represents a convex polygon.

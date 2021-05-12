@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.swt.custom.StyledText;
-import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
+import org.nschmidt.ldparteditor.helper.compositetext.Inliner;
 
 /**
  * Splits selected quads into triangles

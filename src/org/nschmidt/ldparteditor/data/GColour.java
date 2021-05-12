@@ -17,7 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.io.Serializable;
 
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 
 /**
  * @author nils

@@ -19,12 +19,12 @@ import java.io.FileNotFoundException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
+import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
-import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.widget.TreeItem;
 
 enum DescriptionManager {
     INSTANCE;

@@ -24,9 +24,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
+import org.nschmidt.ldparteditor.composite.Composite3D;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 
 /**
  * Lightweight graphical data class

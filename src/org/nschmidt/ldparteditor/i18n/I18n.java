@@ -23,8 +23,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.eclipse.swt.SWT;
-import org.nschmidt.ldparteditor.enums.MyLanguage;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enumtype.MyLanguage;
+import org.nschmidt.ldparteditor.enumtype.View;
 
 /**
  * This class provides quick access to all translated Strings and RTL relevant constants (NEVER EVER FORMAT THIS CLASS!)

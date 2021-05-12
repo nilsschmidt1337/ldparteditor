@@ -16,10 +16,10 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import org.eclipse.swt.custom.CTabItem;
-import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
-import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
+import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.helper.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 
 /**
  * Sorts selected lines by a given criteria

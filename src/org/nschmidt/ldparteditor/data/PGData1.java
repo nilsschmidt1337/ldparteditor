@@ -24,8 +24,8 @@ import java.util.Set;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
-import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
-import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
+import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
+import org.nschmidt.ldparteditor.helper.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**

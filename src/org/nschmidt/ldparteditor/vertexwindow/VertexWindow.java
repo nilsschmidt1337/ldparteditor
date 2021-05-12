@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.vertexwindow;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
+import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
@@ -33,22 +33,22 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
-import org.nschmidt.ldparteditor.enums.ManipulatorScope;
-import org.nschmidt.ldparteditor.enums.Task;
-import org.nschmidt.ldparteditor.enums.TransformationMode;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.Cocoa;
-import org.nschmidt.ldparteditor.helpers.ShellHelper;
+import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
+import org.nschmidt.ldparteditor.enumtype.Task;
+import org.nschmidt.ldparteditor.enumtype.TransformationMode;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.Cocoa;
+import org.nschmidt.ldparteditor.helper.ShellHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.resources.ResourceManager;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.NButton;
+import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widget.NButton;
 
 /**
  * A window for manipulating the coordinates of a single vertex

@@ -23,13 +23,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.nschmidt.ldparteditor.enums.LDConfig;
-import org.nschmidt.ldparteditor.enums.Threshold;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
-import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
+import org.nschmidt.ldparteditor.helper.math.HashBiMap;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM01Select extends VM00Snapshot {

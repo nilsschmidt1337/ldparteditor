@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 
 import org.junit.Test;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 
 @SuppressWarnings("java:S5960")
 public class Vector3dTest {

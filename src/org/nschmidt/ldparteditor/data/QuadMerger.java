@@ -19,12 +19,12 @@ import java.util.Set;
 
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
-import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
-import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
-import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
-import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
+import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
+import org.nschmidt.ldparteditor.helper.compositetext.Text2SelectionConverter;
+import org.nschmidt.ldparteditor.helper.math.HashBiMap;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 
 /**
  * Splits selected quads into triangles

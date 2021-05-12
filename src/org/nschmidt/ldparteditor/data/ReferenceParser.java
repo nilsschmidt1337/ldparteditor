@@ -27,15 +27,15 @@ import java.util.Set;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
-import org.nschmidt.ldparteditor.dialogs.overwrite.OverwriteDialog;
-import org.nschmidt.ldparteditor.enums.MyLanguage;
-import org.nschmidt.ldparteditor.helpers.composite3d.TreeData;
+import org.nschmidt.ldparteditor.dialog.overwrite.OverwriteDialog;
+import org.nschmidt.ldparteditor.enumtype.MyLanguage;
+import org.nschmidt.ldparteditor.helper.composite3d.TreeData;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.References;
-import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.widget.TreeItem;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 

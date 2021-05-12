@@ -25,14 +25,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.nschmidt.ldparteditor.enums.MyLanguage;
-import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
+import org.nschmidt.ldparteditor.enumtype.MyLanguage;
+import org.nschmidt.ldparteditor.helper.LDPartEditorException;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.HeaderState;
-import org.nschmidt.ldparteditor.widgets.TreeItem;
+import org.nschmidt.ldparteditor.widget.TreeItem;
 
 /**
  * "Call me Mike"
@@ -668,7 +668,7 @@ public class DatHeaderManager {
                                 String hints = hintCount == 1 ? I18n.EDITORTEXT_OTHER : I18n.EDITORTEXT_OTHERS;
                                 String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_DUPLICATE : I18n.EDITORTEXT_DUPLICATES;
                                 lblProblemCount.setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-                                org.nschmidt.ldparteditor.widgets.Tree tree = treeItemHints.getParent();
+                                org.nschmidt.ldparteditor.widget.Tree tree = treeItemHints.getParent();
                                 tree.build();
                                 lblProblemCount.getParent().layout();
                                 lblProblemCount.getParent().redraw();

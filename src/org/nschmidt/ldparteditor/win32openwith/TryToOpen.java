@@ -23,10 +23,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.nschmidt.ldparteditor.data.DatFile;
-import org.nschmidt.ldparteditor.enums.OpenInWhat;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
+import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**

@@ -37,17 +37,17 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.csg.CSG;
-import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.composites.ScalableComposite;
-import org.nschmidt.ldparteditor.enums.Colour;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.enums.WorkingMode;
-import org.nschmidt.ldparteditor.helpers.Manipulator;
-import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
-import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
+import org.nschmidt.ldparteditor.composite.Composite3D;
+import org.nschmidt.ldparteditor.composite.ScalableComposite;
+import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.enumtype.WorkingMode;
+import org.nschmidt.ldparteditor.helper.Manipulator;
+import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
+import org.nschmidt.ldparteditor.helper.composite3d.PerspectiveCalculator;
+import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 
 /**
  * All actions are THREAD safe!! 1. Displays all vertices <br>

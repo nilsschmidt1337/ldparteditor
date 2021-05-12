@@ -18,7 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
+import org.nschmidt.ldparteditor.helper.math.Vector3dd;
 
 /**
  * @author nils
