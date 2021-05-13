@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 
 /**
@@ -151,7 +152,7 @@ public enum GuiStatusManager {
                 sb.append(I18n.E3D_ADJACENT_WARNING_STATUS);
             }
 
-            final SelectorSettings sels = win.loadSelectorSettings();
+            final SelectorSettings sels = MiscToolItem.loadSelectorSettings();
             final ObjectMode om = win.getWorkingType();
             if (om == ObjectMode.FACES) {
                 if (sels.isTriangles() && !sels.isQuads()) {

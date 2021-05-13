@@ -79,7 +79,7 @@ public class CopyPasteToolItem extends ToolItem {
         widgetUtil(btnPaste).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().getVertexManager().paste(Editor3DWindow.getWindow().loadSelectorSettings());
+                Project.getFileToEdit().getVertexManager().paste(MiscToolItem.loadSelectorSettings());
                 if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
                     Editor3DWindow.getWindow().setMovingAdjacentData(false);
                     GuiStatusManager.updateStatus();

@@ -104,6 +104,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer33;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -500,7 +501,7 @@ public class Composite3D extends ScalableComposite {
         widgetUtil(mntmPaste).addSelectionListener(e -> {
             if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
             lockableDatFileReference.getVertexManager().addSnapshot();
-            lockableDatFileReference.getVertexManager().paste(Editor3DWindow.getWindow().loadSelectorSettings());
+            lockableDatFileReference.getVertexManager().paste(MiscToolItem.loadSelectorSettings());
             if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
                 Editor3DWindow.getWindow().setMovingAdjacentData(false);
                 GuiStatusManager.updateStatus();

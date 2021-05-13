@@ -57,6 +57,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -497,7 +498,7 @@ public class KeyStateManager {
                         if (df.getObjVertex1() == null && df.getObjVertex2() == null && df.getObjVertex3() == null && df.getObjVertex4() == null) {
                             AddToolItem.disableAddAction();
                         }
-                        win.activateAllTypes();
+                        MiscToolItem.activateAllTypes();
                         df.setObjVertex1(null);
                         df.setObjVertex2(null);
                         df.setObjVertex3(null);
@@ -517,7 +518,7 @@ public class KeyStateManager {
                         vm.delete(win.isMovingAdjacentData(), true);
                         break;
                     case PASTE:
-                        vm.paste(win.loadSelectorSettings());
+                        vm.paste(MiscToolItem.loadSelectorSettings());
                         if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
                             win.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
@@ -720,11 +721,11 @@ public class KeyStateManager {
                         }
                         break;
                     case SELECT_ALL:
-                        vm.selectAll(win.loadSelectorSettings(), true);
+                        vm.selectAll(MiscToolItem.loadSelectorSettings(), true);
                         vm.syncWithTextEditors(true);
                         break;
                     case SELECT_ALL_WITH_SAME_COLOURS:
-                        vm.selectAllWithSameColours(win.loadSelectorSettings(), true);
+                        vm.selectAllWithSameColours(MiscToolItem.loadSelectorSettings(), true);
                         vm.syncWithTextEditors(true);
                         break;
                     case SELECT_NONE:
@@ -750,12 +751,12 @@ public class KeyStateManager {
                         break;
                     }
                     case SELECT_OPTION_WITH_SAME_COLOURS:
-                        win.getMntmWithSameColour().setSelection(!win.getMntmWithSameColour().getSelection());
-                        win.loadSelectorSettings();
+                        MiscToolItem.getMntmWithSameColour().setSelection(!MiscToolItem.getMntmWithSameColour().getSelection());
+                        MiscToolItem.loadSelectorSettings();
                         break;
                     case SELECT_CONNECTED:
                     {
-                        final SelectorSettings sels = win.loadSelectorSettings();
+                        final SelectorSettings sels = MiscToolItem.loadSelectorSettings();
                         sels.setScope(SelectorSettings.CONNECTED);
                         vm.selector(sels);
                         vm.syncWithTextEditors(true);
@@ -763,7 +764,7 @@ public class KeyStateManager {
                     }
                     case SELECT_TOUCHING:
                     {
-                        final SelectorSettings sels = win.loadSelectorSettings();
+                        final SelectorSettings sels = MiscToolItem.loadSelectorSettings();
                         sels.setScope(SelectorSettings.TOUCHING);
                         vm.selector(sels);
                         vm.syncWithTextEditors(true);

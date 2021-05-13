@@ -64,6 +64,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -1249,7 +1250,7 @@ public class MouseActions {
                 m.setAccurateYaxis(aYx, aYy, aYz);
                 checkSyncEditMode(vm, datfile);
             } else if (window.getWorkingAction() == WorkingMode.SELECT) {
-                final SelectorSettings sels = window.loadSelectorSettings();
+                final SelectorSettings sels = MiscToolItem.loadSelectorSettings();
                 switch (window.getWorkingType()) {
                 case VERTICES:
                     vm.selectVertices(c3d, false, false);
