@@ -104,6 +104,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer33;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
@@ -625,19 +626,19 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_ORIGIN);
                 btnMani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToOrigin());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToOrigin());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_WORLD);
                 btnMani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToWorld());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToWorld());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_ADJUST_ROTATION_CENTER);
                 btnMani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorAdjustRotationCenter());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorAdjustRotationCenter());
             }
 
             new MenuItem(mnuManipulator, SWT.SEPARATOR);
@@ -646,19 +647,19 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_REVERSE_X);
                 btnMani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorXReverse());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorXReverse());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_REVERSE_Y);
                 btnMani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorYReverse());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorYReverse());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_REVERSE_Z);
                 btnMani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorZReverse());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorZReverse());
             }
 
             new MenuItem(mnuManipulator, SWT.SEPARATOR);
@@ -667,19 +668,19 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_SWAP_XY);
                 btnMani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorSwitchXY());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorSwitchXY());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_SWAP_XZ);
                 btnMani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorSwitchXZ());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorSwitchXZ());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_SWAP_YZ);
                 btnMani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorSwitchYZ());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorSwitchYZ());
             }
 
             new MenuItem(mnuManipulator, SWT.SEPARATOR);
@@ -688,14 +689,14 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_CAM_TO_MANIPULATOR);
                 btnMani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorCameraToPos());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorCameraToPos());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_AVG);
                 btnMani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
                 KeyStateManager.addKeyText(btnMani, I18n.E3D_MANIPULATOR_TO_AVG, Task.MOVE_TO_AVG);
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToAverage());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToAverage());
             }
 
             new MenuItem(mnuManipulator, SWT.SEPARATOR);
@@ -704,13 +705,13 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_SUBFILE);
                 btnMani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToSubfile());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToSubfile());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(Cocoa.replaceCtrlByCmd(I18n.E3D_SUBFILE_TO_MANIPULATOR));
                 btnMani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorSubfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask)));
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorSubfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask)));
             }
 
             new MenuItem(mnuManipulator, SWT.SEPARATOR);
@@ -719,19 +720,19 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_VERTEX);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToVertex());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToVertex());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_EDGE);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToEdge());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToEdge());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_FACE);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToSurface());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToSurface());
             }
 
             new MenuItem(mnuManipulator, SWT.SEPARATOR);
@@ -740,25 +741,25 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_VERTEX_N);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToVertexNormal());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToVertexNormal());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_VERTEX_P);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToVertexPosition());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToVertexPosition());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_EDGE_N);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToEdgeNormal());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToEdgeNormal());
             }
             {
                 MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_FACE_N);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
-                widgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntmManipulatorToSurfaceNormal());
+                widgetUtil(btnMani).addSelectionListener(e -> ManipulatorToolItem.mntmManipulatorToSurfaceNormal());
             }
         }
 

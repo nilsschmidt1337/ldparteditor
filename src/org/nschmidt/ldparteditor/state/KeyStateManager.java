@@ -57,6 +57,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -555,7 +556,7 @@ public class KeyStateManager {
                         AddToolItem.disableAddAction();
                         break;
                     case MOVE_TO_AVG:
-                        win.mntmManipulatorToAverage();
+                        ManipulatorToolItem.mntmManipulatorToAverage();
                         break;
                     case MOVE_ADJACENT_DATA:
                         win.toggleMoveAdjacentData();
