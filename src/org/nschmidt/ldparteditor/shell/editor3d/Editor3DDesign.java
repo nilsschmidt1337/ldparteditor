@@ -74,6 +74,8 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.CopyPasteToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -202,15 +204,6 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnLinesPtr = new NButton[1];
     final NButton[] btnSubfilesPtr = new NButton[1];
     final NButton[] btnInsertAtCursorPositionPtr = new NButton[1];
-    final NButton[] btnAddCommentPtr = new NButton[1];
-    final NButton[] btnAddVertexPtr = new NButton[1];
-    final NButton[] btnAddPrimitivePtr = new NButton[1];
-    final NButton[] btnAddLinePtr = new NButton[1];
-    final NButton[] btnAddTrianglePtr = new NButton[1];
-    final NButton[] btnAddQuadPtr = new NButton[1];
-    final NButton[] btnAddCondlinePtr = new NButton[1];
-    final NButton[] btnAddDistancePtr = new NButton[1];
-    final NButton[] btnAddProtractorPtr = new NButton[1];
 
     final MenuItem[] mntmGridCoarseDefaultPtr = new MenuItem[1];
     final MenuItem[] mntmGridMediumDefaultPtr = new MenuItem[1];
@@ -329,11 +322,6 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnShowAllPtr = new NButton[1];
     final NButton[] btnNoTransparentSelectionPtr = new NButton[1];
     final NButton[] btnBFCTogglePtr = new NButton[1];
-
-    final NButton[] btnDeletePtr = new NButton[1];
-    final NButton[] btnCopyPtr = new NButton[1];
-    final NButton[] btnCutPtr = new NButton[1];
-    final NButton[] btnPastePtr = new NButton[1];
 
     final NButton[] btnCoarsePtr = new NButton[1];
     final NButton[] btnMediumPtr = new NButton[1];
@@ -2010,55 +1998,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemAdd(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemAdd = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-
-        NButton btnAddComment = new NButton(toolItemAdd, Cocoa.getStyle());
-        this.btnAddCommentPtr[0] = btnAddComment;
-        KeyStateManager.addTooltipText(btnAddComment, I18n.E3D_ADD_COMMENT, Task.ADD_COMMENTS);
-        btnAddComment.setImage(ResourceManager.getImage("icon16_addcomment.png")); //$NON-NLS-1$
-
-        NButton btnAddVertex = new NButton(toolItemAdd, SWT.TOGGLE | Cocoa.getStyle());
-        this.btnAddVertexPtr[0] = btnAddVertex;
-        KeyStateManager.addTooltipText(btnAddVertex, I18n.E3D_ADD_VERTEX, Task.ADD_VERTEX);
-        btnAddVertex.setImage(ResourceManager.getImage("icon16_addvertex.png")); //$NON-NLS-1$
-
-        NButton btnAddPrimitive = new NButton(toolItemAdd, SWT.TOGGLE | Cocoa.getStyle());
-        this.btnAddPrimitivePtr[0] = btnAddPrimitive;
-        btnAddPrimitive.setToolTipText(I18n.E3D_ADD_SUBPART);
-        btnAddPrimitive.setImage(ResourceManager.getImage("icon16_addprimitive.png")); //$NON-NLS-1$
-
-        NButton btnAddLine = new NButton(toolItemAdd, SWT.TOGGLE | Cocoa.getStyle());
-        this.btnAddLinePtr[0] = btnAddLine;
-        KeyStateManager.addTooltipText(btnAddLine, I18n.E3D_ADD_LINE, Task.ADD_LINE);
-        btnAddLine.setImage(ResourceManager.getImage("icon16_addline.png")); //$NON-NLS-1$
-
-        NButton btnAddTriangle = new NButton(toolItemAdd, SWT.TOGGLE | Cocoa.getStyle());
-        this.btnAddTrianglePtr[0] = btnAddTriangle;
-        KeyStateManager.addTooltipText(btnAddTriangle, I18n.E3D_ADD_TRIANGLE, Task.ADD_TRIANGLE);
-        btnAddTriangle.setImage(ResourceManager.getImage("icon16_addtriangle.png")); //$NON-NLS-1$
-
-        NButton btnAddQuad = new NButton(toolItemAdd, SWT.TOGGLE | Cocoa.getStyle());
-        this.btnAddQuadPtr[0] = btnAddQuad;
-        KeyStateManager.addTooltipText(btnAddQuad, I18n.E3D_ADD_QUAD, Task.ADD_QUAD);
-        btnAddQuad.setImage(ResourceManager.getImage("icon16_addquad.png")); //$NON-NLS-1$
-
-        NButton btnAddCondline = new NButton(toolItemAdd, SWT.TOGGLE | Cocoa.getStyle());
-        this.btnAddCondlinePtr[0] = btnAddCondline;
-        KeyStateManager.addTooltipText(btnAddCondline, I18n.E3D_ADD_CONDLINE, Task.ADD_CONDLINE);
-        btnAddCondline.setImage(ResourceManager.getImage("icon16_addcondline.png")); //$NON-NLS-1$
-
-        NButton btnAddDistance = new NButton(toolItemAdd, SWT.TOGGLE | Cocoa.getStyle());
-        this.btnAddDistancePtr[0] = btnAddDistance;
-        KeyStateManager.addTooltipText(btnAddDistance, I18n.E3D_ADD_DISTANCE, Task.ADD_DISTANCE);
-        btnAddDistance.setImage(ResourceManager.getImage("icon16_adddistance.png")); //$NON-NLS-1$
-
-        NButton btnAddProtractor = new NButton(toolItemAdd, SWT.TOGGLE | Cocoa.getStyle());
-        this.btnAddProtractorPtr[0] = btnAddProtractor;
-        KeyStateManager.addTooltipText(btnAddProtractor, I18n.E3D_ADD_PROTRACTOR, Task.ADD_PROTRACTOR);
-        btnAddProtractor.setImage(ResourceManager.getImage("icon16_addprotractor.png")); //$NON-NLS-1$
-
-        return toolItemAdd;
+        return new AddToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemInsertAtCursorPosition(ToolItemDrawLocation location, ToolItemDrawMode mode) {
@@ -2103,33 +2043,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemCCPD(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemCCPD = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnCut = new NButton(toolItemCCPD, Cocoa.getStyle());
-            this.btnCutPtr[0] = btnCut;
-            btnCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btnCut, I18n.COPYNPASTE_CUT, Task.CUT);
-        }
-        {
-            NButton btnCopy = new NButton(toolItemCCPD, Cocoa.getStyle());
-            this.btnCopyPtr[0] = btnCopy;
-            btnCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btnCopy, I18n.COPYNPASTE_COPY, Task.COPY);
-        }
-        {
-            NButton btnPaste = new NButton(toolItemCCPD, Cocoa.getStyle());
-            this.btnPastePtr[0] = btnPaste;
-            btnPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btnPaste, I18n.COPYNPASTE_PASTE, Task.PASTE);
-        }
-        {
-            NButton btnDelete = new NButton(toolItemCCPD, Cocoa.getStyle());
-            this.btnDeletePtr[0] = btnDelete;
-            btnDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btnDelete, I18n.COPYNPASTE_DELETE, Task.DELETE);
-        }
-        return toolItemCCPD;
+        return new CopyPasteToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemMiscClick() {

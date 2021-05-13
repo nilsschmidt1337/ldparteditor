@@ -79,6 +79,7 @@ import org.nschmidt.ldparteditor.helper.math.PowerRay;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -1497,15 +1498,15 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             }
 
             // MARK Draw temporary objects for all "Add..." functions here
-            if (window.isAddingSomething() && c3d.getLockableDatFileReference().getLastSelectedComposite() != null && c3d.getLockableDatFileReference().getLastSelectedComposite().equals(c3d)) {
-                if (window.isAddingVertices()) {
+            if (AddToolItem.isAddingSomething() && c3d.getLockableDatFileReference().getLastSelectedComposite() != null && c3d.getLockableDatFileReference().getLastSelectedComposite().equals(c3d)) {
+                if (AddToolItem.isAddingVertices()) {
                     // Point for add vertex
                     GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                     GL11.glBegin(GL11.GL_POINTS);
                     Vector4f cursor3D = c3d.getCursorSnapped3D();
                     GL11.glVertex3f(cursor3D.x, cursor3D.y, cursor3D.z);
                     GL11.glEnd();
-                } else if (window.isAddingLines() || window.isAddingDistance()) {
+                } else if (AddToolItem.isAddingLines() || AddToolItem.isAddingDistance()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
@@ -1517,7 +1518,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         GL11.glVertex3f(cur.x, cur.y, cur.z);
                         GL11.glEnd();
                     }
-                } else if (window.isAddingTriangles() || window.isAddingProtractor()) {
+                } else if (AddToolItem.isAddingTriangles() || AddToolItem.isAddingProtractor()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
@@ -1543,7 +1544,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             GL11.glEnd();
                         }
                     }
-                } else if (window.isAddingQuads()) {
+                } else if (AddToolItem.isAddingQuads()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
@@ -1597,7 +1598,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             GL11.glEnd();
                         }
                     }
-                } else if (window.isAddingCondlines()) {
+                } else if (AddToolItem.isAddingCondlines()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
@@ -1909,7 +1910,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     GL11.glEnd();
                 }
 
-                if (!c3d.isDoingSelection() && !manipulator.isLocked() && !window.isAddingSomething() && c3d.getDraggedPrimitive() == null) {
+                if (!c3d.isDoingSelection() && !manipulator.isLocked() && !AddToolItem.isAddingSomething() && c3d.getDraggedPrimitive() == null) {
                     Vector2f mp = c3d.getMousePosition();
                     GL11.glColor3f(Colour.textColourR, Colour.textColourG, Colour.textColourB);
                     if (mp.x > 50f || mp.y > 50f) {

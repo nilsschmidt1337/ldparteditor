@@ -56,6 +56,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -494,7 +495,7 @@ public class KeyStateManager {
                         multi = 100;
                         colourNumber = 0;
                         if (df.getObjVertex1() == null && df.getObjVertex2() == null && df.getObjVertex3() == null && df.getObjVertex4() == null) {
-                            win.disableAddAction();
+                            AddToolItem.disableAddAction();
                         }
                         win.activateAllTypes();
                         df.setObjVertex1(null);
@@ -526,31 +527,31 @@ public class KeyStateManager {
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
                         win.setWorkingAction(WorkingMode.COMBINED);
-                        win.disableAddAction();
+                        AddToolItem.disableAddAction();
                         break;
                     case MODE_MOVE:
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
                         win.setWorkingAction(WorkingMode.MOVE);
-                        win.disableAddAction();
+                        AddToolItem.disableAddAction();
                         break;
                     case MODE_ROTATE:
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
                         win.setWorkingAction(WorkingMode.ROTATE);
-                        win.disableAddAction();
+                        AddToolItem.disableAddAction();
                         break;
                     case MODE_SCALE:
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
                         win.setWorkingAction(WorkingMode.SCALE);
-                        win.disableAddAction();
+                        AddToolItem.disableAddAction();
                         break;
                     case MODE_SELECT:
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
                         win.setWorkingAction(WorkingMode.SELECT);
-                        win.disableAddAction();
+                        AddToolItem.disableAddAction();
                         break;
                     case MOVE_TO_AVG:
                         win.mntmManipulatorToAverage();
@@ -601,28 +602,28 @@ public class KeyStateManager {
                         }
                         break;
                     case ADD_COMMENTS:
-                        win.setAddState(0);
+                        AddToolItem.setAddState(0);
                         break;
                     case ADD_DISTANCE:
-                        win.setAddState(6);
+                        AddToolItem.setAddState(6);
                         break;
                     case ADD_PROTRACTOR:
-                        win.setAddState(7);
+                        AddToolItem.setAddState(7);
                         break;
                     case ADD_CONDLINE:
-                        win.setAddState(5);
+                        AddToolItem.setAddState(5);
                         break;
                     case ADD_LINE:
-                        win.setAddState(2);
+                        AddToolItem.setAddState(2);
                         break;
                     case ADD_QUAD:
-                        win.setAddState(4);
+                        AddToolItem.setAddState(4);
                         break;
                     case ADD_TRIANGLE:
-                        win.setAddState(3);
+                        AddToolItem.setAddState(3);
                         break;
                     case ADD_VERTEX:
-                        win.setAddState(1);
+                        AddToolItem.setAddState(1);
                         break;
                     case ZOOM_IN:
                         c3d.getPerspectiveCalculator().zoomIn();

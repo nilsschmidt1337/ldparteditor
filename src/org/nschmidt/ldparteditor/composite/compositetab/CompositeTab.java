@@ -86,6 +86,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
@@ -1216,9 +1217,9 @@ public class CompositeTab extends CompositeTabDesign {
                     sw.setTextComposite(tabState.getTab());
                     sw.setScopeToAll();
                 }
-                if (Editor3DWindow.getWindow().isAddingSomething()) {
+                if (AddToolItem.isAddingSomething()) {
                     NLogger.debug(getClass(), "Editor3DWindow.getWindow().disableAddAction()"); //$NON-NLS-1$
-                    Editor3DWindow.getWindow().disableAddAction();
+                    AddToolItem.disableAddAction();
                 }
             }
         });

@@ -61,6 +61,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -184,7 +185,7 @@ public final class DatFile {
         if (!c3d.isDrawingSolidMaterials() && renderMode != 5)
             vertices.drawGL20(c3d);
 
-        if (Editor3DWindow.getWindow().isAddingCondlines())
+        if (AddToolItem.isAddingCondlines())
             renderMode = 6;
         switch (renderMode) {
         case -1: // Wireframe

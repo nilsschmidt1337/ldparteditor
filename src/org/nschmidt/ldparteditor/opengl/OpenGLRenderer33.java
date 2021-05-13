@@ -52,6 +52,7 @@ import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -524,8 +525,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             }
 
             // MARK Draw temporary objects for all "Add..." functions here
-            if (window.isAddingSomething() && c3d.getLockableDatFileReference().getLastSelectedComposite() != null && c3d.getLockableDatFileReference().getLastSelectedComposite().equals(c3d)) {
-                if (window.isAddingVertices()) {
+            if (AddToolItem.isAddingSomething() && c3d.getLockableDatFileReference().getLastSelectedComposite() != null && c3d.getLockableDatFileReference().getLastSelectedComposite().equals(c3d)) {
+                if (AddToolItem.isAddingVertices()) {
                     // Point for add vertex
                     final Vector4f cursor3D = c3d.getCursorSnapped3D();
                     final int VBO = GL15.glGenBuffers();
@@ -541,7 +542,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                     GL11.glDrawArrays(GL11.GL_POINTS, 0, 1);
                     GL15.glDeleteBuffers(VBO);
-                } else if (window.isAddingLines() || window.isAddingDistance()) {
+                } else if (AddToolItem.isAddingLines() || AddToolItem.isAddingDistance()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
@@ -563,7 +564,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
                         GL15.glDeleteBuffers(VBO);
                     }
-                } else if (window.isAddingTriangles() || window.isAddingProtractor()) {
+                } else if (AddToolItem.isAddingTriangles() || AddToolItem.isAddingProtractor()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
@@ -613,7 +614,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL15.glDeleteBuffers(VBO);
                         }
                     }
-                } else if (window.isAddingQuads()) {
+                } else if (AddToolItem.isAddingQuads()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
@@ -717,7 +718,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL15.glDeleteBuffers(VBO);
                         }
                     }
-                } else if (window.isAddingCondlines()) {
+                } else if (AddToolItem.isAddingCondlines()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
@@ -1167,7 +1168,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     });
                 }
 
-                if (!c3d.isDoingSelection() && !manipulator.isLocked() && !window.isAddingSomething() && c3d.getDraggedPrimitive() == null) {
+                if (!c3d.isDoingSelection() && !manipulator.isLocked() && !AddToolItem.isAddingSomething() && c3d.getDraggedPrimitive() == null) {
                     float r;
                     float g;
                     float b;

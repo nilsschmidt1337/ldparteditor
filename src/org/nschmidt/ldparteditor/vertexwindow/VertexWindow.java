@@ -46,6 +46,7 @@ import org.nschmidt.ldparteditor.helper.ShellHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
@@ -163,7 +164,7 @@ public class VertexWindow extends ApplicationWindow {
         final DatFile df = lastHoveredC3d.getLockableDatFileReference();
         final Set<Vertex> selectedVertices = df.getVertexManager().getSelectedVertices();
         final boolean singleVertexSelected = !df.isReadOnly() && selectedVertices.size() == 1;
-        final boolean addingSomething = Editor3DWindow.getWindow().isAddingSomething();
+        final boolean addingSomething = AddToolItem.isAddingSomething();
 
         final boolean windowShouldBeDisplayed = singleVertexSelected && !addingSomething;
 

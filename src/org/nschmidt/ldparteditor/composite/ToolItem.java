@@ -18,6 +18,8 @@ package org.nschmidt.ldparteditor.composite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
+import org.nschmidt.ldparteditor.widget.NButton;
 
 /**
  * This is a custom toolbar item
@@ -36,5 +38,11 @@ public class ToolItem extends Composite {
             this.setLayout(new RowLayout(SWT.VERTICAL));
             new ToolSeparator(this, SWT.NONE, isHorizontal);
         }
+    }
+
+    protected static void clickSingleBtn(NButton btn) {
+        boolean state = btn.getSelection();
+        WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn.getParent());
+        btn.setSelection(state);
     }
 }

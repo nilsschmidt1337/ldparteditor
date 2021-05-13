@@ -36,6 +36,7 @@ import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -188,7 +189,7 @@ class HistoryManager {
                     if (pointer > 0) {
                         int pStart = historySelectionStart.get(pointer - 1);
                         String[] previous = historyText.get(pointer - 1);
-                        if (Arrays.equals(previous, result) && !Editor3DWindow.getWindow().isAddingSomething() && pStart != -1) {
+                        if (Arrays.equals(previous, result) && !AddToolItem.isAddingSomething() && pStart != -1) {
                             if ((Integer) newEntry[2] == 0) {
                                 // Skip saving this entry since only the cursor was moved
                                 removeFromListAboveOrEqualIndex(historySelectionStart, pointer);

@@ -76,7 +76,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -111,7 +110,6 @@ import org.nschmidt.ldparteditor.data.GDataPNG;
 import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.data.LibraryManager;
 import org.nschmidt.ldparteditor.data.Matrix;
-import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.ProtractorHelper;
 import org.nschmidt.ldparteditor.data.ReferenceParser;
@@ -204,7 +202,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
-import org.nschmidt.ldparteditor.shell.editormeta.EditorMetaWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -253,15 +251,6 @@ public class Editor3DWindow extends Editor3DDesign {
     private static final AtomicBoolean alive = new AtomicBoolean(true);
     private static final AtomicBoolean no_sync_deadlock = new AtomicBoolean(false);
 
-    private boolean addingSomething = false;
-    private boolean addingVertices = false;
-    private boolean addingLines = false;
-    private boolean addingTriangles = false;
-    private boolean addingQuads = false;
-    private boolean addingCondlines = false;
-    private boolean addingDistance = false;
-    private boolean addingProtractor = false;
-    private boolean addingSubfiles = false;
     private boolean movingAdjacentData = WorkbenchManager.getUserSettingState().isMovingAdjacentData();
     private boolean noTransparentSelection = false;
     private boolean bfcToggle = false;
@@ -295,7 +284,6 @@ public class Editor3DWindow extends Editor3DDesign {
     private boolean updatingPngPictureTab;
     private int pngPictureUpdateCounter = 0;
 
-    private final EditorMetaWindow metaWindow = new EditorMetaWindow();
     private boolean updatingSelectionTab = true;
 
     private List<String> recentItems = new ArrayList<>();
@@ -1023,31 +1011,31 @@ public class Editor3DWindow extends Editor3DDesign {
         widgetUtil(btnSelectPtr[0]).addSelectionListener(e -> {
             clickBtnTest(btnSelectPtr[0]);
             workingAction = WorkingMode.SELECT;
-            disableAddAction();
+            AddToolItem.disableAddAction();
             regainFocus();
         });
         widgetUtil(btnMovePtr[0]).addSelectionListener(e -> {
             clickBtnTest(btnMovePtr[0]);
             workingAction = WorkingMode.MOVE;
-            disableAddAction();
+            AddToolItem.disableAddAction();
             regainFocus();
         });
         widgetUtil(btnRotatePtr[0]).addSelectionListener(e -> {
             clickBtnTest(btnRotatePtr[0]);
             workingAction = WorkingMode.ROTATE;
-            disableAddAction();
+            AddToolItem.disableAddAction();
             regainFocus();
         });
         widgetUtil(btnScalePtr[0]).addSelectionListener(e -> {
             clickBtnTest(btnScalePtr[0]);
             workingAction = WorkingMode.SCALE;
-            disableAddAction();
+            AddToolItem.disableAddAction();
             regainFocus();
         });
         widgetUtil(btnCombinedPtr[0]).addSelectionListener(e -> {
             clickBtnTest(btnCombinedPtr[0]);
             workingAction = WorkingMode.COMBINED;
-            disableAddAction();
+            AddToolItem.disableAddAction();
             regainFocus();
         });
 
@@ -1129,297 +1117,6 @@ public class Editor3DWindow extends Editor3DDesign {
                 vm.getSelectedSubfiles().clear();
                 vm.setModified(true, true);
             }
-            regainFocus();
-        });
-        widgetUtil(btnAddCommentPtr[0]).addSelectionListener(e -> {
-            if (!metaWindow.isOpened()) {
-                metaWindow.run();
-            } else {
-                metaWindow.open();
-            }
-        });
-        widgetUtil(btnAddVertexPtr[0]).addSelectionListener(e -> {
-            resetAddState();
-            clickSingleBtn(btnAddVertexPtr[0]);
-            setAddingVertices(btnAddVertexPtr[0].getSelection());
-            setAddingSomething(isAddingVertices());
-            regainFocus();
-        });
-        widgetUtil(btnAddPrimitivePtr[0]).addSelectionListener(e -> {
-
-            resetAddState();
-            setAddingSubfiles(btnAddPrimitivePtr[0].getSelection());
-
-            clickSingleBtn(btnAddPrimitivePtr[0]);
-
-            if (Project.getFileToEdit() != null) {
-                final boolean readOnly = Project.getFileToEdit().isReadOnly();
-                final VertexManager vm = Project.getFileToEdit().getVertexManager();
-
-                if (!vm.getSelectedData().isEmpty() || !vm.getSelectedVertices().isEmpty()) {
-
-                    final boolean insertSubfileFromSelection;
-                    final boolean cutTheSelection;
-
-                    {
-                        MessageBox messageBox1 = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                        messageBox1.setText(I18n.E3D_SUBFILE_FROM_SELECTION);
-                        messageBox1.setMessage(I18n.E3D_SUBFILE_FROM_SELECTION_QUESTION);
-                        int result1 = messageBox1.open();
-                        insertSubfileFromSelection = result1 == SWT.YES;
-                        if (result1 != SWT.NO && result1 != SWT.YES) {
-                            resetAddState();
-                            btnAddPrimitivePtr[0].setSelection(false);
-                            setAddingSubfiles(false);
-                            addingSomething = false;
-                            regainFocus();
-                            return;
-                        }
-                    }
-
-                    if (insertSubfileFromSelection) {
-                        if (!readOnly) {
-                            MessageBox messageBox2 = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                            messageBox2.setText(I18n.E3D_SUBFILE_FROM_SELECTION);
-                            messageBox2.setMessage(I18n.E3D_SUBFILE_FROM_SELECTION_QUESTION_CUT);
-                            int result2 = messageBox2.open();
-                            cutTheSelection = result2 == SWT.YES;
-                            if (result2 != SWT.NO && result2 != SWT.YES) {
-                                resetAddState();
-                                btnAddPrimitivePtr[0].setSelection(false);
-                                setAddingSubfiles(false);
-                                addingSomething = false;
-                                regainFocus();
-                                return;
-                            }
-                        } else {
-                            cutTheSelection = false;
-                        }
-
-                        vm.addSnapshot();
-                        vm.copy();
-                        vm.extendClipboardContent(cutTheSelection);
-
-                        FileDialog fd = new FileDialog(sh, SWT.SAVE);
-                        fd.setText(I18n.E3D_SAVE_DAT_FILE_AS);
-
-                        {
-                            File f1 = new File(Project.getFileToEdit().getNewName()).getParentFile();
-                            if (f1.exists()) {
-                                fd.setFilterPath(f1.getAbsolutePath());
-                            } else {
-                                fd.setFilterPath(Project.getLastVisitedPath());
-                            }
-                        }
-
-                        String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-                        fd.setFilterExtensions(filterExt);
-                        String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
-                        fd.setFilterNames(filterNames);
-
-                        while (true) {
-                            try {
-                                String selected = fd.open();
-                                if (selected != null) {
-
-                                    if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
-                                        MessageBox messageBox3 = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-                                        messageBox3.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
-                                        messageBox3.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
-
-                                        int result3 = messageBox3.open();
-
-                                        if (result3 == SWT.CANCEL) {
-                                            break;
-                                        } else if (result3 == SWT.RETRY) {
-                                            continue;
-                                        }
-                                    }
-
-                                    SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
-                                    if (sw != null) {
-                                        sw.setTextComposite(null);
-                                        sw.setScopeToAll();
-                                    }
-
-
-                                    boolean hasIOerror = false;
-                                    try (UTF8PrintWriter r = new UTF8PrintWriter(selected)) {
-
-                                        String typeSuffix = ""; //$NON-NLS-1$
-                                        String folderPrefix = ""; //$NON-NLS-1$
-                                        String subfilePrefix = ""; //$NON-NLS-1$
-                                        String path = new File(selected).getParent();
-
-                                        if (path.endsWith(File.separator + "S") || path.endsWith(File.separator + "s")) { //$NON-NLS-1$ //$NON-NLS-2$
-                                            typeSuffix = "Unofficial_Subpart"; //$NON-NLS-1$
-                                            folderPrefix = "s\\"; //$NON-NLS-1$
-                                            subfilePrefix = "~"; //$NON-NLS-1$
-                                        } else if (path.endsWith(File.separator + "P" + File.separator + "48") || path.endsWith(File.separator + "p" + File.separator + "48")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                                            typeSuffix = "Unofficial_48_Primitive"; //$NON-NLS-1$
-                                            folderPrefix = "48\\"; //$NON-NLS-1$
-                                        } else if (path.endsWith(File.separator + "P" + File.separator + "8") || path.endsWith(File.separator + "p" + File.separator + "8")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                                            typeSuffix = "Unofficial_8_Primitive"; //$NON-NLS-1$
-                                            folderPrefix = "8\\"; //$NON-NLS-1$
-                                        } else if (path.endsWith(File.separator + "P") || path.endsWith(File.separator + "p")) { //$NON-NLS-1$ //$NON-NLS-2$
-                                            typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
-                                        }
-
-                                        r.println("0 " + subfilePrefix); //$NON-NLS-1$
-                                        r.println("0 Name: " + folderPrefix + new File(selected).getName()); //$NON-NLS-1$
-                                        String ldrawName = WorkbenchManager.getUserSettingState().getLdrawUserName();
-                                        if (ldrawName == null || ldrawName.isEmpty()) {
-                                            r.println("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName()); //$NON-NLS-1$
-                                        } else {
-                                            r.println("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName() + " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                        }
-                                        r.println("0 !LDRAW_ORG " + typeSuffix); //$NON-NLS-1$
-                                        String license = WorkbenchManager.getUserSettingState().getLicense();
-                                        if (license == null || license.isEmpty()) {
-                                            r.println("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
-                                        } else {
-                                            r.println(license);
-                                        }
-                                        r.println(""); //$NON-NLS-1$
-
-                                        {
-                                            BFC bfcType = BFC.NOCERTIFY;
-                                            GData g1 = Project.getFileToEdit().getDrawChainStart();
-                                            while ((g1 = g1.getNext()) != null) {
-                                                if (g1.type() == 6) {
-                                                    BFC bfc = ((GDataBFC) g1).getType();
-                                                    switch (bfc) {
-                                                    case CCW_CLIP:
-                                                        bfcType = bfc;
-                                                        r.println("0 BFC CERTIFY CCW"); //$NON-NLS-1$
-                                                        break;
-                                                    case CW_CLIP:
-                                                        bfcType = bfc;
-                                                        r.println("0 BFC CERTIFY CW"); //$NON-NLS-1$
-                                                        break;
-                                                    default:
-                                                        break;
-                                                    }
-                                                    if (bfcType != BFC.NOCERTIFY) break;
-                                                }
-                                            }
-                                            if (bfcType == BFC.NOCERTIFY) {
-                                                r.println("0 BFC NOCERTIFY"); //$NON-NLS-1$
-                                            }
-                                        }
-                                        r.println(""); //$NON-NLS-1$
-                                        r.println(vm.getClipboardText());
-                                        r.flush();
-                                    } catch (Exception ex1) {
-                                        hasIOerror = true;
-                                    }
-
-                                    if (hasIOerror) {
-                                        MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                        messageBoxError.setText(I18n.DIALOG_ERROR);
-                                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
-                                        messageBoxError.open();
-                                    } else {
-
-                                        if (cutTheSelection) {
-                                            // Insert a reference to the subfile in the old file
-                                            Set<String> alreadyParsed = new HashSet<>();
-                                            alreadyParsed.add(Project.getFileToEdit().getShortName());
-                                            final GColour col16 = LDConfig.getColour16();
-                                            List<ParsingResult> subfileLine = DatParser
-                                                    .parseLine(
-                                                            "1 16 0 0 0 1 0 0 0 1 0 0 0 1 s\\" + new File(selected).getName(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, Project.getFileToEdit(), false, alreadyParsed); //$NON-NLS-1$
-                                            GData1 gd1 = (GData1) subfileLine.get(0).getGraphicalData();
-                                            if (gd1 != null) {
-                                                if (isInsertingAtCursorPosition()) {
-                                                    Project.getFileToEdit().insertAfterCursor(gd1);
-                                                } else {
-                                                    Set<GData> sd = vm.getSelectedData();
-                                                    GData g2 = Project.getFileToEdit().getDrawChainStart();
-                                                    GData whereToInsert = null;
-                                                    while ((g2 = g2.getNext()) != null) {
-                                                        if (sd.contains(g2)) {
-                                                            whereToInsert = g2.getBefore();
-                                                            break;
-                                                        }
-                                                    }
-                                                    if (whereToInsert == null) {
-                                                        whereToInsert = Project.getFileToEdit().getDrawChainTail();
-                                                    }
-                                                    Project.getFileToEdit().insertAfter(whereToInsert, gd1);
-                                                }
-                                            }
-                                            vm.delete(false, true);
-                                        }
-
-                                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, selected, false);
-                                        if (df != null) {
-                                            addRecentFile(df);
-                                            final File f2 = new File(df.getNewName());
-                                            if (f2.getParentFile() != null) {
-                                                Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
-                                            }
-                                        }
-                                    }
-                                    updateTreeUnsavedEntries();
-                                }
-                            } catch (Exception ex2) {
-                                NLogger.error(getClass(), ex2);
-                            }
-                            break;
-                        }
-                        resetAddState();
-                        btnAddPrimitivePtr[0].setSelection(false);
-                        setAddingSubfiles(false);
-                        addingSomething = false;
-                        regainFocus();
-                        return;
-                    }
-                }
-            }
-            setAddingSomething(isAddingSubfiles());
-            regainFocus();
-        });
-        widgetUtil(btnAddLinePtr[0]).addSelectionListener(e -> {
-            resetAddState();
-            setAddingLines(btnAddLinePtr[0].getSelection());
-            setAddingSomething(isAddingLines());
-            clickSingleBtn(btnAddLinePtr[0]);
-            regainFocus();
-        });
-        widgetUtil(btnAddTrianglePtr[0]).addSelectionListener(e -> {
-            resetAddState();
-            setAddingTriangles(btnAddTrianglePtr[0].getSelection());
-            setAddingSomething(isAddingTriangles());
-            clickSingleBtn(btnAddTrianglePtr[0]);
-            regainFocus();
-        });
-        widgetUtil(btnAddQuadPtr[0]).addSelectionListener(e -> {
-            resetAddState();
-            setAddingQuads(btnAddQuadPtr[0].getSelection());
-            setAddingSomething(isAddingQuads());
-            clickSingleBtn(btnAddQuadPtr[0]);
-            regainFocus();
-        });
-        widgetUtil(btnAddCondlinePtr[0]).addSelectionListener(e -> {
-            resetAddState();
-            setAddingCondlines(btnAddCondlinePtr[0].getSelection());
-            setAddingSomething(isAddingCondlines());
-            clickSingleBtn(btnAddCondlinePtr[0]);
-            regainFocus();
-        });
-        widgetUtil(btnAddDistancePtr[0]).addSelectionListener(e -> {
-            resetAddState();
-            setAddingDistance(btnAddDistancePtr[0].getSelection());
-            setAddingSomething(isAddingDistance());
-            clickSingleBtn(btnAddDistancePtr[0]);
-            regainFocus();
-        });
-        widgetUtil(btnAddProtractorPtr[0]).addSelectionListener(e -> {
-            resetAddState();
-            setAddingProtractor(btnAddProtractorPtr[0].getSelection());
-            setAddingSomething(isAddingProtractor());
-            clickSingleBtn(btnAddProtractorPtr[0]);
             regainFocus();
         });
         widgetUtil(btnMoveAdjacentDataPtr[0]).addSelectionListener(e -> {
@@ -2746,40 +2443,6 @@ public class Editor3DWindow extends Editor3DDesign {
         });
         widgetUtil(btnInsertAtCursorPositionPtr[0]).addSelectionListener(e -> {
             setInsertingAtCursorPosition(btnInsertAtCursorPositionPtr[0].getSelection());
-            regainFocus();
-        });
-
-        widgetUtil(btnDeletePtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().getVertexManager().copy();
-            }
-            regainFocus();
-        });
-        widgetUtil(btnCutPtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().getVertexManager().copy();
-                Project.getFileToEdit().getVertexManager().delete(false, true);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPastePtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().getVertexManager().paste(loadSelectorSettings());
-                if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
-                    setMovingAdjacentData(false);
-                    GuiStatusManager.updateStatus();
-                }
-            }
             regainFocus();
         });
 
@@ -5532,91 +5195,6 @@ public class Editor3DWindow extends Editor3DDesign {
         updateBgPictureTab();
     }
 
-    private void resetAddState() {
-        setAddingSubfiles(false);
-        setAddingVertices(false);
-        setAddingLines(false);
-        setAddingTriangles(false);
-        setAddingQuads(false);
-        setAddingCondlines(false);
-        setAddingDistance(false);
-        setAddingProtractor(false);
-        for (OpenGLRenderer renderer : renders) {
-            Composite3D c3d = renderer.getC3D();
-            DatFile df = c3d.getLockableDatFileReference();
-            df.setObjVertex1(null);
-            df.setObjVertex2(null);
-            df.setObjVertex3(null);
-            df.setObjVertex4(null);
-            df.setNearestObjVertex1(null);
-            df.setNearestObjVertex2(null);
-        }
-    }
-
-    public void setAddState(int type) {
-        if (isAddingSomething()) {
-            resetAddState();
-            btnAddVertexPtr[0].setSelection(false);
-            btnAddLinePtr[0].setSelection(false);
-            btnAddTrianglePtr[0].setSelection(false);
-            btnAddQuadPtr[0].setSelection(false);
-            btnAddCondlinePtr[0].setSelection(false);
-            btnAddDistancePtr[0].setSelection(false);
-            btnAddProtractorPtr[0].setSelection(false);
-            btnAddPrimitivePtr[0].setSelection(false);
-            setAddingSomething(false);
-        }
-        switch (type) {
-        case 0:
-            btnAddCommentPtr[0].notifyListeners(SWT.Selection, new Event());
-            break;
-        case 1:
-            setAddingVertices(!isAddingVertices());
-            btnAddVertexPtr[0].setSelection(isAddingVertices());
-            setAddingSomething(isAddingVertices());
-            clickSingleBtn(btnAddVertexPtr[0]);
-            break;
-        case 2:
-            setAddingLines(!isAddingLines());
-            btnAddLinePtr[0].setSelection(isAddingLines());
-            setAddingSomething(isAddingLines());
-            clickSingleBtn(btnAddLinePtr[0]);
-            break;
-        case 3:
-            setAddingTriangles(!isAddingTriangles());
-            btnAddTrianglePtr[0].setSelection(isAddingTriangles());
-            setAddingSomething(isAddingTriangles());
-            clickSingleBtn(btnAddTrianglePtr[0]);
-            break;
-        case 4:
-            setAddingQuads(!isAddingQuads());
-            btnAddQuadPtr[0].setSelection(isAddingQuads());
-            setAddingSomething(isAddingQuads());
-            clickSingleBtn(btnAddQuadPtr[0]);
-            break;
-        case 5:
-            setAddingCondlines(!isAddingCondlines());
-            btnAddCondlinePtr[0].setSelection(isAddingCondlines());
-            setAddingSomething(isAddingCondlines());
-            clickSingleBtn(btnAddCondlinePtr[0]);
-            break;
-        case 6:
-            setAddingDistance(!isAddingDistance());
-            btnAddDistancePtr[0].setSelection(isAddingDistance());
-            setAddingSomething(isAddingDistance());
-            clickSingleBtn(btnAddDistancePtr[0]);
-            break;
-        case 7:
-            setAddingProtractor(!isAddingProtractor());
-            btnAddProtractorPtr[0].setSelection(isAddingProtractor());
-            setAddingSomething(isAddingProtractor());
-            clickSingleBtn(btnAddProtractorPtr[0]);
-            break;
-        default:
-            break;
-        }
-    }
-
     public void toggleInsertAtCursor() {
         setInsertingAtCursorPosition(!isInsertingAtCursorPosition());
         btnInsertAtCursorPositionPtr[0].setSelection(isInsertingAtCursorPosition());
@@ -6248,118 +5826,6 @@ public class Editor3DWindow extends Editor3DDesign {
         btn.setSelection(state);
     }
 
-    public boolean isAddingSomething() {
-        return addingSomething;
-    }
-
-    public void setAddingSomething(boolean addingSomething) {
-        this.addingSomething = addingSomething;
-        for (OpenGLRenderer renderer : renders) {
-            renderer.getC3D().getLockableDatFileReference().getVertexManager().clearSelection();
-        }
-    }
-
-    public boolean isAddingVertices() {
-        return addingVertices;
-    }
-
-    public void setAddingVertices(boolean addingVertices) {
-        this.addingVertices = addingVertices;
-    }
-
-    public boolean isAddingLines() {
-        return addingLines;
-    }
-
-    public void setAddingLines(boolean addingLines) {
-        this.addingLines = addingLines;
-    }
-
-    public boolean isAddingTriangles() {
-        return addingTriangles;
-    }
-
-    public void setAddingTriangles(boolean addingTriangles) {
-        this.addingTriangles = addingTriangles;
-    }
-
-    public boolean isAddingQuads() {
-        return addingQuads;
-    }
-
-    public void setAddingQuads(boolean addingQuads) {
-        this.addingQuads = addingQuads;
-    }
-
-    public boolean isAddingCondlines() {
-        return addingCondlines;
-    }
-
-    public void setAddingCondlines(boolean addingCondlines) {
-        this.addingCondlines = addingCondlines;
-    }
-
-    public boolean isAddingSubfiles() {
-        return addingSubfiles;
-    }
-
-    public void setAddingSubfiles(boolean addingSubfiles) {
-        this.addingSubfiles = addingSubfiles;
-    }
-
-    public boolean isAddingDistance() {
-        return addingDistance;
-    }
-
-    public void setAddingDistance(boolean addingDistance) {
-        this.addingDistance = addingDistance;
-    }
-
-    public boolean isAddingProtractor() {
-        return addingProtractor;
-    }
-
-    public void setAddingProtractor(boolean addingProtractor) {
-        this.addingProtractor = addingProtractor;
-    }
-
-    public void disableAddAction() {
-        addingSomething = false;
-        addingVertices = false;
-        addingLines = false;
-        addingTriangles = false;
-        addingQuads = false;
-        addingCondlines = false;
-        addingSubfiles = false;
-        addingDistance = false;
-        addingProtractor = false;
-        btnAddVertexPtr[0].setSelection(false);
-        btnAddLinePtr[0].setSelection(false);
-        btnAddTrianglePtr[0].setSelection(false);
-        btnAddQuadPtr[0].setSelection(false);
-        btnAddCondlinePtr[0].setSelection(false);
-        btnAddDistancePtr[0].setSelection(false);
-        btnAddProtractorPtr[0].setSelection(false);
-        btnAddPrimitivePtr[0].setSelection(false);
-
-        for (DatFile df : Project.getOpenedFiles()) {
-            final VertexManager vm2 = df.getVertexManager();
-            final Vertex[] vertices = new Vertex[] {df.getObjVertex1(), df.getObjVertex2(), df.getObjVertex3(), df.getObjVertex4()};
-            for (Vertex v : vertices) {
-                if (v != null) {
-                    vm2.getSelectedVertices().remove(v);
-                }
-            }
-
-            df.setObjVertex1(null);
-            df.setObjVertex2(null);
-            df.setObjVertex3(null);
-            df.setObjVertex4(null);
-            df.setNearestObjVertex1(null);
-            df.setNearestObjVertex2(null);
-        }
-    }
-
     public TreeItem getProjectParts() {
         return treeItemProjectPartsPtr[0];
     }
@@ -6848,13 +6314,6 @@ public class Editor3DWindow extends Editor3DDesign {
                 return;
             }
         }
-    }
-
-    public void unselectAddSubfile() {
-        resetAddState();
-        btnAddPrimitivePtr[0].setSelection(false);
-        setAddingSubfiles(false);
-        setAddingSomething(false);
     }
 
     public DatFile createNewDatFile(Shell sh, OpenInWhat where) {

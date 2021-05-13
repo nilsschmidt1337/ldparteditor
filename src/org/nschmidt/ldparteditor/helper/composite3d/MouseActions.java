@@ -63,6 +63,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -143,7 +144,7 @@ public class MouseActions {
         switch (mouseButtonPressed) {
         case MouseButton.LEFT:
             final Editor3DWindow window = Editor3DWindow.getWindow();
-            if ((event.stateMask & SWT.SHIFT) == SWT.SHIFT && !window.isAddingSomething()) {
+            if ((event.stateMask & SWT.SHIFT) == SWT.SHIFT && !AddToolItem.isAddingSomething()) {
                 Manipulator m = c3d.getManipulator();
                 m.startTranslation2(c3d);
                 translateAtSelect = true;
@@ -163,9 +164,9 @@ public class MouseActions {
                 m.getYaxis().normalise();
                 m.setAccurateXaxis(new BigDecimal(m.getXaxis().x), new BigDecimal(m.getXaxis().y), new BigDecimal(m.getXaxis().z));
                 m.setAccurateYaxis(new BigDecimal(m.getYaxis().x), new BigDecimal(m.getYaxis().y), new BigDecimal(m.getYaxis().z));
-            } else  if (window.getWorkingAction() == WorkingMode.SELECT || window.isAddingSomething()) {
+            } else  if (window.getWorkingAction() == WorkingMode.SELECT || AddToolItem.isAddingSomething()) {
                 c3d.setDoingSelection(true);
-            } else  if (!window.isAddingSomething()) {
+            } else  if (!AddToolItem.isAddingSomething()) {
                 c3d.getManipulator().startTranslation(c3d);
             }
             c3d.getOldMousePosition().set(event.x, event.y);
@@ -175,11 +176,11 @@ public class MouseActions {
                 vm.setSelectedBgPicture(null);
                 Editor3DWindow.getWindow().updateBgPictureTab();
             }
-            if (window.isAddingSomething() && !datfile.isReadOnly()) {
+            if (AddToolItem.isAddingSomething() && !datfile.isReadOnly()) {
                 if (!vm.getSelectedData().isEmpty()) {
                     vm.clearSelection();
                 }
-                if (window.isAddingVertices()) {
+                if (AddToolItem.isAddingVertices()) {
                     GData vertexLine = vm.addVertex(new Vertex(c3d.getCursorSnapped3Dprecise()[0], c3d.getCursorSnapped3Dprecise()[1], c3d.getCursorSnapped3Dprecise()[2]));
                     if (vertexLine != null) {
                         vm.setModified(true, true);
@@ -189,7 +190,7 @@ public class MouseActions {
                         }
                         datfile.addToTailOrInsertAfterCursor(vertexLine);
                     }
-                } else if (window.isAddingSubfiles()) {
+                } else if (AddToolItem.isAddingSubfiles()) {
                     final Tree tree = window.getProjectParts().getParent();
                     if (tree.getSelectionCount() == 1) {
                         final TreeItem item = tree.getSelection()[0];
@@ -221,7 +222,7 @@ public class MouseActions {
                                 }
                                 datfile.getVertexManager().validateState();
                             }
-                            Editor3DWindow.getWindow().unselectAddSubfile();
+                            AddToolItem.unselectAddSubfile();
                         }
                     }
                 }
@@ -287,7 +288,7 @@ public class MouseActions {
         switch (mouseButtonPressed) {
         case MouseButton.LEFT:
             Vector4f temp;
-            if (! Editor3DWindow.getWindow().isAddingSomething()) {
+            if (!AddToolItem.isAddingSomething()) {
                 if (translateAtSelect) {
                     temp = c3d.getManipulator().transformAtSelect(oldMousePosition, event.x, event.y, c3d);
                 } else {
@@ -354,7 +355,7 @@ public class MouseActions {
             if (!(keyboard.isShiftPressed() || Cocoa.IS_COCOA && keyboard.isAltPressed()) ) {
                 dx = (oldMousePosition.x - event.x) / viewportPixelPerLDU;
             }
-            if (!(keyboard.isCtrlPressed() || Cocoa.IS_COCOA && keyboard.isCmdPressed()) || Editor3DWindow.getWindow().isAddingSomething()) {
+            if (!(keyboard.isCtrlPressed() || Cocoa.IS_COCOA && keyboard.isCmdPressed()) || AddToolItem.isAddingSomething()) {
                 dy = (event.y - oldMousePosition.y) / viewportPixelPerLDU;
             }
             translateViewport(dx, dy, viewportTranslation, viewportRotation, perspective);
@@ -379,8 +380,8 @@ public class MouseActions {
         c3d.getScreenXY().set(event.x, event.y);
         GuiStatusManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales(event.x, event.y);
-        if (Editor3DWindow.getWindow().isAddingSomething() && !c3d.isDoingSelection()) {
-            if (Editor3DWindow.getWindow().isAddingLines() || Editor3DWindow.getWindow().isAddingDistance()) {
+        if (AddToolItem.isAddingSomething() && !c3d.isDoingSelection()) {
+            if (AddToolItem.isAddingLines() || AddToolItem.isAddingDistance()) {
                 Vertex v1 = c3d.getLockableDatFileReference().getObjVertex1();
                 if (v1 != null) {
                     if (keyboard.isShiftPressed()) {
@@ -405,7 +406,7 @@ public class MouseActions {
                         }
                     }
                 }
-            } else if (Editor3DWindow.getWindow().isAddingTriangles() || Editor3DWindow.getWindow().isAddingProtractor()) {
+            } else if (AddToolItem.isAddingTriangles() || AddToolItem.isAddingProtractor()) {
                 Vertex v1 = c3d.getLockableDatFileReference().getObjVertex1();
                 Vertex v2 = c3d.getLockableDatFileReference().getObjVertex2();
                 Vertex v3 = c3d.getLockableDatFileReference().getObjVertex3();
@@ -459,7 +460,7 @@ public class MouseActions {
                         }
                     }
                 }
-            } else if (Editor3DWindow.getWindow().isAddingQuads()) {
+            } else if (AddToolItem.isAddingQuads()) {
                 Vertex v1 = c3d.getLockableDatFileReference().getObjVertex1();
                 Vertex v2 = c3d.getLockableDatFileReference().getObjVertex2();
                 Vertex v3 = c3d.getLockableDatFileReference().getObjVertex3();
@@ -589,7 +590,7 @@ public class MouseActions {
                         }
                     }
                 }
-            } else if (Editor3DWindow.getWindow().isAddingCondlines()) {
+            } else if (AddToolItem.isAddingCondlines()) {
                 Vertex v1 = c3d.getLockableDatFileReference().getObjVertex1();
                 Vertex v2 = c3d.getLockableDatFileReference().getObjVertex2();
                 Vertex v3 = c3d.getLockableDatFileReference().getObjVertex3();
@@ -721,9 +722,9 @@ public class MouseActions {
         case MouseButton.LEFT:
             c3d.setDoingSelection(false);
             final Editor3DWindow window = Editor3DWindow.getWindow();
-            if (window.isAddingSomething() && !datfile.isReadOnly()) {
+            if (AddToolItem.isAddingSomething() && !datfile.isReadOnly()) {
                 final boolean createVertex = vm.selectVertices(c3d, true, Math.max(Math.abs(oldPos.x - event.x), Math.abs(oldPos.y - event.y)) < 10);
-                if (window.isAddingLines() || window.isAddingDistance()) {
+                if (AddToolItem.isAddingLines() || AddToolItem.isAddingDistance()) {
                     Vertex vl1 = datfile.getObjVertex1();
                     if (vm.getSelectedVertices().size() == 1) {
                         if (vl1 != null) {
@@ -731,7 +732,7 @@ public class MouseActions {
                             Vertex nv = vi.next();
                             datfile.setObjVertex1(vl1);
                             datfile.setObjVertex2(nv);
-                            if (window.isAddingLines()) {
+                            if (AddToolItem.isAddingLines()) {
                                 vm.addLine(datfile.getNearestObjVertex1(), nv);
                             } else {
                                 vm.addDistance(datfile.getNearestObjVertex1(), nv);
@@ -759,7 +760,7 @@ public class MouseActions {
                             final Vertex nv = new Vertex(cu3d);
                             datfile.setObjVertex1(vl1);
                             datfile.setObjVertex2(nv);
-                            if (window.isAddingLines()) {
+                            if (AddToolItem.isAddingLines()) {
                                 vm.addLine(datfile.getNearestObjVertex1(), nv);
                             } else {
                                 vm.addDistance(datfile.getNearestObjVertex1(), nv);
@@ -777,7 +778,7 @@ public class MouseActions {
                         final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
                         Vertex v1 = vi.next();
                         Vertex v2 = vi.next();
-                        if (window.isAddingLines()) {
+                        if (AddToolItem.isAddingLines()) {
                             vm.addLine(v1, v2);
                         } else {
                             vm.addDistance(v1, v2);
@@ -785,7 +786,7 @@ public class MouseActions {
                         vm.getSelectedVertices().clear();
                         vm.setModified(true, true);
                     }
-                } else if (window.isAddingTriangles() || window.isAddingProtractor()) {
+                } else if (AddToolItem.isAddingTriangles() || AddToolItem.isAddingProtractor()) {
                     Vertex vt1 = datfile.getObjVertex1();
                     Vertex vt2 = datfile.getObjVertex2();
                     Vertex vt3 = datfile.getObjVertex3();
@@ -801,7 +802,7 @@ public class MouseActions {
                                     Vertex v1 = vi.next();
                                     Vertex v2 = vi.next();
                                     datfile.setObjVertex3(nv);
-                                    if (window.isAddingTriangles()) {
+                                    if (AddToolItem.isAddingTriangles()) {
                                         vm.addTriangle(v1, v2, nv, c3d);
                                     } else {
                                         vm.addProtractor(v1, nv, v2, c3d);
@@ -828,7 +829,7 @@ public class MouseActions {
                                     final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
                                     Vertex v1 = vi.next();
                                     datfile.setObjVertex3(v1);
-                                    if (window.isAddingTriangles()) {
+                                    if (AddToolItem.isAddingTriangles()) {
                                         vm.addTriangle(vt1, vt2, v1, c3d);
                                     } else {
                                         vm.addProtractor(vt1, vt2, v1, c3d);
@@ -870,7 +871,7 @@ public class MouseActions {
                                 final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                                 final Vertex nv = new Vertex(cu3d);
                                 datfile.setObjVertex3(nv);
-                                if (window.isAddingTriangles()) {
+                                if (AddToolItem.isAddingTriangles()) {
                                     vm.addTriangle(vt1, vt2, nv, c3d);
                                 } else {
                                     vm.addProtractor(vt1, vt2, nv, c3d);
@@ -891,7 +892,7 @@ public class MouseActions {
                                 datfile.setObjVertex1(nv);
                                 datfile.setObjVertex2(vn1);
                                 datfile.setObjVertex3(vn2);
-                                if (window.isAddingTriangles()) {
+                                if (AddToolItem.isAddingTriangles()) {
                                     vm.addTriangle(vn1, vn2, nv, c3d);
                                 } else {
                                     vm.addProtractor(vn1, vn2, nv, c3d);
@@ -906,7 +907,7 @@ public class MouseActions {
                                 datfile.setObjVertex1(v1);
                                 datfile.setObjVertex2(vn1);
                                 datfile.setObjVertex3(vn2);
-                                if (window.isAddingTriangles()) {
+                                if (AddToolItem.isAddingTriangles()) {
                                     vm.addTriangle(vn1, vn2, v1, c3d);
                                 } else {
                                     vm.addProtractor(vn1, vn2, v1, c3d);
@@ -924,14 +925,14 @@ public class MouseActions {
                         datfile.setObjVertex1(v1);
                         datfile.setObjVertex2(v2);
                         datfile.setObjVertex3(v3);
-                        if (window.isAddingTriangles()) {
+                        if (AddToolItem.isAddingTriangles()) {
                             vm.addTriangle(v1, v2, v3, c3d);
                         } else {
                             vm.addProtractor(v1, v2, v3, c3d);
                         }
                         vm.getSelectedVertices().clear();
                     }
-                } else if (window.isAddingQuads()) {
+                } else if (AddToolItem.isAddingQuads()) {
                     Vertex vq1 = datfile.getObjVertex1();
                     Vertex vq2 = datfile.getObjVertex2();
                     Vertex vq3 = datfile.getObjVertex3();
@@ -1073,7 +1074,7 @@ public class MouseActions {
                         vm.addQuad(v1, v2, v3, v4, c3d);
                         vm.getSelectedVertices().clear();
                     }
-                } else if (window.isAddingCondlines()) {
+                } else if (AddToolItem.isAddingCondlines()) {
                     Vertex vc1 = datfile.getObjVertex1();
                     Vertex vc2 = datfile.getObjVertex2();
                     Vertex vc3 = datfile.getObjVertex3();
@@ -1238,7 +1239,7 @@ public class MouseActions {
                         vm.getSelectedVertices().clear();
                     }
                 }
-            } else if (translateAtSelect && !window.isAddingSomething()) {
+            } else if (translateAtSelect && !AddToolItem.isAddingSomething()) {
                 Manipulator m = c3d.getManipulator();
                 m.applyTranslationAtSelect(c3d);
                 translateAtSelect = false;
@@ -1269,7 +1270,7 @@ public class MouseActions {
                 }
                 checkSyncEditMode(vm, datfile);
                 vm.syncWithTextEditors(true);
-            } else if (!window.isAddingSomething()) {
+            } else if (!AddToolItem.isAddingSomething()) {
                 c3d.getManipulator().applyTranslation(c3d);
                 checkSyncEditMode(vm, datfile);
             }
@@ -1284,7 +1285,7 @@ public class MouseActions {
                 datfile.setObjVertex4(null);
                 datfile.setNearestObjVertex1(null);
                 datfile.setNearestObjVertex2(null);
-                if (Editor3DWindow.getWindow().isAddingSomething()) vm.clearSelection();
+                if (AddToolItem.isAddingSomething()) vm.clearSelection();
             }
             if (c3d.isDoingSelection())
                 break;
