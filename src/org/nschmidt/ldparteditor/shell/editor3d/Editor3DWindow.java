@@ -1075,62 +1075,6 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        widgetUtil(btnPerspectiveFrontPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.FRONT);
-                c3d.setPerspectiveOnContextMenu(Perspective.FRONT);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveBackPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.BACK);
-                c3d.setPerspectiveOnContextMenu(Perspective.BACK);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveLeftPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.LEFT);
-                c3d.setPerspectiveOnContextMenu(Perspective.LEFT);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveRightPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.RIGHT);
-                c3d.setPerspectiveOnContextMenu(Perspective.RIGHT);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveTopPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
-                c3d.setPerspectiveOnContextMenu(Perspective.TOP);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveBottomPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.BOTTOM);
-                c3d.setPerspectiveOnContextMenu(Perspective.BOTTOM);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveTwoThirdsPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.TWO_THIRDS);
-                c3d.setPerspectiveOnContextMenu(Perspective.TWO_THIRDS);
-            }
-            regainFocus();
-        });
         widgetUtil(btnRenderModeNoBackfaceCullingPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
@@ -2989,7 +2933,7 @@ public class Editor3DWindow extends Editor3DDesign {
         }
     }
 
-    private Composite3D getCurrentCoposite3d() {
+    public Composite3D getCurrentCoposite3d() {
         Composite3D c3d = null;
         if (Project.getFileToEdit() != null
                 && Project.getFileToEdit().getLastSelectedComposite() != null
@@ -3002,7 +2946,7 @@ public class Editor3DWindow extends Editor3DDesign {
             OpenGLRenderer renderer = renders.get(0);
             c3d = renderer.getC3D();
         }
-        if (c3d !=null && c3d.isDisposed()) {
+        if (c3d != null && c3d.isDisposed()) {
             c3d = null;
         }
         return c3d;

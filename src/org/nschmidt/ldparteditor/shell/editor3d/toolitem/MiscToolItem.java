@@ -343,527 +343,454 @@ public class MiscToolItem extends ToolItem {
         btnRoundSelection.setToolTipText(I18n.E3D_ROUND + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnRoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
 
-        {
-            final NButton btnSelect = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
-            MiscToolItem.btnSelect2Ptr[0] = btnSelect;
-            btnSelect.setToolTipText(I18n.E3D_ADVANCED_SELECT);
-            btnSelect.setText(I18n.E3D_ADVANCED_SELECT);
-            MiscToolItem.mnuSelect = new Menu(miscToolItem.getShell(), SWT.POP_UP);
-            widgetUtil(btnSelect).addSelectionListener(e -> {
-                showSelectMenu();
-                Editor3DWindow.getWindow().regainFocus();
-            });
-            {
-                MenuItem mntmSelectAll = new MenuItem(mnuSelect, SWT.PUSH);
-                MiscToolItem.mntmSelectAllPtr[0] = mntmSelectAll;
-                KeyStateManager.addKeyText(mntmSelectAll, I18n.E3D_ALL, Task.SELECT_ALL);
+        final NButton btnSelect = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
+        MiscToolItem.btnSelect2Ptr[0] = btnSelect;
+        btnSelect.setToolTipText(I18n.E3D_ADVANCED_SELECT);
+        btnSelect.setText(I18n.E3D_ADVANCED_SELECT);
+        MiscToolItem.mnuSelect = new Menu(miscToolItem.getShell(), SWT.POP_UP);
+        widgetUtil(btnSelect).addSelectionListener(e -> {
+            showSelectMenu();
+            Editor3DWindow.getWindow().regainFocus();
+        });
 
+        MenuItem mntmSelectAll = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectAllPtr[0] = mntmSelectAll;
+        KeyStateManager.addKeyText(mntmSelectAll, I18n.E3D_ALL, Task.SELECT_ALL);
 
-                MenuItem mntmSelectNone = new MenuItem(mnuSelect, SWT.PUSH);
-                MiscToolItem.mntmSelectNonePtr[0] = mntmSelectNone;
-                KeyStateManager.addKeyText(mntmSelectNone, I18n.E3D_NONE, Task.SELECT_NONE);
+        MenuItem mntmSelectNone = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectNonePtr[0] = mntmSelectNone;
+        KeyStateManager.addKeyText(mntmSelectNone, I18n.E3D_NONE, Task.SELECT_NONE);
 
-                new MenuItem(mnuSelect, SWT.SEPARATOR);
+        new MenuItem(mnuSelect, SWT.SEPARATOR);
 
-                MenuItem mntmSelectInverse = new MenuItem(mnuSelect, SWT.PUSH);
-                MiscToolItem.mntmSelectInversePtr[0] = mntmSelectInverse;
-                mntmSelectInverse.setText(I18n.E3D_INVERSE);
+        MenuItem mntmSelectInverse = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectInversePtr[0] = mntmSelectInverse;
+        mntmSelectInverse.setText(I18n.E3D_INVERSE);
 
-                new MenuItem(mnuSelect, SWT.SEPARATOR);
+        new MenuItem(mnuSelect, SWT.SEPARATOR);
 
-                MenuItem mntmSelectAllVisible = new MenuItem(mnuSelect, SWT.PUSH);
-                MiscToolItem.mntmSelectAllVisiblePtr[0] = mntmSelectAllVisible;
-                mntmSelectAllVisible.setText(I18n.E3D_ALL_SHOWN);
+        MenuItem mntmSelectAllVisible = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectAllVisiblePtr[0] = mntmSelectAllVisible;
+        mntmSelectAllVisible.setText(I18n.E3D_ALL_SHOWN);
 
+        MenuItem mntmSelectAllWithColours = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectAllWithColoursPtr[0] = mntmSelectAllWithColours;
+        KeyStateManager.addKeyText(mntmSelectAllWithColours, I18n.E3D_ALL_SAME_COLOURS, Task.SELECT_ALL_WITH_SAME_COLOURS);
 
-                MenuItem mntmSelectAllWithColours = new MenuItem(mnuSelect, SWT.PUSH);
-                MiscToolItem.mntmSelectAllWithColoursPtr[0] = mntmSelectAllWithColours;
-                KeyStateManager.addKeyText(mntmSelectAllWithColours, I18n.E3D_ALL_SAME_COLOURS, Task.SELECT_ALL_WITH_SAME_COLOURS);
+        MenuItem mntmSelectAllVisibleWithColours = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectAllVisibleWithColoursPtr[0] = mntmSelectAllVisibleWithColours;
+        mntmSelectAllVisibleWithColours.setText(I18n.E3D_ALL_SAME_COLOURS_SHOWN);
 
+        new MenuItem(mnuSelect, SWT.SEPARATOR);
 
-                MenuItem mntmSelectAllVisibleWithColours = new MenuItem(mnuSelect, SWT.PUSH);
-                MiscToolItem.mntmSelectAllVisibleWithColoursPtr[0] = mntmSelectAllVisibleWithColours;
-                mntmSelectAllVisibleWithColours.setText(I18n.E3D_ALL_SAME_COLOURS_SHOWN);
+        MenuItem mntmSelectEverything = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectEverythingPtr[0] = mntmSelectEverything;
+        mntmSelectEverything.setText(I18n.E3D_EVERYTHING);
+        mntmSelectEverything.setEnabled(false);
 
-                new MenuItem(mnuSelect, SWT.SEPARATOR);
+        MenuItem mntmSelectConnected = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectConnectedPtr[0] = mntmSelectConnected;
+        KeyStateManager.addKeyText(mntmSelectConnected, I18n.E3D_CONNECTED, Task.SELECT_CONNECTED);
 
-                MenuItem mntmSelectEverything = new MenuItem(mnuSelect, SWT.PUSH);
-                MiscToolItem.mntmSelectEverythingPtr[0] = mntmSelectEverything;
-                mntmSelectEverything.setText(I18n.E3D_EVERYTHING);
-                mntmSelectEverything.setEnabled(false);
+        MenuItem mntmSelectTouching = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectTouchingPtr[0] = mntmSelectTouching;
+        KeyStateManager.addKeyText(mntmSelectTouching, I18n.E3D_TOUCHING, Task.SELECT_TOUCHING);
 
-                MenuItem mntmSelectConnected = new MenuItem(mnuSelect, SWT.PUSH);
-                MiscToolItem.mntmSelectConnectedPtr[0] = mntmSelectConnected;
-                KeyStateManager.addKeyText(mntmSelectConnected, I18n.E3D_CONNECTED, Task.SELECT_CONNECTED);
+        MenuItem mntmWithSameColour = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmWithSameColourPtr[0] = mntmWithSameColour;
+        KeyStateManager.addKeyText(mntmWithSameColour, I18n.E3D_WITH_SAME_COLOUR, Task.SELECT_OPTION_WITH_SAME_COLOURS);
 
-                MenuItem mntmSelectTouching = new MenuItem(mnuSelect, SWT.PUSH);
-                MiscToolItem.mntmSelectTouchingPtr[0] = mntmSelectTouching;
-                KeyStateManager.addKeyText(mntmSelectTouching, I18n.E3D_TOUCHING, Task.SELECT_TOUCHING);
+        MenuItem mntmWithSameType = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmWithSameTypePtr[0] = mntmWithSameType;
+        mntmWithSameType.setText(I18n.E3D_WITH_SAME_TYPE);
 
-                MenuItem mntmWithSameColour = new MenuItem(mnuSelect, SWT.CHECK);
-                MiscToolItem.mntmWithSameColourPtr[0] = mntmWithSameColour;
-                KeyStateManager.addKeyText(mntmWithSameColour, I18n.E3D_WITH_SAME_COLOUR, Task.SELECT_OPTION_WITH_SAME_COLOURS);
+        MenuItem mntmWithSameOrientation = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmWithSameOrientationPtr[0] = mntmWithSameOrientation;
+        mntmWithSameOrientation.setText(I18n.E3D_WITH_SAME_ORIENTATION);
 
-                MenuItem mntmWithSameType = new MenuItem(mnuSelect, SWT.CHECK);
-                MiscToolItem.mntmWithSameTypePtr[0] = mntmWithSameType;
-                mntmWithSameType.setText(I18n.E3D_WITH_SAME_TYPE);
+        MenuItem mntmWithAccuracy = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmWithAccuracyPtr[0] = mntmWithAccuracy;
+        mntmWithAccuracy.setText(I18n.E3D_WITH_ACCURACY);
 
-                MenuItem mntmWithSameOrientation = new MenuItem(mnuSelect, SWT.CHECK);
-                MiscToolItem.mntmWithSameOrientationPtr[0] = mntmWithSameOrientation;
-                mntmWithSameOrientation.setText(I18n.E3D_WITH_SAME_ORIENTATION);
+        MenuItem mntmWithAdjacency = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmWithAdjacencyPtr[0] = mntmWithAdjacency;
+        mntmWithAdjacency.setText(I18n.E3D_WITH_ADJACENCY);
 
-                {
-                    MenuItem mntmWithAccuracy = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmWithAccuracyPtr[0] = mntmWithAccuracy;
-                    mntmWithAccuracy.setText(I18n.E3D_WITH_ACCURACY);
-                }
-                {
-                    MenuItem mntmWithAdjacency = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmWithAdjacencyPtr[0] = mntmWithAdjacency;
-                    mntmWithAdjacency.setText(I18n.E3D_WITH_ADJACENCY);
-                }
-                {
-                    MenuItem mntmWithHiddenData = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmWithHiddenDataPtr[0] = mntmWithHiddenData;
-                    mntmWithHiddenData.setText(I18n.E3D_WHAT_IS_HIDDEN);
-                    mntmWithHiddenData.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
-                }
-                {
-                    MenuItem mntmExceptSubfiles = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmExceptSubfilesPtr[0] = mntmExceptSubfiles;
-                    mntmExceptSubfiles.setText(I18n.E3D_EXCEPT_SUBFILE);
-                }
-                {
-                    MenuItem mntmWithWholeSubfiles = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmWithWholeSubfilesPtr[0] = mntmWithWholeSubfiles;
-                    mntmWithWholeSubfiles.setText(I18n.E3D_WITH_WHOLE_SUBFILE_SELECTION);
-                }
-                {
-                    MenuItem mntmStopAtEdges = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmStopAtEdgesPtr[0] = mntmStopAtEdges;
-                    mntmStopAtEdges.setText(I18n.E3D_STOP_SELECTION_AT_EDGES);
-                }
-                new MenuItem(mnuSelect, SWT.SEPARATOR);
-                {
-                    MenuItem mntmSelectSingleVertex = new MenuItem(mnuSelect, SWT.PUSH);
-                    MiscToolItem.mntmSelectSingleVertexPtr[0] = mntmSelectSingleVertex;
-                    mntmSelectSingleVertex.setText(I18n.E3D_SELECT_VERTEX);
-                }
-                {
-                    MenuItem mntmSelectIsolatedVertices = new MenuItem(mnuSelect, SWT.PUSH);
-                    MiscToolItem.mntmSelectIsolatedVerticesPtr[0] = mntmSelectIsolatedVertices;
-                    mntmSelectIsolatedVertices.setText(I18n.E3D_ISOLATED_VERTICES);
-                }
-                new MenuItem(mnuSelect, SWT.SEPARATOR);
-                {
-                    MenuItem mntmSVertices = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmSVerticesPtr[0] = mntmSVertices;
-                    mntmSVertices.setText(I18n.E3D_VERTICES);
-                    mntmSVertices.setSelection(true);
-                }
-                {
-                    MenuItem mntmSLines = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmSLinesPtr[0] = mntmSLines;
-                    mntmSLines.setText(I18n.E3D_LINES);
-                    mntmSLines.setSelection(true);
-                }
-                {
-                    MenuItem mntmSTriangles = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmSTrianglesPtr[0] = mntmSTriangles;
-                    mntmSTriangles.setText(I18n.E3D_TRIANGLES);
-                    mntmSTriangles.setSelection(true);
-                }
-                {
-                    MenuItem mntmSQuads = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmSQuadsPtr[0] = mntmSQuads;
-                    mntmSQuads.setText(I18n.E3D_QUADS);
-                    mntmSQuads.setSelection(true);
-                }
-                {
-                    MenuItem mntmSCLines = new MenuItem(mnuSelect, SWT.CHECK);
-                    MiscToolItem.mntmSCLinesPtr[0] = mntmSCLines;
-                    mntmSCLines.setText(I18n.E3D_CONDLINES);
-                    mntmSCLines.setSelection(true);
-                }
-                new MenuItem(mnuSelect, SWT.SEPARATOR);
-                {
-                    MenuItem mntmSAllTypes = new MenuItem(mnuSelect, SWT.PUSH);
-                    MiscToolItem.mntmSAllTypesPtr[0] = mntmSAllTypes;
-                    mntmSAllTypes.setText(I18n.E3D_ALL_TYPES);
-                }
-                {
-                    MenuItem mntmSNothing = new MenuItem(mnuSelect, SWT.PUSH);
-                    MiscToolItem.mntmSNothingPtr[0] = mntmSNothing;
-                    mntmSNothing.setText(I18n.E3D_NOTHING);
-                }
-                new MenuItem(mnuSelect, SWT.SEPARATOR);
-                {
-                    MenuItem mntmNeedsThreshold = new MenuItem(mnuSelect, SWT.PUSH);
-                    mntmNeedsThreshold.setText(I18n.E3D_NEEDS_A_THRESHOLD);
-                    mntmNeedsThreshold.setEnabled(false);
-                }
-                {
-                    MenuItem mntmNoEffect = new MenuItem(mnuSelect, SWT.PUSH);
-                    mntmNoEffect.setText(I18n.E3D_NO_EFFECT_SELECT_EVERYTHING);
-                    mntmNoEffect.setEnabled(false);
-                }
-            }
+        MenuItem mntmWithHiddenData = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmWithHiddenDataPtr[0] = mntmWithHiddenData;
+        mntmWithHiddenData.setText(I18n.E3D_WHAT_IS_HIDDEN);
+        mntmWithHiddenData.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
+
+        MenuItem mntmExceptSubfiles = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmExceptSubfilesPtr[0] = mntmExceptSubfiles;
+        mntmExceptSubfiles.setText(I18n.E3D_EXCEPT_SUBFILE);
+
+        MenuItem mntmWithWholeSubfiles = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmWithWholeSubfilesPtr[0] = mntmWithWholeSubfiles;
+        mntmWithWholeSubfiles.setText(I18n.E3D_WITH_WHOLE_SUBFILE_SELECTION);
+
+        MenuItem mntmStopAtEdges = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmStopAtEdgesPtr[0] = mntmStopAtEdges;
+        mntmStopAtEdges.setText(I18n.E3D_STOP_SELECTION_AT_EDGES);
+
+        new MenuItem(mnuSelect, SWT.SEPARATOR);
+
+        MenuItem mntmSelectSingleVertex = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectSingleVertexPtr[0] = mntmSelectSingleVertex;
+        mntmSelectSingleVertex.setText(I18n.E3D_SELECT_VERTEX);
+
+        MenuItem mntmSelectIsolatedVertices = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSelectIsolatedVerticesPtr[0] = mntmSelectIsolatedVertices;
+        mntmSelectIsolatedVertices.setText(I18n.E3D_ISOLATED_VERTICES);
+
+        new MenuItem(mnuSelect, SWT.SEPARATOR);
+
+        MenuItem mntmSVertices = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmSVerticesPtr[0] = mntmSVertices;
+        mntmSVertices.setText(I18n.E3D_VERTICES);
+        mntmSVertices.setSelection(true);
+
+        MenuItem mntmSLines = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmSLinesPtr[0] = mntmSLines;
+        mntmSLines.setText(I18n.E3D_LINES);
+        mntmSLines.setSelection(true);
+
+        MenuItem mntmSTriangles = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmSTrianglesPtr[0] = mntmSTriangles;
+        mntmSTriangles.setText(I18n.E3D_TRIANGLES);
+        mntmSTriangles.setSelection(true);
+
+        MenuItem mntmSQuads = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmSQuadsPtr[0] = mntmSQuads;
+        mntmSQuads.setText(I18n.E3D_QUADS);
+        mntmSQuads.setSelection(true);
+
+        MenuItem mntmSCLines = new MenuItem(mnuSelect, SWT.CHECK);
+        MiscToolItem.mntmSCLinesPtr[0] = mntmSCLines;
+        mntmSCLines.setText(I18n.E3D_CONDLINES);
+        mntmSCLines.setSelection(true);
+
+        new MenuItem(mnuSelect, SWT.SEPARATOR);
+
+        MenuItem mntmSAllTypes = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSAllTypesPtr[0] = mntmSAllTypes;
+        mntmSAllTypes.setText(I18n.E3D_ALL_TYPES);
+
+        MenuItem mntmSNothing = new MenuItem(mnuSelect, SWT.PUSH);
+        MiscToolItem.mntmSNothingPtr[0] = mntmSNothing;
+        mntmSNothing.setText(I18n.E3D_NOTHING);
+
+        new MenuItem(mnuSelect, SWT.SEPARATOR);
+
+        MenuItem mntmNeedsThreshold = new MenuItem(mnuSelect, SWT.PUSH);
+        mntmNeedsThreshold.setText(I18n.E3D_NEEDS_A_THRESHOLD);
+        mntmNeedsThreshold.setEnabled(false);
+
+        MenuItem mntmNoEffect = new MenuItem(mnuSelect, SWT.PUSH);
+        mntmNoEffect.setText(I18n.E3D_NO_EFFECT_SELECT_EVERYTHING);
+        mntmNoEffect.setEnabled(false);
+
+        final NButton btnMergeNSplit = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
+        btnMergeNSplit.setToolTipText(I18n.E3D_MERGE_SPLIT);
+        btnMergeNSplit.setText(I18n.E3D_MERGE_SPLIT);
+        final Menu mnuMerge = new Menu(miscToolItem.getShell(), SWT.POP_UP);
+        widgetUtil(btnMergeNSplit).addSelectionListener(e -> {
+            Point loc = btnMergeNSplit.getLocation();
+            Rectangle rect = btnMergeNSplit.getBounds();
+            Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
+            mnuMerge.setLocation(Editor3DWindow.getWindow().getShell().getDisplay().map(btnMergeNSplit.getParent(), null, mLoc));
+            mnuMerge.setVisible(true);
+            Editor3DWindow.getWindow().regainFocus();
+        });
+
+        MenuItem mntmFlip = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmFlipPtr[0] = mntmFlip;
+        mntmFlip.setText(I18n.E3D_FLIP_ROTATE);
+        KeyStateManager.addKeyText(mntmFlip, I18n.E3D_FLIP_ROTATE, Task.FLIP_ROTATE_VERTICES);
+
+        MenuItem mntmSmooth = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmSmoothPtr[0] = mntmSmooth;
+        mntmSmooth.setText(I18n.E3D_SMOOTH);
+
+        new MenuItem(mnuMerge, SWT.SEPARATOR);
+
+        MenuItem mntmSplit = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmSplitPtr[0] = mntmSplit;
+        KeyStateManager.addKeyText(mntmSplit, I18n.E3D_SPLIT, Task.SPLIT);
+
+        MenuItem mntmSplitNTimes = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmSplitNTimesPtr[0] = mntmSplitNTimes;
+        mntmSplitNTimes.setText(I18n.E3D_SPLIT_N_TIMES);
+
+        new MenuItem(mnuMerge, SWT.SEPARATOR);
+
+        MenuItem mntmMergeToAverage = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmMergeToAveragePtr[0] = mntmMergeToAverage;
+        KeyStateManager.addKeyText(mntmMergeToAverage, I18n.E3D_MERGE_TO_AVG, Task.MERGE_TO_AVERAGE);
+
+        MenuItem mntmMergeToLastSelected = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmMergeToLastSelectedPtr[0] = mntmMergeToLastSelected;
+        KeyStateManager.addKeyText(mntmMergeToLastSelected, I18n.E3D_MERGE_TO_LAST_SELECTED, Task.MERGE_TO_LAST);
+
+        MenuItem mntmMergeToNearestVertex = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmMergeToNearestVertexPtr[0] = mntmMergeToNearestVertex;
+        mntmMergeToNearestVertex.setText(I18n.E3D_MERGE_TO_NEAREST_VERTEX);
+
+        MenuItem mntmMergeToNearestEdge = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmMergeToNearestEdgePtr[0] = mntmMergeToNearestEdge;
+        mntmMergeToNearestEdge.setText(I18n.E3D_MERGE_TO_NEAREST_EDGE);
+
+        MenuItem mntmMergeToNearestEdgeSplit = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmMergeToNearestEdgeSplitPtr[0] = mntmMergeToNearestEdgeSplit;
+        mntmMergeToNearestEdgeSplit.setText(I18n.E3D_MERGE_TO_NEAREST_EDGE_SPLIT);
+
+        MenuItem mntmMergeToNearestFace = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmMergeToNearestFacePtr[0] = mntmMergeToNearestFace;
+        mntmMergeToNearestFace.setText(I18n.E3D_MERGE_TO_NEAREST_FACE);
+
+        new MenuItem(mnuMerge, SWT.SEPARATOR);
+
+        MenuItem mntmMergeToNearestFaceDir = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmMergeToNearestFaceDirPtr[0] = mntmMergeToNearestFaceDir;
+        mntmMergeToNearestFaceDir.setText(I18n.E3D_MERGE_TO_NEAREST_FACE_DIR);
+
+        new MenuItem(mnuMerge, SWT.SEPARATOR);
+
+        MenuItem mntmSetXYZ = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmSetXYZPtr[0] = mntmSetXYZ;
+        mntmSetXYZ.setText(I18n.E3D_SET_XYZ);
+
+        MenuItem mntmTranslate = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmTranslatePtr[0] = mntmTranslate;
+        mntmTranslate.setText(I18n.E3D_TRANSLATE_SELECTION);
+
+        MenuItem mntmRotate = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmRotatePtr[0] = mntmRotate;
+        mntmRotate.setText(I18n.E3D_ROTATE_SELECTION);
+
+        MenuItem mntmScale = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmScalePtr[0] = mntmScale;
+        mntmScale.setText(I18n.E3D_SCALE_SELECTION);
+
+        new MenuItem(mnuMerge, SWT.SEPARATOR);
+
+        MenuItem mntmSubdivideCatmullClark = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmSubdivideCatmullClarkPtr[0] = mntmSubdivideCatmullClark;
+        mntmSubdivideCatmullClark.setText(I18n.E3D_SUBDIVIDE_CATMULL_CLARK);
+
+        MenuItem mntmSubdivideLoop = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmSubdivideLoopPtr[0] = mntmSubdivideLoop;
+        mntmSubdivideLoop.setText(I18n.E3D_SUBDIVIDE_LOOP);
+
+        final NButton btnToolsActions = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
+        btnToolsActions.setText(I18n.E3D_TOOLS);
+        btnToolsActions.setToolTipText(I18n.E3D_TOOLS_OPTIONS);
+        final Menu mnuTools = new Menu(miscToolItem.getShell(), SWT.POP_UP);
+        widgetUtil(btnToolsActions).addSelectionListener(e -> {
+            Point loc = btnToolsActions.getLocation();
+            Rectangle rect = btnToolsActions.getBounds();
+            Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
+            mnuTools.setLocation(Editor3DWindow.getWindow().getShell().getDisplay().map(btnToolsActions.getParent(), null, mLoc));
+            mnuTools.setVisible(true);
+            Editor3DWindow.getWindow().regainFocus();
+        });
+
+        MenuItem mntmPartReview = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmPartReviewPtr[0] = mntmPartReview;
+        mntmPartReview.setText(I18n.E3D_PART_REVIEW);
+
+        MenuItem mntmEdger2 = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmEdger2Ptr[0] = mntmEdger2;
+        mntmEdger2.setText(I18n.E3D_EDGER_2);
+
+        MenuItem mntmPrimGen2 = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmPrimGen2Ptr[0] = mntmPrimGen2;
+        mntmPrimGen2.setText(I18n.E3D_PRIMGEN2);
+
+        MenuItem mntmTxt2Dat = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmTxt2DatPtr[0] = mntmTxt2Dat;
+        mntmTxt2Dat.setText(I18n.E3D_TXT_2_DAT);
+
+        MenuItem mntmRectifier = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmRectifierPtr[0] = mntmRectifier;
+        mntmRectifier.setText(I18n.E3D_RECTIFIER);
+
+        MenuItem mntmIsecalc = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmIsecalcPtr[0] = mntmIsecalc;
+        mntmIsecalc.setText(I18n.E3D_ISECALC);
+
+        MenuItem mntmSlicerPro = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmSlicerProPtr[0] = mntmSlicerPro;
+        mntmSlicerPro.setText(I18n.E3D_SLICER_PRO);
+
+        MenuItem mntmIntersector = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmIntersectorPtr[0] = mntmIntersector;
+        mntmIntersector.setText(I18n.E3D_INTERSECTOR);
+
+        MenuItem mntmMatrixCalculator = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmSlantingMatrixProjectorPtr[0] = mntmMatrixCalculator;
+        mntmMatrixCalculator.setText(I18n.E3D_SLANTING_MATRIX_PROJECTOR);
+
+        MenuItem mntmLines2Pattern = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmLines2PatternPtr[0] = mntmLines2Pattern;
+        mntmLines2Pattern.setText(I18n.E3D_LINES_2_PATTERN);
+
+        MenuItem mntmPathTruder = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmPathTruderPtr[0] = mntmPathTruder;
+        mntmPathTruder.setText(I18n.E3D_PATH_TRUDER);
+
+        MenuItem mntmYTruder = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmYTruderPtr[0] = mntmYTruder;
+        mntmYTruder.setText(I18n.E3D_YTRUDER);
+
+        MenuItem mntmSymSplitter = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmSymSplitterPtr[0] = mntmSymSplitter;
+        mntmSymSplitter.setText(I18n.E3D_SYM_SPLITTER);
+
+        MenuItem mntmUnificator = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmUnificatorPtr[0] = mntmUnificator;
+        mntmUnificator.setText(I18n.E3D_UNIFICATOR);
+
+        MenuItem mntmRingsAndCones = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmRingsAndConesPtr[0] = mntmRingsAndCones;
+        mntmRingsAndCones.setText(I18n.E3D_RINGS_AND_CONES);
+
+        MenuItem mntmTJunctionFinder = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmTJunctionFinderPtr[0] = mntmTJunctionFinder;
+        mntmTJunctionFinder.setText(I18n.E3D_T_JUNCTION);
+
+        MenuItem mntmMeshReducer = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmMeshReducerPtr[0] = mntmMeshReducer;
+        mntmMeshReducer.setText(I18n.E3D_MESH_REDUCE);
+
+        new MenuItem(mnuTools, SWT.SEPARATOR);
+
+        final MenuItem mntmLibFeatures = new MenuItem(mnuTools, SWT.CASCADE);
+        mntmLibFeatures.setText(I18n.E3D_LIBRARY_FEATURES);
+        final Menu mnuLibFeatures = new Menu(mntmLibFeatures);
+        mntmLibFeatures.setMenu(mnuLibFeatures);
+
+        MenuItem mntmSelectAnotherLDConfig = new MenuItem(mnuLibFeatures, SWT.PUSH);
+        MiscToolItem.mntmSelectAnotherLDConfigPtr[0] = mntmSelectAnotherLDConfig;
+        mntmSelectAnotherLDConfig.setText(I18n.E3D_SELECT_LDCONFIG);
+
+        MenuItem mntmDownloadLDConfig = new MenuItem(mnuLibFeatures, SWT.PUSH);
+        MiscToolItem.mntmDownloadLDConfigPtr[0] = mntmDownloadLDConfig;
+        mntmDownloadLDConfig.setText(I18n.E3D_DOWNLOAD_LD_CONFIG);
+
+        MenuItem mntmDownloadCategories = new MenuItem(mnuLibFeatures, SWT.PUSH);
+        MiscToolItem.mntmDownloadCategoriesPtr[0] = mntmDownloadCategories;
+        mntmDownloadCategories.setText(I18n.E3D_DOWNLOAD_CATEGORIES);
+
+        MenuItem mntmOptions = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmOptionsPtr[0] = mntmOptions;
+        mntmOptions.setText(I18n.E3D_OPTIONS);
+
+        MenuItem mntmUserConfigSave = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmUserConfigSavePtr[0] = mntmUserConfigSave;
+        mntmUserConfigSave.setText(I18n.E3D_USER_CONFIG_SAVE);
+
+        MenuItem mntmUserConfigLoad = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmUserConfigLoadPtr[0] = mntmUserConfigLoad;
+        mntmUserConfigLoad.setText(I18n.E3D_USER_CONFIG_LOAD);
+
+        MenuItem mntmResetSettingsOnRestart = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmResetSettingsOnRestartPtr[0] = mntmResetSettingsOnRestart;
+        mntmResetSettingsOnRestart.setText(I18n.E3D_RESET_ALL);
+
+        final MenuItem mntmPalette = new MenuItem(mnuTools, SWT.CASCADE);
+        mntmPalette.setText(I18n.E3D_PALETTE);
+        final Menu mnuPalette = new Menu(mntmPalette);
+        mntmPalette.setMenu(mnuPalette);
+
+        MenuItem mntmSavePalette = new MenuItem(mnuPalette, SWT.PUSH);
+        MiscToolItem.mntmSavePalettePtr[0] = mntmSavePalette;
+        mntmSavePalette.setText(I18n.E3D_PALETTE_SAVE);
+
+        MenuItem mntmLoadPalette = new MenuItem(mnuPalette, SWT.PUSH);
+        MiscToolItem.mntmLoadPalettePtr[0] = mntmLoadPalette;
+        mntmLoadPalette.setText(I18n.E3D_PALETTE_LOAD);
+
+        MenuItem mntmSetPaletteSize = new MenuItem(mnuPalette, SWT.PUSH);
+        MiscToolItem.mntmSetPaletteSizePtr[0] = mntmSetPaletteSize;
+        mntmSetPaletteSize.setText(I18n.E3D_PALETTE_SET_SIZE);
+
+        MenuItem mntmResetPalette = new MenuItem(mnuPalette, SWT.PUSH);
+        MiscToolItem.mntmResetPalettePtr[0] = mntmResetPalette;
+        mntmResetPalette.setText(I18n.E3D_PALETTE_RESET);
+
+        final MenuItem mntmSetIconSize = new MenuItem(mnuTools, SWT.CASCADE);
+        mntmSetIconSize.setText(I18n.E3D_SET_ICON_SIZE);
+        final Menu mnuIconSize = new Menu(mntmSetIconSize);
+        mntmSetIconSize.setMenu(mnuIconSize);
+        final int iconSize = IconSize.getIconsize();
+
+        MenuItem mntmIconSize1 = new MenuItem(mnuIconSize, SWT.RADIO);
+        MiscToolItem.mntmIconSize1Ptr[0] = mntmIconSize1;
+        mntmIconSize1.setText(I18n.E3D_ICON_SIZE_1);
+        mntmIconSize1.setSelection(iconSize == -1);
+
+        MenuItem mntmIconSize2 = new MenuItem(mnuIconSize, SWT.RADIO);
+        MiscToolItem.mntmIconSize2Ptr[0] = mntmIconSize2;
+        mntmIconSize2.setText(I18n.E3D_ICON_SIZE_2);
+        mntmIconSize2.setSelection(iconSize == 0);
+
+        MenuItem mntmIconSize3 = new MenuItem(mnuIconSize, SWT.RADIO);
+        MiscToolItem.mntmIconSize3Ptr[0] = mntmIconSize3;
+        mntmIconSize3.setText(I18n.E3D_ICON_SIZE_3);
+        mntmIconSize3.setSelection(iconSize == 1);
+
+        MenuItem mntmIconSize4 = new MenuItem(mnuIconSize, SWT.RADIO);
+        MiscToolItem.mntmIconSize4Ptr[0] = mntmIconSize4;
+        mntmIconSize4.setText(I18n.E3D_ICON_SIZE_4);
+        mntmIconSize4.setSelection(iconSize == 2);
+
+        MenuItem mntmIconSize5 = new MenuItem(mnuIconSize, SWT.RADIO);
+        MiscToolItem.mntmIconSize5Ptr[0] = mntmIconSize5;
+        mntmIconSize5.setText(I18n.E3D_ICON_SIZE_5);
+        mntmIconSize5.setSelection(iconSize == 3);
+
+        MenuItem mntmIconSize6 = new MenuItem(mnuIconSize, SWT.RADIO);
+        MiscToolItem.mntmIconSize6Ptr[0] = mntmIconSize6;
+        mntmIconSize6.setText(I18n.E3D_ICON_SIZE_6);
+        mntmIconSize6.setSelection(iconSize >= 4);
+
+        new MenuItem(mnuIconSize, SWT.SEPARATOR);
+
+        MenuItem mntmIconSizeRequiresRestart = new MenuItem(mnuIconSize, SWT.PUSH);
+        mntmIconSizeRequiresRestart.setText(I18n.E3D_REQUIRES_RESTART);
+        mntmIconSizeRequiresRestart.setEnabled(false);
+
+        new MenuItem(mnuTools, SWT.SEPARATOR);
+
+        MenuItem mntmUploadErrorLog = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmUploadLogsPtr[0] = mntmUploadErrorLog;
+        mntmUploadErrorLog.setText(I18n.E3D_UPLOAD_ERROR_LOGS);
+
+        new MenuItem(mnuTools, SWT.SEPARATOR);
+
+        MenuItem mntmAntiAliasing = new MenuItem(mnuTools, SWT.CHECK);
+        mntmAntiAliasing.setSelection(WorkbenchManager.getUserSettingState().isAntiAliasing());
+        MiscToolItem.mntmAntiAliasingPtr[0] = mntmAntiAliasing;
+        mntmAntiAliasing.setText(I18n.E3D_ANTI_ALIASING);
+
+        MenuItem mntmOpenGL33Engine = new MenuItem(mnuTools, SWT.CHECK);
+        mntmOpenGL33Engine.setSelection(WorkbenchManager.getUserSettingState().isOpenGL33Engine());
+        MiscToolItem.mntmOpenGL33EnginePtr[0] = mntmOpenGL33Engine;
+        mntmOpenGL33Engine.setText(I18n.E3D_NEW_ENGINE);
+
+        if (NLogger.debugging) {
+            MenuItem mntmVulkanEngine = new MenuItem(mnuTools, SWT.CHECK);
+            mntmVulkanEngine.setSelection(WorkbenchManager.getUserSettingState().isVulkanEngine());
+            MiscToolItem.mntmVulkanEnginePtr[0] = mntmVulkanEngine;
+            mntmVulkanEngine.setText(I18n.E3D_VULKAN_ENGINE);
         }
-        {
-            final NButton btnMergeNSplit = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
-            btnMergeNSplit.setToolTipText(I18n.E3D_MERGE_SPLIT);
-            btnMergeNSplit.setText(I18n.E3D_MERGE_SPLIT);
-            final Menu mnuMerge = new Menu(miscToolItem.getShell(), SWT.POP_UP);
-            widgetUtil(btnMergeNSplit).addSelectionListener(e -> {
-                Point loc = btnMergeNSplit.getLocation();
-                Rectangle rect = btnMergeNSplit.getBounds();
-                Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
-                mnuMerge.setLocation(Editor3DWindow.getWindow().getShell().getDisplay().map(btnMergeNSplit.getParent(), null, mLoc));
-                mnuMerge.setVisible(true);
-                Editor3DWindow.getWindow().regainFocus();
-            });
-            {
-                MenuItem mntmFlip = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmFlipPtr[0] = mntmFlip;
-                mntmFlip.setText(I18n.E3D_FLIP_ROTATE);
-                KeyStateManager.addKeyText(mntmFlip, I18n.E3D_FLIP_ROTATE, Task.FLIP_ROTATE_VERTICES);
-            }
-            {
-                MenuItem mntmSmooth = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmSmoothPtr[0] = mntmSmooth;
-                mntmSmooth.setText(I18n.E3D_SMOOTH);
-            }
-            new MenuItem(mnuMerge, SWT.SEPARATOR);
-            {
-                MenuItem mntmSplit = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmSplitPtr[0] = mntmSplit;
-                KeyStateManager.addKeyText(mntmSplit, I18n.E3D_SPLIT, Task.SPLIT);
-            }
-            {
-                MenuItem mntmSplitNTimes = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmSplitNTimesPtr[0] = mntmSplitNTimes;
-                mntmSplitNTimes.setText(I18n.E3D_SPLIT_N_TIMES);
-            }
-            new MenuItem(mnuMerge, SWT.SEPARATOR);
-            {
-                MenuItem mntmMergeTo = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmMergeToAveragePtr[0] = mntmMergeTo;
-                KeyStateManager.addKeyText(mntmMergeTo, I18n.E3D_MERGE_TO_AVG, Task.MERGE_TO_AVERAGE);
-            }
-            {
-                MenuItem mntmMergeTo = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmMergeToLastSelectedPtr[0] = mntmMergeTo;
-                KeyStateManager.addKeyText(mntmMergeTo, I18n.E3D_MERGE_TO_LAST_SELECTED, Task.MERGE_TO_LAST);
-            }
-            {
-                MenuItem mntmMergeTo = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmMergeToNearestVertexPtr[0] = mntmMergeTo;
-                mntmMergeTo.setText(I18n.E3D_MERGE_TO_NEAREST_VERTEX);
-            }
-            {
-                MenuItem mntmMergeTo = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmMergeToNearestEdgePtr[0] = mntmMergeTo;
-                mntmMergeTo.setText(I18n.E3D_MERGE_TO_NEAREST_EDGE);
-            }
-            {
-                MenuItem mntmMergeTo = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmMergeToNearestEdgeSplitPtr[0] = mntmMergeTo;
-                mntmMergeTo.setText(I18n.E3D_MERGE_TO_NEAREST_EDGE_SPLIT);
-            }
-            {
-                MenuItem mntmMergeTo = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmMergeToNearestFacePtr[0] = mntmMergeTo;
-                mntmMergeTo.setText(I18n.E3D_MERGE_TO_NEAREST_FACE);
-            }
-            new MenuItem(mnuMerge, SWT.SEPARATOR);
-            {
-                MenuItem mntmMergeTo = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmMergeToNearestFaceDirPtr[0] = mntmMergeTo;
-                mntmMergeTo.setText(I18n.E3D_MERGE_TO_NEAREST_FACE_DIR);
-            }
-            new MenuItem(mnuMerge, SWT.SEPARATOR);
-            {
-                MenuItem mntmSetXYZ = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmSetXYZPtr[0] = mntmSetXYZ;
-                mntmSetXYZ.setText(I18n.E3D_SET_XYZ);
-            }
-            {
-                MenuItem mntmTranslate = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmTranslatePtr[0] = mntmTranslate;
-                mntmTranslate.setText(I18n.E3D_TRANSLATE_SELECTION);
-            }
-            {
-                MenuItem mntmRotate = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmRotatePtr[0] = mntmRotate;
-                mntmRotate.setText(I18n.E3D_ROTATE_SELECTION);
-            }
-            {
-                MenuItem mntmScale = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmScalePtr[0] = mntmScale;
-                mntmScale.setText(I18n.E3D_SCALE_SELECTION);
-            }
-            new MenuItem(mnuMerge, SWT.SEPARATOR);
-            {
-                MenuItem mntmSubdivideCatmullClark = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmSubdivideCatmullClarkPtr[0] = mntmSubdivideCatmullClark;
-                mntmSubdivideCatmullClark.setText(I18n.E3D_SUBDIVIDE_CATMULL_CLARK);
-            }
-            {
-                MenuItem mntmSubdivideLoop = new MenuItem(mnuMerge, SWT.PUSH);
-                MiscToolItem.mntmSubdivideLoopPtr[0] = mntmSubdivideLoop;
-                mntmSubdivideLoop.setText(I18n.E3D_SUBDIVIDE_LOOP);
-            }
-        }
-        {
-            final NButton btnToolsActions = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
-            btnToolsActions.setText(I18n.E3D_TOOLS);
-            btnToolsActions.setToolTipText(I18n.E3D_TOOLS_OPTIONS);
-            final Menu mnuTools = new Menu(miscToolItem.getShell(), SWT.POP_UP);
-            widgetUtil(btnToolsActions).addSelectionListener(e -> {
-                Point loc = btnToolsActions.getLocation();
-                Rectangle rect = btnToolsActions.getBounds();
-                Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
-                mnuTools.setLocation(Editor3DWindow.getWindow().getShell().getDisplay().map(btnToolsActions.getParent(), null, mLoc));
-                mnuTools.setVisible(true);
-                Editor3DWindow.getWindow().regainFocus();
-            });
-            {
-                {
-                    MenuItem mntmPartReview = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmPartReviewPtr[0] = mntmPartReview;
-                    mntmPartReview.setText(I18n.E3D_PART_REVIEW);
-                }
-                {
-                    MenuItem mntmEdger2 = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmEdger2Ptr[0] = mntmEdger2;
-                    mntmEdger2.setText(I18n.E3D_EDGER_2);
-                }
-                {
-                    MenuItem mntmPrimGen2 = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmPrimGen2Ptr[0] = mntmPrimGen2;
-                    mntmPrimGen2.setText(I18n.E3D_PRIMGEN2);
-                }
-                {
-                    MenuItem mntmEdger2 = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmTxt2DatPtr[0] = mntmEdger2;
-                    mntmEdger2.setText(I18n.E3D_TXT_2_DAT);
-                }
-                {
-                    MenuItem mntmRectifier = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmRectifierPtr[0] = mntmRectifier;
-                    mntmRectifier.setText(I18n.E3D_RECTIFIER);
-                }
-                {
-                    MenuItem mntmIsecalc = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmIsecalcPtr[0] = mntmIsecalc;
-                    mntmIsecalc.setText(I18n.E3D_ISECALC);
-                }
-                {
-                    MenuItem mntmSlicerPro = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmSlicerProPtr[0] = mntmSlicerPro;
-                    mntmSlicerPro.setText(I18n.E3D_SLICER_PRO);
-                }
-                {
-                    MenuItem mntmIntersector = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmIntersectorPtr[0] = mntmIntersector;
-                    mntmIntersector.setText(I18n.E3D_INTERSECTOR);
-                }
-                {
-                    MenuItem mntmMatrixCalculator = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmSlantingMatrixProjectorPtr[0] = mntmMatrixCalculator;
-                    mntmMatrixCalculator.setText(I18n.E3D_SLANTING_MATRIX_PROJECTOR);
-                }
-                {
-                    MenuItem mntmLines2Pattern = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmLines2PatternPtr[0] = mntmLines2Pattern;
-                    mntmLines2Pattern.setText(I18n.E3D_LINES_2_PATTERN);
-                }
-                {
-                    MenuItem mntmPathTruder = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmPathTruderPtr[0] = mntmPathTruder;
-                    mntmPathTruder.setText(I18n.E3D_PATH_TRUDER);
-                }
-                {
-                    MenuItem mntmYTruder = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmYTruderPtr[0] = mntmYTruder;
-                    mntmYTruder.setText(I18n.E3D_YTRUDER);
-                }
-                {
-                    MenuItem mntmSymSplitter = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmSymSplitterPtr[0] = mntmSymSplitter;
-                    mntmSymSplitter.setText(I18n.E3D_SYM_SPLITTER);
-                }
-                {
-                    MenuItem mntmUnificator = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmUnificatorPtr[0] = mntmUnificator;
-                    mntmUnificator.setText(I18n.E3D_UNIFICATOR);
-                }
-                {
-                    MenuItem mntmRingsAndCones = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmRingsAndConesPtr[0] = mntmRingsAndCones;
-                    mntmRingsAndCones.setText(I18n.E3D_RINGS_AND_CONES);
-                }
-                {
-                    MenuItem mntmTJunctionFinder = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmTJunctionFinderPtr[0] = mntmTJunctionFinder;
-                    mntmTJunctionFinder.setText(I18n.E3D_T_JUNCTION);
-                }
-                {
-                    MenuItem mntmMeshReducer = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmMeshReducerPtr[0] = mntmMeshReducer;
-                    mntmMeshReducer.setText(I18n.E3D_MESH_REDUCE);
-                }
-                new MenuItem(mnuTools, SWT.SEPARATOR);
-                {
-                    final MenuItem mntmLibFeatures = new MenuItem(mnuTools, SWT.CASCADE);
-                    mntmLibFeatures.setText(I18n.E3D_LIBRARY_FEATURES);
-                    final Menu mnuLibFeatures = new Menu(mntmLibFeatures);
-                    mntmLibFeatures.setMenu(mnuLibFeatures);
-                    {
-                        MenuItem mntmSelectAnotherLDConfig = new MenuItem(mnuLibFeatures, SWT.PUSH);
-                        MiscToolItem.mntmSelectAnotherLDConfigPtr[0] = mntmSelectAnotherLDConfig;
-                        mntmSelectAnotherLDConfig.setText(I18n.E3D_SELECT_LDCONFIG);
-                    }
-                    {
-                        MenuItem mntmDownloadLDConfig = new MenuItem(mnuLibFeatures, SWT.PUSH);
-                        MiscToolItem.mntmDownloadLDConfigPtr[0] = mntmDownloadLDConfig;
-                        mntmDownloadLDConfig.setText(I18n.E3D_DOWNLOAD_LD_CONFIG);
-                    }
-                    {
-                        MenuItem mntmDownloadCategories = new MenuItem(mnuLibFeatures, SWT.PUSH);
-                        MiscToolItem.mntmDownloadCategoriesPtr[0] = mntmDownloadCategories;
-                        mntmDownloadCategories.setText(I18n.E3D_DOWNLOAD_CATEGORIES);
-                    }
-                }
-                {
-                    MenuItem mntmOptions = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmOptionsPtr[0] = mntmOptions;
-                    mntmOptions.setText(I18n.E3D_OPTIONS);
-                }
-                {
-                    MenuItem mntmUserConfigSave = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmUserConfigSavePtr[0] = mntmUserConfigSave;
-                    mntmUserConfigSave.setText(I18n.E3D_USER_CONFIG_SAVE);
-                }
-                {
-                    MenuItem mntmUserConfigLoad = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmUserConfigLoadPtr[0] = mntmUserConfigLoad;
-                    mntmUserConfigLoad.setText(I18n.E3D_USER_CONFIG_LOAD);
-                }
-                {
-                    MenuItem mntmResetSettingsOnRestart = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmResetSettingsOnRestartPtr[0] = mntmResetSettingsOnRestart;
-                    mntmResetSettingsOnRestart.setText(I18n.E3D_RESET_ALL);
-                }
-                {
-                    final MenuItem mntmPalette = new MenuItem(mnuTools, SWT.CASCADE);
-                    mntmPalette.setText(I18n.E3D_PALETTE);
-                    final Menu mnuPalette = new Menu(mntmPalette);
-                    mntmPalette.setMenu(mnuPalette);
-                    {
-                        MenuItem mntmSavePalette = new MenuItem(mnuPalette, SWT.PUSH);
-                        MiscToolItem.mntmSavePalettePtr[0] = mntmSavePalette;
-                        mntmSavePalette.setText(I18n.E3D_PALETTE_SAVE);
-                    }
-                    {
-                        MenuItem mntmLoadPalette = new MenuItem(mnuPalette, SWT.PUSH);
-                        MiscToolItem.mntmLoadPalettePtr[0] = mntmLoadPalette;
-                        mntmLoadPalette.setText(I18n.E3D_PALETTE_LOAD);
-                    }
-                    {
-                        MenuItem mntmSetPaletteSize = new MenuItem(mnuPalette, SWT.PUSH);
-                        MiscToolItem.mntmSetPaletteSizePtr[0] = mntmSetPaletteSize;
-                        mntmSetPaletteSize.setText(I18n.E3D_PALETTE_SET_SIZE);
-                    }
-                    {
-                        MenuItem mntmResetPalette = new MenuItem(mnuPalette, SWT.PUSH);
-                        MiscToolItem.mntmResetPalettePtr[0] = mntmResetPalette;
-                        mntmResetPalette.setText(I18n.E3D_PALETTE_RESET);
-                    }
-                }
-                {
-                    final MenuItem mntmSetIconSize = new MenuItem(mnuTools, SWT.CASCADE);
-                    mntmSetIconSize.setText(I18n.E3D_SET_ICON_SIZE);
-                    final Menu mnuIconSize = new Menu(mntmSetIconSize);
-                    mntmSetIconSize.setMenu(mnuIconSize);
-                    final int iconSize = IconSize.getIconsize();
-                    {
-                        MenuItem mntmIconSize = new MenuItem(mnuIconSize, SWT.RADIO);
-                        MiscToolItem.mntmIconSize1Ptr[0] = mntmIconSize;
-                        mntmIconSize.setText(I18n.E3D_ICON_SIZE_1);
-                        mntmIconSize.setSelection(iconSize == -1);
-                    }
-                    {
-                        MenuItem mntmIconSize = new MenuItem(mnuIconSize, SWT.RADIO);
-                        MiscToolItem.mntmIconSize2Ptr[0] = mntmIconSize;
-                        mntmIconSize.setText(I18n.E3D_ICON_SIZE_2);
-                        mntmIconSize.setSelection(iconSize == 0);
-                    }
-                    {
-                        MenuItem mntmIconSize = new MenuItem(mnuIconSize, SWT.RADIO);
-                        MiscToolItem.mntmIconSize3Ptr[0] = mntmIconSize;
-                        mntmIconSize.setText(I18n.E3D_ICON_SIZE_3);
-                        mntmIconSize.setSelection(iconSize == 1);
-                    }
-                    {
-                        MenuItem mntmIconSize = new MenuItem(mnuIconSize, SWT.RADIO);
-                        MiscToolItem.mntmIconSize4Ptr[0] = mntmIconSize;
-                        mntmIconSize.setText(I18n.E3D_ICON_SIZE_4);
-                        mntmIconSize.setSelection(iconSize == 2);
-                    }
-                    {
-                        MenuItem mntmIconSize = new MenuItem(mnuIconSize, SWT.RADIO);
-                        MiscToolItem.mntmIconSize5Ptr[0] = mntmIconSize;
-                        mntmIconSize.setText(I18n.E3D_ICON_SIZE_5);
-                        mntmIconSize.setSelection(iconSize == 3);
-                    }
-                    {
-                        MenuItem mntmIconSize = new MenuItem(mnuIconSize, SWT.RADIO);
-                        MiscToolItem.mntmIconSize6Ptr[0] = mntmIconSize;
-                        mntmIconSize.setText(I18n.E3D_ICON_SIZE_6);
-                        mntmIconSize.setSelection(iconSize >= 4);
-                    }
-                    new MenuItem(mnuIconSize, SWT.SEPARATOR);
-                    {
-                        MenuItem mntmIconSize = new MenuItem(mnuIconSize, SWT.PUSH);
-                        mntmIconSize.setText(I18n.E3D_REQUIRES_RESTART);
-                        mntmIconSize.setEnabled(false);
-                    }
-                }
-                new MenuItem(mnuTools, SWT.SEPARATOR);
-                {
-                    MenuItem mntmUploadErrorLog = new MenuItem(mnuTools, SWT.PUSH);
-                    MiscToolItem.mntmUploadLogsPtr[0] = mntmUploadErrorLog;
-                    mntmUploadErrorLog.setText(I18n.E3D_UPLOAD_ERROR_LOGS);
-                }
-                new MenuItem(mnuTools, SWT.SEPARATOR);
-                {
-                    MenuItem mntmAntiAliasing = new MenuItem(mnuTools, SWT.CHECK);
-                    mntmAntiAliasing.setSelection(WorkbenchManager.getUserSettingState().isAntiAliasing());
-                    MiscToolItem.mntmAntiAliasingPtr[0] = mntmAntiAliasing;
-                    mntmAntiAliasing.setText(I18n.E3D_ANTI_ALIASING);
-                }
-                {
-                    MenuItem mntmOpenGL33Engine = new MenuItem(mnuTools, SWT.CHECK);
-                    mntmOpenGL33Engine.setSelection(WorkbenchManager.getUserSettingState().isOpenGL33Engine());
-                    MiscToolItem.mntmOpenGL33EnginePtr[0] = mntmOpenGL33Engine;
-                    mntmOpenGL33Engine.setText(I18n.E3D_NEW_ENGINE);
-                }
-                if (NLogger.debugging) {
-                    MenuItem mntmVulkanEngine = new MenuItem(mnuTools, SWT.CHECK);
-                    mntmVulkanEngine.setSelection(WorkbenchManager.getUserSettingState().isVulkanEngine());
-                    MiscToolItem.mntmVulkanEnginePtr[0] = mntmVulkanEngine;
-                    mntmVulkanEngine.setText(I18n.E3D_VULKAN_ENGINE);
-                }
-                new MenuItem(mnuTools, SWT.SEPARATOR);
-                {
-                    MenuItem mntmSyncLpeInline = new MenuItem(mnuTools, SWT.CHECK);
-                    mntmSyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());
-                    MiscToolItem.mntmSyncLpeInlinePtr[0] = mntmSyncLpeInline;
-                    mntmSyncLpeInline.setText(I18n.E3D_PARSE_INLINE);
-                }
-            }
-        }
+        new MenuItem(mnuTools, SWT.SEPARATOR);
+
+        MenuItem mntmSyncLpeInline = new MenuItem(mnuTools, SWT.CHECK);
+        mntmSyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());
+        MiscToolItem.mntmSyncLpeInlinePtr[0] = mntmSyncLpeInline;
+        mntmSyncLpeInline.setText(I18n.E3D_PARSE_INLINE);
     }
 
     private static void addListeners() {
@@ -1908,7 +1835,8 @@ public class MiscToolItem extends ToolItem {
                                 });
                             }
                         });
-                    } catch (InvocationTargetException consumed) {
+                    } catch (InvocationTargetException ex) {
+                        NLogger.error(MiscToolItem.class, ex);
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
                         throw new LDPartEditorException(ie);
@@ -2703,52 +2631,51 @@ public class MiscToolItem extends ToolItem {
         widgetUtil(mntmUploadLogsPtr[0]).addSelectionListener(e -> {
 
             String source = ""; //$NON-NLS-1$
-            {
-                StringBuilder code1 = new StringBuilder();
 
-                File l11 = new File(NLogger.ERROR_LOG);
-                File l21 = new File(NLogger.ERROR_LOG2);
+            StringBuilder code1 = new StringBuilder();
 
-                if (l11.exists() || l21.exists()) {
-                    try {
-                        if (l11.exists()) {
-                            try (UTF8BufferedReader b11 = new UTF8BufferedReader(NLogger.ERROR_LOG)) {
-                                String line1;
-                                while ((line1 = b11.readLine()) != null) {
-                                    code1.append(line1);
-                                    code1.append(StringHelper.getLineDelimiter());
-                                }
+            File l11 = new File(NLogger.ERROR_LOG);
+            File l21 = new File(NLogger.ERROR_LOG2);
+
+            if (l11.exists() || l21.exists()) {
+                try {
+                    if (l11.exists()) {
+                        try (UTF8BufferedReader b11 = new UTF8BufferedReader(NLogger.ERROR_LOG)) {
+                            String line1;
+                            while ((line1 = b11.readLine()) != null) {
+                                code1.append(line1);
+                                code1.append(StringHelper.getLineDelimiter());
                             }
                         }
-
-                        if (l21.exists()) {
-                            try (UTF8BufferedReader b21 = new UTF8BufferedReader(NLogger.ERROR_LOG2)) {
-                                String line2;
-                                while ((line2 = b21.readLine()) != null) {
-                                    code1.append(line2);
-                                    code1.append(StringHelper.getLineDelimiter());
-                                }
-                            }
-                        }
-
-                        source = code1.toString();
-                    } catch (Exception ex) {
-                        NLogger.error(Editor3DWindow.class, ex);
-                        MessageBox messageBox1 = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBox1.setText(I18n.DIALOG_ERROR);
-                        messageBox1.setMessage(I18n.E3D_LOG_UPLOAD_UNEXPECTED_EXCEPTION);
-                        messageBox1.open();
-                        regainFocus();
-                        return;
                     }
-                } else {
-                    MessageBox messageBox2 = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                    messageBox2.setText(I18n.DIALOG_INFO);
-                    messageBox2.setMessage(I18n.E3D_LOG_UPLOAD_NO_LOG_FILES);
-                    messageBox2.open();
+
+                    if (l21.exists()) {
+                        try (UTF8BufferedReader b21 = new UTF8BufferedReader(NLogger.ERROR_LOG2)) {
+                            String line2;
+                            while ((line2 = b21.readLine()) != null) {
+                                code1.append(line2);
+                                code1.append(StringHelper.getLineDelimiter());
+                            }
+                        }
+                    }
+
+                    source = code1.toString();
+                } catch (Exception ex) {
+                    NLogger.error(Editor3DWindow.class, ex);
+                    MessageBox messageBox1 = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
+                    messageBox1.setText(I18n.DIALOG_ERROR);
+                    messageBox1.setMessage(I18n.E3D_LOG_UPLOAD_UNEXPECTED_EXCEPTION);
+                    messageBox1.open();
                     regainFocus();
                     return;
                 }
+            } else {
+                MessageBox messageBox2 = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                messageBox2.setText(I18n.DIALOG_INFO);
+                messageBox2.setMessage(I18n.E3D_LOG_UPLOAD_NO_LOG_FILES);
+                messageBox2.open();
+                regainFocus();
+                return;
             }
 
             LogUploadDialog dialog = new LogUploadDialog(Editor3DWindow.getWindow().getShell(), source);

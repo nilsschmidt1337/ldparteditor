@@ -77,6 +77,7 @@ import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.CopyPasteToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.PerspectiveToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -283,14 +284,6 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnLineSize2Ptr = new NButton[1];
     final NButton[] btnLineSize3Ptr = new NButton[1];
     final NButton[] btnLineSize4Ptr = new NButton[1];
-
-    final NButton[] btnPerspectiveFrontPtr = new NButton[1];
-    final NButton[] btnPerspectiveBackPtr = new NButton[1];
-    final NButton[] btnPerspectiveTopPtr = new NButton[1];
-    final NButton[] btnPerspectiveBottomPtr = new NButton[1];
-    final NButton[] btnPerspectiveLeftPtr = new NButton[1];
-    final NButton[] btnPerspectiveRightPtr = new NButton[1];
-    final NButton[] btnPerspectiveTwoThirdsPtr = new NButton[1];
 
     final NButton[] btnRenderModeNoBackfaceCullingPtr = new NButton[1];
     final NButton[] btnRenderModeRandomColoursPtr = new NButton[1];
@@ -1657,51 +1650,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemPerspective(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemViewPerspective = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnPerspectiveFront = new NButton(toolItemViewPerspective, Cocoa.getStyle());
-            this.btnPerspectiveFrontPtr[0] = btnPerspectiveFront;
-            KeyStateManager.addTooltipText(btnPerspectiveFront, I18n.PERSPECTIVE_FRONT, Task.PERSPECTIVE_FRONT);
-            btnPerspectiveFront.setImage(ResourceManager.getImage("icon16_front.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnPerspective = new NButton(toolItemViewPerspective, Cocoa.getStyle());
-            this.btnPerspectiveBackPtr[0] = btnPerspective;
-            KeyStateManager.addTooltipText(btnPerspective, I18n.PERSPECTIVE_BACK, Task.PERSPECTIVE_BACK);
-            btnPerspective.setImage(ResourceManager.getImage("icon16_back.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnPerspective = new NButton(toolItemViewPerspective, Cocoa.getStyle());
-            this.btnPerspectiveLeftPtr[0] = btnPerspective;
-            KeyStateManager.addTooltipText(btnPerspective, I18n.PERSPECTIVE_LEFT, Task.PERSPECTIVE_LEFT);
-            btnPerspective.setImage(ResourceManager.getImage("icon16_left.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnPerspective = new NButton(toolItemViewPerspective, Cocoa.getStyle());
-            this.btnPerspectiveRightPtr[0] = btnPerspective;
-            KeyStateManager.addTooltipText(btnPerspective, I18n.PERSPECTIVE_RIGHT, Task.PERSPECTIVE_RIGHT);
-            btnPerspective.setImage(ResourceManager.getImage("icon16_right.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnPerspective = new NButton(toolItemViewPerspective, Cocoa.getStyle());
-            this.btnPerspectiveTopPtr[0] = btnPerspective;
-            KeyStateManager.addTooltipText(btnPerspective, I18n.PERSPECTIVE_TOP, Task.PERSPECTIVE_TOP);
-            btnPerspective.setImage(ResourceManager.getImage("icon16_top.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnPerspective = new NButton(toolItemViewPerspective, Cocoa.getStyle());
-            this.btnPerspectiveBottomPtr[0] = btnPerspective;
-            KeyStateManager.addTooltipText(btnPerspective, I18n.PERSPECTIVE_BOTTOM, Task.PERSPECTIVE_BOTTOM);
-            btnPerspective.setImage(ResourceManager.getImage("icon16_bottom.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnPerspective = new NButton(toolItemViewPerspective, Cocoa.getStyle());
-            this.btnPerspectiveTwoThirdsPtr[0] = btnPerspective;
-            KeyStateManager.addTooltipText(btnPerspective, I18n.PERSPECTIVE_TWO_THIRDS, Task.PERSPECTIVE_TWO_THIRDS);
-            btnPerspective.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
-        }
-        return toolItemViewPerspective;
+        return new PerspectiveToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemRenderMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
