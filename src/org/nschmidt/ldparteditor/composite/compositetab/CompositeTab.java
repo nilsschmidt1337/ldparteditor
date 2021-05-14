@@ -87,6 +87,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
@@ -725,8 +726,8 @@ public class CompositeTab extends CompositeTabDesign {
                     canvasLineNumberAreaPtr[0].redraw();
                 } else {
                     // Text inserted
-                    if (tabState.isDoingPaste() && Editor3DWindow.getWindow().isMovingAdjacentData() && WorkbenchManager.getUserSettingState().isDisableMADtext()) {
-                        Editor3DWindow.getWindow().setMovingAdjacentData(false);
+                    if (tabState.isDoingPaste() && MiscToggleToolItem.isMovingAdjacentData() && WorkbenchManager.getUserSettingState().isDisableMADtext()) {
+                        MiscToggleToolItem.setMovingAdjacentData(false);
                         GuiStatusManager.updateStatus();
                     }
                 }

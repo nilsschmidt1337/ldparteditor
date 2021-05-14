@@ -54,7 +54,7 @@ public class CopyPasteToolItem extends ToolItem {
         widgetUtil(btnDelete).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
+                Project.getFileToEdit().getVertexManager().delete(MiscToggleToolItem.isMovingAdjacentData(), true);
             }
 
             Editor3DWindow.getWindow().regainFocus();
@@ -81,7 +81,7 @@ public class CopyPasteToolItem extends ToolItem {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().paste(MiscToolItem.loadSelectorSettings());
                 if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
-                    Editor3DWindow.getWindow().setMovingAdjacentData(false);
+                    MiscToggleToolItem.setMovingAdjacentData(false);
                     GuiStatusManager.updateStatus();
                 }
             }

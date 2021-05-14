@@ -47,7 +47,6 @@ import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.FocusEvent;
@@ -123,7 +122,6 @@ import org.nschmidt.ldparteditor.helper.SphereGL20;
 import org.nschmidt.ldparteditor.helper.Version;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
-import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.TreeData;
 import org.nschmidt.ldparteditor.helper.composite3d.ViewIdleManager;
@@ -179,9 +177,6 @@ public class Editor3DWindow extends Editor3DDesign {
     private static final AtomicBoolean alive = new AtomicBoolean(true);
     private static final AtomicBoolean no_sync_deadlock = new AtomicBoolean(false);
 
-    private boolean movingAdjacentData = WorkbenchManager.getUserSettingState().isMovingAdjacentData();
-    private boolean noTransparentSelection = false;
-    private boolean bfcToggle = false;
     private boolean insertingAtCursorPosition = false;
     private boolean reviewingAPart = false;
     private ObjectMode workingType = ObjectMode.VERTICES;
@@ -1030,12 +1025,6 @@ public class Editor3DWindow extends Editor3DDesign {
                 vm.getSelectedSubfiles().clear();
                 vm.setModified(true, true);
             }
-            regainFocus();
-        });
-        widgetUtil(btnMoveAdjacentDataPtr[0]).addSelectionListener(e -> {
-            clickSingleBtn(btnMoveAdjacentDataPtr[0]);
-            setMovingAdjacentData(btnMoveAdjacentDataPtr[0].getSelection());
-            GuiStatusManager.updateStatus();
             regainFocus();
         });
         if (btnToggleLinesOpenGLPtr[0] != null) widgetUtil(btnToggleLinesOpenGLPtr[0]).addSelectionListener(e -> {
@@ -2163,46 +2152,6 @@ public class Editor3DWindow extends Editor3DDesign {
             getCompositePrimitive().zoomOut();
             getCompositePrimitive().getOpenGL().drawScene(-1, -1);
         });
-        widgetUtil(btnHidePtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedData().isEmpty()) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().getVertexManager().hideSelection();
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    for (CTabItem t : w.getTabFolder().getItems()) {
-                        if (Project.getFileToEdit().equals(((CompositeTab) t).getState().getFileNameObj())) {
-                            StyledText st = ((CompositeTab) t).getTextComposite();
-                            st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
-                        }
-                    }
-                }
-                Project.getFileToEdit().addHistory();
-            }
-            regainFocus();
-        });
-        widgetUtil(btnShowAllPtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().getVertexManager().showAll();
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    for (CTabItem t : w.getTabFolder().getItems()) {
-                        if (Project.getFileToEdit().equals(((CompositeTab) t).getState().getFileNameObj())) {
-                            StyledText st = ((CompositeTab) t).getTextComposite();
-                            st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
-                        }
-                    }
-                }
-                Project.getFileToEdit().addHistory();
-            }
-            regainFocus();
-        });
-        widgetUtil(btnNoTransparentSelectionPtr[0]).addSelectionListener(e -> {
-            setNoTransparentSelection(btnNoTransparentSelectionPtr[0].getSelection());
-            regainFocus();
-        });
-        widgetUtil(btnBFCTogglePtr[0]).addSelectionListener(e -> {
-            setBfcToggle(btnBFCTogglePtr[0].getSelection());
-            regainFocus();
-        });
         widgetUtil(btnInsertAtCursorPositionPtr[0]).addSelectionListener(e -> {
             setInsertingAtCursorPosition(btnInsertAtCursorPositionPtr[0].getSelection());
             regainFocus();
@@ -2946,12 +2895,6 @@ public class Editor3DWindow extends Editor3DDesign {
         clickSingleBtn(btnInsertAtCursorPositionPtr[0]);
     }
 
-    public void toggleMoveAdjacentData() {
-        setMovingAdjacentData(!isMovingAdjacentData());
-        btnMoveAdjacentDataPtr[0].setSelection(isMovingAdjacentData());
-        clickSingleBtn(btnMoveAdjacentDataPtr[0]);
-    }
-
     public void setObjMode(int type) {
         switch (type) {
         case 0:
@@ -3647,16 +3590,6 @@ public class Editor3DWindow extends Editor3DDesign {
         this.workingType = workingMode;
     }
 
-    public boolean isMovingAdjacentData() {
-        return movingAdjacentData;
-    }
-
-    public void setMovingAdjacentData(boolean movingAdjacentData) {
-        btnMoveAdjacentDataPtr[0].setSelection(movingAdjacentData);
-        this.movingAdjacentData = movingAdjacentData;
-        WorkbenchManager.getUserSettingState().setMovingAdjacentData(movingAdjacentData);
-    }
-
     public WorkingMode getWorkingAction() {
         return workingAction;
     }
@@ -3686,22 +3619,6 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public ManipulatorScope getTransformationMode() {
         return transformationMode;
-    }
-
-    public boolean hasNoTransparentSelection() {
-        return noTransparentSelection;
-    }
-
-    public void setNoTransparentSelection(boolean noTransparentSelection) {
-        this.noTransparentSelection = noTransparentSelection;
-    }
-
-    public boolean hasBfcToggle() {
-        return bfcToggle;
-    }
-
-    public void setBfcToggle(boolean bfcToggle) {
-        this.bfcToggle = bfcToggle;
     }
 
     public boolean isInsertingAtCursorPosition() {

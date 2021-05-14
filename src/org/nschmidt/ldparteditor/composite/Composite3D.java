@@ -105,6 +105,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
@@ -504,7 +505,7 @@ public class Composite3D extends ScalableComposite {
             lockableDatFileReference.getVertexManager().addSnapshot();
             lockableDatFileReference.getVertexManager().paste(MiscToolItem.loadSelectorSettings());
             if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
-                Editor3DWindow.getWindow().setMovingAdjacentData(false);
+                MiscToggleToolItem.setMovingAdjacentData(false);
                 GuiStatusManager.updateStatus();
             }
         });
@@ -514,7 +515,7 @@ public class Composite3D extends ScalableComposite {
         widgetUtil(mntmDelete).addSelectionListener(e -> {
             if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
             lockableDatFileReference.getVertexManager().addSnapshot();
-            lockableDatFileReference.getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
+            lockableDatFileReference.getVertexManager().delete(MiscToggleToolItem.isMovingAdjacentData(), true);
         });
         mntmDelete.setText(I18n.COPYNPASTE_DELETE);
         mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$

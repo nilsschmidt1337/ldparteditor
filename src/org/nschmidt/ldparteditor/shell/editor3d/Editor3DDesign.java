@@ -75,7 +75,9 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.CopyPasteToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.HideUnhideToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.PerspectiveToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
@@ -145,7 +147,6 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnDecolourPtr = new NButton[1];
     final NButton[] btnPalettePtr = new NButton[1];
 
-    final NButton[] btnMoveAdjacentDataPtr = new NButton[1];
     final NButton[] btnVerticesPtr = new NButton[1];
     final NButton[] btnTrisNQuadsPtr = new NButton[1];
     final NButton[] btnLinesPtr = new NButton[1];
@@ -183,11 +184,6 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnShowLeftPtr = new NButton[1];
     final NButton[] btnShowRightPtr = new NButton[1];
     final NButton[] btnSameWidthPtr = new NButton[1];
-
-    final NButton[] btnHidePtr = new NButton[1];
-    final NButton[] btnShowAllPtr = new NButton[1];
-    final NButton[] btnNoTransparentSelectionPtr = new NButton[1];
-    final NButton[] btnBFCTogglePtr = new NButton[1];
 
     final NButton[] btnCoarsePtr = new NButton[1];
     final NButton[] btnMediumPtr = new NButton[1];
@@ -1933,46 +1929,11 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemMiscToggle(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemMiscToggle = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnAdjacentMove = new NButton(toolItemMiscToggle, SWT.TOGGLE | Cocoa.getStyle());
-            this.btnMoveAdjacentDataPtr[0] = btnAdjacentMove;
-            KeyStateManager.addTooltipText(btnAdjacentMove, I18n.E3D_MOVE_ADJACENT_DATA, Task.MOVE_ADJACENT_DATA);
-            btnAdjacentMove.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
-            btnAdjacentMove.setSelection(WorkbenchManager.getUserSettingState().isMovingAdjacentData());
-        }
-        {
-            NButton btnTransSelection = new NButton(toolItemMiscToggle, SWT.TOGGLE | Cocoa.getStyle());
-            this.btnNoTransparentSelectionPtr[0] = btnTransSelection;
-            btnTransSelection.setToolTipText(I18n.E3D_TOGGLE_TRANSPARENT);
-            btnTransSelection.setImage(ResourceManager.getImage("icon16_notrans.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnBFCToggle = new NButton(toolItemMiscToggle, SWT.TOGGLE | Cocoa.getStyle());
-            this.btnBFCTogglePtr[0] = btnBFCToggle;
-            btnBFCToggle.setToolTipText(I18n.E3D_TOGGLE_BFC);
-            btnBFCToggle.setImage(ResourceManager.getImage("icon16_bfc.png")); //$NON-NLS-1$
-        }
-        return toolItemMiscToggle;
+        return new MiscToggleToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemHideUnhide(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemHideUnhide = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnHide = new NButton(toolItemHideUnhide, Cocoa.getStyle());
-            this.btnHidePtr[0] = btnHide;
-            btnHide.setToolTipText(I18n.E3D_HIDE);
-            btnHide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnUnhide = new NButton(toolItemHideUnhide, Cocoa.getStyle());
-            this.btnShowAllPtr[0] = btnUnhide;
-            btnUnhide.setToolTipText(I18n.E3D_SHOW_ALL);
-            btnUnhide.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
-        }
-        return toolItemHideUnhide;
+        return new HideUnhideToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemNewOpenDat(ToolItemDrawLocation location, ToolItemDrawMode mode) {

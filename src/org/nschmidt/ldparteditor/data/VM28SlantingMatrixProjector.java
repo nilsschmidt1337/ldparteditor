@@ -28,7 +28,7 @@ import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM28SlantingMatrixProjector extends VM27YTruder {
@@ -315,6 +315,6 @@ class VM28SlantingMatrixProjector extends VM27YTruder {
             selectedSubfiles.addAll(newSubfileSelection);
             reSelectSubFiles();
         }
-        transformSelection(transformation, null, Editor3DWindow.getWindow().isMovingAdjacentData());
+        transformSelection(transformation, null, MiscToggleToolItem.isMovingAdjacentData());
     }
 }

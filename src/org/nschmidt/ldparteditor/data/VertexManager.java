@@ -48,6 +48,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 
 /**
  * All actions are THREAD safe!! 1. Displays all vertices <br>
@@ -324,7 +325,7 @@ public final class VertexManager extends VM99Clipboard {
                         default:
                             break;
                         }
-                    } else if (lineLinkedToVertices.containsKey(gd) && Editor3DWindow.getWindow().isMovingAdjacentData()) {
+                    } else if (lineLinkedToVertices.containsKey(gd) && MiscToggleToolItem.isMovingAdjacentData()) {
                         if (gd.visible) {
                             dataToHide.add(gd);
                             gd.hide();

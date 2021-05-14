@@ -53,6 +53,7 @@ import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -67,7 +68,7 @@ class VM01SelectHelper extends VM01Select {
      * @return {@code true} if the selection did not use a rubber band
      */
     public synchronized boolean selectVertices(final Composite3D c3d, boolean addSomething, boolean forceRayTest) {
-        final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
+        final boolean noTrans = MiscToggleToolItem.hasNoTransparentSelection();
         final boolean noCondlineVerts = !c3d.isShowingCondlineControlPoints();
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())) && !addSomething || addSomething) {
             clearSelection2();
@@ -430,7 +431,7 @@ class VM01SelectHelper extends VM01Select {
                 selectedVertices.addAll(nearVertices);
             }
 
-        } else if (Editor3DWindow.getWindow().isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) {
+        } else if (MiscToggleToolItem.isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) {
             {
                 Map<GData, Integer> occurMap = new HashMap<>();
                 for (Vertex vertex : selectedVertices) {
@@ -489,7 +490,7 @@ class VM01SelectHelper extends VM01Select {
      * @param c3d
      */
     private synchronized void selectVertices2(final Composite3D c3d) {
-        final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
+        final boolean noTrans = MiscToggleToolItem.hasNoTransparentSelection();
         final boolean noCondlineVerts = !c3d.isShowingCondlineControlPoints();
 
         final Vector4f selectionStart = new Vector4f(c3d.getSelectionStart());
@@ -890,7 +891,7 @@ class VM01SelectHelper extends VM01Select {
     }
 
     public synchronized void selectLines(Composite3D c3d, SelectorSettings sels) {
-        final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
+        final boolean noTrans = MiscToggleToolItem.hasNoTransparentSelection();
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
@@ -1150,7 +1151,7 @@ class VM01SelectHelper extends VM01Select {
      * @param selectionWidth
      */
     private synchronized void selectLines2(Composite3D c3d, Vector4f selectionWidth, Vector4f selectionHeight) {
-        final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
+        final boolean noTrans = MiscToggleToolItem.hasNoTransparentSelection();
         Set<Vertex> tmpVerts = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
         tmpVerts.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
@@ -1573,7 +1574,7 @@ class VM01SelectHelper extends VM01Select {
     }
 
     private synchronized GData selectFacesHelper(Composite3D c3d, Event event) {
-        final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
+        final boolean noTrans = MiscToggleToolItem.hasNoTransparentSelection();
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
         Matrix4f viewportRotation = c3d.getRotation();
         Vector4f zAxis4f = new Vector4f(0, 0, -1f, 1f);

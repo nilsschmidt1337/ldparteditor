@@ -47,6 +47,7 @@ import org.nschmidt.ldparteditor.helper.math.Vector3r;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 
 class VM08SlicerPro extends VM07PathTruder {
 
@@ -895,7 +896,7 @@ class VM08SlicerPro extends VM07PathTruder {
         n.setZ((v[2].x - v[0].x) * (v[1].y - v[0].y) - (v[2].y - v[0].y) * (v[1].x - v[0].x));
         Matrix4f.transform(vport, n, n);
         Vector4f.sub(n, new Vector4f(vport.m03, vport.m13, vport.m23, 0f), n);
-        if (n.z > 0f ^ Editor3DWindow.getWindow().hasBfcToggle()) {
+        if (n.z > 0f ^ MiscToggleToolItem.hasBfcToggle()) {
             return new GData3(g3.colourNumber, g3.r, g3.g, g3.b, g3.a, v[0], v[2], v[1], View.DUMMY_REFERENCE, linkedDatFile, g3.isTriangle);
         } else {
             return null;

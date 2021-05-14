@@ -22,7 +22,7 @@ import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTabState;
 import org.nschmidt.ldparteditor.helper.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -52,7 +52,7 @@ public enum Rounder {
         // Check here if single vertex replacing (ALT+SHIFT+R) is active
         // If so, round only this vertex!
 
-        final VertexManager vm = datFile.getVertexManager();        
+        final VertexManager vm = datFile.getVertexManager();
         final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
         final boolean onX = userSettings.isRoundX();
         final boolean onY = userSettings.isRoundY();
@@ -86,7 +86,7 @@ public enum Rounder {
             datFile.getVertexManager().skipSyncTimer();
             datFile.getVertexManager().backupHideShowState();
             datFile.getVertexManager()
-            .roundSelection(userSettings.getCoordsPrecision(), userSettings.getTransMatrixPrecision(), Editor3DWindow.getWindow().isMovingAdjacentData(), true, onX, onY, onZ);
+            .roundSelection(userSettings.getCoordsPrecision(), userSettings.getTransMatrixPrecision(), MiscToggleToolItem.isMovingAdjacentData(), true, onX, onY, onZ);
         }
 
         datFile.getVertexManager().clearSelection();

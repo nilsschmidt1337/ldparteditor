@@ -34,7 +34,7 @@ import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
 
@@ -103,7 +103,7 @@ class CoordinatesDesign extends Dialog {
         Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        if (Editor3DWindow.getWindow().isMovingAdjacentData()) {
+        if (MiscToggleToolItem.isMovingAdjacentData()) {
             Label lblAdjacencyWarning = new Label(cmpContainer, SWT.NONE);
             lblAdjacencyWarning.setText(I18n.E3D_ADJACENT_WARNING_STATUS);
             lblAdjacencyWarning.setToolTipText(I18n.E3D_ADJACENT_WARNING_DIALOG);

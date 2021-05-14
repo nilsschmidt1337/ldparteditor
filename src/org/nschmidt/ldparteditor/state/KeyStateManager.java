@@ -58,6 +58,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -488,7 +489,7 @@ public class KeyStateManager {
                     vm.addSnapshot();
                     switch (t) {
                     case DELETE:
-                        vm.delete(win.isMovingAdjacentData(), true);
+                        vm.delete(MiscToggleToolItem.isMovingAdjacentData(), true);
                         break;
                     case INSERT_AT_CURSOR:
                         win.toggleInsertAtCursor();
@@ -516,12 +517,12 @@ public class KeyStateManager {
                         break;
                     case CUT:
                         vm.copy();
-                        vm.delete(win.isMovingAdjacentData(), true);
+                        vm.delete(MiscToggleToolItem.isMovingAdjacentData(), true);
                         break;
                     case PASTE:
                         vm.paste(MiscToolItem.loadSelectorSettings());
                         if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
-                            win.setMovingAdjacentData(false);
+                            MiscToggleToolItem.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                         }
                         break;
@@ -559,7 +560,7 @@ public class KeyStateManager {
                         ManipulatorToolItem.mntmManipulatorToAverage();
                         break;
                     case MOVE_ADJACENT_DATA:
-                        win.toggleMoveAdjacentData();
+                        MiscToggleToolItem.toggleMoveAdjacentData();
                         break;
                     case SWAP_WINDING:
                         vm.backupHideShowState();
@@ -810,7 +811,7 @@ public class KeyStateManager {
                     case TRANSFORM_RIGHT_COPY:
                         if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || win.getWorkingAction() == WorkingMode.SELECT) break;
                         if (tmpCtrlPressed) {
-                            win.setMovingAdjacentData(false);
+                            MiscToggleToolItem.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                             vm.copy();
                             vm.paste(null);
@@ -827,7 +828,7 @@ public class KeyStateManager {
                     case TRANSFORM_LEFT_COPY:
                         if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || win.getWorkingAction() == WorkingMode.SELECT) break;
                         if (tmpCtrlPressed) {
-                            win.setMovingAdjacentData(false);
+                            MiscToggleToolItem.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                             vm.copy();
                             vm.paste(null);

@@ -35,6 +35,7 @@ import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -449,7 +450,7 @@ class VM02Add extends VM01SelectHelper {
         Matrix4f vport = c3d.getViewport();
         Matrix4f.transform(vport, n, n);
         Vector4f.sub(n, new Vector4f(vport.m03, vport.m13, vport.m23, 0f), n);
-        if (isTriangle && n.z > 0f ^ Editor3DWindow.getWindow().hasBfcToggle()) {
+        if (isTriangle && n.z > 0f ^ MiscToggleToolItem.hasBfcToggle()) {
             Vertex t = v1;
             v1 = v2;
             v2 = t;
@@ -561,7 +562,7 @@ class VM02Add extends VM01SelectHelper {
             Matrix4f vport = c3d.getViewport();
             Matrix4f.transform(vport, n, n);
             Vector4f.sub(n, new Vector4f(vport.m03, vport.m13, vport.m23, 0f), n);
-            if (n.z > 0f ^ Editor3DWindow.getWindow().hasBfcToggle()) {
+            if (n.z > 0f ^ MiscToggleToolItem.hasBfcToggle()) {
                 Vertex t = v1;
                 v1 = v3;
                 v3 = t;
@@ -693,7 +694,7 @@ class VM02Add extends VM01SelectHelper {
         Matrix4f vport = c3d.getViewport();
         Matrix4f.transform(vport, n, n);
         Vector4f.sub(n, new Vector4f(vport.m03, vport.m13, vport.m23, 0f), n);
-        if (n.z > 0f ^ Editor3DWindow.getWindow().hasBfcToggle()) {
+        if (n.z > 0f ^ MiscToggleToolItem.hasBfcToggle()) {
             Vertex t = v1;
             v1 = v3;
             v3 = t;

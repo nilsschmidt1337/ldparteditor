@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 
@@ -148,7 +149,7 @@ public enum GuiStatusManager {
             }
 
             final Editor3DWindow win = Editor3DWindow.getWindow();
-            if (win.isMovingAdjacentData()) {
+            if (MiscToggleToolItem.isMovingAdjacentData()) {
                 sb.append(I18n.E3D_ADJACENT_WARNING_STATUS);
             }
 

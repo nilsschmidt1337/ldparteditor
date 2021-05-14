@@ -1429,15 +1429,15 @@ public class MiscToolItem extends ToolItem {
                                 CoordinatesDialog.setZ(c2);
                             }
                         } else {
-                            final boolean moveAdjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
+                            final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
                             if (CoordinatesDialog.isCreatingCopy()) {
                                 vm.copy();
                                 vm.paste(null);
-                                Editor3DWindow.getWindow().setMovingAdjacentData(false);
+                                MiscToggleToolItem.setMovingAdjacentData(false);
                                 vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), false, true, CoordinatesDialog.getTransformationMode());
-                                Editor3DWindow.getWindow().setMovingAdjacentData(moveAdjacentData);
+                                MiscToggleToolItem.setMovingAdjacentData(moveAdjacentData);
                             } else {
-                                vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), Editor3DWindow.getWindow().isMovingAdjacentData() || vm.getSelectedData().isEmpty() || vm.getSelectedVertices().size() == 1, true, CoordinatesDialog.getTransformationMode());
+                                vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), MiscToggleToolItem.isMovingAdjacentData() || vm.getSelectedData().isEmpty() || vm.getSelectedVertices().size() == 1, true, CoordinatesDialog.getTransformationMode());
                             }
                         }
 
@@ -1468,18 +1468,18 @@ public class MiscToolItem extends ToolItem {
                     }
                     if (new TranslateDialog(Editor3DWindow.getWindow().getShell(), new Vertex(c3d.getManipulator().getAccuratePosition()), Editor3DWindow.getWindow().getTransformationMode()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
-                        final boolean moveAdjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
+                        final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
                         final int iterations = TranslateDialog.getAndResetIterations();
                         for (int i = 0; i < iterations; i++) {
                             if (TranslateDialog.isCreatingCopy()) {
                                 c3d.getLockableDatFileReference().getVertexManager().copy();
                                 c3d.getLockableDatFileReference().getVertexManager().paste(null);
-                                Editor3DWindow.getWindow().setMovingAdjacentData(false);
+                                MiscToggleToolItem.setMovingAdjacentData(false);
                             }
-                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), Editor3DWindow.getWindow().isMovingAdjacentData(), true, TranslateDialog.getTransformationMode());
+                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), MiscToggleToolItem.isMovingAdjacentData(), true, TranslateDialog.getTransformationMode());
                         }
                         if (TranslateDialog.isCreatingCopy()) {
-                            Editor3DWindow.getWindow().setMovingAdjacentData(moveAdjacentData);
+                            MiscToggleToolItem.setMovingAdjacentData(moveAdjacentData);
                         }
                     }
                     Editor3DWindow.getWindow().setWorkingAction(action);
@@ -1530,18 +1530,18 @@ public class MiscToolItem extends ToolItem {
                     }
                     if (new RotateDialog(Editor3DWindow.getWindow().getShell(), null, clipboard, mani, Editor3DWindow.getWindow().getTransformationMode()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
-                        final boolean moveAdjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
+                        final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
                         final int iterations = RotateDialog.getAndResetIterations();
                         for (int i = 0; i < iterations; i++) {
                             if (RotateDialog.isCreatingCopy()) {
                                 c3d.getLockableDatFileReference().getVertexManager().copy();
                                 c3d.getLockableDatFileReference().getVertexManager().paste(null);
-                                Editor3DWindow.getWindow().setMovingAdjacentData(false);
+                                MiscToggleToolItem.setMovingAdjacentData(false);
                             }
-                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), RotateDialog.isZ(), Editor3DWindow.getWindow().isMovingAdjacentData(), true, RotateDialog.getTransformationMode());
+                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), RotateDialog.isZ(), MiscToggleToolItem.isMovingAdjacentData(), true, RotateDialog.getTransformationMode());
                         }
                         if (RotateDialog.isCreatingCopy()) {
-                            Editor3DWindow.getWindow().setMovingAdjacentData(moveAdjacentData);
+                            MiscToggleToolItem.setMovingAdjacentData(moveAdjacentData);
                         }
                     }
                     Editor3DWindow.getWindow().setWorkingAction(action);
@@ -1593,15 +1593,15 @@ public class MiscToolItem extends ToolItem {
                     if (new ScaleDialog(Editor3DWindow.getWindow().getShell(), null, clipboard, mani, Editor3DWindow.getWindow().getTransformationMode()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                         Editor3DWindow.getWindow().updateInitialScale(BigDecimal.ZERO, BigDecimal.ZERO, true);
-                        final boolean moveAdjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
+                        final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
                         if (ScaleDialog.isCreatingCopy()) {
                             c3d.getLockableDatFileReference().getVertexManager().copy();
                             c3d.getLockableDatFileReference().getVertexManager().paste(null);
-                            Editor3DWindow.getWindow().setMovingAdjacentData(false);
+                            MiscToggleToolItem.setMovingAdjacentData(false);
                         }
-                        c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), Editor3DWindow.getWindow().isMovingAdjacentData(), true, ScaleDialog.getTransformationMode());
+                        c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), MiscToggleToolItem.isMovingAdjacentData(), true, ScaleDialog.getTransformationMode());
                         if (ScaleDialog.isCreatingCopy()) {
-                            Editor3DWindow.getWindow().setMovingAdjacentData(moveAdjacentData);
+                            MiscToggleToolItem.setMovingAdjacentData(moveAdjacentData);
                         }
                     }
                     Editor3DWindow.getWindow().setWorkingAction(action);
@@ -1978,7 +1978,7 @@ public class MiscToolItem extends ToolItem {
                 Project.getFileToEdit().getVertexManager().backupHideShowState();
                 UserSettingState userSettings = WorkbenchManager.getUserSettingState();
                 Project.getFileToEdit().getVertexManager()
-                .roundSelection(userSettings.getCoordsPrecision(), userSettings.getTransMatrixPrecision(), Editor3DWindow.getWindow().isMovingAdjacentData(), true, userSettings.isRoundX(), userSettings.isRoundY(), userSettings.isRoundZ());
+                .roundSelection(userSettings.getCoordsPrecision(), userSettings.getTransMatrixPrecision(), MiscToggleToolItem.isMovingAdjacentData(), true, userSettings.isRoundX(), userSettings.isRoundY(), userSettings.isRoundZ());
             }
             regainFocus();
         });

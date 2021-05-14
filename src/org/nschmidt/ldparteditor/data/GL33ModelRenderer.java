@@ -56,7 +56,7 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer33;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 
 /**
  * New OpenGL 3.3 high performance render function for the model (VAO accelerated)
@@ -687,7 +687,7 @@ public class GL33ModelRenderer {
                 final Manipulator manipulator = c3d.getManipulator();
                 final Matrix4f transform = manipulator.getTempTransformation4f();
                 final boolean isTransforming = manipulator.isModified();
-                final boolean moveAdjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
+                final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
 
                 final List<Matrix4f> stud1Matrices;
                 final List<Matrix4f> stud2Matrices;

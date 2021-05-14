@@ -38,6 +38,7 @@ import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 
 /**
  * @author nils
@@ -1127,7 +1128,7 @@ public class Manipulator {
 
     public void applyTranslation(Composite3D c3d) {
         if (modified) {
-            c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
+            c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, MiscToggleToolItem.isMovingAdjacentData());
             initialScaleOld = initialScaleNew;
             Editor3DWindow.getWindow().updateInitialScale(initialScaleNew, factorScale, false);
         }
@@ -1136,7 +1137,7 @@ public class Manipulator {
 
     public void applyTranslationAtSelect(Composite3D c3d) {
         if (modified) {
-            c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
+            c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, MiscToggleToolItem.isMovingAdjacentData());
         }
         resetTranslation();
     }

@@ -26,7 +26,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 
 class VM15Flipper extends VM14Splitter {
 
@@ -38,8 +38,8 @@ class VM15Flipper extends VM14Splitter {
 
         if (linkedDatFile.isReadOnly()) return;
 
-        final boolean adjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
-        Editor3DWindow.getWindow().setMovingAdjacentData(false);
+        final boolean adjacentData = MiscToggleToolItem.isMovingAdjacentData();
+        MiscToggleToolItem.setMovingAdjacentData(false);
         GuiStatusManager.updateStatus();
 
         final Set<GData2> newLines = new HashSet<>();
@@ -261,7 +261,7 @@ class VM15Flipper extends VM14Splitter {
         selectedData.addAll(selectedQuads);
         selectedData.addAll(selectedCondlines);
 
-        Editor3DWindow.getWindow().setMovingAdjacentData(adjacentData);
+        MiscToggleToolItem.setMovingAdjacentData(adjacentData);
 
         if (isModified()) {
             syncWithTextEditors(true);
