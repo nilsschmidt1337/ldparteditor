@@ -1276,14 +1276,14 @@ public class MiscToolItem extends ToolItem {
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     vm.addSnapshot();
-                    final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();
+                    final WorkingMode action = TransformationModeToolItem.getWorkingAction();
                     if (DirectionDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
                     } else {
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                     }
                     vm.merge(MergeTo.NEAREST_FACE, true, true);
-                    Editor3DWindow.getWindow().setWorkingAction(action);
+                    TransformationModeToolItem.setWorkingAction(action);
                     regainFocus();
                     return;
                 }
@@ -1333,11 +1333,11 @@ public class MiscToolItem extends ToolItem {
                         v = clipboardVertex;
                     }
                     final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
-                    final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();
+                    final WorkingMode action = TransformationModeToolItem.getWorkingAction();
                     if (CoordinatesDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
                     } else {
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                     }
                     if (new CoordinatesDialog(Editor3DWindow.getWindow().getShell(), v, mani, c3d.getManipulator()).open() == IDialogConstants.OK_ID) {
 
@@ -1446,7 +1446,7 @@ public class MiscToolItem extends ToolItem {
                             CoordinatesDialog.setEnd(null);
                         }
                     }
-                    Editor3DWindow.getWindow().setWorkingAction(action);
+                    TransformationModeToolItem.setWorkingAction(action);
                     regainFocus();
                     return;
                 }
@@ -1460,11 +1460,11 @@ public class MiscToolItem extends ToolItem {
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())
                         && c3d.equals(DatFile.getLastHoveredComposite())
                         && !c3d.getLockableDatFileReference().isReadOnly()) {
-                    final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();
+                    final WorkingMode action = TransformationModeToolItem.getWorkingAction();
                     if (TranslateDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
                     } else {
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                     }
                     if (new TranslateDialog(Editor3DWindow.getWindow().getShell(), new Vertex(c3d.getManipulator().getAccuratePosition()), Editor3DWindow.getWindow().getTransformationMode()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
@@ -1482,7 +1482,7 @@ public class MiscToolItem extends ToolItem {
                             MiscToggleToolItem.setMovingAdjacentData(moveAdjacentData);
                         }
                     }
-                    Editor3DWindow.getWindow().setWorkingAction(action);
+                    TransformationModeToolItem.setWorkingAction(action);
                     regainFocus();
                     return;
                 }
@@ -1522,11 +1522,11 @@ public class MiscToolItem extends ToolItem {
                         }
                     }
                     final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
-                    final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();
+                    final WorkingMode action = TransformationModeToolItem.getWorkingAction();
                     if (RotateDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
                     } else {
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                     }
                     if (new RotateDialog(Editor3DWindow.getWindow().getShell(), null, clipboard, mani, Editor3DWindow.getWindow().getTransformationMode()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
@@ -1544,7 +1544,7 @@ public class MiscToolItem extends ToolItem {
                             MiscToggleToolItem.setMovingAdjacentData(moveAdjacentData);
                         }
                     }
-                    Editor3DWindow.getWindow().setWorkingAction(action);
+                    TransformationModeToolItem.setWorkingAction(action);
                     regainFocus();
                     return;
                 }
@@ -1584,11 +1584,11 @@ public class MiscToolItem extends ToolItem {
                         }
                     }
                     final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
-                    final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();
+                    final WorkingMode action = TransformationModeToolItem.getWorkingAction();
                     if (ScaleDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
                     } else {
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                     }
                     if (new ScaleDialog(Editor3DWindow.getWindow().getShell(), null, clipboard, mani, Editor3DWindow.getWindow().getTransformationMode()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
@@ -1604,7 +1604,7 @@ public class MiscToolItem extends ToolItem {
                             MiscToggleToolItem.setMovingAdjacentData(moveAdjacentData);
                         }
                     }
-                    Editor3DWindow.getWindow().setWorkingAction(action);
+                    TransformationModeToolItem.setWorkingAction(action);
                     regainFocus();
                     return;
                 }

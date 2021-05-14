@@ -25,7 +25,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.WorkingMode;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 
 /**
  *
@@ -78,13 +78,13 @@ public class ScaleDialog extends ScaleDesign {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
             btnLocalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.LOCAL;
-            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+            TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
         });
         widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
-            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+            TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
         });
         widgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> x = cbXaxisPtr[0].getSelection());
         widgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> y = cbYaxisPtr[0].getSelection());

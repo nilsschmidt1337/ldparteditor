@@ -27,7 +27,7 @@ import org.nschmidt.ldparteditor.enumtype.WorkingMode;
 import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 
 /**
  *
@@ -103,7 +103,7 @@ public class DirectionDialog extends DirectionDesign {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
             btnLocalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.LOCAL) {
-                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                 transformationMode = ManipulatorScope.LOCAL;
                 cart = globalToLocal(cart);
                 sphe = cartesianToSpherical(cart);
@@ -114,7 +114,7 @@ public class DirectionDialog extends DirectionDesign {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.GLOBAL) {
-                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
                 transformationMode = ManipulatorScope.GLOBAL;
                 cart = localToGlobal(cart);
                 sphe = cartesianToSpherical(cart);

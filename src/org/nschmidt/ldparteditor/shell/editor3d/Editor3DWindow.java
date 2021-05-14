@@ -113,7 +113,6 @@ import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.Perspective;
 import org.nschmidt.ldparteditor.enumtype.SnapSize;
 import org.nschmidt.ldparteditor.enumtype.View;
-import org.nschmidt.ldparteditor.enumtype.WorkingMode;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.Manipulator;
@@ -133,7 +132,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
-import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -180,7 +178,6 @@ public class Editor3DWindow extends Editor3DDesign {
     private boolean insertingAtCursorPosition = false;
     private boolean reviewingAPart = false;
     private ObjectMode workingType = ObjectMode.VERTICES;
-    private WorkingMode workingAction = WorkingMode.SELECT;
     private ManipulatorAxisMode workingLayer = ManipulatorAxisMode.NONE;
 
     private GColour lastUsedColour = LDConfig.getColour16();
@@ -890,38 +887,6 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-
-        widgetUtil(btnSelectPtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnSelectPtr[0]);
-            workingAction = WorkingMode.SELECT;
-            AddToolItem.disableAddAction();
-            regainFocus();
-        });
-        widgetUtil(btnMovePtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnMovePtr[0]);
-            workingAction = WorkingMode.MOVE;
-            AddToolItem.disableAddAction();
-            regainFocus();
-        });
-        widgetUtil(btnRotatePtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnRotatePtr[0]);
-            workingAction = WorkingMode.ROTATE;
-            AddToolItem.disableAddAction();
-            regainFocus();
-        });
-        widgetUtil(btnScalePtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnScalePtr[0]);
-            workingAction = WorkingMode.SCALE;
-            AddToolItem.disableAddAction();
-            regainFocus();
-        });
-        widgetUtil(btnCombinedPtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnCombinedPtr[0]);
-            workingAction = WorkingMode.COMBINED;
-            AddToolItem.disableAddAction();
-            regainFocus();
-        });
-
         widgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
             clickBtnTest(btnLocalPtr[0]);
             transformationMode = ManipulatorScope.LOCAL;
@@ -932,7 +897,6 @@ public class Editor3DWindow extends Editor3DDesign {
             transformationMode = ManipulatorScope.GLOBAL;
             regainFocus();
         });
-
         widgetUtil(btnVerticesPtr[0]).addSelectionListener(e -> {
             clickBtnTest(btnVerticesPtr[0]);
             setWorkingType(ObjectMode.VERTICES);
@@ -3490,33 +3454,6 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void setWorkingType(ObjectMode workingMode) {
         this.workingType = workingMode;
-    }
-
-    public WorkingMode getWorkingAction() {
-        return workingAction;
-    }
-
-    public void setWorkingAction(WorkingMode workingAction) {
-        this.workingAction = workingAction;
-        switch (workingAction) {
-        case COMBINED:
-            clickBtnTest(btnCombinedPtr[0]);
-            break;
-        case MOVE:
-            clickBtnTest(btnMovePtr[0]);
-            break;
-        case ROTATE:
-            clickBtnTest(btnRotatePtr[0]);
-            break;
-        case SCALE:
-            clickBtnTest(btnScalePtr[0]);
-            break;
-        case SELECT:
-            clickBtnTest(btnSelectPtr[0]);
-            break;
-        default:
-            break;
-        }
     }
 
     public ManipulatorScope getTransformationMode() {

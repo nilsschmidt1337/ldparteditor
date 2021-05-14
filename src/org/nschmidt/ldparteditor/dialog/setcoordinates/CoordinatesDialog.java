@@ -27,7 +27,7 @@ import org.nschmidt.ldparteditor.enumtype.WorkingMode;
 import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 
 /**
  *
@@ -85,7 +85,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
             btnLocalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.LOCAL) {
                 transformationMode = ManipulatorScope.LOCAL;
-                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                 vertex = globalToLocal(vertex);
             }
             updateXYZ();
@@ -95,7 +95,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
             btnGlobalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.GLOBAL) {
                 transformationMode = ManipulatorScope.GLOBAL;
-                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
                 vertex = localToGlobal(vertex);
             }
             updateXYZ();

@@ -45,4 +45,9 @@ public class ToolItem extends Composite {
         WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn.getParent());
         btn.setSelection(state);
     }
+
+    protected static void clickRadioBtn(NButton btn) {
+        WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn.getParent());
+        btn.setSelection(true);
+    }
 }

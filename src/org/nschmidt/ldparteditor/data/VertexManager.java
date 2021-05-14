@@ -47,8 +47,8 @@ import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helper.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 
 /**
  * All actions are THREAD safe!! 1. Displays all vertices <br>
@@ -929,7 +929,7 @@ public final class VertexManager extends VM99Clipboard {
         }
 
         if (objectSelected) {
-            if (Editor3DWindow.getWindow().getWorkingAction() != WorkingMode.SELECT) {
+            if (TransformationModeToolItem.getWorkingAction() != WorkingMode.SELECT) {
                 c3d.getManipulator().getPosition().set(minPoint.x, minPoint.y, minPoint.z, 1f);
                 if (selectedObject.type() == 3) {
                     GData3 tri = (GData3) selectedObject;

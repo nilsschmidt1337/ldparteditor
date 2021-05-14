@@ -34,8 +34,8 @@ import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.enumtype.WorkingMode;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
@@ -113,7 +113,7 @@ class TranslateDesign extends Dialog {
             btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.LOCAL) {
                 btnLocal.setSelection(true);
-                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
             }
         }
         {
@@ -123,7 +123,7 @@ class TranslateDesign extends Dialog {
             btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.GLOBAL) {
                 btnGlobal.setSelection(true);
-                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
             }
         }
 

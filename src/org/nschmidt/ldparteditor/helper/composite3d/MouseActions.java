@@ -65,6 +65,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -165,7 +166,7 @@ public class MouseActions {
                 m.getYaxis().normalise();
                 m.setAccurateXaxis(new BigDecimal(m.getXaxis().x), new BigDecimal(m.getXaxis().y), new BigDecimal(m.getXaxis().z));
                 m.setAccurateYaxis(new BigDecimal(m.getYaxis().x), new BigDecimal(m.getYaxis().y), new BigDecimal(m.getYaxis().z));
-            } else  if (window.getWorkingAction() == WorkingMode.SELECT || AddToolItem.isAddingSomething()) {
+            } else  if (TransformationModeToolItem.getWorkingAction() == WorkingMode.SELECT || AddToolItem.isAddingSomething()) {
                 c3d.setDoingSelection(true);
             } else  if (!AddToolItem.isAddingSomething()) {
                 c3d.getManipulator().startTranslation(c3d);
@@ -1249,7 +1250,7 @@ public class MouseActions {
                 m.setAccurateXaxis(aXx, aXy, aXz);
                 m.setAccurateYaxis(aYx, aYy, aYz);
                 checkSyncEditMode(vm, datfile);
-            } else if (window.getWorkingAction() == WorkingMode.SELECT) {
+            } else if (TransformationModeToolItem.getWorkingAction() == WorkingMode.SELECT) {
                 final SelectorSettings sels = MiscToolItem.loadSelectorSettings();
                 switch (window.getWorkingType()) {
                 case VERTICES:

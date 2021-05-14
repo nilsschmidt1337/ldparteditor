@@ -80,6 +80,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -1359,7 +1360,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             // MARK Manipulator
             boolean singleMode = true;
             GColour c;
-            if (window.getWorkingAction() != WorkingMode.SELECT) {
+            if (TransformationModeToolItem.getWorkingAction() != WorkingMode.SELECT) {
                 final float lineWidth;
                 final float cone_height;
                 final float cone_width;
@@ -1424,7 +1425,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     circleWidth = (negDet ? -1f : 1f) * 0.01f * mSize[4];
                     arcWidth = 0.002f * mSize[5];
                 }
-                switch (window.getWorkingAction()) {
+                switch (TransformationModeToolItem.getWorkingAction()) {
                 case COMBINED:
                     singleMode = false;
                 case ROTATE:

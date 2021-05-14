@@ -81,6 +81,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.PerspectiveToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.RenderModeToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.UndoRedoToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
@@ -131,11 +132,6 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnOpenPtr = new NButton[1];
     final NButton[] btnSavePtr = new NButton[1];
     final NButton[] btnSaveAllPtr = new NButton[1];
-    final NButton[] btnSelectPtr = new NButton[1];
-    final NButton[] btnMovePtr = new NButton[1];
-    final NButton[] btnRotatePtr = new NButton[1];
-    final NButton[] btnScalePtr = new NButton[1];
-    final NButton[] btnCombinedPtr = new NButton[1];
 
     final NButton[] btnLocalPtr = new NButton[1];
     final NButton[] btnGlobalPtr = new NButton[1];
@@ -1800,40 +1796,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemTransformationMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemTransformationMode = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnSelect = new NButton(toolItemTransformationMode, SWT.TOGGLE | Cocoa.getStyle());
-            this.btnSelectPtr[0] = btnSelect;
-            KeyStateManager.addTooltipText(btnSelect, I18n.E3D_SELECT, Task.MODE_SELECT);
-            btnSelect.setSelection(true);
-            btnSelect.setImage(ResourceManager.getImage("icon16_select.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnMove = new NButton(toolItemTransformationMode, SWT.TOGGLE | Cocoa.getStyle());
-            this.btnMovePtr[0] = btnMove;
-            KeyStateManager.addTooltipText(btnMove, I18n.E3D_MOVE, Task.MODE_MOVE);
-            btnMove.setImage(ResourceManager.getImage("icon16_move.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnRotate = new NButton(toolItemTransformationMode, SWT.TOGGLE | Cocoa.getStyle());
-            this.btnRotatePtr[0] = btnRotate;
-            KeyStateManager.addTooltipText(btnRotate, I18n.E3D_ROTATE, Task.MODE_ROTATE);
-            btnRotate.setImage(ResourceManager.getImage("icon16_rotate.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnScale = new NButton(toolItemTransformationMode, SWT.TOGGLE | Cocoa.getStyle());
-            this.btnScalePtr[0] = btnScale;
-            KeyStateManager.addTooltipText(btnScale, I18n.E3D_SCALE, Task.MODE_SCALE);
-            btnScale.setImage(ResourceManager.getImage("icon16_scale.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnCombined = new NButton(toolItemTransformationMode, SWT.TOGGLE | Cocoa.getStyle());
-            this.btnCombinedPtr[0] = btnCombined;
-            KeyStateManager.addTooltipText(btnCombined, I18n.E3D_COMBINED, Task.MODE_COMBINED);
-            btnCombined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
-        }
-        return toolItemTransformationMode;
+        return new TransformationModeToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemUndoRedo(ToolItemDrawLocation location, ToolItemDrawMode mode) {

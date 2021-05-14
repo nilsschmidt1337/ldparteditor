@@ -60,6 +60,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -529,31 +530,31 @@ public class KeyStateManager {
                     case MODE_COMBINED:
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
-                        win.setWorkingAction(WorkingMode.COMBINED);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.COMBINED);
                         AddToolItem.disableAddAction();
                         break;
                     case MODE_MOVE:
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
-                        win.setWorkingAction(WorkingMode.MOVE);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                         AddToolItem.disableAddAction();
                         break;
                     case MODE_ROTATE:
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
-                        win.setWorkingAction(WorkingMode.ROTATE);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.ROTATE);
                         AddToolItem.disableAddAction();
                         break;
                     case MODE_SCALE:
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
-                        win.setWorkingAction(WorkingMode.SCALE);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.SCALE);
                         AddToolItem.disableAddAction();
                         break;
                     case MODE_SELECT:
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
-                        win.setWorkingAction(WorkingMode.SELECT);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.SELECT);
                         AddToolItem.disableAddAction();
                         break;
                     case MOVE_TO_AVG:
@@ -809,14 +810,14 @@ public class KeyStateManager {
                     case TRANSFORM_UP_COPY:
                     case TRANSFORM_RIGHT:
                     case TRANSFORM_RIGHT_COPY:
-                        if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || win.getWorkingAction() == WorkingMode.SELECT) break;
+                        if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || TransformationModeToolItem.getWorkingAction() == WorkingMode.SELECT) break;
                         if (tmpCtrlPressed) {
                             MiscToggleToolItem.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                             vm.copy();
                             vm.paste(null);
                         }
-                        c3d.getManipulator().smallIncrement(win.getWorkingAction(), win.getWorkingLayer(), win.getTransformationMode(), c3d);
+                        c3d.getManipulator().smallIncrement(TransformationModeToolItem.getWorkingAction(), win.getWorkingLayer(), win.getTransformationMode(), c3d);
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
                         c3d.getManipulator().resetTranslation();
@@ -826,14 +827,14 @@ public class KeyStateManager {
                     case TRANSFORM_DOWN_COPY:
                     case TRANSFORM_LEFT:
                     case TRANSFORM_LEFT_COPY:
-                        if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || win.getWorkingAction() == WorkingMode.SELECT) break;
+                        if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || TransformationModeToolItem.getWorkingAction() == WorkingMode.SELECT) break;
                         if (tmpCtrlPressed) {
                             MiscToggleToolItem.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                             vm.copy();
                             vm.paste(null);
                         }
-                        c3d.getManipulator().smallDecrement(win.getWorkingAction(), win.getWorkingLayer(), win.getTransformationMode(), c3d);
+                        c3d.getManipulator().smallDecrement(TransformationModeToolItem.getWorkingAction(), win.getWorkingLayer(), win.getTransformationMode(), c3d);
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
                         c3d.getManipulator().resetTranslation();
