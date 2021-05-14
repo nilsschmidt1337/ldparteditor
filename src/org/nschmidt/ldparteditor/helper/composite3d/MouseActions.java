@@ -66,6 +66,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -723,7 +724,6 @@ public class MouseActions {
         switch (event.button) {
         case MouseButton.LEFT:
             c3d.setDoingSelection(false);
-            final Editor3DWindow window = Editor3DWindow.getWindow();
             if (AddToolItem.isAddingSomething() && !datfile.isReadOnly()) {
                 final boolean createVertex = vm.selectVertices(c3d, true, Math.max(Math.abs(oldPos.x - event.x), Math.abs(oldPos.y - event.y)) < 10);
                 if (AddToolItem.isAddingLines() || AddToolItem.isAddingDistance()) {
@@ -1252,7 +1252,7 @@ public class MouseActions {
                 checkSyncEditMode(vm, datfile);
             } else if (TransformationModeToolItem.getWorkingAction() == WorkingMode.SELECT) {
                 final SelectorSettings sels = MiscToolItem.loadSelectorSettings();
-                switch (window.getWorkingType()) {
+                switch (WorkingTypeToolItem.getWorkingType()) {
                 case VERTICES:
                     vm.selectVertices(c3d, false, false);
                     vm.reSelectSubFiles();

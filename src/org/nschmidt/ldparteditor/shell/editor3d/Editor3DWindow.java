@@ -101,23 +101,19 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialog.colour.ColourDialog;
 import org.nschmidt.ldparteditor.dialog.copy.CopyDialog;
 import org.nschmidt.ldparteditor.dialog.newproject.NewProjectDialog;
-import org.nschmidt.ldparteditor.enumtype.GL20Primitives;
 import org.nschmidt.ldparteditor.enumtype.IconSize;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.MouseButton;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
-import org.nschmidt.ldparteditor.enumtype.ObjectMode;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.Perspective;
 import org.nschmidt.ldparteditor.enumtype.SnapSize;
 import org.nschmidt.ldparteditor.enumtype.View;
-import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.helper.ShellHelper;
-import org.nschmidt.ldparteditor.helper.SphereGL20;
 import org.nschmidt.ldparteditor.helper.Version;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
@@ -177,7 +173,6 @@ public class Editor3DWindow extends Editor3DDesign {
 
     private boolean insertingAtCursorPosition = false;
     private boolean reviewingAPart = false;
-    private ObjectMode workingType = ObjectMode.VERTICES;
     private ManipulatorAxisMode workingLayer = ManipulatorAxisMode.NONE;
 
     private GColour lastUsedColour = LDConfig.getColour16();
@@ -895,103 +890,6 @@ public class Editor3DWindow extends Editor3DDesign {
         widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
             clickBtnTest(btnGlobalPtr[0]);
             transformationMode = ManipulatorScope.GLOBAL;
-            regainFocus();
-        });
-        widgetUtil(btnVerticesPtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnVerticesPtr[0]);
-            setWorkingType(ObjectMode.VERTICES);
-            if ((e.stateMask & SWT.ALT) == SWT.ALT && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedVertices().isEmpty()) {
-                final VertexManager vm = Project.getFileToEdit().getVertexManager();
-                vm.getSelectedVertices().clear();
-                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
-                    vm.reSelectSubFiles();
-                } else {
-                    vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
-                    vm.getSelectedSubfiles().clear();
-                }
-                vm.setModified(true, true);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnTrisNQuadsPtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnTrisNQuadsPtr[0]);
-            setWorkingType(ObjectMode.FACES);
-            if ((e.stateMask & SWT.ALT) == SWT.ALT && Project.getFileToEdit() != null && (!Project.getFileToEdit().getVertexManager().getSelectedQuads().isEmpty() || !Project.getFileToEdit().getVertexManager().getSelectedTriangles().isEmpty())) {
-                final VertexManager vm = Project.getFileToEdit().getVertexManager();
-                vm.getSelectedData().removeAll(vm.getSelectedTriangles());
-                vm.getSelectedData().removeAll(vm.getSelectedQuads());
-                vm.getSelectedTriangles().clear();
-                vm.getSelectedQuads().clear();
-                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
-                    vm.reSelectSubFiles();
-                } else {
-                    vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
-                    vm.getSelectedSubfiles().clear();
-                }
-                vm.setModified(true, true);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnLinesPtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnLinesPtr[0]);
-            setWorkingType(ObjectMode.LINES);
-            if ((e.stateMask & SWT.ALT) == SWT.ALT && Project.getFileToEdit() != null && (!Project.getFileToEdit().getVertexManager().getSelectedLines().isEmpty() || !Project.getFileToEdit().getVertexManager().getSelectedCondlines().isEmpty())) {
-                final VertexManager vm = Project.getFileToEdit().getVertexManager();
-                vm.getSelectedData().removeAll(vm.getSelectedCondlines());
-                vm.getSelectedData().removeAll(vm.getSelectedLines());
-                vm.getSelectedCondlines().clear();
-                vm.getSelectedLines().clear();
-                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
-                    vm.reSelectSubFiles();
-                } else {
-                    vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
-                    vm.getSelectedSubfiles().clear();
-                }
-                vm.setModified(true, true);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnSubfilesPtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnSubfilesPtr[0]);
-            setWorkingType(ObjectMode.SUBFILES);
-            if ((e.stateMask & SWT.ALT) == SWT.ALT && !Cocoa.checkCtrlOrCmdPressed(e.stateMask) && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedSubfiles().isEmpty()) {
-                final VertexManager vm = Project.getFileToEdit().getVertexManager();
-                final List<GData1> subfiles = new ArrayList<>();
-                subfiles.addAll(vm.getSelectedSubfiles());
-                for (GData1 g1 : subfiles) {
-                    vm.removeSubfileFromSelection(g1);
-                }
-                vm.getSelectedSubfiles().clear();
-                vm.setModified(true, true);
-            }
-            regainFocus();
-        });
-        if (btnToggleLinesOpenGLPtr[0] != null) widgetUtil(btnToggleLinesOpenGLPtr[0]).addSelectionListener(e -> {
-            if (btnToggleLinesOpenGLPtr[0].getSelection()) {
-                View.edgeThreshold = 5e6f;
-            } else {
-                View.edgeThreshold = 5e-6f;
-            }
-            regainFocus();
-        });
-        widgetUtil(btnLineSize0Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE0, GL20Primitives.SPHERE_INV0, 0f, 0f, 0.01f, btnLineSize0Ptr[0]);
-            regainFocus();
-        });
-        widgetUtil(btnLineSize1Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, 25f, .025f, 1f, btnLineSize1Ptr[0]);
-            regainFocus();
-        });
-        widgetUtil(btnLineSize2Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, 50f, .050f, 2f, btnLineSize2Ptr[0]);
-            regainFocus();
-        });
-        widgetUtil(btnLineSize3Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 3f, btnLineSize3Ptr[0]);
-            regainFocus();
-        });
-        widgetUtil(btnLineSize4Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 4f, btnLineSize4Ptr[0]);
             regainFocus();
         });
         widgetUtil(btnCloseViewPtr[0]).addSelectionListener(e -> {
@@ -2761,33 +2659,6 @@ public class Editor3DWindow extends Editor3DDesign {
         clickSingleBtn(btnInsertAtCursorPositionPtr[0]);
     }
 
-    public void setObjMode(int type) {
-        switch (type) {
-        case 0:
-            btnVerticesPtr[0].setSelection(true);
-            setWorkingType(ObjectMode.VERTICES);
-            clickSingleBtn(btnVerticesPtr[0]);
-            break;
-        case 1:
-            btnTrisNQuadsPtr[0].setSelection(true);
-            setWorkingType(ObjectMode.FACES);
-            clickSingleBtn(btnTrisNQuadsPtr[0]);
-            break;
-        case 2:
-            btnLinesPtr[0].setSelection(true);
-            setWorkingType(ObjectMode.LINES);
-            clickSingleBtn(btnLinesPtr[0]);
-            break;
-        case 3:
-            btnSubfilesPtr[0].setSelection(true);
-            setWorkingType(ObjectMode.SUBFILES);
-            clickSingleBtn(btnSubfilesPtr[0]);
-            break;
-        default:
-            break;
-        }
-    }
-
     /**
      * The Shell-Close-Event
      */
@@ -3446,14 +3317,6 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public TreeItem getUnsaved() {
         return treeItemUnsavedPtr[0];
-    }
-
-    public ObjectMode getWorkingType() {
-        return workingType;
-    }
-
-    public void setWorkingType(ObjectMode workingMode) {
-        this.workingType = workingMode;
     }
 
     public ManipulatorScope getTransformationMode() {
@@ -4478,19 +4341,6 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public List<String> getRecentItems() {
         return recentItems;
-    }
-
-    private void setLineSize(SphereGL20 sp, SphereGL20 spInv, float lineWidth1000, float lineWidth, float lineWidthGL, NButton btn) {
-        final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;
-        View.lineWidth1000 = lineWidth1000;
-        View.lineWidth = lineWidth;
-        View.lineWidthGL = lineWidthGL;
-        if (useLegacyGL) {
-            GL20Primitives.sphere = sp;
-            GL20Primitives.sphereInv = spInv;
-            compileAll(false);
-        }
-        clickSingleBtn(btn);
     }
 
     public void compileAll(boolean forceParsing) {

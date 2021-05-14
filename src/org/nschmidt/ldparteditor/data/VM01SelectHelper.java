@@ -54,6 +54,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -431,7 +432,7 @@ class VM01SelectHelper extends VM01Select {
                 selectedVertices.addAll(nearVertices);
             }
 
-        } else if (MiscToggleToolItem.isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) {
+        } else if (MiscToggleToolItem.isMovingAdjacentData() && WorkingTypeToolItem.getWorkingType() == ObjectMode.VERTICES) {
             {
                 Map<GData, Integer> occurMap = new HashMap<>();
                 for (Vertex vertex : selectedVertices) {
@@ -788,7 +789,7 @@ class VM01SelectHelper extends VM01Select {
                 }
             } else {
                 selectedVertices.add(vertex);
-                if (Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) lastSelectedVertex = vertex;
+                if (WorkingTypeToolItem.getWorkingType() == ObjectMode.VERTICES) lastSelectedVertex = vertex;
             }
         } else {
             final Vector4f point = vertex.toVector4f();
@@ -821,7 +822,7 @@ class VM01SelectHelper extends VM01Select {
                     }
                 } else {
                     selectedVertices.add(vertex);
-                    if (Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) lastSelectedVertex = vertex;
+                    if (WorkingTypeToolItem.getWorkingType() == ObjectMode.VERTICES) lastSelectedVertex = vertex;
                 }
             }
         }

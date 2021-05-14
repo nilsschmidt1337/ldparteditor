@@ -61,6 +61,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -642,16 +643,16 @@ public class KeyStateManager {
                         c3d.getManipulator().reset();
                         break;
                     case OBJ_FACE:
-                        win.setObjMode(1);
+                        WorkingTypeToolItem.setObjMode(1);
                         break;
                     case OBJ_LINE:
-                        win.setObjMode(2);
+                        WorkingTypeToolItem.setObjMode(2);
                         break;
                     case OBJ_PRIMITIVE:
-                        win.setObjMode(3);
+                        WorkingTypeToolItem.setObjMode(3);
                         break;
                     case OBJ_VERTEX:
-                        win.setObjMode(0);
+                        WorkingTypeToolItem.setObjMode(0);
                         break;
                     case LMB:
                     {

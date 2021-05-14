@@ -41,6 +41,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
 import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 
 /**
@@ -148,13 +149,12 @@ public enum GuiStatusManager {
                 sb.append("] "); //$NON-NLS-1$
             }
 
-            final Editor3DWindow win = Editor3DWindow.getWindow();
             if (MiscToggleToolItem.isMovingAdjacentData()) {
                 sb.append(I18n.E3D_ADJACENT_WARNING_STATUS);
             }
 
             final SelectorSettings sels = MiscToolItem.loadSelectorSettings();
-            final ObjectMode om = win.getWorkingType();
+            final ObjectMode om = WorkingTypeToolItem.getWorkingType();
             if (om == ObjectMode.FACES) {
                 if (sels.isTriangles() && !sels.isQuads()) {
                     sb.append(I18n.E3D_ONLY_TRIANGLES);
