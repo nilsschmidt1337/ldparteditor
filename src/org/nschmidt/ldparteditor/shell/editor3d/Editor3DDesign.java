@@ -80,6 +80,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.PerspectiveToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.RenderModeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.UndoRedoToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
@@ -235,16 +236,6 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnLineSize2Ptr = new NButton[1];
     final NButton[] btnLineSize3Ptr = new NButton[1];
     final NButton[] btnLineSize4Ptr = new NButton[1];
-
-    final NButton[] btnRenderModeNoBackfaceCullingPtr = new NButton[1];
-    final NButton[] btnRenderModeRandomColoursPtr = new NButton[1];
-    final NButton[] btnRenderModeGreenRedPtr = new NButton[1];
-    final NButton[] btnRenderModeRedBackfacesPtr = new NButton[1];
-    final NButton[] btnRenderModeRealBackfaceCullingPtr = new NButton[1];
-    final NButton[] btnRenderModeLDrawStandardPtr = new NButton[1];
-    final NButton[] btnRenderModeCoplanarityModePtr = new NButton[1];
-    final NButton[] btnRenderModeCondlineModePtr = new NButton[1];
-    final NButton[] btnRenderModeWireframePtr = new NButton[1];
 
     final NButton[] btnNewDatPtr = new NButton[1];
     final NButton[] btnOpenDatPtr = new NButton[1];
@@ -1605,63 +1596,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemRenderMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemRenderMode = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnRenderModeNoBackfaceCulling = new NButton(toolItemRenderMode, Cocoa.getStyle());
-            this.btnRenderModeNoBackfaceCullingPtr[0] = btnRenderModeNoBackfaceCulling;
-            KeyStateManager.addTooltipText(btnRenderModeNoBackfaceCulling, I18n.C3D_NO_BACKFACE_CULLING, Task.RENDERMODE_NO_BACKFACE_CULLING);
-            btnRenderModeNoBackfaceCulling.setImage(ResourceManager.getImage("icon16_noBfc.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnRenderModeRandomColours = new NButton(toolItemRenderMode, Cocoa.getStyle());
-            this.btnRenderModeRandomColoursPtr[0] = btnRenderModeRandomColours;
-            KeyStateManager.addTooltipText(btnRenderModeRandomColours, I18n.C3D_RANDOM_COLOURS, Task.RENDERMODE_RANDOM_COLOURS);
-            btnRenderModeRandomColours.setImage(ResourceManager.getImage("icon16_randomColour.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnRenderModeGreenRed = new NButton(toolItemRenderMode, Cocoa.getStyle());
-            this.btnRenderModeGreenRedPtr[0] = btnRenderModeGreenRed;
-            KeyStateManager.addTooltipText(btnRenderModeGreenRed, I18n.C3D_GREEN_RED, Task.RENDERMODE_GREEN_FRONTFACES_RED_BACKFACES);
-            btnRenderModeGreenRed.setImage(ResourceManager.getImage("icon16_greenFrontRedBack.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnRenderModeRedBackfaces = new NButton(toolItemRenderMode, Cocoa.getStyle());
-            this.btnRenderModeRedBackfacesPtr[0] = btnRenderModeRedBackfaces;
-            KeyStateManager.addTooltipText(btnRenderModeRedBackfaces, I18n.C3D_RED_BACKFACES, Task.RENDERMODE_RED_BACKFACES);
-            btnRenderModeRedBackfaces.setImage(ResourceManager.getImage("icon16_redBackfaces.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnRenderModeRealBackfaceCulling = new NButton(toolItemRenderMode, Cocoa.getStyle());
-            this.btnRenderModeRealBackfaceCullingPtr[0] = btnRenderModeRealBackfaceCulling;
-            KeyStateManager.addTooltipText(btnRenderModeRealBackfaceCulling, I18n.C3D_REAL_BACKFACE_CULLING, Task.RENDERMODE_REAL_BACKFACE_CULLING);
-            btnRenderModeRealBackfaceCulling.setImage(ResourceManager.getImage("icon16_realBfc.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnRenderModeLDrawStandard = new NButton(toolItemRenderMode, Cocoa.getStyle());
-            this.btnRenderModeLDrawStandardPtr[0] = btnRenderModeLDrawStandard;
-            KeyStateManager.addTooltipText(btnRenderModeLDrawStandard, I18n.C3D_LDRAW_STANDARD, Task.RENDERMODE_LDRAW_STANDARD);
-            btnRenderModeLDrawStandard.setImage(ResourceManager.getImage("icon16_ldrawStandard.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnRenderModeCondlineMode = new NButton(toolItemRenderMode, Cocoa.getStyle());
-            this.btnRenderModeCondlineModePtr[0] = btnRenderModeCondlineMode;
-            KeyStateManager.addTooltipText(btnRenderModeCondlineMode, I18n.C3D_CONDLINE_MODE, Task.RENDERMODE_SPECIAL_CONDLINE);
-            btnRenderModeCondlineMode.setImage(ResourceManager.getImage("icon16_specialCondline.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnRenderModeCoplanarityMode = new NButton(toolItemRenderMode, Cocoa.getStyle());
-            this.btnRenderModeCoplanarityModePtr[0] = btnRenderModeCoplanarityMode;
-            KeyStateManager.addTooltipText(btnRenderModeCoplanarityMode, I18n.C3D_COPLANARITY_MODE, Task.RENDERMODE_COPLANARITY_HEATMAP);
-            btnRenderModeCoplanarityMode.setImage(ResourceManager.getImage("icon16_coplanarityHeatmap.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnRenderModeWireframe = new NButton(toolItemRenderMode, Cocoa.getStyle());
-            this.btnRenderModeWireframePtr[0] = btnRenderModeWireframe;
-            KeyStateManager.addTooltipText(btnRenderModeWireframe, I18n.C3D_WIREFRAME, Task.RENDERMODE_WIREFRAME);
-            btnRenderModeWireframe.setImage(ResourceManager.getImage("icon16_wireframe.png")); //$NON-NLS-1$
-        }
-        return toolItemRenderMode;
+        return new RenderModeToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemLineThickness(ToolItemDrawLocation location, ToolItemDrawMode mode) {
