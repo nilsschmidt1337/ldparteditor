@@ -80,6 +80,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.PerspectiveToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.UndoRedoToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -137,10 +138,6 @@ class Editor3DDesign extends ApplicationWindow {
 
     final NButton[] btnLocalPtr = new NButton[1];
     final NButton[] btnGlobalPtr = new NButton[1];
-
-    final NButton[] btnUndoPtr = new NButton[1];
-    final NButton[] btnAddHistoryPtr = new NButton[1];
-    final NButton[] btnRedoPtr = new NButton[1];
 
     final NButton[] btnLastUsedColourPtr = new NButton[1];
     final NButton[] btnPipettePtr = new NButton[1];
@@ -1905,27 +1902,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemUndoRedo(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemUndoRedo = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnUndo = new NButton(toolItemUndoRedo, Cocoa.getStyle());
-            this.btnUndoPtr[0] = btnUndo;
-            btnUndo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btnUndo, I18n.E3D_UNDO, Task.UNDO);
-        }
-        if (NLogger.debugging) {
-            NButton btnSnapshot = new NButton(toolItemUndoRedo, Cocoa.getStyle());
-            this.btnAddHistoryPtr[0] = btnSnapshot;
-            btnSnapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
-            btnSnapshot.setToolTipText(I18n.E3D_SNAPSHOT);
-        }
-        {
-            NButton btnRedo = new NButton(toolItemUndoRedo, Cocoa.getStyle());
-            this.btnRedoPtr[0] = btnRedo;
-            btnRedo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btnRedo, I18n.E3D_REDO, Task.REDO);
-        }
-        return toolItemUndoRedo;
+        return new UndoRedoToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemMiscToggle(ToolItemDrawLocation location, ToolItemDrawMode mode) {

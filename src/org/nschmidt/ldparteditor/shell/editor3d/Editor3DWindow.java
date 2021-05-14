@@ -891,31 +891,6 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        widgetUtil(btnUndoPtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().undo(false);
-            }
-            regainFocus();
-        });
-
-        widgetUtil(btnRedoPtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().redo(false);
-            }
-            regainFocus();
-        });
-
-        if (NLogger.debugging) {
-            widgetUtil(btnAddHistoryPtr[0]).addSelectionListener(e -> {
-                if (Project.getFileToEdit() != null) {
-                    Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().addHistory();
-                }
-            });
-        }
-
         widgetUtil(btnSelectPtr[0]).addSelectionListener(e -> {
             clickBtnTest(btnSelectPtr[0]);
             workingAction = WorkingMode.SELECT;
@@ -5564,16 +5539,13 @@ public class Editor3DWindow extends Editor3DDesign {
         // Traverse the sash forms to store the 3D configuration
         final List<Composite3DState> result = new ArrayList<>();
         Control c = getSashForm().getChildren()[1];
-        if (c != null) {
-            if (c instanceof SashForm|| c instanceof CompositeContainer) {
-                // c instanceof CompositeContainer: Simple case, since its only one 3D view open -> No recursion!
-                saveComposite3DStates(c, result, "", "|"); //$NON-NLS-1$ //$NON-NLS-2$
-            } else {
-                // There is no 3D window open at the moment
-            }
+        if (c instanceof SashForm || c instanceof CompositeContainer) {
+            // c instanceof CompositeContainer: Simple case, since its only one 3D view open -> No recursion!
+            saveComposite3DStates(c, result, "", "|"); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
             // There is no 3D window open at the moment
         }
+
         return result;
     }
 
