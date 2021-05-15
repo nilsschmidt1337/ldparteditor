@@ -38,6 +38,7 @@ import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 
 /**
@@ -1172,7 +1173,7 @@ public class Manipulator {
     public Vector4f transform(Vector2f oldMousePosition, int newX, int newY, Composite3D c3d) {
 
         Vector4f temp = new Vector4f(this.position);
-        boolean isGlobal = Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL;
+        boolean isGlobal = ManipulatorScopeToolItem.getTransformationScope() == ManipulatorScope.GLOBAL;
         if (isGlobal) {
             position = new Vector4f(0f, 0f, 0f, 1f);
             accuratePosition = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO };
@@ -1869,7 +1870,7 @@ public class Manipulator {
     public Vector4f transformAtSelect(Vector2f oldMousePosition, int newX, int newY, Composite3D c3d) {
 
         Vector4f temp = new Vector4f(this.position);
-        boolean isGlobal = Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL;
+        boolean isGlobal = ManipulatorScopeToolItem.getTransformationScope() == ManipulatorScope.GLOBAL;
         if (isGlobal) {
             position = new Vector4f(0f, 0f, 0f, 1f);
             accuratePosition = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO };

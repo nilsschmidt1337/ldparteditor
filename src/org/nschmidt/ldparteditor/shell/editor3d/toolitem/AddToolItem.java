@@ -331,7 +331,7 @@ public class AddToolItem extends ToolItem {
                                                             "1 16 0 0 0 1 0 0 0 1 0 0 0 1 s\\" + new File(selected).getName(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, Project.getFileToEdit(), false, alreadyParsed); //$NON-NLS-1$
                                             GData1 gd1 = (GData1) subfileLine.get(0).getGraphicalData();
                                             if (gd1 != null) {
-                                                if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
+                                                if (InsertAtCursorPositionToolItem.isInsertingAtCursorPosition()) {
                                                     Project.getFileToEdit().insertAfterCursor(gd1);
                                                 } else {
                                                     Set<GData> sd = vm.getSelectedData();

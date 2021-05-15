@@ -40,7 +40,7 @@ import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolItem;
 
 /**
  * @author nils
@@ -731,7 +731,7 @@ public final class GData2 extends GData {
         BigDecimal dx = x2c.subtract(x1c);
         BigDecimal dy = y2c.subtract(y1c);
         BigDecimal dz = z2c.subtract(z1c);
-        if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
+        if (ManipulatorScopeToolItem.getTransformationScope() == ManipulatorScope.GLOBAL) {
             if (state != -1) {
                 length = new Vector3d(dx, dy, dz).length();
                 state = -1;
@@ -919,7 +919,7 @@ public final class GData2 extends GData {
         BigDecimal dx = x2c.subtract(x1c);
         BigDecimal dy = y2c.subtract(y1c);
         BigDecimal dz = z2c.subtract(z1c);
-        if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
+        if (ManipulatorScopeToolItem.getTransformationScope() == ManipulatorScope.GLOBAL) {
             if (state != -1 || forceLengthCalculation) {
                 length = new Vector3d(dx, dy, dz).length();
                 state = -1;

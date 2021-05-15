@@ -35,7 +35,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.main.LDPartEditor;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.InsertAtCursorPositionToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -91,20 +91,20 @@ public class EditorMetaWindow extends EditorMetaDesign {
             String textToCompile = lblLineToInsertPtr[0].getText();
             final DatFile df = Project.getFileToEdit();
             if (df != null) {
-                final boolean insertAtCursor = Editor3DWindow.getWindow().isInsertingAtCursorPosition();
+                final boolean insertAtCursor = InsertAtCursorPositionToolItem.isInsertingAtCursorPosition();
                 for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
+                    if (InsertAtCursorPositionToolItem.isInsertingAtCursorPosition()) {
                         break;
                     }
                     for (CTabItem t : w.getTabFolder().getItems()) {
                         if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                            Editor3DWindow.getWindow().setInsertingAtCursorPosition(true);
+                            InsertAtCursorPositionToolItem.setInsertingAtCursorPosition(true);
                             break;
                         }
                     }
                 }
                 df.getVertexManager().addParsedLine(textToCompile);
-                Editor3DWindow.getWindow().setInsertingAtCursorPosition(insertAtCursor);
+                InsertAtCursorPositionToolItem.setInsertingAtCursorPosition(insertAtCursor);
             }
         });
 

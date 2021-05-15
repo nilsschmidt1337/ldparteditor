@@ -48,7 +48,8 @@ import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.InsertAtCursorPositionToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolItem;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
@@ -429,7 +430,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     BigDecimal dx = gd2.x1p.subtract(gd2.x2p);
                     BigDecimal dy = gd2.y1p.subtract(gd2.y2p);
                     BigDecimal dz = gd2.z1p.subtract(gd2.z2p);
-                    if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.LOCAL && rotM != null) {
+                    if (ManipulatorScopeToolItem.getTransformationScope() == ManipulatorScope.LOCAL && rotM != null) {
                         Vector3d tr = rotM.transform(new Vector3d(dx, dy, dz));
                         dx = tr.x;
                         dy = tr.y;
@@ -491,7 +492,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         final GColour col16 = LDConfig.getColour16();
         if (!CLIPBOARD.isEmpty()) {
             clearSelection();
-            if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
+            if (InsertAtCursorPositionToolItem.isInsertingAtCursorPosition()) {
                 for (GData g : CLIPBOARD) {
                     if (g.type() == 0 && (!insertVertices || g.text.startsWith("0 //~")) //$NON-NLS-1$
                     || !insertLines && g.type() == 2

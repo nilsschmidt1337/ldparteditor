@@ -62,6 +62,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.InsertAtCursorPositionToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -1319,7 +1320,7 @@ public final class DatFile {
     }
 
     public void addToTailOrInsertAfterCursor(GData gdata) {
-        if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
+        if (InsertAtCursorPositionToolItem.isInsertingAtCursorPosition()) {
             insertAfterCursor(gdata);
         } else {
             addToTail(gdata);

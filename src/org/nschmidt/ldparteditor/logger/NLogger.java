@@ -63,8 +63,11 @@ public enum NLogger {
 
     /**
      * Initializes the logger.
+     * @param args the argument "DEBUG" will start the logger in debug mode, to log directly into the console instead of logging into a file.
      */
-    public static void init() {
+    public static void init(String... args) {
+        debugging = args.length == 1 && "DEBUG".equals(args[0]); //$NON-NLS-1$
+
         try {
             if (!debugging) {
                 File log = new File(ERROR_LOG);
@@ -338,9 +341,4 @@ public enum NLogger {
             System.err.close();
         }
     }
-
-    public static void setDebugging(boolean debug) {
-        debugging = debug;
-    }
-
 }

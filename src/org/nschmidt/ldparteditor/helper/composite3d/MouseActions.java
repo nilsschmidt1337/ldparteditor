@@ -64,6 +64,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
@@ -297,7 +298,7 @@ public class MouseActions {
                 } else {
                     temp = c3d.getManipulator().transform(oldMousePosition, event.x, event.y, c3d);
                 }
-                if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
+                if (ManipulatorScopeToolItem.getTransformationScope() == ManipulatorScope.GLOBAL) {
                     c3d.getManipulator().getPosition().set(temp);
                     c3d.getManipulator().setAccuratePosition(new BigDecimal(temp.x / 1000f), new BigDecimal(temp.y / 1000f), new BigDecimal(temp.z / 1000f));
                 }

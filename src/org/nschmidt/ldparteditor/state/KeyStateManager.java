@@ -58,6 +58,8 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.InsertAtCursorPositionToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
@@ -495,7 +497,7 @@ public class KeyStateManager {
                         vm.delete(MiscToggleToolItem.isMovingAdjacentData(), true);
                         break;
                     case INSERT_AT_CURSOR:
-                        win.toggleInsertAtCursor();
+                        InsertAtCursorPositionToolItem.toggleInsertAtCursor();
                         break;
                     case ESC:
                         multi = 100;
@@ -819,7 +821,7 @@ public class KeyStateManager {
                             vm.copy();
                             vm.paste(null);
                         }
-                        c3d.getManipulator().smallIncrement(TransformationModeToolItem.getWorkingAction(), win.getWorkingLayer(), win.getTransformationMode(), c3d);
+                        c3d.getManipulator().smallIncrement(TransformationModeToolItem.getWorkingAction(), win.getWorkingLayer(), ManipulatorScopeToolItem.getTransformationScope(), c3d);
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
                         c3d.getManipulator().resetTranslation();
@@ -836,7 +838,7 @@ public class KeyStateManager {
                             vm.copy();
                             vm.paste(null);
                         }
-                        c3d.getManipulator().smallDecrement(TransformationModeToolItem.getWorkingAction(), win.getWorkingLayer(), win.getTransformationMode(), c3d);
+                        c3d.getManipulator().smallDecrement(TransformationModeToolItem.getWorkingAction(), win.getWorkingLayer(), ManipulatorScopeToolItem.getTransformationScope(), c3d);
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
                         c3d.getManipulator().resetTranslation();

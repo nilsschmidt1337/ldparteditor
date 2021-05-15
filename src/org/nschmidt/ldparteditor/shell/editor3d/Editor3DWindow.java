@@ -65,6 +65,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.util.vector.Matrix4f;
@@ -74,7 +75,6 @@ import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.composite.CompositeContainer;
 import org.nschmidt.ldparteditor.composite.CompositeScale;
-import org.nschmidt.ldparteditor.composite.ToolItem;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTabFolder;
 import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
@@ -97,7 +97,6 @@ import org.nschmidt.ldparteditor.dialog.copy.CopyDialog;
 import org.nschmidt.ldparteditor.dialog.newproject.NewProjectDialog;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
-import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.MouseButton;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
@@ -127,6 +126,7 @@ import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 import org.nschmidt.ldparteditor.widget.DecimalValueChangeAdapter;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.widget.Tree;
 import org.nschmidt.ldparteditor.widget.TreeItem;
 import org.nschmidt.ldparteditor.win32openwith.TryToOpen;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
@@ -162,11 +162,8 @@ public class Editor3DWindow extends Editor3DDesign {
     private static final AtomicBoolean alive = new AtomicBoolean(true);
     private static final AtomicBoolean no_sync_deadlock = new AtomicBoolean(false);
 
-    private boolean insertingAtCursorPosition = false;
     private boolean reviewingAPart = false;
     private ManipulatorAxisMode workingLayer = ManipulatorAxisMode.NONE;
-
-    private ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
     private SnapSize snapSize = SnapSize.MEDIUM;
 
@@ -437,79 +434,6 @@ public class Editor3DWindow extends Editor3DDesign {
                 // Implementation is not required.
             }
         });
-
-
-        widgetUtil(btnSyncPtr[0]).addSelectionListener(e -> {
-
-            resetSearch();
-            int[][] stats = new int[15][3];
-            stats[0] = LibraryManager.syncProjectElements(treeItemProjectPtr[0]);
-            stats[5] = LibraryManager.syncUnofficialParts(treeItemUnofficialPartsPtr[0]);
-            stats[6] = LibraryManager.syncUnofficialSubparts(treeItemUnofficialSubpartsPtr[0]);
-            stats[7] = LibraryManager.syncUnofficialPrimitives(treeItemUnofficialPrimitivesPtr[0]);
-            stats[8] = LibraryManager.syncUnofficialHiResPrimitives(treeItemUnofficialPrimitives48Ptr[0]);
-            stats[9] = LibraryManager.syncUnofficialLowResPrimitives(treeItemUnofficialPrimitives8Ptr[0]);
-            stats[10] = LibraryManager.syncOfficialParts(treeItemOfficialPartsPtr[0]);
-            stats[11] = LibraryManager.syncOfficialSubparts(treeItemOfficialSubpartsPtr[0]);
-            stats[12] = LibraryManager.syncOfficialPrimitives(treeItemOfficialPrimitivesPtr[0]);
-            stats[13] = LibraryManager.syncOfficialHiResPrimitives(treeItemOfficialPrimitives48Ptr[0]);
-            stats[14] = LibraryManager.syncOfficialLowResPrimitives(treeItemOfficialPrimitives8Ptr[0]);
-
-            int additions = 0;
-            int deletions = 0;
-            int conflicts = 0;
-            for (int[] folderStat : stats) {
-                additions += folderStat[0];
-                deletions += folderStat[1];
-                conflicts += folderStat[2];
-            }
-
-            txtSearchPtr[0].setText(" "); //$NON-NLS-1$
-            txtSearchPtr[0].setText(""); //$NON-NLS-1$
-
-            Set<DatFile> dfs = new HashSet<>();
-            for (OpenGLRenderer renderer : renders) {
-                dfs.add(renderer.getC3D().getLockableDatFileReference());
-            }
-            for (EditorTextWindow w1 : Project.getOpenTextWindows()) {
-                for (CTabItem t1 : w1.getTabFolder().getItems()) {
-                    DatFile txtDat1 = ((CompositeTab) t1).getState().getFileNameObj();
-                    if (txtDat1 != null) {
-                        dfs.add(txtDat1);
-                    }
-                }
-            }
-            for (DatFile df : dfs) {
-                SubfileCompiler.compile(df, false, false);
-            }
-            for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
-                for (CTabItem t2 : w2.getTabFolder().getItems()) {
-                    DatFile txtDat2 = ((CompositeTab) t2).getState().getFileNameObj();
-                    if (txtDat2 != null) {
-                        ((CompositeTab) t2).parseForErrorAndHints();
-                        ((CompositeTab) t2).getTextComposite().redraw();
-
-                        ((CompositeTab) t2).getState().getTab().setText(((CompositeTab) t2).getState().getFilenameWithStar());
-                    }
-                }
-            }
-
-            updateTreeUnsavedEntries();
-            treeParts[0].getTree().showItem(treeParts[0].getTree().getItem(0));
-
-            MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-            messageBox.setText(I18n.DIALOG_SYNC_TITLE);
-
-            Object[] messageArguments = {additions, deletions, conflicts};
-            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.getLocale());
-            formatter.applyPattern(I18n.DIALOG_SYNC);
-            messageBox.setMessage(formatter.format(messageArguments));
-
-            messageBox.open();
-            regainFocus();
-        });
-
         widgetUtil(btnLastOpenPtr[0]).addSelectionListener(e -> {
 
             Menu lastOpenedMenu = new Menu(treeParts[0].getTree());
@@ -868,23 +792,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     break;
                 }
 
-            }
-            regainFocus();
-        });
-        widgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnLocalPtr[0]);
-            transformationMode = ManipulatorScope.LOCAL;
-            regainFocus();
-        });
-        widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
-            clickBtnTest(btnGlobalPtr[0]);
-            transformationMode = ManipulatorScope.GLOBAL;
-            regainFocus();
-        });
-        widgetUtil(btnCloseViewPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getModifier().closeView();
             }
             regainFocus();
         });
@@ -1810,10 +1717,6 @@ public class Editor3DWindow extends Editor3DDesign {
             getCompositePrimitive().zoomOut();
             getCompositePrimitive().getOpenGL().drawScene(-1, -1);
         });
-        widgetUtil(btnInsertAtCursorPositionPtr[0]).addSelectionListener(e -> {
-            setInsertingAtCursorPosition(btnInsertAtCursorPositionPtr[0].getSelection());
-            regainFocus();
-        });
 
         // MARK Background PNG
         widgetUtil(btnPngFocusPtr[0]).addSelectionListener(e -> {
@@ -2547,12 +2450,6 @@ public class Editor3DWindow extends Editor3DDesign {
         updateBgPictureTab();
     }
 
-    public void toggleInsertAtCursor() {
-        setInsertingAtCursorPosition(!isInsertingAtCursorPosition());
-        btnInsertAtCursorPositionPtr[0].setSelection(isInsertingAtCursorPosition());
-        clickSingleBtn(btnInsertAtCursorPositionPtr[0]);
-    }
-
     /**
      * The Shell-Close-Event
      */
@@ -3133,16 +3030,8 @@ public class Editor3DWindow extends Editor3DDesign {
         tabFolderOpenDatFilesPtr[0].redraw();
     }
 
-    // Helper functions
-    private void clickBtnTest(NButton btn) {
-        WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn.getParent());
-        btn.setSelection(true);
-    }
-
-    private void clickSingleBtn(NButton btn) {
-        boolean state = btn.getSelection();
-        WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn.getParent());
-        btn.setSelection(state);
+    public Tree getPartsTree() {
+        return treeParts[0];
     }
 
     public TreeItem getProject() {
@@ -3211,18 +3100,6 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public TreeItem getUnsaved() {
         return treeItemUnsavedPtr[0];
-    }
-
-    public ManipulatorScope getTransformationMode() {
-        return transformationMode;
-    }
-
-    public boolean isInsertingAtCursorPosition() {
-        return insertingAtCursorPosition;
-    }
-
-    public void setInsertingAtCursorPosition(boolean insertAtCursor) {
-        this.insertingAtCursorPosition = insertAtCursor;
     }
 
     public boolean isReviewingAPart() {
@@ -3297,6 +3174,10 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public String getSearchCriteria() {
         return txtSearchPtr[0].getText();
+    }
+
+    public Text getSearchText() {
+        return txtSearchPtr[0];
     }
 
     public void resetSearch() {

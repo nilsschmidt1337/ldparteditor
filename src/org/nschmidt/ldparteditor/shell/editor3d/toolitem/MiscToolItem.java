@@ -1466,7 +1466,7 @@ public class MiscToolItem extends ToolItem {
                     } else {
                         TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                     }
-                    if (new TranslateDialog(Editor3DWindow.getWindow().getShell(), new Vertex(c3d.getManipulator().getAccuratePosition()), Editor3DWindow.getWindow().getTransformationMode()).open() == IDialogConstants.OK_ID) {
+                    if (new TranslateDialog(Editor3DWindow.getWindow().getShell(), new Vertex(c3d.getManipulator().getAccuratePosition()), ManipulatorScopeToolItem.getTransformationScope()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                         final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
                         final int iterations = TranslateDialog.getAndResetIterations();
@@ -1528,7 +1528,7 @@ public class MiscToolItem extends ToolItem {
                     } else {
                         TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                     }
-                    if (new RotateDialog(Editor3DWindow.getWindow().getShell(), null, clipboard, mani, Editor3DWindow.getWindow().getTransformationMode()).open() == IDialogConstants.OK_ID) {
+                    if (new RotateDialog(Editor3DWindow.getWindow().getShell(), null, clipboard, mani, ManipulatorScopeToolItem.getTransformationScope()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                         final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
                         final int iterations = RotateDialog.getAndResetIterations();
@@ -1590,7 +1590,7 @@ public class MiscToolItem extends ToolItem {
                     } else {
                         TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                     }
-                    if (new ScaleDialog(Editor3DWindow.getWindow().getShell(), null, clipboard, mani, Editor3DWindow.getWindow().getTransformationMode()).open() == IDialogConstants.OK_ID) {
+                    if (new ScaleDialog(Editor3DWindow.getWindow().getShell(), null, clipboard, mani, ManipulatorScopeToolItem.getTransformationScope()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                         Editor3DWindow.getWindow().updateInitialScale(BigDecimal.ZERO, BigDecimal.ZERO, true);
                         final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();

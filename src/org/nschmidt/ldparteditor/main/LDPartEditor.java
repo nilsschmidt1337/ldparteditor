@@ -35,10 +35,8 @@ public class LDPartEditor {
      *            startup arguments
      */
     public static void main(String[] args) {
-
         // Initialize the logger
-        NLogger.setDebugging(args.length == 1 && "DEBUG".equals(args[0])); //$NON-NLS-1$
-        NLogger.init();
+        NLogger.init(args);
 
         // Check if LDPartEditor should open a file
         if (args.length > 0 && TryToOpen.file(args[0]) == DELEGATED_TO_ANOTHER_INSTANCE) {

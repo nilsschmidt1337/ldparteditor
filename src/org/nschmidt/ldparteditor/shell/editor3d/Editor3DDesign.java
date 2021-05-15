@@ -66,16 +66,20 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.CloseViewToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourFunctionsToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.CopyPasteToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.HideUnhideToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.InsertAtCursorPositionToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.LineThicknessToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.PerspectiveToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.RenderModeToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.SyncToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.UndoRedoToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
@@ -122,17 +126,11 @@ class Editor3DDesign extends ApplicationWindow {
     private Composite cmpWest;
     protected static Composite status;
 
-    final NButton[] btnSyncPtr = new NButton[1];
     final NButton[] btnLastOpenPtr = new NButton[1];
     final NButton[] btnNewPtr = new NButton[1];
     final NButton[] btnOpenPtr = new NButton[1];
     final NButton[] btnSavePtr = new NButton[1];
     final NButton[] btnSaveAllPtr = new NButton[1];
-
-    final NButton[] btnLocalPtr = new NButton[1];
-    final NButton[] btnGlobalPtr = new NButton[1];
-
-    final NButton[] btnInsertAtCursorPositionPtr = new NButton[1];
 
     final MenuItem[] mntmGridCoarseDefaultPtr = new MenuItem[1];
     final MenuItem[] mntmGridMediumDefaultPtr = new MenuItem[1];
@@ -210,8 +208,6 @@ class Editor3DDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spnPngA3Ptr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnPngSXPtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnPngSYPtr = new BigDecimalSpinner[1];
-
-    final NButton[] btnCloseViewPtr = new NButton[1];
 
     final NButton[] btnNewDatPtr = new NButton[1];
     final NButton[] btnOpenDatPtr = new NButton[1];
@@ -1554,15 +1550,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemCloseView(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemCloseView = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnCloseView = new NButton(toolItemCloseView, Cocoa.getStyle());
-            this.btnCloseViewPtr[0] = btnCloseView;
-            KeyStateManager.addTooltipText(btnCloseView, I18n.E3D_CLOSE_VIEW, Task.CLOSE_VIEW);
-            btnCloseView.setImage(ResourceManager.getImage("icon16_closeview.png")); //$NON-NLS-1$
-        }
-        return toolItemCloseView;
+        return new CloseViewToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemPerspective(ToolItemDrawLocation location, ToolItemDrawMode mode) {
@@ -1583,35 +1571,12 @@ class Editor3DDesign extends ApplicationWindow {
         return new ColourFunctionsToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
-    private Composite areaFromLocation(ToolItemDrawLocation location) {
-        final Composite target;
-        switch (location) {
-        case EAST:
-            target = cmpEast;
-            break;
-        case WEST:
-            target = cmpWest;
-            break;
-        case NORTH:
-        default:
-            target = cmpNorth;
-            break;
-        }
-        return target;
-    }
-
     private ToolItem createToolItemAdd(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         return new AddToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemInsertAtCursorPosition(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemInsertAtCursorPosition = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        NButton btnInsertAtCursorPosition = new NButton(toolItemInsertAtCursorPosition, SWT.TOGGLE | Cocoa.getStyle());
-        this.btnInsertAtCursorPositionPtr[0] = btnInsertAtCursorPosition;
-        KeyStateManager.addTooltipText(btnInsertAtCursorPosition, I18n.E3D_INSERT_AT_CURSOR_POSITION, Task.INSERT_AT_CURSOR);
-        btnInsertAtCursorPosition.setImage(ResourceManager.getImage("icon16_insertAtCursor.png")); //$NON-NLS-1$
-        return toolItemInsertAtCursorPosition;
+        return new InsertAtCursorPositionToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemWorkingType(ToolItemDrawLocation location, ToolItemDrawMode mode) {
@@ -1631,22 +1596,7 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemManipulatorMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemTransformationModes = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE | Cocoa.getStyle());
-            this.btnLocalPtr[0] = btnLocal;
-            btnLocal.setToolTipText(I18n.E3D_LOCAL);
-            btnLocal.setSelection(true);
-            btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE | Cocoa.getStyle());
-            this.btnGlobalPtr[0] = btnGlobal;
-            btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
-            btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
-        }
-        return toolItemTransformationModes;
+        return new ManipulatorScopeToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemTransformationMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
@@ -1733,15 +1683,24 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemSync(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemSync = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnSync = new NButton(toolItemSync, Cocoa.getStyle());
-            this.btnSyncPtr[0] = btnSync;
-            btnSync.setToolTipText(I18n.E3D_SYNC_FOLDERS);
-            btnSync.setImage(ResourceManager.getImage("icon16_sync.png")); //$NON-NLS-1$
+        return new SyncToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
+    }
+
+    private Composite areaFromLocation(ToolItemDrawLocation location) {
+        final Composite target;
+        switch (location) {
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
         }
-        return toolItemSync;
+        return target;
     }
 
     private void createComposite3D(SashForm sashForm, CompositeContainer c, Composite3DState state) {
