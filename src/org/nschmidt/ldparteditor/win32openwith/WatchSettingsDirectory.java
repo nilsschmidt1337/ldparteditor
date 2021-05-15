@@ -47,6 +47,7 @@ import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
@@ -192,7 +193,7 @@ class WatchSettingsDirectory {
                                                try {
                                                    final DatFile df = win.openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, path, false);
                                                    if (df != null) {
-                                                       win.addRecentFile(df);
+                                                       NewOpenSaveProjectToolItem.addRecentFile(df);
                                                        final File f = new File(df.getNewName());
                                                        if (f.getParentFile() != null) {
                                                            Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());

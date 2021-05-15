@@ -2365,7 +2365,7 @@ public class MiscToolItem extends ToolItem {
                 WorkbenchManager.getPrimitiveCache().setPrimitiveCache(CompositePrimitive.getCache());
                 WorkbenchManager.getPrimitiveCache().setPrimitiveFileCache(CompositePrimitive.getFileCache());
 
-                WorkbenchManager.getUserSettingState().setRecentItems(Editor3DWindow.getWindow().getRecentItems());
+                WorkbenchManager.getUserSettingState().setRecentItems(NewOpenSaveProjectToolItem.getRecentItems());
 
                 if (!WorkbenchManager.saveWorkbench(selected)) {
                     MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);

@@ -53,7 +53,6 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.opengl.GLCanvas;
@@ -118,6 +117,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -171,8 +171,6 @@ public class Editor3DWindow extends Editor3DDesign {
     private int pngPictureUpdateCounter = 0;
 
     private boolean updatingSelectionTab = true;
-
-    private List<String> recentItems = new ArrayList<>();
 
     private Map<DatFile, Map<Composite3D, org.nschmidt.ldparteditor.composite.Composite3DViewState>> c3dStates = new HashMap<>();
 
@@ -242,14 +240,14 @@ public class Editor3DWindow extends Editor3DDesign {
         WorkbenchManager.getUserSettingState().loadColours();
         LDConfig.overrideColour16();
         // Load recent files
-        recentItems = WorkbenchManager.getUserSettingState().getRecentItems();
-        if (recentItems == null) recentItems = new ArrayList<>();
+        List<String> recentFiles = WorkbenchManager.getUserSettingState().getRecentItems();
+        NewOpenSaveProjectToolItem.getRecentItems().addAll(recentFiles);
         // Adjust the last visited path according to what was last opened (and exists on the harddrive)
         {
-            final int rc = recentItems.size() - 1;
+            final int rc = recentFiles.size() - 1;
             boolean foundPath = false;
             for (int i = rc; i > -1; i--) {
-                final String path = recentItems.get(i);
+                final String path = recentFiles.get(i);
                 final File f = new File(path);
                 if (f.exists()) {
                     if (f.isFile() && f.getParentFile() != null) {
@@ -434,367 +432,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 // Implementation is not required.
             }
         });
-        widgetUtil(btnLastOpenPtr[0]).addSelectionListener(e -> {
 
-            Menu lastOpenedMenu = new Menu(treeParts[0].getTree());
-            btnLastOpenPtr[0].setMenu(lastOpenedMenu);
-
-            final int size = recentItems.size() - 1;
-            for (int i = size; i > -1; i--) {
-                final String path = recentItems.get(i);
-                File f = new File(path);
-                if (f.exists() && f.canRead()) {
-                    if (f.isFile()) {
-                        MenuItem mntmItem1 = new MenuItem(lastOpenedMenu, I18n.noBiDirectionalTextStyle());
-                        mntmItem1.setEnabled(true);
-                        mntmItem1.setText(path);
-                        widgetUtil(mntmItem1).addSelectionListener(e11 -> {
-                            File f11 = new File(path);
-                            if (f11.exists() && f11.isFile() && f11.canRead()) {
-                                DatFile df = openDatFile(OpenInWhat.EDITOR_3D, path, false);
-                                if (df != null && !df.equals(View.DUMMY_DATFILE) && WorkbenchManager.getUserSettingState().isSyncingTabs()) {
-                                    boolean fileIsOpenInTextEditor = false;
-                                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                        for (CTabItem t : w.getTabFolder().getItems()) {
-                                            if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                                fileIsOpenInTextEditor = true;
-                                            }
-                                            if (fileIsOpenInTextEditor) break;
-                                        }
-                                        if (fileIsOpenInTextEditor) break;
-                                    }
-                                    if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
-                                        openDatFile(df, OpenInWhat.EDITOR_TEXT, null);
-                                    } else {
-                                        Project.getOpenTextWindows().iterator().next().openNewDatFileTab(df, true);
-                                    }
-                                }
-                                cleanupClosedData();
-                                regainFocus();
-                            }
-                        });
-                    } else if (f.isDirectory()) {
-                        MenuItem mntmItem2 = new MenuItem(lastOpenedMenu, I18n.noBiDirectionalTextStyle());
-                        mntmItem2.setEnabled(true);
-
-                        Object[] messageArguments = {path};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.getLocale());
-                        formatter.applyPattern(I18n.E3D_LAST_PROJECT);
-
-                        mntmItem2.setText(formatter.format(messageArguments));
-                        widgetUtil(mntmItem2).addSelectionListener(e12 -> {
-                            File f12 = new File(path);
-                            if (f12.exists() && f12.isDirectory() && f12.canRead() && ProjectActions.openProject(path)) {
-                                Project.create(false);
-                                treeItemProjectPtr[0].setData(Project.getProjectPath());
-                                resetSearch();
-                                LibraryManager.readProjectPartsParent(treeItemProjectPartsPtr[0]);
-                                LibraryManager.readProjectParts(treeItemProjectPartsPtr[0]);
-                                LibraryManager.readProjectSubparts(treeItemProjectSubpartsPtr[0]);
-                                LibraryManager.readProjectPrimitives(treeItemProjectPrimitivesPtr[0]);
-                                LibraryManager.readProjectHiResPrimitives(treeItemProjectPrimitives48Ptr[0]);
-                                LibraryManager.readProjectLowResPrimitives(treeItemProjectPrimitives8Ptr[0]);
-                                treeItemOfficialPartsPtr[0].setData(null);
-                                txtSearchPtr[0].setText(" "); //$NON-NLS-1$
-                                txtSearchPtr[0].setText(""); //$NON-NLS-1$
-                                updateTreeUnsavedEntries();
-                            }
-                            regainFocus();
-                        });
-                    }
-                }
-            }
-
-            java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
-            final int x = (int) b.getX();
-            final int y = (int) b.getY();
-
-            lastOpenedMenu.setLocation(x, y);
-            lastOpenedMenu.setVisible(true);
-            regainFocus();
-        });
-        widgetUtil(btnNewPtr[0]).addSelectionListener(e -> {
-            if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), false)) {
-                addRecentFile(Project.getProjectPath());
-            }
-            regainFocus();
-        });
-        widgetUtil(btnOpenPtr[0]).addSelectionListener(e -> {
-            if (ProjectActions.openProject(null)) {
-                addRecentFile(Project.getProjectPath());
-                Project.setLastVisitedPath(Project.getProjectPath());
-                Project.create(false);
-                treeItemProjectPtr[0].setData(Project.getProjectPath());
-                resetSearch();
-                LibraryManager.readProjectPartsParent(treeItemProjectPartsPtr[0]);
-                LibraryManager.readProjectParts(treeItemProjectPartsPtr[0]);
-                LibraryManager.readProjectSubparts(treeItemProjectSubpartsPtr[0]);
-                LibraryManager.readProjectPrimitives(treeItemProjectPrimitivesPtr[0]);
-                LibraryManager.readProjectHiResPrimitives(treeItemProjectPrimitives48Ptr[0]);
-                LibraryManager.readProjectLowResPrimitives(treeItemProjectPrimitives8Ptr[0]);
-                treeItemOfficialPartsPtr[0].setData(null);
-                txtSearchPtr[0].setText(" "); //$NON-NLS-1$
-                txtSearchPtr[0].setText(""); //$NON-NLS-1$
-                updateTreeUnsavedEntries();
-            }
-            regainFocus();
-        });
-        widgetUtil(btnSavePtr[0]).addSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (treeParts[0].getSelectionCount() == 1) {
-                    if (treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-                        DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
-                        if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
-                            if (df.save()) {
-                                Editor3DWindow.getWindow().addRecentFile(df);
-                                Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-                            } else {
-                                MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_ERROR);
-                                messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
-                                messageBoxError.open();
-                                Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-                            }
-                        }
-                    } else if (treeParts[0].getSelection()[0].getData() instanceof ArrayList<?>) {
-                        NLogger.debug(getClass(), "Saving all files from this group"); //$NON-NLS-1$
-                        {
-                            @SuppressWarnings("unchecked")
-                            List<DatFile> dfs = (List<DatFile>) treeParts[0].getSelection()[0].getData();
-                            for (DatFile df : dfs) {
-                                if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
-                                    if (df.save()) {
-                                        Editor3DWindow.getWindow().addRecentFile(df);
-                                        Project.removeUnsavedFile(df);
-                                        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-                                    } else {
-                                        MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                        messageBoxError.setText(I18n.DIALOG_ERROR);
-                                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
-                                        messageBoxError.open();
-                                        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-                                    }
-                                }
-                            }
-                        }
-                    } else if (treeParts[0].getSelection()[0].getData() instanceof String) {
-                        if (treeParts[0].getSelection()[0].equals(treeItemProjectPtr[0])) {
-                            NLogger.debug(getClass(), "Save the project..."); //$NON-NLS-1$
-                            if (Project.isDefaultProject() && ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
-                                Project.setLastVisitedPath(Project.getProjectPath());
-                            }
-                            iterateOverItems(treeItemProjectPartsPtr[0]);
-                            iterateOverItems(treeItemProjectSubpartsPtr[0]);
-                            iterateOverItems(treeItemProjectPrimitivesPtr[0]);
-                            iterateOverItems(treeItemProjectPrimitives48Ptr[0]);
-                            iterateOverItems(treeItemProjectPrimitives8Ptr[0]);
-                        } else if (treeParts[0].getSelection()[0].equals(treeItemUnofficialPtr[0])) {
-                            iterateOverItems(treeItemUnofficialPartsPtr[0]);
-                            iterateOverItems(treeItemUnofficialSubpartsPtr[0]);
-                            iterateOverItems(treeItemUnofficialPrimitivesPtr[0]);
-                            iterateOverItems(treeItemUnofficialPrimitives48Ptr[0]);
-                            iterateOverItems(treeItemUnofficialPrimitives8Ptr[0]);
-                        }
-                        NLogger.debug(getClass(), "Saving all files from this group to {0}", treeParts[0].getSelection()[0].getData()); //$NON-NLS-1$
-                    }
-                } else {
-                    NLogger.debug(getClass(), "Save the project..."); //$NON-NLS-1$
-                    if (Project.isDefaultProject() && ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
-                        Project.setLastVisitedPath(Project.getProjectPath());
-                    }
-                }
-                regainFocus();
-            }
-
-            private void iterateOverItems(TreeItem ti) {
-                {
-                    @SuppressWarnings("unchecked")
-                    List<DatFile> dfs = (List<DatFile>) ti.getData();
-                    for (DatFile df : dfs) {
-                        if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
-                            if (df.save()) {
-                                Editor3DWindow.getWindow().addRecentFile(df);
-                                Project.removeUnsavedFile(df);
-                                Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-                            } else {
-                                MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_ERROR);
-                                messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
-                                messageBoxError.open();
-                                Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        widgetUtil(btnSaveAllPtr[0]).addSelectionListener(e -> {
-            Set<DatFile> dfs = new HashSet<>(Project.getUnsavedFiles());
-            for (DatFile df : dfs) {
-                if (!df.isReadOnly()) {
-                    if (df.save()) {
-                        Editor3DWindow.getWindow().addRecentFile(df);
-                        Project.removeUnsavedFile(df);
-                    } else {
-                        MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBoxError.setText(I18n.DIALOG_ERROR);
-                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
-                        messageBoxError.open();
-                    }
-                }
-            }
-            if (Project.isDefaultProject() && ProjectActions.createNewProject(getWindow(), true)) {
-                addRecentFile(Project.getProjectPath());
-            }
-            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-            regainFocus();
-        });
-
-        widgetUtil(btnNewDatPtr[0]).addSelectionListener(e -> {
-            DatFile dat = createNewDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D);
-            if (dat != null) {
-                addRecentFile(dat);
-                final File f = new File(dat.getNewName());
-                if (f.getParentFile() != null) {
-                    Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
-                }
-            }
-            regainFocus();
-        });
-
-        widgetUtil(btnOpenDatPtr[0]).addSelectionListener(e -> {
-            boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
-            WorkbenchManager.getUserSettingState().setSyncingTabs(false);
-
-            FileDialog fd = new FileDialog(btnOpenPtr[0].getShell(), SWT.MULTI);
-            fd.setText(I18n.E3D_OPEN_DAT_FILE);
-
-            fd.setFilterPath(Project.getLastVisitedPath());
-
-            String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-            fd.setFilterExtensions(filterExt);
-            String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
-            fd.setFilterNames(filterNames);
-
-            String selected = fd.open();
-            if (selected == null) {
-                return;
-            }
-
-            for (String fileName : fd.getFileNames()) {
-                final String filePath = fd.getFilterPath() + File.separator + fileName;
-                DatFile dat = openDatFile(OpenInWhat.EDITOR_3D, filePath, true);
-                if (dat != null) {
-                    addRecentFile(dat);
-                    final File f = new File(dat.getNewName());
-                    if (f.getParentFile() != null) {
-                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
-                    }
-                    boolean fileIsOpenInTextEditor = false;
-                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                        for (CTabItem t : w.getTabFolder().getItems()) {
-                            if (dat.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                fileIsOpenInTextEditor = true;
-                            }
-                            if (fileIsOpenInTextEditor) break;
-                        }
-                        if (fileIsOpenInTextEditor) break;
-                    }
-                    if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
-                        openDatFile(dat, OpenInWhat.EDITOR_TEXT, null);
-                    } else {
-                        Project.getOpenTextWindows().iterator().next().openNewDatFileTab(dat, true);
-                    }
-                    Project.setFileToEdit(dat);
-                }
-            }
-
-            updateTabs();
-            WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
-            regainFocus();
-        });
-
-        widgetUtil(btnSaveDatPtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null && !Project.getFileToEdit().equals(View.DUMMY_DATFILE)) {
-                final DatFile df = Project.getFileToEdit();
-                Editor3DWindow.getWindow().addRecentFile(df);
-                if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
-                    if (df.save()) {
-                        Editor3DWindow.getWindow().addRecentFile(df);
-                        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-                    } else {
-                        MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBoxError.setText(I18n.DIALOG_ERROR);
-                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
-                    }
-                }
-            }
-            regainFocus();
-        });
-
-        widgetUtil(btnSaveAsDatPtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null && !Project.getFileToEdit().equals(View.DUMMY_DATFILE)) {
-                final DatFile df2 = Project.getFileToEdit();
-
-                FileDialog fd = new FileDialog(sh, SWT.SAVE);
-                fd.setText(I18n.E3D_SAVE_DAT_FILE_AS);
-                fd.setOverwrite(true);
-
-                {
-                    File f1 = new File(df2.getNewName()).getParentFile();
-                    if (f1.exists()) {
-                        fd.setFilterPath(f1.getAbsolutePath());
-                    } else {
-                        fd.setFilterPath(Project.getLastVisitedPath());
-                    }
-                }
-
-                String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-                fd.setFilterExtensions(filterExt);
-                String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
-                fd.setFilterNames(filterNames);
-
-                while (true) {
-                    try {
-                        String selected = fd.open();
-                        if (selected != null) {
-
-                            if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
-                                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-                                messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
-                                messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
-
-                                int result = messageBox.open();
-
-                                if (result == SWT.CANCEL) {
-                                    break;
-                                } else if (result == SWT.RETRY) {
-                                    continue;
-                                }
-                            }
-
-                            df2.saveAs(selected);
-
-                            DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, selected, false);
-                            if (df != null) {
-                                Editor3DWindow.getWindow().addRecentFile(df);
-                                final File f2 = new File(df.getNewName());
-                                if (f2.getParentFile() != null) {
-                                    Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
-                                }
-                            }
-                        }
-                    } catch (Exception ex) {
-                        NLogger.error(getClass(), ex);
-                    }
-                    break;
-                }
-
-            }
-            regainFocus();
-        });
         widgetUtil(btnCoarsePtr[0]).addSelectionListener(e -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getCoarseMoveSnap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getCoarseRotateSnap();
@@ -2419,23 +2057,6 @@ public class Editor3DWindow extends Editor3DDesign {
         return c3d;
     }
 
-    private void addRecentFile(String projectPath) {
-        // PrimGen2 uses a temporary "..." projectPath
-        if (!"...".equals(projectPath)) { //$NON-NLS-1$
-            final int index = recentItems.indexOf(projectPath);
-            if (index > -1) {
-                recentItems.remove(index);
-            } else if (recentItems.size() > 20) {
-                recentItems.remove(0);
-            }
-            recentItems.add(projectPath);
-        }
-    }
-
-    public void addRecentFile(DatFile dat) {
-        addRecentFile(dat.getNewName());
-    }
-
     private void replaceBgPicture(GDataPNG selectedBgPicture, GDataPNG newBgPicture, DatFile linkedDatFile) {
         if (linkedDatFile.getDrawPerLineNoClone().getKey(selectedBgPicture) == null) return;
         GData before = selectedBgPicture.getBefore();
@@ -2475,7 +2096,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     updateTreeRemoveEntry(df);
                 } else if (result == SWT.YES) {
                     if (df.save()) {
-                        Editor3DWindow.getWindow().addRecentFile(df);
+                        NewOpenSaveProjectToolItem.addRecentFile(df);
                     } else {
                         MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                         messageBoxError.setText(I18n.DIALOG_ERROR);
@@ -2538,7 +2159,7 @@ public class Editor3DWindow extends Editor3DDesign {
         WorkbenchManager.getPrimitiveCache().setPrimitiveCache(CompositePrimitive.getCache());
         WorkbenchManager.getPrimitiveCache().setPrimitiveFileCache(CompositePrimitive.getFileCache());
 
-        WorkbenchManager.getUserSettingState().setRecentItems(getRecentItems());
+        WorkbenchManager.getUserSettingState().setRecentItems(NewOpenSaveProjectToolItem.getRecentItems());
         // Save the workbench
         WorkbenchManager.saveWorkbench(WorkbenchManager.SETTINGS_GZ);
         setReturnCode(CANCEL);
@@ -2988,7 +2609,7 @@ public class Editor3DWindow extends Editor3DDesign {
         updateTabs();
     }
 
-    private synchronized void updateTabs() {
+    public synchronized void updateTabs() {
 
         boolean isSelected = false;
         if (tabFolderOpenDatFilesPtr[0].getData() != null) {
@@ -3056,6 +2677,10 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public TreeItem getProjectSubparts() {
         return treeItemProjectSubpartsPtr[0];
+    }
+
+    public TreeItem getUnofficial() {
+        return treeItemUnofficialPtr[0];
     }
 
     public TreeItem getUnofficialParts() {
@@ -4041,10 +3666,6 @@ public class Editor3DWindow extends Editor3DDesign {
         return alive;
     }
 
-    public List<String> getRecentItems() {
-        return recentItems;
-    }
-
     public void compileAll(boolean forceParsing) {
         Set<DatFile> dfs = new HashSet<>();
         for (OpenGLRenderer renderer : renders) {
@@ -4109,7 +3730,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 result2 = true;
             } else if (result == SWT.YES) {
                 if (df.save()) {
-                    Editor3DWindow.getWindow().addRecentFile(df);
+                    NewOpenSaveProjectToolItem.addRecentFile(df);
                     result2 = true;
                 } else {
                     MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
@@ -4144,7 +3765,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 Editor3DWindow.getSashForm().getChildren()[1].dispose();
                 CompositeContainer cmpContainer = new CompositeContainer(Editor3DWindow.getSashForm(), false);
                 cmpContainer.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
-                addRecentFile(df);
+                NewOpenSaveProjectToolItem.addRecentFile(df);
                 df.parseForData(true);
                 Project.setFileToEdit(df);
                 cmpContainer.getComposite3D().setLockableDatFileReference(df);
@@ -4176,7 +3797,7 @@ public class Editor3DWindow extends Editor3DDesign {
             if (vm.isModified()) {
                 df.setText(df.getText());
             }
-            addRecentFile(df);
+            NewOpenSaveProjectToolItem.addRecentFile(df);
             df.parseForData(true);
 
             Project.setFileToEdit(df);

@@ -354,7 +354,7 @@ public class AddToolItem extends ToolItem {
 
                                         DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, selected, false);
                                         if (df != null) {
-                                            Editor3DWindow.getWindow().addRecentFile(df);
+                                            NewOpenSaveProjectToolItem.addRecentFile(df);
                                             final File f2 = new File(df.getNewName());
                                             if (f2.getParentFile() != null) {
                                                 Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());

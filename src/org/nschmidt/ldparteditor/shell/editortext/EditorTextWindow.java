@@ -85,6 +85,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.workbench.EditorTextWindowState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -315,7 +316,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     Project.removeUnsavedFile(df);
                 } else if (result == SWT.YES) {
                     if (df.save()) {
-                        Editor3DWindow.getWindow().addRecentFile(df);
+                        NewOpenSaveProjectToolItem.addRecentFile(df);
                         ((CompositeTab) tabFolderPtr[0].getSelection()).getTextComposite().setText(df.getText());
                     } else {
                         MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
@@ -395,7 +396,7 @@ public class EditorTextWindow extends EditorTextDesign {
     }
 
     public void openNewDatFileTab(DatFile df, boolean updateLastVisited) {
-        Editor3DWindow.getWindow().addRecentFile(df);
+        NewOpenSaveProjectToolItem.addRecentFile(df);
         final File f = new File(df.getNewName());
         if (f.getParentFile() != null && updateLastVisited) {
             Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
@@ -432,7 +433,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                     if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
                                         DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
                                         if (df != null) {
-                                            Editor3DWindow.getWindow().addRecentFile(df);
+                                            NewOpenSaveProjectToolItem.addRecentFile(df);
                                             final File f2 = new File(df.getNewName());
                                             if (f2.getParentFile() != null) {
                                                 Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
@@ -588,13 +589,13 @@ public class EditorTextWindow extends EditorTextDesign {
             if (ct != null) {
                 CompositeTabState state = ct.getState();
                 DatFile df = state.getFileNameObj();
-                Editor3DWindow.getWindow().addRecentFile(df);
+                NewOpenSaveProjectToolItem.addRecentFile(df);
                 final Point selection = ct.getTextComposite().getSelection();
                 final int x = selection.x;
                 final int y = selection.y;
                 if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                     if (df.save()) {
-                        Editor3DWindow.getWindow().addRecentFile(df);
+                        NewOpenSaveProjectToolItem.addRecentFile(df);
                         Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                         ((CompositeTab) tabFolderPtr[0].getSelection()).getTextComposite().setText(state.getFileNameObj().getText());
                     } else {
@@ -1142,7 +1143,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                 if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
                                     DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
                                     if (df != null) {
-                                        Editor3DWindow.getWindow().addRecentFile(df);
+                                        NewOpenSaveProjectToolItem.addRecentFile(df);
                                         final File f2 = new File(df.getNewName());
                                         if (f2.getParentFile() != null) {
                                             Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
@@ -1275,7 +1276,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
                         DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, selected, false);
                         if (df != null) {
-                            Editor3DWindow.getWindow().addRecentFile(df);
+                            NewOpenSaveProjectToolItem.addRecentFile(df);
                             final File f = new File(df.getNewName());
                             if (f.getParentFile() != null) {
                                 Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());

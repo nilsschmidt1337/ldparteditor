@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.widget.TreeItem;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -105,7 +106,7 @@ public enum ProjectActions {
                         Editor3DWindow.getWindow().updateTreeRemoveEntry(df);
                     } else if (result == SWT.YES) {
                         if (df.save()) {
-                            Editor3DWindow.getWindow().addRecentFile(df);
+                            NewOpenSaveProjectToolItem.addRecentFile(df);
                             Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                         } else {
                             MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);

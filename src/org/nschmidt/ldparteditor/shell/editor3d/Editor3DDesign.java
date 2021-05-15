@@ -57,7 +57,6 @@ import org.nschmidt.ldparteditor.composite.ToolItemState;
 import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
-import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
@@ -77,6 +76,8 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolIte
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveDatfileToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.PerspectiveToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.RenderModeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.SyncToolItem;
@@ -84,7 +85,6 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolI
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.UndoRedoToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
-import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
@@ -125,12 +125,6 @@ class Editor3DDesign extends ApplicationWindow {
     private Composite cmpEast;
     private Composite cmpWest;
     protected static Composite status;
-
-    final NButton[] btnLastOpenPtr = new NButton[1];
-    final NButton[] btnNewPtr = new NButton[1];
-    final NButton[] btnOpenPtr = new NButton[1];
-    final NButton[] btnSavePtr = new NButton[1];
-    final NButton[] btnSaveAllPtr = new NButton[1];
 
     final MenuItem[] mntmGridCoarseDefaultPtr = new MenuItem[1];
     final MenuItem[] mntmGridMediumDefaultPtr = new MenuItem[1];
@@ -208,11 +202,6 @@ class Editor3DDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spnPngA3Ptr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnPngSXPtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnPngSYPtr = new BigDecimalSpinner[1];
-
-    final NButton[] btnNewDatPtr = new NButton[1];
-    final NButton[] btnOpenDatPtr = new NButton[1];
-    final NButton[] btnSaveDatPtr = new NButton[1];
-    final NButton[] btnSaveAsDatPtr = new NButton[1];
 
     final NButton[] btnPreviousSelectionPtr = new NButton[1];
     final NButton[] btnNextSelectionPtr = new NButton[1];
@@ -1616,70 +1605,11 @@ class Editor3DDesign extends ApplicationWindow {
     }
 
     private ToolItem createToolItemNewOpenDat(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemNewOpenDAT = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnNewDat = new NButton(toolItemNewOpenDAT, Cocoa.getStyle());
-            this.btnNewDatPtr[0] = btnNewDat;
-            btnNewDat.setToolTipText(I18n.E3D_NEW_DAT);
-            btnNewDat.setImage(ResourceManager.getImage("icon16_document-newdat.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnOpenDAT = new NButton(toolItemNewOpenDAT, Cocoa.getStyle());
-            this.btnOpenDatPtr[0] = btnOpenDAT;
-            btnOpenDAT.setToolTipText(I18n.E3D_OPEN_DAT);
-            btnOpenDAT.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnSnapshot = new NButton(toolItemNewOpenDAT, Cocoa.getStyle());
-            this.btnLastOpenPtr[0] = btnSnapshot;
-            btnSnapshot.setToolTipText(I18n.E3D_LAST_OPENED);
-            btnSnapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnSaveDAT = new NButton(toolItemNewOpenDAT, Cocoa.getStyle());
-            this.btnSaveDatPtr[0] = btnSaveDAT;
-            KeyStateManager.addTooltipText(btnSaveDAT, I18n.E3D_SAVE, Task.SAVE);
-            btnSaveDAT.setImage(ResourceManager.getImage("icon16_document-savedat.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnSaveAsDAT = new NButton(toolItemNewOpenDAT, Cocoa.getStyle());
-            this.btnSaveAsDatPtr[0] = btnSaveAsDAT;
-            btnSaveAsDAT.setToolTipText(I18n.E3D_SAVE_AS);
-            btnSaveAsDAT.setImage(ResourceManager.getImage("icon16_document-savedat.png")); //$NON-NLS-1$
-            btnSaveAsDAT.setText("..."); //$NON-NLS-1$
-        }
-        return toolItemNewOpenDAT;
+        return new NewOpenSaveDatfileToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemNewOpenSave(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        final Composite target = areaFromLocation(location);
-        ToolItem toolItemNewOpenSave = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            NButton btnNew = new NButton(toolItemNewOpenSave, Cocoa.getStyle());
-            this.btnNewPtr[0] = btnNew;
-            btnNew.setToolTipText(I18n.E3D_NEW);
-            btnNew.setImage(ResourceManager.getImage("icon16_document-new.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnOpen = new NButton(toolItemNewOpenSave, Cocoa.getStyle());
-            this.btnOpenPtr[0] = btnOpen;
-            btnOpen.setToolTipText(I18n.E3D_OPEN);
-            btnOpen.setImage(ResourceManager.getImage("icon16_document-open.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnSave = new NButton(toolItemNewOpenSave, Cocoa.getStyle());
-            this.btnSavePtr[0] = btnSave;
-            KeyStateManager.addTooltipText(btnSave, I18n.E3D_SAVE, Task.SAVE);
-            btnSave.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnSaveAll = new NButton(toolItemNewOpenSave, Cocoa.getStyle());
-            this.btnSaveAllPtr[0] = btnSaveAll;
-            btnSaveAll.setToolTipText(I18n.E3D_SAVE_ALL);
-            btnSaveAll.setImage(ResourceManager.getImage("icon16_document-saveall.png")); //$NON-NLS-1$
-        }
-        return toolItemNewOpenSave;
+        return new NewOpenSaveProjectToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemSync(ToolItemDrawLocation location, ToolItemDrawMode mode) {

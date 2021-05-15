@@ -63,6 +63,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolIte
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
 import org.nschmidt.ldparteditor.widget.NButton;
@@ -715,7 +716,7 @@ public class KeyStateManager {
                     case SAVE:
                         if (!df.isReadOnly()) {
                             if (df.save()) {
-                                Editor3DWindow.getWindow().addRecentFile(df);
+                                NewOpenSaveProjectToolItem.addRecentFile(df);
                                 Project.removeUnsavedFile(df);
                                 Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                                 pressedKeyCodes.remove(keyCode);

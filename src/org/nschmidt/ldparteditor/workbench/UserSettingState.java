@@ -514,6 +514,7 @@ public class UserSettingState implements Serializable {
     }
 
     public List<String> getRecentItems() {
+        if (recentItems == null) recentItems = new ArrayList<>();
         return recentItems;
     }
 

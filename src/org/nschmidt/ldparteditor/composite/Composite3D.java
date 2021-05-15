@@ -107,6 +107,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -1216,7 +1217,7 @@ public class Composite3D extends ScalableComposite {
                                     if (df != null) {
                                         boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
                                         WorkbenchManager.getUserSettingState().setSyncingTabs(false);
-                                        Editor3DWindow.getWindow().addRecentFile(df);
+                                        NewOpenSaveProjectToolItem.addRecentFile(df);
                                         final File f2 = new File(df.getNewName());
                                         if (f2.getParentFile() != null) {
                                             Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());

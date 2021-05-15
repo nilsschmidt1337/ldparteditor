@@ -88,6 +88,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
@@ -165,7 +166,7 @@ public class CompositeTab extends CompositeTabDesign {
                                     if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
                                         DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
                                         if (df != null) {
-                                            Editor3DWindow.getWindow().addRecentFile(df);
+                                            NewOpenSaveProjectToolItem.addRecentFile(df);
                                             final File f2 = new File(df.getNewName());
                                             if (f2.getParentFile() != null) {
                                                 Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
@@ -959,7 +960,7 @@ public class CompositeTab extends CompositeTabDesign {
                     if (!df.isReadOnly()) {
                         final Shell sh3 = compositeTextPtr[0].getDisplay().getActiveShell();
                         if (df.save()) {
-                            Editor3DWindow.getWindow().addRecentFile(df);
+                            NewOpenSaveProjectToolItem.addRecentFile(df);
                             Project.removeUnsavedFile(df);
                             Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                         } else if (sh3 != null) {
