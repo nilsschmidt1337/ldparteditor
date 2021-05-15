@@ -57,6 +57,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
@@ -601,7 +602,7 @@ public class KeyStateManager {
                         if (multi == 0) {
                             multi = 100;
                             if (LDConfig.hasColour(colourNumber)) {
-                                win.setLastUsedColour2(LDConfig.getColour(colourNumber));
+                                ColourToolItem.setLastUsedColour2(LDConfig.getColour(colourNumber));
                             }
                             colourNumber = 0;
                         }

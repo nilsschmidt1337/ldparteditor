@@ -31,7 +31,7 @@ import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.helper.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourToolItem;
 
 class VM06Edger2 extends VM05Distance {
 
@@ -171,22 +171,22 @@ class VM06Edger2 extends VM05Distance {
                 // No Line
             } else if (angle > es.getAf().doubleValue() && angle <= es.getAc().doubleValue()) {
                 // Condline
-                Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour16());
+                ColourToolItem.setLastUsedColour(LDConfig.getColour16());
                 addCondline(v1, v2, v3, v4);
             } else if (angle > es.getAc().doubleValue() && angle <= es.getAe().doubleValue()) {
                 // Condline + Edge Line
-                Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour16());
+                ColourToolItem.setLastUsedColour(LDConfig.getColour16());
                 addCondline(v1, v2, v3, v4);
-                Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour(2));
+                ColourToolItem.setLastUsedColour(LDConfig.getColour(2));
                 addLine(v1, v2);
             } else {
                 // Edge Line
-                Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour16());
+                ColourToolItem.setLastUsedColour(LDConfig.getColour16());
                 addLine(v1, v2);
             }
 
         } else {
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour16());
+            ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             addLine(h1.iterator().next(), h2.iterator().next());
         }
     }
@@ -222,17 +222,17 @@ class VM06Edger2 extends VM05Distance {
             // No Line
         } else if (angle > es.getAf().doubleValue() && angle <= es.getAc().doubleValue()) {
             // Condline
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour16());
+            ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             addCondline(v1, v2, v3, v4);
         } else if (angle > es.getAc().doubleValue() && angle <= es.getAe().doubleValue()) {
             // Condline + Edge Line
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour16());
+            ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             addCondline(v1, v2, v3, v4);
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour(2));
+            ColourToolItem.setLastUsedColour(LDConfig.getColour(2));
             addLine(v1, v2);
         } else {
             // Edge Line
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour16());
+            ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             addLine(v1, v2);
         }
     }
@@ -364,8 +364,8 @@ class VM06Edger2 extends VM05Distance {
                 }
             }
 
-            GColour tmpCol = Editor3DWindow.getWindow().getLastUsedColour();
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour16());
+            GColour tmpCol = ColourToolItem.getLastUsedColour();
+            ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             if (es.getUnmatchedMode() < 2) {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
@@ -375,7 +375,7 @@ class VM06Edger2 extends VM05Distance {
                 }
             }
 
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour(4));
+            ColourToolItem.setLastUsedColour(LDConfig.getColour(4));
             if (es.getUnmatchedMode() != 1) {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
@@ -384,7 +384,7 @@ class VM06Edger2 extends VM05Distance {
                     }
                 }
             }
-            Editor3DWindow.getWindow().setLastUsedColour(tmpCol);
+            ColourToolItem.setLastUsedColour(tmpCol);
 
         }
         break;
@@ -499,8 +499,8 @@ class VM06Edger2 extends VM05Distance {
                 }
             }
 
-            GColour tmpCol = Editor3DWindow.getWindow().getLastUsedColour();
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour16());
+            GColour tmpCol = ColourToolItem.getLastUsedColour();
+            ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             if (es.getUnmatchedMode() < 2) {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
@@ -510,7 +510,7 @@ class VM06Edger2 extends VM05Distance {
                 }
             }
 
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour(4));
+            ColourToolItem.setLastUsedColour(LDConfig.getColour(4));
             if (es.getUnmatchedMode() != 1) {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
@@ -519,8 +519,8 @@ class VM06Edger2 extends VM05Distance {
                     }
                 }
             }
-            Editor3DWindow.getWindow().setLastUsedColour(tmpCol);
 
+            ColourToolItem.setLastUsedColour(tmpCol);
         }
         break;
         case 2: // Selected Data Only
@@ -696,8 +696,8 @@ class VM06Edger2 extends VM05Distance {
                 }
             }
 
-            GColour tmpCol = Editor3DWindow.getWindow().getLastUsedColour();
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour16());
+            GColour tmpCol = ColourToolItem.getLastUsedColour();
+            ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             if (es.getUnmatchedMode() < 2) {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
@@ -707,7 +707,7 @@ class VM06Edger2 extends VM05Distance {
                 }
             }
 
-            Editor3DWindow.getWindow().setLastUsedColour(LDConfig.getColour(4));
+            ColourToolItem.setLastUsedColour(LDConfig.getColour(4));
             if (es.getUnmatchedMode() != 1) {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
@@ -716,7 +716,7 @@ class VM06Edger2 extends VM05Distance {
                     }
                 }
             }
-            Editor3DWindow.getWindow().setLastUsedColour(tmpCol);
+            ColourToolItem.setLastUsedColour(tmpCol);
         }
         break;
         default:

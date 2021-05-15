@@ -2555,7 +2555,7 @@ public class MiscToolItem extends ToolItem {
                     NLogger.error(Editor3DWindow.class, ex);
                 }
 
-                Editor3DWindow.reloadAllColours();
+                ColourToolItem.reloadAllColours();
 
             }
 
@@ -2603,7 +2603,7 @@ public class MiscToolItem extends ToolItem {
                 }
 
                 if (reBuild) {
-                    Editor3DWindow.reloadAllColours();
+                    ColourToolItem.reloadAllColours();
                 }
             }
 
@@ -2623,7 +2623,7 @@ public class MiscToolItem extends ToolItem {
                 }
             }
 
-            Editor3DWindow.reloadAllColours();
+            ColourToolItem.reloadAllColours();
 
             regainFocus();
         });

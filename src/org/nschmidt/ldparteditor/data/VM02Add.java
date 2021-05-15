@@ -35,6 +35,7 @@ import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -355,7 +356,7 @@ class VM02Add extends VM01SelectHelper {
             Project.addUnsavedFile(linkedDatFile);
             Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
-        GColour col = Editor3DWindow.getWindow().getLastUsedColour();
+        GColour col = ColourToolItem.getLastUsedColour();
         if (col.getColourNumber() == 16 || col.getColourNumber() == 24) {
             // Will never return a 'null' colour!
             col = DatParser.validateColour(24, 0f, 0f, .0f, 0f);
@@ -460,7 +461,7 @@ class VM02Add extends VM01SelectHelper {
             Project.addUnsavedFile(linkedDatFile);
             Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
-        GColour col = Editor3DWindow.getWindow().getLastUsedColour();
+        GColour col = ColourToolItem.getLastUsedColour();
         linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, isTriangle));
         setModified(true, true);
     }
@@ -572,7 +573,7 @@ class VM02Add extends VM01SelectHelper {
                 Project.addUnsavedFile(linkedDatFile);
                 Editor3DWindow.getWindow().updateTreeUnsavedEntries();
             }
-            GColour col = Editor3DWindow.getWindow().getLastUsedColour();
+            GColour col = ColourToolItem.getLastUsedColour();
             linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile, true));
             linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v4, v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
             setModified(true, true);
@@ -705,7 +706,7 @@ class VM02Add extends VM01SelectHelper {
             Project.addUnsavedFile(linkedDatFile);
             Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
-        GColour col = Editor3DWindow.getWindow().getLastUsedColour();
+        GColour col = ColourToolItem.getLastUsedColour();
         linkedDatFile.addToTailOrInsertAfterCursor(new GData4(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
         setModified(true, true);
     }
@@ -751,7 +752,7 @@ class VM02Add extends VM01SelectHelper {
             Project.addUnsavedFile(linkedDatFile);
             Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
-        GColour col = Editor3DWindow.getWindow().getLastUsedColour();
+        GColour col = ColourToolItem.getLastUsedColour();
         if (col.getColourNumber() == 16 || col.getColourNumber() == 24) {
             // Will never return a 'null' colour!
             col = DatParser.validateColour(24, 0f, 0f, 0f, 0f);

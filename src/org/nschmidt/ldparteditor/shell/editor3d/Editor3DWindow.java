@@ -56,8 +56,6 @@ import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -77,19 +75,16 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.composite.CompositeContainer;
 import org.nschmidt.ldparteditor.composite.CompositeScale;
 import org.nschmidt.ldparteditor.composite.ToolItem;
-import org.nschmidt.ldparteditor.composite.ToolSeparator;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTabFolder;
 import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.BFC;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
-import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData0;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GDataBFC;
-import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.GDataPNG;
 import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.data.LibraryManager;
@@ -98,10 +93,8 @@ import org.nschmidt.ldparteditor.data.ProtractorHelper;
 import org.nschmidt.ldparteditor.data.ReferenceParser;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
-import org.nschmidt.ldparteditor.dialog.colour.ColourDialog;
 import org.nschmidt.ldparteditor.dialog.copy.CopyDialog;
 import org.nschmidt.ldparteditor.dialog.newproject.NewProjectDialog;
-import org.nschmidt.ldparteditor.enumtype.IconSize;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
@@ -117,12 +110,10 @@ import org.nschmidt.ldparteditor.helper.ShellHelper;
 import org.nschmidt.ldparteditor.helper.Version;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
-import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.TreeData;
 import org.nschmidt.ldparteditor.helper.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helper.compositetext.ProjectActions;
 import org.nschmidt.ldparteditor.helper.compositetext.SubfileCompiler;
-import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -174,8 +165,6 @@ public class Editor3DWindow extends Editor3DDesign {
     private boolean insertingAtCursorPosition = false;
     private boolean reviewingAPart = false;
     private ManipulatorAxisMode workingLayer = ManipulatorAxisMode.NONE;
-
-    private GColour lastUsedColour = LDConfig.getColour16();
 
     private ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
@@ -899,99 +888,6 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        widgetUtil(btnPipettePtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                VertexManager vm = Project.getFileToEdit().getVertexManager();
-                vm.addSnapshot();
-                final GColour gColour2;
-                {
-                    GColour gColour3 = vm.getRandomSelectedColour(lastUsedColour);
-                    if (gColour3.getColourNumber() == 16) {
-                        gColour2 = LDConfig.getColour16();
-                    } else {
-                        gColour2 = gColour3;
-                    }
-                    lastUsedColour = gColour2;
-                }
-                setLastUsedColour(gColour2);
-                btnLastUsedColourPtr[0].clearPaintListeners();
-                btnLastUsedColourPtr[0].clearSelectionListeners();
-                final int imgSize = IconSize.getImageSizeFromIconSize();
-                final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
-                final Point size = btnLastUsedColourPtr[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
-                final int x = Math.round(size.x / 5f);
-                final int y = Math.round(size.y / 5f);
-                final int w = Math.round(size.x * (3f / 5f));
-                final int h = Math.round(size.y * (3f / 5f));
-                int num = gColour2.getColourNumber();
-                btnLastUsedColourPtr[0].addPaintListener(e1 -> {
-                    e1.gc.setBackground(col);
-                    e1.gc.fillRectangle(x, y, w, h);
-                    if (gColour2.getA() >= .99f) {
-                        e1.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                    } else {
-                        e1.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                    }
-                });
-                widgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e1 -> {
-                    if (Project.getFileToEdit() != null) {
-                        int num1 = gColour2.getColourNumber();
-                        if (!LDConfig.hasColour(num1)) {
-                            num1 = -1;
-                        }
-                        Project.getFileToEdit().getVertexManager().addSnapshot();
-                        Project.getFileToEdit().getVertexManager().colourChangeSelection(num1, gColour2.getR(), gColour2.getG(), gColour2.getB(), gColour2.getA(), true);
-                    }
-                    regainFocus();
-                });
-                if (num != -1) {
-
-                    Object[] messageArguments1 = {num, LDConfig.getColourName(num)};
-                    MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter1.setLocale(MyLanguage.getLocale());
-                    formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1);
-
-                    btnLastUsedColourPtr[0].setToolTipText(formatter1.format(messageArguments1));
-                } else {
-                    StringBuilder colourBuilder = new StringBuilder();
-                    colourBuilder.append("0x2"); //$NON-NLS-1$
-                    colourBuilder.append(MathHelper.toHex((int) (255f * gColour2.getR())).toUpperCase());
-                    colourBuilder.append(MathHelper.toHex((int) (255f * gColour2.getG())).toUpperCase());
-                    colourBuilder.append(MathHelper.toHex((int) (255f * gColour2.getB())).toUpperCase());
-
-                    Object[] messageArguments2 = {colourBuilder.toString()};
-                    MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter2.setLocale(MyLanguage.getLocale());
-                    formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2);
-
-                    btnLastUsedColourPtr[0].setToolTipText(formatter2.format(messageArguments2));
-                }
-                btnLastUsedColourPtr[0].redraw();
-            }
-            regainFocus();
-        });
-
-        widgetUtil(btnDecolourPtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
-                VertexManager vm = Project.getFileToEdit().getVertexManager();
-                vm.addSnapshot();
-                vm.selectAll(new SelectorSettings(), true);
-                GDataCSG.clearSelection(Project.getFileToEdit());
-                GColour c = LDConfig.getColour16();
-                vm.colourChangeSelection(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), false);
-                vm.getSelectedData().removeAll(vm.getTriangles().keySet());
-                vm.getSelectedData().removeAll(vm.getQuads().keySet());
-                vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
-                vm.getSelectedSubfiles().clear();
-                vm.getSelectedTriangles().removeAll(vm.getTriangles().keySet());
-                vm.getSelectedQuads().removeAll(vm.getQuads().keySet());
-                c = LDConfig.getColour(24);
-                vm.colourChangeSelection(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), true);
-            }
-        });
-
-        initPaletteEvent();
-
         widgetUtil(btnCoarsePtr[0]).addSelectionListener(e -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getCoarseMoveSnap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getCoarseRotateSnap();
@@ -1003,7 +899,6 @@ public class Editor3DWindow extends Editor3DDesign {
             Manipulator.setSnap(m, r, s);
             regainFocus();
         });
-
         widgetUtil(btnMediumPtr[0]).addSelectionListener(e -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getMediumMoveSnap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getMediumRotateSnap();
@@ -1015,7 +910,6 @@ public class Editor3DWindow extends Editor3DDesign {
             Manipulator.setSnap(m, r, s);
             regainFocus();
         });
-
         widgetUtil(btnFinePtr[0]).addSelectionListener(e -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getFineMoveSnap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getFineRotateSnap();
@@ -3378,79 +3272,6 @@ public class Editor3DWindow extends Editor3DDesign {
         this.workingLayer = workingLayer;
     }
 
-    public GColour getLastUsedColour() {
-        return lastUsedColour;
-    }
-
-    public void setLastUsedColour(GColour lastUsedColour) {
-        this.lastUsedColour = lastUsedColour;
-    }
-
-    public void setLastUsedColour2(GColour lastUsedColour) {
-        final int imgSize = IconSize.getImageSizeFromIconSize();
-        final GColour[] gColour2 = new GColour[] { lastUsedColour };
-        int num = gColour2[0].getColourNumber();
-        if (LDConfig.hasColour(num)) {
-            gColour2[0] = LDConfig.getColour(num);
-        } else {
-            num = -1;
-        }
-        Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
-        btnLastUsedColourPtr[0].clearPaintListeners();
-        btnLastUsedColourPtr[0].clearSelectionListeners();
-        final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-        final Point size = btnLastUsedColourPtr[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
-        final int x = size.x / 4;
-        final int y = size.y / 4;
-        final int w = size.x / 2;
-        final int h = size.y / 2;
-        btnLastUsedColourPtr[0].addPaintListener(e -> {
-            e.gc.setBackground(col);
-            e.gc.fillRectangle(x, y, w, h);
-            if (gColour2[0].getA() >= .99f) {
-                e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-            } else if (gColour2[0].getA() == 0f) {
-                e.gc.drawImage(ResourceManager.getImage("icon16_randomColours.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-            } else {
-                e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-            }
-        });
-        widgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
-                int num1 = gColour2[0].getColourNumber();
-                if (!LDConfig.hasColour(num1)) {
-                    num1 = -1;
-                }
-                Project.getFileToEdit().getVertexManager().colourChangeSelection(num1, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
-            }
-        });
-        if (num != -1) {
-
-            Object[] messageArguments = {num, LDConfig.getColourName(num)};
-            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.getLocale());
-            formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1);
-
-            btnLastUsedColourPtr[0].setToolTipText(formatter.format(messageArguments));
-        } else {
-            StringBuilder colourBuilder = new StringBuilder();
-            colourBuilder.append("0x2"); //$NON-NLS-1$
-            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
-            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
-            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-
-            Object[] messageArguments = {colourBuilder.toString()};
-            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.getLocale());
-            formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2);
-
-            btnLastUsedColourPtr[0].setToolTipText(formatter.format(messageArguments));
-            if (gColour2[0].getA() == 0f) btnLastUsedColourPtr[0].setToolTipText(I18n.COLOURDIALOG_RANDOM_COLOURS);
-        }
-        btnLastUsedColourPtr[0].redraw();
-    }
-
     public void cleanupClosedData() {
         Set<DatFile> openFiles = new HashSet<>(Project.getUnsavedFiles());
         for (OpenGLRenderer renderer : renders) {
@@ -5114,113 +4935,6 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
         regainFocus();
-    }
-
-    private void reloadColours() {
-        for (Control ctrl : toolItemColourBar.getChildren()) {
-            if (!(ctrl instanceof ToolSeparator)) ctrl.dispose();
-        }
-
-        List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-
-        final int size = colours.size();
-        for (int i = 0; i < size; i++) {
-            addColorButton(toolItemColourBar, colours.get(i), i);
-        }
-
-        {
-            NButton btnPalette = new NButton(toolItemColourBar, SWT.NONE);
-            this.btnPalettePtr[0] = btnPalette;
-            btnPalette.setToolTipText(I18n.E3D_MORE);
-            btnPalette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
-            initPaletteEvent();
-        }
-
-        toolItemColourBar.getParent().layout();
-        toolItemColourBar.layout();
-        toolItemColourBar.redraw();
-    }
-
-    public static void reloadAllColours() {
-        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-            w.reloadColours();
-        }
-        Editor3DWindow.getWindow().reloadColours();
-    }
-
-    private void initPaletteEvent() {
-        widgetUtil(btnPalettePtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null) {
-                final GColour[] gColour2 = new GColour[1];
-                new ColourDialog(getShell(), gColour2, true).run();
-                if (gColour2[0] != null) {
-                    setLastUsedColour(gColour2[0]);
-                    int num = gColour2[0].getColourNumber();
-                    if (!LDConfig.hasColour(num)) {
-                        num = -1;
-                    }
-                    Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
-
-                    btnLastUsedColourPtr[0].clearPaintListeners();
-                    btnLastUsedColourPtr[0].clearSelectionListeners();
-                    final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-                    final Point size = btnLastUsedColourPtr[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
-                    final int x = Math.round(size.x / 5f);
-                    final int y = Math.round(size.y / 5f);
-                    final int w = Math.round(size.x * (3f / 5f));
-                    final int h = Math.round(size.y * (3f / 5f));
-                    final int imgSize = IconSize.getImageSizeFromIconSize();
-                    btnLastUsedColourPtr[0].addPaintListener(e1 -> {
-                        e1.gc.setBackground(col);
-                        e1.gc.fillRectangle(x, y, w, h);
-                        if (gColour2[0].getA() >= .99f) {
-                            e1.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                        } else if (gColour2[0].getA() == 0f) {
-                            e1.gc.drawImage(ResourceManager.getImage("icon16_randomColours.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                        } else {
-                            e1.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                        }
-                    });
-                    widgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e1 -> {
-                        if (Project.getFileToEdit() != null) {
-                            int num1 = gColour2[0].getColourNumber();
-                            if (!LDConfig.hasColour(num1)) {
-                                num1 = -1;
-                            }
-                            Project.getFileToEdit().getVertexManager().addSnapshot();
-                            Project.getFileToEdit().getVertexManager().colourChangeSelection(num1, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
-                        }
-                        regainFocus();
-                    });
-                    if (num != -1) {
-
-                        Object[] messageArguments1 = {num, LDConfig.getColourName(num)};
-                        MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
-                        formatter1.setLocale(MyLanguage.getLocale());
-                        formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1);
-
-                        btnLastUsedColourPtr[0].setToolTipText(formatter1.format(messageArguments1));
-                    } else {
-                        StringBuilder colourBuilder = new StringBuilder();
-                        colourBuilder.append("0x2"); //$NON-NLS-1$
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-
-                        Object[] messageArguments2 = {colourBuilder.toString()};
-                        MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
-                        formatter2.setLocale(MyLanguage.getLocale());
-                        formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2);
-
-                        btnLastUsedColourPtr[0].setToolTipText(formatter2.format(messageArguments2));
-                        if (gColour2[0].getA() == 0f) btnLastUsedColourPtr[0].setToolTipText(I18n.COLOURDIALOG_RANDOM_COLOURS);
-                    }
-                    btnLastUsedColourPtr[0].redraw();
-                }
-            }
-            regainFocus();
-        });
     }
 
     public void updateInitialScale(BigDecimal initialScale, BigDecimal scaleFacor, boolean setDefaults) {

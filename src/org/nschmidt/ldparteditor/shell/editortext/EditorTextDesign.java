@@ -50,7 +50,7 @@ import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
-import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourToolItem;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
@@ -250,7 +250,7 @@ class EditorTextDesign extends ApplicationWindow {
                     btnCol.setToolTipText(formatter2.format(messageArguments2));
 
                 }
-                Editor3DWindow.reloadAllColours();
+                ColourToolItem.reloadAllColours();
             } else {
                 int num2 = gColour2[0].getColourNumber();
                 if (LDConfig.hasColour(num2)) {

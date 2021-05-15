@@ -15,8 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shell.editor3d;
 
-import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
-
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -49,7 +47,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.composite.CompositeContainer;
@@ -58,22 +55,19 @@ import org.nschmidt.ldparteditor.composite.ToolItemDrawLocation;
 import org.nschmidt.ldparteditor.composite.ToolItemDrawMode;
 import org.nschmidt.ldparteditor.composite.ToolItemState;
 import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
-import org.nschmidt.ldparteditor.data.GColour;
-import org.nschmidt.ldparteditor.dialog.colour.ColourDialog;
-import org.nschmidt.ldparteditor.enumtype.IconSize;
-import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
-import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourFunctionsToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.CopyPasteToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.HideUnhideToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.LineThicknessToolItem;
@@ -137,11 +131,6 @@ class Editor3DDesign extends ApplicationWindow {
 
     final NButton[] btnLocalPtr = new NButton[1];
     final NButton[] btnGlobalPtr = new NButton[1];
-
-    final NButton[] btnLastUsedColourPtr = new NButton[1];
-    final NButton[] btnPipettePtr = new NButton[1];
-    final NButton[] btnDecolourPtr = new NButton[1];
-    final NButton[] btnPalettePtr = new NButton[1];
 
     final NButton[] btnInsertAtCursorPositionPtr = new NButton[1];
 
@@ -270,8 +259,6 @@ class Editor3DDesign extends ApplicationWindow {
 
     final NButton[] btnZoomOutPrimitivesPtr = new NButton[1];
     final NButton[] btnZoomInPrimitivesPtr = new NButton[1];
-
-    ToolItem toolItemColourBar;
 
     protected static SashForm sashForm;
     final SashForm[] editorSashForm = new SashForm[]{null};
@@ -1592,66 +1579,8 @@ class Editor3DDesign extends ApplicationWindow {
 
     private ToolItem createToolItemColours(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target = areaFromLocation(location);
-        ToolItem toolItemColours = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        toolItemColourBar = toolItemColours;
-        List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
-
-        {
-            final int size = colours.size();
-            for (int i = 0; i < size; i++) {
-                addColorButton(toolItemColours, colours.get(i), i);
-            }
-        }
-
-        {
-            NButton btnPalette = new NButton(toolItemColours, Cocoa.getStyle());
-            this.btnPalettePtr[0] = btnPalette;
-            btnPalette.setToolTipText(I18n.E3D_MORE);
-            btnPalette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
-        }
-
-        ToolItem toolItemColourFunctions = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-        {
-            final int imgSize = IconSize.getImageSizeFromIconSize();
-            NButton btnLastUsedColour = new NButton(toolItemColourFunctions, Cocoa.getStyle());
-            this.btnLastUsedColourPtr[0] = btnLastUsedColour;
-            btnLastUsedColour.setToolTipText(I18n.E3D_COLOUR_16);
-            btnLastUsedColour.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
-
-            final GColour col16 = LDConfig.getColour16();
-            final Color col = SWTResourceManager.getColor((int) (255f * col16.getR()), (int) (255f * col16.getG()), (int) (255f * col16.getB()));
-            final Point size = btnLastUsedColour.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-            final int x = Math.round(size.x / 5f);
-            final int y = Math.round(size.y / 5f);
-            final int w = Math.round(size.x * (3f / 5f));
-            final int h = Math.round(size.y * (3f / 5f));
-            btnLastUsedColour.addPaintListener(e -> {
-                e.gc.setBackground(col);
-                e.gc.fillRectangle(x, y, w, h);
-                e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-            });
-            widgetUtil(btnLastUsedColour).addSelectionListener(e -> {
-                if (Project.getFileToEdit() != null) {
-                    Project.getFileToEdit().getVertexManager().addSnapshot();
-                    GColour col1 = LDConfig.getColour16();
-                    Project.getFileToEdit().getVertexManager().colourChangeSelection(16, col1.getR(), col1.getG(), col1.getB(), 1f, true);
-                }
-                Editor3DWindow.getWindow().regainFocus();
-            });
-        }
-        {
-            NButton btnPipette = new NButton(toolItemColourFunctions, Cocoa.getStyle());
-            this.btnPipettePtr[0] = btnPipette;
-            btnPipette.setToolTipText(I18n.E3D_PIPETTE);
-            btnPipette.setImage(ResourceManager.getImage("icon16_pipette.png")); //$NON-NLS-1$
-        }
-        {
-            NButton btnDecolour = new NButton(toolItemColourFunctions, Cocoa.getStyle());
-            this.btnDecolourPtr[0] = btnDecolour;
-            btnDecolour.setToolTipText(I18n.E3D_DECOLOUR);
-            btnDecolour.setImage(ResourceManager.getImage("icon16_uncolour.png")); //$NON-NLS-1$
-        }
-        return toolItemColourFunctions;
+        new ColourToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
+        return new ColourFunctionsToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private Composite areaFromLocation(ToolItemDrawLocation location) {
@@ -1827,167 +1756,6 @@ class Editor3DDesign extends ApplicationWindow {
         }
 
         c3d.loadState(state);
-    }
-
-    void addColorButton(ToolItem toolItemColours, GColour gColour, final int index) {
-        int cn = gColour.getColourNumber();
-        if (cn != -1 && LDConfig.hasColour(cn)) {
-            gColour = LDConfig.getColour(cn);
-        }
-
-        final int imgSize = IconSize.getImageSizeFromIconSize();
-        final GColour[] gColour2 = new GColour[] { gColour };
-        final Color[] col = new Color[1];
-        col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-
-        final NButton btnCol = new NButton(toolItemColours, Cocoa.getStyle());
-        btnCol.setData(gColour2);
-        int num = gColour2[0].getColourNumber();
-        if (!LDConfig.hasColour(num)) {
-            num = -1;
-        }
-        if (num != -1) {
-
-            Object[] messageArguments = {num, LDConfig.getColourName(num)};
-            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.getLocale());
-            formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-
-            btnCol.setToolTipText(formatter.format(messageArguments));
-        } else {
-            StringBuilder colourBuilder = new StringBuilder();
-            colourBuilder.append("0x2"); //$NON-NLS-1$
-            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
-            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
-            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-
-            Object[] messageArguments = {colourBuilder.toString()};
-            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.getLocale());
-            formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-
-            btnCol.setToolTipText(formatter.format(messageArguments));
-        }
-
-        btnCol.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
-
-        widgetUtil(btnCol).addSelectionListener(e -> {
-            if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
-                // Choose new colour
-                new ColourDialog(getShell(), gColour2, false).run();
-                WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
-                col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-                int num2 = gColour2[0].getColourNumber();
-                if (LDConfig.hasColour(num2)) {
-                    gColour2[0] = LDConfig.getColour(num2);
-                } else {
-                    num2 = -1;
-                }
-                if (num2 != -1) {
-
-                    Object[] messageArguments1 = {num2, LDConfig.getColourName(num2)};
-                    MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter1.setLocale(MyLanguage.getLocale());
-                    formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-
-                    btnCol.setToolTipText(formatter1.format(messageArguments1));
-                } else {
-                    StringBuilder colourBuilder1 = new StringBuilder();
-                    colourBuilder1.append("0x2"); //$NON-NLS-1$
-                    colourBuilder1.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
-                    colourBuilder1.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
-                    colourBuilder1.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-
-                    Object[] messageArguments2 = {colourBuilder1.toString()};
-                    MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter2.setLocale(MyLanguage.getLocale());
-                    formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-
-                    btnCol.setToolTipText(formatter2.format(messageArguments2));
-                }
-                Editor3DWindow.reloadAllColours();
-            } else {
-                int num3 = gColour2[0].getColourNumber();
-                if (LDConfig.hasColour(num3)) {
-                    gColour2[0] = LDConfig.getColour(num3);
-                } else {
-                    num3 = -1;
-                }
-                if (Project.getFileToEdit() != null) {
-                    Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().getVertexManager().colourChangeSelection(num3, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
-                }
-                Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
-                btnLastUsedColourPtr[0].clearPaintListeners();
-                btnLastUsedColourPtr[0].clearSelectionListeners();
-                final Color col1 = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-                final Point size = btnLastUsedColourPtr[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
-                final int x = Math.round(size.x / 5f);
-                final int y = Math.round(size.y / 5f);
-                final int w = Math.round(size.x * (3f / 5f));
-                final int h = Math.round(size.y * (3f / 5f));
-                btnLastUsedColourPtr[0].addPaintListener(e1 -> {
-                    e1.gc.setBackground(col1);
-                    e1.gc.fillRectangle(x, y, w, h);
-                    if (gColour2[0].getA() == 1f) {
-                        e1.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                    } else {
-                        e1.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                    }
-                });
-                widgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e1 -> {
-                    if (Project.getFileToEdit() != null) {
-                        Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
-                        int num1 = gColour2[0].getColourNumber();
-                        if (LDConfig.hasColour(num1)) {
-                            gColour2[0] = LDConfig.getColour(num1);
-                        } else {
-                            num1 = -1;
-                        }
-                        Project.getFileToEdit().getVertexManager().addSnapshot();
-                        Project.getFileToEdit().getVertexManager().colourChangeSelection(num1, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
-                    }
-                    Editor3DWindow.getWindow().regainFocus();
-                });
-                if (num3 != -1) {
-                    Object[] messageArguments3 = {num3, LDConfig.getColourName(num3)};
-                    MessageFormat formatter3 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter3.setLocale(MyLanguage.getLocale());
-                    formatter3.applyPattern(I18n.EDITORTEXT_COLOUR_1);
-
-                    btnLastUsedColourPtr[0].setToolTipText(formatter3.format(messageArguments3));
-                } else {
-                    StringBuilder colourBuilder2 = new StringBuilder();
-                    colourBuilder2.append("0x2"); //$NON-NLS-1$
-                    colourBuilder2.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
-                    colourBuilder2.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
-                    colourBuilder2.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-
-                    Object[] messageArguments4 = {colourBuilder2.toString()};
-                    MessageFormat formatter4 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter4.setLocale(MyLanguage.getLocale());
-                    formatter4.applyPattern(I18n.EDITORTEXT_COLOUR_2);
-
-                    btnLastUsedColourPtr[0].setToolTipText(formatter4.format(messageArguments4));
-                }
-                btnLastUsedColourPtr[0].redraw();
-            }
-            Editor3DWindow.getWindow().regainFocus();
-        });
-        final Point size = btnCol.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-        final int x = Math.round(size.x / 5f);
-        final int y = Math.round(size.y / 5f);
-        final int w = Math.round(size.x * (3f / 5f));
-        final int h = Math.round(size.y * (3f / 5f));
-        btnCol.addPaintListener(e -> {
-            e.gc.setBackground(col[0]);
-            e.gc.fillRectangle(x, y, w, h);
-            if (gColour2[0].getA() == 1f) {
-                e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-            } else {
-                e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-            }
-        });
     }
 
     /**
