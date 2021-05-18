@@ -47,6 +47,9 @@ import java.util.zip.Inflater;
  */
 public class PNGDecoder {
 
+    private static final String UNSUPPORTED_FORMAT_FOR_THIS_IMAGE = "Unsupported format for this image"; //$NON-NLS-1$
+    private static final String UNSUPPORTED_BIT_DEPTH = "Unsupported bit depth: "; //$NON-NLS-1$
+
     public enum Format {
         ALPHA(1, true), LUMINANCE(1, false), LUMINANCE_ALPHA(2, true), RGB(3, false), RGBA(4, true), BGRA(4, true), ABGR(4, true);
 
@@ -112,11 +115,15 @@ public class PNGDecoder {
         readIHDR();
         closeChunk();
 
-        searchIDAT: for (;;) {
+        while (true) {
             openChunk();
             switch (chunkType) {
             case IDAT:
-                break searchIDAT;
+                if (colorType == COLOR_INDEXED && palette == null) {
+                    throw new IOException("Missing PLTE chunk"); //$NON-NLS-1$
+                }
+
+                return;
             case PLTE:
                 readPLTE();
                 break;
@@ -126,11 +133,8 @@ public class PNGDecoder {
             default:
                 break;
             }
-            closeChunk();
-        }
 
-        if (colorType == COLOR_INDEXED && palette == null) {
-            throw new IOException("Missing PLTE chunk"); //$NON-NLS-1$
+            closeChunk();
         }
     }
 
@@ -193,7 +197,7 @@ public class PNGDecoder {
                         copy(buffer, curLine);
                         break;
                     default:
-                        throw new UnsupportedOperationException("Unsupported format for this image"); //$NON-NLS-1$
+                        throw new UnsupportedOperationException(UNSUPPORTED_FORMAT_FOR_THIS_IMAGE);
                     }
                     break;
                 case COLOR_TRUEALPHA:
@@ -211,7 +215,7 @@ public class PNGDecoder {
                         copyRGBAtoRGB(buffer, curLine);
                         break;
                     default:
-                        throw new UnsupportedOperationException("Unsupported format for this image"); //$NON-NLS-1$
+                        throw new UnsupportedOperationException(UNSUPPORTED_FORMAT_FOR_THIS_IMAGE);
                     }
                     break;
                 case COLOR_GREYSCALE:
@@ -221,14 +225,14 @@ public class PNGDecoder {
                         copy(buffer, curLine);
                         break;
                     default:
-                        throw new UnsupportedOperationException("Unsupported format for this image"); //$NON-NLS-1$
+                        throw new UnsupportedOperationException(UNSUPPORTED_FORMAT_FOR_THIS_IMAGE);
                     }
                     break;
                 case COLOR_GREYALPHA:
                     if (fmt == Format.LUMINANCE_ALPHA) {
                         copy(buffer, curLine);
                     } else {
-                        throw new UnsupportedOperationException("Unsupported format for this image"); //$NON-NLS-1$
+                        throw new UnsupportedOperationException(UNSUPPORTED_FORMAT_FOR_THIS_IMAGE);
                     }
                     break;
                 case COLOR_INDEXED:
@@ -259,7 +263,7 @@ public class PNGDecoder {
                         copyPALtoBGRA(buffer, palLine);
                         break;
                     default:
-                        throw new UnsupportedOperationException("Unsupported format for this image"); //$NON-NLS-1$
+                        throw new UnsupportedOperationException(UNSUPPORTED_FORMAT_FOR_THIS_IMAGE);
                     }
                     break;
                 default:
@@ -567,25 +571,25 @@ public class PNGDecoder {
         switch (colorType) {
         case COLOR_GREYSCALE:
             if (bitdepth != 8) {
-                throw new IOException("Unsupported bit depth: " + bitdepth); //$NON-NLS-1$
+                throw new IOException(UNSUPPORTED_BIT_DEPTH + bitdepth);
             }
             bytesPerPixel = 1;
             break;
         case COLOR_GREYALPHA:
             if (bitdepth != 8) {
-                throw new IOException("Unsupported bit depth: " + bitdepth); //$NON-NLS-1$
+                throw new IOException(UNSUPPORTED_BIT_DEPTH + bitdepth);
             }
             bytesPerPixel = 2;
             break;
         case COLOR_TRUECOLOR:
             if (bitdepth != 8) {
-                throw new IOException("Unsupported bit depth: " + bitdepth); //$NON-NLS-1$
+                throw new IOException(UNSUPPORTED_BIT_DEPTH + bitdepth);
             }
             bytesPerPixel = 3;
             break;
         case COLOR_TRUEALPHA:
             if (bitdepth != 8) {
-                throw new IOException("Unsupported bit depth: " + bitdepth); //$NON-NLS-1$
+                throw new IOException(UNSUPPORTED_BIT_DEPTH + bitdepth);
             }
             bytesPerPixel = 4;
             break;
@@ -598,7 +602,7 @@ public class PNGDecoder {
                 bytesPerPixel = 1;
                 break;
             default:
-                throw new IOException("Unsupported bit depth: " + bitdepth); //$NON-NLS-1$
+                throw new IOException(UNSUPPORTED_BIT_DEPTH + bitdepth);
             }
             break;
         default:
