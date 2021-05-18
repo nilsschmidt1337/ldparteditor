@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.csg.CSG;
+import org.nschmidt.csg.CSGType;
 import org.nschmidt.ldparteditor.data.BFC;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -373,61 +373,61 @@ public enum DatParser {
             } else if (line.startsWith("CSG_", 7)) { //$NON-NLS-1$
                 if (line.startsWith("UNION", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.UNION, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.UNION, line, parent)));
                 } else if (line.startsWith("DIFFERENCE", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.DIFFERENCE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.DIFFERENCE, line, parent)));
                 } else if (line.startsWith("INTERSECTION", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.INTERSECTION, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.INTERSECTION, line, parent)));
                 } else if (line.startsWith("TRANSFORM", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.TRANSFORM, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.TRANSFORM, line, parent)));
                 } else if (line.startsWith("CUBOID", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CUBOID, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.CUBOID, line, parent)));
                 } else if (line.startsWith("ELLIPSOID", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.ELLIPSOID, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.ELLIPSOID, line, parent)));
                 } else if (line.startsWith("QUAD", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.QUAD, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.QUAD, line, parent)));
                 } else if (line.startsWith("CYLINDER", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CYLINDER, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.CYLINDER, line, parent)));
                 } else if (line.startsWith("MESH", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.MESH, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.MESH, line, parent)));
                 } else if (line.startsWith("CONE", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CONE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.CONE, line, parent)));
                 } else if (line.startsWith("CIRCLE", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CIRCLE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.CIRCLE, line, parent)));
                 } else if (line.startsWith("COMPILE", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.COMPILE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.COMPILE, line, parent)));
                 } else if (line.startsWith("QUALITY", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.QUALITY, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.QUALITY, line, parent)));
                 } else if (line.startsWith("EPSILON", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EPSILON, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.EPSILON, line, parent)));
                 } else if (line.startsWith("TJUNCTION_EPSILON", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.TJUNCTION, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.TJUNCTION, line, parent)));
                 } else if (line.startsWith("EDGE_COLLAPSE_EPSILON", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.COLLAPSE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.COLLAPSE, line, parent)));
                 } else if (line.startsWith("DONT_OPTIMIZE", 11) || line.startsWith("DONT_OPTIMISE", 11) ) { //$NON-NLS-1$ //$NON-NLS-2$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.DONTOPTIMIZE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.DONTOPTIMIZE, line, parent)));
                 } else if (line.startsWith("EXTRUDE", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.EXTRUDE, line, parent)));
                 } else if (line.startsWith("EXT_CFG", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE_CFG, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.EXTRUDE_CFG, line, parent)));
                     GDataCSG.forceRecompile(datFile);
                 }
             } else if (line.startsWith("PNG", 7) && depth == 0 && dataSegments.length >= 12) { //$NON-NLS-1$

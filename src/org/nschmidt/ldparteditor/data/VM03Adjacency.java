@@ -29,7 +29,7 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.nschmidt.csg.CSG;
+import org.nschmidt.csg.CSGType;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.math.HashBiMap;
@@ -875,7 +875,7 @@ class VM03Adjacency extends VM02Add {
                 Set<GDataCSG> newCSGSelection = new HashSet<>();
                 HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
                 for (GDataCSG csg : GDataCSG.getSelection(linkedDatFile)) {
-                    if (csg.type == CSG.COMPILE || csg.type == CSG.QUALITY || csg.type == CSG.UNION || csg.type == CSG.DIFFERENCE || csg.type == CSG.INTERSECTION  || csg.type == CSG.EPSILON || csg.type == CSG.TJUNCTION || csg.type == CSG.COLLAPSE || csg.type == CSG.DONTOPTIMIZE || csg.type == CSG.EXTRUDE_CFG) {
+                    if (csg.type == CSGType.COMPILE || csg.type == CSGType.QUALITY || csg.type == CSGType.UNION || csg.type == CSGType.DIFFERENCE || csg.type == CSGType.INTERSECTION  || csg.type == CSGType.EPSILON || csg.type == CSGType.TJUNCTION || csg.type == CSGType.COLLAPSE || csg.type == CSGType.DONTOPTIMIZE || csg.type == CSGType.EXTRUDE_CFG) {
                         continue;
                     }
                     GColour col = csg.getColour();

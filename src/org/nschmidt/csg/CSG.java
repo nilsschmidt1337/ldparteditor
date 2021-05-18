@@ -127,26 +127,6 @@ public class CSG {
         globalOptimizationRate = 100.0;
     }
 
-    public static final byte UNION = 0;
-    public static final byte DIFFERENCE = 1;
-    public static final byte INTERSECTION = 2;
-    public static final byte CUBOID = 3;
-    public static final byte ELLIPSOID = 4;
-    public static final byte QUAD = 5;
-    public static final byte CYLINDER = 6;
-    public static final byte CIRCLE = 7;
-    public static final byte COMPILE = 8;
-    public static final byte QUALITY = 9;
-    public static final byte EPSILON = 10;
-    public static final byte CONE = 11;
-    public static final byte TRANSFORM = 12;
-    public static final byte MESH = 13;
-    public static final byte EXTRUDE = 14;
-    public static final byte EXTRUDE_CFG = 15;
-    public static final byte TJUNCTION = 16;
-    public static final byte COLLAPSE = 17;
-    public static final byte DONTOPTIMIZE = 18;
-
     /**
      * Constructs a CSG from a list of {@link Polygon} instances.
      *

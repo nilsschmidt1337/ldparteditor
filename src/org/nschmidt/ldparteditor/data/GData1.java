@@ -30,7 +30,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.csg.CSG;
+import org.nschmidt.csg.CSGType;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
@@ -2124,7 +2124,7 @@ public final class GData1 extends GData {
                 break;
             case 8: // CSG Statement
                 GDataCSG g8 = (GDataCSG) gs;
-                byte csgType = g8.getCSGtype();
+                CSGType csgType = g8.getCSGtype();
                 StringBuilder lineBuilder8 = new StringBuilder();
 
                 String line2 = ((GDataCSG) gs).text;
@@ -2133,71 +2133,71 @@ public final class GData1 extends GData {
 
                 switch (csgType) {
 
-                case CSG.QUAD:
+                case QUAD:
                     lineBuilder8.append("0 !LPE CSG_QUAD "); //$NON-NLS-1$
                     break;
-                case CSG.CUBOID:
+                case CUBOID:
                     lineBuilder8.append("0 !LPE CSG_CUBOID "); //$NON-NLS-1$
                     break;
-                case CSG.ELLIPSOID:
+                case ELLIPSOID:
                     lineBuilder8.append("0 !LPE CSG_ELLIPSOID "); //$NON-NLS-1$
                     break;
-                case CSG.CIRCLE:
+                case CIRCLE:
                     lineBuilder8.append("0 !LPE CSG_CIRCLE "); //$NON-NLS-1$
                     break;
-                case CSG.CYLINDER:
+                case CYLINDER:
                     lineBuilder8.append("0 !LPE CSG_CYLINDER "); //$NON-NLS-1$
                     break;
-                case CSG.MESH:
+                case MESH:
                     lineBuilder8.append("0 !LPE CSG_MESH "); //$NON-NLS-1$
                     break;
-                case CSG.EXTRUDE:
+                case EXTRUDE:
                     lineBuilder8.append("0 !LPE CSG_EXTRUDE "); //$NON-NLS-1$
                     break;
-                case CSG.INTERSECTION:
+                case INTERSECTION:
                     lineBuilder8.append("0 !LPE CSG_INTERSECTION "); //$NON-NLS-1$
                     break;
-                case CSG.DIFFERENCE:
+                case DIFFERENCE:
                     lineBuilder8.append("0 !LPE CSG_DIFFERENCE "); //$NON-NLS-1$
                     break;
-                case CSG.UNION:
+                case UNION:
                     lineBuilder8.append("0 !LPE CSG_UNION "); //$NON-NLS-1$
                     break;
-                case CSG.TRANSFORM:
+                case TRANSFORM:
                     lineBuilder8.append("0 !LPE CSG_TRANSFORM "); //$NON-NLS-1$
                     break;
                 default:
                     break;
                 }
                 switch (csgType) {
-                case CSG.INTERSECTION:
-                case CSG.DIFFERENCE:
-                case CSG.UNION:
+                case INTERSECTION:
+                case DIFFERENCE:
+                case UNION:
                     lineBuilder8.append(dataSegments2[3] + this.id + " " + dataSegments2[4] + this.id + " " + dataSegments2[5] + this.id); //$NON-NLS-1$ //$NON-NLS-2$
                     break;
-                case CSG.TRANSFORM:
+                case TRANSFORM:
                     lineBuilder8.append(dataSegments2[3] + this.id + " " + dataSegments2[4] + this.id + " " + dataSegments2[5] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
-                case CSG.EXTRUDE:
-                case CSG.QUAD:
-                case CSG.CUBOID:
-                case CSG.ELLIPSOID:
-                case CSG.CIRCLE:
-                case CSG.CYLINDER:
-                case CSG.MESH:
+                case EXTRUDE:
+                case QUAD:
+                case CUBOID:
+                case ELLIPSOID:
+                case CIRCLE:
+                case CYLINDER:
+                case MESH:
                     lineBuilder8.append(dataSegments2[3] + this.id + " " + dataSegments2[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
-                case CSG.QUALITY:
-                case CSG.EPSILON:
-                case CSG.TJUNCTION:
-                case CSG.COLLAPSE:
-                case CSG.DONTOPTIMIZE:
-                case CSG.EXTRUDE_CFG:
+                case QUALITY:
+                case EPSILON:
+                case TJUNCTION:
+                case COLLAPSE:
+                case DONTOPTIMIZE:
+                case EXTRUDE_CFG:
                     lineBuilder8.append(g8.getNiceString());
                     break;
-                case CSG.COMPILE:
+                case COMPILE:
                     lineBuilder8.append("0 !LPE CSG_COMPILE " + dataSegments2[3] + this.id); //$NON-NLS-1$
                     break;
                 default:

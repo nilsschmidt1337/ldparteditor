@@ -50,6 +50,7 @@ import org.nschmidt.csg.CSGOptimizerEdgeCollapse;
 import org.nschmidt.csg.CSGOptimizerTJunction;
 import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
+import org.nschmidt.csg.CSGType;
 import org.nschmidt.csg.IdAndPlane;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.csg.Polygon;
@@ -79,7 +80,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
  */
 public final class GDataCSG extends GData {
 
-    final byte type;
+    final CSGType type;
 
     static volatile Lock staticLock = new ReentrantLock();
 
@@ -161,7 +162,7 @@ public final class GDataCSG extends GData {
         parsedData.get(df).clear();
     }
 
-    public byte getCSGtype() {
+    public CSGType getCSGtype() {
         return type;
     }
 
@@ -177,7 +178,7 @@ public final class GDataCSG extends GData {
     // CASE 1 0 !LPE [CSG TAG] [ID] [COLOUR] [MATRIX] 17
     // CASE 2 0 !LPE [CSG TAG] [ID] [ID2] [ID3] 6
     // CASE 3 0 !LPE [CSG TAG] [ID] 4
-    public GDataCSG(DatFile df, byte type, String csgLine, GData1 parent) {
+    public GDataCSG(DatFile df, CSGType type, String csgLine, GData1 parent) {
         super(parent);
         clearPolygonCache.put(df, true);
         fullClearPolygonCache.put(df, false);
@@ -187,7 +188,7 @@ public final class GDataCSG extends GData {
         this.type = type;
         this.text = csgLine;
         switch (type) {
-        case CSG.COMPILE:
+        case COMPILE:
             if (dataSegments.length == 4) {
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
@@ -198,14 +199,14 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
-        case CSG.QUAD:
-        case CSG.CIRCLE:
-        case CSG.ELLIPSOID:
-        case CSG.CUBOID:
-        case CSG.CYLINDER:
-        case CSG.MESH:
-        case CSG.EXTRUDE:
-        case CSG.CONE:
+        case QUAD:
+        case CIRCLE:
+        case ELLIPSOID:
+        case CUBOID:
+        case CYLINDER:
+        case MESH:
+        case EXTRUDE:
+        case CONE:
             if (dataSegments.length == 17) {
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
                 GColour c = DatParser.validateColour(dataSegments[4], col16.getR(), col16.getG(), col16.getB(), 1f);
@@ -224,9 +225,9 @@ public final class GDataCSG extends GData {
             ref2 = null;
             ref3 = null;
             break;
-        case CSG.DIFFERENCE:
-        case CSG.INTERSECTION:
-        case CSG.UNION:
+        case DIFFERENCE:
+        case INTERSECTION:
+        case UNION:
             if (dataSegments.length == 6) {
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
                 ref2 = dataSegments[4] + "#>" + parent.shortName; //$NON-NLS-1$
@@ -239,7 +240,7 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
-        case CSG.TRANSFORM:
+        case TRANSFORM:
             if (dataSegments.length == 18) {
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
                 ref2 = dataSegments[4] + "#>" + parent.shortName; //$NON-NLS-1$
@@ -259,7 +260,7 @@ public final class GDataCSG extends GData {
             }
             ref3 = null;
             break;
-        case CSG.QUALITY:
+        case QUALITY:
             if (dataSegments.length == 4) {
                 try {
                     int q = Integer.parseInt(dataSegments[3]);
@@ -277,7 +278,7 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
-        case CSG.EPSILON:
+        case EPSILON:
             if (dataSegments.length == 4) {
                 try {
                     double q = Double.parseDouble(dataSegments[3]);
@@ -295,7 +296,7 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
-        case CSG.TJUNCTION:
+        case TJUNCTION:
             if (dataSegments.length == 4) {
                 try {
                     double q = Double.parseDouble(dataSegments[3]);
@@ -313,7 +314,7 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
-        case CSG.COLLAPSE:
+        case COLLAPSE:
             if (dataSegments.length == 4) {
                 try {
                     double q = Double.parseDouble(dataSegments[3]);
@@ -331,7 +332,7 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
-        case CSG.EXTRUDE_CFG:
+        case EXTRUDE_CFG:
             if (dataSegments.length == 4 && "DEFAULT".equals(dataSegments[3])) { //$NON-NLS-1$
                 extruderConfig = new PathTruderSettings();
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
@@ -373,13 +374,13 @@ public final class GDataCSG extends GData {
 
     void drawAndParse(Composite3D c3d, DatFile df, boolean doDraw) {
 
-        if (type == CSG.DONTOPTIMIZE) {
+        if (type == CSGType.DONTOPTIMIZE) {
             df.setOptimizingCSG(false);
         }
 
         final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true)
-                || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df)
-                || type == CSG.EXTRUDE && CSGExtrude.needCacheRefresh(cachedData, this, df);
+                || type == CSGType.MESH && CSGMesh.needCacheRefresh(cachedData, this, df)
+                || type == CSGType.EXTRUDE && CSGExtrude.needCacheRefresh(cachedData, this, df);
 
         if (clearCaches) {
             clearPolygonCache.put(df, true);
@@ -403,17 +404,17 @@ public final class GDataCSG extends GData {
                 tmpRegisteredData.add(this);
                 if (ref1 != null) {
                     switch (type) {
-                    case CSG.QUAD:
-                    case CSG.CIRCLE:
-                    case CSG.ELLIPSOID:
-                    case CSG.CUBOID:
-                    case CSG.CYLINDER:
-                    case CSG.CONE:
-                    case CSG.MESH:
-                    case CSG.EXTRUDE:
+                    case QUAD:
+                    case CIRCLE:
+                    case ELLIPSOID:
+                    case CUBOID:
+                    case CYLINDER:
+                    case CONE:
+                    case MESH:
+                    case EXTRUDE:
                         if (matrix != null) {
                             switch (type) {
-                            case CSG.QUAD:
+                            case QUAD:
                                 CSGQuad quad = new CSGQuad();
                                 tmpIdToGDataCSG.put(quad.id, this);
                                 CSG csgQuad = quad.toCSG(df, colour);
@@ -425,7 +426,7 @@ public final class GDataCSG extends GData {
                                 dataCSG = csgQuad;
                                 tmpLinkedCSG.put(ref1, csgQuad);
                                 break;
-                            case CSG.CIRCLE:
+                            case CIRCLE:
                                 CSGCircle circle = new CSGCircle(quality);
                                 tmpIdToGDataCSG.put(circle.id, this);
                                 CSG csgCircle = circle.toCSG(df, colour);
@@ -437,7 +438,7 @@ public final class GDataCSG extends GData {
                                 dataCSG = csgCircle;
                                 tmpLinkedCSG.put(ref1, csgCircle);
                                 break;
-                            case CSG.ELLIPSOID:
+                            case ELLIPSOID:
                                 CSGSphere sphere = new CSGSphere(quality, quality / 2);
                                 tmpIdToGDataCSG.put(sphere.id, this);
                                 CSG csgSphere = sphere.toCSG(df, colour);
@@ -449,7 +450,7 @@ public final class GDataCSG extends GData {
                                 dataCSG = csgSphere;
                                 tmpLinkedCSG.put(ref1, csgSphere);
                                 break;
-                            case CSG.CUBOID:
+                            case CUBOID:
                                 CSGCube cube = new CSGCube();
                                 tmpIdToGDataCSG.put(cube.id, this);
                                 CSG csgCube = cube.toCSG(df, colour);
@@ -461,7 +462,7 @@ public final class GDataCSG extends GData {
                                 dataCSG = csgCube;
                                 tmpLinkedCSG.put(ref1, csgCube);
                                 break;
-                            case CSG.CYLINDER:
+                            case CYLINDER:
                                 CSGCylinder cylinder = new CSGCylinder(quality);
                                 tmpIdToGDataCSG.put(cylinder.id, this);
                                 CSG csgCylinder = cylinder.toCSG(df, colour);
@@ -473,7 +474,7 @@ public final class GDataCSG extends GData {
                                 dataCSG = csgCylinder;
                                 tmpLinkedCSG.put(ref1, csgCylinder);
                                 break;
-                            case CSG.CONE:
+                            case CONE:
                                 CSGCone cone = new CSGCone(quality);
                                 tmpIdToGDataCSG.put(cone.id, this);
                                 CSG csgCone = cone.toCSG(df, colour);
@@ -485,7 +486,7 @@ public final class GDataCSG extends GData {
                                 dataCSG = csgCone;
                                 tmpLinkedCSG.put(ref1, csgCone);
                                 break;
-                            case CSG.MESH:
+                            case MESH:
                                 if (clearCaches) {
                                     polygonCache.clear();
                                 }
@@ -501,7 +502,7 @@ public final class GDataCSG extends GData {
                                 dataCSG = csgMesh;
                                 tmpLinkedCSG.put(ref1, csgMesh);
                                 break;
-                            case CSG.EXTRUDE:
+                            case EXTRUDE:
                                 if (clearCaches) {
                                     polygonCache.clear();
                                 }
@@ -527,7 +528,7 @@ public final class GDataCSG extends GData {
                             }
                         }
                         break;
-                    case CSG.COMPILE:
+                    case COMPILE:
                         if (tmpLinkedCSG.containsKey(ref1)) {
                             compiledCSG = tmpLinkedCSG.get(ref1);
                             compiledCSG.compile();
@@ -535,22 +536,22 @@ public final class GDataCSG extends GData {
                             compiledCSG = null;
                         }
                         break;
-                    case CSG.DIFFERENCE:
+                    case DIFFERENCE:
                         if (tmpLinkedCSG.containsKey(ref1) && tmpLinkedCSG.containsKey(ref2)) {
                             tmpLinkedCSG.put(ref3, tmpLinkedCSG.get(ref1).difference(tmpLinkedCSG.get(ref2)));
                         }
                         break;
-                    case CSG.INTERSECTION:
+                    case INTERSECTION:
                         if (tmpLinkedCSG.containsKey(ref1) && tmpLinkedCSG.containsKey(ref2)) {
                             tmpLinkedCSG.put(ref3, tmpLinkedCSG.get(ref1).intersect(tmpLinkedCSG.get(ref2)));
                         }
                         break;
-                    case CSG.UNION:
+                    case UNION:
                         if (tmpLinkedCSG.containsKey(ref1) && tmpLinkedCSG.containsKey(ref2)) {
                             tmpLinkedCSG.put(ref3, tmpLinkedCSG.get(ref1).union(tmpLinkedCSG.get(ref2)));
                         }
                         break;
-                    case CSG.TRANSFORM:
+                    case TRANSFORM:
                         if (tmpLinkedCSG.containsKey(ref1) && matrix != null) {
                             tmpIdToGDataCSG.put(id, this);
                             if (modified && isSelected(df)) {
@@ -561,13 +562,13 @@ public final class GDataCSG extends GData {
                             tmpLinkedCSG.put(ref2, dataCSG);
                         }
                         break;
-                    case CSG.QUALITY:
+                    case QUALITY:
                         quality = c3d != null && c3d.getManipulator().isModified() ? Math.min(globalQuality, 12) : globalQuality;
                         break;
-                    case CSG.EPSILON:
+                    case EPSILON:
                         Plane.epsilon = globalEpsilon;
                         break;
-                    case CSG.EXTRUDE_CFG:
+                    case EXTRUDE_CFG:
                         globalExtruderConfig.put(df, extruderConfig);
                         break;
                     default:
@@ -653,14 +654,14 @@ public final class GDataCSG extends GData {
     }
 
     boolean wasNotCompiled() {
-        return (CSG.COMPILE == type && compiledCSG == null);
+        return (CSGType.COMPILE == type && compiledCSG == null);
     }
 
     @Override
     public synchronized String inlinedString(final BFC bfc, final GColour colour) {
         staticLock.lock();
         try {
-            if (type == CSG.COMPILE) {
+            if (type == CSGType.COMPILE) {
 
                 if (compiledCSG == null) {
                     // Try to do a rebuild
@@ -769,45 +770,45 @@ public final class GDataCSG extends GData {
         boolean notChoosen = true;
         String t = null;
         switch (type) {
-        case CSG.QUAD:
+        case QUAD:
             t = " CSG_QUAD "; //$NON-NLS-1$
             notChoosen = false;
-        case CSG.CIRCLE:
+        case CIRCLE:
             if (notChoosen) {
                 t = " CSG_CIRCLE "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.ELLIPSOID:
+        case ELLIPSOID:
             if (notChoosen) {
                 t = " CSG_ELLIPSOID "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CUBOID:
+        case CUBOID:
             if (notChoosen) {
                 t = " CSG_CUBOID "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CYLINDER:
+        case CYLINDER:
             if (notChoosen) {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.MESH:
+        case MESH:
             if (notChoosen) {
                 t = " CSG_MESH "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.EXTRUDE:
+        case EXTRUDE:
             if (notChoosen) {
                 t = " CSG_EXTRUDE "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.TRANSFORM:
+        case TRANSFORM:
             if (notChoosen) {
                 t = " CSG_TRANSFORM "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CONE:
+        case CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
             }
@@ -846,45 +847,45 @@ public final class GDataCSG extends GData {
         boolean notChoosen = true;
         String t = null;
         switch (type) {
-        case CSG.QUAD:
+        case QUAD:
             t = " CSG_QUAD "; //$NON-NLS-1$
             notChoosen = false;
-        case CSG.CIRCLE:
+        case CIRCLE:
             if (notChoosen) {
                 t = " CSG_CIRCLE "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.ELLIPSOID:
+        case ELLIPSOID:
             if (notChoosen) {
                 t = " CSG_ELLIPSOID "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CUBOID:
+        case CUBOID:
             if (notChoosen) {
                 t = " CSG_CUBOID "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CYLINDER:
+        case CYLINDER:
             if (notChoosen) {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.MESH:
+        case MESH:
             if (notChoosen) {
                 t = " CSG_MESH "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.EXTRUDE:
+        case EXTRUDE:
             if (notChoosen) {
                 t = " CSG_EXTRUDE "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.TRANSFORM:
+        case TRANSFORM:
             if (notChoosen) {
                 t = " CSG_TRANSFORM "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CONE:
+        case CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
             }
@@ -925,7 +926,7 @@ public final class GDataCSG extends GData {
             accurateLocalMatrix = accurateLocalMatrix.translate(new BigDecimal[] { tx, ty, tz });
 
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
-            if (type == CSG.TRANSFORM) {
+            if (type == CSGType.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
                 accurateLocalMatrix = accurateLocalMatrix.transpose();
                 accurateLocalMatrix = accurateLocalMatrix.transposeXYZ();
@@ -940,45 +941,45 @@ public final class GDataCSG extends GData {
         boolean notChoosen = true;
         String t = null;
         switch (type) {
-        case CSG.QUAD:
+        case QUAD:
             t = " CSG_QUAD "; //$NON-NLS-1$
             notChoosen = false;
-        case CSG.CIRCLE:
+        case CIRCLE:
             if (notChoosen) {
                 t = " CSG_CIRCLE "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.ELLIPSOID:
+        case ELLIPSOID:
             if (notChoosen) {
                 t = " CSG_ELLIPSOID "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CUBOID:
+        case CUBOID:
             if (notChoosen) {
                 t = " CSG_CUBOID "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CYLINDER:
+        case CYLINDER:
             if (notChoosen) {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.MESH:
+        case MESH:
             if (notChoosen) {
                 t = " CSG_MESH "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.EXTRUDE:
+        case EXTRUDE:
             if (notChoosen) {
                 t = " CSG_EXTRUDE "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.TRANSFORM:
+        case TRANSFORM:
             if (notChoosen) {
                 t = " CSG_TRANSFORM "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CONE:
+        case CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
             }
@@ -992,7 +993,7 @@ public final class GDataCSG extends GData {
             newMatrix.m23 = 0f;
             String col = colour2;
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
-            if (type == CSG.TRANSFORM) {
+            if (type == CSGType.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
             }
             return "0 !LPE" + t + tag + " " + col + " " + MathHelper.matrixToString(newMatrix); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -1120,7 +1121,7 @@ public final class GDataCSG extends GData {
                     Integer result2 = pair.getValue().id;
                     if (result2 != null) {
                         for (GDataCSG c : registeredData.get(df)) {
-                            if (dpl.containsValue(c) && idToGDataCSG.putIfAbsent(df, new HashBiMap<>()).containsKey(result2) && (c.type == CSG.TRANSFORM && c.ref1 != null && c.ref2 != null || c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSG.COMPILE)) {
+                            if (dpl.containsValue(c) && idToGDataCSG.putIfAbsent(df, new HashBiMap<>()).containsKey(result2) && (c.type == CSGType.TRANSFORM && c.ref1 != null && c.ref2 != null || c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSGType.COMPILE)) {
                                 resultObj = idToGDataCSG.get(df).getValue(result2);
                                 if (resultObj != null && resultObj.ref1 != null && resultObj.ref1.endsWith("#>null")) { //$NON-NLS-1$
                                     minDist = dist[0];
@@ -1163,7 +1164,7 @@ public final class GDataCSG extends GData {
     }
 
     synchronized boolean canSelect() {
-        return ref1 != null && ref2 == null && ref3 == null && type != CSG.COMPILE && ref1.endsWith("#>null") && type != CSG.QUALITY && type != CSG.EPSILON && type != CSG.TJUNCTION && type != CSG.COLLAPSE && type != CSG.DONTOPTIMIZE; //$NON-NLS-1$
+        return ref1 != null && ref2 == null && ref3 == null && type != CSGType.COMPILE && ref1.endsWith("#>null") && type != CSGType.QUALITY && type != CSGType.EPSILON && type != CSGType.TJUNCTION && type != CSGType.COLLAPSE && type != CSGType.DONTOPTIMIZE; //$NON-NLS-1$
     }
 
     static synchronized Set<GColour> getSelectedColours(DatFile df) {
@@ -1242,45 +1243,45 @@ public final class GDataCSG extends GData {
         boolean notChoosen = true;
         String t = null;
         switch (type) {
-        case CSG.QUAD:
+        case QUAD:
             t = " CSG_QUAD "; //$NON-NLS-1$
             notChoosen = false;
-        case CSG.CIRCLE:
+        case CIRCLE:
             if (notChoosen) {
                 t = " CSG_CIRCLE "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.ELLIPSOID:
+        case ELLIPSOID:
             if (notChoosen) {
                 t = " CSG_ELLIPSOID "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CUBOID:
+        case CUBOID:
             if (notChoosen) {
                 t = " CSG_CUBOID "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CYLINDER:
+        case CYLINDER:
             if (notChoosen) {
                 t = " CSG_CYLINDER "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.MESH:
+        case MESH:
             if (notChoosen) {
                 t = " CSG_MESH "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.EXTRUDE:
+        case EXTRUDE:
             if (notChoosen) {
                 t = " CSG_EXTRUDE "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.TRANSFORM:
+        case TRANSFORM:
             if (notChoosen) {
                 t = " CSG_TRANSFORM "; //$NON-NLS-1$
                 notChoosen = false;
             }
-        case CSG.CONE:
+        case CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
             }
@@ -1305,7 +1306,7 @@ public final class GDataCSG extends GData {
             newMatrix.m13 = 0f;
             newMatrix.m23 = 0f;
             String tag = ref1.substring(0, ref1.lastIndexOf("#>")); //$NON-NLS-1$
-            if (type == CSG.TRANSFORM) {
+            if (type == CSGType.TRANSFORM) {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
             }
             return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces, onX, onY, onZ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
