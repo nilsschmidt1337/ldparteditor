@@ -2026,7 +2026,7 @@ public class Editor3DWindow extends Editor3DDesign {
         this.open();
 
         // Dispose all resources (never delete this!)
-        CSG.executorService.shutdown();
+        CSG.EXECUTOR_SERVICE.shutdown();
         cmpPrimitivesPtr[0].getOpenGL().dispose();
         ResourceManager.dispose();
         SWTResourceManager.dispose();

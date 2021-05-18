@@ -116,6 +116,8 @@ import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
  */
 public class CSG {
 
+    public static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+
     private SortedMap<GData3, IdAndPlane> csgResult = new TreeMap<>();
 
     private List<Polygon> polygons;
@@ -468,8 +470,6 @@ public class CSG {
     private volatile SortedMap<GData3, IdAndPlane> optimizedResult = null;
     private volatile SortedMap<GData3, IdAndPlane> optimizedTriangles = new TreeMap<>();
     private final Random rnd = new Random(12345678L);
-    public static ExecutorService executorService = Executors.newSingleThreadExecutor();
-
     public static volatile long timeOfLastOptimization = -1;
     public static volatile double globalOptimizationRate = 100.0;
 
@@ -495,7 +495,7 @@ public class CSG {
             }
 
             shouldOptimize = false;
-            executorService.execute(() -> {
+            EXECUTOR_SERVICE.execute(() -> {
 
                 SortedMap<GData3, IdAndPlane> optimization = new TreeMap<>();
                 if (optimizedResult != null) {
@@ -670,3 +670,4 @@ public class CSG {
         return result;
     }
 }
+
