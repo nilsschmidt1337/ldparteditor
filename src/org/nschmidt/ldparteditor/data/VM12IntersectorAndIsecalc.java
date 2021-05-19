@@ -914,6 +914,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         return result;
     }
 
+    @SuppressWarnings("java:S2111")
     private IntersectionInfoWithColour getIntersectionInfo(GData origin, Set<GData> targetSurfs, IntersectorSettings ins) {
 
         final BigDecimal minDist = new BigDecimal(".0001"); //$NON-NLS-1$

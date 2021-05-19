@@ -1454,6 +1454,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
+    @SuppressWarnings("java:S2111")
     private double round4f(double d) {
         return new BigDecimal(d).setScale(4, RoundingMode.HALF_EVEN).doubleValue();
     }

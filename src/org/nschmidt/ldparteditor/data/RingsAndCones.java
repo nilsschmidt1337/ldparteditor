@@ -59,6 +59,7 @@ public enum RingsAndCones {
 
     private static Map<Integer, boolean[]> existanceMap = new HashMap<>();
 
+    @SuppressWarnings("java:S2111")
     public static void solve(Shell sh, final DatFile df, final List<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
 
         if (df.isReadOnly()) return;

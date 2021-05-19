@@ -526,6 +526,7 @@ public class Composite3D extends ScalableComposite {
         MenuItem mntmGridSize = new MenuItem(mnuComposite, I18n.rightToLeftStyle());
         widgetUtil(mntmGridSize).addSelectionListener(e -> new ValueDialog(getShell(), I18n.C3D_SET_GRID_SIZE, I18n.getCurrentUnit()) {
             @Override
+            @SuppressWarnings("java:S2111")
             public void initializeSpinner() {
                 this.spnValuePtr[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
                 this.spnValuePtr[0].setMaximum(new BigDecimal("1000")); //$NON-NLS-1$

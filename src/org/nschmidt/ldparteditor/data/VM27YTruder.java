@@ -38,6 +38,7 @@ class VM27YTruder extends VM26LineIntersector {
         super(linkedDatFile);
     }
 
+    @SuppressWarnings("java:S2111")
     public void yTruder(YTruderSettings ys) {
         if (linkedDatFile.isReadOnly())
             return;

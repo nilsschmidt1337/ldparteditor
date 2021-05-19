@@ -650,7 +650,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = View.ACCURATE_ID.rotate(target.xp.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
+                transformation = View.ACCURATE_ID.rotate(target.xp.divide(new BigDecimal(180), Threshold.MC).multiply(BigDecimal.valueOf(Math.PI)), flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
             } else if (y) {
                 try {
                     target.yp.intValueExact();
@@ -674,7 +674,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = View.ACCURATE_ID.rotate(target.yp.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
+                transformation = View.ACCURATE_ID.rotate(target.yp.divide(new BigDecimal(180), Threshold.MC).multiply(BigDecimal.valueOf(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
             } else {
                 try {
                     target.zp.intValueExact();
@@ -698,7 +698,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = View.ACCURATE_ID.rotate(target.zp.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
+                transformation = View.ACCURATE_ID.rotate(target.zp.divide(new BigDecimal(180), Threshold.MC).multiply(BigDecimal.valueOf(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
             }
             break;
         case SCALE:

@@ -234,6 +234,7 @@ public class Editor3DWindow extends Editor3DDesign {
     /**
      * Run a fresh instance of this window
      */
+    @SuppressWarnings("java:S2111")
     public void run() {
         window = this;
         // Load colours

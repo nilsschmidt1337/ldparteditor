@@ -90,6 +90,7 @@ public final class Matrix {
         this.m[3][3] = m33;
     }
 
+    @SuppressWarnings("java:S2111")
     public Matrix(Matrix4f m) {
         BigDecimal tm00 = new BigDecimal(m.m00);
         BigDecimal tm01 = new BigDecimal(m.m01);

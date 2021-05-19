@@ -45,6 +45,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
  * @author nils
  *
  */
+@SuppressWarnings("java:S2111")
 public class Manipulator {
 
     public static final int X_TRANSLATE = 0;
@@ -108,10 +109,10 @@ public class Manipulator {
 
     private static BigDecimal factorScale = new BigDecimal("1.1"); //$NON-NLS-1$
 
-    private static BigDecimal snapXrotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
-    private static BigDecimal snapYrotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
-    private static BigDecimal snapZrotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
-    private static BigDecimal snapVrotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snapXrotate = BigDecimal.valueOf(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snapYrotate = BigDecimal.valueOf(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snapZrotate = BigDecimal.valueOf(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snapVrotate = BigDecimal.valueOf(Math.PI).divide(new BigDecimal(8), Threshold.MC);
 
 
     private static RotationSnap snapXrotateFlag = RotationSnap.COMPLEX;
@@ -208,7 +209,7 @@ public class Manipulator {
             snapVrotateFlag = RotationSnap.COMPLEX;
         }
 
-        rot = rot.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI));
+        rot = rot.divide(new BigDecimal(180), Threshold.MC).multiply(BigDecimal.valueOf(Math.PI));
         snapXtranslate = trans;
         snapZtranslate = trans;
         snapYtranslate = trans;

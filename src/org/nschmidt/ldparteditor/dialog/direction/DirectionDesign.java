@@ -81,6 +81,7 @@ class DirectionDesign extends Dialog {
      * @param parent
      */
     @Override
+    @SuppressWarnings("java:S2111")
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();

@@ -574,6 +574,7 @@ public final class GData2 extends GData {
     }
 
     @Override
+    @SuppressWarnings("java:S2111")
     public String transformAndColourReplace(String colour, Matrix matrix) {
         BigDecimal[] v1;
         BigDecimal[] v2;

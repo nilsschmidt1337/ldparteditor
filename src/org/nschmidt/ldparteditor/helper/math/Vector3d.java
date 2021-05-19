@@ -74,6 +74,7 @@ public class Vector3d {
         this.z = vertex.zp;
     }
 
+    @SuppressWarnings("java:S2111")
     public Vector3d(VectorCSGd v) {
         this(new BigDecimal(v.x), new BigDecimal(v.y), new BigDecimal(v.z));
     }

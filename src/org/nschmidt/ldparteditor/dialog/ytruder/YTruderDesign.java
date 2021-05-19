@@ -43,6 +43,7 @@ import org.nschmidt.ldparteditor.widget.NButton;
  * @author nils
  *
  */
+@SuppressWarnings("java:S2111")
 class YTruderDesign extends Dialog {
 
 

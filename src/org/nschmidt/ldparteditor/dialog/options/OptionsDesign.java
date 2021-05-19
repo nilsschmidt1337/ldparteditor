@@ -77,6 +77,7 @@ import org.nschmidt.ldparteditor.widget.TreeItem;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
+@SuppressWarnings("java:S2111")
 class OptionsDesign extends ApplicationWindow {
 
     NButton[] btnAllowInvalidShapesPtr = new NButton[1];

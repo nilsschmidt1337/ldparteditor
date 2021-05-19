@@ -225,6 +225,7 @@ class VM16Subdivide extends VM15Flipper {
 
     }
 
+    @SuppressWarnings("java:S2111")
     public void subdivideLoop(boolean showDialog) {
 
         if (linkedDatFile.isReadOnly()) return;

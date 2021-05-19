@@ -47,6 +47,7 @@ class VM07PathTruder extends VM06Edger2 {
         super(linkedDatFile);
     }
 
+    @SuppressWarnings("java:S2111")
     public void pathTruder(final PathTruderSettings ps, boolean syncWithEditor, Set<GData> sl) {
         if (linkedDatFile.isReadOnly() && syncWithEditor) return;
 

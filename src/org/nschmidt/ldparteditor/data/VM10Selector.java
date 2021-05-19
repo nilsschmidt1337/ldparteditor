@@ -114,6 +114,7 @@ class VM10Selector extends VM09WindingChange {
         linkedDatFile.setDrawSelection(true);
     }
 
+    @SuppressWarnings("java:S2111")
     private void selectorHelper(final SelectorSettings ss) {
         final Set<GColour> allColours = new HashSet<>();
         final Set<Vector3d> allNormals = new HashSet<>();
@@ -814,6 +815,7 @@ class VM10Selector extends VM09WindingChange {
         return true;
     }
 
+    @SuppressWarnings("java:S2111")
     private boolean canSelect(GData adjacentTo, GData what, SelectorSettings ss, Set<Vector3d> allNormals, Set<GColour> allColours, double angle) {
 
         {

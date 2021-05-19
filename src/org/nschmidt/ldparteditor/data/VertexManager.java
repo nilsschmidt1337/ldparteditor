@@ -856,6 +856,7 @@ public final class VertexManager extends VM99Clipboard {
         }
     }
 
+    @SuppressWarnings("java:S2111")
     public synchronized void adjustRotationCenter(Composite3D c3d, Event event) {
         Point cSize = c3d.getSize();
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();

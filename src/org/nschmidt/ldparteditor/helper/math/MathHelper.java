@@ -675,6 +675,7 @@ public enum MathHelper {
         return tMatrix;
     }
 
+    @SuppressWarnings("java:S2111")
     public static String matrixToString(Matrix4f matrix, int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(bigDecimalToString(onX ? new BigDecimal(matrix.m30 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : new BigDecimal(matrix.m30 / 1000f)));
@@ -1432,6 +1433,7 @@ public enum MathHelper {
         return omax - omin < tmax - tmin;
     }
 
+    @SuppressWarnings("java:S2111")
     private static double[] getTriangleAngles(VectorCSGd pa, VectorCSGd pb, VectorCSGd pc) {
         double[] result = new double[3];
         Vector3d a = new Vector3d(new BigDecimal(pa.x), new BigDecimal(pa.y), new BigDecimal(pa.z));

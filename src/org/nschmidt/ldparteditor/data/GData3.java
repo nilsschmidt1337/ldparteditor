@@ -80,6 +80,7 @@ public final class GData3 extends GData {
     final float yn;
     final float zn;
 
+    @SuppressWarnings("java:S2111")
     public GData3(final int colourNumber, float r, float g, float b, float a, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, GData1 parent, DatFile datFile, boolean isTriangle) {
         super(parent);
         this.isTriangle = isTriangle;
@@ -1307,6 +1308,7 @@ public final class GData3 extends GData {
     }
 
     @Override
+    @SuppressWarnings("java:S2111")
     public String transformAndColourReplace(String colour, Matrix matrix) {
         BigDecimal[] v1;
         BigDecimal[] v2;
@@ -1594,6 +1596,7 @@ public final class GData3 extends GData {
         return lineBuilder.toString();
     }
 
+    @SuppressWarnings("java:S2111")
     void drawProtractorGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
 
@@ -1615,6 +1618,7 @@ public final class GData3 extends GData {
         drawNumberGL33(angleS, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
     }
 
+    @SuppressWarnings("java:S2111")
     void drawProtractorGL20(boolean selected, Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.getLocale()));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();

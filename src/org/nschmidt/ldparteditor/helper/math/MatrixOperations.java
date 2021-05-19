@@ -34,6 +34,7 @@ public enum MatrixOperations {
      * @param m
      * @return
      */
+    @SuppressWarnings("java:S2111")
     public static Matrix removeRotationAndTranslation(final Matrix m) {
 
         // Quick test with FP arithmetic if this removal is necessary
@@ -97,6 +98,7 @@ public enum MatrixOperations {
                 );
     }
 
+    @SuppressWarnings("java:S2111")
     public static void moveManipulatorToSubfileOrCSGMatrix(Composite3D c3d, Matrix mPrecise, Matrix4f m) {
         c3d.getManipulator().getPosition().set(m.m30, m.m31, m.m32, 1f);
         c3d.getManipulator().setAccuratePosition(mPrecise.m30, mPrecise.m31, mPrecise.m32);

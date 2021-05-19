@@ -127,6 +127,7 @@ public class MouseActions {
      * @param event
      *            Event data.
      */
+    @SuppressWarnings("java:S2111")
     public void mouseDown(Event event) {
         syncManipulator();
         c3d.getManipulator().lock();
@@ -264,6 +265,7 @@ public class MouseActions {
     // MARK MouseMove
     private boolean triedHGfix = false;
 
+    @SuppressWarnings("java:S2111")
     public void mouseMove(Event event) {
         DatFile.setLastHoveredComposite(c3d);
         if (!c3d.getLockableDatFileReference().isDrawSelection()) return;

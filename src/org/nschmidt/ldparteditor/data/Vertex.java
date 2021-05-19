@@ -44,6 +44,7 @@ public class Vertex implements Comparable<Vertex> {
     private final float roundedZ;
 
     // Lowest accuracy version (simple float to BigDecimal cast)
+    @SuppressWarnings("java:S2111")
     public Vertex(Vector4f vertex) {
 
         this.x = vertex.x;
@@ -76,6 +77,7 @@ public class Vertex implements Comparable<Vertex> {
     }
 
     // High accuracy version
+    @SuppressWarnings("java:S2111")
     public Vertex(BigDecimal bx, BigDecimal by, BigDecimal bz) {
 
         this.x = bx.floatValue() * 1000f;
@@ -103,6 +105,7 @@ public class Vertex implements Comparable<Vertex> {
     }
 
     // High performance version / only for texture rendering, primitive preview
+    @SuppressWarnings("java:S2111")
     public Vertex(float vx, float vy, float vz, boolean hp) {
 
         this.x = vx;
@@ -129,6 +132,7 @@ public class Vertex implements Comparable<Vertex> {
     }
 
     // High accuracy version (better performance)
+    @SuppressWarnings("java:S2111")
     Vertex(BigDecimal bx, BigDecimal by, BigDecimal bz, Vector4f vertex) {
 
         this.x = vertex.x;

@@ -164,6 +164,7 @@ public class DirectionDialog extends DirectionDesign {
         return transformationMode;
     }
 
+    @SuppressWarnings("java:S2111")
     private void updateValues() {
         stopCalculations = true;
         spnXPtr[0].setValue(new BigDecimal(cart[X]));
@@ -198,6 +199,7 @@ public class DirectionDialog extends DirectionDesign {
         return new double[]{x, y, z};
     }
 
+    @SuppressWarnings("java:S2111")
     private double[] globalToLocal(double[] global) {
         Vertex vert = new Vertex(new BigDecimal(global[0]), new BigDecimal(global[1]), new BigDecimal(global[2]));
         BigDecimal[] pos = mani.getAccuratePosition();
@@ -205,6 +207,7 @@ public class DirectionDialog extends DirectionDesign {
         return new double[]{result.x.doubleValue(), result.y.doubleValue(), result.z.doubleValue()};
     }
 
+    @SuppressWarnings("java:S2111")
     private double[] localToGlobal(double[] local) {
         Vertex vert = new Vertex(new BigDecimal(local[0]), new BigDecimal(local[1]), new BigDecimal(local[2]));
         BigDecimal[] pos = mani.getAccuratePosition();
@@ -212,6 +215,7 @@ public class DirectionDialog extends DirectionDesign {
         return new double[]{result.x.doubleValue(), result.y.doubleValue(), result.z.doubleValue()};
     }
 
+    @SuppressWarnings("java:S2111")
     private static double[] localToGlobal(double[] local, Manipulator mani) {
         Vertex vert = new Vertex(new BigDecimal(local[0]), new BigDecimal(local[1]), new BigDecimal(local[2]));
         BigDecimal[] pos = mani.getAccuratePosition();
@@ -223,6 +227,7 @@ public class DirectionDialog extends DirectionDesign {
         return direction;
     }
 
+    @SuppressWarnings("java:S2111")
     public static boolean calculateDirection(Manipulator mani) {
         double[] result = cart;
         if (getTransformationMode() == ManipulatorScope.LOCAL) {

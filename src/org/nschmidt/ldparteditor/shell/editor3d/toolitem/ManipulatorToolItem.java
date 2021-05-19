@@ -33,7 +33,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widget.NButton;
 
-@SuppressWarnings("java:S2111")
+
 public class ManipulatorToolItem extends ToolItem {
 
     private static final NButton[] btnManipulatorToOriginPtr = new NButton[1];
@@ -467,6 +467,7 @@ public class ManipulatorToolItem extends ToolItem {
         regainFocus();
     }
 
+    @SuppressWarnings("java:S2111")
     public static void mntmManipulatorToAverage() {
         if (Project.getFileToEdit() != null) {
             Vector4f avg = Project.getFileToEdit().getVertexManager().getSelectionCenter();
@@ -574,6 +575,7 @@ public class ManipulatorToolItem extends ToolItem {
         regainFocus();
     }
 
+    @SuppressWarnings("java:S2111")
     public static void mntmManipulatorToEdge() {
         for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
             Composite3D c3d = renderer.getC3D();
@@ -631,6 +633,7 @@ public class ManipulatorToolItem extends ToolItem {
         regainFocus();
     }
 
+    @SuppressWarnings("java:S2111")
     public static void mntmManipulatorToSurface() {
         for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
             Composite3D c3d = renderer.getC3D();
@@ -645,6 +648,7 @@ public class ManipulatorToolItem extends ToolItem {
         regainFocus();
     }
 
+    @SuppressWarnings("java:S2111")
     public static void mntmManipulatorToVertexNormal() {
         for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
             Composite3D c3d = renderer.getC3D();
@@ -709,6 +713,7 @@ public class ManipulatorToolItem extends ToolItem {
         regainFocus();
     }
 
+    @SuppressWarnings("java:S2111")
     public static void mntmManipulatorToEdgeNormal() {
         for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
             Composite3D c3d = renderer.getC3D();
@@ -755,6 +760,7 @@ public class ManipulatorToolItem extends ToolItem {
         regainFocus();
     }
 
+    @SuppressWarnings("java:S2111")
     public static void mntmManipulatorToSurfaceNormal() {
         for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
             Composite3D c3d = renderer.getC3D();
