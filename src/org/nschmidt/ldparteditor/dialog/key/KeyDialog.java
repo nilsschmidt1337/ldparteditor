@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.dialog.key;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.KeyBoardHelper;
@@ -39,10 +40,13 @@ public class KeyDialog extends KeyDesign {
             }
         });
 
+        // On MacOS X the dialog area does not have its focus by default
+        Display.getCurrent().timerExec(500, this.dialogArea::forceFocus);
+
         return super.open();
     }
 
-    private void onKeyPressed(KeyEvent e) {
+    private static void onKeyPressed(KeyEvent e) {
         final int stateMask = e.stateMask;
         final int keyCode = e.keyCode;
         final boolean ctrlPressed = (stateMask & SWT.CTRL) != 0;

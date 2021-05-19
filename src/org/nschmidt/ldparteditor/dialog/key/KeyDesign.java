@@ -27,7 +27,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 class KeyDesign extends Dialog {
 
 
-    final Label[] lblPressKeyPtr = new Label[1];
+    protected static final Label[] lblPressKeyPtr = new Label[1];
 
     protected KeyDesign(Shell parentShell) {
         super(parentShell);
@@ -41,14 +41,7 @@ class KeyDesign extends Dialog {
     @Override
     protected Control createDialogArea(final Composite parent) {
         this.getShell().setText(I18n.KEYBOARD_CUSTOMISE_SHORTKEYS);
-        Composite cmpContainer = parent;
-        cmpContainer.setLayout(new GridLayout());
-
-        Label lblPressKey = new Label(cmpContainer, I18n.rightToLeftStyle());
-        this.lblPressKeyPtr[0] = lblPressKey;
-        lblPressKey.setText(I18n.KEYBOARD_PRESS_A_KEY);
-
-        return cmpContainer;
+        return createControl(parent);
     }
 
     /**
@@ -60,5 +53,15 @@ class KeyDesign extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
+    }
+
+    private static Control createControl(final Composite cmpContainer) {
+        cmpContainer.setLayout(new GridLayout());
+
+        Label lblPressKey = new Label(cmpContainer, I18n.rightToLeftStyle());
+        lblPressKeyPtr[0] = lblPressKey;
+        lblPressKey.setText(I18n.KEYBOARD_PRESS_A_KEY);
+
+        return cmpContainer;
     }
 }
