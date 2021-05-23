@@ -304,16 +304,9 @@ public class Composite3DModifier {
             int[] superSashWeights = ((SashForm) c3d.getSashForm().getParent()).getWeights();
             Composite oldParentSashForm = c3d.getSashForm();
             Composite oldGrandpaSashForm = oldParentSashForm.getParent();
-            boolean isUpperComposite = oldParentSashForm.getChildren()[0].equals(c3d.getCompositeContainer());
 
-            if (isUpperComposite) {
-                if (newStyle == SWT.HORIZONTAL) {
-                    reverseChilds(c3d.getSashForm());
-                }
-            } else {
-                if (newStyle == SWT.HORIZONTAL) {
-                    reverseChilds(c3d.getSashForm());
-                }
+            if (newStyle == SWT.HORIZONTAL) {
+                reverseChilds(c3d.getSashForm());
             }
 
             oldParentSashForm.setOrientation(newStyle);

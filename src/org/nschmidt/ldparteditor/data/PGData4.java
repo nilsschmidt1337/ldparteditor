@@ -160,35 +160,19 @@ public final class PGData4 extends PGData implements Serializable {
             break;
         case CW:
             if (PGData.globalNegativeDeterminant) {
-                if (PGData.globalInvertNext) {
-                    GL11.glColor4f( // 011
-                            Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
-                    GL11.glBegin(GL11.GL_QUADS);
-                    GL11.glVertex3f(x1, y1, z1);
-                    GL11.glVertex3f(x4, y4, z4);
-                    GL11.glVertex3f(x3, y3, z3);
-                    GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
-                    GL11.glVertex3f(x1, y1, z1);
-                    GL11.glVertex3f(x2, y2, z2);
-                    GL11.glVertex3f(x3, y3, z3);
-                    GL11.glVertex3f(x4, y4, z4);
-                    GL11.glEnd();
-                } else {
-                    GL11.glColor4f( // 010
-                            Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
-                    GL11.glBegin(GL11.GL_QUADS);
-                    GL11.glVertex3f(x1, y1, z1);
-                    GL11.glVertex3f(x4, y4, z4);
-                    GL11.glVertex3f(x3, y3, z3);
-                    GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
-                    GL11.glVertex3f(x1, y1, z1);
-                    GL11.glVertex3f(x2, y2, z2);
-                    GL11.glVertex3f(x3, y3, z3);
-                    GL11.glVertex3f(x4, y4, z4);
-                    GL11.glEnd();
-                }
+                GL11.glColor4f( // 011 + 010
+                        Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB, 1f);
+                GL11.glBegin(GL11.GL_QUADS);
+                GL11.glVertex3f(x1, y1, z1);
+                GL11.glVertex3f(x4, y4, z4);
+                GL11.glVertex3f(x3, y3, z3);
+                GL11.glVertex3f(x2, y2, z2);
+                GL11.glColor4f(Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB, 1f);
+                GL11.glVertex3f(x1, y1, z1);
+                GL11.glVertex3f(x2, y2, z2);
+                GL11.glVertex3f(x3, y3, z3);
+                GL11.glVertex3f(x4, y4, z4);
+                GL11.glEnd();
             } else {
                 if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 001
@@ -317,33 +301,18 @@ public final class PGData4 extends PGData implements Serializable {
         case CW:
             if (indices[1] == 0) {
                 if (PGData.globalNegativeDeterminant) {
-                    if (PGData.globalInvertNext) {
-                        indices[0] = 0;
-                        indices[1] = 3;
-                        indices[2] = 2;
-                        indices[3] = 2;
-                        indices[4] = 1;
-                        indices[5] = 0;
-                        indices[6] = 4;
-                        indices[7] = 5;
-                        indices[8] = 6;
-                        indices[9] = 6;
-                        indices[10] = 7;
-                        indices[11] = 4;
-                    } else {
-                        indices[0] = 0;
-                        indices[1] = 3;
-                        indices[2] = 2;
-                        indices[3] = 2;
-                        indices[4] = 1;
-                        indices[5] = 0;
-                        indices[6] = 4;
-                        indices[7] = 5;
-                        indices[8] = 6;
-                        indices[9] = 6;
-                        indices[10] = 7;
-                        indices[11] = 4;
-                    }
+                    indices[0] = 0;
+                    indices[1] = 3;
+                    indices[2] = 2;
+                    indices[3] = 2;
+                    indices[4] = 1;
+                    indices[5] = 0;
+                    indices[6] = 4;
+                    indices[7] = 5;
+                    indices[8] = 6;
+                    indices[9] = 6;
+                    indices[10] = 7;
+                    indices[11] = 4;
                 } else {
                     if (PGData.globalInvertNext) {
                         indices[0] = 0;

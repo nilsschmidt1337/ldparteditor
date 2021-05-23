@@ -1451,49 +1451,25 @@ public final class GData3 extends GData {
                     result[2] = tzn;
                     break;
                 case CCW:
-                    if (state.globalInvertNext) {
-                        if (state.globalNegativeDeterminant) {
-                            result[0] = -txn;
-                            result[1] = -tyn;
-                            result[2] = -tzn;
-                        } else {
-                            result[0] = txn;
-                            result[1] = tyn;
-                            result[2] = tzn;
-                        }
+                    if (state.globalNegativeDeterminant) {
+                        result[0] = -txn;
+                        result[1] = -tyn;
+                        result[2] = -tzn;
                     } else {
-                        if (state.globalNegativeDeterminant) {
-                            result[0] = -txn;
-                            result[1] = -tyn;
-                            result[2] = -tzn;
-                        } else {
-                            result[0] = txn;
-                            result[1] = tyn;
-                            result[2] = tzn;
-                        }
+                        result[0] = txn;
+                        result[1] = tyn;
+                        result[2] = tzn;
                     }
                     break;
                 case CW:
-                    if (state.globalInvertNext) {
-                        if (state.globalNegativeDeterminant) {
-                            result[0] = -txn;
-                            result[1] = -tyn;
-                            result[2] = -tzn;
-                        } else {
-                            result[0] = txn;
-                            result[1] = tyn;
-                            result[2] = tzn;
-                        }
+                    if (state.globalNegativeDeterminant) {
+                        result[0] = -txn;
+                        result[1] = -tyn;
+                        result[2] = -tzn;
                     } else {
-                        if (state.globalNegativeDeterminant) {
-                            result[0] = -txn;
-                            result[1] = -tyn;
-                            result[2] = -tzn;
-                        } else {
-                            result[0] = txn;
-                            result[1] = tyn;
-                            result[2] = tzn;
-                        }
+                        result[0] = txn;
+                        result[1] = tyn;
+                        result[2] = tzn;
                     }
                     break;
                 case NOCERTIFY:
