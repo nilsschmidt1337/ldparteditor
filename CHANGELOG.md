@@ -1,3 +1,17 @@
+### 24 May 2021
+With the release of 0.8.53 you are able to...
+-  ...benefit from about 100 different optimizations to LDPEs code base (I added 180000 lines and deleted 185000 lines since the last release).
+-  ...benefit from a new, more robust and secure method which loads and saves LDPEs configuration file.
+-  ...get improved hints and tips for the startup dialog (seen on first program start).
+
+The following critical issues are fixed:
+1. Undo / Redo broke the 3D model if the file ended with empty lines or contained duplicated empty line groups.
+2. The calculated colour for transparent textures was too dark. (OpenGL 2.0)
+3. On MacOS X it was not possible to reassign a shortkey, because the dialog window had not the required focus for detecting the keyboard input.
+4. Avoided obvious divisions by zero on "zoom to fit" with empty models and by scaling a zero-height font with Txt2Dat.
+5. The 3D editor freezed by an BFC INVERTNEXT without a following TYPE 1 reference line.
+6. "Make subpart from 3D selection" duplicated "0 BFC INVERTNEXT" meta commands.
+
 ### 01 Sep 2020
 With the release of 0.8.52 the following critical issue is fixed:
 1. The Windows program (LDPartEditor.exe) will now start with support of newer Java versions.
