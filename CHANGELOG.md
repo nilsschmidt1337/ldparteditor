@@ -12,6 +12,7 @@ The following critical issues are fixed:
 5. The 3D editor freezed by an BFC INVERTNEXT without a following TYPE 1 reference line.
 6. "Make subpart from 3D selection" duplicated "0 BFC INVERTNEXT" meta commands.
 
+
 ### 01 Sep 2020
 With the release of 0.8.52 the following critical issue is fixed:
 1. The Windows program (LDPartEditor.exe) will now start with support of newer Java versions.
