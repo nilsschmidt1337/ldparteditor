@@ -629,8 +629,8 @@ public class VM20Manipulator extends VM19ColourChanger {
             RotationSnap flag;
             if (x) {
                 try {
-                    target.xp.intValueExact();
-                    switch (Math.abs(target.xp.intValue())) {
+                    final int angle = target.xp.intValueExact();
+                    switch (Math.abs(angle)) {
                     case 90:
                         flag = RotationSnap.DEG90;
                         break;
@@ -653,8 +653,8 @@ public class VM20Manipulator extends VM19ColourChanger {
                 transformation = View.ACCURATE_ID.rotate(target.xp.divide(new BigDecimal(180), Threshold.MC).multiply(BigDecimal.valueOf(Math.PI)), flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
             } else if (y) {
                 try {
-                    target.yp.intValueExact();
-                    switch (Math.abs(target.yp.intValue())) {
+                    final int angle = target.yp.intValueExact();
+                    switch (Math.abs(angle)) {
                     case 90:
                         flag = RotationSnap.DEG90;
                         break;
@@ -677,8 +677,8 @@ public class VM20Manipulator extends VM19ColourChanger {
                 transformation = View.ACCURATE_ID.rotate(target.yp.divide(new BigDecimal(180), Threshold.MC).multiply(BigDecimal.valueOf(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
             } else {
                 try {
-                    target.zp.intValueExact();
-                    switch (Math.abs(target.zp.intValue())) {
+                    final int angle = target.zp.intValueExact();
+                    switch (Math.abs(angle)) {
                     case 90:
                         flag = RotationSnap.DEG90;
                         break;

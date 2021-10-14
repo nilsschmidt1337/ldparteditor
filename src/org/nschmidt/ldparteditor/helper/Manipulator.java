@@ -130,75 +130,36 @@ public class Manipulator {
     public static void setSnap(BigDecimal trans, BigDecimal rot, BigDecimal scale) {
 
         try {
-            rot.intValueExact();
-            switch (rot.intValue()) {
+            final int angle = rot.intValueExact();
+            switch (angle) {
             case 90:
                 snapXrotateFlag = RotationSnap.DEG90;
-                break;
-            case 180:
-                snapXrotateFlag = RotationSnap.DEG180;
-                break;
-            case 270:
-                snapXrotateFlag = RotationSnap.DEG270;
-                break;
-            case 360:
-                snapXrotateFlag = RotationSnap.DEG360;
-                break;
-            default:
-                snapXrotateFlag = RotationSnap.COMPLEX;
-                break;
-            }
-
-            switch (rot.intValue()) {
-            case 90:
                 snapYrotateFlag = RotationSnap.DEG90;
-                break;
-            case 180:
-                snapYrotateFlag = RotationSnap.DEG180;
-                break;
-            case 270:
-                snapYrotateFlag = RotationSnap.DEG270;
-                break;
-            case 360:
-                snapYrotateFlag = RotationSnap.DEG360;
-                break;
-            default:
-                snapYrotateFlag = RotationSnap.COMPLEX;
-                break;
-            }
-
-            switch (rot.intValue()) {
-            case 90:
                 snapZrotateFlag = RotationSnap.DEG90;
-                break;
-            case 180:
-                snapZrotateFlag = RotationSnap.DEG180;
-                break;
-            case 270:
-                snapZrotateFlag = RotationSnap.DEG270;
-                break;
-            case 360:
-                snapZrotateFlag = RotationSnap.DEG360;
-                break;
-            default:
-                snapZrotateFlag = RotationSnap.COMPLEX;
-                break;
-            }
-
-            switch (rot.intValue()) {
-            case 90:
                 snapVrotateFlag = RotationSnap.DEG90;
                 break;
             case 180:
+                snapXrotateFlag = RotationSnap.DEG180;
+                snapYrotateFlag = RotationSnap.DEG180;
+                snapZrotateFlag = RotationSnap.DEG180;
                 snapVrotateFlag = RotationSnap.DEG180;
                 break;
             case 270:
+                snapXrotateFlag = RotationSnap.DEG270;
+                snapYrotateFlag = RotationSnap.DEG270;
+                snapZrotateFlag = RotationSnap.DEG270;
                 snapVrotateFlag = RotationSnap.DEG270;
                 break;
             case 360:
+                snapXrotateFlag = RotationSnap.DEG360;
+                snapYrotateFlag = RotationSnap.DEG360;
+                snapZrotateFlag = RotationSnap.DEG360;
                 snapVrotateFlag = RotationSnap.DEG360;
                 break;
             default:
+                snapXrotateFlag = RotationSnap.COMPLEX;
+                snapYrotateFlag = RotationSnap.COMPLEX;
+                snapZrotateFlag = RotationSnap.COMPLEX;
                 snapVrotateFlag = RotationSnap.COMPLEX;
                 break;
             }
