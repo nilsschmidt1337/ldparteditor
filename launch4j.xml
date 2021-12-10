@@ -20,7 +20,7 @@
     <bundledJreAsFallback>false</bundledJreAsFallback>
     <minVersion>17.0.1</minVersion>
     <maxVersion></maxVersion>
-    <jdkPreference>preferJre</jdkPreference>
+    <jdkPreference>preferJdk</jdkPreference>
     <runtimeBits>64</runtimeBits>
   </jre>
 </launch4jConfig>
