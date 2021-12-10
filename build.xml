@@ -293,7 +293,7 @@
             checksum="8badd78055cdd9374b096ac4461d6f6f701884c6"
             dir="buildfiles" />
             
-        <unzip src="${dependenciesFolder}/launch4j-3.12.zip" dest="${dependenciesFolder}"/>
+        <unzip src="${dependenciesFolder}/launch4j-3.14.zip" dest="${dependenciesFolder}"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/ld" perm="777"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/windres" perm="777"/>
         
