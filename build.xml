@@ -391,7 +391,7 @@
             srcdir="${sourceFolder}"
             destdir="${targetFolder}"
             includeantruntime="false"
-            debug="on" source="1.8" >
+            debug="on" source="17" target="17" >
             <classpath refid="master-classpath"/>
          </javac>
         
@@ -620,7 +620,7 @@
            srcdir="${testFolder}"
            destdir="${targetFolder}"
            includeantruntime="false"
-           debug="on" source="1.8" >
+           debug="on" source="17" target="17" >
            <classpath refid="master-classpath"/>
            <classpath path="${targetFolder}" />
         </javac>
