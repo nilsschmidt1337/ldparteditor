@@ -288,9 +288,9 @@
             
         <!-- Get launch4j.zip -->
         <get-and-checksum
-            file="launch4j-3.12.zip"
+            file="launch4j-3.14.zip"
             destdir="${dependenciesFolder}"
-            checksum="8334fd5ed02206f8479de9e6e2502f0ea39836b2"
+            checksum="8badd78055cdd9374b096ac4461d6f6f701884c6"
             dir="buildfiles" />
             
         <unzip src="${dependenciesFolder}/launch4j-3.12.zip" dest="${dependenciesFolder}"/>
