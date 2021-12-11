@@ -19,7 +19,7 @@ jobs:
       with:
         java-version: 17
     - name: Build with Ant
-      run: ant -noinput -buildfile build.xml
+      run: ant -noinput -buildfile build-windows.xml
     - name: Publish Test Report
       uses: mikepenz/action-junit-report@v2
       with:
@@ -29,18 +29,3 @@ jobs:
       with:
         name: LDPartEditor_win32_x64
         path: bin/windows
-    - name: Archive linux artifact for gtk3-x64
-      uses: actions/upload-artifact@v1
-      with:
-        name: LDPartEditor_linux_x64
-        path: bin/linux-gtk3
-    - name: Archive macosx artifact for cocoa-x64
-      uses: actions/upload-artifact@v1
-      with:
-        name: LDPartEditor_mac_x64
-        path: bin/macosx
-    - name: Archive linux artifact for gtk2-x64
-      uses: actions/upload-artifact@v1
-      with:
-        name: LDPartEditor_linux_x64_alternative
-        path: bin/linux-gtk2
