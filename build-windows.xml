@@ -283,6 +283,25 @@
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="${scriptsFolder}/${windowsFolder}/update.bat" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="${scriptsFolder}/${windowsFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
+        
+        <exec executable="jpackage">
+            <arg value="--type msi"/>
+            <arg value="--name LDPartEditor"/>
+            <arg value="--win-menu"/>
+            <arg value="--win-menu-group LDraw-Tools"/>
+            <arg value="--vendor 'Nils Schmidt'"/>
+            <arg value="--icon favicon.ico"/>
+            <arg value="--dest ${binariesFolder}/${windowsFolder}"/>
+            <arg value="--main-jar LDPartEditor.jar"/>
+            <arg value="--main-class org.nschmidt.ldparteditor.main.LDPartEditor"/>
+            <arg value="--input ${binariesFolder}/${windowsFolder}"/>
+            <arg value="--app-version ${app.version}"/>
+            <arg value="--runtime-image ${binariesFolder}\jvm-image"/>
+            <arg value="--temp ${binariesFolder}\installer-work"/>
+            <arg value="--win-upgrade-uuid 1E5BAA6E-AFEF-48F6-8BDE-F98C3F1CBA1F"/>
+            <arg value="--description 'The LDraw™ Part Editor. Create and edit LDraw™ Parts quick and easy.'"/>
+            <arg value="--copyright 'Copyright (c) 2012 - this year, Nils Schmidt'"/>
+        </exec>
     </target>
     
     <target name="clean">

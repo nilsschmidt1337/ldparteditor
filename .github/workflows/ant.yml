@@ -34,11 +34,11 @@ jobs:
         java-version: 17
     - name: Build with Ant
       run: ant -noinput -buildfile build-windows.xml
-#    - name: Archive windows executable for win32-x64
-#      uses: actions/upload-artifact@v1
-#      with:
-#        name: LDPartEditor_win32_x64
-#        path: bin/windows
+    - name: Archive windows installer for win32-x64
+      uses: actions/upload-artifact@v1
+      with:
+        name: LDPartEditor_win32_x64
+        path: bin/windows
 
   build-linux:
 
