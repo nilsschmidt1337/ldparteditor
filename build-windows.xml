@@ -236,6 +236,7 @@
             srcdir="${sourceFolder}"
             destdir="${targetFolder}"
             includeantruntime="false"
+            encoding="utf8"
             debug="on" source="17" target="17" >
             <classpath refid="master-classpath"/>
          </javac>
