@@ -301,7 +301,7 @@
             <arg value="--name"/>
             <arg value="LDPartEditor" />
             <arg value="--icon"/>
-            <arg value="svg_icons/done/png/imgDuke2.png" />
+            <arg value="icon.icns" />
             <arg value="--dest"/>
             <arg value="${binariesFolder}/${macosxFolder}/setup" />
             <arg value="--main-jar"/>
