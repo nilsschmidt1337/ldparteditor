@@ -290,7 +290,8 @@
             <arg value="--strip-debug"/>
             <arg value="--no-man-pages"/>
             <arg value="--compress=2"/>
-            <arg path="${binariesFolder}\jvm-image"/>
+            <arg value="--output"/>
+            <arg value="${binariesFolder}\jvm-image"/>
         </exec>
         
         <exec executable="jpackage" failonerror="true">
