@@ -325,6 +325,10 @@
             <arg value="${binariesFolder}\jvm-image" />
             <arg value="--temp"/>
             <arg value="${binariesFolder}\installer-work" />
+            <arg value="--linux-deb-maintainer"/>
+            <arg value="Nils Schmidt &lt;nils.schmidt@schmidthj.de&gt;"/>
+            <arg value="--linux-rpm-license-type"/>
+            <arg value="MIT License"/>
         </exec>
     </target>
     
