@@ -64,16 +64,6 @@
             checksum="ed53556f0dc3fc33e863d6d265223096f9933e83"
             dir="buildfiles/swt-lib" />
         <get-and-checksum
-            file="swt-4.14-gtk-linux-x86_64.zip"
-            destdir="${dependenciesFolder}"
-            checksum="82fcb2eb4f506c33cc1be83847065ad4981c5876"
-            dir="buildfiles/swt-lib" />
-        <get-and-checksum
-            file="swt-4.14-cocoa-macosx-x86_64.zip"
-            destdir="${dependenciesFolder}"
-            checksum="72840b087674b72e4de210bffc5495c72e62366f"
-            dir="buildfiles/swt-lib" />
-        <get-and-checksum
             file="org.eclipse.core.commands_3.9.600.v20191122-2109.jar"
             destdir="${dependenciesFolder}"
             checksum="0209c198c2fdb66d6e91baf0a404d358bbd217ea"

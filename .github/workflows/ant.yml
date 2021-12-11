@@ -3,7 +3,7 @@ name: Java CI
 on: [push]
 
 jobs:
-  build:
+  build-windows:
 
     runs-on: ubuntu-latest
 
@@ -20,12 +20,26 @@ jobs:
         java-version: 17
     - name: Build with Ant
       run: ant -noinput -buildfile build-windows.xml
-    - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v2
+#    - name: Archive windows executable for win32-x64
+#      uses: actions/upload-artifact@v1
+#      with:
+#        name: LDPartEditor_win32_x64
+#        path: bin/windows
+
+  build-linux:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Get dependent binaries from cache
+      uses: actions/cache@v1
       with:
-        report_paths: '**/report/TEST-*.xml'
-    - name: Archive windows executable for win32-x64
-      uses: actions/upload-artifact@v1
+        path: ./dependencies
+        key: swt-jface-lwjgl-tools-launch4j-3-12-multiplatform-gtk2
+    - name: Set up JDK 17
+      uses: actions/setup-java@v1
       with:
-        name: LDPartEditor_win32_x64
-        path: bin/windows
+        java-version: 17
+    - name: Build with Ant
+      run: ant -noinput -buildfile build-windows.xml
