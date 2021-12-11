@@ -588,6 +588,15 @@ public class CompositePrimitive extends Composite {
         }
     }
 
+    private File detectPrimitiveRulesFile() {
+        final File primitiveRulesInAppDirectory = new File("app/primitive_rules.txt"); //$NON-NLS-1$
+        if (primitiveRulesInAppDirectory.exists() && primitiveRulesInAppDirectory.isFile()) {
+            return primitiveRulesInAppDirectory;
+        }
+        
+        return new File("primitive_rules.txt"); //$NON-NLS-1$
+    }
+
     private void load(boolean waitForRenderer) {
         // Pause primitive renderer
         if (!stopDraw.get() && !dontRefresh.get() && waitForRenderer) {
@@ -665,7 +674,7 @@ public class CompositePrimitive extends Composite {
                     // Creating the categories / Rules
                     // "primitive_rules.txt" is not stored in the AppData\LDPartEditor folder on Windows
                     // It is considered to be "read-only" by the application.
-                    File rulesFile = new File("primitive_rules.txt"); //$NON-NLS-1$
+                    File rulesFile = detectPrimitiveRulesFile();
                     if (rulesFile.exists() && rulesFile.isFile()) {
                         try (UTF8BufferedReader reader = new UTF8BufferedReader(rulesFile.getAbsolutePath())) {
                             String line ;
