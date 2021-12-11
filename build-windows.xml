@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar"
-    name="Create Runnable LDPartEditor JAR and Exe (Windows, Linux, Mac OS X, only 64-bit)">
+    name="Create Runnable LDPartEditor JAR and Exe (Windows, only 64-bit)">
     <!--ANT 1.7 is required -->
     <property name="dependenciesFolder"
             value="dependencies" />
@@ -46,10 +46,6 @@
             value="src" />
        <property name="windowsFolder"
             value="windows" />
-            
-        <!-- Set a launch4j directory property -->
-        <property name="launch4j.dir"
-            value="launch4j" />
             
         <mkdir dir="${dependenciesFolder}" />
         <mkdir dir="${dependenciesFolder}/${windowsFolder}" />
@@ -158,16 +154,6 @@
             checksum="25f5280e2b946d3a25fcf2a764306c1966858f18"
             dir="buildfiles" />
             
-        <!-- Get launch4j.zip -->
-        <get-and-checksum
-            file="launch4j-3.14.zip"
-            destdir="${dependenciesFolder}"
-            checksum="8badd78055cdd9374b096ac4461d6f6f701884c6"
-            dir="buildfiles" />
-            
-        <unzip src="${dependenciesFolder}/launch4j-3.14.zip" dest="${dependenciesFolder}"/>
-        <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/ld" perm="777"/>
-        <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/windres" perm="777"/>
         
         <!-- Unzip SWT libraries -->
         <pathconvert property="swt.windows.zipfile">
@@ -300,15 +286,6 @@
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="${scriptsFolder}/${windowsFolder}/update.bat" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="${scriptsFolder}/${windowsFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        
-        <taskdef name="launch4j"
-            classname="net.sf.launch4j.ant.Launch4jTask"
-            classpath="${dependenciesFolder}/${launch4j.dir}/launch4j.jar
-                :${dependenciesFolder}/${launch4j.dir}/lib/xstream.jar" />
-        
-        <launch4j configFile="launch4j.xml" />
-        
-        <delete file="LDPartEditor.jar"/>
     </target>
     
     <target name="clean">
