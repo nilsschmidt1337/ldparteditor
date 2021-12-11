@@ -285,6 +285,8 @@
         <copy file="${scriptsFolder}/${windowsFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         
         <exec executable="jlink" failonerror="true">
+            <arg value="--add-modules"/>
+            <arg value="java.base,java.logging"/>
             <arg value="--strip-native-commands"/>
             <arg value="--no-header-files" />
             <arg value="--strip-debug"/>
