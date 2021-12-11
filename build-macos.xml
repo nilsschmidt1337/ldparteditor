@@ -112,7 +112,17 @@
             checksum="44a6ed1520203654584556434fadc9e294310388"
             dir="buildfiles" />
             
-        <!-- JARs, DLLs, SOs and DYLIBs from LWJGL -->
+        <!-- JARs and DYLIBs from LWJGL -->
+        <get-and-checksum
+            file="lwjgl.jar"
+            destdir="${dependenciesFolder}"
+            checksum="50ce421ca1ed411ca45e16c1686bda3a5fe8c395"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="lwjgl_util.jar"
+            destdir="${dependenciesFolder}"
+            checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149"
+            dir="buildfiles" />
         <get-and-checksum
             file="liblwjgl.dylib"
             destdir="${dependenciesFolder}"

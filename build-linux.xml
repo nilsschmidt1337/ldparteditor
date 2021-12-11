@@ -118,7 +118,7 @@
             checksum="44a6ed1520203654584556434fadc9e294310388"
             dir="buildfiles" />
             
-        <!-- JARs, DLLs, SOs and DYLIBs from LWJGL -->
+        <!-- JARs and SOs from LWJGL -->
         <get-and-checksum
             file="lwjgl.jar"
             destdir="${dependenciesFolder}"
