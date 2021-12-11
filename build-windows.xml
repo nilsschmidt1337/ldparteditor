@@ -269,7 +269,6 @@
             <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
             <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
-            <fileset file="primitive_rules.txt"/>
         </jar>
         
         <!-- Copy dll files for Windows (64-bit) -->
@@ -281,6 +280,7 @@
         <!-- Copy resource files for Windows (64-bit) -->
         <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
+        <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="${scriptsFolder}/${windowsFolder}/update.bat" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="${scriptsFolder}/${windowsFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         
