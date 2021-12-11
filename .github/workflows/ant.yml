@@ -78,4 +78,4 @@ jobs:
       with:
         java-version: 17
     - name: Build with Ant
-      run: ant -noinput -buildfile build-windows.xml
+      run: ant -noinput -buildfile build-macos.xml

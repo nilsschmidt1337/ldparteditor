@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="junit"
-    name="Create Runnable LDPartEditor JAR and Exe (Windows, Linux, Mac OS X, only 64-bit)">
+    name="Create Runnable LDPartEditor JAR and .deb (Linux GTK3, only 64-bit)">
     <!--ANT 1.7 is required -->
     <property name="dependenciesFolder"
             value="dependencies" />

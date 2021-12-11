@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar"
-    name="Create Runnable LDPartEditor JAR and .exe (Windows, only 64-bit)">
+    name="Create Runnable LDPartEditor JAR and .pkg (Mac OS X, only 64-bit)">
     <!--ANT 1.7 is required -->
     <property name="dependenciesFolder"
             value="dependencies" />
@@ -40,21 +40,17 @@
             value="natives" />
        <property name="sourceFolder"
             value="src" />
-       <property name="windowsFolder"
-            value="windows" />
+       <property name="macosxFolder"
+            value="macosx" />
             
         <mkdir dir="${dependenciesFolder}" />
-        <mkdir dir="${dependenciesFolder}/${windowsFolder}" />
+        <mkdir dir="${dependenciesFolder}/${macosxFolder}" />
         <mkdir dir="${targetFolder}" />
         <mkdir dir="${binariesFolder}" />
-        <mkdir dir="${binariesFolder}/${windowsFolder}" />
+        <mkdir dir="${binariesFolder}/${macosxFolder}" />
+        <mkdir dir="${binariesFolder}/${macosxFolder}/${nativesFolder}" />
         
         <!-- JARs from org.eclipse and com.ibm -->
-        <get-and-checksum
-            file="swt-4.14-win32-win32-x86_64.zip"
-            destdir="${dependenciesFolder}"
-            checksum="ed53556f0dc3fc33e863d6d265223096f9933e83"
-            dir="buildfiles/swt-lib" />
         <get-and-checksum
             file="org.eclipse.core.commands_3.9.600.v20191122-2109.jar"
             destdir="${dependenciesFolder}"
@@ -113,34 +109,24 @@
             
         <!-- JARs, DLLs, SOs and DYLIBs from LWJGL -->
         <get-and-checksum
-            file="lwjgl.jar"
+            file="liblwjgl.dylib"
             destdir="${dependenciesFolder}"
-            checksum="50ce421ca1ed411ca45e16c1686bda3a5fe8c395"
+            checksum="9a7b713450b3db5305abff4265d061a66ee0ef1d"
             dir="buildfiles" />
         <get-and-checksum
-            file="lwjgl_util.jar"
+            file="libjemalloc.dylib"
             destdir="${dependenciesFolder}"
-            checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149"
+            checksum="edbb726d240d5f2c9ebbfb41a91bcf63c725ee58"
             dir="buildfiles" />
         <get-and-checksum
-            file="lwjgl.dll"
+            file="libopenal.dylib"
             destdir="${dependenciesFolder}"
-            checksum="a88f7b2e81ca860b28c6d21463c44a4d0fb29553"
+            checksum="319da170fd51eb047b4c6e9adaddb08af1d4a6e0"
             dir="buildfiles" />
         <get-and-checksum
-            file="jemalloc.dll"
+            file="libglfw.dylib"
             destdir="${dependenciesFolder}"
-            checksum="2e9087e72d2072b3da45a8b06ada5264e77a1b4a"
-            dir="buildfiles" />
-        <get-and-checksum
-            file="OpenAL.dll"
-            destdir="${dependenciesFolder}"
-            checksum="8bf21574699ecf224bf977a894b88fd96cf3b21a"
-            dir="buildfiles" />
-        <get-and-checksum
-            file="glfw.dll"
-            destdir="${dependenciesFolder}"
-            checksum="6b05b5ccb95e6841eca55dfb3612a30bc94d2003"
+            checksum="eabb7c01e44e6e27982b114051e590c308a66d55"
             dir="buildfiles" />
             
         <!-- Get tools.jar -->
@@ -150,14 +136,14 @@
             checksum="25f5280e2b946d3a25fcf2a764306c1966858f18"
             dir="buildfiles" />
             
-        
         <!-- Unzip SWT libraries -->
-        <pathconvert property="swt.windows.zipfile">
+        <pathconvert property="swt.macosx.zipfile">
             <fileset dir="${dependenciesFolder}"
-                includes="swt-*win32*.zip" />
+                includes="swt-*macosx*.zip" />
         </pathconvert>
         
-        <unzip src="${swt.windows.zipfile}" dest="${dependenciesFolder}/${windowsFolder}"/>
+        <unzip src="${swt.macosx.zipfile}" dest="${dependenciesFolder}/${macosxFolder}"/>
+        <unzip src="${dependenciesFolder}/${macosxFolder}/swt.jar" dest="${dependenciesFolder}/${macosxFolder}"/>
         
         <!-- Auto-detect other paths -->
         <pathconvert property="core.commands">
@@ -244,8 +230,8 @@
           </fileset>
         </copy>
         
-        <!-- Create JAR file for Windows (64-bit) -->
-        <jar destfile="LDPartEditor.jar" filesetmanifest="mergewithoutmain">
+        <!-- Create JAR file for Mac OS X (64-bit) -->
+        <jar destfile="${binariesFolder}/${macosxFolder}/LDPartEditor.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
                 <!-- Modified Classpath -->
@@ -254,7 +240,7 @@
             <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${windowsFolder}/swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${macosxFolder}/swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
@@ -271,18 +257,24 @@
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
         </jar>
         
-        <!-- Copy dll files for Windows (64-bit) -->
-        <copy file="${dependenciesFolder}/lwjgl.dll" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="${dependenciesFolder}/jemalloc.dll" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="${dependenciesFolder}/OpenAL.dll" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="${dependenciesFolder}/glfw.dll" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
+         <!-- Copy dylib and jnilib files for Mac OS X (64-bit) -->
+        <copy file="${dependenciesFolder}/liblwjgl.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
+        <copy file="${dependenciesFolder}/libjemalloc.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
+        <copy file="${dependenciesFolder}/libopenal.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
+        <copy file="${dependenciesFolder}/libglfw.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
+        <copy todir="${binariesFolder}/${macosxFolder}/${nativesFolder}" overwrite="true">
+          <fileset dir="${dependenciesFolder}/${macosxFolder}">
+            <include name="**/*.jnilib"/>
+          </fileset>
+        </copy>
         
-        <!-- Copy resource files for Windows (64-bit) -->
-        <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="${scriptsFolder}/${windowsFolder}/update.bat" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="${scriptsFolder}/${windowsFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
+        <!-- Copy resource files for Mac OS X (64-bit) -->
+        <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="${scriptsFolder}/${macosxFolder}/run.sh" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="${scriptsFolder}/${macosxFolder}/update.sh" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="${scriptsFolder}/${macosxFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
     </target>
     
     <target name="clean">
