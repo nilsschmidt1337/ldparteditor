@@ -296,6 +296,39 @@
         <copy file="${scriptsFolder}/${linuxFolder}/run.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="${scriptsFolder}/${linuxFolder}/update.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="${scriptsFolder}/${linuxFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        
+        <exec executable="jlink" failonerror="true">
+            <arg value="--add-modules"/>
+            <arg value="java.base,java.compiler,java.desktop,java.logging,java.management,java.prefs,java.rmi,java.scripting,java.xml,jdk.unsupported"/>
+            <arg value="--strip-native-commands"/>
+            <arg value="--no-header-files" />
+            <arg value="--strip-debug"/>
+            <arg value="--no-man-pages"/>
+            <arg value="--compress=2"/>
+            <arg value="--output"/>
+            <arg value="${binariesFolder}\jvm-image"/>
+        </exec>
+        
+        <exec executable="jpackage" failonerror="true">
+            <arg value="--name"/>
+            <arg value="LDPartEditor" />
+            <arg value="--icon"/>
+            <arg value="svg_icons/done/png/imgDuke2.png" />
+            <arg value="--dest"/>
+            <arg value="${binariesFolder}/${linuxFolder}/setup" />
+            <arg value="--main-jar"/>
+            <arg value="LDPartEditor.jar" />
+            <arg value="--main-class"/>
+            <arg value="org.nschmidt.ldparteditor.main.LDPartEditor" />
+            <arg value="--input"/>
+            <arg value="${binariesFolder}/${linuxFolder}" />
+            <arg value="--app-version"/>
+            <arg value="0.8.54" />
+            <arg value="--runtime-image"/>
+            <arg value="${binariesFolder}\jvm-image" />
+            <arg value="--temp"/>
+            <arg value="${binariesFolder}\installer-work" />
+        </exec>
     </target>
     
     <target name="clean">
