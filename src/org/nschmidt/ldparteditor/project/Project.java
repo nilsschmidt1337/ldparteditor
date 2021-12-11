@@ -44,8 +44,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public enum Project {
     INSTANCE;
 
-    public static final String PROJECT = "project";  //$NON-NLS-1$
-    public static final String DEFAULT_PROJECT_PATH = AppData.getPath() + PROJECT;
+    public static final String LD_PART_EDITOR_PROJECT = "ldparteditor-temp-project";  //$NON-NLS-1$
+    public static final String DEFAULT_PROJECT_PATH = AppData.getPath() + LD_PART_EDITOR_PROJECT;
     private static String projectName = "default"; //$NON-NLS-1$
     private static String projectPath = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath();
     private static String tempProjectName = "default"; //$NON-NLS-1$
