@@ -38,7 +38,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: LDPartEditor_win32_x64
-        path: bin/windows
+        path: bin/windows/setup
 
 #  build-linux:
 #

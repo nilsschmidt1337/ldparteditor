@@ -309,7 +309,7 @@
             <arg value="--icon"/>
             <arg value="favicon.ico" />
             <arg value="--dest"/>
-            <arg value="${binariesFolder}/${windowsFolder}" />
+            <arg value="${binariesFolder}/${windowsFolder}/setup" />
             <arg value="--main-jar"/>
             <arg value="LDPartEditor.jar" />
             <arg value="--main-class"/>
