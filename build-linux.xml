@@ -326,9 +326,13 @@
             <arg value="--temp"/>
             <arg value="${binariesFolder}\installer-work" />
             <arg value="--linux-deb-maintainer"/>
-            <arg value="Nils Schmidt &lt;nils.schmidt@schmidthj.de&gt;"/>
+            <arg value="&lt;nils.schmidt@schmidthj.de&gt;"/>
             <arg value="--linux-rpm-license-type"/>
             <arg value="MIT License"/>
+            <arg value="--description"/>
+            <arg value="The LDraw™ Part Editor. Create and edit LDraw™ Parts quick and easy." />
+            <arg value="--copyright"/>
+            <arg value="Copyright (c) 2012 - this year, Nils Schmidt" />
         </exec>
     </target>
     
