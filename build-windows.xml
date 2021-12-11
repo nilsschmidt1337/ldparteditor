@@ -245,7 +245,7 @@
         </copy>
         
         <!-- Create JAR file for Windows (64-bit) -->
-        <jar destfile="LDPartEditor.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="${binariesFolder}/${windowsFolder}/LDPartEditor.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
                 <!-- Modified Classpath -->
