@@ -101,6 +101,9 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class CompositePrimitive extends Composite {
 
+    private static final String WINDOWS_PRIMITIVE_RULES_LOCATION = "app/primitive_rules.txt";
+    private static final String LINUX_PRIMITIVE_RULES_LOCATION = "/opt/ldparteditor/lib/app/primitive_rules.txt";
+
     /** The {@linkplain OpenGLRendererPrimitives} instance */
     private final OpenGLRendererPrimitives openGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20 ? new OpenGLRendererPrimitives20(this) : new OpenGLRendererPrimitives33(this);
 
@@ -589,9 +592,16 @@ public class CompositePrimitive extends Composite {
     }
 
     private File detectPrimitiveRulesFile() {
-        final File primitiveRulesInAppDirectory = new File("app/primitive_rules.txt"); //$NON-NLS-1$
+        // Windows
+        final File primitiveRulesInAppDirectory = new File(WINDOWS_PRIMITIVE_RULES_LOCATION);
         if (primitiveRulesInAppDirectory.exists() && primitiveRulesInAppDirectory.isFile()) {
             return primitiveRulesInAppDirectory;
+        }
+        
+        // Linux
+        final File primitiveRulesInOptDirectory = new File(LINUX_PRIMITIVE_RULES_LOCATION);
+        if (primitiveRulesInOptDirectory.exists() && primitiveRulesInOptDirectory.isFile()) {
+            return primitiveRulesInOptDirectory;
         }
         
         return new File("primitive_rules.txt"); //$NON-NLS-1$
