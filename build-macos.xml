@@ -36,8 +36,6 @@
             value="libs" />
        <property name="scriptsFolder"
             value="scripts" />
-       <property name="nativesFolder"
-            value="natives" />
        <property name="sourceFolder"
             value="src" />
        <property name="macosxFolder"
@@ -48,7 +46,6 @@
         <mkdir dir="${targetFolder}" />
         <mkdir dir="${binariesFolder}" />
         <mkdir dir="${binariesFolder}/${macosxFolder}" />
-        <mkdir dir="${binariesFolder}/${macosxFolder}/${nativesFolder}" />
         
         <!-- JARs from org.eclipse and com.ibm -->
         <get-and-checksum
@@ -273,11 +270,11 @@
         </jar>
         
          <!-- Copy dylib and jnilib files for Mac OS X (64-bit) -->
-        <copy file="${dependenciesFolder}/liblwjgl.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
-        <copy file="${dependenciesFolder}/libjemalloc.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
-        <copy file="${dependenciesFolder}/libopenal.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
-        <copy file="${dependenciesFolder}/libglfw.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
-        <copy todir="${binariesFolder}/${macosxFolder}/${nativesFolder}" overwrite="true">
+        <copy file="${dependenciesFolder}/liblwjgl.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="${dependenciesFolder}/libjemalloc.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="${dependenciesFolder}/libopenal.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="${dependenciesFolder}/libglfw.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy todir="${binariesFolder}/${macosxFolder}" overwrite="true">
           <fileset dir="${dependenciesFolder}/${macosxFolder}">
             <include name="**/*.jnilib"/>
           </fileset>
@@ -287,9 +284,43 @@
         <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
-        <copy file="${scriptsFolder}/${macosxFolder}/run.sh" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
-        <copy file="${scriptsFolder}/${macosxFolder}/update.sh" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
-        <copy file="${scriptsFolder}/${macosxFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        
+        <exec executable="jlink" failonerror="true">
+            <arg value="--add-modules"/>
+            <arg value="java.base,java.compiler,java.desktop,java.logging,java.management,java.prefs,java.rmi,java.scripting,java.xml,jdk.unsupported"/>
+            <arg value="--strip-native-commands"/>
+            <arg value="--no-header-files" />
+            <arg value="--strip-debug"/>
+            <arg value="--no-man-pages"/>
+            <arg value="--compress=2"/>
+            <arg value="--output"/>
+            <arg value="${binariesFolder}\jvm-image"/>
+        </exec>
+        
+        <exec executable="jpackage" failonerror="true">
+            <arg value="--name"/>
+            <arg value="LDPartEditor" />
+            <arg value="--icon"/>
+            <arg value="svg_icons/done/png/imgDuke2.png" />
+            <arg value="--dest"/>
+            <arg value="${binariesFolder}/${linuxGtk3Folder}/setup" />
+            <arg value="--main-jar"/>
+            <arg value="LDPartEditor.jar" />
+            <arg value="--main-class"/>
+            <arg value="org.nschmidt.ldparteditor.main.LDPartEditor" />
+            <arg value="--input"/>
+            <arg value="${binariesFolder}/${linuxGtk3Folder}" />
+            <arg value="--app-version"/>
+            <arg value="0.8.54" />
+            <arg value="--runtime-image"/>
+            <arg value="${binariesFolder}\jvm-image" />
+            <arg value="--temp"/>
+            <arg value="${binariesFolder}\installer-work" />
+            <arg value="--description"/>
+            <arg value="The LDraw™ Part Editor. Create and edit LDraw™ Parts quick and easy." />
+            <arg value="--copyright"/>
+            <arg value="Copyright (c) 2012 - this year, Nils Schmidt" />
+        </exec>
     </target>
     
     <target name="clean">

@@ -39,37 +39,10 @@ jobs:
 #      with:
 #        name: LDPartEditor_win32_x64
 #        path: bin/windows/setup
-
-  build-linux:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Get dependent binaries from cache
-      uses: actions/cache@v1
-      with:
-        path: ./dependencies
-        key: swt-jface-lwjgl-tools-linux
-    - name: Set up JDK 17
-      uses: actions/setup-java@v1
-      with:
-        java-version: 17
-    - name: Build with Ant
-      run: ant -noinput -buildfile build-linux.xml
-    - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v2
-      with:
-        report_paths: '**/report/TEST-*.xml'
-    - name: Archive linux artifact for gtk3-x64
-      uses: actions/upload-artifact@v1
-      with:
-        name: LDPartEditor_linux_x64
-        path: bin/linux-gtk3/setup
-
-#  build-macos:
 #
-#    runs-on: macos-latest
+#  build-linux:
+#
+#    runs-on: ubuntu-latest
 #
 #    steps:
 #    - uses: actions/checkout@v2
@@ -77,15 +50,42 @@ jobs:
 #      uses: actions/cache@v1
 #      with:
 #        path: ./dependencies
-#        key: swt-jface-lwjgl-tools-macos
+#        key: swt-jface-lwjgl-tools-linux
 #    - name: Set up JDK 17
 #      uses: actions/setup-java@v1
 #      with:
 #        java-version: 17
 #    - name: Build with Ant
-#      run: ant -noinput -buildfile build-macos.xml
-#    - name: Archive macosx artifact for cocoa-x64
+#      run: ant -noinput -buildfile build-linux.xml
+#    - name: Publish Test Report
+#      uses: mikepenz/action-junit-report@v2
+#      with:
+#        report_paths: '**/report/TEST-*.xml'
+#    - name: Archive linux installer for gtk3-x64
 #      uses: actions/upload-artifact@v1
 #      with:
-#        name: LDPartEditor_mac_x64
-#        path: bin/macosx
+#        name: LDPartEditor_linux_x64
+#        path: bin/linux-gtk3/setup
+#
+  build-macos:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get dependent binaries from cache
+      uses: actions/cache@v1
+      with:
+        path: ./dependencies
+        key: swt-jface-lwjgl-tools-macos
+    - name: Set up JDK 17
+      uses: actions/setup-java@v1
+      with:
+        java-version: 17
+    - name: Build with Ant
+      run: ant -noinput -buildfile build-macos.xml
+    - name: Archive macosx installer for cocoa-x64
+      uses: actions/upload-artifact@v1
+      with:
+        name: LDPartEditor_mac_x64
+        path: bin/macosx/setup
