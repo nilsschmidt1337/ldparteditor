@@ -284,6 +284,15 @@
         <copy file="${scriptsFolder}/${windowsFolder}/update.bat" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="${scriptsFolder}/${windowsFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         
+        <exec executable="jlink" failonerror="true">
+            <arg value="--strip-native-commands"/>
+            <arg value="--no-header-files" />
+            <arg value="--strip-debug"/>
+            <arg value="--no-man-pages"/>
+            <arg value="--compress=2"/>
+            <arg path="${binariesFolder}\jvm-image"/>
+        </exec>
+        
         <exec executable="jpackage" failonerror="true">
             <arg value="--type"/>
             <arg value="msi" />
