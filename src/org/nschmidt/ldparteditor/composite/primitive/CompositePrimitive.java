@@ -103,6 +103,7 @@ public class CompositePrimitive extends Composite {
 
     private static final String WINDOWS_PRIMITIVE_RULES_LOCATION = "app/primitive_rules.txt";
     private static final String LINUX_PRIMITIVE_RULES_LOCATION = "/opt/ldparteditor/lib/app/primitive_rules.txt";
+    private static final String MACOS_PRIMITIVE_RULES_LOCATION = "/Applications/LDPartEditor.app/Contents/app/primitive_rules.txt";
 
     /** The {@linkplain OpenGLRendererPrimitives} instance */
     private final OpenGLRendererPrimitives openGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20 ? new OpenGLRendererPrimitives20(this) : new OpenGLRendererPrimitives33(this);
@@ -602,6 +603,12 @@ public class CompositePrimitive extends Composite {
         final File primitiveRulesInOptDirectory = new File(LINUX_PRIMITIVE_RULES_LOCATION);
         if (primitiveRulesInOptDirectory.exists() && primitiveRulesInOptDirectory.isFile()) {
             return primitiveRulesInOptDirectory;
+        }
+        
+        // Mac OS
+        final File primitiveRulesInApplicationsDirectory = new File(MACOS_PRIMITIVE_RULES_LOCATION);
+        if (primitiveRulesInApplicationsDirectory.exists() && primitiveRulesInApplicationsDirectory.isFile()) {
+            return primitiveRulesInApplicationsDirectory;
         }
         
         return new File("primitive_rules.txt"); //$NON-NLS-1$

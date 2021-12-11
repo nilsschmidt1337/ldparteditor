@@ -3,70 +3,70 @@ name: Java CI
 on: [push]
 
 jobs:
-#  build-windows:
-#
-#    runs-on: windows-latest
-#
-#    steps:
-#    - name: Download Wix
-#      uses: i3h/download-release-asset@v1
-#      with:
-#        owner: wixtoolset
-#        repo: wix3
-#        tag: wix3112rtm
-#        file: wix311-binaries.zip
-#    - name: Decompress Wix
-#      uses: DuckSoft/extract-7z-action@v1.0
-#      with:
-#        pathSource: wix311-binaries.zip
-#        pathTarget: ./target/wix
-#    - name: Add Wix to Path
-#      run: echo "$HOME/target/wix" >> $GITHUB_PATH
-#    - uses: actions/checkout@v2
-#    - name: Get dependent binaries from cache
-#      uses: actions/cache@v1
-#      with:
-#        path: ./dependencies
-#        key: swt-jface-lwjgl-tools-windows
-#    - name: Set up JDK 17
-#      uses: actions/setup-java@v1
-#      with:
-#        java-version: 17
-#    - name: Build with Ant
-#      run: ant -noinput -buildfile build-windows.xml
-#    - name: Archive windows installer for win32-x64
-#      uses: actions/upload-artifact@v1
-#      with:
-#        name: LDPartEditor_win32_x64
-#        path: bin/windows/setup
-#
-#  build-linux:
-#
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: Get dependent binaries from cache
-#      uses: actions/cache@v1
-#      with:
-#        path: ./dependencies
-#        key: swt-jface-lwjgl-tools-linux
-#    - name: Set up JDK 17
-#      uses: actions/setup-java@v1
-#      with:
-#        java-version: 17
-#    - name: Build with Ant
-#      run: ant -noinput -buildfile build-linux.xml
-#    - name: Publish Test Report
-#      uses: mikepenz/action-junit-report@v2
-#      with:
-#        report_paths: '**/report/TEST-*.xml'
-#    - name: Archive linux installer for gtk3-x64
-#      uses: actions/upload-artifact@v1
-#      with:
-#        name: LDPartEditor_linux_x64
-#        path: bin/linux-gtk3/setup
-#
+  build-windows:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Download Wix
+      uses: i3h/download-release-asset@v1
+      with:
+        owner: wixtoolset
+        repo: wix3
+        tag: wix3112rtm
+        file: wix311-binaries.zip
+    - name: Decompress Wix
+      uses: DuckSoft/extract-7z-action@v1.0
+      with:
+        pathSource: wix311-binaries.zip
+        pathTarget: ./target/wix
+    - name: Add Wix to Path
+      run: echo "$HOME/target/wix" >> $GITHUB_PATH
+    - uses: actions/checkout@v2
+    - name: Get dependent binaries from cache
+      uses: actions/cache@v1
+      with:
+        path: ./dependencies
+        key: swt-jface-lwjgl-tools-windows
+    - name: Set up JDK 17
+      uses: actions/setup-java@v1
+      with:
+        java-version: 17
+    - name: Build with Ant
+      run: ant -noinput -buildfile build-windows.xml
+    - name: Archive windows installer for win32-x64
+      uses: actions/upload-artifact@v1
+      with:
+        name: LDPartEditor_win32_x64
+        path: bin/windows/setup
+
+  build-linux:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get dependent binaries from cache
+      uses: actions/cache@v1
+      with:
+        path: ./dependencies
+        key: swt-jface-lwjgl-tools-linux
+    - name: Set up JDK 17
+      uses: actions/setup-java@v1
+      with:
+        java-version: 17
+    - name: Build with Ant
+      run: ant -noinput -buildfile build-linux.xml
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v2
+      with:
+        report_paths: '**/report/TEST-*.xml'
+    - name: Archive linux installer for gtk3-x64
+      uses: actions/upload-artifact@v1
+      with:
+        name: LDPartEditor_linux_x64
+        path: bin/linux-gtk3/setup
+
   build-macos:
 
     runs-on: macos-latest
