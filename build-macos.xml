@@ -303,13 +303,13 @@
             <arg value="--icon"/>
             <arg value="svg_icons/done/png/imgDuke2.png" />
             <arg value="--dest"/>
-            <arg value="${binariesFolder}/${linuxGtk3Folder}/setup" />
+            <arg value="${binariesFolder}/${macosxFolder}/setup" />
             <arg value="--main-jar"/>
             <arg value="LDPartEditor.jar" />
             <arg value="--main-class"/>
             <arg value="org.nschmidt.ldparteditor.main.LDPartEditor" />
             <arg value="--input"/>
-            <arg value="${binariesFolder}/${linuxGtk3Folder}" />
+            <arg value="${binariesFolder}/${macosxFolder}" />
             <arg value="--app-version"/>
             <arg value="0.8.54" />
             <arg value="--runtime-image"/>
