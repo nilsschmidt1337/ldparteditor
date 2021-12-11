@@ -40,8 +40,6 @@
             value="libs" />
        <property name="scriptsFolder"
             value="scripts" />
-       <property name="nativesFolder"
-            value="natives" />
        <property name="sourceFolder"
             value="src" />
        <property name="linuxFolder"
@@ -54,7 +52,6 @@
         <mkdir dir="${targetFolder}" />
         <mkdir dir="${binariesFolder}" />
         <mkdir dir="${binariesFolder}/${linuxGtk3Folder}" />
-        <mkdir dir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}" />
         
         <!-- JARs from org.eclipse and com.ibm -->
         <get-and-checksum
@@ -279,11 +276,11 @@
         </jar>
         
          <!-- Copy so files for Linux with GTK3 (64-bit) -->
-        <copy file="${dependenciesFolder}/liblwjgl.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}"/>
-        <copy file="${dependenciesFolder}/libjemalloc.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}"/>
-        <copy file="${dependenciesFolder}/libopenal.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}"/>
-        <copy file="${dependenciesFolder}/libglfw.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}"/>
-        <copy todir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}" overwrite="true">
+        <copy file="${dependenciesFolder}/liblwjgl.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${dependenciesFolder}/libjemalloc.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${dependenciesFolder}/libopenal.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${dependenciesFolder}/libglfw.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy todir="${binariesFolder}/${linuxGtk3Folder}" overwrite="true">
           <fileset dir="${dependenciesFolder}/${linuxGtk3Folder}">
             <include name="**/*.so"/>
           </fileset>
