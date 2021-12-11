@@ -323,6 +323,8 @@
             <arg value="--copyright"/>
             <arg value="Copyright (c) 2012 - this year, Nils Schmidt" />
         </exec>
+        
+        <copy file="${scriptsFolder}/${macosxFolder}/ldparteditor.sh" overwrite="true" todir="${binariesFolder}/${macosxFolder}/setup"/>
     </target>
     
     <target name="clean">
