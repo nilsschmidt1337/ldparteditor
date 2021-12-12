@@ -301,7 +301,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
 
-                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
+                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.LD_PART_EDITOR_PROJECT)) {
                     try {
                         String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                         String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
@@ -365,7 +365,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
 
-                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
+                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.LD_PART_EDITOR_PROJECT)) {
                     try {
                         String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                         String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
@@ -431,7 +431,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
 
-                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
+                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.LD_PART_EDITOR_PROJECT)) {
                     try {
                         String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                         String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
@@ -737,7 +737,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
 
-                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
+                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.LD_PART_EDITOR_PROJECT)) {
                     try {
                         String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                         String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());

@@ -101,6 +101,10 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class CompositePrimitive extends Composite {
 
+    private static final String WINDOWS_PRIMITIVE_RULES_LOCATION = "app/primitive_rules.txt";
+    private static final String LINUX_PRIMITIVE_RULES_LOCATION = "/opt/ldparteditor/lib/app/primitive_rules.txt";
+    private static final String MACOS_PRIMITIVE_RULES_LOCATION = "/Applications/LDPartEditor.app/Contents/app/primitive_rules.txt";
+
     /** The {@linkplain OpenGLRendererPrimitives} instance */
     private final OpenGLRendererPrimitives openGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20 ? new OpenGLRendererPrimitives20(this) : new OpenGLRendererPrimitives33(this);
 
@@ -588,6 +592,28 @@ public class CompositePrimitive extends Composite {
         }
     }
 
+    private File detectPrimitiveRulesFile() {
+        // Windows
+        final File primitiveRulesInAppDirectory = new File(WINDOWS_PRIMITIVE_RULES_LOCATION);
+        if (primitiveRulesInAppDirectory.exists() && primitiveRulesInAppDirectory.isFile()) {
+            return primitiveRulesInAppDirectory;
+        }
+        
+        // Linux
+        final File primitiveRulesInOptDirectory = new File(LINUX_PRIMITIVE_RULES_LOCATION);
+        if (primitiveRulesInOptDirectory.exists() && primitiveRulesInOptDirectory.isFile()) {
+            return primitiveRulesInOptDirectory;
+        }
+        
+        // Mac OS
+        final File primitiveRulesInApplicationsDirectory = new File(MACOS_PRIMITIVE_RULES_LOCATION);
+        if (primitiveRulesInApplicationsDirectory.exists() && primitiveRulesInApplicationsDirectory.isFile()) {
+            return primitiveRulesInApplicationsDirectory;
+        }
+        
+        return new File("primitive_rules.txt"); //$NON-NLS-1$
+    }
+
     private void load(boolean waitForRenderer) {
         // Pause primitive renderer
         if (!stopDraw.get() && !dontRefresh.get() && waitForRenderer) {
@@ -665,7 +691,7 @@ public class CompositePrimitive extends Composite {
                     // Creating the categories / Rules
                     // "primitive_rules.txt" is not stored in the AppData\LDPartEditor folder on Windows
                     // It is considered to be "read-only" by the application.
-                    File rulesFile = new File("primitive_rules.txt"); //$NON-NLS-1$
+                    File rulesFile = detectPrimitiveRulesFile();
                     if (rulesFile.exists() && rulesFile.isFile()) {
                         try (UTF8BufferedReader reader = new UTF8BufferedReader(rulesFile.getAbsolutePath())) {
                             String line ;

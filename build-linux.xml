@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="junit"
+    name="Create Runnable LDPartEditor JAR and .deb (Linux GTK3, only 64-bit)">
+    <!--ANT 1.7 is required -->
+    <property name="dependenciesFolder"
+            value="dependencies" />
+    <property name="binariesFolder"
+            value="bin" />
+    <property name="targetFolder"
+            value="target" />
+    <property name="testFolder"
+         value="test" />
+    <property name="reportFolder"
+            value="report" />
+            
+    <macrodef name="get-and-checksum">
+        <attribute name="file" />
+        <attribute name="destdir" />
+        <attribute name="checksum" />
+        <attribute name="dir" />
+        <sequential>
+            <get
+                src="https://downloads.sourceforge.net/project/partcreator/@{dir}/@{file}?r=&#038;use_mirror=netcologne"
+                dest="@{destdir}/@{file}" skipexisting="true"
+                verbose="on" />
+            <local name="checksum.matches" />
+            <local name="checksum.matches.fail" />
+            <checksum file="@{destdir}/@{file}" algorithm="sha"
+                property="@{checksum}" verifyproperty="checksum.matches" />
+            <condition property="checksum.matches.fail">
+                <equals arg1="${checksum.matches}" arg2="false" />
+            </condition>
+            <fail if="checksum.matches.fail">Checksum-error</fail>
+        </sequential>
+    </macrodef>
+    
+    <target name="create_run_jar">
+    
+       <property name="libsFolder"
+            value="libs" />
+       <property name="scriptsFolder"
+            value="scripts" />
+       <property name="sourceFolder"
+            value="src" />
+       <property name="linuxFolder"
+            value="linux" />
+       <property name="linuxGtk3Folder"
+            value="linux-gtk3" />
+            
+        <mkdir dir="${dependenciesFolder}" />
+        <mkdir dir="${dependenciesFolder}/${linuxGtk3Folder}" />
+        <mkdir dir="${targetFolder}" />
+        <mkdir dir="${binariesFolder}" />
+        <mkdir dir="${binariesFolder}/${linuxGtk3Folder}" />
+        
+        <!-- JARs from org.eclipse and com.ibm -->
+        <get-and-checksum
+            file="swt-4.14-gtk-linux-x86_64.zip"
+            destdir="${dependenciesFolder}"
+            checksum="82fcb2eb4f506c33cc1be83847065ad4981c5876"
+            dir="buildfiles/swt-lib" />
+        <get-and-checksum
+            file="org.eclipse.core.commands_3.9.600.v20191122-2109.jar"
+            destdir="${dependenciesFolder}"
+            checksum="0209c198c2fdb66d6e91baf0a404d358bbd217ea"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="org.eclipse.core.databinding_1.7.700.v20191122-2109.jar"
+            destdir="${dependenciesFolder}"
+            checksum="24fdcedca32360003c475de6f468fc0f59ee6c3f"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="org.eclipse.core.databinding.beans_1.6.0.v20191118-0932.jar"
+            destdir="${dependenciesFolder}"
+            checksum="d4e438befefea163c1d3ec93696071b366abdf7b"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="org.eclipse.core.databinding.observable_1.8.100.v20191118-0932.jar"
+            destdir="${dependenciesFolder}"
+            checksum="9b4c919bc0b3985025ac8861bfda5c2b2b4edfb1"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="org.eclipse.core.databinding.property_1.7.200.v20191105-1311.jar"
+            destdir="${dependenciesFolder}"
+            checksum="d77268dbd229e1175121206264d3cd38773c3e59"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="org.eclipse.equinox.common_3.10.600.v20191004-1420.jar"
+            destdir="${dependenciesFolder}"
+            checksum="21782c2c89c2afb085ba74ff4994867d2a0849a9"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="org.eclipse.jface_3.18.0.v20191122-2109.jar"
+            destdir="${dependenciesFolder}"
+            checksum="e2495d6767af33ee01e7f6d9d4325aa21d7cfa55"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="org.eclipse.jface.databinding_1.9.200.v20191113-1050.jar"
+            destdir="${dependenciesFolder}"
+            checksum="ac748de1c80f151753d89787eeb626ad0c63af55"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="org.eclipse.osgi_3.15.100.v20191114-1701.jar"
+            destdir="${dependenciesFolder}"
+            checksum="84d26b2d0b597803386918c464b831b54c6321b2"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="org.eclipse.ui.workbench_3.117.0.v20191126-1131.jar"
+            destdir="${dependenciesFolder}"
+            checksum="767859ff5a2fac870eae74615bffaf1c9daabd46"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="com.ibm.icu_64.2.0.v20190507-1337.jar"
+            destdir="${dependenciesFolder}"
+            checksum="44a6ed1520203654584556434fadc9e294310388"
+            dir="buildfiles" />
+            
+        <!-- JARs and SOs from LWJGL -->
+        <get-and-checksum
+            file="lwjgl.jar"
+            destdir="${dependenciesFolder}"
+            checksum="50ce421ca1ed411ca45e16c1686bda3a5fe8c395"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="lwjgl_util.jar"
+            destdir="${dependenciesFolder}"
+            checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="liblwjgl.so"
+            destdir="${dependenciesFolder}"
+            checksum="4767eadb5561fdf42bf222db84e30e4c00121f73"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="libjemalloc.so"
+            destdir="${dependenciesFolder}"
+            checksum="ab8f563c4c4ee6ce82ef9a22c4f25d708ddb0e1d"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="libopenal.so"
+            destdir="${dependenciesFolder}"
+            checksum="517017b50206fd6d2c5ee553acd16d4c86199a1f"
+            dir="buildfiles" />
+        <get-and-checksum
+            file="libglfw.so"
+            destdir="${dependenciesFolder}"
+            checksum="a6a4a535a49be83a26741a997cdcab6adacc332d"
+            dir="buildfiles" />
+            
+        <!-- Get tools.jar -->
+        <get-and-checksum
+            file="tools.jar"
+            destdir="${dependenciesFolder}"
+            checksum="25f5280e2b946d3a25fcf2a764306c1966858f18"
+            dir="buildfiles" />
+            
+        <!-- Unzip SWT libraries -->
+        <pathconvert property="swt.linux.gtk3.zipfile">
+            <fileset dir="${dependenciesFolder}"
+                includes="swt-*linux*.zip" />
+        </pathconvert>
+        
+        <unzip src="${swt.linux.gtk3.zipfile}" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
+        <unzip src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
+        
+        <!-- Auto-detect other paths -->
+        <pathconvert property="core.commands">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.core.commands_*.jar" />
+        </pathconvert>
+        <pathconvert property="core.databinding">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.core.databinding_*.jar" />
+        </pathconvert>
+        <pathconvert property="core.databinding.beans">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.core.databinding.beans_*.jar" />
+        </pathconvert>
+        <pathconvert property="core.databinding.observable">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.core.databinding.observable_*.jar" />
+        </pathconvert>
+        <pathconvert property="core.databinding.property">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.core.databinding.property_*.jar" />
+        </pathconvert>
+        <pathconvert property="equinox.common">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.equinox.common_*.jar" />
+        </pathconvert>
+        <pathconvert property="jface">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.jface_*.jar" />
+        </pathconvert>
+        <pathconvert property="jface.databinding">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.jface.databinding_*.jar" />
+        </pathconvert>
+        <pathconvert property="osgi">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.osgi_*.jar" />
+        </pathconvert>
+        <pathconvert property="ui.workbench">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.ui.workbench_*.jar" />
+        </pathconvert>
+        <pathconvert property="icu">
+            <fileset dir="${dependenciesFolder}"
+                includes="com.ibm.icu_*.jar" />
+        </pathconvert>
+        
+        <!-- Do some echo for the important paths -->
+        <echo message="${core.commands}" />
+        <echo message="${core.databinding}" />
+        <echo message="${core.databinding.beans}" />
+        <echo message="${core.databinding.observable}" />
+        <echo message="${core.databinding.property}" />
+        <echo message="${equinox.common}" />
+        <echo message="${jface}" />
+        <echo message="${jface.databinding}" />
+        <echo message="${osgi}" />
+        <echo message="${ui.workbench}" />
+        <echo message="${icu}" />
+        
+        <path id="master-classpath">
+           <fileset dir="${dependenciesFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+           <fileset dir="${libsFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+         </path>
+         
+         <!-- Compile -->
+         <javac
+            srcdir="${sourceFolder}"
+            destdir="${targetFolder}"
+            includeantruntime="false"
+            encoding="utf8"
+            debug="on" source="17" target="17" >
+            <classpath refid="master-classpath"/>
+         </javac>
+        
+        <!-- Copy non-java files -->
+        <copy todir="${targetFolder}" overwrite="true">
+          <fileset dir="${sourceFolder}">
+            <exclude name="**/*.java"/>
+          </fileset>
+        </copy>
+        
+        <!-- Create JAR file for Linux with GTK3 (64-bit) -->
+        <jar destfile="${binariesFolder}/${linuxGtk3Folder}/LDPartEditor.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
+                <!-- Modified Classpath -->
+                <attribute name="Class-Path" value=". plugin/"/>
+            </manifest>
+            <fileset dir="${targetFolder}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.observable}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.property}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${equinox.common}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
+        </jar>
+        
+         <!-- Copy so files for Linux with GTK3 (64-bit) -->
+        <copy file="${dependenciesFolder}/liblwjgl.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${dependenciesFolder}/libjemalloc.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${dependenciesFolder}/libopenal.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${dependenciesFolder}/libglfw.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy todir="${binariesFolder}/${linuxGtk3Folder}" overwrite="true">
+          <fileset dir="${dependenciesFolder}/${linuxGtk3Folder}">
+            <include name="**/*.so"/>
+          </fileset>
+        </copy>
+        
+        <!-- Copy resource files for Linux with GTK3 (64-bit) -->
+        <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${scriptsFolder}/${linuxFolder}/run.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${scriptsFolder}/${linuxFolder}/update.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${scriptsFolder}/${linuxFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        
+        <exec executable="jlink" failonerror="true">
+            <arg value="--add-modules"/>
+            <arg value="java.base,java.compiler,java.desktop,java.logging,java.management,java.prefs,java.rmi,java.scripting,java.xml,jdk.unsupported"/>
+            <arg value="--strip-native-commands"/>
+            <arg value="--no-header-files" />
+            <arg value="--strip-debug"/>
+            <arg value="--no-man-pages"/>
+            <arg value="--compress=2"/>
+            <arg value="--output"/>
+            <arg value="${binariesFolder}\jvm-image"/>
+        </exec>
+        
+        <exec executable="jpackage" failonerror="true">
+            <arg value="--name"/>
+            <arg value="LDPartEditor" />
+            <arg value="--icon"/>
+            <arg value="svg_icons/done/png/imgDuke2.png" />
+            <arg value="--dest"/>
+            <arg value="${binariesFolder}/${linuxGtk3Folder}/setup" />
+            <arg value="--main-jar"/>
+            <arg value="LDPartEditor.jar" />
+            <arg value="--main-class"/>
+            <arg value="org.nschmidt.ldparteditor.main.LDPartEditor" />
+            <arg value="--input"/>
+            <arg value="${binariesFolder}/${linuxGtk3Folder}" />
+            <arg value="--app-version"/>
+            <arg value="1.8.54" />
+            <arg value="--runtime-image"/>
+            <arg value="${binariesFolder}\jvm-image" />
+            <arg value="--temp"/>
+            <arg value="${binariesFolder}\installer-work" />
+            <arg value="--linux-deb-maintainer"/>
+            <arg value="nils.schmidt@schmidthj.de"/>
+            <arg value="--linux-rpm-license-type"/>
+            <arg value="MIT License"/>
+            <arg value="--description"/>
+            <arg value="The LDraw™ Part Editor. Create and edit LDraw™ Parts quick and easy." />
+            <arg value="--copyright"/>
+            <arg value="Copyright (c) 2012 - this year, Nils Schmidt" />
+        </exec>
+    </target>
+    
+    <target name="clean">
+        <delete dir="${binariesFolder}" />
+        <delete dir="${targetFolder}" />
+        <delete dir="${reportFolder}" />
+        <delete dir="${dependenciesFolder}" />
+    </target>
+    
+    <target name="junit" depends="create_run_jar">
+        <delete dir="${dependenciesFolder}/launch4j" />
+        <mkdir dir="${reportFolder}" />
+        <property name="libsFolder"
+             value="libs" />
+        <property name="linuxGtk3Folder"
+             value="linux-gtk3" />
+        <path id="master-classpath">
+           <fileset dir="${dependenciesFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+           <fileset dir="${libsFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+           <fileset dir="${binariesFolder}/${linuxGtk3Folder}">
+             <include name="**/*.jar"/>
+           </fileset>
+        </path>
+        
+        <!-- Compile tests -->
+        <javac
+           srcdir="${testFolder}"
+           destdir="${targetFolder}"
+           includeantruntime="false"
+           encoding="utf8"
+           debug="on" source="17" target="17" >
+           <classpath refid="master-classpath"/>
+           <classpath path="${targetFolder}" />
+        </javac>
+        
+        <junit printsummary="yes" haltonfailure="no">
+            
+            <classpath location="${libsFolder}/junit-4.13.2.jar" />
+            <classpath location="${libsFolder}/hamcrest-core-1.3.jar" />
+            <classpath refid="master-classpath"/>
+            <classpath path="${targetFolder}" />
+            
+            <formatter type="xml" />
+            <formatter type="plain" />
+            
+            <batchtest fork="yes" todir="${reportFolder}">
+                <fileset dir="${testFolder}">
+                    <include name="**/*Test*.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+</project>
