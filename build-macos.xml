@@ -49,104 +49,104 @@
         
         <!-- JARs from org.eclipse and com.ibm -->
         <get-and-checksum
-            file="swt-4.14-cocoa-macosx-x86_64.zip"
+            file="swt-4.22-cocoa-macosx-x86_64.zip"
             destdir="${dependenciesFolder}"
-            checksum="72840b087674b72e4de210bffc5495c72e62366f"
-            dir="buildfiles/swt-lib" />
+            checksum="d5d9c4df4323ff59b9649359c3c6dd37b9ad620c"
+            dir="buildfiles-v2/swt-lib" />
         <get-and-checksum
-            file="org.eclipse.core.commands_3.9.600.v20191122-2109.jar"
+            file="org.eclipse.core.commands_3.10.100.v20210722-1426.jar"
             destdir="${dependenciesFolder}"
-            checksum="0209c198c2fdb66d6e91baf0a404d358bbd217ea"
-            dir="buildfiles" />
+            checksum="e6ab3335ea6918b4d73ee1b78a302248eaed4670"
+            dir="buildfiles-v2" />
         <get-and-checksum
-            file="org.eclipse.core.databinding_1.7.700.v20191122-2109.jar"
+            file="org.eclipse.core.databinding_1.10.100.v20200926-1123.jar"
             destdir="${dependenciesFolder}"
-            checksum="24fdcedca32360003c475de6f468fc0f59ee6c3f"
-            dir="buildfiles" />
+            checksum="e396f092881fbc787254fcad8ff5cd9774dd8314"
+            dir="buildfiles-v2" />
         <get-and-checksum
-            file="org.eclipse.core.databinding.beans_1.6.0.v20191118-0932.jar"
+            file="org.eclipse.core.databinding.beans_1.8.0.v20210619-1111.jar"
             destdir="${dependenciesFolder}"
-            checksum="d4e438befefea163c1d3ec93696071b366abdf7b"
-            dir="buildfiles" />
+            checksum="e5bde29a74df6ca3e9a00700cd997698e149f597"
+            dir="buildfiles-v2" />
         <get-and-checksum
-            file="org.eclipse.core.databinding.observable_1.8.100.v20191118-0932.jar"
+            file="org.eclipse.core.databinding.observable_1.11.0.v20210722-1426.jar"
             destdir="${dependenciesFolder}"
-            checksum="9b4c919bc0b3985025ac8861bfda5c2b2b4edfb1"
-            dir="buildfiles" />
+            checksum="37d2d6b39387844b53e5d92f7912ca7f710b221b"
+            dir="buildfiles-v2" />
         <get-and-checksum
-            file="org.eclipse.core.databinding.property_1.7.200.v20191105-1311.jar"
+            file="org.eclipse.core.databinding.property_1.9.0.v20210619-1129.jar"
             destdir="${dependenciesFolder}"
-            checksum="d77268dbd229e1175121206264d3cd38773c3e59"
-            dir="buildfiles" />
+            checksum="831e5c27a79a2ed2e263298dabf4e885677c1ce4"
+            dir="buildfiles-v2" />
         <get-and-checksum
-            file="org.eclipse.equinox.common_3.10.600.v20191004-1420.jar"
+            file="org.eclipse.equinox.common_3.15.100.v20211021-1418.jar"
             destdir="${dependenciesFolder}"
-            checksum="21782c2c89c2afb085ba74ff4994867d2a0849a9"
-            dir="buildfiles" />
+            checksum="498abfe26a551e844909c745c2936f6578ad81e5"
+            dir="buildfiles-v2" />
         <get-and-checksum
-            file="org.eclipse.jface_3.18.0.v20191122-2109.jar"
+            file="org.eclipse.jface_3.24.0.v20211110-1517.jar"
             destdir="${dependenciesFolder}"
-            checksum="e2495d6767af33ee01e7f6d9d4325aa21d7cfa55"
-            dir="buildfiles" />
+            checksum="ec64256ebee9db8906a98a6d1fb4761436211883"
+            dir="buildfiles-v2" />
         <get-and-checksum
-            file="org.eclipse.jface.databinding_1.9.200.v20191113-1050.jar"
+            file="org.eclipse.jface.databinding_1.13.0.v20210619-1146.jar"
             destdir="${dependenciesFolder}"
-            checksum="ac748de1c80f151753d89787eeb626ad0c63af55"
-            dir="buildfiles" />
+            checksum="e36d9c4ce8b4aa34af799b4e974a90ef4d9c348e"
+            dir="buildfiles-v2" />
         <get-and-checksum
-            file="org.eclipse.osgi_3.15.100.v20191114-1701.jar"
+            file="org.eclipse.osgi_3.17.100.v20211104-1730.jar"
             destdir="${dependenciesFolder}"
-            checksum="84d26b2d0b597803386918c464b831b54c6321b2"
-            dir="buildfiles" />
+            checksum="61963893c02d326b40fb16ccf506eb6da13a5514"
+            dir="buildfiles-v2" />
         <get-and-checksum
-            file="org.eclipse.ui.workbench_3.117.0.v20191126-1131.jar"
+            file="org.eclipse.ui.workbench_3.124.0.v20211116-0651.jar"
             destdir="${dependenciesFolder}"
-            checksum="767859ff5a2fac870eae74615bffaf1c9daabd46"
-            dir="buildfiles" />
+            checksum="77eabb05cb825f650b86928aed885e7b08a5bb74"
+            dir="buildfiles-v2" />
         <get-and-checksum
-            file="com.ibm.icu_64.2.0.v20190507-1337.jar"
+            file="com.ibm.icu_67.1.0.v20200706-1749.jar"
             destdir="${dependenciesFolder}"
-            checksum="44a6ed1520203654584556434fadc9e294310388"
-            dir="buildfiles" />
+            checksum="7f079687290b9bfa98a65723fe1b81386df60d79"
+            dir="buildfiles-v2" />
             
         <!-- JARs and DYLIBs from LWJGL -->
         <get-and-checksum
             file="lwjgl.jar"
             destdir="${dependenciesFolder}"
             checksum="50ce421ca1ed411ca45e16c1686bda3a5fe8c395"
-            dir="buildfiles" />
+            dir="buildfiles-v2" />
         <get-and-checksum
             file="lwjgl_util.jar"
             destdir="${dependenciesFolder}"
             checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149"
-            dir="buildfiles" />
+            dir="buildfiles-v2" />
         <get-and-checksum
             file="liblwjgl.dylib"
             destdir="${dependenciesFolder}"
             checksum="9a7b713450b3db5305abff4265d061a66ee0ef1d"
-            dir="buildfiles" />
+            dir="buildfiles-v2" />
         <get-and-checksum
             file="libjemalloc.dylib"
             destdir="${dependenciesFolder}"
             checksum="edbb726d240d5f2c9ebbfb41a91bcf63c725ee58"
-            dir="buildfiles" />
+            dir="buildfiles-v2" />
         <get-and-checksum
             file="libopenal.dylib"
             destdir="${dependenciesFolder}"
             checksum="319da170fd51eb047b4c6e9adaddb08af1d4a6e0"
-            dir="buildfiles" />
+            dir="buildfiles-v2" />
         <get-and-checksum
             file="libglfw.dylib"
             destdir="${dependenciesFolder}"
             checksum="eabb7c01e44e6e27982b114051e590c308a66d55"
-            dir="buildfiles" />
+            dir="buildfiles-v2" />
             
         <!-- Get tools.jar -->
         <get-and-checksum
             file="tools.jar"
             destdir="${dependenciesFolder}"
             checksum="25f5280e2b946d3a25fcf2a764306c1966858f18"
-            dir="buildfiles" />
+            dir="buildfiles-v2" />
             
         <!-- Unzip SWT libraries -->
         <pathconvert property="swt.macosx.zipfile">
