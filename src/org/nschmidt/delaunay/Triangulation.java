@@ -26,6 +26,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
+import org.nschmidt.ldparteditor.logger.NLogger;
+
 /**
  * A 2D Delaunay Triangulation (DT) with incremental site insertion.
  *
@@ -140,7 +142,7 @@ public class Triangulation extends AbstractSet<Triangle> {
         Set<Triangle> visited = new HashSet<>();
         while (triangle != null) {
             if (visited.contains(triangle)) { // This should never happen
-                System.out.println("Warning: Caught in a locate loop"); //$NON-NLS-1$
+                NLogger.error(Triangulation.class, "Warning: Caught in a locate loop"); //$NON-NLS-1$
                 break;
             }
             visited.add(triangle);
@@ -151,13 +153,13 @@ public class Triangulation extends AbstractSet<Triangle> {
             triangle = this.neighborOpposite(corner, triangle);
         }
         // No luck; try brute force
-        System.out.println("Warning: Checking all triangles for " + point); //$NON-NLS-1$
+        NLogger.error(Triangulation.class, "Warning: Checking all triangles for " + point); //$NON-NLS-1$
         for (Triangle tri : this) {
             if (point.isOutside(tri.toArray(new Pnt[0])) == null)
                 return tri;
         }
         // No such triangle
-        System.out.println("Warning: No triangle holds " + point); //$NON-NLS-1$
+        NLogger.error(Triangulation.class, "Warning: No triangle holds " + point); //$NON-NLS-1$
         return null;
     }
 

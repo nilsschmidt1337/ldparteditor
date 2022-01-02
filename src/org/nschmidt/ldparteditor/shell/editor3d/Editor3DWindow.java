@@ -3026,7 +3026,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         while (true) {
             String selected = fd.open();
-            System.out.println(selected);
+            NLogger.debug(Editor3DWindow.class, selected);
 
             if (selected != null) {
 

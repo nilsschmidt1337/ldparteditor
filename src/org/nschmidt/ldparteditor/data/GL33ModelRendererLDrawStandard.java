@@ -1126,7 +1126,7 @@ public class GL33ModelRendererLDrawStandard {
 
             } catch (Exception ex) {
                 if (NLogger.debugging) {
-                    System.out.println("Exception: " + ex.getMessage()); //$NON-NLS-1$
+                    NLogger.debug(GL33ModelRendererLDrawStandard.class, "Exception: " + ex.getMessage()); //$NON-NLS-1$
                 }
             } finally {
                 staticLock.unlock();

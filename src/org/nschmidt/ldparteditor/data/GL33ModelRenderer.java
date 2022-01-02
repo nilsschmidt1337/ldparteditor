@@ -2193,7 +2193,7 @@ public class GL33ModelRenderer {
 
             } catch (Exception ex) {
                 if (NLogger.debugging) {
-                    System.out.println("Exception: " + ex.getMessage()); //$NON-NLS-1$
+                    NLogger.debug(GL33ModelRenderer.class,"Exception: " + ex.getMessage()); //$NON-NLS-1$
                 }
             } finally {
                 staticLock.unlock();
