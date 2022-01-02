@@ -440,7 +440,7 @@ class VM01SelectHelper extends VM01Select {
                     if (occurences == null)
                         continue;
                     for (VertexManifestation vm : occurences) {
-                        GData g = vm.getGdata();
+                        GData g = vm.gdata();
                         int val = 1;
                         if (occurMap.containsKey(g)) {
                             val = occurMap.get(g);

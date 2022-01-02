@@ -15,33 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-/**
- * @author nils
- *
- */
-class VertexManifestation {
-
-    private final int position;
-    private final GData gdata;
-
-    VertexManifestation(int position, GData gdata) {
-        this.position = position;
-        this.gdata = gdata;
-    }
-
-    /**
-     * @return the position from the vertex in the LDraw line (0-3)
-     */
-    public int getPosition() {
-        return position;
-    }
-
-    /**
-     * @return the linked LDraw line
-     */
-    public GData getGdata() {
-        return gdata;
-    }
+public record VertexManifestation (int position, GData gdata) {
 
     @Override
     public int hashCode() {
@@ -66,9 +40,6 @@ class VertexManifestation {
                 return false;
         } else if (!gdata.equals(other.gdata))
             return false;
-        if (position != other.position)
-            return false;
-        return true;
+        return position == other.position;
     }
-
 }

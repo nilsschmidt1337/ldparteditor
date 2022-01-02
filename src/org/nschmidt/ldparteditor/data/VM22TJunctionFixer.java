@@ -186,7 +186,7 @@ class VM22TJunctionFixer extends VM21Merger {
             }
 
             for (VertexManifestation mani : vertexLinkedToPositionInFile.get(v)) {
-                GData gd = mani.getGdata();
+                GData gd = mani.gdata();
                 switch (gd.type()) {
                 case 2:
                     selectedLines.add((GData2) gd);

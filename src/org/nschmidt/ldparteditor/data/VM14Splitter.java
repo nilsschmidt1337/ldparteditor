@@ -1168,10 +1168,10 @@ class VM14Splitter extends VM13SymSplitter {
         Set<GData> setB = new HashSet<>();
 
         for (VertexManifestation m : manis1) {
-            setA.add(m.getGdata());
+            setA.add(m.gdata());
         }
         for (VertexManifestation m : manis1) {
-            setB.add(m.getGdata());
+            setB.add(m.gdata());
         }
 
         setA.retainAll(setB);

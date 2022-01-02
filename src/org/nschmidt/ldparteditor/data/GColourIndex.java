@@ -15,27 +15,4 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-
-/**
- * @author nils
- *
- */
-public class GColourIndex {
-
-    private final int index;
-    private final GColour colour;
-
-    public GColourIndex(GColour colour, int index) {
-        this.index = index;
-        this.colour = colour;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public GColour getColour() {
-        return colour;
-    }
-
-}
+public record GColourIndex (GColour colour, int index) {}

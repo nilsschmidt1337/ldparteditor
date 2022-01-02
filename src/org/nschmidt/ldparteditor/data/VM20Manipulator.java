@@ -94,7 +94,7 @@ public class VM20Manipulator extends VM19ColourChanger {
             Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
             if (manis == null) continue;
             for (VertexManifestation m : manis) {
-                GData gd = m.getGdata();
+                GData gd = m.gdata();
                 if (lineLinkedToVertices.containsKey(gd)) {
                     final int type = gd.type();
                     switch (type) {
@@ -390,7 +390,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                         continue;
                     boolean isPureSubfileVertex = true;
                     for (VertexManifestation vm : occurences) {
-                        GData g = vm.getGdata();
+                        GData g = vm.gdata();
                         int val = 1;
                         if (occurMap.containsKey(g)) {
                             val = occurMap.get(g);

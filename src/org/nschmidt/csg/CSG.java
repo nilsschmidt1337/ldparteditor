@@ -243,9 +243,9 @@ public class CSG {
         st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
-            Node n = np.getNode();
+            Node n = np.node();
             nodes.add(n);
-            List<NodePolygon> npr = n.buildForResult(np.getPolygons());
+            List<NodePolygon> npr = n.buildForResult(np.polygons());
             for (NodePolygon np2 : npr) {
                 st.push(np2);
             }
@@ -332,7 +332,7 @@ public class CSG {
         st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
-            List<NodePolygon> npr = np.getNode().buildForResult(np.getPolygons());
+            List<NodePolygon> npr = np.node().buildForResult(np.polygons());
             for (NodePolygon np2 : npr) {
                 st.push(np2);
             }
@@ -401,7 +401,7 @@ public class CSG {
         st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
-            List<NodePolygon> npr = np.getNode().buildForResult(np.getPolygons());
+            List<NodePolygon> npr = np.node().buildForResult(np.polygons());
             for (NodePolygon np2 : npr) {
                 st.push(np2);
             }

@@ -48,7 +48,7 @@ public class CSGMesh implements Primitive {
         if (!needCacheRefresh(cachedData, start, df) && !polygonCache.isEmpty()) {
             for (Polygon p : polygonCache) {
                 GColourIndex i = p.getColour();
-                p.setColour(new GColourIndex(i.getColour(), id));
+                p.setColour(new GColourIndex(i.colour(), id));
             }
             return polygonCache;
         }

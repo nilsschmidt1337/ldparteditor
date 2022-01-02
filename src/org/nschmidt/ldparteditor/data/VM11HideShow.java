@@ -57,7 +57,7 @@ class VM11HideShow extends VM10Selector {
             boolean isHidden = true;
             if (m == null) continue;
             for (VertexManifestation vm : m) {
-                if (vm.getGdata().type() != 0 && vm.getGdata().visible) {
+                if (vm.gdata().type() != 0 && vm.gdata().visible) {
                     isHidden = false;
                     break;
                 }

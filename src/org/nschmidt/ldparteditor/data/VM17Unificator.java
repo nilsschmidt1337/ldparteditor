@@ -107,13 +107,13 @@ class VM17Unificator extends VM16Subdivide {
                             Set<VertexManifestation> mani = vertexLinkedToPositionInFile.get(v);
                             int controlPointCondlineInSubfile = 0;
                             for (VertexManifestation vm : mani) {
-                                GData gd = vm.getGdata();
+                                GData gd = vm.gdata();
                                 if (lineLinkedToVertices.containsKey(gd)) {
                                     // Better performance, since we can detect file vertices here!
                                     fileVertices.add(v);
                                     isFileVertex = true;
                                     break;
-                                } else if (gd.type() == 5 && vm.getPosition() > 1) {
+                                } else if (gd.type() == 5 && vm.position() > 1) {
                                     controlPointCondlineInSubfile++;
                                 }
                             }
@@ -126,7 +126,7 @@ class VM17Unificator extends VM16Subdivide {
                         if (!isFileVertex) {
                             Set<VertexManifestation> mani = vertexLinkedToPositionInFile.get(v);
                             for (VertexManifestation vm : mani) {
-                                GData gd = vm.getGdata();
+                                GData gd = vm.gdata();
                                 if (lineLinkedToVertices.containsKey(gd)) {
                                     fileVertices.add(v);
                                     break;

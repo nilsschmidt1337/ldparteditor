@@ -378,7 +378,7 @@ public class GL33ModelRenderer {
                                 boolean pureControlPoint = true;
                                 maniLock.lock();
                                 for (VertexManifestation m : manis) {
-                                    if (m.getPosition() < 2 || m.getGdata().type() != 5) {
+                                    if (m.position() < 2 || m.gdata().type() != 5) {
                                         pureControlPoint = false;
                                         break;
                                     }

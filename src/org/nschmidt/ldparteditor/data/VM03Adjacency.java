@@ -108,9 +108,9 @@ class VM03Adjacency extends VM02Add {
         if (vm != null) {
             getManifestationLock().lock();
             for (VertexManifestation m : vm) {
-                int type = m.getGdata().type();
+                int type = m.gdata().type();
                 if (type < 5 && type > 2)
-                    rval.add(m.getGdata());
+                    rval.add(m.gdata());
             }
             getManifestationLock().unlock();
         }
@@ -124,20 +124,20 @@ class VM03Adjacency extends VM02Add {
             GColour colour = null;
             getManifestationLock().lock();
             for (VertexManifestation m : vm) {
-                int type = m.getGdata().type();
+                int type = m.gdata().type();
                 GColour col = null;
                 if (type == 3) {
-                    GData3 gd = (GData3) m.getGdata();
+                    GData3 gd = (GData3) m.gdata();
                     col = new GColour(gd.colourNumber, gd.r, gd.g, gd.b, gd.a);
                 }
                 if (type == 4) {
-                    GData4 gd = (GData4) m.getGdata();
+                    GData4 gd = (GData4) m.gdata();
                     col = new GColour(gd.colourNumber, gd.r, gd.g, gd.b, gd.a);
                 }
                 if (col != null) {
                     if (colour == null) colour = col;
                     if (colour.equals(col)) {
-                        rval.add(m.getGdata());
+                        rval.add(m.gdata());
                     }
                 }
             }
@@ -154,9 +154,9 @@ class VM03Adjacency extends VM02Add {
         }
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
-                if (a.getGdata().equals(b.getGdata()) && b.getGdata().type() == 2) {
-                    if (!lineLinkedToVertices.containsKey(b.getGdata())) return null;
-                    return (GData2) b.getGdata();
+                if (a.gdata().equals(b.gdata()) && b.gdata().type() == 2) {
+                    if (!lineLinkedToVertices.containsKey(b.gdata())) return null;
+                    return (GData2) b.gdata();
                 }
             }
         }
@@ -171,16 +171,16 @@ class VM03Adjacency extends VM02Add {
         }
         getManifestationLock().lock();
         for (VertexManifestation a : m1) {
-            if (a.getPosition() > 1) continue;
+            if (a.position() > 1) continue;
             for (VertexManifestation b : m2) {
-                if (b.getPosition() > 1) continue;
-                if (a.getGdata().equals(b.getGdata()) && b.getGdata().type() == 5) {
-                    if (!lineLinkedToVertices.containsKey(b.getGdata())) {
+                if (b.position() > 1) continue;
+                if (a.gdata().equals(b.gdata()) && b.gdata().type() == 5) {
+                    if (!lineLinkedToVertices.containsKey(b.gdata())) {
                         getManifestationLock().unlock();
                         return null;
                     }
                     getManifestationLock().unlock();
-                    return (GData5) b.getGdata();
+                    return (GData5) b.gdata();
                 }
             }
         }
@@ -197,11 +197,11 @@ class VM03Adjacency extends VM02Add {
         }
         getManifestationLock().lock();
         for (VertexManifestation a : m1) {
-            if (a.getPosition() > 1) continue;
+            if (a.position() > 1) continue;
             for (VertexManifestation b : m2) {
-                if (b.getPosition() > 1) continue;
-                if (a.getGdata().equals(b.getGdata())) {
-                    final int type = b.getGdata().type();
+                if (b.position() > 1) continue;
+                if (a.gdata().equals(b.gdata())) {
+                    final int type = b.gdata().type();
                     if (type == 5) {
                         hasCondline = true;
                     } else if (type == 2) {
@@ -230,8 +230,8 @@ class VM03Adjacency extends VM02Add {
         }
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
-                GData bg = b.getGdata();
-                if (a.getGdata().equals(bg)) {
+                GData bg = b.gdata();
+                if (a.gdata().equals(bg)) {
                     int type = bg.type();
                     if (type == 4 || type == 3 && ((GData3) bg).isTriangle) {
                         result.add(bg);
@@ -252,8 +252,8 @@ class VM03Adjacency extends VM02Add {
         getManifestationLock().lock();
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
-                GData bg = b.getGdata();
-                if (a.getGdata().equals(bg)) {
+                GData bg = b.gdata();
+                if (a.gdata().equals(bg)) {
                     int type = bg.type();
                     if (type == 4 || type == 3 && ((GData3) bg).isTriangle) {
                         result.add(bg);
@@ -273,7 +273,7 @@ class VM03Adjacency extends VM02Add {
         }
         for (VertexManifestation a : m1) {
             for (VertexManifestation b : m2) {
-                if (a.getGdata().equals(b.getGdata())) {
+                if (a.gdata().equals(b.gdata())) {
                     return true;
                 }
             }
@@ -697,7 +697,7 @@ class VM03Adjacency extends VM02Add {
                         continue;
                     boolean isPureSubfileVertex = true;
                     for (VertexManifestation vm : occurences) {
-                        GData g = vm.getGdata();
+                        GData g = vm.gdata();
                         int val = 1;
                         if (occurMap.containsKey(g)) {
                             val = occurMap.get(g);
@@ -944,7 +944,7 @@ class VM03Adjacency extends VM02Add {
         Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
         if (manis != null) {
             for (VertexManifestation mani : manis) {
-                GData gd = mani.getGdata();
+                GData gd = mani.gdata();
                 if (gd != null && gd.type() == 0) {
                     result.add((GData0) gd);
                 }

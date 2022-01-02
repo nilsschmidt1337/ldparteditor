@@ -317,33 +317,33 @@ class VM04Rectifier extends VM03Adjacency {
                                             {
                                                 Set<VertexManifestation> s1 = vertexLinkedToPositionInFile.get(first);
                                                 for (VertexManifestation m : s1) {
-                                                    GData gd = m.getGdata();
+                                                    GData gd = m.gdata();
                                                     int t = gd.type();
-                                                    if (lineLinkedToVertices.containsKey(gd) && m.getPosition() < 2 && (t == 2 || t == 5)) lines1.add(gd);
+                                                    if (lineLinkedToVertices.containsKey(gd) && m.position() < 2 && (t == 2 || t == 5)) lines1.add(gd);
                                                 }
                                             }
                                             {
                                                 Set<VertexManifestation> s2 = vertexLinkedToPositionInFile.get(second);
                                                 for (VertexManifestation m : s2) {
-                                                    GData gd = m.getGdata();
+                                                    GData gd = m.gdata();
                                                     int t = gd.type();
-                                                    if (lineLinkedToVertices.containsKey(gd) && m.getPosition() < 2 && (t == 2 || t == 5)) lines2.add(gd);
+                                                    if (lineLinkedToVertices.containsKey(gd) && m.position() < 2 && (t == 2 || t == 5)) lines2.add(gd);
                                                 }
                                             }
                                             {
                                                 Set<VertexManifestation> s3 = vertexLinkedToPositionInFile.get(third);
                                                 for (VertexManifestation m : s3) {
-                                                    GData gd = m.getGdata();
+                                                    GData gd = m.gdata();
                                                     int t = gd.type();
-                                                    if (lineLinkedToVertices.containsKey(gd) && m.getPosition() < 2 && (t == 2 || t == 5)) lines3.add(gd);
+                                                    if (lineLinkedToVertices.containsKey(gd) && m.position() < 2 && (t == 2 || t == 5)) lines3.add(gd);
                                                 }
                                             }
                                             {
                                                 Set<VertexManifestation> s4 = vertexLinkedToPositionInFile.get(fourth);
                                                 for (VertexManifestation m : s4) {
-                                                    GData gd = m.getGdata();
+                                                    GData gd = m.gdata();
                                                     int t = gd.type();
-                                                    if (lineLinkedToVertices.containsKey(gd) && m.getPosition() < 2 &&  (t == 2 || t == 5)) lines4.add(gd);
+                                                    if (lineLinkedToVertices.containsKey(gd) && m.position() < 2 &&  (t == 2 || t == 5)) lines4.add(gd);
                                                 }
                                             }
 
@@ -805,33 +805,33 @@ class VM04Rectifier extends VM03Adjacency {
                             {
                                 Set<VertexManifestation> s1 = vertexLinkedToPositionInFile.get(first);
                                 for (VertexManifestation m : s1) {
-                                    GData gd = m.getGdata();
+                                    GData gd = m.gdata();
                                     int t = gd.type();
-                                    if (lineLinkedToVertices.containsKey(gd) && m.getPosition() < 2 && (t == 2 || t == 5)) lines1.add(gd);
+                                    if (lineLinkedToVertices.containsKey(gd) && m.position() < 2 && (t == 2 || t == 5)) lines1.add(gd);
                                 }
                             }
                             {
                                 Set<VertexManifestation> s2 = vertexLinkedToPositionInFile.get(second);
                                 for (VertexManifestation m : s2) {
-                                    GData gd = m.getGdata();
+                                    GData gd = m.gdata();
                                     int t = gd.type();
-                                    if (lineLinkedToVertices.containsKey(gd) && m.getPosition() < 2 && (t == 2 || t == 5)) lines2.add(gd);
+                                    if (lineLinkedToVertices.containsKey(gd) && m.position() < 2 && (t == 2 || t == 5)) lines2.add(gd);
                                 }
                             }
                             {
                                 Set<VertexManifestation> s3 = vertexLinkedToPositionInFile.get(third);
                                 for (VertexManifestation m : s3) {
-                                    GData gd = m.getGdata();
+                                    GData gd = m.gdata();
                                     int t = gd.type();
-                                    if (lineLinkedToVertices.containsKey(gd) && m.getPosition() < 2 && (t == 2 || t == 5)) lines3.add(gd);
+                                    if (lineLinkedToVertices.containsKey(gd) && m.position() < 2 && (t == 2 || t == 5)) lines3.add(gd);
                                 }
                             }
                             {
                                 Set<VertexManifestation> s4 = vertexLinkedToPositionInFile.get(fourth);
                                 for (VertexManifestation m : s4) {
-                                    GData gd = m.getGdata();
+                                    GData gd = m.gdata();
                                     int t = gd.type();
-                                    if (lineLinkedToVertices.containsKey(gd) && m.getPosition() < 2 &&  (t == 2 || t == 5)) lines4.add(gd);
+                                    if (lineLinkedToVertices.containsKey(gd) && m.position() < 2 &&  (t == 2 || t == 5)) lines4.add(gd);
                                 }
                             }
 

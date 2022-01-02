@@ -153,7 +153,7 @@ public final class Polygon {
         for (VectorCSGd vertex : vertices) {
             newVertices.add(vertex.createClone());
         }
-        return new Polygon(df, newVertices, new GColourIndex(colour.getColour(), colour.getIndex()));
+        return new Polygon(df, newVertices, new GColourIndex(colour.colour(), colour.index()));
     }
 
     /**
@@ -186,7 +186,7 @@ public final class Polygon {
                     result.put(new GData3(v1, v2, v3, parent, c16, true), new IdAndPlane(plane, dID));
                 } else {
                     // Debug-only: result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(pseudoId % 16), true), new IdAndPlane(plane, colour.getIndex())); // only for test
-                    result.put(new GData3(v1, v2, v3, parent, tmpColour.getColour(), true), new IdAndPlane(plane, tmpColour.getIndex()));
+                    result.put(new GData3(v1, v2, v3, parent, tmpColour.colour(), true), new IdAndPlane(plane, tmpColour.index()));
                 }
             }
         }
@@ -238,7 +238,7 @@ public final class Polygon {
         GColourIndex tmpColour = null;
         if ((tmpColour = this.getColour()) != null) {
             GColour c2;
-            if ((c2 = tmpColour.getColour()) != null) {
+            if ((c2 = tmpColour.colour()) != null) {
                 if (c2.getColourNumber() == 16) {
                     result.setColour(new GColourIndex(c.createClone(), id));
                 } else {

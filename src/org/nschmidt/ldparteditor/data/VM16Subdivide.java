@@ -102,7 +102,7 @@ class VM16Subdivide extends VM15Flipper {
             Set<Vector3d> midEdge = new HashSet<>();
             boolean keepIt = false;
             for (VertexManifestation m : manis) {
-                GData gd = m.getGdata();
+                GData gd = m.gdata();
                 switch (gd.type()) {
                 case 0:
                     continue;
@@ -111,7 +111,7 @@ class VM16Subdivide extends VM15Flipper {
                     break;
                 case 3:
                 {
-                    int p = m.getPosition();
+                    int p = m.position();
                     Vertex[] verts = triangles.get(gd);
                     Vector3d vt = new Vector3d(v);
                     midEdge.add(Vector3d.add(vt, new Vector3d(verts[(p + 1) % 3])));
@@ -120,7 +120,7 @@ class VM16Subdivide extends VM15Flipper {
                 break;
                 case 4:
                 {
-                    int p = m.getPosition();
+                    int p = m.position();
                     Vertex[] verts = quads.get(gd);
                     Vector3d vt = new Vector3d(v);
                     midEdge.add(Vector3d.add(vt, new Vector3d(verts[(p + 1) % 4])));
@@ -349,7 +349,7 @@ class VM16Subdivide extends VM15Flipper {
             Set<Vector3d> midEdge = new HashSet<>();
             boolean keepIt = false;
             for (VertexManifestation m : manis) {
-                GData gd = m.getGdata();
+                GData gd = m.gdata();
                 switch (gd.type()) {
                 case 0:
                     continue;
@@ -358,7 +358,7 @@ class VM16Subdivide extends VM15Flipper {
                     break;
                 case 3:
                 {
-                    int p = m.getPosition();
+                    int p = m.position();
                     Vertex[] verts = triangles.get(gd);
                     midEdge.add(new Vector3d(verts[(p + 1) % 3]));
                     midEdge.add(new Vector3d(verts[(p + 2) % 3]));
@@ -366,7 +366,7 @@ class VM16Subdivide extends VM15Flipper {
                 break;
                 case 4:
                 {
-                    int p = m.getPosition();
+                    int p = m.position();
                     Vertex[] verts = quads.get(gd);
                     midEdge.add(new Vector3d(verts[(p + 1) % 4]));
                     midEdge.add(new Vector3d(verts[(p + 3) % 4]));

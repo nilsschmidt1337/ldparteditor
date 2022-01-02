@@ -148,16 +148,16 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     if (occurences == null)
                         continue;
                     for (VertexManifestation vm : occurences) {
-                        GData g = vm.getGdata();
+                        GData g = vm.gdata();
                         int val = 1;
                         int type = g.type();
                         if (occurMap.containsKey(g)) {
                             val = occurMap.get(g);
-                            if (type != 5 || vm.getPosition() < 2) {
+                            if (type != 5 || vm.position() < 2) {
                                 val++;
                                 occurMap.put(g, val);
                             }
-                        } else if (type != 5 || vm.getPosition() < 2) {
+                        } else if (type != 5 || vm.position() < 2) {
                             occurMap.put(g, val);
                         }
                         switch (type) {

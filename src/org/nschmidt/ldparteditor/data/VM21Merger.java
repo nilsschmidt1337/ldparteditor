@@ -111,7 +111,7 @@ public class VM21Merger extends VM20Manipulator {
                 final Set<VertexManifestation> emptySet = new HashSet<>();
                 for (Vertex v : originVerts) {
                     for (VertexManifestation mani : vertexLinkedToPositionInFile.getOrDefault(v, emptySet)) {
-                        GData gd = mani.getGdata();
+                        GData gd = mani.gdata();
                         switch (gd.type()) {
                         case 2:
                             selectedLines.add((GData2) gd);

@@ -87,7 +87,7 @@ final class Node {
             while (!st.isEmpty() && it < 10000) {
                 it++;
                 NodePolygon np = st.pop();
-                List<NodePolygon> npr = np.getNode().build(np.getPolygons());
+                List<NodePolygon> npr = np.node().build(np.polygons());
                 for (NodePolygon np2 : npr) {
                     st.push(np2);
                 }

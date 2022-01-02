@@ -304,7 +304,7 @@ class VM02Add extends VM01SelectHelper {
                     lineLinkedToVertices.put(gdata, Collections.newSetFromMap(new ThreadsafeHashMap<>()));
                 }
 
-                lineLinkedToVertices.get(gdata).add(new VertexInfo(vArray[i], vdArray[i].getPosition(), gdata));
+                lineLinkedToVertices.get(gdata).add(new VertexInfo(vArray[i], vdArray[i].position(), gdata));
             }
         }
         getManifestationLock().unlock();
@@ -340,10 +340,10 @@ class VM02Add extends VM01SelectHelper {
             Set<GData> grefs1 = new HashSet<>();
             Set<GData> grefs2 = new HashSet<>();
             for (VertexManifestation vm : refs1) {
-                grefs1.add(vm.getGdata());
+                grefs1.add(vm.gdata());
             }
             for (VertexManifestation vm : refs2) {
-                grefs2.add(vm.getGdata());
+                grefs2.add(vm.gdata());
             }
             grefs1.retainAll(grefs2);
             for (GData gData : grefs1) {
@@ -392,13 +392,13 @@ class VM02Add extends VM01SelectHelper {
         if (refs3 == null)
             refs3 = new HashSet<>();
         for (VertexManifestation vm : refs1) {
-            grefs1.add(vm.getGdata());
+            grefs1.add(vm.gdata());
         }
         for (VertexManifestation vm : refs2) {
-            grefs2.add(vm.getGdata());
+            grefs2.add(vm.gdata());
         }
         for (VertexManifestation vm : refs3) {
-            grefs3.add(vm.getGdata());
+            grefs3.add(vm.gdata());
         }
         grefs1.retainAll(grefs2);
         grefs1.retainAll(grefs3);
@@ -495,16 +495,16 @@ class VM02Add extends VM01SelectHelper {
         if (refs4 == null)
             refs4 = new HashSet<>();
         for (VertexManifestation vm : refs1) {
-            grefs1.add(vm.getGdata());
+            grefs1.add(vm.gdata());
         }
         for (VertexManifestation vm : refs2) {
-            grefs2.add(vm.getGdata());
+            grefs2.add(vm.gdata());
         }
         for (VertexManifestation vm : refs3) {
-            grefs3.add(vm.getGdata());
+            grefs3.add(vm.gdata());
         }
         for (VertexManifestation vm : refs4) {
-            grefs4.add(vm.getGdata());
+            grefs4.add(vm.gdata());
         }
         grefs1.retainAll(grefs2);
         grefs1.retainAll(grefs3);
@@ -731,10 +731,10 @@ class VM02Add extends VM01SelectHelper {
         if (refs2 == null)
             refs2 = new HashSet<>();
         for (VertexManifestation vm : refs1) {
-            grefs1.add(vm.getGdata());
+            grefs1.add(vm.gdata());
         }
         for (VertexManifestation vm : refs2) {
-            grefs2.add(vm.getGdata());
+            grefs2.add(vm.gdata());
         }
         grefs1.retainAll(grefs2);
         for (GData gData : grefs1) {

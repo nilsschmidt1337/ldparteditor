@@ -614,7 +614,7 @@ class VM01Select extends VM00Snapshot {
             Set<VertexManifestation> manifestations = entry.getValue();
             int vd = 0;
             for (VertexManifestation vm : manifestations) {
-                if (vm.getGdata().type() == 0) {
+                if (vm.gdata().type() == 0) {
                     vd++;
                 } else {
                     break;

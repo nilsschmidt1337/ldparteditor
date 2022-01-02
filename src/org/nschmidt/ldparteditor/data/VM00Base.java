@@ -206,7 +206,7 @@ class VM00Base {
         if (manis != null) {
             pureControlPoint = true;
             for (VertexManifestation m : manis) {
-                if (m.getPosition() < 2 || m.getGdata().type() != 5) {
+                if (m.position() < 2 || m.gdata().type() != 5) {
                     pureControlPoint = false;
                     break;
                 }
@@ -1019,7 +1019,7 @@ class VM00Base {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
 
         for (VertexManifestation mani : manis) {
-            GData oldData = mani.getGdata();
+            GData oldData = mani.gdata();
             if (!lineLinkedToVertices.containsKey(oldData))
                 continue;
             GData newData = null;
@@ -1040,7 +1040,7 @@ class VM00Base {
                 if (!moveAdjacentData && !selectedLines.contains(oldLin))
                     continue;
                 GData2 newLin = null;
-                switch (mani.getPosition()) {
+                switch (mani.position()) {
                 case 0:
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, newVertex.xp, newVertex.yp, newVertex.zp, oldLin.x2p, oldLin.y2p, oldLin.z2p, oldLin.parent,
                             linkedDatFile, oldLin.isLine);
@@ -1050,7 +1050,7 @@ class VM00Base {
                             linkedDatFile, oldLin.isLine);
                     break;
                 default:
-                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.position()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
                 newData = newLin;
@@ -1062,7 +1062,7 @@ class VM00Base {
                 if (!moveAdjacentData && !selectedTriangles.contains(oldTri))
                     continue;
                 GData3 newTri = null;
-                switch (mani.getPosition()) {
+                switch (mani.position()) {
                 case 0:
                     newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, newVertex, new Vertex(oldTri.x2p, oldTri.y2p, oldTri.z2p),
                             new Vertex(oldTri.x3p, oldTri.y3p, oldTri.z3p), oldTri.parent, linkedDatFile, oldTri.isTriangle);
@@ -1076,7 +1076,7 @@ class VM00Base {
                             newVertex, oldTri.parent, linkedDatFile, oldTri.isTriangle);
                     break;
                 default:
-                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.position()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
                 newData = newTri;
@@ -1088,7 +1088,7 @@ class VM00Base {
                 if (!moveAdjacentData && !selectedQuads.contains(oldQuad))
                     continue;
                 GData4 newQuad = null;
-                switch (mani.getPosition()) {
+                switch (mani.position()) {
                 case 0:
                     newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, newVertex, new Vertex(oldQuad.x2p, oldQuad.y2p, oldQuad.z2p), new Vertex(oldQuad.x3p,
                             oldQuad.y3p, oldQuad.z3p), new Vertex(oldQuad.x4p, oldQuad.y4p, oldQuad.z4p), oldQuad.parent, linkedDatFile);
@@ -1106,7 +1106,7 @@ class VM00Base {
                             oldQuad.z2p), new Vertex(oldQuad.x3p, oldQuad.y3p, oldQuad.z3p), newVertex, oldQuad.parent, linkedDatFile);
                     break;
                 default:
-                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.position()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
                 newData = newQuad;
@@ -1118,7 +1118,7 @@ class VM00Base {
                 if (!moveAdjacentData && !selectedCondlines.contains(oldCLin))
                     continue;
                 GData5 newCLin = null;
-                switch (mani.getPosition()) {
+                switch (mani.position()) {
                 case 0:
                     newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, newVertex, new Vertex(oldCLin.x2p, oldCLin.y2p, oldCLin.z2p), new Vertex(oldCLin.x3p,
                             oldCLin.y3p, oldCLin.z3p), new Vertex(oldCLin.x4p, oldCLin.y4p, oldCLin.z4p), oldCLin.parent, linkedDatFile);
@@ -1136,7 +1136,7 @@ class VM00Base {
                             oldCLin.z2p), new Vertex(oldCLin.x3p, oldCLin.y3p, oldCLin.z3p), newVertex, oldCLin.parent, linkedDatFile);
                     break;
                 default:
-                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.position()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
                 newData = newCLin;
@@ -1183,7 +1183,7 @@ class VM00Base {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
 
         for (VertexManifestation mani : manis) {
-            GData oldData = mani.getGdata();
+            GData oldData = mani.gdata();
             if (!lineLinkedToVertices.containsKey(oldData))
                 continue;
             GData newData = null;
@@ -1204,7 +1204,7 @@ class VM00Base {
                 if (!moveAdjacentData && !selectedLines.contains(oldLin))
                     continue;
                 GData2 newLin = null;
-                switch (mani.getPosition()) {
+                switch (mani.position()) {
                 case 0:
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, newVertex.xp, newVertex.yp, newVertex.zp, oldLin.x2p, oldLin.y2p, oldLin.z2p, oldLin.parent,
                             linkedDatFile, oldLin.isLine);
@@ -1214,7 +1214,7 @@ class VM00Base {
                             linkedDatFile, oldLin.isLine);
                     break;
                 default:
-                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.position()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
                 newData = newLin;
@@ -1226,7 +1226,7 @@ class VM00Base {
                 if (!moveAdjacentData && !selectedTriangles.contains(oldTri))
                     continue;
                 GData3 newTri = null;
-                switch (mani.getPosition()) {
+                switch (mani.position()) {
                 case 0:
                     newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, newVertex, new Vertex(oldTri.x2p, oldTri.y2p, oldTri.z2p),
                             new Vertex(oldTri.x3p, oldTri.y3p, oldTri.z3p), oldTri.parent, linkedDatFile, oldTri.isTriangle);
@@ -1240,7 +1240,7 @@ class VM00Base {
                             newVertex, oldTri.parent, linkedDatFile, oldTri.isTriangle);
                     break;
                 default:
-                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.position()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
                 newData = newTri;
@@ -1252,7 +1252,7 @@ class VM00Base {
                 if (!moveAdjacentData && !selectedQuads.contains(oldQuad))
                     continue;
                 GData4 newQuad = null;
-                switch (mani.getPosition()) {
+                switch (mani.position()) {
                 case 0:
                     newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, newVertex, new Vertex(oldQuad.x2p, oldQuad.y2p, oldQuad.z2p), new Vertex(oldQuad.x3p,
                             oldQuad.y3p, oldQuad.z3p), new Vertex(oldQuad.x4p, oldQuad.y4p, oldQuad.z4p), oldQuad.parent, linkedDatFile);
@@ -1270,7 +1270,7 @@ class VM00Base {
                             oldQuad.z2p), new Vertex(oldQuad.x3p, oldQuad.y3p, oldQuad.z3p), newVertex, oldQuad.parent, linkedDatFile);
                     break;
                 default:
-                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.position()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
                 newData = newQuad;
@@ -1282,7 +1282,7 @@ class VM00Base {
                 if (!moveAdjacentData && !selectedCondlines.contains(oldCLin))
                     continue;
                 GData5 newCLin = null;
-                switch (mani.getPosition()) {
+                switch (mani.position()) {
                 case 0:
                     newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, newVertex, new Vertex(oldCLin.x2p, oldCLin.y2p, oldCLin.z2p), new Vertex(oldCLin.x3p,
                             oldCLin.y3p, oldCLin.z3p), new Vertex(oldCLin.x4p, oldCLin.y4p, oldCLin.z4p), oldCLin.parent, linkedDatFile);
@@ -1300,7 +1300,7 @@ class VM00Base {
                             oldCLin.z2p), new Vertex(oldCLin.x3p, oldCLin.y3p, oldCLin.z3p), newVertex, oldCLin.parent, linkedDatFile);
                     break;
                 default:
-                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.position()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
                 newData = newCLin;
@@ -1368,7 +1368,7 @@ class VM00Base {
         Vector4f result = new Vector4f(0f, 0f, 0f, 0f);
         Set<VertexManifestation> linked = vertexLinkedToPositionInFile.get(min);
         for (VertexManifestation m : linked) {
-            GData g = m.getGdata();
+            GData g = m.gdata();
             Vector3f n = null;
             switch (g.type()) {
             case 3:
@@ -1499,7 +1499,7 @@ class VM00Base {
                         continue;
                     boolean isPureSubfileVertex = true;
                     for (VertexManifestation vm : occurences) {
-                        GData g = vm.getGdata();
+                        GData g = vm.gdata();
                         int val = 1;
                         if (occurMap.containsKey(g)) {
                             val = occurMap.get(g);
@@ -1641,7 +1641,7 @@ class VM00Base {
                         continue;
                     Set<VertexManifestation> occurences = new HashSet<>(tmp);
                     for (VertexManifestation vm : occurences) {
-                        GData g = vm.getGdata();
+                        GData g = vm.gdata();
                         if (lineLinkedToVertices.containsKey(g)) {
                             dpl.removeByValue(g);
                             g.getBefore().setNext(g.getNext());

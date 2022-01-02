@@ -586,7 +586,7 @@ class VM10Selector extends VM09WindingChange {
                     for (Vertex v : touchingVertices) {
                         Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
                         for (VertexManifestation mani : manis) {
-                            GData g = mani.getGdata();
+                            GData g = mani.gdata();
                             switch (g.type()) {
                             case 2:
                                 if (!addedSelectedLines.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && isEdgeAdjacent(ss, g, addedSelectedLines, addedSelectedTriangles, addedSelectedQuads, addedSelectedCondlines, newSelectedLines, newSelectedTriangles, newSelectedQuads, newSelectedCondlines, adjaencyByPrecision)) {

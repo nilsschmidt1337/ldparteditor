@@ -93,7 +93,7 @@ public final class VertexManager extends VM99Clipboard {
                             if (manis != null) {
                                 pureControlPoint = true;
                                 for (VertexManifestation m : manis) {
-                                    if (m.getPosition() < 2 || m.getGdata().type() != 5) {
+                                    if (m.position() < 2 || m.gdata().type() != 5) {
                                         pureControlPoint = false;
                                         break;
                                     }
@@ -112,7 +112,7 @@ public final class VertexManager extends VM99Clipboard {
                         if (manis != null) {
                             pureControlPoint = true;
                             for (VertexManifestation m : manis) {
-                                if (m.getPosition() < 2  || m.getGdata().type() != 5) {
+                                if (m.position() < 2  || m.gdata().type() != 5) {
                                     pureControlPoint = false;
                                     break;
                                 }
@@ -237,7 +237,7 @@ public final class VertexManager extends VM99Clipboard {
                 Set<VertexManifestation> vms = vertexLinkedToPositionInFile.get(vertex);
                 if (vms == null) continue;
                 for (VertexManifestation m : vms) {
-                    GData gd = m.getGdata();
+                    GData gd = m.gdata();
                     if (alreadyMoved.contains(gd)) continue;
                     alreadyMoved.add(gd);
                     if (selectedData.contains(gd)) {
