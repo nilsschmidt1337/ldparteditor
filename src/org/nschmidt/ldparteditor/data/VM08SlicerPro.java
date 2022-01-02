@@ -272,10 +272,7 @@ class VM08SlicerPro extends VM07PathTruder {
                                                             av.get(2).x, av.get(2).y, av.get(2).z,
                                                             View.DUMMY_REFERENCE, linkedDatFile, true));
                                                     break;
-                                                case 4:
-                                                case 5:
-                                                case 6:
-                                                case 7:
+                                                case 4, 5, 6, 7:
                                                     newTriangles.addAll(MathHelper.triangulateNPoints(CN, R, G, B, A, pointsToTriangulate, av, View.DUMMY_REFERENCE, linkedDatFile));
                                                     break;
                                                 default:
@@ -663,16 +660,11 @@ class VM08SlicerPro extends VM07PathTruder {
 
                 final int size = allVertices.size();
                 switch (size) {
-                case 0: // Fall through
-                case 1:
-                case 2:
+                case 0, 1, 2:
                     return null;
                 case 3: // Triangle
                     break;
-                case 4: // Four corners or more (up to 7)
-                case 5:
-                case 6:
-                case 7:
+                case 4, 5, 6, 7: // Four corners or more (up to 7)
                 {
                     List<Vector3r> rv = new ArrayList<>();
                     rv.addAll(convexHull(allVertices));

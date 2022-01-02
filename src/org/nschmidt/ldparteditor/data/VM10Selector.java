@@ -243,8 +243,7 @@ class VM10Selector extends VM09WindingChange {
             }
             break;
         }
-        case SelectorSettings.TOUCHING:
-        case SelectorSettings.CONNECTED:
+        case SelectorSettings.TOUCHING, SelectorSettings.CONNECTED:
 
             selectedVertices.clear();
 

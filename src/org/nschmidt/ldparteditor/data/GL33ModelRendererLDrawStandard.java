@@ -1454,12 +1454,10 @@ public class GL33ModelRendererLDrawStandard {
                     }
                 } else {
                     switch (((GDataBFC) gd).type) {
-                    case CCW:
-                    case CCW_CLIP:
+                    case CCW, CCW_CLIP:
                         localWinding = BFC.CCW;
                         continue;
-                    case CW:
-                    case CW_CLIP:
+                    case CW, CW_CLIP:
                         localWinding = BFC.CW;
                         continue;
                     case INVERTNEXT:

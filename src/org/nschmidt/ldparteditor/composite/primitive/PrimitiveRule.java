@@ -64,10 +64,7 @@ class PrimitiveRule {
             return p.getName().endsWith(criteria);
         case FILENAME_MATCHES:
             return pattern.matcher(p.getName()).matches();
-        case FILENAME_ORDER_BY_FRACTION:
-        case FILENAME_ORDER_BY_ALPHABET:
-        case FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS:
-        case FILENAME_ORDER_BY_LASTNUMBER:
+        case FILENAME_ORDER_BY_FRACTION, FILENAME_ORDER_BY_ALPHABET, FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS, FILENAME_ORDER_BY_LASTNUMBER:
             return true;
         case FILENAME_STARTS_WITH:
             return p.getName().startsWith(criteria);

@@ -339,10 +339,7 @@ public class CompositeTab extends CompositeTabDesign {
                             }
                         }
                         break;
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
+                    case 2, 3, 4, 5:
                         int index2 = StringHelper.getIndexFromWhitespaces(oldLine, tabState.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
                         if (index2 > 1) {
                             if (type > 3 && index2 > 10) {
@@ -450,6 +447,8 @@ public class CompositeTab extends CompositeTabDesign {
                                 }
                             }
                         }
+                        
+                        break;
                     default:
                         break;
                     }
@@ -514,10 +513,7 @@ public class CompositeTab extends CompositeTabDesign {
                                     NLogger.debug(getClass(), "Vertex II"); //$NON-NLS-1$
                                 }
                                 break;
-                            case 2:
-                            case 3:
-                            case 4:
-                            case 5:
+                            case 2, 3, 4, 5:
                                 int index2;
                                 index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
                                 if (index2 > 0) {
@@ -543,6 +539,8 @@ public class CompositeTab extends CompositeTabDesign {
                                         foundValidVertex = true;
                                     }
                                 }
+                                
+                                break;
                             default:
                                 break;
                             }
@@ -576,11 +574,9 @@ public class CompositeTab extends CompositeTabDesign {
                                             foundVertexMetacommand = true;
                                             NLogger.debug(getClass(), "Vertex III"); //$NON-NLS-1$
                                         }
+                                        
                                         break;
-                                    case 2:
-                                    case 3:
-                                    case 4:
-                                    case 5:
+                                    case 2, 3, 4, 5:
                                         int index2;
                                         index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
                                         if (index2 > 1) {
@@ -606,6 +602,8 @@ public class CompositeTab extends CompositeTabDesign {
                                                 foundValidVertex = true;
                                             }
                                         }
+                                        
+                                        break;
                                     default:
                                         break;
                                     }
@@ -640,10 +638,7 @@ public class CompositeTab extends CompositeTabDesign {
                                                     NLogger.debug(getClass(), "Vertex IV"); //$NON-NLS-1$
                                                 }
                                                 break;
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
+                                            case 2, 3, 4, 5:
                                                 int index2;
                                                 index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
                                                 if (index2 > 1) {
@@ -669,6 +664,8 @@ public class CompositeTab extends CompositeTabDesign {
                                                         foundValidVertex = true;
                                                     }
                                                 }
+                                                
+                                                break;
                                             default:
                                                 break;
                                             }

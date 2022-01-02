@@ -414,8 +414,7 @@ class VM01Select extends VM00Snapshot {
                 SortedSet<Vertex> nv = new TreeSet<>();
 
                 switch (selectedLine.type()) {
-                case 5:
-                case 4:
+                case 5, 4:
                     nv.add(v4);
                 case 3:
                     nv.add(v3);
@@ -776,11 +775,7 @@ class VM01Select extends VM00Snapshot {
             return false;
         }
         switch (g.type()) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
+        case 1, 2, 3, 4, 5:
             return true;
         default:
             return false;

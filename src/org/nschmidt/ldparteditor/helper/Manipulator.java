@@ -486,24 +486,15 @@ public class Manipulator {
         GColour resultColour = manipulatorStatusHelper(r, g, b, type, c3d, zoom);
         if (Colour.manipulatorSelectedColourR == resultColour.getR() && Colour.manipulatorSelectedColourG == resultColour.getG() && Colour.manipulatorSelectedColourB == resultColour.getB()) {
             switch (Editor3DWindow.getWindow().getWorkingLayer()) {
-            case NONE:
-            case TEMP_X:
-            case TEMP_Y:
-            case TEMP_Z:
+            case NONE, TEMP_X, TEMP_Y, TEMP_Z:
                 switch (type) {
-                case X_TRANSLATE:
-                case X_SCALE:
-                case X_ROTATE:
+                case X_TRANSLATE, X_SCALE, X_ROTATE:
                     Editor3DWindow.getWindow().setWorkingLayer(ManipulatorAxisMode.TEMP_X);
                     break;
-                case Y_TRANSLATE:
-                case Y_SCALE:
-                case Y_ROTATE:
+                case Y_TRANSLATE, Y_SCALE, Y_ROTATE:
                     Editor3DWindow.getWindow().setWorkingLayer(ManipulatorAxisMode.TEMP_Y);
                     break;
-                case Z_TRANSLATE:
-                case Z_SCALE:
-                case Z_ROTATE:
+                case Z_TRANSLATE, Z_SCALE, Z_ROTATE:
                     Editor3DWindow.getWindow().setWorkingLayer(ManipulatorAxisMode.TEMP_Z);
                     break;
                 default:
@@ -516,63 +507,42 @@ public class Manipulator {
         switch (Editor3DWindow.getWindow().getWorkingLayer()) {
         case X:
             switch (type) {
-            case X_TRANSLATE:
-            case X_SCALE:
-            case X_ROTATE:
+            case X_TRANSLATE, X_SCALE, X_ROTATE:
                 return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
         case Y:
             switch (type) {
-            case Y_TRANSLATE:
-            case Y_SCALE:
-            case Y_ROTATE:
+            case Y_TRANSLATE, Y_SCALE, Y_ROTATE:
                 return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
         case Z:
             switch (type) {
-            case Z_TRANSLATE:
-            case Z_SCALE:
-            case Z_ROTATE:
+            case Z_TRANSLATE, Z_SCALE, Z_ROTATE:
                 return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
         case XY:
             switch (type) {
-            case X_TRANSLATE:
-            case X_SCALE:
-            case X_ROTATE:
-            case Y_TRANSLATE:
-            case Y_SCALE:
-            case Y_ROTATE:
+            case X_TRANSLATE, X_SCALE, X_ROTATE, Y_TRANSLATE, Y_SCALE, Y_ROTATE:
                 return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
         case XZ:
             switch (type) {
-            case X_TRANSLATE:
-            case X_SCALE:
-            case X_ROTATE:
-            case Z_TRANSLATE:
-            case Z_SCALE:
-            case Z_ROTATE:
+            case X_TRANSLATE, X_SCALE, X_ROTATE, Z_TRANSLATE, Z_SCALE, Z_ROTATE:
                 return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
             break;
         case YZ:
             switch (type) {
-            case Y_TRANSLATE:
-            case Y_SCALE:
-            case Y_ROTATE:
-            case Z_TRANSLATE:
-            case Z_SCALE:
-            case Z_ROTATE:
+            case Y_TRANSLATE, Y_SCALE, Y_ROTATE, Z_TRANSLATE, Z_SCALE, Z_ROTATE:
                 return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
             default:
             }
@@ -609,10 +579,7 @@ public class Manipulator {
             break;
         }
         switch (type) {
-        case X_ROTATE:
-        case Y_ROTATE:
-        case Z_ROTATE:
-        case V_ROTATE:
+        case X_ROTATE, Y_ROTATE, Z_ROTATE, V_ROTATE:
             // Take the axis
             Vector4f vector = null;
             switch (type) {
@@ -808,16 +775,13 @@ public class Manipulator {
             }
             // Take the axis
             switch (type) {
-            case X_TRANSLATE:
-            case X_SCALE:
+            case X_TRANSLATE, X_SCALE:
                 vector = new Vector4f(xAxis);
                 break;
-            case Y_TRANSLATE:
-            case Y_SCALE:
+            case Y_TRANSLATE, Y_SCALE:
                 vector = new Vector4f(yAxis);
                 break;
-            case Z_TRANSLATE:
-            case Z_SCALE:
+            case Z_TRANSLATE, Z_SCALE:
                 vector = new Vector4f(zAxis);
                 break;
             case X_ROTATE_ARROW:
@@ -857,10 +821,7 @@ public class Manipulator {
 
             final boolean rotate;
             switch (type) {
-            case X_ROTATE_ARROW:
-            case Y_ROTATE_ARROW:
-            case Z_ROTATE_ARROW:
-            case V_ROTATE_ARROW:
+            case X_ROTATE_ARROW, Y_ROTATE_ARROW, Z_ROTATE_ARROW, V_ROTATE_ARROW:
                 rotate = true;
                 break;
             default:
@@ -2058,23 +2019,17 @@ public class Manipulator {
         initialScaleOld = initialScaleNew;
         resetTranslation();
         switch (layer) {
-        case X:
-        case XY:
-        case TEMP_X:
+        case X, XY, TEMP_X:
             if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) xTranslate = true;
             if (action == WorkingMode.ROTATE) xRotate = true;
             if (action == WorkingMode.SCALE) xScale = true;
             if (layer != ManipulatorAxisMode.XY) break;
-        case Y:
-        case YZ:
-        case TEMP_Y:
+        case Y, YZ, TEMP_Y:
             if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) yTranslate = true;
             if (action == WorkingMode.ROTATE) yRotate = true;
             if (action == WorkingMode.SCALE) yScale = true;
             if (layer != ManipulatorAxisMode.YZ) break;
-        case Z:
-        case XZ:
-        case TEMP_Z:
+        case Z, XZ, TEMP_Z:
             if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) zTranslate = true;
             if (action == WorkingMode.ROTATE) zRotate = true;
             if (action == WorkingMode.SCALE) zScale = true;

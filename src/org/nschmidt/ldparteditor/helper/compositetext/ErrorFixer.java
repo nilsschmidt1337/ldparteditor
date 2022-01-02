@@ -53,9 +53,7 @@ enum ErrorFixer {
         case 1: // Duplicated line
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             break;
-        case 10: // INVERTNEXT (Flat subfile)
-        case 11:
-        case 12:
+        case 10, 11, 12: // INVERTNEXT (Flat subfile)
         {
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             GData1 subfileToFlip = null;

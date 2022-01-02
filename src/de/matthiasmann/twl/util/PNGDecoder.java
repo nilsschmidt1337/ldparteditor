@@ -220,8 +220,7 @@ public class PNGDecoder {
                     break;
                 case COLOR_GREYSCALE:
                     switch (fmt) {
-                    case LUMINANCE:
-                    case ALPHA:
+                    case LUMINANCE, ALPHA:
                         copy(buffer, curLine);
                         break;
                     default:
@@ -595,10 +594,7 @@ public class PNGDecoder {
             break;
         case COLOR_INDEXED:
             switch (bitdepth) {
-            case 8:
-            case 4:
-            case 2:
-            case 1:
+            case 1, 2, 4 ,8:
                 bytesPerPixel = 1;
                 break;
             default:

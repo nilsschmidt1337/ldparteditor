@@ -405,16 +405,14 @@ public enum ReferenceParser {
                 for (int a2 = 0; a2 < middle.length; a2++) {
                     String s2 = middle[a2];
                     switch (a2) {
-                    case 0:
-                    case 1:
+                    case 0, 1:
                         if (shortFilename.startsWith("S" + File.separator) || shortFilename2.startsWith("s" + File.separator)) { //$NON-NLS-1$ //$NON-NLS-2$
                             dt = DatType.SUBPART;
                         } else {
                             dt = DatType.PART;
                         }
                         break;
-                    case 2:
-                    case 3:
+                    case 2, 3:
                         if (shortFilename.startsWith("48")) { //$NON-NLS-1$
                             dt = DatType.PRIMITIVE48;
                         } else if (shortFilename.startsWith("8")) { //$NON-NLS-1$
@@ -446,16 +444,14 @@ public enum ReferenceParser {
                     for (int a2 = 0; a2 < middle.length; a2++) {
                         String s2 = middle[a2];
                         switch (a2) {
-                        case 0:
-                        case 1:
+                        case 0, 1:
                             if (shortFilename.startsWith("S" + File.separator) || shortFilename2.startsWith("s" + File.separator)) { //$NON-NLS-1$ //$NON-NLS-2$
                                 dt = DatType.SUBPART;
                             } else {
                                 dt = DatType.PART;
                             }
                             break;
-                        case 2:
-                        case 3:
+                        case 2, 3:
                             if (shortFilename.startsWith("48")) { //$NON-NLS-1$
                                 dt = DatType.PRIMITIVE48;
                             } else if (shortFilename.startsWith("8")) { //$NON-NLS-1$

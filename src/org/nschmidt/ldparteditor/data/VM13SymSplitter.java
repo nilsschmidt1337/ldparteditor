@@ -63,16 +63,13 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
             final BigDecimal a = new BigDecimal(100000000);
             final BigDecimal an = a.negate();
             switch (sp) {
-            case SymSplitterSettings.Z_PLUS:
-            case SymSplitterSettings.Z_MINUS:
+            case SymSplitterSettings.Z_PLUS, SymSplitterSettings.Z_MINUS:
                 splitPlane = new GData4(16, .5f, .5f, .5f, 1f, a, a, o, a, an, o, an, an, o, an, a, o, new Vector3d(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE), View.DUMMY_REFERENCE, linkedDatFile);
                 break;
-            case SymSplitterSettings.Y_PLUS:
-            case SymSplitterSettings.Y_MINUS:
+            case SymSplitterSettings.Y_PLUS, SymSplitterSettings.Y_MINUS:
                 splitPlane = new GData4(16, .5f, .5f, .5f, 1f, a, o, a, a, o, an, an, o, an, an, o, a, new Vector3d(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO), View.DUMMY_REFERENCE, linkedDatFile);
                 break;
-            case SymSplitterSettings.X_PLUS:
-            case SymSplitterSettings.X_MINUS:
+            case SymSplitterSettings.X_PLUS, SymSplitterSettings.X_MINUS:
                 splitPlane = new GData4(16, .5f, .5f, .5f, 1f, o, a, a, o, a, an, o, an, an, o, an, a, new Vector3d(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO), View.DUMMY_REFERENCE, linkedDatFile);
                 break;
             default:
@@ -246,20 +243,17 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
             clearSelection();
             for (Vertex v : allVertices) {
                 switch (sp) {
-                case SymSplitterSettings.Z_PLUS:
-                case SymSplitterSettings.Z_MINUS:
+                case SymSplitterSettings.Z_PLUS, SymSplitterSettings.Z_MINUS:
                     if (p.compareTo(v.zp.subtract(o).abs()) > 0) {
                         wasModified = changeVertexDirectFast(v, new Vertex(v.xp, v.yp, o), true) || wasModified;
                     }
                     break;
-                case SymSplitterSettings.Y_PLUS:
-                case SymSplitterSettings.Y_MINUS:
+                case SymSplitterSettings.Y_PLUS, SymSplitterSettings.Y_MINUS:
                     if (p.compareTo(v.yp.subtract(o).abs()) > 0) {
                         wasModified = changeVertexDirectFast(v, new Vertex(v.xp, o, v.zp), true) || wasModified;
                     }
                     break;
-                case SymSplitterSettings.X_PLUS:
-                case SymSplitterSettings.X_MINUS:
+                case SymSplitterSettings.X_PLUS, SymSplitterSettings.X_MINUS:
                     if (p.compareTo(v.xp.subtract(o).abs()) > 0) {
                         wasModified = changeVertexDirectFast(v, new Vertex(o, v.yp, v.zp), true) || wasModified;
                     }
@@ -556,8 +550,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                     }
 
                                     switch (sp) {
-                                    case SymSplitterSettings.Z_PLUS:
-                                    case SymSplitterSettings.Z_MINUS:
+                                    case SymSplitterSettings.Z_PLUS, SymSplitterSettings.Z_MINUS:
                                         for (int i = 0; i < verts.length - 1; i++) {
                                             int j = (i + 1) % verts.length;
                                             BigDecimal di = verts[i].zp.subtract(o);
@@ -568,8 +561,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                             }
                                         }
                                         break;
-                                    case SymSplitterSettings.Y_PLUS:
-                                    case SymSplitterSettings.Y_MINUS:
+                                    case SymSplitterSettings.Y_PLUS, SymSplitterSettings.Y_MINUS:
                                         for (int i = 0; i < verts.length - 1; i++) {
                                             int j = (i + 1) % verts.length;
                                             BigDecimal di = verts[i].yp.subtract(o);
@@ -580,8 +572,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                             }
                                         }
                                         break;
-                                    case SymSplitterSettings.X_PLUS:
-                                    case SymSplitterSettings.X_MINUS:
+                                    case SymSplitterSettings.X_PLUS, SymSplitterSettings.X_MINUS:
                                         for (int i = 0; i < verts.length - 1; i++) {
                                             int j = (i + 1) % verts.length;
                                             BigDecimal di = verts[i].xp.subtract(o);

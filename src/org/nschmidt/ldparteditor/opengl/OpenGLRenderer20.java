@@ -1406,8 +1406,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     circleWidth = (negDet ? -1f : 1f) * 0.0175f * mSize[4];
                     arcWidth = 0.004f * mSize[5];
                     break;
-                case 4:
-                case 5:
+                case 4, 5:
                     lineWidth = 4f * mSize[0];
                     cone_height = .030f * mSize[1];
                     cone_width = .008f * mSize[2];
@@ -1415,8 +1414,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     circleWidth = (negDet ? -1f : 1f) * 0.02f * mSize[4];
                     arcWidth = 0.004f * mSize[5];
                     break;
-                case -1:
-                case 0:
+                case -1, 0:
                 default:
                     lineWidth = 2f * mSize[0];
                     cone_height = .015f * mSize[1];
@@ -1805,8 +1803,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     final float cone_width;
                     final float line_width;
                     switch (IconSize.getIconsize()) {
-                    case 4:
-                    case 5:
+                    case 4, 5:
                         l = 1f;
                         ox = .1f;
                         oy = .11f;
@@ -1814,8 +1811,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         cone_width = .00008f;
                         line_width = 6f;
                         break;
-                    case 2:
-                    case 3:
+                    case 2, 3:
                         l = .75f;
                         ox = .075f;
                         oy = .085f;
@@ -1823,8 +1819,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         cone_width = .00006f;
                         line_width = 4f;
                         break;
-                    case 0:
-                    case 1:
+                    case 0, 1:
                     default:
                         l = .5f;
                         ox = .05f;

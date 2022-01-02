@@ -105,12 +105,7 @@ public class Primitive implements Comparable<Primitive> {
         GL11.glScalef(-zoom, zoom, zoom);
         for (PGData gd : graphicalData) {
             switch (gd.type()) {
-            case 0:
-            case 1:
-            case 3:
-            case 4:
-            case 6:
-            case 7:
+            case 0, 1, 3, 4, 6, 7:
                 gd.drawBFCprimitiveGL20(1);
                 break;
             default:
@@ -124,12 +119,7 @@ public class Primitive implements Comparable<Primitive> {
         GL11.glScalef(-zoom, zoom, zoom);
         for (PGData gd : graphicalData) {
             switch (gd.type()) {
-            case 0:
-            case 1:
-            case 2:
-            case 5:
-            case 6:
-            case 7:
+            case 0, 1, 2, 5, 6, 7:
                 gd.drawBFCprimitiveGL20(2);
                 break;
             default:
@@ -146,12 +136,7 @@ public class Primitive implements Comparable<Primitive> {
         stack.glScalef(-zoom, zoom, zoom);
         for (PGData gd : graphicalData) {
             switch (gd.type()) {
-            case 0:
-            case 1:
-            case 3:
-            case 4:
-            case 6:
-            case 7:
+            case 0, 1, 3, 4, 6, 7:
                 gd.drawBFCprimitiveGL33(stack, 1);
                 break;
             default:
@@ -165,12 +150,7 @@ public class Primitive implements Comparable<Primitive> {
         stack.glScalef(-zoom, zoom, zoom);
         for (PGData gd : graphicalData) {
             switch (gd.type()) {
-            case 0:
-            case 1:
-            case 2:
-            case 5:
-            case 6:
-            case 7:
+            case 0, 1, 2, 5, 6, 7:
                 gd.drawBFCprimitiveGL33(stack, 2);
                 break;
             default:

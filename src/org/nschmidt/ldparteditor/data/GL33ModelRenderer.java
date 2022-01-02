@@ -900,17 +900,13 @@ public class GL33ModelRenderer {
                             localSelectionLineSize += 14;
                             selectionLineVertexCount += 2;
                             break;
-                        case 3:
+                        case 3, 5:
                             localSelectionLineSize += 42;
                             selectionLineVertexCount += 6;
                             break;
                         case 4:
                             localSelectionLineSize += 56;
                             selectionLineVertexCount += 8;
-                            break;
-                        case 5:
-                            localSelectionLineSize += 42;
-                            selectionLineVertexCount += 6;
                             break;
                         default:
                             break;
@@ -960,12 +956,7 @@ public class GL33ModelRenderer {
                             switch (renderMode) {
                             case -1:
                                 continue;
-                            case 0:
-                            case 1:
-                            case 2:
-                            case 3:
-                            case 6:
-                            case 7:
+                            case 0, 1, 2, 3, 6, 7:
                                 localTriangleSize += 60;
                                 if (gd3.a < 1f) {
                                     transparentTriangleVertexCount += 6;
@@ -1007,12 +998,7 @@ public class GL33ModelRenderer {
                         switch (renderMode) {
                         case -1:
                             continue;
-                        case 0:
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 6:
-                        case 7:
+                        case 0, 1, 2, 3, 6, 7:
                             localTriangleSize += 120;
                             if (gd4.a < 1f) {
                                 transparentTriangleVertexCount += 12;
@@ -1410,8 +1396,7 @@ public class GL33ModelRenderer {
                                 }
                                 continue;
                             }
-                            case 2:
-                            case 6:
+                            case 2, 6:
                             {
                                 pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                 pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
@@ -1818,8 +1803,7 @@ public class GL33ModelRenderer {
                             }
                             continue;
                         }
-                        case 2:
-                        case 6:
+                        case 2, 6:
                         {
                             pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                             pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
@@ -2723,12 +2707,10 @@ public class GL33ModelRenderer {
                     }
                 } else {
                     switch (((GDataBFC) gd).type) {
-                    case CCW:
-                    case CCW_CLIP:
+                    case CCW, CCW_CLIP:
                         localWinding = BFC.CCW;
                         continue;
-                    case CW:
-                    case CW_CLIP:
+                    case CW, CW_CLIP:
                         localWinding = BFC.CW;
                         continue;
                     case INVERTNEXT:

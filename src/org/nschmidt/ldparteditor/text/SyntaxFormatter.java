@@ -428,13 +428,9 @@ public class SyntaxFormatter {
                             styles.add(metaStyleRange);
                             checkForProtractorAndDistanceCounter++;
                             break;
-                        case 5:
-                        case 11:
+                        case 5, 11:
                             checkForReplace = true;
-                        case 3:
-                        case 4:
-                        case 9:
-                        case 10:
+                        case 3, 4, 9, 10:
                             metaStyleRange.fontStyle = SWT.NORMAL;
                             metaStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                             styles.add(metaStyleRange);
@@ -442,8 +438,7 @@ public class SyntaxFormatter {
                             break;
                         case 8:
                             checkForReplace = true;
-                        case 6:
-                        case 7:
+                        case 6, 7:
                             metaStyleRange.fontStyle = SWT.NORMAL;
                             metaStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                             styles.add(metaStyleRange);
@@ -508,24 +503,16 @@ public class SyntaxFormatter {
                 case 1: // colour
                     segmentStyleRange.foreground = TextEditorColour.getLineColourAttrFont();
                     break;
-                case 2: // *fall through*
-                case 3:
-                case 4: // x,y,z offset
+                case 2, 3, 4: // x,y,z offset
                     segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
-                case 5: // *fall through*
-                case 6:
-                case 7: // 1st matrix row
+                case 5, 6, 7: // 1st matrix row
                     segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
-                case 8: // *fall through*
-                case 9:
-                case 10: // 2nd matrix row
+                case 8, 9, 10: // 2nd matrix row
                     segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
-                case 11: // *fall through*
-                case 12:
-                case 13: // 3rd matrix row
+                case 11, 12, 13: // 3rd matrix row
                     segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 default: // dat file reference
@@ -747,14 +734,10 @@ public class SyntaxFormatter {
                 case 1: // colour
                     segmentStyleRange.foreground = TextEditorColour.getLineColourAttrFont();
                     break;
-                case 2: // *fall through*
-                case 3:
-                case 4: // start vertex
+                case 2, 3, 4: // start vertex
                     segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
-                case 5: // *fall through*
-                case 6:
-                case 7: // end vertex
+                case 5, 6, 7: // end vertex
                     segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 default: // error
@@ -878,19 +861,13 @@ public class SyntaxFormatter {
                 case 1: // colour
                     segmentStyleRange.foreground = TextEditorColour.getLineColourAttrFont();
                     break;
-                case 2: // *fall through*
-                case 3:
-                case 4: // 1st vertex
+                case 2, 3, 4: // 1st vertex
                     segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
-                case 5: // *fall through*
-                case 6:
-                case 7: // 2nd vertex
+                case 5, 6, 7: // 2nd vertex
                     segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
-                case 8: // *fall through*
-                case 9:
-                case 10: // 3rd vertex
+                case 8, 9, 10: // 3rd vertex
                     segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
                 default: // error
@@ -1062,24 +1039,16 @@ public class SyntaxFormatter {
                 case 1: // colour
                     segmentStyleRange.foreground = TextEditorColour.getLineColourAttrFont();
                     break;
-                case 2: // *fall through*
-                case 3:
-                case 4: // 1st vertex
+                case 2, 3, 4: // 1st vertex
                     segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
-                case 5: // *fall through*
-                case 6:
-                case 7: // 2nd vertex
+                case 5, 6, 7: // 2nd vertex
                     segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
-                case 8: // *fall through*
-                case 9:
-                case 10: // 3rd vertex
+                case 8, 9, 10: // 3rd vertex
                     segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
-                case 11: // *fall through*
-                case 12:
-                case 13: // 4th vertex
+                case 11, 12, 13: // 4th vertex
                     segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 default: // error
@@ -1320,24 +1289,16 @@ public class SyntaxFormatter {
                 case 1: // colour
                     segmentStyleRange.foreground = TextEditorColour.getLineColourAttrFont();
                     break;
-                case 2: // *fall through*
-                case 3:
-                case 4: // start vertex
+                case 2, 3, 4: // start vertex
                     segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
-                case 5: // *fall through*
-                case 6:
-                case 7: // end vertex
+                case 5, 6, 7: // end vertex
                     segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
-                case 8: // *fall through*
-                case 9:
-                case 10: // control vertex I
+                case 8, 9, 10: // control vertex I
                     segmentStyleRange.foreground = TextEditorColour.getLineSecondaryFont();
                     break;
-                case 11: // *fall through*
-                case 12:
-                case 13: // control vertex II
+                case 11, 12, 13: // control vertex II
                     segmentStyleRange.foreground = TextEditorColour.getLinePrimaryFont();
                     break;
                 default: // error

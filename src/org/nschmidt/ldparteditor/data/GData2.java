@@ -237,8 +237,7 @@ public final class GData2 extends GData {
             return;
         }
         switch (c3d.getLineMode()) {
-        case 3:
-        case 4:
+        case 3, 4:
             if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 GL11.glEnable(GL11.GL_LIGHTING);
             return;
@@ -342,9 +341,7 @@ public final class GData2 extends GData {
             return;
         }
         switch (c3d.getLineMode()) {
-        case 3:
-        case 4:
-
+        case 3, 4:
             return;
         default:
             break;
@@ -490,8 +487,7 @@ public final class GData2 extends GData {
             if (!c3d.isDrawingSolidMaterials())
                 return;
             switch (c3d.getLineMode()) {
-            case 3:
-            case 4:
+            case 3, 4:
                 return;
             default:
                 break;

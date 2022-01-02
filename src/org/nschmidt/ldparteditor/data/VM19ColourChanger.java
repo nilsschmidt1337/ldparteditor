@@ -299,8 +299,7 @@ class VM19ColourChanger extends VM18LineConverter {
             }
             if (index > -1) {
                 switch (gData.type()) {
-                case 2:
-                case 5:
+                case 2, 5:
                     if (index == 24) {
                         r = Colour.lineColourR;
                         g = Colour.lineColourG;

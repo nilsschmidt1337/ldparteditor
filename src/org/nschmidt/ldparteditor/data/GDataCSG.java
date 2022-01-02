@@ -199,14 +199,7 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
-        case QUAD:
-        case CIRCLE:
-        case ELLIPSOID:
-        case CUBOID:
-        case CYLINDER:
-        case MESH:
-        case EXTRUDE:
-        case CONE:
+        case QUAD, CIRCLE, ELLIPSOID, CUBOID, CYLINDER, MESH, EXTRUDE, CONE:
             if (dataSegments.length == 17) {
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
                 GColour c = DatParser.validateColour(dataSegments[4], col16.getR(), col16.getG(), col16.getB(), 1f);
@@ -225,9 +218,7 @@ public final class GDataCSG extends GData {
             ref2 = null;
             ref3 = null;
             break;
-        case DIFFERENCE:
-        case INTERSECTION:
-        case UNION:
+        case DIFFERENCE, INTERSECTION, UNION:
             if (dataSegments.length == 6) {
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
                 ref2 = dataSegments[4] + "#>" + parent.shortName; //$NON-NLS-1$
@@ -404,14 +395,7 @@ public final class GDataCSG extends GData {
                 tmpRegisteredData.add(this);
                 if (ref1 != null) {
                     switch (type) {
-                    case QUAD:
-                    case CIRCLE:
-                    case ELLIPSOID:
-                    case CUBOID:
-                    case CYLINDER:
-                    case CONE:
-                    case MESH:
-                    case EXTRUDE:
+                    case QUAD, CIRCLE, ELLIPSOID, CUBOID, CYLINDER, CONE, MESH, EXTRUDE:
                         if (matrix != null) {
                             switch (type) {
                             case QUAD:

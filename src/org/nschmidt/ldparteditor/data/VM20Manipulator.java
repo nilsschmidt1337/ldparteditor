@@ -98,11 +98,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                 if (lineLinkedToVertices.containsKey(gd)) {
                     final int type = gd.type();
                     switch (type) {
-                    case 0:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
+                    case 0, 2, 3, 4, 5:
                         break;
                     default:
                         continue;

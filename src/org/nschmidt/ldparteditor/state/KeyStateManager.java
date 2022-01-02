@@ -811,10 +811,7 @@ public class KeyStateManager {
                     case MODE_XYZ:
                         win.setWorkingLayer(ManipulatorAxisMode.XYZ);
                         break;
-                    case TRANSFORM_UP:
-                    case TRANSFORM_UP_COPY:
-                    case TRANSFORM_RIGHT:
-                    case TRANSFORM_RIGHT_COPY:
+                    case TRANSFORM_UP, TRANSFORM_UP_COPY, TRANSFORM_RIGHT, TRANSFORM_RIGHT_COPY:
                         if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || TransformationModeToolItem.getWorkingAction() == WorkingMode.SELECT) break;
                         if (tmpCtrlPressed) {
                             MiscToggleToolItem.setMovingAdjacentData(false);
@@ -828,10 +825,7 @@ public class KeyStateManager {
                         c3d.getManipulator().resetTranslation();
                         c3d.getMouse().syncManipulator();
                         break;
-                    case TRANSFORM_DOWN:
-                    case TRANSFORM_DOWN_COPY:
-                    case TRANSFORM_LEFT:
-                    case TRANSFORM_LEFT_COPY:
+                    case TRANSFORM_DOWN, TRANSFORM_DOWN_COPY, TRANSFORM_LEFT, TRANSFORM_LEFT_COPY:
                         if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || TransformationModeToolItem.getWorkingAction() == WorkingMode.SELECT) break;
                         if (tmpCtrlPressed) {
                             MiscToggleToolItem.setMovingAdjacentData(false);

@@ -206,8 +206,7 @@ public class Vertex implements Comparable<Vertex> {
             float d1 = roundedX - o.roundedX;
             int c1 = Float.compare(Math.abs(d1), EPSILON);
             switch (c1) {
-            case 0:
-            case 1:
+            case 0, 1:
                 return d1 < 0f ? -1 : 1;
             default:
                 break;
@@ -217,8 +216,7 @@ public class Vertex implements Comparable<Vertex> {
             float d1 = roundedY - o.roundedY;
             int c1 = Float.compare(Math.abs(d1), EPSILON);
             switch (c1) {
-            case 0:
-            case 1:
+            case 0, 1:
                 return d1 < 0f ? -1 : 1;
             default:
                 break;
@@ -228,8 +226,7 @@ public class Vertex implements Comparable<Vertex> {
             float d1 = roundedZ - o.roundedZ;
             int c1 = Float.compare(Math.abs(d1), EPSILON);
             switch (c1) {
-            case 0:
-            case 1:
+            case 0, 1:
                 return d1 < 0f ? -1 : 1;
             default:
                 break;

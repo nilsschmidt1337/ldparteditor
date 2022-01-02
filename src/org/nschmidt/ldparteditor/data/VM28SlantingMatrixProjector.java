@@ -140,9 +140,7 @@ class VM28SlantingMatrixProjector extends VM27YTruder {
                     switch (axisSelectionMode) {
                     case 0: // X,Y,Z
                         return SlantingMatrixStatus.NO_SELECTION_THREE_AXIS;
-                    case 1: // X,Y
-                    case 2: // X,Z
-                    case 3: // Y,Z
+                    case 1 /* X,Y */, 2 /* X,Z */, 3 /* Y,Z */:
                         return SlantingMatrixStatus.NO_SELECTION_TWO_AXIS;
                     default:
                         return SlantingMatrixStatus.INIT;
@@ -242,8 +240,7 @@ class VM28SlantingMatrixProjector extends VM27YTruder {
         }
 
         switch (axisSelectionMode) {
-        case 0: // X,Y,Z (no adjustment) OK
-        case 1: // X,Y (no adjustment) OK
+        case 0, 1: // X,Y,Z (no adjustment) OK and X,Y (no adjustment) OK
             break;
         case 2: // X,Z (swap YZ) OK
             tmp = mz;

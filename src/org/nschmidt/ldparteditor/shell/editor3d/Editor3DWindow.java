@@ -717,9 +717,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             disableSelectionTab();
                             updatingSelectionTab = true;
                             switch (gdata.type()) {
-                            case 1:
-                            case 5:
-                            case 4:
+                            case 1, 5, 4:
                                 spnSelectionX4Ptr[0].setEnabled(true);
                                 spnSelectionY4Ptr[0].setEnabled(true);
                                 spnSelectionZ4Ptr[0].setEnabled(true);
@@ -897,9 +895,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             disableSelectionTab();
                             updatingSelectionTab = true;
                             switch (gdata.type()) {
-                            case 1:
-                            case 5:
-                            case 4:
+                            case 1, 4, 5:
                                 spnSelectionX4Ptr[0].setEnabled(true);
                                 spnSelectionY4Ptr[0].setEnabled(true);
                                 spnSelectionZ4Ptr[0].setEnabled(true);
@@ -3267,14 +3263,6 @@ public class Editor3DWindow extends Editor3DDesign {
 
             TreeItem ti;
             switch (type) {
-            case PART:
-            {
-                @SuppressWarnings("unchecked")
-                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPartsPtr[0].getData();
-                if (cachedReferences != null) cachedReferences.add(df);
-            }
-            ti = new TreeItem(this.treeItemProjectPartsPtr[0]);
-            break;
             case SUBPART:
             {
                 @SuppressWarnings("unchecked")
@@ -3307,6 +3295,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             ti = new TreeItem(this.treeItemProjectPrimitives8Ptr[0]);
             break;
+            case PART:
             default:
             {
                 @SuppressWarnings("unchecked")

@@ -70,8 +70,7 @@ public class Vector3dd extends Vector3d implements Comparable<Vector3dd> {
             BigDecimal d1 = x.subtract(o.x);
             int c1 = d1.abs().compareTo(EPSILON);
             switch (c1) {
-            case 0:
-            case 1:
+            case 0, 1:
                 return d1.compareTo(BigDecimal.ZERO) < 0 ? -1 : 1;
             default:
                 break;
@@ -81,8 +80,7 @@ public class Vector3dd extends Vector3d implements Comparable<Vector3dd> {
             BigDecimal d1 = y.subtract(o.y);
             int c1 = d1.abs().compareTo(EPSILON);
             switch (c1) {
-            case 0:
-            case 1:
+            case 0, 1:
                 return d1.compareTo(BigDecimal.ZERO) < 0 ? -1 : 1;
             default:
                 break;
@@ -92,8 +90,7 @@ public class Vector3dd extends Vector3d implements Comparable<Vector3dd> {
             BigDecimal d1 = z.subtract(o.z);
             int c1 = d1.abs().compareTo(EPSILON);
             switch (c1) {
-            case 0:
-            case 1:
+            case 0, 1:
                 return d1.compareTo(BigDecimal.ZERO) < 0 ? -1 : 1;
             default:
                 break;

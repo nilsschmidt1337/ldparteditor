@@ -1158,9 +1158,7 @@ public class CompositePrimitive extends Composite {
                     for (PrimitiveRule rule : rules) {
                         final Rule r = rule.getRule();
                         switch (r) {
-                        case FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS:
-                        case FILENAME_ORDER_BY_FRACTION:
-                        case FILENAME_ORDER_BY_LASTNUMBER:
+                        case FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS, FILENAME_ORDER_BY_FRACTION, FILENAME_ORDER_BY_LASTNUMBER:
                             hasSpecialOrder = true;
                             cat.sort(r);
                             break;
@@ -1192,11 +1190,7 @@ public class CompositePrimitive extends Composite {
         // Cache Access
         if ((result = cache.get(line)) != null) {
             switch (result.type()) {
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
+            case 2, 3, 4, 5, 6:
                 return new PGDataProxy(result);
             default:
                 break;

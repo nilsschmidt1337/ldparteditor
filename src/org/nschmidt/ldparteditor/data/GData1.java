@@ -1163,8 +1163,7 @@ public final class GData1 extends GData {
                     GData.accumClip++;
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (data2draw.type()) {
-                        case 1:
-                        case 5:
+                        case 1, 5:
                             data2draw.drawGL20WhileAddCondlines(c3d);
                             break;
                         default:
@@ -1176,8 +1175,7 @@ public final class GData1 extends GData {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         if (tempWinding == BFC.NOCERTIFY) {
                             switch (data2draw.type()) {
-                            case 1:
-                            case 5:
+                            case 1, 5:
                                 data2draw.drawGL20WhileAddCondlines(c3d);
                                 break;
                             default:
@@ -2170,31 +2168,18 @@ public final class GData1 extends GData {
                     break;
                 }
                 switch (csgType) {
-                case INTERSECTION:
-                case DIFFERENCE:
-                case UNION:
+                case INTERSECTION,  DIFFERENCE, UNION:
                     lineBuilder8.append(dataSegments2[3] + this.id + " " + dataSegments2[4] + this.id + " " + dataSegments2[5] + this.id); //$NON-NLS-1$ //$NON-NLS-2$
                     break;
                 case TRANSFORM:
                     lineBuilder8.append(dataSegments2[3] + this.id + " " + dataSegments2[4] + this.id + " " + dataSegments2[5] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
-                case EXTRUDE:
-                case QUAD:
-                case CUBOID:
-                case ELLIPSOID:
-                case CIRCLE:
-                case CYLINDER:
-                case MESH:
+                case EXTRUDE, QUAD, CUBOID, ELLIPSOID, CIRCLE, CYLINDER, MESH:
                     lineBuilder8.append(dataSegments2[3] + this.id + " " + dataSegments2[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
-                case QUALITY:
-                case EPSILON:
-                case TJUNCTION:
-                case COLLAPSE:
-                case DONTOPTIMIZE:
-                case EXTRUDE_CFG:
+                case QUALITY, EPSILON, TJUNCTION, COLLAPSE, DONTOPTIMIZE, EXTRUDE_CFG:
                     lineBuilder8.append(g8.getNiceString());
                     break;
                 case COMPILE:

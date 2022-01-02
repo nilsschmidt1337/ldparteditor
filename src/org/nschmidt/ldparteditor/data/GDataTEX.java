@@ -137,8 +137,7 @@ public final class GDataTEX extends GData {
         if (meta == null) return text;
         String prefix = "0 !TEXMAP "; //$NON-NLS-1$
         switch (meta) {
-        case END:
-        case FALLBACK:
+        case END, FALLBACK:
             return text;
         case GEOMETRY:
             if (linkedData != null) {
@@ -146,8 +145,7 @@ public final class GDataTEX extends GData {
             } else {
                 return text;
             }
-        case NEXT:
-        case START:
+        case NEXT, START:
             if (meta == TexMeta.NEXT) {
                 prefix = prefix + "NEXT "; //$NON-NLS-1$
             } else {
@@ -156,9 +154,7 @@ public final class GDataTEX extends GData {
             if (linkedTexture != null) {
                 TexType texType = linkedTexture.getType();
                 switch (texType) {
-                case CYLINDRICAL:
-                case PLANAR:
-                case SPHERICAL:
+                case CYLINDRICAL, PLANAR, SPHERICAL:
                     String[] dataSegments = text.trim().split("\\s+"); //$NON-NLS-1$
                     if (texType == TexType.CYLINDRICAL) prefix = prefix + "CYLINDRICAL "; //$NON-NLS-1$
                     else if (texType == TexType.PLANAR) prefix = prefix + "PLANAR "; //$NON-NLS-1$

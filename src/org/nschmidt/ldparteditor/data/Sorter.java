@@ -76,12 +76,7 @@ public enum Sorter {
                 switch (data2draw.type()) {
                 case 0:
                     if (!data2draw.toString().trim().isEmpty() && !destructiveSort) break;
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
+                case 1, 2, 3, 4 , 5, 6:
                     validType = true;
                 default:
                     if (!validType && !destructiveSort) break;

@@ -248,10 +248,7 @@ class VM04Rectifier extends VM03Adjacency {
                                                         BigDecimal m1 = Vector3d.distSquare(new Vector3d(first), new Vector3d(third)).add(BigDecimal.ONE);
                                                         BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);
                                                         BigDecimal ratio = m1.compareTo(m2) > 0 ? m1.divide(m2, Threshold.MC) : m2.divide(m1, Threshold.MC);
-                                                        if (bestIndex == -1) {
-                                                            bestRatio = ratio;
-                                                            bestIndex = i;
-                                                        } else if (ratio.compareTo(bestRatio) < 0) {
+                                                        if (bestIndex == -1 || ratio.compareTo(bestRatio) < 0) {
                                                             bestRatio = ratio;
                                                             bestIndex = i;
                                                         }
@@ -739,10 +736,7 @@ class VM04Rectifier extends VM03Adjacency {
                                         BigDecimal m1 = Vector3d.distSquare(new Vector3d(first), new Vector3d(third)).add(BigDecimal.ONE);
                                         BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);
                                         BigDecimal ratio = m1.compareTo(m2) > 0 ? m1.divide(m2, Threshold.MC) : m2.divide(m1, Threshold.MC);
-                                        if (bestIndex == -1) {
-                                            bestRatio = ratio;
-                                            bestIndex = i;
-                                        } else if (ratio.compareTo(bestRatio) < 0) {
+                                        if (bestIndex == -1 || ratio.compareTo(bestRatio) < 0) {
                                             bestRatio = ratio;
                                             bestIndex = i;
                                         }

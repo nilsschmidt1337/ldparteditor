@@ -74,10 +74,7 @@ public enum VertexMarker {
                             vertexToReplace = vm.getDeclaredVertices().get(dataInLine)[0];
                         }
                         break;
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
+                    case 2, 3, 4, 5:
                         int index2 = StringHelper.getIndexFromWhitespaces(line, caretStart) - (isDistanceOrProtractor ? 2 : 0);
                         if (index2 > 1) {
                             if (type > 3 && index2 > 10) {
@@ -125,6 +122,8 @@ public enum VertexMarker {
                             }
                             state.setReplacingVertex(true);
                         }
+                        
+                        break;
                     default:
                         break;
                     }
@@ -137,7 +136,9 @@ public enum VertexMarker {
                         vm.getSelectedVertices().add(vertexToReplace);
                     }
                 } catch (NumberFormatException nfe) {
-
+                    if (NLogger.debugging) {
+                        NLogger.debug(VertexMarker.class, nfe.getMessage());
+                    }
                 }
                 NLogger.debug(VertexMarker.class, "Mark vertex at {0}", compositeText.getLine(startLine)); //$NON-NLS-1$
             }

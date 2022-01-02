@@ -101,9 +101,7 @@ public class VM21Merger extends VM20Manipulator {
             newVertex = new Vector3d(lastSelectedVertex);
             lastSelectedVertex = null;
             break;
-        case NEAREST_EDGE:
-        case NEAREST_EDGE_SPLIT:
-        case NEAREST_FACE:
+        case NEAREST_EDGE, NEAREST_EDGE_SPLIT, NEAREST_FACE:
             if (originVerts.isEmpty()) return;
             {
                 // This is a little bit more complex.

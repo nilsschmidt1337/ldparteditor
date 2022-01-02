@@ -222,24 +222,21 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
     public int compareTo(VectorCSGd o) {
         double d1 = x - o.x;
         switch (Double.compare(Math.abs(d1), EPSILON)) {
-        case 0:
-        case 1:
+        case 0, 1:
             return d1 < 0f ? -1 : 1;
         default:
             break;
         }
         d1 = y - o.y;
         switch (Double.compare(Math.abs(d1), EPSILON)) {
-        case 0:
-        case 1:
+        case 0, 1:
             return d1 < 0f ? -1 : 1;
         default:
             break;
         }
         d1 = z - o.z;
         switch (Double.compare(Math.abs(d1), EPSILON)) {
-        case 0:
-        case 1:
+        case 0, 1:
             return d1 < 0f ? -1 : 1;
         default:
             break;

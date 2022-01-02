@@ -360,8 +360,7 @@ public final class GData5 extends GData {
         case 1:
             result = 1f;
             break;
-        case 2:
-        case 4:
+        case 2, 4:
             if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 GL11.glEnable(GL11.GL_LIGHTING);
             return;
@@ -499,8 +498,7 @@ public final class GData5 extends GData {
         case 1:
             result = 1f;
             break;
-        case 2:
-        case 4:
+        case 2, 4:
             if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 GL11.glEnable(GL11.GL_LIGHTING);
             return;
@@ -777,8 +775,7 @@ public final class GData5 extends GData {
             case 1:
                 result = 1f;
                 break;
-            case 2:
-            case 4:
+            case 2, 4:
                 return;
             default:
                 final Matrix4f m2 = GData.CACHE_viewByProjection.get(parent);
