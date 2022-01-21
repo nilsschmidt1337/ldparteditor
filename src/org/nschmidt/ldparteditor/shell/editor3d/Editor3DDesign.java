@@ -1489,12 +1489,12 @@ class Editor3DDesign extends ApplicationWindow {
                 int width = windowState.getWindowState().getSizeAndPosition().width;
                 int[] sashSize = windowState.getLeftSashWidth();
                 if (sashSize == null) {
-                    sashFormCmpMain.setWeights(new int[] { width / 3, width - width / 3 });
+                    sashFormCmpMain.setWeights(width / 3, width - width / 3);
                 } else {
                     try {
                         sashFormCmpMain.setWeights(sashSize);
                     } catch (IllegalArgumentException iae) {
-                        sashFormCmpMain.setWeights(new int[] { width / 3, width - width / 3 });
+                        sashFormCmpMain.setWeights(width / 3, width - width / 3);
                     }
                 }
             }
@@ -1524,14 +1524,14 @@ class Editor3DDesign extends ApplicationWindow {
             int width = windowState.getWindowState().getSizeAndPosition().width;
             int[] sashSize = windowState.getEditorSashWeights();
             if (sashSize == null) {
-                sashform.setWeights(new int[] { width / 2, width / 2 });
+                sashform.setWeights(width / 2, width / 2);
             } else {
                 try {
                     sashform.setWeights(sashSize);
                     Editor3DWindow.sashWeight1 = sashSize[0];
                     Editor3DWindow.sashWeight2 = sashSize[1];
                 } catch (IllegalArgumentException iae) {
-                    sashform.setWeights(new int[] { width / 2, width / 2 });
+                    sashform.setWeights(width / 2, width / 2);
                 }
             }
         }

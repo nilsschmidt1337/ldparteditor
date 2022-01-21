@@ -365,9 +365,9 @@ public class Editor3DWindow extends Editor3DDesign {
         WidgetSelectionListener sa = e -> {
             int[] w = leftSash[0].getWeights();
             if (w[0] == 800 && w[1] == 100 && w[2] == 100) {
-                leftSash[0].setWeights(new int[]{33, 33, 33});
+                leftSash[0].setWeights(33, 33, 33);
             } else {
-                leftSash[0].setWeights(new int[]{80, 10, 10});
+                leftSash[0].setWeights(80, 10, 10);
             }
         };
 
@@ -378,22 +378,22 @@ public class Editor3DWindow extends Editor3DDesign {
         widgetUtil(btnShowMiddlePtr[0]).addSelectionListener(e -> {
             int[] w = leftSash[0].getWeights();
             if (w[0] == 100 && w[1] == 800 && w[2] == 100) {
-                leftSash[0].setWeights(new int[]{33, 33, 33});
+                leftSash[0].setWeights(33, 33, 33);
             } else {
-                leftSash[0].setWeights(new int[]{10, 80, 10});
+                leftSash[0].setWeights(10, 80, 10);
             }
         });
 
         widgetUtil(btnSameHeightPtr[0]).addSelectionListener(e ->
-            leftSash[0].setWeights(new int[]{33, 33, 33})
+            leftSash[0].setWeights(33, 33, 33)
         );
 
         widgetUtil(btnShowLowerPtr[0]).addSelectionListener(e -> {
             int[] w = leftSash[0].getWeights();
             if (w[0] == 100 && w[1] == 100 && w[2] == 800) {
-                leftSash[0].setWeights(new int[]{33, 33, 33});
+                leftSash[0].setWeights(33, 33, 33);
             } else {
-                leftSash[0].setWeights(new int[]{10, 10, 80});
+                leftSash[0].setWeights(10, 10, 80);
             }
         });
 
@@ -401,9 +401,9 @@ public class Editor3DWindow extends Editor3DDesign {
             final SashForm sf = splitSash[0];
             int[] w = sf.getWeights();
             if (w[1] * 9 > w[0]) {
-                sf.setWeights(new int[]{95, 5});
+                sf.setWeights(95, 5);
             } else {
-                sf.setWeights(new int[]{Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2});
+                sf.setWeights(Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2);
             }
         });
 
@@ -411,13 +411,13 @@ public class Editor3DWindow extends Editor3DDesign {
             final SashForm sf = splitSash[0];
             int[] w = sf.getWeights();
             if (w[0] * 9 > w[1]) {
-                sf.setWeights(new int[]{5, 95});
+                sf.setWeights(5, 95);
             } else {
-                sf.setWeights(new int[]{Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2});
+                sf.setWeights(Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2);
             }
         });
 
-        if (btnSameWidthPtr[0] != null) widgetUtil(btnSameWidthPtr[0]).addSelectionListener(e -> splitSash[0].setWeights(new int[]{50, 50}));
+        if (btnSameWidthPtr[0] != null) widgetUtil(btnSameWidthPtr[0]).addSelectionListener(e -> splitSash[0].setWeights(50, 50));
 
         if (splitSash[0] != null) splitSash[0].getChildren()[0].addControlListener(new ControlListener() {
             @Override

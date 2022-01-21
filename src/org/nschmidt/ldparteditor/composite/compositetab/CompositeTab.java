@@ -1378,7 +1378,7 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             public void close(CTabFolderEvent event) {
                 ((CTabFolder) event.widget).setVisible(false);
-                sashFormPtr[0].setWeights(new int[] { compositeTextPtr[0].getSize().y, 1 });
+                sashFormPtr[0].setWeights(compositeTextPtr[0].getSize().y, 1);
                 event.doit = false;
             }
         });
@@ -1692,7 +1692,7 @@ public class CompositeTab extends CompositeTabDesign {
             public void controlResized(ControlEvent e) {
                 ((GridData) compositeTextPtr[0].getLayoutData()).minimumHeight = compositeContainerPtr[0].getBounds().height;
                 if (!tabFolderPartInformationPtr[0].getVisible()) {
-                    sashFormPtr[0].setWeights(new int[] { compositeTextPtr[0].getSize().y, 1 });
+                    sashFormPtr[0].setWeights(compositeTextPtr[0].getSize().y, 1);
                 }
                 compositeContainerPtr[0].layout();
             }
@@ -1900,9 +1900,9 @@ public class CompositeTab extends CompositeTabDesign {
     public void setErrorTabVisibility(boolean isVisible) {
         tabFolderPartInformationPtr[0].setVisible(isVisible);
         if (isVisible) {
-            sashFormPtr[0].setWeights(new int[] { compositeContainerPtr[0].getSize().y, compositeContainerPtr[0].getSize().y / 2 });
+            sashFormPtr[0].setWeights(compositeContainerPtr[0].getSize().y, compositeContainerPtr[0].getSize().y / 2);
         } else {
-            sashFormPtr[0].setWeights(new int[] { compositeContainerPtr[0].getSize().y, 1 });
+            sashFormPtr[0].setWeights(compositeContainerPtr[0].getSize().y, 1);
         }
     }
 
