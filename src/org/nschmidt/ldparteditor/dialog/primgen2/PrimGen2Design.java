@@ -305,7 +305,7 @@ class PrimGen2Design extends Dialog {
             txtData2.setFont(Font.MONOSPACE);
             txtData2.setLineSpacing(0);
         } else {
-            sashForm.setWeights(new int[]{33, 66});
+            sashForm.setWeights(33, 66);
         }
 
         Label lblStandard = new Label(cmpContainer, SWT.NONE);

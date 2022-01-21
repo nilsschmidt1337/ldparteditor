@@ -497,9 +497,9 @@ public class EditorTextWindow extends EditorTextDesign {
             final SashForm sf = Editor3DWindow.getWindow().getSplitSashForm();
             int[] w = sf.getWeights();
             if (w[1] * 9 > w[0]) {
-                sf.setWeights(new int[]{95, 5});
+                sf.setWeights(95, 5);
             } else {
-                sf.setWeights(new int[]{Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2});
+                sf.setWeights(Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2);
             }
         });
 
@@ -507,13 +507,13 @@ public class EditorTextWindow extends EditorTextDesign {
             final SashForm sf = Editor3DWindow.getWindow().getSplitSashForm();
             int[] w = sf.getWeights();
             if (w[0] * 9 > w[1]) {
-                sf.setWeights(new int[]{5, 95});
+                sf.setWeights(5, 95);
             } else {
-                sf.setWeights(new int[]{Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2});
+                sf.setWeights(Editor3DWindow.sashWeight1, Editor3DWindow.sashWeight2);
             }
         });
 
-        if (btnSameWidthPtr[0] != null) widgetUtil(btnSameWidthPtr[0]).addSelectionListener(e -> Editor3DWindow.getWindow().getSplitSashForm().setWeights(new int[]{50, 50}));
+        if (btnSameWidthPtr[0] != null) widgetUtil(btnSameWidthPtr[0]).addSelectionListener(e -> Editor3DWindow.getWindow().getSplitSashForm().setWeights(50, 50));
 
         widgetUtil(btnNewPtr[0]).addSelectionListener(e -> {
             final boolean isSyncTabs = WorkbenchManager.getUserSettingState().isSyncingTabs();
