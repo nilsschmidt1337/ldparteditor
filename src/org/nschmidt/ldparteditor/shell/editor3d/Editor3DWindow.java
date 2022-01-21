@@ -385,7 +385,7 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         widgetUtil(btnSameHeightPtr[0]).addSelectionListener(e ->
-            leftSash[0].setWeights(33, 33, 33);
+            leftSash[0].setWeights(33, 33, 33)
         );
 
         widgetUtil(btnShowLowerPtr[0]).addSelectionListener(e -> {
