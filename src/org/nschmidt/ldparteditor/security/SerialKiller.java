@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.nschmidt.ldparteditor.logger.NLogger;
 
@@ -72,7 +71,7 @@ public class SerialKiller extends ObjectInputStream {
             "org.nschmidt.ldparteditor.data.PGTimestamp") //$NON-NLS-1$
             .stream()
             .map(Pattern::compile)
-            .collect(Collectors.toList());
+            .toList();
 
     public SerialKiller(final InputStream inputStream) throws IOException {
         super(inputStream);

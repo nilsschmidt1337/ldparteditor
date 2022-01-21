@@ -39,7 +39,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -187,7 +186,7 @@ final class Node {
                         .parallel()
                         .map(poly ->
                         n.plane.getTypes(poly))
-                        .collect(Collectors.toList());
+                        .toList();
 
                 int i = 0;
                 for (Polygon polygon : a.polygons) {
@@ -379,7 +378,7 @@ final class Node {
                 .parallel()
                 .map(poly ->
                 this.plane.getTypes(poly))
-                .collect(Collectors.toList());
+                .toList();
 
         // parallel version does not work here
         int i = 0;
@@ -426,7 +425,7 @@ final class Node {
                 .parallel()
                 .map(poly ->
                 this.plane.getTypes(poly))
-                .collect(Collectors.toList());
+                .toList();
 
         int i = 0;
         for (Polygon polygon : polygons) {
