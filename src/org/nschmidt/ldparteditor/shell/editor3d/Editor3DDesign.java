@@ -1519,19 +1519,19 @@ class Editor3DDesign extends ApplicationWindow {
             Project.getOpenTextWindows().add(tWin);
         }
 
-        if (containerTop instanceof SashForm) {
-            this.editorSashForm[0] = (SashForm) containerTop;
+        if (containerTop instanceof SashForm sashform) {
+            this.editorSashForm[0] = sashform;
             int width = windowState.getWindowState().getSizeAndPosition().width;
             int[] sashSize = windowState.getEditorSashWeights();
             if (sashSize == null) {
-                ((SashForm) containerTop).setWeights(new int[] { width / 2, width / 2 });
+                sashform.setWeights(new int[] { width / 2, width / 2 });
             } else {
                 try {
-                    ((SashForm) containerTop).setWeights(sashSize);
+                    sashform.setWeights(sashSize);
                     Editor3DWindow.sashWeight1 = sashSize[0];
                     Editor3DWindow.sashWeight2 = sashSize[1];
                 } catch (IllegalArgumentException iae) {
-                    ((SashForm) containerTop).setWeights(new int[] { width / 2, width / 2 });
+                    sashform.setWeights(new int[] { width / 2, width / 2 });
                 }
             }
         }

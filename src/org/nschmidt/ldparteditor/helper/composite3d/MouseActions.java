@@ -200,8 +200,7 @@ public class MouseActions {
                     if (tree.getSelectionCount() == 1) {
                         final TreeItem item = tree.getSelection()[0];
                         final Object obj = item.getData();
-                        if (obj instanceof DatFile) {
-                            final DatFile data = (DatFile) obj;
+                        if (obj instanceof DatFile data) {
                             String ref = new File(data.getNewName()).getName();
                             if (data.getType().equals(DatType.SUBPART))
                                 ref = "s\\" + ref; //$NON-NLS-1$

@@ -170,16 +170,16 @@ public enum FileHelper {
         URLConnection conn = null;
         try {
             conn = url.openConnection();
-            if(conn instanceof HttpURLConnection) {
-                ((HttpURLConnection)conn).setRequestMethod("HEAD"); //$NON-NLS-1$
+            if(conn instanceof HttpURLConnection httpurlconnection) {
+                httpurlconnection.setRequestMethod("HEAD"); //$NON-NLS-1$
             }
             conn.getInputStream();
             return conn.getContentLength();
         } catch (IOException e) {
             return 0;
         } finally {
-            if(conn instanceof HttpURLConnection) {
-                ((HttpURLConnection)conn).disconnect();
+            if(conn instanceof HttpURLConnection httpurlconnection) {
+                httpurlconnection.disconnect();
             }
         }
     }

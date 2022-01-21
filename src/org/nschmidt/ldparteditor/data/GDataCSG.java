@@ -654,8 +654,8 @@ public final class GDataCSG extends GData {
                     GDataCSG.resetCSG(df, true);
                     GData g = df.getDrawChainStart();
                     while ((g = g.next) != null) {
-                        if (g instanceof GDataCSG) {
-                            csgData.add((GDataCSG) g);
+                        if (g instanceof GDataCSG gcsg) {
+                            csgData.add(gcsg);
                         }
                     }
                     for (GDataCSG csg : csgData) {

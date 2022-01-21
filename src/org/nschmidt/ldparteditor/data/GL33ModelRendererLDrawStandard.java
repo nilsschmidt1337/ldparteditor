@@ -295,8 +295,7 @@ public class GL33ModelRendererLDrawStandard {
                                 gw.texture = lastTexture;
                             }
 
-                            if (gw.data instanceof GDataTEX) {
-                                GDataTEX tex = (GDataTEX) gw.data;
+                            if (gw.data instanceof GDataTEX tex) {
                                 if (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT) {
                                     lastTexture = tex.linkedTexture;
                                 }
@@ -307,11 +306,11 @@ public class GL33ModelRendererLDrawStandard {
                             final GData ga = a.data;
                             final GData gb = b.data;
                             final boolean aIsTransparentSurface =
-                                    ga instanceof GData3 && ((GData3) ga).a < 1f
-                                    || ga instanceof GData4 && ((GData4) ga).a < 1f;
+                                    ga instanceof GData3 gd3 && gd3.a < 1f
+                                    || ga instanceof GData4 gd4 && gd4.a < 1f;
                             final boolean bIsTransparentSurface =
-                                    gb instanceof GData3 && ((GData3) gb).a < 1f
-                                    || gb instanceof GData4 && ((GData4) gb).a < 1f;
+                                    gb instanceof GData3 gd3 && gd3.a < 1f
+                                    || gb instanceof GData4 gd4 && gd4.a < 1f;
 
                             if (aIsTransparentSurface && bIsTransparentSurface) {
                                 final Vertex[] saVerts =  vertexMap.containsKey(ga) ? vertexMap.get(ga) : ga.type() == 3 ? triangles.get(ga) : quads.get(ga);
@@ -352,11 +351,11 @@ public class GL33ModelRendererLDrawStandard {
                             final GData ga = a.data;
                             final GData gb = b.data;
                             final boolean aIsTransparentSurface =
-                                    ga instanceof GData3 && ((GData3) ga).a < 1f
-                                    || ga instanceof GData4 && ((GData4) ga).a < 1f;
+                                    ga instanceof GData3 gd3 && gd3.a < 1f
+                                    || ga instanceof GData4 gd4 && gd4.a < 1f;
                             final boolean bIsTransparentSurface =
-                                    gb instanceof GData3 && ((GData3) gb).a < 1f
-                                    || gb instanceof GData4 && ((GData4) gb).a < 1f;
+                                    gb instanceof GData3 gd3 && gd3.a < 1f
+                                    || gb instanceof GData4 gd4 && gd4.a < 1f;
 
                             if (aIsTransparentSurface && bIsTransparentSurface) {
                                 final Vertex[] saVerts =  ga.type() == 3 ? triangles.get(ga) : quads.get(ga);
@@ -1589,7 +1588,7 @@ public class GL33ModelRendererLDrawStandard {
                     // Shouldn't happen...
                     break;
                 case FALLBACK:
-                    while ((backup = backup.next) != null && !(backup instanceof GDataTEX && ((GDataTEX) backup).meta == TexMeta.END));
+                    while ((backup = backup.next) != null && !(backup instanceof GDataTEX gdtex && gdtex.meta == TexMeta.END));
                     texmap = false;
                     break;
                 case END:
@@ -1607,14 +1606,12 @@ public class GL33ModelRendererLDrawStandard {
         if (hasTEXMAP) {
             for (Iterator<GDataAndWinding> iterator = dataInOrder.iterator(); iterator.hasNext();) {
                 GDataAndWinding gaw = iterator.next();
-                if (gaw.data instanceof GData3) {
-                    final GData3 gd3 = (GData3) gaw.data;
+                if (gaw.data instanceof GData3 gd3) {
                     if (gd3.a < 1f) {
                         texmapDataInOrder.add(new GDataAndTexture(gaw));
                         iterator.remove();
                     }
-                } else if (gaw.data instanceof GData4) {
-                    final GData4 gd4 = (GData4) gaw.data;
+                } else if (gaw.data instanceof GData4 gd4) {
                     if (gd4.a < 1f) {
                         texmapDataInOrder.add(new GDataAndTexture(gaw));
                         iterator.remove();

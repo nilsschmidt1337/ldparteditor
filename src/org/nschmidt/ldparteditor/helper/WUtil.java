@@ -37,6 +37,7 @@ import org.nschmidt.ldparteditor.widget.NButton;
  */
 public class WUtil {
 
+    private static final String NO_MAPPING_FOR_TYPE = "No mapping for type:";
     private final Widget w;
 
     WUtil(Widget w) {
@@ -44,70 +45,70 @@ public class WUtil {
     }
 
     public void addSelectionListener(final WidgetSelectionListener listener) {
-        if (w instanceof NButton) {
-            ((NButton)w).addSelectionListener(listener);
-        } else if (w instanceof Combo) {
-            ((Combo)w).addSelectionListener(new SelectionAdapter() {
+        if (w instanceof NButton nbutton) {
+            nbutton.addSelectionListener(listener);
+        } else if (w instanceof Combo combo) {
+            combo.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     listener.widgetSelected(e);
                 }
             });
-        } else if (w instanceof Button) {
-            ((Button)w).addSelectionListener(new SelectionAdapter() {
+        } else if (w instanceof Button button) {
+            button.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     listener.widgetSelected(e);
                 }
             });
-        } else if (w instanceof MenuItem) {
-            ((MenuItem)w).addSelectionListener(new SelectionAdapter() {
+        } else if (w instanceof MenuItem menuitem) {
+            menuitem.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     listener.widgetSelected(e);
                 }
             });
-        } else if (w instanceof CompositeTabFolder) {
-            ((CompositeTabFolder)w).addSelectionListener(new SelectionAdapter() {
+        } else if (w instanceof CompositeTabFolder compositetabfolder) {
+            compositetabfolder.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     listener.widgetSelected(e);
                 }
             });
-        } else if (w instanceof CTabFolder) {
-            ((CTabFolder)w).addSelectionListener(new SelectionAdapter() {
+        } else if (w instanceof CTabFolder ctabfolder) {
+            ctabfolder.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     listener.widgetSelected(e);
                 }
             });
-        } else if (w instanceof ScrollBar) {
-            ((ScrollBar)w).addSelectionListener(new SelectionAdapter() {
+        } else if (w instanceof ScrollBar scrollbar) {
+            scrollbar.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     listener.widgetSelected(e);
                 }
             });
         } else if (w != null){
-            NLogger.error(getClass(), "No mapping for type:" + w.getClass().getName()); //$NON-NLS-1$
+            NLogger.error(getClass(), NO_MAPPING_FOR_TYPE + w.getClass().getName()); //$NON-NLS-1$
         }
     }
 
     public void setItems(String... items) {
-        if (w instanceof Combo) {
-            ((Combo)w).setItems(items);
+        if (w instanceof Combo combo) {
+            combo.setItems(items);
         } else if (w != null){
-            NLogger.error(getClass(), "No mapping for type:" + w.getClass().getName()); //$NON-NLS-1$
+            NLogger.error(getClass(), NO_MAPPING_FOR_TYPE + w.getClass().getName()); //$NON-NLS-1$
         }
     }
 
     public void setTransfer(Transfer... transferAgents) {
-        if (w instanceof DragSource) {
-            ((DragSource)w).setTransfer(transferAgents);
-        } else if (w instanceof DropTarget) {
-            ((DropTarget)w).setTransfer(transferAgents);
+        if (w instanceof DragSource dragsource) {
+            dragsource.setTransfer(transferAgents);
+        } else if (w instanceof DropTarget droptarget) {
+            droptarget.setTransfer(transferAgents);
         } else if (w != null){
-            NLogger.error(getClass(), "No mapping for type:" + w.getClass().getName()); //$NON-NLS-1$
+            NLogger.error(getClass(), NO_MAPPING_FOR_TYPE + w.getClass().getName()); //$NON-NLS-1$
         }
     }
 }

@@ -472,13 +472,13 @@ public class Composite3DModifier {
     public void moveSashOnResize() {
         if (isSashFormChild(c3d.getSashForm()) && c3d.getSashForm().getParent() instanceof SashForm && isSashFormChild(c3d.getSashForm().getParent())) {
             Composite symmetricalSashAxis = c3d.getSashForm().getParent();
-            if (symmetricalSashAxis.getChildren()[0] instanceof SashForm && symmetricalSashAxis.getChildren()[1] instanceof SashForm
-                && ((SashForm) symmetricalSashAxis).getStyle() != ((SashForm) symmetricalSashAxis.getChildren()[0]).getStyle()
-                && ((SashForm) symmetricalSashAxis).getStyle() != ((SashForm) symmetricalSashAxis.getChildren()[1]).getStyle()) {
-                if (symmetricalSashAxis.getChildren()[0].equals(c3d.getSashForm())) {
-                    ((SashForm) symmetricalSashAxis.getChildren()[1]).setWeights(c3d.getSashForm().getWeights());
+            if (symmetricalSashAxis.getChildren()[0] instanceof SashForm childLeft && symmetricalSashAxis.getChildren()[1] instanceof SashForm childRight
+                && ((SashForm) symmetricalSashAxis).getStyle() != childLeft.getStyle()
+                && ((SashForm) symmetricalSashAxis).getStyle() != childRight.getStyle()) {
+                if (childLeft.equals(c3d.getSashForm())) {
+                    childRight.setWeights(c3d.getSashForm().getWeights());
                 } else {
-                    ((SashForm) symmetricalSashAxis.getChildren()[0]).setWeights(c3d.getSashForm().getWeights());
+                    childLeft.setWeights(c3d.getSashForm().getWeights());
                 }
             }
         }

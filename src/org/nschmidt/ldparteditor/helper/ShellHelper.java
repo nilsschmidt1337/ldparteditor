@@ -69,8 +69,7 @@ public enum ShellHelper {
                 break;
             }
         }
-        if (cmp instanceof Shell) {
-            Shell sh = (Shell) cmp;
+        if (cmp instanceof Shell sh) {
             absX += sh.getLocation().x;
             absY += sh.getLocation().y;
         }

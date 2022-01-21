@@ -115,8 +115,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (win.getPartsTree().getSelectionCount() == 1) {
-                    if (win.getPartsTree().getSelection()[0].getData() instanceof DatFile) {
-                        DatFile df = (DatFile) win.getPartsTree().getSelection()[0].getData();
+                    if (win.getPartsTree().getSelection()[0].getData() instanceof DatFile df) {
                         if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                             if (df.save()) {
                                 addRecentFile(df);

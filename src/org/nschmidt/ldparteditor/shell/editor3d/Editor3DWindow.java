@@ -2167,22 +2167,21 @@ public class Editor3DWindow extends Editor3DDesign {
         Composite3DState st = new Composite3DState();
         st.setParentPath(parentPath);
         st.setPath(path);
-        if (c instanceof CompositeContainer) {
+        if (c instanceof CompositeContainer compositecontainer) {
             NLogger.debug(getClass(), "{0}C", path); //$NON-NLS-1$
-            final Composite3D c3d = ((CompositeContainer) c).getComposite3D();
+            final Composite3D c3d = compositecontainer.getComposite3D();
             st.setSash(false);
             st.setScales(c3d.getParent() instanceof CompositeScale);
             st.setVertical(false);
             st.setWeights(null);
             fillC3DState(st, c3d);
-        } else if (c instanceof SashForm) {
+        } else if (c instanceof SashForm sashform) {
             NLogger.debug(getClass(), path);
-            SashForm s = (SashForm) c;
             st.setSash(true);
-            st.setVertical((s.getStyle() & SWT.VERTICAL) != 0);
-            st.setWeights(s.getWeights());
-            Control c1 = s.getChildren()[0];
-            Control c2 = s.getChildren()[1];
+            st.setVertical((sashform.getStyle() & SWT.VERTICAL) != 0);
+            st.setWeights(sashform.getWeights());
+            Control c1 = sashform.getChildren()[0];
+            Control c2 = sashform.getChildren()[1];
             saveComposite3DStates(c1, c3dStates, path, path + "s1|"); //$NON-NLS-1$
             saveComposite3DStates(c2, c3dStates, path, path + "s2|"); //$NON-NLS-1$
         } else {
@@ -3966,8 +3965,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     private void actionOpenInTextEditor() {
-        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile df) {
             for (EditorTextWindow w : Project.getOpenTextWindows()) {
                 for (CTabItem t : w.getTabFolder().getItems()) {
                     if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
@@ -4005,8 +4003,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     private void actionOpenIn3DEditor() {
-        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile df) {
             openFileIn3DEditor(df);
             updateTreeUnsavedEntries();
             cleanupClosedData();
@@ -4015,16 +4012,14 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     private void actionRevert() {
-        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile df) {
             revert(df);
         }
         regainFocus();
     }
 
     private void actionClose() {
-        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile df) {
             Project.removeOpenedFile(df);
             if (!closeDatfile(df)) {
                 Project.addOpenedFile(df);
@@ -4035,8 +4030,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     @SuppressWarnings("unchecked")
     private void actionRename() {
-        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile df) {
             if (df.isReadOnly()) {
                 regainFocus();
                 return;
@@ -4201,8 +4195,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     @SuppressWarnings("unchecked")
     private void actionCopyToUnofficial() {
-        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
-            DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
+        if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile df) {
             TreeItem p = treeParts[0].getSelection()[0].getParentItem();
             String targetPathU;
             String targetPathL;

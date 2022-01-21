@@ -133,12 +133,11 @@ public class Win32MouseWheelFilter implements Listener {
         if (event.widget == cursorControl)
             return;
 
-        if (event.widget instanceof Control) {
+        if (event.widget instanceof Control control) {
             // If the original target control's bounds contain the mouse
             // location, do not re-target the event, since it may indeed be the
             // Control that needs to handle scrolling for an embedded Control
             // that has focus.
-            Control control = (Control) event.widget;
             Rectangle bounds = control.getBounds();
             bounds.x = 0;
             bounds.y = 0;
@@ -165,7 +164,7 @@ public class Win32MouseWheelFilter implements Listener {
 
         int style = wheelControl.getStyle();
 
-        if ((style & scrollStyle) != 0 && wheelControl instanceof Scrollable) {
+        if ((style & scrollStyle) != 0 && wheelControl instanceof Scrollable scrollable) {
             // Construct the data for the low level event based on which
             // direction the target can scroll in. We need to use a low-level
             // event since otherwise it won't be handled by the native
@@ -176,7 +175,7 @@ public class Win32MouseWheelFilter implements Listener {
             // there is no vertical ScrollBar, or if it's somehow disabled,
             // then switch to horizontal scrolling instead.
             if ((style & SWT.V_SCROLL) != 0 ) {
-                ScrollBar vBar = ((Scrollable) wheelControl).getVerticalBar();
+                ScrollBar vBar = scrollable.getVerticalBar();
                 if (vBar == null
                         || vBar.getMinimum() == 0
                         && vBar.getMaximum() == 0
