@@ -304,7 +304,7 @@
             <arg value="--vendor"/>
             <arg value="Nils Schmidt" />
             <arg value="--icon"/>
-            <arg value="favicon.ico" />
+            <arg value="icons/favicon.ico" />
             <arg value="--dest"/>
             <arg value="${binariesFolder}/${windowsFolder}/setup" />
             <arg value="--main-jar"/>

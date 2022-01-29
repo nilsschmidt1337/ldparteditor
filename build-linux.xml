@@ -305,7 +305,7 @@
             <arg value="--name"/>
             <arg value="LDPartEditor" />
             <arg value="--icon"/>
-            <arg value="svg_icons/png/imgDuke2.png" />
+            <arg value="icons/png/imgDuke2.png" />
             <arg value="--dest"/>
             <arg value="${binariesFolder}/${linuxGtk3Folder}/setup" />
             <arg value="--main-jar"/>

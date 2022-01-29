@@ -301,7 +301,7 @@
             <arg value="--name"/>
             <arg value="LDPartEditor" />
             <arg value="--icon"/>
-            <arg value="icon.icns" />
+            <arg value="icons/icon.icns" />
             <arg value="--dest"/>
             <arg value="${binariesFolder}/${macosxFolder}/setup" />
             <arg value="--main-jar"/>
