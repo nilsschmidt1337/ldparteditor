@@ -1,8 +1,10 @@
+package plugin;
+
 import java.io.File;
 import org.nschmidt.ldparteditor.plugin.Plugin;
 import com.sun.tools.javac.Main;
 
-class Test {
+class PlugInLoading {
 
     public void pluginTest() {
         // List all java files from the plugin directory

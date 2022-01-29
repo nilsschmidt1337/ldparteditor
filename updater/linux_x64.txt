@@ -1,1 +1,0 @@
-https://github.com/nilsschmidt1337/ldparteditor/releases/download/v0.8.53-beta/LDPartEditor_linux_x64.zip

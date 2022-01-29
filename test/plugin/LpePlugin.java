@@ -1,6 +1,8 @@
+package plugin;
+
 // AUTO GENERATED PLUGIN CLASS
 import org.nschmidt.ldparteditor.plugin.Plugin;
-import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 
 public class LpePlugin implements Plugin {

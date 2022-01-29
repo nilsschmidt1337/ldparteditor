@@ -34,8 +34,6 @@
     
        <property name="libsFolder"
             value="libs" />
-       <property name="scriptsFolder"
-            value="scripts" />
        <property name="nativesFolder"
             value="natives" />
        <property name="sourceFolder"
@@ -281,8 +279,6 @@
         <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="${scriptsFolder}/${windowsFolder}/update.bat" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="${scriptsFolder}/${windowsFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         
         <exec executable="jlink" failonerror="true">
             <arg value="--add-modules"/>

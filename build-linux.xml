@@ -38,8 +38,6 @@
     
        <property name="libsFolder"
             value="libs" />
-       <property name="scriptsFolder"
-            value="scripts" />
        <property name="sourceFolder"
             value="src" />
        <property name="linuxFolder"
@@ -290,9 +288,6 @@
         <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
-        <copy file="${scriptsFolder}/${linuxFolder}/run.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
-        <copy file="${scriptsFolder}/${linuxFolder}/update.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
-        <copy file="${scriptsFolder}/${linuxFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         
         <exec executable="jlink" failonerror="true">
             <arg value="--add-modules"/>
@@ -310,7 +305,7 @@
             <arg value="--name"/>
             <arg value="LDPartEditor" />
             <arg value="--icon"/>
-            <arg value="svg_icons/done/png/imgDuke2.png" />
+            <arg value="svg_icons/png/imgDuke2.png" />
             <arg value="--dest"/>
             <arg value="${binariesFolder}/${linuxGtk3Folder}/setup" />
             <arg value="--main-jar"/>
