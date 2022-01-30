@@ -280,6 +280,9 @@
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         
+        <delete dir="${binariesFolder}/jvm-image" />
+        <delete dir="${binariesFolder}/installer-work" />
+        
         <exec executable="jlink" failonerror="true">
             <arg value="--add-modules"/>
             <arg value="java.base,java.compiler,java.desktop,java.logging,java.management,java.prefs,java.rmi,java.scripting,java.xml,jdk.unsupported"/>
@@ -289,7 +292,7 @@
             <arg value="--no-man-pages"/>
             <arg value="--compress=2"/>
             <arg value="--output"/>
-            <arg value="${binariesFolder}\jvm-image"/>
+            <arg value="${binariesFolder}/jvm-image"/>
         </exec>
         
         <exec executable="jpackage" failonerror="true">
@@ -316,9 +319,9 @@
             <arg value="--app-version"/>
             <arg value="1.8.54" />
             <arg value="--runtime-image"/>
-            <arg value="${binariesFolder}\jvm-image" />
+            <arg value="${binariesFolder}/jvm-image" />
             <arg value="--temp"/>
-            <arg value="${binariesFolder}\installer-work" />
+            <arg value="${binariesFolder}/installer-work" />
             <arg value="--win-upgrade-uuid"/>
             <arg value="1E5BAA6E-AFEF-48F6-8BDE-F98C3F1CBA1F" />
             <arg value="--description"/>

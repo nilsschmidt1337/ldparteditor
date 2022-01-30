@@ -285,6 +285,9 @@
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
         
+        <delete dir="${binariesFolder}/jvm-image" />
+        <delete dir="${binariesFolder}/installer-work" />
+        
         <exec executable="jlink" failonerror="true">
             <arg value="--add-modules"/>
             <arg value="java.base,java.compiler,java.desktop,java.logging,java.management,java.prefs,java.rmi,java.scripting,java.xml,jdk.unsupported"/>
@@ -294,7 +297,7 @@
             <arg value="--no-man-pages"/>
             <arg value="--compress=2"/>
             <arg value="--output"/>
-            <arg value="${binariesFolder}\jvm-image"/>
+            <arg value="${binariesFolder}/jvm-image"/>
         </exec>
         
         <exec executable="jpackage" failonerror="true">
@@ -315,9 +318,9 @@
             <arg value="--java-options"/>
         	<arg value="-XstartOnFirstThread"/>
             <arg value="--runtime-image"/>
-            <arg value="${binariesFolder}\jvm-image" />
+            <arg value="${binariesFolder}/jvm-image" />
             <arg value="--temp"/>
-            <arg value="${binariesFolder}\installer-work" />
+            <arg value="${binariesFolder}/installer-work" />
             <arg value="--description"/>
             <arg value="The LDraw™ Part Editor. Create and edit LDraw™ Parts quick and easy." />
             <arg value="--copyright"/>

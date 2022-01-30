@@ -289,6 +289,9 @@
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         
+        <delete dir="${binariesFolder}/jvm-image" />
+        <delete dir="${binariesFolder}/installer-work" />
+        
         <exec executable="jlink" failonerror="true">
             <arg value="--add-modules"/>
             <arg value="java.base,java.compiler,java.desktop,java.logging,java.management,java.prefs,java.rmi,java.scripting,java.xml,jdk.unsupported"/>
@@ -298,7 +301,7 @@
             <arg value="--no-man-pages"/>
             <arg value="--compress=2"/>
             <arg value="--output"/>
-            <arg value="${binariesFolder}\jvm-image"/>
+            <arg value="${binariesFolder}/jvm-image"/>
         </exec>
         
         <exec executable="jpackage" failonerror="true">
@@ -317,9 +320,9 @@
             <arg value="--app-version"/>
             <arg value="1.8.54" />
             <arg value="--runtime-image"/>
-            <arg value="${binariesFolder}\jvm-image" />
+            <arg value="${binariesFolder}/jvm-image" />
             <arg value="--temp"/>
-            <arg value="${binariesFolder}\installer-work" />
+            <arg value="${binariesFolder}/installer-work" />
             <arg value="--linux-deb-maintainer"/>
             <arg value="nils.schmidt@schmidthj.de"/>
             <arg value="--linux-rpm-license-type"/>
