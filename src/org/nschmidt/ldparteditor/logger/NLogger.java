@@ -43,6 +43,10 @@ public enum NLogger {
 
     public static boolean debugging = false;
 
+    private static final String DEBUG_PREFIX = "[DEBUG ";
+    private static final String ERROR_PREFIX = "[ERROR ";
+    private static final String LINE_SEPARATOR = "line.separator";
+
     /**
      * The error counter. If it reaches 100 within one session, no more caught
      * errors will be evaluated.
@@ -82,7 +86,7 @@ public enum NLogger {
             sb.append(debugging ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
             sb.append("] Started on "); //$NON-NLS-1$
             sb.append(new java.util.Date());
-            System.err.println(sb.toString());
+            systemErr().println(sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -166,12 +170,12 @@ public enum NLogger {
      */
     private static synchronized void debugSync(Class<?> clazz, Throwable t) {
         StringBuilder sb = new StringBuilder();
-        sb.append("[DEBUG "); //$NON-NLS-1$
+        sb.append(DEBUG_PREFIX); //$NON-NLS-1$
         sb.append(Version.getVersion());
         sb.append("] @"); //$NON-NLS-1$
         sb.append(clazz.getName());
-        System.out.println(sb.toString());
-        t.printStackTrace(System.out);
+        systemOut().println(sb.toString());
+        t.printStackTrace(systemOut());
     }
 
     /**
@@ -188,13 +192,13 @@ public enum NLogger {
         MessageFormat formatter = new MessageFormat("", Locale.ENGLISH); //$NON-NLS-1$
         formatter.applyPattern(message);
         StringBuilder sb = new StringBuilder();
-        sb.append("[DEBUG "); //$NON-NLS-1$
+        sb.append(DEBUG_PREFIX); //$NON-NLS-1$
         sb.append(Version.getVersion());
         sb.append("] @"); //$NON-NLS-1$
         sb.append(clazz.getName());
         sb.append("  "); //$NON-NLS-1$
         sb.append(formatter.format(args));
-        System.out.println(sb.toString());
+        systemOut().println(sb.toString());
     }
 
     /**
@@ -207,13 +211,13 @@ public enum NLogger {
      */
     private static synchronized void debugSync(Class<?> clazz, String message) {
         StringBuilder sb = new StringBuilder();
-        sb.append("[DEBUG "); //$NON-NLS-1$
+        sb.append(DEBUG_PREFIX); //$NON-NLS-1$
         sb.append(Version.getVersion());
         sb.append("] @"); //$NON-NLS-1$
         sb.append(clazz.getName());
         sb.append("  "); //$NON-NLS-1$
         sb.append(message);
-        System.out.println(sb.toString());
+        systemOut().println(sb.toString());
     }
 
     /**
@@ -221,13 +225,13 @@ public enum NLogger {
      */
     public static synchronized void error(Class<?> clazz, String message) {
         StringBuilder sb = new StringBuilder();
-        sb.append("[DEBUG "); //$NON-NLS-1$
+        sb.append(DEBUG_PREFIX); //$NON-NLS-1$
         sb.append(Version.getVersion());
         sb.append("] @"); //$NON-NLS-1$
         sb.append(clazz.getName());
         sb.append("  "); //$NON-NLS-1$
         sb.append(message);
-        System.err.println(sb.toString());
+        systemErr().println(sb.toString());
     }
 
     /**
@@ -244,7 +248,7 @@ public enum NLogger {
         sb.append(" PLATFORM "); //$NON-NLS-1$
         sb.append(SWT.getPlatform());
         sb.append("]"); //$NON-NLS-1$
-        System.err.println(sb.toString());
+        systemErr().println(sb.toString());
     }
 
     /**
@@ -267,52 +271,60 @@ public enum NLogger {
                 writeInNewFile = log1.length() > 100000;
             }
             if (writeInNewFile) {
-                // Write in the new ERROR_LOG2 file
-                try (FileWriter fw = new FileWriter(ERROR_LOG2, true)) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("[ERROR "); //$NON-NLS-1$
-                    sb.append(Version.getVersion());
-                    sb.append("] @"); //$NON-NLS-1$
-                    sb.append(clazz.getName());
-                    sb.append(System.getProperty("line.separator")); //$NON-NLS-1$
-                    sb.append(getStackTrace(t));
-                    sb.append(System.getProperty("line.separator")); //$NON-NLS-1$
-                    fw.write(sb.toString());
-                    fw.flush();
-                } catch (IOException ex) {
-                    System.err.println("[ERROR] Fatal logging error, caused by java.io.IOException."); //$NON-NLS-1$
-                }
-                try {
-                    // Check if ERROR_LOG2 is greater than 100KB
-                    File log2 = new File(ERROR_LOG2);
-                    if (log2.length() > 100000) {
-                        // if so, delete ERROR_LOG,
-                        File log1 = new File(ERROR_LOG);
-                        // rename ERROR_LOG2 to ERROR_LOG
-                        if (!Files.deleteIfExists(log1.toPath()) || !log2.renameTo(log1)) {
-                            throw new SecurityException();
-                        }
-                    }
-                } catch (IOException | SecurityException ex) {
-                    System.err.println("[ERROR] Fatal logging error, caused by java.io.SecurityException. \n You have not enough rights to manipulate files within the application folder."); //$NON-NLS-1$
-                }
+                writeInSecondLogfile(clazz, t);
             } else {
-                // Write in the old "error_log1.txt" file
-                try (FileWriter fw = new FileWriter(ERROR_LOG, true)) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("[ERROR "); //$NON-NLS-1$
-                    sb.append(Version.getVersion());
-                    sb.append("] @"); //$NON-NLS-1$
-                    sb.append(clazz.getName());
-                    sb.append(System.getProperty("line.separator")); //$NON-NLS-1$
-                    sb.append(getStackTrace(t));
-                    sb.append(System.getProperty("line.separator")); //$NON-NLS-1$
-                    fw.write(sb.toString());
-                    fw.flush();
-                } catch (IOException ex) {
-                    System.err.println("[ERROR] Fatal logging error, caused by java.io.IOException."); //$NON-NLS-1$
+                writeInFirstLogfile(clazz, t);
+            }
+        }
+    }
+
+    private static void writeInFirstLogfile(Class<?> clazz, Throwable t) {
+        // Write in the old "error_log1.txt" file
+        try (FileWriter fw = new FileWriter(ERROR_LOG, true)) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(ERROR_PREFIX); //$NON-NLS-1$
+            sb.append(Version.getVersion());
+            sb.append("] @"); //$NON-NLS-1$
+            sb.append(clazz.getName());
+            sb.append(System.getProperty(LINE_SEPARATOR)); //$NON-NLS-1$
+            sb.append(getStackTrace(t));
+            sb.append(System.getProperty(LINE_SEPARATOR)); //$NON-NLS-1$
+            fw.write(sb.toString());
+            fw.flush();
+        } catch (IOException ex) {
+            systemErr().println("[ERROR] Fatal logging error, caused by java.io.IOException."); //$NON-NLS-1$
+        }
+    }
+
+    private static void writeInSecondLogfile(Class<?> clazz, Throwable t) {
+        // Write in the new "error_log2.txt" file
+        try (FileWriter fw = new FileWriter(ERROR_LOG2, true)) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(ERROR_PREFIX); //$NON-NLS-1$
+            sb.append(Version.getVersion());
+            sb.append("] @"); //$NON-NLS-1$
+            sb.append(clazz.getName());
+            sb.append(System.getProperty(LINE_SEPARATOR)); //$NON-NLS-1$
+            sb.append(getStackTrace(t));
+            sb.append(System.getProperty(LINE_SEPARATOR)); //$NON-NLS-1$
+            fw.write(sb.toString());
+            fw.flush();
+        } catch (IOException ex) {
+            systemErr().println("[ERROR] Fatal logging error, caused by java.io.IOException."); //$NON-NLS-1$
+        }
+        try {
+            // Check if ERROR_LOG2 is greater than 100KB
+            File log2 = new File(ERROR_LOG2);
+            if (log2.length() > 100000) {
+                // if so, delete ERROR_LOG,
+                File log1 = new File(ERROR_LOG);
+                // rename ERROR_LOG2 to ERROR_LOG
+                if (!Files.deleteIfExists(log1.toPath()) || !log2.renameTo(log1)) {
+                    throw new SecurityException();
                 }
             }
+        } catch (IOException | SecurityException ex) {
+            systemErr().println("[ERROR] Fatal logging error, caused by java.io.SecurityException. \n You have not enough rights to manipulate files within the application folder."); //$NON-NLS-1$
         }
     }
 
@@ -337,8 +349,18 @@ public enum NLogger {
      */
     public static void flushErrorStream() {
         if (errorStream != null) {
-            System.err.flush();
-            System.err.close();
+            systemErr().flush();
+            systemErr().close();
         }
+    }
+    
+    @SuppressWarnings("java:S106")
+    private static PrintStream systemErr() {
+        return System.err;
+    }
+    
+    @SuppressWarnings("java:S106")
+    private static PrintStream systemOut() {
+        return System.out;
     }
 }
