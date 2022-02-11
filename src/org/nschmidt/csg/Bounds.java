@@ -78,12 +78,8 @@ class Bounds {
         if (b.min.y > max.y || b.max.y < min.y) {
             return false;
         }
-        if (b.min.z > max.z || b.max.z < min.z) {
-            return false;
-        }
 
-        return true;
-
+        return !(b.min.z > max.z || b.max.z < min.z);
     }
 
     /**

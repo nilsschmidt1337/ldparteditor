@@ -71,9 +71,7 @@ public final class PowerRay {
         if (v < 0 || u + v > 1)
             return false;
         t = (corner2[0] * qvec[0] + corner2[1] * qvec[1] + corner2[2] * qvec[2]) * invDiskr;
-        if (t < 0)
-            return false;
-        return true;
+        return t >= 0;
     }
 
     private boolean triangleIntersect2(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {

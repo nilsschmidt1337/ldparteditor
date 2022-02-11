@@ -2615,9 +2615,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             return false;
         Vector3d qvec = Vector3d.cross(tvec, corner1);
         BigDecimal v = Vector3d.dotP(dir, qvec).multiply(invDiskr);
-        if (v.compareTo(ZEROTR) < 0 || u.add(v).compareTo(ONETR) > 0)
-            return false;
-        return true;
+        return !(v.compareTo(ZEROTR) < 0 || u.add(v).compareTo(ONETR) > 0);
     }
 
     private boolean intersectLineTriangleSuperFast(Vector3dd q, Vector3d d, Vector3dd p2, Vector3d c, Vector3d dir, BigDecimal len) {
@@ -2643,8 +2641,6 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         if (v.compareTo(ZEROT) < 0 || u.add(v).compareTo(ONET) > 0)
             return false;
         BigDecimal t = Vector3d.dotP(corner2, qvec).multiply(invDiskr);
-        if (t.compareTo(ZEROT) < 0 || t.compareTo(len.add(TOLERANCE)) > 0)
-            return false;
-        return true;
+        return !(t.compareTo(ZEROT) < 0 || t.compareTo(len.add(TOLERANCE)) > 0);
     }
 }

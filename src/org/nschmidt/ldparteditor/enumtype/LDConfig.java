@@ -135,9 +135,7 @@ public enum LDConfig {
                return false;
            if (Float.floatToIntBits(g) != Float.floatToIntBits(other.g))
                return false;
-           if (Float.floatToIntBits(r) != Float.floatToIntBits(other.r))
-               return false;
-           return true;
+           return Float.floatToIntBits(r) == Float.floatToIntBits(other.r);
        }
    }
 

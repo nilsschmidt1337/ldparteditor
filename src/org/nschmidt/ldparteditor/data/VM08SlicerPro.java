@@ -1002,10 +1002,7 @@ class VM08SlicerPro extends VM07PathTruder {
             if (t0.compareTo(t1) > 0) {
                 Rational t=t0; t0=t1; t1=t;
             }
-            if (t0.compareTo(Rational.ONE) > 0 || t1.compareTo(Rational.ZERO) < 0) {
-                return false;
-            }
-            return true;
+            return !(t0.compareTo(Rational.ONE) > 0 || t1.compareTo(Rational.ZERO) < 0);
         }
 
         Rational sI = v.x.multiply(w.y).subtract(v.y.multiply(w.x)).divide(d);
@@ -1013,10 +1010,7 @@ class VM08SlicerPro extends VM07PathTruder {
             return false;
 
         Rational tI = u.x.multiply(w.y).subtract(u.y.multiply(w.x)).divide(d);
-        if (tI.compareTo(Rational.ZERO) < 0 || tI.compareTo(Rational.ONE) > 0)
-            return false;
-
-        return true;
+        return !(tI.compareTo(Rational.ZERO) < 0 || tI.compareTo(Rational.ONE) > 0);
     }
 
     private boolean inSegment(Vector3r p, Vector3r s1, Vector3r s2) {

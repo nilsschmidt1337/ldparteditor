@@ -72,8 +72,6 @@ public class VertexInfo {
                 return false;
         } else if (!linkedData.equals(other.linkedData))
             return false;
-        if (position != other.position)
-            return false;
-        return true;
+        return position == other.position;
     }
 }

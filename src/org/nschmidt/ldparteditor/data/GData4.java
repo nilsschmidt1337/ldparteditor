@@ -1694,11 +1694,7 @@ public final class GData4 extends GData {
         }
 
         collinearityAngle = 360.0 - sumAngle;
-        if (collinearityAngle < Threshold.COLLINEAR_ANGLE_MINIMUM || collinearityAngle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
-            return true;
-        }
-
-        return false;
+        return collinearityAngle < Threshold.COLLINEAR_ANGLE_MINIMUM || collinearityAngle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
     }
 
     public int getHourglassConfiguration() {

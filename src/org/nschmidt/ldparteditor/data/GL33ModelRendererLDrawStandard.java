@@ -295,10 +295,8 @@ public class GL33ModelRendererLDrawStandard {
                                 gw.texture = lastTexture;
                             }
 
-                            if (gw.data instanceof GDataTEX tex) {
-                                if (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT) {
-                                    lastTexture = tex.linkedTexture;
-                                }
+                            if (gw.data instanceof GDataTEX tex && (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT)) {
+                                lastTexture = tex.linkedTexture;
                             }
                         }
 
@@ -1606,16 +1604,10 @@ public class GL33ModelRendererLDrawStandard {
         if (hasTEXMAP) {
             for (Iterator<GDataAndWinding> iterator = dataInOrder.iterator(); iterator.hasNext();) {
                 GDataAndWinding gaw = iterator.next();
-                if (gaw.data instanceof GData3 gd3) {
-                    if (gd3.a < 1f) {
-                        texmapDataInOrder.add(new GDataAndTexture(gaw));
-                        iterator.remove();
-                    }
-                } else if (gaw.data instanceof GData4 gd4) {
-                    if (gd4.a < 1f) {
-                        texmapDataInOrder.add(new GDataAndTexture(gaw));
-                        iterator.remove();
-                    }
+                if (gaw.data instanceof GData3 gd3 && gd3.a < 1f
+                 || gaw.data instanceof GData4 gd4 && gd4.a < 1f) {
+                    texmapDataInOrder.add(new GDataAndTexture(gaw));
+                    iterator.remove();
                 }
             }
         }

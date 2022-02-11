@@ -902,13 +902,8 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
                 NLogger.debug(getClass(), "Unrectify.."); //$NON-NLS-1$
                 final StyledText st = selection.getTextComposite();
-                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
-                    // Don't split quads
-                    Unrectifier.splitAllIntoTriangles(st, selection.getState().getFileNameObj(), false);
-                } else {
-                    // Split quads AND rect primitives
-                    Unrectifier.splitAllIntoTriangles(st, selection.getState().getFileNameObj(), true);
-                }
+                final boolean splitQuadsAndRectPrimitives = !Cocoa.checkCtrlOrCmdPressed(e.stateMask);
+                Unrectifier.splitAllIntoTriangles(st, selection.getState().getFileNameObj(), splitQuadsAndRectPrimitives);
                 st.forceFocus();
             }
         });

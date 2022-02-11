@@ -203,11 +203,7 @@ class WatchSettingsDirectory {
                                                    win.updateTreeUnsavedEntries();
 
                                                    // Hack to bring LDPartEditor to front
-                                                   if (!win.getShell().getMinimized())
-                                                   {
-                                                       win.getShell().setMinimized(true);
-                                                   }
-
+                                                   win.getShell().setMinimized(!win.getShell().getMinimized());
                                                    win.getShell().setMinimized(false);
                                                    win.getShell().setActive();
                                                } finally {

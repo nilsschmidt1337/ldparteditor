@@ -180,11 +180,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         helper.createVBO();
 
         int state3d = 0;
-        if (c3d.isAnaglyph3d() && !ldrawStandardMode) {
-            GL11.glColorMask(true, false, false, true);
-        } else {
-            GL11.glColorMask(true, true, true, true);
-        }
+        boolean isAnaglyph = c3d.isAnaglyph3d() && !ldrawStandardMode;
+        GL11.glColorMask(true, !isAnaglyph, !isAnaglyph, true);
         while (true) {
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);

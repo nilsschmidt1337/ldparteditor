@@ -1536,10 +1536,7 @@ public final class GData3 extends GData {
         }
 
         angle = 180.0 - sumAngle;
-        if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
-            return true;
-        }
-        return false;
+        return angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
     }
 
     String colourReplace(String col) {
