@@ -475,7 +475,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (btnCoarsePtr[0].getMenu() != null) {
                         btnCoarsePtr[0].getMenu().dispose();
                     }
-                } catch (Exception ex) {}
+                } catch (Exception ex) {
+                    NLogger.debug(Editor3DWindow.class, ex);
+                }
 
                 Menu gridMenu = new Menu(btnCoarsePtr[0]);
                 btnCoarsePtr[0].setMenu(gridMenu);
@@ -522,7 +524,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (btnMediumPtr[0].getMenu() != null) {
                         btnMediumPtr[0].getMenu().dispose();
                     }
-                } catch (Exception ex) {}
+                } catch (Exception ex) {
+                    NLogger.debug(Editor3DWindow.class, ex);
+                }
 
                 Menu gridMenu = new Menu(btnMediumPtr[0]);
                 btnMediumPtr[0].setMenu(gridMenu);
@@ -569,7 +573,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (btnFinePtr[0].getMenu() != null) {
                         btnFinePtr[0].getMenu().dispose();
                     }
-                } catch (Exception ex) {}
+                } catch (Exception ex) {
+                    NLogger.debug(Editor3DWindow.class, ex);
+                }
 
                 Menu gridMenu = new Menu(btnFinePtr[0]);
                 btnFinePtr[0].setMenu(gridMenu);
@@ -1211,7 +1217,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (treeParts[0].getTree().getMenu() != null) {
                         treeParts[0].getTree().getMenu().dispose();
                     }
-                } catch (Exception ex) {}
+                } catch (Exception ex) {
+                    NLogger.debug(Editor3DWindow.class, ex);
+                }
 
                 final boolean enabled = treeParts[0].getSelectionCount() > 0  && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile;
                 final boolean writable = enabled && !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly();
@@ -1460,7 +1468,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         fd.setFilterPath(f.getParent());
                         fd.setFileName(f.getName());
                     } catch (Exception ex) {
-
+                        NLogger.debug(Editor3DWindow.class, ex);
                     }
 
                     String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
@@ -1895,7 +1903,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     });
                 }
             });
-        } catch (InvocationTargetException consumed) {
+        } catch (InvocationTargetException ite) {
+            NLogger.error(Editor3DWindow.class, ite);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new LDPartEditorException(ie);

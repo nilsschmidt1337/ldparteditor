@@ -138,7 +138,7 @@ public class SplashScreen extends ApplicationWindow {
         try {
             Locale.setDefault(WorkbenchManager.getUserSettingState().getLocale());
         } catch (SecurityException se) {
-
+            NLogger.error(getClass(), se);
         }
 
         this.setShellStyle(SWT.ON_TOP);
@@ -257,7 +257,9 @@ public class SplashScreen extends ApplicationWindow {
                     if (!layout3Dconfig.exists()) {
                         pathToLayout3Dconfig = "layout_3D_editor.cfg"; //$NON-NLS-1$
                     }
-                } catch (SecurityException consumed) {}
+                } catch (SecurityException se) {
+                    NLogger.error(getClass(), se);
+                }
 
                 // Load the toolItem state for the 3D editor
                 String line = null;

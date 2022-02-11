@@ -376,7 +376,9 @@ public class CompositePrimitive extends Composite {
                         Editor3DWindow.getWindow().updatePrimitiveLabel(null);
                         Display.getCurrent().timerExec(3000, this);
                     }
-                } catch (SWTException consumed) {}
+                } catch (SWTException consumed) {
+                    NLogger.debug(CompositePrimitive.class, consumed);
+                }
             }
         });
     }
@@ -754,48 +756,66 @@ public class CompositePrimitive extends Composite {
                                                         try {
                                                             criteria = dataSegments[i].substring(searchIndex + 13, dataSegments[i].length() - 1);
                                                             rules.add(new PrimitiveRule(Rule.FILENAME_STARTS_WITH, criteria, hasAnd, hasNot));
-                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                        } catch (IndexOutOfBoundsException consumed) {
+                                                            NLogger.debug(CompositePrimitive.class, consumed);
+                                                        }
                                                     } else if (dataSegments[i].startsWith("ends with ", searchIndex)) { //$NON-NLS-1$
                                                         try {
                                                             criteria = dataSegments[i].substring(searchIndex + 11, dataSegments[i].length() - 1);
                                                             rules.add(new PrimitiveRule(Rule.FILENAME_ENDS_WITH, criteria, hasAnd, hasNot));
-                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                        } catch (IndexOutOfBoundsException consumed) {
+                                                            NLogger.debug(CompositePrimitive.class, consumed);
+                                                        }
                                                     } else if (dataSegments[i].startsWith("contains ", searchIndex)) { //$NON-NLS-1$
                                                         try {
                                                             criteria = dataSegments[i].substring(searchIndex + 10, dataSegments[i].length() - 1);
                                                             rules.add(new PrimitiveRule(Rule.FILENAME_CONTAINS, criteria, hasAnd, hasNot));
-                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                        } catch (IndexOutOfBoundsException consumed) {
+                                                            NLogger.debug(CompositePrimitive.class, consumed);
+                                                        }
                                                     } else if (dataSegments[i].startsWith("matches ", searchIndex)) { //$NON-NLS-1$
                                                         try {
                                                             criteria = dataSegments[i].substring(searchIndex + 9, dataSegments[i].length() - 1);
                                                             rules.add(new PrimitiveRule(Rule.FILENAME_MATCHES, criteria, hasAnd, hasNot));
-                                                        } catch (IndexOutOfBoundsException consumed) {}
+                                                        } catch (IndexOutOfBoundsException consumed) {
+                                                            NLogger.debug(CompositePrimitive.class, consumed);
+                                                        }
                                                     }
                                                 } else if (dataSegments[i].startsWith("Starts with ", searchIndex)) { //$NON-NLS-1$
                                                     try {
                                                         criteria = dataSegments[i].substring(searchIndex + 13, dataSegments[i].length() - 1);
                                                         rules.add(new PrimitiveRule(Rule.STARTS_WITH, criteria, hasAnd, hasNot));
-                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                    } catch (IndexOutOfBoundsException consumed) {
+                                                        NLogger.debug(CompositePrimitive.class, consumed);
+                                                    }
                                                 } else if (dataSegments[i].startsWith("Ends with ", searchIndex)) { //$NON-NLS-1$
                                                     try {
                                                         criteria = dataSegments[i].substring(searchIndex + 11, dataSegments[i].length() - 1);
                                                         rules.add(new PrimitiveRule(Rule.ENDS_WITH, criteria, hasAnd, hasNot));
-                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                    } catch (IndexOutOfBoundsException consumed) {
+                                                        NLogger.debug(CompositePrimitive.class, consumed);
+                                                    }
                                                 } else if (dataSegments[i].startsWith("Contains ", searchIndex)) { //$NON-NLS-1$
                                                     try {
                                                         criteria = dataSegments[i].substring(searchIndex + 10, dataSegments[i].length() - 1);
                                                         rules.add(new PrimitiveRule(Rule.CONTAINS, criteria, hasAnd, hasNot));
-                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                    } catch (IndexOutOfBoundsException consumed) {
+                                                        NLogger.debug(CompositePrimitive.class, consumed);
+                                                    }
                                                 } else if (dataSegments[i].startsWith("Matches ", searchIndex)) { //$NON-NLS-1$
                                                     try {
                                                         criteria = dataSegments[i].substring(searchIndex + 9, dataSegments[i].length() - 1);
                                                         rules.add(new PrimitiveRule(Rule.MATCHES, criteria, hasAnd, hasNot));
-                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                    } catch (IndexOutOfBoundsException consumed) {
+                                                        NLogger.debug(CompositePrimitive.class, consumed);
+                                                    }
                                                 } else if (dataSegments[i].startsWith("Title ", searchIndex)) { //$NON-NLS-1$
                                                     try {
                                                         criteria = dataSegments[i].substring(searchIndex + 7, dataSegments[i].length() - 1);
                                                         leavesTitleMap.put(catID, criteria);
-                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                    } catch (IndexOutOfBoundsException consumed) {
+                                                        NLogger.debug(CompositePrimitive.class, consumed);
+                                                    }
                                                 }
                                             }
                                             leavesRulesMap.put(catID, rules);
@@ -850,48 +870,66 @@ public class CompositePrimitive extends Composite {
                                                                     try {
                                                                         criteria = dataSegments[i].substring(searchIndex + 13, dataSegments[i].length() - 1);
                                                                         rules.add(new PrimitiveRule(Rule.FILENAME_STARTS_WITH, criteria, hasAnd, hasNot));
-                                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                                    } catch (IndexOutOfBoundsException consumed) {
+                                                                        NLogger.debug(CompositePrimitive.class, consumed);
+                                                                    }
                                                                 } else if (dataSegments[i].startsWith("ends with ", searchIndex)) { //$NON-NLS-1$
                                                                     try {
                                                                         criteria = dataSegments[i].substring(searchIndex + 11, dataSegments[i].length() - 1);
                                                                         rules.add(new PrimitiveRule(Rule.FILENAME_ENDS_WITH, criteria, hasAnd, hasNot));
-                                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                                    } catch (IndexOutOfBoundsException consumed) {
+                                                                        NLogger.debug(CompositePrimitive.class, consumed);
+                                                                    }
                                                                 } else if (dataSegments[i].startsWith("contains ", searchIndex)) { //$NON-NLS-1$
                                                                     try {
                                                                         criteria = dataSegments[i].substring(searchIndex + 10, dataSegments[i].length() - 1);
                                                                         rules.add(new PrimitiveRule(Rule.FILENAME_CONTAINS, criteria, hasAnd, hasNot));
-                                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                                    } catch (IndexOutOfBoundsException consumed) {
+                                                                        NLogger.debug(CompositePrimitive.class, consumed);
+                                                                    }
                                                                 } else if (dataSegments[i].startsWith("matches ", searchIndex)) { //$NON-NLS-1$
                                                                     try {
                                                                         criteria = dataSegments[i].substring(searchIndex + 9, dataSegments[i].length() - 1);
                                                                         rules.add(new PrimitiveRule(Rule.FILENAME_MATCHES, criteria, hasAnd, hasNot));
-                                                                    } catch (IndexOutOfBoundsException consumed) {}
+                                                                    } catch (IndexOutOfBoundsException consumed) {
+                                                                        NLogger.debug(CompositePrimitive.class, consumed);
+                                                                    }
                                                                 }
                                                             } else if (dataSegments[i].startsWith("Starts with ", searchIndex)) { //$NON-NLS-1$
                                                                 try {
                                                                     criteria = dataSegments[i].substring(searchIndex + 13, dataSegments[i].length() - 1);
                                                                     rules.add(new PrimitiveRule(Rule.STARTS_WITH, criteria, hasAnd, hasNot));
-                                                                } catch (IndexOutOfBoundsException consumed) {}
+                                                                } catch (IndexOutOfBoundsException consumed) {
+                                                                    NLogger.debug(CompositePrimitive.class, consumed);
+                                                                }
                                                             } else if (dataSegments[i].startsWith("Ends with ", searchIndex)) { //$NON-NLS-1$
                                                                 try {
                                                                     criteria = dataSegments[i].substring(searchIndex + 11, dataSegments[i].length() - 1);
                                                                     rules.add(new PrimitiveRule(Rule.ENDS_WITH, criteria, hasAnd, hasNot));
-                                                                } catch (IndexOutOfBoundsException consumed) {}
+                                                                } catch (IndexOutOfBoundsException consumed) {
+                                                                    NLogger.debug(CompositePrimitive.class, consumed);
+                                                                }
                                                             } else if (dataSegments[i].startsWith("Contains ", searchIndex)) { //$NON-NLS-1$
                                                                 try {
                                                                     criteria = dataSegments[i].substring(searchIndex + 10, dataSegments[i].length() - 1);
                                                                     rules.add(new PrimitiveRule(Rule.CONTAINS, criteria, hasAnd, hasNot));
-                                                                } catch (IndexOutOfBoundsException consumed) {}
+                                                                } catch (IndexOutOfBoundsException consumed) {
+                                                                    NLogger.debug(CompositePrimitive.class, consumed);
+                                                                }
                                                             } else if (dataSegments[i].startsWith("Matches ", searchIndex)) { //$NON-NLS-1$
                                                                 try {
                                                                     criteria = dataSegments[i].substring(searchIndex + 9, dataSegments[i].length() - 1);
                                                                     rules.add(new PrimitiveRule(Rule.MATCHES, criteria, hasAnd, hasNot));
-                                                                } catch (IndexOutOfBoundsException consumed) {}
+                                                                } catch (IndexOutOfBoundsException consumed) {
+                                                                    NLogger.debug(CompositePrimitive.class, consumed);
+                                                                }
                                                             } else if (dataSegments[i].startsWith("Title ", searchIndex)) { //$NON-NLS-1$
                                                                 try {
                                                                     criteria = dataSegments[i].substring(searchIndex + 7, dataSegments[i].length() - 1);
                                                                     leavesTitleMap.put(catID, criteria);
-                                                                } catch (IndexOutOfBoundsException consumed) {}
+                                                                } catch (IndexOutOfBoundsException consumed) {
+                                                                    NLogger.debug(CompositePrimitive.class, consumed);
+                                                                }
                                                             }
                                                         }
                                                         leavesMap.put(catID, child);
@@ -1045,8 +1083,8 @@ public class CompositePrimitive extends Composite {
                             }
                         }
                     }
-                } catch (SecurityException consumed) {
-
+                } catch (SecurityException se) {
+                    NLogger.error(CompositePrimitive.class, se);
                 }
 
                 // Clear superflous cache data

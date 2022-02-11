@@ -864,7 +864,8 @@ class VM07PathTruder extends VM06Edger2 {
                         }
                     }
                 });
-            } catch (InvocationTargetException consumed) {
+            } catch (InvocationTargetException ite) {
+                NLogger.error(VM07PathTruder.class, ite);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);

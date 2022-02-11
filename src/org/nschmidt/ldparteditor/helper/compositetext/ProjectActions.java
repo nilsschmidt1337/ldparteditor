@@ -137,6 +137,7 @@ public enum ProjectActions {
                     }
                     Editor3DWindow.getWindow().closeAllComposite3D();
                 } else if (result == SWT.YES) {
+                    // Keep the files open and continue
                 } else return false;
             }
             {
@@ -234,6 +235,7 @@ public enum ProjectActions {
                         if (!(createOnlyDefault && Project.isDefaultProject())) {
                             int result2 = messageBox.open();
                             if (result2 == SWT.YES) {
+                                // Save the changes and continue
                             } else if (result2 == SWT.NO) {
                                 break;
                             } else {

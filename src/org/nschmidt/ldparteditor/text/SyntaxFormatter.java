@@ -36,6 +36,7 @@ import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -356,6 +357,7 @@ public class SyntaxFormatter {
                                 tx = Float.parseFloat(segment);
                                 checkForVertexCounter++;
                             } catch (NumberFormatException nfe) {
+                                NLogger.debug(SyntaxFormatter.class, nfe);
                             }
                             break;
                         case 3:
@@ -363,6 +365,7 @@ public class SyntaxFormatter {
                                 ty = Float.parseFloat(segment);
                                 checkForVertexCounter++;
                             } catch (NumberFormatException nfe) {
+                                NLogger.debug(SyntaxFormatter.class, nfe);
                             }
                             break;
                         case 4:
@@ -370,6 +373,7 @@ public class SyntaxFormatter {
                                 tz = Float.parseFloat(segment);
                                 checkForVertexCounter++;
                             } catch (NumberFormatException nfe) {
+                                NLogger.debug(SyntaxFormatter.class, nfe);
                             }
                             break;
                         default:
@@ -459,6 +463,7 @@ public class SyntaxFormatter {
                                     setBorderStyle(styles.get(numStyles - 3));
                                 }
                             } catch (NumberFormatException nfe) {
+                                NLogger.debug(SyntaxFormatter.class, nfe);
                             }
                         }
                     }

@@ -200,7 +200,9 @@ public class BigDecimalSpinner extends Composite {
                         if (val2.compareTo(value) != 0) {
                             differenceBetweenDisplayedAndInput = true;
                         }
-                    } catch (ParseException consumed) {}
+                    } catch (ParseException consumed) {
+                        NLogger.debug(BigDecimalSpinner.class, consumed);
+                    }
                 }
                 if (differenceBetweenDisplayedAndInput) {
                     lblWarn[0].setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$

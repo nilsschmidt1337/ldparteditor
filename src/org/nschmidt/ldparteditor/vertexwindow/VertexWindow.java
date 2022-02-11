@@ -44,6 +44,7 @@ import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.ShellHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
@@ -173,7 +174,9 @@ public class VertexWindow extends ApplicationWindow {
         if (singleVertexSelected) {
             try {
                 newSelectedVertex = selectedVertices.iterator().next();
-            } catch (NoSuchElementException consumed) {}
+            } catch (NoSuchElementException consumed) {
+                NLogger.debug(VertexWindow.class, consumed);
+            }
         }
 
         if (windowShouldBeDisplayed && vertexWindow.getShell() == null) {

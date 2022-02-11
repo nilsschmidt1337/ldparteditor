@@ -448,7 +448,9 @@ public enum DatParser {
                     if (!errorCheckOnly) datFile.getVertexManager().setSelectedBgPicture(gpng);
                     result.add(0, new ParsingResult(gpng));
                     if (!errorCheckOnly) updatePngImages = true;
-                } catch (Exception ex) {}
+                } catch (Exception consumed) {
+                    NLogger.debug(DatParser.class, consumed);
+                }
             }
         } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$

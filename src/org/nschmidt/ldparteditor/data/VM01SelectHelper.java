@@ -202,7 +202,8 @@ class VM01SelectHelper extends VM01Select {
                                 }
                             }
                         });
-                    } catch (InvocationTargetException consumed) {
+                    } catch (InvocationTargetException ite) {
+                        NLogger.error(VM01SelectHelper.class, ite);
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
                         throw new LDPartEditorException(ie);
@@ -356,7 +357,8 @@ class VM01SelectHelper extends VM01Select {
                                 }
                             }
                         });
-                    }catch (InvocationTargetException consumed) {
+                    } catch (InvocationTargetException ite) {
+                        NLogger.error(VM01SelectHelper.class, ite);
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
                         throw new LDPartEditorException(ie);
@@ -614,7 +616,8 @@ class VM01SelectHelper extends VM01Select {
                                 }
                             }
                         });
-                    } catch (InvocationTargetException consumed) {
+                    } catch (InvocationTargetException ite) {
+                        NLogger.error(VM01SelectHelper.class, ite);
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
                         throw new LDPartEditorException(ie);
@@ -768,7 +771,8 @@ class VM01SelectHelper extends VM01Select {
                                 }
                             }
                         });
-                    }catch (InvocationTargetException consumed) {
+                    }catch (InvocationTargetException ite) {
+                        NLogger.error(VM01SelectHelper.class, ite);
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
                         throw new LDPartEditorException(ie);
@@ -1038,6 +1042,7 @@ class VM01SelectHelper extends VM01Select {
                                 }
                             }
                         } catch (RuntimeException re1) {
+                            NLogger.debug(VM01SelectHelper.class, re1);
                         }
                     }
                 }
@@ -1091,6 +1096,7 @@ class VM01SelectHelper extends VM01Select {
                                 }
                             }
                         } catch (RuntimeException re2) {
+                            NLogger.debug(VM01SelectHelper.class, re2);
                         }
                     }
                 }
@@ -1271,6 +1277,7 @@ class VM01SelectHelper extends VM01Select {
                             }
                         }
                     } catch (RuntimeException re1) {
+                        NLogger.debug(VM01SelectHelper.class, re1);
                     }
                 }
                 for (Entry<GData5, Vertex[]> entry : condlines.entrySet()) {
@@ -1316,6 +1323,7 @@ class VM01SelectHelper extends VM01Select {
                             }
                         }
                     } catch (RuntimeException re2) {
+                        NLogger.debug(VM01SelectHelper.class, re2);
                     }
                 }
             }

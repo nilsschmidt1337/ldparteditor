@@ -193,7 +193,9 @@ public enum GuiStatusManager {
                 Vertex v = vsi.next();
                 result.add(new ScreenVertex(v, pc.getScreenCoordinatesFrom3D(v.xp, v.yp, v.zp)));
             }
-        } catch (NoSuchElementException consumed) {}
+        } catch (NoSuchElementException consumed) {
+            NLogger.debug(GuiStatusManager.class, consumed);
+        }
         return result.iterator();
     }
 
@@ -207,7 +209,9 @@ public enum GuiStatusManager {
             sb.append("; "); //$NON-NLS-1$
             sb.append(DF4F.format(v.zp.multiply(View.unitFactor)));
             sb.append("]"); //$NON-NLS-1$
-        } catch (NoSuchElementException consumed) {}
+        } catch (NoSuchElementException consumed) {
+            NLogger.debug(GuiStatusManager.class, consumed);
+        }
     }
 
     private static void formatForTwoSelectedVertices(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
@@ -220,7 +224,9 @@ public enum GuiStatusManager {
             sb.append("; "); //$NON-NLS-1$
             sb.append(DF2F.format(v.zp.multiply(View.unitFactor)));
             sb.append("]"); //$NON-NLS-1$
-        } catch (NoSuchElementException consumed) {}
+        } catch (NoSuchElementException consumed) {
+            NLogger.debug(GuiStatusManager.class, consumed);
+        }
     }
 
     private static void formatForThreeSelectedVertices(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
@@ -233,7 +239,9 @@ public enum GuiStatusManager {
             sb.append(";"); //$NON-NLS-1$
             sb.append(DF1F.format(v.zp.multiply(View.unitFactor)));
             sb.append("]"); //$NON-NLS-1$
-        } catch (NoSuchElementException consumed) {}
+        } catch (NoSuchElementException consumed) {
+            NLogger.debug(GuiStatusManager.class, consumed);
+        }
     }
 
     private static void formatForFourSelectedVertices(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
@@ -246,7 +254,9 @@ public enum GuiStatusManager {
             sb.append(";"); //$NON-NLS-1$
             sb.append(DF0F.format(v.zp.multiply(View.unitFactor)));
             sb.append("]"); //$NON-NLS-1$
-        } catch (NoSuchElementException consumed) {}
+        } catch (NoSuchElementException consumed) {
+            NLogger.debug(GuiStatusManager.class, consumed);
+        }
     }
 
     public static synchronized void updateStatus(DatFile df) {

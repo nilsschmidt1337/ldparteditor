@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.swt.custom.StyledText;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * Splits selected quads into triangles
@@ -68,7 +69,9 @@ public enum QuadSplitter {
             } catch (IllegalArgumentException iae2) {
                 try {
                     st.setSelectionRange(x - 2, y);
-                } catch (IllegalArgumentException consumed) {}
+                } catch (IllegalArgumentException consumed) {
+                    NLogger.debug(QuadSplitter.class, consumed);
+                }
             }
         }
 

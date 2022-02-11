@@ -238,7 +238,8 @@ public enum Project {
             primitives8Folder.mkdir();
             File texturesFolder = new File(getProjectPath() + File.separator + "textures"); //$NON-NLS-1$
             texturesFolder.mkdir();
-        } catch (SecurityException consumed) {
+        } catch (SecurityException se) {
+            NLogger.error(Project.class, se);
         }
     }
 

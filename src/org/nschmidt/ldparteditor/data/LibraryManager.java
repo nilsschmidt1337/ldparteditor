@@ -505,6 +505,7 @@ public enum LibraryManager {
                         }
                     }
                 } catch (NumberFormatException consumed) {
+                    NLogger.debug(LibraryManager.class, consumed);
                 }
             }
 

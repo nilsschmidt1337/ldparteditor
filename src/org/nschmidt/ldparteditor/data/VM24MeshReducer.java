@@ -252,7 +252,8 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                     }
                 });
             }
-            catch (InvocationTargetException consumed) {
+            catch (InvocationTargetException ite) {
+                NLogger.error(VM24MeshReducer.class, ite);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);

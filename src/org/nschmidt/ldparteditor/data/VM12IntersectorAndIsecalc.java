@@ -124,7 +124,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 }
             });
         }
-        catch (InvocationTargetException consumed) {
+        catch (InvocationTargetException ite) {
+            NLogger.error(VM12IntersectorAndIsecalc.class, ite);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new LDPartEditorException(ie);
@@ -554,7 +555,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     }
                 });
             }
-            catch (InvocationTargetException consumed) {
+            catch (InvocationTargetException ite) {
+                NLogger.error(VM12IntersectorAndIsecalc.class, ite);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);
@@ -1742,7 +1744,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 }
             });
         }
-        catch (InvocationTargetException consumed) {
+        catch (InvocationTargetException ite) {
+            NLogger.error(VM12IntersectorAndIsecalc.class, ite);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new LDPartEditorException(ie);
@@ -1924,7 +1927,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     }
                 });
             }
-            catch (InvocationTargetException consumed) {
+            catch (InvocationTargetException ite) {
+                NLogger.error(VM12IntersectorAndIsecalc.class, ite);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);
@@ -2107,7 +2111,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     }
                 });
             }
-            catch (InvocationTargetException consumed) {
+            catch (InvocationTargetException ite) {
+                NLogger.error(VM12IntersectorAndIsecalc.class, ite);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);
@@ -2419,7 +2424,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     }
                 });
             }
-            catch (InvocationTargetException consumed) {
+            catch (InvocationTargetException ite) {
+                NLogger.error(VM12IntersectorAndIsecalc.class, ite);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);
@@ -2551,7 +2557,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     }
                 });
             }
-            catch (InvocationTargetException consumed) {
+            catch (InvocationTargetException ite) {
+                NLogger.error(VM12IntersectorAndIsecalc.class, ite);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);

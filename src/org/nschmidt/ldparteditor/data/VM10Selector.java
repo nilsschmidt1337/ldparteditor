@@ -34,6 +34,7 @@ import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 
 class VM10Selector extends VM09WindingChange {
@@ -99,7 +100,8 @@ class VM10Selector extends VM09WindingChange {
                     selectorHelper(ss);
                 }
             });
-        }catch (InvocationTargetException consumed) {
+        }catch (InvocationTargetException ite) {
+            NLogger.error(VM10Selector.class, ite);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new LDPartEditorException(ie);

@@ -877,12 +877,14 @@ public class GTexture {
                 buf.flip();
                 try {
                     in.close();
-                } catch (Exception ex) {
+                } catch (Exception consumed) {
+                    NLogger.debug(GTexture.class, consumed);
                 }
             } catch (IOException e) {
                 try {
                     in.close();
-                } catch (Exception ex) {
+                } catch (Exception consumed) {
+                    NLogger.debug(GTexture.class, consumed);
                 }
                 return -1;
             }

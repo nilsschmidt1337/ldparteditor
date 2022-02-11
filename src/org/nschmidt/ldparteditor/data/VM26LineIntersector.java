@@ -132,7 +132,8 @@ class VM26LineIntersector extends VM25Smooth {
                     }
                 });
             }
-            catch (InvocationTargetException consumed) {
+            catch (InvocationTargetException ite) {
+                NLogger.error(VM26LineIntersector.class, ite);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);

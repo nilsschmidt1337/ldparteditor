@@ -1246,6 +1246,7 @@ public class CompositeTab extends CompositeTabDesign {
             try {
                 compositeTextPtr[0].setLineBackground(tabState.currentLineIndex, 1, compositeTextPtr[0].getBackground());
             } catch (Exception a) {
+                NLogger.debug(CompositeTab.class, a);
             }
             int caretOffset = event.caretOffset;
             tabState.currentLineIndex = compositeTextPtr[0].getLineAtOffset(caretOffset);
@@ -1253,6 +1254,7 @@ public class CompositeTab extends CompositeTabDesign {
                 try {
                     compositeTextPtr[0].setLineBackground(tabState.currentLineIndex, 1, TextEditorColour.getLineHighlightBackground());
                 } catch (Exception a) {
+                    NLogger.debug(CompositeTab.class, a);
                 }
             }
             if (tabState.window[0] == Editor3DWindow.getWindow()) {
@@ -1265,6 +1267,7 @@ public class CompositeTab extends CompositeTabDesign {
                     Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
                     Editor3DWindow.getStatusLabel().update();
                 } catch (Exception a) {
+                    NLogger.debug(CompositeTab.class, a);
                 }
             } else {
                 try {
@@ -1274,6 +1277,7 @@ public class CompositeTab extends CompositeTabDesign {
                         tabState.window[0].setStatus(tabState.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(tabState.currentLineIndex) + 1)); //$NON-NLS-1$
                     }
                 } catch (Exception a) {
+                    NLogger.debug(CompositeTab.class, a);
                 }
             }
             canvasLineNumberAreaPtr[0].redraw();
@@ -1737,7 +1741,9 @@ public class CompositeTab extends CompositeTabDesign {
                             newstart = Math.max(Math.max(oldSelectionStart, oldSelectionEnd), newstart);
                             newend = Math.min(Math.min(oldSelectionStart, oldSelectionEnd), newend);
                             compositeTextPtr[0].setSelection(newstart, newend);
-                        } catch (IllegalArgumentException consumed) {}
+                        } catch (IllegalArgumentException consumed) {
+                            NLogger.debug(CompositeTab.class, consumed);
+                        }
                     }
                 } else {
                     try {
@@ -1745,14 +1751,18 @@ public class CompositeTab extends CompositeTabDesign {
                     } catch (IllegalArgumentException iae) {
                         try {
                             compositeTextPtr[0].setSelection(compositeTextPtr[0].getText().length(), compositeTextPtr[0].getOffsetAtLine(line));
-                        } catch (IllegalArgumentException consumed) {}
+                        } catch (IllegalArgumentException consumed) {
+                            NLogger.debug(CompositeTab.class, consumed);
+                        }
                     }
                 }
                 try {
                     if (compositeTextPtr[0].getSelectionText().endsWith(StringHelper.getLineDelimiter())) {
                         compositeTextPtr[0].setSelection(compositeTextPtr[0].getSelection().x, compositeTextPtr[0].getSelection().y - StringHelper.getLineDelimiter().length());
                     }
-                } catch (IllegalArgumentException consumed) {}
+                } catch (IllegalArgumentException consumed) {
+                    NLogger.debug(CompositeTab.class, consumed);
+                }
             }
         });
         canvasLineNumberAreaPtr[0].addPaintListener(e -> {

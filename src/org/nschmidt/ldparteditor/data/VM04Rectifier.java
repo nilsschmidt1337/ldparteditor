@@ -38,6 +38,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
@@ -582,7 +583,8 @@ class VM04Rectifier extends VM03Adjacency {
                     }
                 });
             }
-            catch (InvocationTargetException consumed) {
+            catch (InvocationTargetException ite) {
+                NLogger.error(VM04Rectifier.class, ite);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);
@@ -1146,6 +1148,7 @@ class VM04Rectifier extends VM03Adjacency {
                 BigDecimal m22 = new BigDecimal(dataSegments[13]);
                 return new Matrix(m00, m01, m02, m02, m10, m11, m12, m12, m20, m21, m22, m22, m30, m31, m32, m32);
             } catch (NumberFormatException nfe) {
+                NLogger.debug(VM04Rectifier.class, nfe);
             }
         }
         return m;

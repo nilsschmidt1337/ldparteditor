@@ -25,6 +25,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
@@ -151,7 +152,7 @@ public class SearchWindow extends SearchDesign {
                     scopeAll = true;
                 }
             } catch (IllegalArgumentException iae) {
-
+                NLogger.debug(SearchWindow.class, iae);
             }
         });
 
@@ -327,7 +328,9 @@ public class SearchWindow extends SearchDesign {
                         } else {
                             textComposite.setText(textComposite.getText().replace("(?i)" + Pattern.quote(criteria), replacement)); //$NON-NLS-1$
                         }
-                    } catch (Exception consumed) {}
+                    } catch (Exception consumed) {
+                        NLogger.debug(SearchWindow.class, consumed);
+                    }
                 } else {
 
                     textComposite.setSelectionRange(selectionStart, selectionEnd - selectionStart);
@@ -348,7 +351,9 @@ public class SearchWindow extends SearchDesign {
                                 textComposite.setSelectionRange(selectionStart, textToReplace.length());
                             }
 
-                        } catch (Exception consumed) {}
+                        } catch (Exception consumed) {
+                            NLogger.debug(SearchWindow.class, consumed);
+                        }
                     }
                 }
             }
@@ -360,6 +365,8 @@ public class SearchWindow extends SearchDesign {
             rbAllPtr[0].setSelection(true);
             rbSelectedLinesPtr[0].setSelection(false);
             getShell().update();
-        } catch (Exception consumed) {}
+        } catch (Exception consumed) {
+            NLogger.debug(SearchWindow.class, consumed);
+        }
     }
 }

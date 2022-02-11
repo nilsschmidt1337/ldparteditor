@@ -1033,7 +1033,7 @@ public class MouseActions {
                             vm.getSelectedVertices().clear();
                             return;
                         } else if (vq1 != null && vq2 == null && vq3 == null && vq4 == null) {
-
+                            // Add nothing.
                         }
                     } else if (vm.getSelectedVertices().size() == 3) {
                         final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();
@@ -1195,7 +1195,7 @@ public class MouseActions {
                             vm.setModified(true, true);
                             return;
                         } else if (vc1 != null && vc2 == null && vc3 == null && vc4 == null) {
-
+                            // Add nothing.
                         }
                     } else if (vm.getSelectedVertices().size() == 3) {
                         final Iterator<Vertex> vi = vm.getSelectedVertices().iterator();

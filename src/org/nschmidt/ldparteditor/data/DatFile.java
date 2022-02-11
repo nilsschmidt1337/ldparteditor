@@ -1383,7 +1383,8 @@ public final class DatFile {
                                     offset += StringHelper.getLineDelimiter().length() + gdata.toString().length();
                                     st.setSelection(offset, offset);
                                 }
-                            } catch (IllegalArgumentException iae) {
+                            } catch (IllegalArgumentException consumed) {
+                                NLogger.debug(DatFile.class, consumed);
                             }
                             state.setSync(false);
                         }

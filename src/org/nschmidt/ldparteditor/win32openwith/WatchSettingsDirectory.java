@@ -211,8 +211,8 @@ class WatchSettingsDirectory {
                                                    win.getShell().setMinimized(false);
                                                    win.getShell().setActive();
                                                } finally {
+                                                   WorkbenchManager.getUserSettingState().setSyncingTabs(syncingTabs);
                                                }
-                                               WorkbenchManager.getUserSettingState().setSyncingTabs(syncingTabs);
                                            } finally {
                                               fileOpenLock2.unlock();
                                            }

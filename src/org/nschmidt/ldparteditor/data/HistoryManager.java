@@ -446,7 +446,9 @@ class HistoryManager {
                         }
                         try {
                             ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
-                        } catch (IllegalArgumentException consumed) {}
+                        } catch (IllegalArgumentException consumed) {
+                            NLogger.debug(HistoryManager.class, consumed);
+                        }
                         ((CompositeTab) t).getTextComposite().redraw();
                         ((CompositeTab) t).getControl().redraw();
                         ((CompositeTab) t).getTextComposite().update();

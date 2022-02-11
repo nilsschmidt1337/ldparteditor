@@ -105,9 +105,8 @@ public class CSGMesh implements Primitive {
     public static void fillCache(List<GData> cachedData, GData start) {
         if (cachedData.isEmpty()) {
             GData next = start;
-            while ((next = next.getNext()) != null && next.type() == 8) {
-
-            }
+            while ((next = next.getNext()) != null && next.type() == 8);
+            // ^ Loop has intentionally no body.
             if (next == null) {
                 return;
             }
@@ -135,9 +134,8 @@ public class CSGMesh implements Primitive {
     public static boolean needCacheRefresh(List<GData> cachedData2, GData start, DatFile df) {
         List<GData> cachedData = new ArrayList<>();
         GData next = start;
-        while ((next = next.getNext()) != null && next.type() == 8) {
-
-        }
+        while ((next = next.getNext()) != null && next.type() == 8);
+        // ^ Loop has intentionally no body.
         if (next == null) {
             return false;
         }

@@ -257,7 +257,8 @@ class VM17Unificator extends VM16Subdivide {
                     }
                 }
             });
-        } catch (InvocationTargetException consumed) {
+        } catch (InvocationTargetException ite) {
+            NLogger.error(VM17Unificator.class, ite);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new LDPartEditorException(ie);

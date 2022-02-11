@@ -107,7 +107,8 @@ class VM22TJunctionFixer extends VM21Merger {
                 }
             });
         }
-        catch (InvocationTargetException consumed) {
+        catch (InvocationTargetException ite) {
+            NLogger.error(VM22TJunctionFixer.class, ite);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new LDPartEditorException(ie);

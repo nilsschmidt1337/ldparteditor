@@ -27,6 +27,7 @@ import org.nschmidt.ldparteditor.enumtype.Font;
 import org.nschmidt.ldparteditor.enumtype.IconSize;
 import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * The resource manager, which returns pictures, sounds and so on..
@@ -144,12 +145,14 @@ public enum ResourceManager {
                     imageMap.put(name, img);
                 }
             } catch (SWTException swt) {
+                NLogger.error(ResourceManager.class, swt);
             } finally {
                 try {
                     if (imgStream != null) {
                         imgStream.close();
                     }
-                } catch (IOException io) {
+                } catch (IOException ioe) {
+                    NLogger.error(ResourceManager.class, ioe);
                 }
             }
         }

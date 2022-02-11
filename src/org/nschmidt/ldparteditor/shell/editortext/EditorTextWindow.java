@@ -152,7 +152,9 @@ public class EditorTextWindow extends EditorTextDesign {
                     sh.setMaximized(editorTextWindowState.getWindowState().isMaximized());
                     sh.forceActive();
                 }
-            } catch (SWTException consumed) {}
+            } catch (SWTException consumed) {
+                NLogger.debug(EditorTextWindow.class, consumed);
+            }
         });
         // The window reference has to be added to the tab folder
         tabFolderPtr[0].setWindow(editorTextWindow);

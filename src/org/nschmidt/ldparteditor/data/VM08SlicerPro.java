@@ -307,7 +307,8 @@ class VM08SlicerPro extends VM07PathTruder {
                     }
                 });
             }
-            catch (InvocationTargetException consumed) {
+            catch (InvocationTargetException ite) {
+                NLogger.error(VM08SlicerPro.class, ite);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);

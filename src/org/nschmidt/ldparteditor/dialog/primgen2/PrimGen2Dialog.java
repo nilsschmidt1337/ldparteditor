@@ -1489,7 +1489,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 }
                 if (!nonZeroFound) {
                     if (c == '0') {
-
+                        // ignore the zero digit
                     } else if (c == '.') {
                         nonZeroFound = true;
                     } else {
@@ -1523,7 +1523,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 }
                 if (!nonZeroFound) {
                     if (c == '0') {
-
+                        // ignore the zero digit
                     } else if (c == '.') {
                         nonZeroFound = true;
                     } else {
@@ -1558,7 +1558,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 }
                 if (!nonZeroFound) {
                     if (c == '0') {
-
+                        // ignore the zero digit
                     } else if (c == '.') {
                         nonZeroFound = true;
                     } else {

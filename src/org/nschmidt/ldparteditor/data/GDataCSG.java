@@ -259,6 +259,7 @@ public final class GDataCSG extends GData {
                         globalQuality = q;
                     }
                 } catch (NumberFormatException e) {
+                    NLogger.debug(GDataCSG.class, e);
                 }
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
@@ -277,6 +278,7 @@ public final class GDataCSG extends GData {
                         globalEpsilon = q;
                     }
                 } catch (NumberFormatException e) {
+                    NLogger.debug(GDataCSG.class, e);
                 }
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
@@ -295,6 +297,7 @@ public final class GDataCSG extends GData {
                         CSGOptimizerTJunction.epsilon = q;
                     }
                 } catch (NumberFormatException e) {
+                    NLogger.debug(GDataCSG.class, e);
                 }
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
@@ -313,6 +316,7 @@ public final class GDataCSG extends GData {
                         CSGOptimizerEdgeCollapse.epsilon = q;
                     }
                 } catch (NumberFormatException e) {
+                    NLogger.debug(GDataCSG.class, e);
                 }
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
@@ -1205,8 +1209,8 @@ public final class GDataCSG extends GData {
                 if (selectedTriangles.isEmpty()) {
                     selectedBodies.clear();
                 }
-            } catch (ConcurrentModificationException consumed) {
-
+            } catch (ConcurrentModificationException cme) {
+                NLogger.debug(GDataCSG.class, cme);
             }
         }
     }
@@ -1306,7 +1310,9 @@ public final class GDataCSG extends GData {
                 backupSelectedBodyMap.put(linkedDatFile, new HashSet<>(selectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<>())));
                 backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<>(selectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<>())));
                 break;
-            } catch (ConcurrentModificationException cme) {}
+            } catch (ConcurrentModificationException cme) {
+                NLogger.debug(GDataCSG.class, cme);
+            }
         }
     }
 
@@ -1316,7 +1322,9 @@ public final class GDataCSG extends GData {
                 backupSelectedBodyMap.put(linkedDatFile, new HashSet<>());
                 backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<>());
                 break;
-            } catch (ConcurrentModificationException cme) {}
+            } catch (ConcurrentModificationException cme) {
+                NLogger.debug(GDataCSG.class, cme);
+            }
         }
     }
 
@@ -1326,7 +1334,9 @@ public final class GDataCSG extends GData {
                 selectedBodyMap.put(linkedDatFile, backupSelectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<>()));
                 selectedTrianglesMap.put(linkedDatFile, backupSelectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<>()));
                 break;
-            } catch (ConcurrentModificationException cme) {}
+            } catch (ConcurrentModificationException cme) {
+                NLogger.debug(GDataCSG.class, cme);
+            }
         }
     }
 

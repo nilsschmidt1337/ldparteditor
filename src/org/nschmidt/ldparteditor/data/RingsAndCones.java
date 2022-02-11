@@ -542,7 +542,6 @@ public enum RingsAndCones {
             }
         }
 
-        // TODO The solution should be transformed to the location of a selected 4-4disc.dat if any was selected.
         GData1 disc44 = null;
         for (GData gd : vm.getSelectedData()) {
             if (gd.type() == 1
@@ -552,7 +551,7 @@ public enum RingsAndCones {
             }
         }
         if (disc44 != null) {
-
+            // TODO The solution should be transformed to the location of a selected 4-4disc.dat if any was selected.
         }
 
         if (syncWithTextEditor) {
@@ -641,7 +640,9 @@ public enum RingsAndCones {
                                                 existanceMap.get(radius)[index] = true;
                                             }
                                         }
-                                    } catch (NumberFormatException consumed) {}
+                                    } catch (NumberFormatException consumed) {
+                                        NLogger.debug(RingsAndCones.class, consumed);
+                                    }
                                 }
                             }
                         }

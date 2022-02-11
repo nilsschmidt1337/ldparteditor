@@ -126,7 +126,8 @@ public enum TextTriangulator {
                 }
             });
         }
-        catch (InvocationTargetException consumed) {
+        catch (InvocationTargetException ite) {
+            NLogger.error(TextTriangulator.class, ite);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new LDPartEditorException(ie);
