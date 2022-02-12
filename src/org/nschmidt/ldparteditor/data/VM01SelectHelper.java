@@ -243,12 +243,12 @@ class VM01SelectHelper extends VM01Select {
                     b[0] = vertex.x - selectionStart.x;
                     b[1] = vertex.y - selectionStart.y;
                     b[2] = vertex.z - selectionStart.z;
-                    b = MathHelper.gaussianElimination(a, b);
-                    if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
+                    float[] c = MathHelper.gaussianElimination(a, b);
+                    if (c.length > 1 && c[0] <= 1f && c[0] >= 0f && c[1] >= 0f && c[1] <= 1f) {
                         selectVerticesHelper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                     }
                 }
-            } else {  // Multithreaded selection for many, many faces
+            } else { // Multithreaded selection for many, many faces
                 backupSelection();
                 final int chunks = View.NUM_CORES;
                 final Thread[] threads = new Thread[chunks];
@@ -290,8 +290,8 @@ class VM01SelectHelper extends VM01Select {
                             b[0] = vertex.x - selectionStart.x;
                             b[1] = vertex.y - selectionStart.y;
                             b[2] = vertex.z - selectionStart.z;
-                            b = MathHelper.gaussianElimination(a, b);
-                            if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
+                            float[] c = MathHelper.gaussianElimination(a, b);
+                            if (c.length > 1 && c[0] <= 1f && c[0] >= 0f && c[1] >= 0f && c[1] <= 1f) {
                                 if (dialogCanceled.get()) return;
                                 selectVerticesHelper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                             }
@@ -657,8 +657,8 @@ class VM01SelectHelper extends VM01Select {
                     b[0] = vertex.x - selectionStart.x;
                     b[1] = vertex.y - selectionStart.y;
                     b[2] = vertex.z - selectionStart.z;
-                    b = MathHelper.gaussianElimination(a, b);
-                    if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
+                    float[] c = MathHelper.gaussianElimination(a, b);
+                    if (c.length > 1 && c[0] <= 1f && c[0] >= 0f && c[1] >= 0f && c[1] <= 1f) {
                         selectVertices2Helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                     }
                 }
@@ -704,8 +704,8 @@ class VM01SelectHelper extends VM01Select {
                             b[0] = vertex.x - selectionStart.x;
                             b[1] = vertex.y - selectionStart.y;
                             b[2] = vertex.z - selectionStart.z;
-                            b = MathHelper.gaussianElimination(a, b);
-                            if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
+                            float[] c = MathHelper.gaussianElimination(a, b);
+                            if (c.length > 1 && c[0] <= 1f && c[0] >= 0f && c[1] >= 0f && c[1] <= 1f) {
                                 if (dialogCanceled.get()) return;
                                 selectVertices2Helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                             }
@@ -1024,25 +1024,21 @@ class VM01SelectHelper extends VM01Select {
                         m[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
                         b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
                         b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
-                        try {
-                            float[] solution = MathHelper.gaussianElimination(m, b);
 
-                            if (solution[1] >= 0f && solution[1] <= 1f) {
-                                float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
-                                if (distanceSquared < discr) {
-                                    if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
-                                        continue;
-                                    if (selectedLines.contains(line)) {
-                                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
-                                    } else {
-                                        selectedData.add(line);
-                                        selectedLines.add(line);
-                                    }
+                        float[] solution = MathHelper.gaussianElimination(m, b);
+                        if (solution.length > 1 && solution[1] >= 0f && solution[1] <= 1f) {
+                            float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
+                            if (distanceSquared < discr) {
+                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
+                                    continue;
+                                if (selectedLines.contains(line)) {
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
+                                } else {
+                                    selectedData.add(line);
+                                    selectedLines.add(line);
                                 }
                             }
-                        } catch (RuntimeException re1) {
-                            NLogger.debug(VM01SelectHelper.class, re1);
                         }
                     }
                 }
@@ -1078,25 +1074,22 @@ class VM01SelectHelper extends VM01Select {
                         m[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
                         b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
                         b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
-                        try {
-                            float[] solution = MathHelper.gaussianElimination(m, b);
-                            if (solution[1] >= 0f && solution[1] <= 1f) {
-                                float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
-                                        e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
-                                if (distanceSquared < discr) {
-                                    if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
-                                        continue;
-                                    if (selectedCondlines.contains(line)) {
-                                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
-                                    } else {
-                                        selectedData.add(line);
-                                        selectedCondlines.add(line);
-                                    }
+
+                        float[] solution = MathHelper.gaussianElimination(m, b);
+                        if (solution.length > 1 && solution[1] >= 0f && solution[1] <= 1f) {
+                            float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
+                                    e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
+                            if (distanceSquared < discr) {
+                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
+                                    continue;
+                                if (selectedCondlines.contains(line)) {
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
+                                } else {
+                                    selectedData.add(line);
+                                    selectedCondlines.add(line);
                                 }
                             }
-                        } catch (RuntimeException re2) {
-                            NLogger.debug(VM01SelectHelper.class, re2);
                         }
                     }
                 }
@@ -1264,20 +1257,16 @@ class VM01SelectHelper extends VM01Select {
                     m[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
                     b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
                     b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
-                    try {
-                        float[] solution = MathHelper.gaussianElimination(m, b);
 
-                        if (solution[1] >= 0f && solution[1] <= 1f) {
-                            float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
-                                    e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
-                            if (distanceSquared < discr) {
-                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
-                                    continue;
-                                selectedLinesForSubfile.add(line);
-                            }
+                    float[] solution = MathHelper.gaussianElimination(m, b);
+                    if (solution.length > 1 && solution[1] >= 0f && solution[1] <= 1f) {
+                        float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
+                                e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
+                        if (distanceSquared < discr) {
+                            if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
+                                continue;
+                            selectedLinesForSubfile.add(line);
                         }
-                    } catch (RuntimeException re1) {
-                        NLogger.debug(VM01SelectHelper.class, re1);
                     }
                 }
                 for (Entry<GData5, Vertex[]> entry : condlines.entrySet()) {
@@ -1311,19 +1300,16 @@ class VM01SelectHelper extends VM01Select {
                     m[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
                     b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
                     b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
-                    try {
-                        float[] solution = MathHelper.gaussianElimination(m, b);
-                        if (solution[1] >= 0f && solution[1] <= 1f) {
-                            float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
-                                    e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
-                            if (distanceSquared < discr) {
-                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
-                                    continue;
-                                selectedCondlinesForSubfile.add(line);
-                            }
+
+                    float[] solution = MathHelper.gaussianElimination(m, b);
+                    if (solution.length > 1 && solution[1] >= 0f && solution[1] <= 1f) {
+                        float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
+                                e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
+                        if (distanceSquared < discr) {
+                            if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
+                                continue;
+                            selectedCondlinesForSubfile.add(line);
                         }
-                    } catch (RuntimeException re2) {
-                        NLogger.debug(VM01SelectHelper.class, re2);
                     }
                 }
             }

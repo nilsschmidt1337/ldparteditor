@@ -38,6 +38,8 @@ import org.nschmidt.ldparteditor.data.GData5;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.LDPartEditorException;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * Math Helper Class
@@ -599,7 +601,7 @@ public enum MathHelper {
      *            value vector
      * @return solution
      */
-    public static float[] gaussianElimination(float[][] a, float[] b) throws RuntimeException {
+    public static float[] gaussianElimination(float[][] a, float[] b) {
         int n = b.length; // Very compact gaussian elimination
         for (int p = 0; p < n; p++) {
             int max = p;
@@ -612,8 +614,15 @@ public enum MathHelper {
             float t = b[p];
             b[p] = b[max];
             b[max] = t;
-            if (Math.abs(a[p][p]) < 0.000001f)
-                throw new RuntimeException("Matrix is singular or nearly singular"); //$NON-NLS-1$
+            if (Math.abs(a[p][p]) < 0.000001f) {
+                try {
+                    // Throw this exception and catch it immediately to track where the error occurred.
+                    throw new LDPartEditorException(new RuntimeException("Matrix is singular or nearly singular"));
+                } catch (LDPartEditorException ex) {
+                    NLogger.debug(MathHelper.class, ex);
+                }
+                return new float[0];
+            }
             for (int i = p + 1; i < n; i++) {
                 float alpha = a[i][p] / a[p][p];
                 b[i] -= alpha * b[p];
