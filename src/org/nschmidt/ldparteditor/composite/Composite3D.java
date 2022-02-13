@@ -87,6 +87,7 @@ import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.Manipulator;
+import org.nschmidt.ldparteditor.helper.ScaleCalculator;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.composite3d.Composite3DModifier;
 import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
@@ -330,6 +331,7 @@ public class Composite3D extends ScalableComposite {
      */
     Composite3D(Composite parentCompositeContainer) {
         super(parentCompositeContainer, I18n.noBiDirectionalTextStyle() | SWT.H_SCROLL | SWT.V_SCROLL);
+        WorkbenchManager.getUserSettingState().setViewportScaleFactor(ScaleCalculator.getViewportScaleFactor(this));
         final ScrollBar sb1 = super.getVerticalBar();
         sb1.setMinimum(-1);
         sb1.setMaximum(1);
