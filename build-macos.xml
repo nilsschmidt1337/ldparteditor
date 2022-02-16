@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar"
+<project default="junit"
     name="Create Runnable LDPartEditor JAR and .pkg (Mac OS X, only 64-bit)">
     <!--ANT 1.7 is required -->
     <property name="dependenciesFolder"
@@ -8,7 +8,11 @@
             value="bin" />
     <property name="targetFolder"
             value="target" />
-            
+    <property name="testFolder"
+         value="test" />
+    <property name="reportFolder"
+            value="report" />
+    
     <macrodef name="get-and-checksum">
         <attribute name="file" />
         <attribute name="destdir" />
@@ -334,5 +338,53 @@
         <delete dir="${binariesFolder}" />
         <delete dir="${targetFolder}" />
         <delete dir="${dependenciesFolder}" />
+    </target>
+    
+        <target name="junit" depends="create_run_jar">
+        <delete dir="${dependenciesFolder}/launch4j" />
+        <mkdir dir="${reportFolder}" />
+        <property name="libsFolder"
+             value="libs" />
+        <property name="macosxFolder"
+             value="macosx" />
+        <path id="master-classpath">
+           <fileset dir="${dependenciesFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+           <fileset dir="${libsFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+           <fileset dir="${binariesFolder}/${macosxFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+        </path>
+        
+        <!-- Compile tests -->
+        <javac
+           srcdir="${testFolder}"
+           destdir="${targetFolder}"
+           includeantruntime="false"
+           encoding="utf8"
+           debug="on" source="17" target="17" >
+           <classpath refid="master-classpath"/>
+           <classpath path="${targetFolder}" />
+        </javac>
+        
+        <junit printsummary="yes" haltonfailure="no">
+            
+            <classpath location="${libsFolder}/junit-4.13.2.jar" />
+            <classpath location="${libsFolder}/hamcrest-core-1.3.jar" />
+            <classpath refid="master-classpath"/>
+            <classpath path="${targetFolder}" />
+            
+            <formatter type="xml" />
+            <formatter type="plain" />
+            
+            <batchtest fork="yes" todir="${reportFolder}">
+                <fileset dir="${testFolder}">
+                    <include name="**/*Test*.java" />
+                </fileset>
+            </batchtest>
+        </junit>
     </target>
 </project>
