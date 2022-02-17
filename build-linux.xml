@@ -342,7 +342,6 @@
     </target>
     
     <target name="junit" depends="create_run_jar">
-        <delete dir="${dependenciesFolder}/launch4j" />
         <mkdir dir="${reportFolder}" />
         <property name="libsFolder"
              value="libs" />
