@@ -5,7 +5,7 @@
 
 ## How to build LDPartEditor
 
-Install a recent version of [Apache Ant](https://ant.apache.org/).
+Install a recent version of [Apache Ant](https://ant.apache.org/) and at least a [Java 17 JDK](https://openjdk.java.net/).
 
 ### Linux:
 > ant -noinput -buildfile build-linux.xml
