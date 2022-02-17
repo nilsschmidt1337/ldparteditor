@@ -1,7 +1,24 @@
 # LDPartEditor - The LDraw™ Part Editor
-"Create and edit LDraw™ Parts quick and easy."
+"Create and edit [LDraw™](https://www.ldraw.org) Parts quick and easy."
 
 ![](https://github.com/nilsschmidt1337/ldparteditor/workflows/Java%20CI/badge.svg?branch=master)
+
+## How to build LDPartEditor
+
+Install a recent version of [Apache Ant](https://ant.apache.org/).
+
+### Linux:
+> ant -noinput -buildfile build-linux.xml
+
+### Windows (install the [WiX toolset](https://wixtoolset.org/) first):
+> ant -noinput -buildfile build-windows.xml
+
+### Mac OS X:
+> ant -noinput -buildfile build-macos.xml
+
+## What is this?
+
+![1](https://user-images.githubusercontent.com/11047164/154556480-3c25947c-9f05-4ed3-b379-83e826945f4f.png)
 
 This repository contains the full sourcecode of "LDPartEditor" (further referred to as LDPE).
 LDPE aims to be the platform independent LEGO® CAD tool for [LDraw™](https://www.ldraw.org) parts.
