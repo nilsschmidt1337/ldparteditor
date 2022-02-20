@@ -1319,18 +1319,13 @@ public class MiscToolItem extends ToolItem {
                     Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
                     final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     final Set<Vertex> sv = vm.getSelectedVertices();
-                    final Vertex clipboardVertex = VertexManager.getSingleVertexFromClipboard();
-                    if (clipboardVertex == null) {
-                        if (sv.size() == 1 && vm.getSelectedData().isEmpty()) {
-                            v = sv.iterator().next();
-                        } else {
-                            v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-                            vm.selectObjectVertices();
-                            CoordinatesDialog.setStart(null);
-                            CoordinatesDialog.setEnd(null);
-                        }
+                    if (sv.size() == 1 && vm.getSelectedData().isEmpty()) {
+                        v = sv.iterator().next();
                     } else {
-                        v = clipboardVertex;
+                        v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+                        vm.selectObjectVertices();
+                        CoordinatesDialog.setStart(null);
+                        CoordinatesDialog.setEnd(null);
                     }
                     final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
                     final WorkingMode action = TransformationModeToolItem.getWorkingAction();

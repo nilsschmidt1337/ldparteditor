@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composite.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -81,7 +82,13 @@ class CoordinatesDesign extends Dialog {
         }
         if (v != null) {
             this.v = v;
-            c = new Vertex(v.xp, v.yp, v.zp);
+            final Vertex clipboardVertex = VertexManager.getSingleVertexFromClipboard();
+            if (clipboardVertex == null) {
+                c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+            } else {
+                c = new Vertex(clipboardVertex.xp, clipboardVertex.yp, clipboardVertex.zp);
+            }
+           
         }
     }
 
