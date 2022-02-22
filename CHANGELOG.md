@@ -1,3 +1,13 @@
+### 22 Feb 2022
+With the release of 1.8.54 you are able to...
+-  ...use installers of LDPartEditor for Windows, Linux and Mac OS X (without the need to install Java)
+-  ...see more digits (at least 4 decimal places) on the protractor and the distance meter.
+
+The following critical issues are fixed:
+1. "Set X/Y/Z (for Selection)" loaded always the vertex from the clipboard if there was one vertex stored in it.
+2. Outdated UI libraries for Mac OS X were updated.
+
+
 ### 24 May 2021
 With the release of 0.8.53 you are able to...
 -  ...benefit from about 100 different optimizations to LDPEs code base (I added 180000 lines and deleted 185000 lines since the last release).
