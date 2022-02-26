@@ -115,34 +115,14 @@
             
         <!-- JARs and SOs from LWJGL -->
         <get-and-checksum
-            file="lwjgl.jar"
+            file="lwjgl-linux.jar"
             destdir="${dependenciesFolder}"
-            checksum="50ce421ca1ed411ca45e16c1686bda3a5fe8c395"
-            dir="buildfiles-v2" />
+            checksum="3f6ce96701d8e53ecabbde1178b3436c71c85dc6"
+            dir="buildfiles-v2/lwjgl-linux" />
         <get-and-checksum
             file="lwjgl_util.jar"
             destdir="${dependenciesFolder}"
             checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="liblwjgl.so"
-            destdir="${dependenciesFolder}"
-            checksum="4767eadb5561fdf42bf222db84e30e4c00121f73"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="libjemalloc.so"
-            destdir="${dependenciesFolder}"
-            checksum="ab8f563c4c4ee6ce82ef9a22c4f25d708ddb0e1d"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="libopenal.so"
-            destdir="${dependenciesFolder}"
-            checksum="517017b50206fd6d2c5ee553acd16d4c86199a1f"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="libglfw.so"
-            destdir="${dependenciesFolder}"
-            checksum="a6a4a535a49be83a26741a997cdcab6adacc332d"
             dir="buildfiles-v2" />
             
         <!-- Get tools.jar -->
@@ -255,7 +235,7 @@
             </manifest>
             <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl-linux.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
@@ -274,10 +254,6 @@
         </jar>
         
          <!-- Copy so files for Linux with GTK3 (64-bit) -->
-        <copy file="${dependenciesFolder}/liblwjgl.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
-        <copy file="${dependenciesFolder}/libjemalloc.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
-        <copy file="${dependenciesFolder}/libopenal.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
-        <copy file="${dependenciesFolder}/libglfw.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy todir="${binariesFolder}/${linuxGtk3Folder}" overwrite="true">
           <fileset dir="${dependenciesFolder}/${linuxGtk3Folder}">
             <include name="**/*.so"/>
