@@ -202,6 +202,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
 
             String selected = fd.open();
             if (selected == null) {
+                WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                 return;
             }
 
