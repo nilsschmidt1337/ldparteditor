@@ -1138,7 +1138,7 @@ public final class DatFile {
         alreadyParsed.add(getShortName());
 
         String[] lines;
-        if (Project.getUnsavedFiles().contains(this) ) {
+        if (Project.getUnsavedFiles().contains(this) || View.DUMMY_DATFILE.equals(this)) {
             lines = pattern.split(text, -1);
             if (lines.length == 0) {
                 lines = new String[]{""}; //$NON-NLS-1$
