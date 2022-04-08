@@ -1484,12 +1484,26 @@ class VM01SelectHelper extends VM01Select {
      * @param event
      * @param selectionHeight
      * @param selectionWidth
+     * @param subsToAdd 
      */
-    private synchronized void selectFaces2(Composite3D c3d, Event event, Vector4f selectionWidth, Vector4f selectionHeight) {
+    private synchronized void selectFaces2(Composite3D c3d, Event event, Vector4f selectionWidth, Vector4f selectionHeight, Set<GData1> subsToAdd) {
         Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
         selVert4sTemp.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
         selectVertices2(c3d);
+        final List<GData1> subfilesWithOneVertex = subfilesWithOneVertex();
+
+        for (GData1 subfileWithOneVertex : subfilesWithOneVertex) {
+            Set<VertexInfo> vis = lineLinkedToVertices.getOrDefault(subfileWithOneVertex, Set.of());
+            if (vis.size() == 1) {
+                VertexInfo vi = vis.iterator().next();
+                if (selectedVerticesForSubfile.contains(vi.vertex)) {
+                    subsToAdd.add(subfileWithOneVertex);
+                    selVert4sTemp.add(vi.vertex);
+                }
+            }
+        }
+
         boolean allVertsFromLine = false;
         boolean needRayTest = false;
         if (Math.abs(selectionWidth.x) < 0.001f && Math.abs(selectionWidth.y) < 0.001f && Math.abs(selectionWidth.z) < 0.001f)
@@ -1692,6 +1706,7 @@ class VM01SelectHelper extends VM01Select {
         selectedCondlinesForSubfile.clear();
 
         Set<GData1> backupSubfiles = new HashSet<>(selectedSubfiles);
+        Set<GData1> subsToAdd = new HashSet<>();
 
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
@@ -1703,7 +1718,7 @@ class VM01SelectHelper extends VM01Select {
         {
             final Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
             final Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
-            selectFaces2(c3d, event, selectionWidth, selectionHeight);
+            selectFaces2(c3d, event, selectionWidth, selectionHeight, subsToAdd);
             selectLines2(c3d, selectionWidth, selectionHeight);
         }
 
@@ -1742,7 +1757,7 @@ class VM01SelectHelper extends VM01Select {
         selectedData.clear();
 
         NLogger.debug(getClass(), "Subfiles in selection, to add/remove:"); //$NON-NLS-1$
-        Set<GData1> subsToAdd = new HashSet<>();
+
         Set<GData1> subsToRemove = new HashSet<>();
         if (c3d.getKeys().isCtrlPressed()) {
             for (GData1 subf : backupSubfiles) {
@@ -1774,6 +1789,27 @@ class VM01SelectHelper extends VM01Select {
             NLogger.debug(getClass(), g.toString());
             addSubfileToSelection(g);
         }
+
+        final List<GData1> subfilesWithOneVertex = subfilesWithOneVertex();
+
+        for (GData1 subfileWithOneVertex : subfilesWithOneVertex) {
+            Set<VertexInfo> vis = lineLinkedToVertices.getOrDefault(subfileWithOneVertex, Set.of());
+            if (vis.size() == 1) {
+                VertexInfo vi = vis.iterator().next();
+                if (selectedVertices.contains(vi.vertex)) {
+                    NLogger.debug(getClass(), subfileWithOneVertex.toString());
+                    addSubfileToSelection(subfileWithOneVertex);
+                }
+            }
+        }
+    }
+
+    private List<GData1> subfilesWithOneVertex() {
+        return vertexCountInSubfile.entrySet().stream()
+                .filter(e -> e.getKey().depth == 1)
+                .filter(e -> e.getValue() == -1)
+                .map(Entry::getKey)
+                .toList();
     }
 
     public Vector4f getSelectionCenter() {

@@ -123,7 +123,8 @@ public final class GData1 extends GData {
         super(parent);
         depth++;
         if (depth < 16) {
-            if (depth == 1) {
+            final boolean depthOne = depth == 1;
+            if (depthOne) {
                 this.firstRef = this;
                 this.readOnly = readOnly;
             } else {
@@ -291,6 +292,14 @@ public final class GData1 extends GData {
                 this.firstRef.setMovedTo(true);
             }
 
+            if (depthOne && datFile.getVertexManager().getLineLinkedToVertices().getOrDefault(this, Set.of()).isEmpty()) {
+                GData gdata = DatParser.parseLine("0 !LPE VERTEX 0 0 0", 0, depth, r, g, b, a, this, pMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed).get(0).getGraphicalData();
+                if (gdata != null) {
+                    anchorData.setNext(gdata);
+                    anchorData = gdata;
+                    NLogger.debug(GData1.class, "Subfile has no vertex content: {0}", name); //$NON-NLS-1$
+                }
+            }
         } else {
             this.firstRef = firstRef;
             this.readOnly = firstRef.readOnly;

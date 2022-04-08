@@ -526,6 +526,9 @@ class VM01Select extends VM00Snapshot {
                 for (VertexInfo vertexInfo : vis) {
                     GData g = vertexInfo.getLinkedData();
                     switch (g.type()) {
+                    case 0:
+                        selectedVertices.add(vertexInfo.vertex);
+                        break;
                     case 2:
                         selectedData.add(g);
                         selectedLines.add((GData2) g);
