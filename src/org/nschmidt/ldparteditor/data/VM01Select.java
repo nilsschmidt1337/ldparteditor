@@ -667,13 +667,11 @@ class VM01Select extends VM00Snapshot {
             if (gd.type() > 0 && gd.type() < 6) {
                 selectedData.add(gd);
             }
+            Set<VertexInfo> vi = lineLinkedToVertices.getOrDefault(gd, Set.of());
+            for (VertexInfo vertexInfo : vi) {
+                selectedVertices.add(vertexInfo.vertex);
+            }
             switch (gd.type()) {
-            case 0:
-                Set<VertexInfo> vi = lineLinkedToVertices.getOrDefault(gd, null);
-                if (vi != null && vi.size() == 1) {
-                    selectedVertices.add(vi.iterator().next().vertex);
-                }
-                break;
             case 1:
                 selectSubfile(gd);
                 break;
