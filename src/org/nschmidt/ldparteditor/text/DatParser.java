@@ -714,11 +714,8 @@ public enum DatParser {
                         if (g1 != null && g1.type() == 1) {
                             result.addAll(datFile.getVertexManager().checkForFlatScaling((GData1) g1));
                         }
-
                     }
-
                 }
-
             } else if (!fileExists) {
                 result.add(new ParsingResult(I18n.DATPARSER_FILE_NOT_FOUND, "[E01] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             } else {
@@ -762,12 +759,8 @@ public enum DatParser {
                         if (g1 != null && g1.type() == 1) {
                             result.addAll(datFile.getVertexManager().checkForFlatScaling((GData1) g1));
                         }
-
                     }
-
                 }
-
-
             }
             if (parent.equals(View.DUMMY_REFERENCE) && result.size() == 1) {
                 GData1 g1 = (GData1) result.get(0).getGraphicalData();

@@ -1281,6 +1281,7 @@ public final class I18n {
     public static final String VERSION_TESTERS = VERSION.getString(getProperty());
     public static final String VERSION_VERSION = VERSION.getString(getProperty());
     public static final String VM_DETECT_NEW_EDGES = VM.getString(getProperty());
+    public static final String VM_EMPTY_SUBFILE = VM.getString(getProperty());
     public static final String VM_FLAT_SCALED_X = VM.getString(getProperty());
     public static final String VM_FLAT_SCALED_Y = VM.getString(getProperty());
     public static final String VM_FLAT_SCALED_Z = VM.getString(getProperty());

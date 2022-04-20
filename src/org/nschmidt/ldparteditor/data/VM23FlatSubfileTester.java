@@ -121,6 +121,9 @@ class VM23FlatSubfileTester extends VM22TJunctionFixer {
         if (plainOnZ && epsilon.compareTo(lengthZ) < 0) {
             result.add(new ParsingResult(I18n.VM_FLAT_SCALED_Z, "[W04] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
         }
+        if (plainOnX && plainOnY && plainOnZ) {
+            result.add(new ParsingResult(I18n.VM_EMPTY_SUBFILE, "[WEF] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
+        }
 
         return result;
     }
