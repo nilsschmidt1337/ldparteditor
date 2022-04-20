@@ -298,7 +298,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
 
                             df2.saveAs(selected);
 
-                            DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, selected, false);
+                            DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, selected, false);
                             if (df != null) {
                                 NewOpenSaveProjectToolItem.addRecentFile(df);
                                 final File f2 = new File(df.getNewName());
