@@ -250,10 +250,7 @@ class Editor3DDesign extends ApplicationWindow {
     final SashForm[] leftSash = new SashForm[1];
     final SashForm[] splitSash = new SashForm[1];
 
-    static final int TEXT_3D_SEPARATE = 0;
-    private static final int TEXT_LEFT_3D_RIGHT = 1;
-    private static final int TEXT_RIGHT_3D_LEFT = 2;
-
+    
     /**
      * Create the application window.
      */
@@ -280,10 +277,10 @@ class Editor3DDesign extends ApplicationWindow {
         Composite containerTop = new Composite(parent, Cocoa.getStyle());
         containerTop.setLayout(new BorderLayout(0, 0));
 
-        if (userSettings.getTextWinArr() != TEXT_3D_SEPARATE) {
+        if (!userSettings.hasSeparateTextWindow()) {
             containerTop = new SashForm(containerTop, SWT.BORDER);
             splitSash[0] = (SashForm) containerTop;
-            if (userSettings.getTextWinArr() == TEXT_LEFT_3D_RIGHT) {
+            if (userSettings.getTextWinArr() == Editor3DWindow.TEXT_LEFT_3D_RIGHT) {
                 Composite containerTextEditor = new Composite(containerTop, Cocoa.getStyle());
                 containerTextEditor.setLayout(new BorderLayout(0, 0));
                 EditorTextWindow tWin = new EditorTextWindow(containerTextEditor, this);
@@ -318,9 +315,9 @@ class Editor3DDesign extends ApplicationWindow {
             cmpWest.setLayout(rlRoolBar);
         }
 
-        if (userSettings.getTextWinArr() != TEXT_3D_SEPARATE) {
+        if (!userSettings.hasSeparateTextWindow()) {
             ToolItem toolItemSashResize = new ToolItem(cmpNorth, Cocoa.getStyle(), true);
-            if (userSettings.getTextWinArr() == TEXT_RIGHT_3D_LEFT) {
+            if (userSettings.getTextWinArr() == Editor3DWindow.TEXT_RIGHT_3D_LEFT) {
                 NButton btnShowLeft = new NButton(toolItemSashResize, Cocoa.getStyle());
                 this.btnShowLeftPtr[0] = btnShowLeft;
                 btnShowLeft.setToolTipText(I18n.E3D_SASH_LEFT);
@@ -1509,7 +1506,7 @@ class Editor3DDesign extends ApplicationWindow {
             lblStatus.setText(""); //$NON-NLS-1$
         }
 
-        if (userSettings.getTextWinArr() == TEXT_RIGHT_3D_LEFT) {
+        if (userSettings.getTextWinArr() == Editor3DWindow.TEXT_RIGHT_3D_LEFT) {
             Composite containerTextEditor = new Composite(containerTop, Cocoa.getStyle());
             containerTextEditor.setLayout(new BorderLayout(0, 0));
             EditorTextWindow tWin = new EditorTextWindow(containerTextEditor, this);

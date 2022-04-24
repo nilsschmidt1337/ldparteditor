@@ -50,6 +50,7 @@ import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourToolItem;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widget.NButton;
@@ -331,12 +332,10 @@ class EditorTextDesign extends ApplicationWindow {
         toolBar.setLayout(rlToolBar);
 
         {
-            final int TEXT_3D_SEPARATE = 0;
-            final int TEXT_LEFT_3D_RIGHT = 1;
             final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
-            if (userSettings.getTextWinArr() != TEXT_3D_SEPARATE) {
+            if (!userSettings.hasSeparateTextWindow()) {
                 ToolItem toolItemSashResize = new ToolItem(toolBar, Cocoa.getStyle(), true);
-                if (userSettings.getTextWinArr() == TEXT_LEFT_3D_RIGHT) {
+                if (userSettings.getTextWinArr() == Editor3DWindow.TEXT_LEFT_3D_RIGHT) {
                     NButton btnShowLeft = new NButton(toolItemSashResize, Cocoa.getStyle());
                     this.btnShowLeftPtr[0] = btnShowLeft;
                     btnShowLeft.setToolTipText(I18n.E3D_SASH_LEFT);

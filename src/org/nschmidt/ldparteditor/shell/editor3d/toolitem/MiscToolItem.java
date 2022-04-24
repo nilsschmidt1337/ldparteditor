@@ -1665,7 +1665,8 @@ public class MiscToolItem extends ToolItem {
                                     String source3 = source2;
 
                                     Editor3DWindow.getWindow().closeAllComposite3D();
-                                    for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
+                                    Set<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
+                                    for (EditorTextWindow txtwin : windows) {
                                         if (txtwin.isSeperateWindow()) {
                                             txtwin.getShell().close();
                                         } else {

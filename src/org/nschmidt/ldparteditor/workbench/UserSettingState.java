@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.enumtype.TextTask;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 
 /**
@@ -1108,7 +1109,15 @@ public class UserSettingState implements Serializable {
     public int getTextWinArr() {
         return textWinArr;
     }
-
+    
+    public boolean hasSeparateTextWindow() {
+        return textWinArr == Editor3DWindow.TEXT_3D_SEPARATE || textWinArr == Editor3DWindow.TEXT_NEW_INSTANCE;
+    }
+    
+    public boolean hasSingleTextWindow() {
+        return textWinArr != Editor3DWindow.TEXT_NEW_INSTANCE;
+    }
+    
     public void setTextWinArr(int textWinArr) {
         this.textWinArr = textWinArr;
     }

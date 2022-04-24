@@ -258,7 +258,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             // Project.getParsedFiles().add(df); IS NECESSARY HERE
             Project.getParsedFiles().add(df);
             Project.addOpenedFile(df);
-            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
+            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow()))) {
                 w.openNewDatFileTab(df, true);
             } else {
                 w = new EditorTextWindow();
@@ -289,7 +289,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             // Project.getParsedFiles().add(df); IS NECESSARY HERE
             Project.getParsedFiles().add(df);
             Project.addOpenedFile(df);
-            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
+            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow()))) {
                 w.openNewDatFileTab(df, true);
             } else {
                 w = new EditorTextWindow();

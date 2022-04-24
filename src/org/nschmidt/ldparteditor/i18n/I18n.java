@@ -987,6 +987,7 @@ public final class I18n {
     public static final String OPTIONS_TEXT_WINDOW_LEFT = OPTIONS.getString(getProperty());
     public static final String OPTIONS_TEXT_WINDOW_RIGHT = OPTIONS.getString(getProperty());
     public static final String OPTIONS_TEXT_WINDOW_SEPARATE = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_TEXT_WINDOW_SINGLE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_TRANSLATE_BY_CURSOR = OPTIONS.getString(getProperty());
     public static final String OPTIONS_UNOFFICIAL_FOLDER = OPTIONS.getString(getProperty());
     public static final String OPTIONS_UNOFFICIAL_WHERE = OPTIONS.getString(getProperty());

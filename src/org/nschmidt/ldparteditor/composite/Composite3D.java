@@ -473,7 +473,8 @@ public class Composite3D extends ScalableComposite {
                 if (df.equals(View.DUMMY_DATFILE)) return;
                 MemorySnapshot[] retVal = new MemorySnapshot[1];
                 if (new SnapshotDialog(getShell(), df.getVertexManager().getSnapshots(), retVal).open() == IDialogConstants.OK_ID && retVal[0] != null) {
-                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    Set<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
+                    for (EditorTextWindow w : windows) {
                         w.closeTabWithDatfile(df);
                     }
                     df.getVertexManager().loadSnapshot(retVal[0]);
@@ -1302,7 +1303,7 @@ public class Composite3D extends ScalableComposite {
         // Project.getParsedFiles().add(df); IS NECESSARY HERE
         Project.getParsedFiles().add(df);
         Project.addOpenedFile(df);
-        if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
+        if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
             w.openNewDatFileTab(df, true);
         } else {
             new EditorTextWindow().run(df, false);
@@ -2155,7 +2156,7 @@ public class Composite3D extends ScalableComposite {
             Project.getParsedFiles().add(df);
             Project.addOpenedFile(df);
             final EditorTextWindow win;
-            if (!Project.getOpenTextWindows().isEmpty() && !Project.getOpenTextWindows().iterator().next().isSeperateWindow()) {
+            if (!Project.getOpenTextWindows().isEmpty() && !(Project.getOpenTextWindows().iterator().next().isSeperateWindow() || WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
                 win = Project.getOpenTextWindows().iterator().next();
                 win.openNewDatFileTab(df, true);
             } else {

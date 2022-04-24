@@ -1074,8 +1074,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     sw.setTextComposite(null);
                     sw.setScopeToAll();
                 }
-                final int TEXT_3D_SEPARATE = 0;
-                if (WorkbenchManager.getUserSettingState().getTextWinArr() != TEXT_3D_SEPARATE) {
+                if (!WorkbenchManager.getUserSettingState().hasSeparateTextWindow()) {
                     Editor3DWindow.getWindow().closeTabWithDatFile(df);
                 }
             }

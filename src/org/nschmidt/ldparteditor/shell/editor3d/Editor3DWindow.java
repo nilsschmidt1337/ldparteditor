@@ -158,6 +158,11 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public static int sashWeight1 = 50;
     public static int sashWeight2 = 50;
+    
+    public static final int TEXT_3D_SEPARATE = 0;
+    public static final int TEXT_LEFT_3D_RIGHT = 1;
+    public static final int TEXT_RIGHT_3D_LEFT = 2;
+    public static final int TEXT_NEW_INSTANCE = 3;
 
     private static final AtomicBoolean alive = new AtomicBoolean(true);
     private static final AtomicBoolean no_sync_deadlock = new AtomicBoolean(false);
@@ -286,7 +291,7 @@ public class Editor3DWindow extends Editor3DDesign {
         sh.getDisplay().asyncExec(() -> {
             sh.setMaximized(WorkbenchManager.getEditor3DWindowState().getWindowState().isMaximized());
 
-            if (WorkbenchManager.getUserSettingState().getTextWinArr() != TEXT_3D_SEPARATE) {
+            if (!WorkbenchManager.getUserSettingState().hasSeparateTextWindow()) {
                 for (EditorTextWindow w : Project.getOpenTextWindows()) {
                     if (!w.isSeperateWindow()) {
                         Project.getParsedFiles().add(Project.getFileToEdit());
@@ -3442,11 +3447,11 @@ public class Editor3DWindow extends Editor3DDesign {
             }
 
             if (tWin == null) {
-                EditorTextWindow w;
+                EditorTextWindow w = null;
                 // Project.getParsedFiles().add(df); IS NECESSARY HERE
                 Project.getParsedFiles().add(df);
                 Project.addOpenedFile(df);
-                if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) {
+                if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
                     w.openNewDatFileTab(df, true);
                 } else {
                     new EditorTextWindow().run(df, false);
@@ -4000,7 +4005,7 @@ public class Editor3DWindow extends Editor3DDesign {
             // Project.getParsedFiles().add(df); IS NECESSARY HERE
             Project.getParsedFiles().add(df);
             Project.addOpenedFile(df);
-            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
+            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
                 w.openNewDatFileTab(df, true);
             } else {
                 new EditorTextWindow().run(df, false);
