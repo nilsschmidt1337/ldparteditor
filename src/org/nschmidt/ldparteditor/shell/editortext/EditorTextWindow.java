@@ -69,6 +69,7 @@ import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropType;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
+import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.ShellHelper;
 import org.nschmidt.ldparteditor.helper.Version;
@@ -316,6 +317,15 @@ public class EditorTextWindow extends EditorTextDesign {
                 if (result == SWT.NO) {
                     // Skip file
                     Project.removeUnsavedFile(df);
+                    Project.removeOpenedFile(df);
+                    if (df.equals(Project.getFileToEdit())) {
+                        Project.setFileToEdit(View.DUMMY_DATFILE);
+                        for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                            if (df.equals(renderer.getC3D().getLockableDatFileReference())) {
+                                renderer.getC3D().setLockableDatFileReference(View.DUMMY_DATFILE);
+                            }
+                        }
+                    }
                 } else if (result == SWT.YES) {
                     if (df.save()) {
                         NewOpenSaveProjectToolItem.addRecentFile(df);
@@ -325,15 +335,21 @@ public class EditorTextWindow extends EditorTextDesign {
                         messageBoxError.setText(I18n.DIALOG_ERROR);
                         messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                         messageBoxError.open();
+                        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                         return;
                     }
-                } else if (result == SWT.CANCEL)
+                } else if (result == SWT.CANCEL) {
+                    Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                     return;
+                }
             }
         }
         if (isSeperateWindow()) {
             Project.getOpenTextWindows().remove(this);
         }
+        
+        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
+        
         // Save the workbench
         EditorTextWindowState stateText = WorkbenchManager.getEditorTextWindowState();
         stateText.getWindowState().setCentered(false);
