@@ -513,7 +513,7 @@ public class Composite3DModifier {
         }
         pc.setZoomExponent((float) (Math.log10(c3d.getZoom()) + 3f) * 10f);
 
-        if (Float.isInfinite(c3d.getZoom()) || Float.isInfinite(pc.getZoomExponent()) || Float.isNaN(c3d.getZoom()) || Float.isNaN(pc.getZoomExponent())) {
+        if (pc.getZoomExponent() > 20 || Float.isInfinite(c3d.getZoom()) || Float.isInfinite(pc.getZoomExponent()) || Float.isNaN(c3d.getZoom()) || Float.isNaN(pc.getZoomExponent())) {
             pc.setZoomExponent(-20f);
             c3d.setZoom((float) Math.pow(10.0d, -20f / 10 - 3));
         }
