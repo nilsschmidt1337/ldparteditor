@@ -116,6 +116,25 @@ class VM03Adjacency extends VM02Add {
         }
         return rval;
     }
+    
+    public Set<GData> getLinkedSurfacesSubfilesAndLines(Vertex vertex) {
+        Set<GData> rval = new HashSet<>();
+        Set<VertexManifestation> vm = vertexLinkedToPositionInFile.get(vertex);
+        if (vm != null) {
+            getManifestationLock().lock();
+            for (VertexManifestation m : vm) {
+                final GData gdata = m.gdata();
+                final int type = gdata.type();
+                if (type < 6 && type > 1) {
+                    rval.add(gdata);
+                    rval.add(gdata.parent.firstRef);
+                }
+            }
+            getManifestationLock().unlock();
+        }
+        rval.remove(View.DUMMY_REFERENCE);
+        return rval;
+    }
 
     public Set<GData> getLinkedSurfacesOfSameColour(Vertex vertex) {
         Set<GData> rval = new HashSet<>();

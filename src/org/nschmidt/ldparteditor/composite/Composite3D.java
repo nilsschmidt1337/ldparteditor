@@ -2069,6 +2069,8 @@ public class Composite3D extends ScalableComposite {
 
                         Display.getDefault().asyncExec(() -> {
                             final VertexManager vm = df.getVertexManager();
+                            final int selectedVertexCount = vm.getSelectedVertices().size();
+                            
                             if (!vm.getSelectedData().isEmpty() || !vm.getSelectedVertices().isEmpty()) {
 
                                 final int oldIndex = ((CompositeTab) t).getTextComposite().getTopIndex() + 1;
@@ -2076,6 +2078,10 @@ public class Composite3D extends ScalableComposite {
                                 final List<Integer> indices = new ArrayList<>();
                                 final Set<GData> selection = new HashSet<>();
                                 Integer index;
+                                
+                                if (selectedVertexCount == 1) {
+                                    selection.addAll(vm.getLinkedSurfacesSubfilesAndLines(vm.getSelectedVertices().iterator().next()));
+                                }
 
                                 selection.addAll(vm.getSelectedData());
                                 selection.addAll(vm.getSelectedSubfiles());
@@ -2138,6 +2144,18 @@ public class Composite3D extends ScalableComposite {
                     }
                 }
                 index2 = index;
+            } else if (vm.getSelectedVertices().size() == 1) {
+                final Vertex singleVertex = vm.getSelectedVertices().iterator().next();
+                final Set<GData> selection = new HashSet<>();
+                selection.addAll(vm.getLinkedVertexMetaCommands(singleVertex));
+                selection.addAll(vm.getLinkedSurfacesSubfilesAndLines(singleVertex));
+                if (selection.isEmpty())
+                    return;
+                Integer index = df.getDrawPerLineNoClone().getKey(selection.iterator().next());
+                if (index == null) {
+                    return;
+                }
+                index2 = index;
             } else {
                 return;
             }
@@ -2149,6 +2167,23 @@ public class Composite3D extends ScalableComposite {
                 final Integer i = df.getDrawPerLineNoClone().getKey(gd);
                 if (i != null && gd.type() > 0 && gd.type() < 6) {
                     selectedIndicies.add(i);
+                }
+            }
+            
+            if (selectedVertices.size() == 1) {
+                final Vertex singleVertex = vm.getSelectedVertices().iterator().next();
+                for (GData gd : vm.getLinkedSurfacesSubfilesAndLines(singleVertex)) {
+                    final Integer i = df.getDrawPerLineNoClone().getKey(gd);
+                    if (i != null && gd.type() > 0 && gd.type() < 6) {
+                        selectedIndicies.add(i);
+                    }
+                }
+                
+                for (GData gd : vm.getLinkedVertexMetaCommands(singleVertex)) {
+                    final Integer i = df.getDrawPerLineNoClone().getKey(gd);
+                    if (i != null && gd.type() == 0) {
+                        selectedIndicies.add(i);
+                    }
                 }
             }
 
