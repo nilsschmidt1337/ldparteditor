@@ -157,11 +157,6 @@ public class SyntaxFormatter {
             styles.add(errStyleRange);
             break;
         }
-        if (!isVisible) {
-            for (StyleRange sr : styles) {
-                sr.foreground = TextEditorColour.getTextForegroundHidden();
-            }
-        }
         if (isSelected) {
             for (StyleRange sr : styles) {
                 if (sr.background == null) {
@@ -173,6 +168,13 @@ public class SyntaxFormatter {
         } else if (replaceVertex) {
             for (StyleRange sr : styles) {
                 sr.fontStyle = SWT.BOLD;
+            }
+        } else if (!isVisible) {
+            for (StyleRange sr : styles) {
+                sr.foreground = TextEditorColour.getTextForegroundHidden();
+                if (sr.borderStyle == SWT.NONE) {
+                    sr.background = TextEditorColour.getTextBackground();
+                }
             }
         }
         e.styles = styles.toArray(new StyleRange[0]);
