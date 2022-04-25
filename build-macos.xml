@@ -318,9 +318,9 @@
             <arg value="--input"/>
             <arg value="${binariesFolder}/${macosxFolder}" />
             <arg value="--app-version"/>
-            <arg value="1.8.54" />
+            <arg value="1.8.55" />
             <arg value="--java-options"/>
-        	<arg value="-XstartOnFirstThread"/>
+            <arg value="-XstartOnFirstThread"/>
             <arg value="--runtime-image"/>
             <arg value="${binariesFolder}/jvm-image" />
             <arg value="--temp"/>
