@@ -1,3 +1,21 @@
+### 26 Apr 2022
+With the release of 1.8.55 you are able to...
+-  ...to see a warning for subpart references with no content. You can also transform empty subparts and "see" them as a single vertex in the 3D editor.
+-  ...use "Show Selection in Text Editor" to show the first line that uses that vertex, when you selected a vertex (or the next lines when you repeat the function).
+-  ...benefit from a better contrast of hidden lines in the text editor.
+
+The following critical issues are fixed:
+1. Empty primitives couldn't be selected/rotated (e.g. 1-16chrd's)
+2. The zoom value for newly created files was not the default value (3D Editor)
+3. When the user did not wanted to save the file in the text editor it was still displayed in the 3D editor.
+4. "Show selection in 3D View" did not select the vertices from subfiles.
+5. When you used separate text and 3D windows and created a new file, a new text window was opened, instead of using a new tab in the already opened text window.
+6. If you used "save as", a new file was created, but no text window or tab was created, although the sync tabs button was active.
+7. "Sync. 3D Editor Tabs with Text Editor" setting was sometimes deactivated.
+8. (back-ported to 1.8.54) LDPartEditor 1.8.54 won't start on Linux (because of a classpath error)
+9. Minor IO error regarding the "(no file selected)" tab.
+
+
 ### 22 Feb 2022
 With the release of 1.8.54 you are able to...
 -  ...use installers of LDPartEditor for Windows, Linux and Mac OS X (without the need to install Java)
