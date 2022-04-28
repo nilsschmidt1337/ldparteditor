@@ -245,7 +245,7 @@ public final class GData2 extends GData {
             break;
         }
 
-        if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
+        if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
             drawDistanceGL20(c3d, x1p, y1p, z1p, x2p, y2p, z2p);
@@ -347,7 +347,7 @@ public final class GData2 extends GData {
             break;
         }
 
-        if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
+        if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
             drawDistanceGL20(c3d, x1p, y1p, z1p, x2p, y2p, z2p);

@@ -17,7 +17,7 @@ package org.nschmidt.ldparteditor.helper.composite3d;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.swt.opengl.GLCanvas;
+import org.lwjgl.opengl.swt.GLCanvas;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 

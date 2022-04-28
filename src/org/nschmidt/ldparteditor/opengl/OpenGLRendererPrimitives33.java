@@ -18,7 +18,7 @@ package org.nschmidt.ldparteditor.opengl;
 import java.nio.FloatBuffer;
 
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.opengl.GLCanvas;
+import org.lwjgl.opengl.swt.GLCanvas;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;

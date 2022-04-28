@@ -387,7 +387,7 @@ public final class GData5 extends GData {
 
         if (result > -1e-20f) {
 
-            if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
+            if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
             if (zoom > View.edgeThreshold) {
 
@@ -522,7 +522,7 @@ public final class GData5 extends GData {
             final float rndGreen = MathHelper.randomFloat(id, 1);
             final float rndBlue = MathHelper.randomFloat(id, 2);
 
-            if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
+            if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
             if (zoom > View.edgeThreshold) {
 
@@ -636,7 +636,7 @@ public final class GData5 extends GData {
 
         final float result = zoom / Vector4f.dot(n, Vector4f.sub(sC, sA, null)) * Vector4f.dot(n, Vector4f.sub(sD, sA, null));
 
-        if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
+        if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (zoom > View.edgeThreshold) {
 

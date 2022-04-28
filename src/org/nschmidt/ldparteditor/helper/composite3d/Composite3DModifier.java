@@ -31,7 +31,7 @@ import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.opengl.GLCanvas;
+import org.lwjgl.opengl.swt.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.lwjgl.opengl.GL;

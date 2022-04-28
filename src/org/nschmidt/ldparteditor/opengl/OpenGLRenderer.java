@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.swt.opengl.GLCanvas;
+import org.lwjgl.opengl.swt.GLCanvas;
 import org.lwjgl.opengl.GL;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.data.GTexture;
