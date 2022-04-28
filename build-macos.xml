@@ -113,36 +113,16 @@
             checksum="7f079687290b9bfa98a65723fe1b81386df60d79"
             dir="buildfiles-v2" />
             
-        <!-- JARs and DYLIBs from LWJGL -->
+        <!-- JARs from LWJGL -->
         <get-and-checksum
-            file="lwjgl.jar"
+            file="lwjgl3.zip"
             destdir="${dependenciesFolder}"
-            checksum="50ce421ca1ed411ca45e16c1686bda3a5fe8c395"
+            checksum="dfa26eb7b13953e8861f02f813cbec1ca3385e77"
             dir="buildfiles-v2" />
         <get-and-checksum
             file="lwjgl_util.jar"
             destdir="${dependenciesFolder}"
             checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="liblwjgl.dylib"
-            destdir="${dependenciesFolder}"
-            checksum="9a7b713450b3db5305abff4265d061a66ee0ef1d"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="libjemalloc.dylib"
-            destdir="${dependenciesFolder}"
-            checksum="edbb726d240d5f2c9ebbfb41a91bcf63c725ee58"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="libopenal.dylib"
-            destdir="${dependenciesFolder}"
-            checksum="319da170fd51eb047b4c6e9adaddb08af1d4a6e0"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="libglfw.dylib"
-            destdir="${dependenciesFolder}"
-            checksum="eabb7c01e44e6e27982b114051e590c308a66d55"
             dir="buildfiles-v2" />
             
         <!-- Get tools.jar -->
@@ -160,6 +140,7 @@
         
         <unzip src="${swt.macosx.zipfile}" dest="${dependenciesFolder}/${macosxFolder}"/>
         <unzip src="${dependenciesFolder}/${macosxFolder}/swt.jar" dest="${dependenciesFolder}/${macosxFolder}"/>
+        <unzip src="${dependenciesFolder}/lwjgl3.zip" dest="${libsFolder}"/>
         
         <!-- Auto-detect other paths -->
         <pathconvert property="core.commands">
@@ -255,11 +236,20 @@
             </manifest>
             <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${macosxFolder}/swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl3-swt-common-1.0.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengl-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengles-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-vulkan-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-3.2.3-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl3-swt-macos-1.0.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengl-3.2.3-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengles-3.2.3-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-vulkan-3.2.3-natives-macos.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
@@ -274,10 +264,6 @@
         </jar>
         
          <!-- Copy dylib and jnilib files for Mac OS X (64-bit) -->
-        <copy file="${dependenciesFolder}/liblwjgl.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
-        <copy file="${dependenciesFolder}/libjemalloc.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
-        <copy file="${dependenciesFolder}/libopenal.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
-        <copy file="${dependenciesFolder}/libglfw.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
         <copy todir="${binariesFolder}/${macosxFolder}" overwrite="true">
           <fileset dir="${dependenciesFolder}/${macosxFolder}">
             <include name="**/*.jnilib"/>

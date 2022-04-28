@@ -113,36 +113,16 @@
             checksum="7f079687290b9bfa98a65723fe1b81386df60d79"
             dir="buildfiles-v2" />
             
-        <!-- JARs and DLLs from LWJGL -->
+        <!-- JARs from LWJGL -->
         <get-and-checksum
-            file="lwjgl.jar"
+            file="lwjgl3.zip"
             destdir="${dependenciesFolder}"
-            checksum="50ce421ca1ed411ca45e16c1686bda3a5fe8c395"
+            checksum="dfa26eb7b13953e8861f02f813cbec1ca3385e77"
             dir="buildfiles-v2" />
         <get-and-checksum
             file="lwjgl_util.jar"
             destdir="${dependenciesFolder}"
             checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="lwjgl.dll"
-            destdir="${dependenciesFolder}"
-            checksum="a88f7b2e81ca860b28c6d21463c44a4d0fb29553"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="jemalloc.dll"
-            destdir="${dependenciesFolder}"
-            checksum="2e9087e72d2072b3da45a8b06ada5264e77a1b4a"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="OpenAL.dll"
-            destdir="${dependenciesFolder}"
-            checksum="8bf21574699ecf224bf977a894b88fd96cf3b21a"
-            dir="buildfiles-v2" />
-        <get-and-checksum
-            file="glfw.dll"
-            destdir="${dependenciesFolder}"
-            checksum="6b05b5ccb95e6841eca55dfb3612a30bc94d2003"
             dir="buildfiles-v2" />
             
         <!-- Get tools.jar -->
@@ -160,6 +140,7 @@
         </pathconvert>
         
         <unzip src="${swt.windows.zipfile}" dest="${dependenciesFolder}/${windowsFolder}"/>
+        <unzip src="${dependenciesFolder}/lwjgl3.zip" dest="${libsFolder}"/>
         
         <!-- Auto-detect other paths -->
         <pathconvert property="core.commands">
@@ -255,11 +236,19 @@
             </manifest>
             <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${windowsFolder}/swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl3-swt-common-1.0.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengl-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengles-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-vulkan-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-windows/lwjgl-3.2.3-natives-windows.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-windows/lwjgl3-swt-windows-1.0.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-windows/lwjgl-opengl-3.2.3-natives-windows.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-windows/lwjgl-opengles-3.2.3-natives-windows.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
@@ -272,12 +261,6 @@
             <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
         </jar>
-        
-        <!-- Copy dll files for Windows (64-bit) -->
-        <copy file="${dependenciesFolder}/lwjgl.dll" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="${dependenciesFolder}/jemalloc.dll" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="${dependenciesFolder}/OpenAL.dll" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
-        <copy file="${dependenciesFolder}/glfw.dll" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         
         <!-- Copy resource files for Windows (64-bit) -->
         <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>

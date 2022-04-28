@@ -113,12 +113,12 @@
             checksum="7f079687290b9bfa98a65723fe1b81386df60d79"
             dir="buildfiles-v2" />
             
-        <!-- JARs and SOs from LWJGL -->
+        <!-- JARs from LWJGL -->
         <get-and-checksum
-            file="lwjgl-linux.jar"
+            file="lwjgl3.zip"
             destdir="${dependenciesFolder}"
-            checksum="3f6ce96701d8e53ecabbde1178b3436c71c85dc6"
-            dir="buildfiles-v2/lwjgl-linux" />
+            checksum="dfa26eb7b13953e8861f02f813cbec1ca3385e77"
+            dir="buildfiles-v2" />
         <get-and-checksum
             file="lwjgl_util.jar"
             destdir="${dependenciesFolder}"
@@ -140,6 +140,7 @@
         
         <unzip src="${swt.linux.gtk3.zipfile}" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
         <unzip src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
+        <unzip src="${dependenciesFolder}/lwjgl3.zip" dest="${libsFolder}"/>
         
         <!-- Auto-detect other paths -->
         <pathconvert property="core.commands">
@@ -235,11 +236,19 @@
             </manifest>
             <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl-linux.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl3-swt-common-1.0.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengl-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengles-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-vulkan-3.2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-linux/lwjgl-3.2.3-natives-linux.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-linux/lwjgl3-swt-linux-1.0.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-linux/lwjgl-opengl-3.2.3-natives-linux.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-linux/lwjgl-opengles-3.2.3-natives-linux.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
