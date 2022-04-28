@@ -247,12 +247,10 @@
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-3.2.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl3-swt-common-1.0.0.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengl-3.2.3.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengles-3.2.3.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-vulkan-3.2.3.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-3.2.3-natives-macos.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl3-swt-macos-1.0.0.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengl-3.2.3-natives-macos.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengles-3.2.3-natives-macos.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-vulkan-3.2.3-natives-macos.jar"/>
