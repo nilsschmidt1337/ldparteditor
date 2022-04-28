@@ -23,7 +23,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.internal.DPIUtil;
 import org.eclipse.swt.internal.gtk.GDK;
 import org.eclipse.swt.internal.gtk.GTK;
-import org.eclipse.swt.internal.gtk.GdkWindowAttr;
+import org.eclipse.swt.internal.gtk3.GTK3;
+import org.eclipse.swt.internal.gtk3.GdkWindowAttr;
 
 import org.eclipse.swt.widgets.Listener;
 import org.lwjgl.BufferUtils;
@@ -53,7 +54,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 		GTK.gtk_widget_realize(canvas.handle);
 		
 		// grab handles to our window/display
-		long window = GTK.gtk_widget_get_window(canvas.handle);
+		long window = GTK3.gtk_widget_get_window(canvas.handle);
 		long xDisplay = gdk_x11_display_get_xdisplay(window);
 
 		// generate a list of config options for our frame buffer from the supplied data
@@ -88,7 +89,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 		winAttrs.visual = gdkvisual;
 
 		// create the new window - this gives us a glxdrawable too
-		canvas.glWindow = GDK.gdk_window_new(window, winAttrs, GDK.GDK_WA_VISUAL);
+		canvas.glWindow = GTK3.gdk_window_new(window, winAttrs, GDK.GDK_WA_VISUAL);
 		
 		// sets the user data as the widget that owns the window - historical
 		// see: https://developer.gnome.org/gdk3/stable/gdk3-Windows.html#gdk-window-set-user-data
@@ -235,14 +236,14 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 
 	@Override
 	public boolean makeCurrent(GLCanvas canvas, long context) {
-		long window = GTK.gtk_widget_get_window(canvas.handle);
+		long window = GTK3.gtk_widget_get_window(canvas.handle);
 		long xDisplay = gdk_x11_display_get_xdisplay(window);
 		return glXMakeCurrent(xDisplay, canvas.xWindow, context);
 	}
 
 	@Override
 	public boolean deleteContext(GLCanvas canvas, long context) {
-		long window = GTK.gtk_widget_get_window(canvas.handle);
+		long window = GTK3.gtk_widget_get_window(canvas.handle);
 		long xDisplay = gdk_x11_display_get_xdisplay(window);
 		if (context != 0) {
 			if (glXGetCurrentContext() == context) {
@@ -260,7 +261,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 
 	@Override
 	public boolean swapBuffers(GLCanvas canvas) {
-		long window = GTK.gtk_widget_get_window(canvas.handle);
+		long window = GTK3.gtk_widget_get_window(canvas.handle);
 		long xDisplay = gdk_x11_display_get_xdisplay(window);
 		glXSwapBuffers(xDisplay, canvas.xWindow);
 		return false;
@@ -268,7 +269,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 
 	@Override
 	public boolean delayBeforeSwapNV(GLCanvas canvas, float seconds) {
-		long window = GTK.gtk_widget_get_window(canvas.handle);
+		long window = GTK3.gtk_widget_get_window(canvas.handle);
 		long xDisplay = gdk_x11_display_get_xdisplay(window);
         return glXDelayBeforeSwapNV(xDisplay, canvas.xWindow, seconds);
 	}
