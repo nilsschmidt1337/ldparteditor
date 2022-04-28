@@ -42,6 +42,8 @@
             value="scripts" />
        <property name="sourceFolder"
             value="src" />
+       <property name="macosxSourceFolder"
+            value="src-macos" />
        <property name="macosxFolder"
             value="macosx" />
             
@@ -141,6 +143,10 @@
         <unzip src="${swt.macosx.zipfile}" dest="${dependenciesFolder}/${macosxFolder}"/>
         <unzip src="${dependenciesFolder}/${macosxFolder}/swt.jar" dest="${dependenciesFolder}/${macosxFolder}"/>
         <unzip src="${dependenciesFolder}/lwjgl3.zip" dest="${libsFolder}"/>
+        
+        <copy todir="${sourceFolder}" >
+            <fileset dir="${macosxSourceFolder}" includes="**"/>
+        </copy>
         
         <!-- Auto-detect other paths -->
         <pathconvert property="core.commands">
