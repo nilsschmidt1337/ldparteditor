@@ -247,12 +247,10 @@
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-3.2.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl3-swt-common-1.0.0.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengl-3.2.3.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengles-3.2.3.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-vulkan-3.2.3.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-linux/lwjgl-3.2.3-natives-linux.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-linux/lwjgl3-swt-linux-1.0.0.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-linux/lwjgl-opengl-3.2.3-natives-linux.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-linux/lwjgl-opengles-3.2.3-natives-linux.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
