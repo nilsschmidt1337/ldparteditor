@@ -40,6 +40,8 @@
             value="libs" />
        <property name="sourceFolder"
             value="src" />
+       <property name="linuxSourceFolder"
+            value="src-linux" />
        <property name="linuxFolder"
             value="linux" />
        <property name="linuxGtk3Folder"
@@ -141,6 +143,10 @@
         <unzip src="${swt.linux.gtk3.zipfile}" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
         <unzip src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
         <unzip src="${dependenciesFolder}/lwjgl3.zip" dest="${libsFolder}"/>
+        
+        <copy todir="${sourceFolder}" >
+            <fileset dir="${linuxSourceFolder}" includes="**"/>
+        </copy>
         
         <!-- Auto-detect other paths -->
         <pathconvert property="core.commands">

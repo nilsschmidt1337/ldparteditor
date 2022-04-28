@@ -42,6 +42,8 @@
             value="natives" />
        <property name="sourceFolder"
             value="src" />
+       <property name="windowsSourceFolder"
+            value="src-windows" />
        <property name="windowsFolder"
             value="windows" />
             
@@ -141,6 +143,10 @@
         
         <unzip src="${swt.windows.zipfile}" dest="${dependenciesFolder}/${windowsFolder}"/>
         <unzip src="${dependenciesFolder}/lwjgl3.zip" dest="${libsFolder}"/>
+        
+        <copy todir="${sourceFolder}" >
+            <fileset dir="${windowsSourceFolder}" includes="**"/>
+        </copy>
         
         <!-- Auto-detect other paths -->
         <pathconvert property="core.commands">
