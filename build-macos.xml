@@ -117,7 +117,7 @@
         <get-and-checksum
             file="lwjgl3.zip"
             destdir="${dependenciesFolder}"
-            checksum="dfa26eb7b13953e8861f02f813cbec1ca3385e77"
+            checksum="d4f9620bea367fc5d226e2199c45e9b7b25a03a0"
             dir="buildfiles-v2" />
         <get-and-checksum
             file="lwjgl_util.jar"
