@@ -139,8 +139,6 @@ class PlatformMacOSXGLCanvas extends AbstractPlatformGLCanvas {
 			SWT.error(SWT.ERROR_UNSUPPORTED_DEPTH);
 		}
 		context = context.initWithFormat(pixelFormat, ctx);
-		if (data.swapInterval != null && data.swapInterval.intValue() > 0)
-			context.setValues(new int[] { data.swapInterval.intValue() }, OS.NSOpenGLCPSwapInterval);
 
 		context.setValues(new int[] { -1 }, OS.NSOpenGLCPSurfaceOrder);
 		canvas.setData(GLCONTEXT_KEY, context);
