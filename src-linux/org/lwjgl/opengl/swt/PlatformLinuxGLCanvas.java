@@ -36,6 +36,7 @@ import org.lwjgl.opengl.swt.GLData.API;
 import org.lwjgl.opengl.swt.GLData.Profile;
 import org.lwjgl.opengl.swt.GLData.ReleaseBehavior;
 import org.lwjgl.system.linux.XVisualInfo;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * Linux-specific implementation of methods for GLCanvas.
@@ -47,6 +48,14 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 	@Override
 	public long create(GLCanvas canvas, GLData data, GLData effective) {
 
+		if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
+            data.majorVersion = 2;
+            data.minorVersion = 1;
+		} else {
+            data.majorVersion = 3;
+            data.minorVersion = 3;
+		}
+		
 		// Validate context attributes
 		validateAttributes(data);
 
