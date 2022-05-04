@@ -46,7 +46,7 @@ class PlatformMacOSXGLCanvas extends AbstractPlatformGLCanvas {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
 		this.view = canvas.view;
 
-		int attrib[] = new int[MAX_ATTRIB];
+		int[] attrib = new int[MAX_ATTRIB];
 		int pos = 0;
 
 		if (data.doubleBuffer)
@@ -122,7 +122,7 @@ class PlatformMacOSXGLCanvas extends AbstractPlatformGLCanvas {
 			attrib[pos++] = data.samples;
 		}
 
-		attrib[pos++] = 0;
+		attrib[pos] = 0;
 
 		pixelFormat = (NSOpenGLPixelFormat) new NSOpenGLPixelFormat().alloc();
 
@@ -145,21 +145,18 @@ class PlatformMacOSXGLCanvas extends AbstractPlatformGLCanvas {
 		NSNotificationCenter.defaultCenter().addObserver(view, OS.sel_updateOpenGLContext_, OS.NSViewGlobalFrameDidChangeNotification, view);
 
 		Listener listener = event -> {
-			switch (event.type) {
+			if (event.type == SWT.Dispose) {
+				canvas.setData(GLCONTEXT_KEY, null);
+				NSNotificationCenter.defaultCenter().removeObserver(view);
 
-				case SWT.Dispose:
-					canvas.setData(GLCONTEXT_KEY, null);
-					NSNotificationCenter.defaultCenter().removeObserver(view);
-
-					if (context != null) {
-						context.clearDrawable();
-						context.release();
-					}
-					context = null;
-					if (pixelFormat != null)
-						pixelFormat.release();
-					pixelFormat = null;
-					break;
+				if (context != null) {
+					context.clearDrawable();
+					context.release();
+				}
+				context = null;
+				if (pixelFormat != null)
+					pixelFormat.release();
+				pixelFormat = null;
 			}
 		};
 		canvas.addListener(SWT.Dispose, listener);
@@ -215,13 +212,12 @@ class PlatformMacOSXGLCanvas extends AbstractPlatformGLCanvas {
 		canvas.setData(GLCONTEXT_KEY, null);
 		NSNotificationCenter.defaultCenter().removeObserver(view);
 		NSOpenGLContext ctx = new NSOpenGLContext(context);
-		if (ctx != null) {
-			ctx.clearDrawable();
-			ctx.release();
-		}
-		ctx = null;
-		if (pixelFormat != null)
+		ctx.clearDrawable();
+		ctx.release();
+
+		if (pixelFormat != null) {
 			pixelFormat.release();
+		}
 		pixelFormat = null;
 		return true;
 	}
