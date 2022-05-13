@@ -3220,7 +3220,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             break;
                         }
                     }
-                    if (foundTab && OpenInWhat.EDITOR_3D != where) {
+                    if (foundTab && OpenInWhat.EDITOR_TEXT == where) {
                         return null;
                     }
                 }
@@ -3327,6 +3327,7 @@ public class Editor3DWindow extends Editor3DDesign {
             ti.setData(df);
 
             if (canRevert && Project.getUnsavedFiles().contains(df) && Editor3DWindow.getWindow().revert(df)) {
+                Project.setFileToEdit(df);
                 boolean foundTab = false;
                 for (EditorTextWindow win : Project.getOpenTextWindows()) {
                     for (CTabItem ci : win.getTabFolder().getItems()) {
@@ -3340,7 +3341,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         break;
                     }
                 }
-                if (foundTab && OpenInWhat.EDITOR_3D != where) {
+                if (foundTab && OpenInWhat.EDITOR_TEXT == where) {
                     updateTreeUnsavedEntries();
                     return null;
                 }

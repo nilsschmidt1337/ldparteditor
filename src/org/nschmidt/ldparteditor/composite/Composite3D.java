@@ -1217,26 +1217,16 @@ public class Composite3D extends ScalableComposite {
                             if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                 final File fileToOpen = new File(f);
                                 if (fileToOpen.exists() && !fileToOpen.isDirectory()) {
-                                    DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
+                                    DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, f, true);
                                     if (df != null) {
-                                        boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
-                                        WorkbenchManager.getUserSettingState().setSyncingTabs(false);
                                         NewOpenSaveProjectToolItem.addRecentFile(df);
                                         final File f2 = new File(df.getNewName());
                                         if (f2.getParentFile() != null) {
                                             Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
                                         }
-                                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                            for (CTabItem t : w.getTabFolder().getItems()) {
-                                                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                                    w.closeTabWithDatfile(df);
-                                                    WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
-                                                    return;
-                                                }
-                                            }
-                                        }
-                                        WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                                     }
+                                    
+                                    Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                                     break;
                                 }
                             }

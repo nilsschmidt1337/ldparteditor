@@ -21,7 +21,6 @@ import java.io.File;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -40,7 +39,6 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.composite.CompositeContainer;
 import org.nschmidt.ldparteditor.composite.CompositeScale;
 import org.nschmidt.ldparteditor.composite.ScalableComposite;
-import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
@@ -53,7 +51,6 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
-import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.widget.NButton;
 
 /**
@@ -421,22 +418,16 @@ public class Composite3DModifier {
                                 if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                     final File fileToOpen = new File(f);
                                     if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
-                                    DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
+                                    DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, f, true);
                                     if (df != null) {
                                         NewOpenSaveProjectToolItem.addRecentFile(df);
                                         final File f2 = new File(df.getNewName());
                                         if (f2.getParentFile() != null) {
                                             Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
                                         }
-                                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                            for (CTabItem t : w.getTabFolder().getItems()) {
-                                                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                                    w.closeTabWithDatfile(df);
-                                                    return;
-                                                }
-                                            }
-                                        }
                                     }
+                                    
+                                    Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                                     break;
                                 }
                             }
