@@ -322,12 +322,14 @@ public class MiscToolItem extends ToolItem {
 
         NButton btnCondlineToLine = new NButton(miscToolItem, Cocoa.getStyle());
         MiscToolItem.btnCondlineToLinePtr[0] = btnCondlineToLine;
+        KeyStateManager.addTooltipText(btnCondlineToLine, I18n.E3D_CONDLINE_TO_LINE, Task.CONDLINE_TO_LINE);
         // FIXME Needs icon!
         btnCondlineToLine.setText("C2L"); //$NON-NLS-1$
         btnCondlineToLine.setToolTipText(I18n.E3D_CONDLINE_TO_LINE);
 
         NButton btnLineToCondline = new NButton(miscToolItem, Cocoa.getStyle());
         MiscToolItem.btnLineToCondlinePtr[0] = btnLineToCondline;
+        KeyStateManager.addTooltipText(btnLineToCondline, I18n.E3D_LINE_TO_CONDLINE, Task.LINE_TO_CONDLINE);
         // FIXME Needs icon!
         btnLineToCondline.setText("L2C"); //$NON-NLS-1$
         btnLineToCondline.setToolTipText(I18n.E3D_LINE_TO_CONDLINE);
@@ -1911,16 +1913,14 @@ public class MiscToolItem extends ToolItem {
         });
 
         widgetUtil(btnCondlineToLinePtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
+            if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().condlineToLine();
             }
             regainFocus();
         });
 
         widgetUtil(btnLineToCondlinePtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
+            if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().lineToCondline();
             }
             regainFocus();

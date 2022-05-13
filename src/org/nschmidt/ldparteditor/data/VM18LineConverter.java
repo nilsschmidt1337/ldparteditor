@@ -32,7 +32,12 @@ class VM18LineConverter extends VM17Unificator {
     }
 
     public final void condlineToLine() {
-
+        if (linkedDatFile.isReadOnly()) {
+            return;
+        }
+        
+        addSnapshot();
+        
         final Set<GData5> condlinesToDelete = new HashSet<>();
         final Set<GData2> newLines = new HashSet<>();
 
@@ -77,6 +82,11 @@ class VM18LineConverter extends VM17Unificator {
     }
 
     public final void lineToCondline() {
+        if (linkedDatFile.isReadOnly()) {
+            return;
+        }
+        
+        addSnapshot();
 
         final Set<GData2> linesToDelete = new HashSet<>();
         final Set<GData5> newCondlines = new HashSet<>();

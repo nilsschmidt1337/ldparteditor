@@ -280,6 +280,9 @@ public class KeyStateManager {
             addTask(Task.RENDERMODE_WIREFRAME, SWT.ALT, SWT.KEYPAD_9);
 
             addTask(Task.RESET_MANIPULATOR, 'r');
+            
+            addTask(Task.CONDLINE_TO_LINE, SWT.SHIFT, 'l');
+            addTask(Task.LINE_TO_CONDLINE, SWT.SHIFT, 'c');
         } else {
 
             reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
@@ -409,6 +412,9 @@ public class KeyStateManager {
             addTask(Task.RENDERMODE_WIREFRAME, SWT.ALT, SWT.KEYPAD_9);
 
             addTask(Task.RESET_MANIPULATOR, 'r');
+            
+            addTask(Task.CONDLINE_TO_LINE, SWT.SHIFT, 'l');
+            addTask(Task.LINE_TO_CONDLINE, SWT.SHIFT, 'c');
         }
     }
 
@@ -917,6 +923,12 @@ public class KeyStateManager {
                     case RENDERMODE_WIREFRAME:
                         c3d.setRenderMode(-1);
                         c3d.setRenderModeOnContextMenu(-1);
+                        break;
+                    case CONDLINE_TO_LINE:
+                        vm.condlineToLine();
+                        break;
+                    case LINE_TO_CONDLINE:
+                        vm.lineToCondline();
                         break;
                     }
                 }

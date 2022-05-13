@@ -454,6 +454,8 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtmEditor3D, I18n.KEYBOARD_MOVE_TO_AVG, Task.MOVE_TO_AVG, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_MOVE_ADJACENT_DATA, Task.MOVE_ADJACENT_DATA, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SWAP_WINDING, Task.SWAP_WINDING, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_CONDLINE_TO_LINE, Task.CONDLINE_TO_LINE, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_LINE_TO_CONDLINE, Task.LINE_TO_CONDLINE, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_OBJ_VERTEX, Task.OBJ_VERTEX, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_OBJ_LINE, Task.OBJ_LINE, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_OBJ_FACE, Task.OBJ_FACE, true);
