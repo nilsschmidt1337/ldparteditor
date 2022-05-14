@@ -2015,7 +2015,7 @@ public class Editor3DWindow extends Editor3DDesign {
         txtSearchPtr[0].setText(""); //$NON-NLS-1$
 
         Project.getFileToEdit().setLastSelectedComposite(Editor3DWindow.renders.get(0).getC3D());
-        new EditorTextWindow().run(Project.getFileToEdit(), true);
+        EditorTextWindow.createTemporaryWindow(Project.getFileToEdit());
 
         updateBgPictureTab();
         Project.getFileToEdit().addHistory();
@@ -3432,7 +3432,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
                     w.openNewDatFileTab(df, true);
                 } else {
-                    new EditorTextWindow().run(df, false);
+                    EditorTextWindow.createNewWindowIfRequired(df);
                 }
             } else {
                 if (WorkbenchManager.getUserSettingState().hasSingleTextWindow()) {
@@ -3442,7 +3442,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         wtxt.openNewDatFileTab(df, true);
                     }
                 } else {
-                    new EditorTextWindow().run(df, false);
+                    EditorTextWindow.createNewWindowIfRequired(df);
                 }
             }
         }
@@ -4006,7 +4006,7 @@ public class Editor3DWindow extends Editor3DDesign {
             if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
                 w.openNewDatFileTab(df, true);
             } else {
-                new EditorTextWindow().run(df, false);
+                EditorTextWindow.createNewWindowIfRequired(df);
             }
             df.getVertexManager().addSnapshot();
         }

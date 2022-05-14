@@ -110,10 +110,33 @@ public class EditorTextWindow extends EditorTextDesign {
     /** The window state of this window */
     private EditorTextWindowState editorTextWindowState;
 
+    public static void createTemporaryWindow(final DatFile df) {
+        new EditorTextWindow().run(df, true);
+    }
+    
+    public static EditorTextWindow createNewWindowIfRequired(final DatFile df) {
+        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+            final CompositeTabFolder cTabFolder = w.getTabFolder();
+            for (CTabItem t : cTabFolder.getItems()) {
+                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    cTabFolder.setSelection(t);
+                    ((CompositeTab) t).getControl().getShell().forceActive();
+                    
+                    // Don't create a tab for already opened files
+                    return w;
+                }
+            }
+        }
+        
+        final EditorTextWindow result = new EditorTextWindow();
+        result.run(df, false);
+        return result;
+    }
+    
     /**
      * Create the application window.
      */
-    public EditorTextWindow() {
+    private EditorTextWindow() {
         super();
         super.setEditorTextWindow(this);
     }

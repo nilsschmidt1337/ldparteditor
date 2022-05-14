@@ -261,8 +261,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow()))) {
                 w.openNewDatFileTab(df, true);
             } else {
-                w = new EditorTextWindow();
-                w.run(df, false);
+                w = EditorTextWindow.createNewWindowIfRequired(df);
             }
 
             final boolean doClose = w.saveAs(df, name, Project.getProjectPath() + File.separator + "p" + File.separator + resPrefix + name); //$NON-NLS-1$
@@ -292,8 +291,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow()))) {
                 w.openNewDatFileTab(df, true);
             } else {
-                w = new EditorTextWindow();
-                w.run(df, false);
+                w = EditorTextWindow.createNewWindowIfRequired(df);
             }
 
             final boolean doClose = w.saveAs(df, name, null);

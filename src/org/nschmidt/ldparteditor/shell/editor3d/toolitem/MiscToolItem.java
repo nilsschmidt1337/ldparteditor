@@ -1818,8 +1818,7 @@ public class MiscToolItem extends ToolItem {
                                     EditorTextWindow txt;
 
                                     if (Project.getOpenTextWindows().isEmpty()) {
-                                        txt = new EditorTextWindow();
-                                        txt.run(main, false);
+                                        txt = EditorTextWindow.createNewWindowIfRequired(main);
                                     } else {
                                         txt = Project.getOpenTextWindows().iterator().next();
                                     }

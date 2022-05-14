@@ -1296,7 +1296,7 @@ public class Composite3D extends ScalableComposite {
         if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow()) || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
             w.openNewDatFileTab(df, true);
         } else {
-            new EditorTextWindow().run(df, false);
+            EditorTextWindow.createNewWindowIfRequired(df);
         }
     }
 
@@ -2185,8 +2185,7 @@ public class Composite3D extends ScalableComposite {
                 win = Project.getOpenTextWindows().iterator().next();
                 win.openNewDatFileTab(df, true);
             } else {
-                win = new EditorTextWindow();
-                win.run(df, false);
+                win = EditorTextWindow.createNewWindowIfRequired(df);
                 win.open();
             }
 
