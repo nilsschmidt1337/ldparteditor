@@ -245,63 +245,15 @@ public class PrimGen2Dialog extends PrimGen2Design {
         btnOkPtr[0].removeListener(SWT.Selection, btnOkPtr[0].getListeners(SWT.Selection)[0]);
         btnCancelPtr[0].removeListener(SWT.Selection, btnCancelPtr[0].getListeners(SWT.Selection)[0]);
 
-        widgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
-
-            EditorTextWindow w = null;
-            for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
-                if (w2.getTabFolder().getItems().length == 0) {
-                    w = w2;
-                    break;
-                }
-            }
-
-            // Project.getParsedFiles().add(df); IS NECESSARY HERE
-            Project.getParsedFiles().add(df);
-            Project.addOpenedFile(df);
-            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow()))) {
-                w.openNewDatFileTab(df, true);
-            } else {
-                w = EditorTextWindow.createNewWindowIfRequired(df);
-            }
-
-            final boolean doClose = w.saveAs(df, name, Project.getProjectPath() + File.separator + "p" + File.separator + resPrefix + name); //$NON-NLS-1$
-            w.closeTabWithDatfile(df);
-
-            if (doClose) {
-                ok = true;
-                getShell().close();
-            }
-        });
+        widgetUtil(btnOkPtr[0]).addSelectionListener(e -> 
+            savePrimitive(Project.getProjectPath() + File.separator + "p" + File.separator + resPrefix + name) //$NON-NLS-1$
+        );
 
         widgetUtil(btnCancelPtr[0]).addSelectionListener(e -> getShell().close());
 
-        widgetUtil(btnSaveAsPtr[0]).addSelectionListener(e -> {
-
-            EditorTextWindow w = null;
-            for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
-                if (w2.getTabFolder().getItems().length == 0) {
-                    w = w2;
-                    break;
-                }
-            }
-
-            // Project.getParsedFiles().add(df); IS NECESSARY HERE
-            Project.getParsedFiles().add(df);
-            Project.addOpenedFile(df);
-            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow()))) {
-                w.openNewDatFileTab(df, true);
-            } else {
-                w = EditorTextWindow.createNewWindowIfRequired(df);
-            }
-
-            final boolean doClose = w.saveAs(df, name, null);
-            w.closeTabWithDatfile(df);
-
-            if (doClose) {
-                ok = true;
-                getShell().close();
-            }
-        });
+        widgetUtil(btnSaveAsPtr[0]).addSelectionListener(e -> 
+            savePrimitive(null)
+        );
 
         widgetUtil(btnTopPtr[0]).addSelectionListener(e -> {
             c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
@@ -407,6 +359,33 @@ public class PrimGen2Dialog extends PrimGen2Design {
         Editor3DWindow.getWindow().cleanupClosedData();
         Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         return result;
+    }
+
+    private void savePrimitive(final String filePath) {
+        EditorTextWindow w = null;
+        for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
+            if (w2.getTabFolder().getItems().length == 0) {
+                w = w2;
+                break;
+            }
+        }
+
+        // Project.getParsedFiles().add(df); IS NECESSARY HERE
+        Project.getParsedFiles().add(df);
+        Project.addOpenedFile(df);
+        if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow()))) {
+            w.openNewDatFileTab(df, true);
+        } else {
+            w = EditorTextWindow.createNewWindowIfRequired(df);
+        }
+
+        final boolean doClose = w.saveAs(df, name, filePath);
+        w.closeTabWithDatfile(df);
+
+        if (doClose) {
+            ok = true;
+            getShell().close();
+        }
     }
 
     @Override
