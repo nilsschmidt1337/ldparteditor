@@ -3412,12 +3412,12 @@ public class Editor3DWindow extends Editor3DDesign {
                             Project.addOpenedFile(df);
                             tbtmnewItem.parseForErrorAndHints();
                             tbtmnewItem.getTextComposite().redraw();
-                            return true;
                         }
                         if (w.isSeperateWindow()) {
                             w.open();
                         }
-                        return w == tWin;
+                        
+                        return true;
                     }
                 }
             }
@@ -3893,6 +3893,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
             df.parseForData(true);
             df.getVertexManager().setModified(true, true);
+            
+            Project.setFileToEdit(df);
 
             if (tmpW != null) {
                 tmpW.getTabFolder().setSelection(tmpT);
@@ -3902,6 +3904,15 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 ((CompositeTab) tmpT).getTextComposite().forceFocus();
             }
+            
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (!c3d.isDatFileLockedOnDisplay() || df.equals(c3d.getLockableDatFileReference())) {
+                    c3d.setLockableDatFileReference(df);
+                }
+            }
+            
+            updateTabs();
         }
         return true;
     }
