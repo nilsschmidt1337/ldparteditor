@@ -420,6 +420,19 @@ public class EditorTextWindow extends EditorTextDesign {
             Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
         }
         
+        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+            final CompositeTabFolder cTabFolder = w.getTabFolder();
+            for (CTabItem t : cTabFolder.getItems()) {
+                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    cTabFolder.setSelection(t);
+                    ((CompositeTab) t).getControl().getShell().forceActive();
+                    
+                    // Don't create a tab for already opened files
+                    return;
+                }
+            }
+        }
+        
         CompositeTab tbtmnewItem = new CompositeTab(tabFolderPtr[0], SWT.CLOSE);
         tbtmnewItem.setFolderAndWindow(tabFolderPtr[0], editorTextWindow);
         tbtmnewItem.getState().setFileNameObj(df);
