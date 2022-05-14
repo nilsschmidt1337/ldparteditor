@@ -152,7 +152,7 @@ public class EditorTextWindow extends EditorTextDesign {
     /**
      * Run a fresh instance of this window
      */
-    public void run(DatFile fileToOpen, boolean closeASAP) {
+    private void run(DatFile fileToOpen, boolean closeASAP) {
         if (!isSeperateWindow()) {
             return;
         }

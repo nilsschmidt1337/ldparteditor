@@ -3147,10 +3147,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
             } else {
 
-                // FIXME Needs code cleanup!!
                 df = original;
 
-                if (checkForRevert(canRevert, df, where)) {
+                if (checkForRevert(canRevert, df)) {
                     return null;
                 }
 
@@ -3204,7 +3203,7 @@ public class Editor3DWindow extends Editor3DDesign {
             ti.setText(nameSb.toString());
             ti.setData(df);
 
-            if (checkForRevert(canRevert, df, where)) {
+            if (checkForRevert(canRevert, df)) {
                 return null;
             }
 
@@ -3219,26 +3218,10 @@ public class Editor3DWindow extends Editor3DDesign {
         return null;
     }
 
-    private boolean checkForRevert(boolean canRevert, final DatFile df, OpenInWhat where) {
-        if (canRevert && Project.getUnsavedFiles().contains(df) && Editor3DWindow.getWindow().revert(df)) {
-            Project.setFileToEdit(df);
-            boolean foundTab = false;
-            for (EditorTextWindow win : Project.getOpenTextWindows()) {
-                for (CTabItem ci : win.getTabFolder().getItems()) {
-                    CompositeTab ct = (CompositeTab) ci;
-                    if (df.equals(ct.getState().getFileNameObj())) {
-                        foundTab = true;
-                        break;
-                    }
-                }
-                if (foundTab) {
-                    break;
-                }
-            }
-            if (foundTab && OpenInWhat.EDITOR_TEXT == where) {
-                updateTreeUnsavedEntries();
-                return true;
-            }
+    private boolean checkForRevert(boolean canRevert, final DatFile df) {
+        if (canRevert && Project.getUnsavedFiles().contains(df)) {
+            revert(df);
+            return true;
         }
         
         return false;
@@ -3436,7 +3419,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             } else {
                 if (WorkbenchManager.getUserSettingState().hasSingleTextWindow()) {
-                    if (tWin instanceof Editor3DWindow && !Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
+                    if (tWin instanceof Editor3DWindow && !Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || w != null) {
                         w.openNewDatFileTab(df, true);
                     } else if (tWin instanceof EditorTextWindow wtxt) {
                         wtxt.openNewDatFileTab(df, true);
