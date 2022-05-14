@@ -3132,72 +3132,17 @@ public class Editor3DWindow extends Editor3DDesign {
             NLogger.debug(Editor3DWindow.class, filePath);
 
             // Check if its already created
-
-            DatType type = DatType.PART;
-
-            DatFile df = new DatFile(filePath);
-            DatFile original = isFileNameAllocated2(filePath);
+            final DatType type;
+            final DatFile df;
+            final DatFile original = isFileNameAllocated2(filePath);
 
             if (original == null) {
 
-                // Type Check and Description Parsing!!
-                StringBuilder titleSb = new StringBuilder();
-                File f = new File(filePath);
-                try (UTF8BufferedReader reader = new UTF8BufferedReader(f.getAbsolutePath())) {
-                    String title = reader.readLine();
-                    if (title != null) {
-                        title = title.trim();
-                        if (title.length() > 0) {
-                            titleSb.append(" -"); //$NON-NLS-1$
-                            titleSb.append(title.substring(1));
-                        }
-                    }
-                    while (true) {
-                        String typ = reader.readLine();
-                        if (typ != null) {
-                            typ = typ.trim();
-                            if (!typ.startsWith("0")) { //$NON-NLS-1$
-                                break;
-                            } else {
-                                int i1 = typ.indexOf("!LDRAW_ORG"); //$NON-NLS-1$
-                                if (i1 > -1) {
-                                    int i2;
-                                    i2 = typ.indexOf("Subpart"); //$NON-NLS-1$
-                                    if (i2 > -1 && i1 < i2) {
-                                        type = DatType.SUBPART;
-                                        break;
-                                    }
-                                    i2 = typ.indexOf("Part"); //$NON-NLS-1$
-                                    if (i2 > -1 && i1 < i2) {
-                                        type = DatType.PART;
-                                        break;
-                                    }
-                                    i2 = typ.indexOf("48_Primitive"); //$NON-NLS-1$
-                                    if (i2 > -1 && i1 < i2) {
-                                        type = DatType.PRIMITIVE48;
-                                        break;
-                                    }
-                                    i2 = typ.indexOf("8_Primitive"); //$NON-NLS-1$
-                                    if (i2 > -1 && i1 < i2) {
-                                        type = DatType.PRIMITIVE8;
-                                        break;
-                                    }
-                                    i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
-                                    if (i2 > -1 && i1 < i2) {
-                                        type = DatType.PRIMITIVE;
-                                        break;
-                                    }
-                                }
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                } catch (LDParsingException | FileNotFoundException ex) {
-                    NLogger.error(Editor3DWindow.class, ex);
-                }
+                // Title Parsing and Type Check!!
+                String title = parseTitle(filePath);
+                type = parseFileType(filePath);
 
-                df = new DatFile(filePath, titleSb.toString(), false, type);
+                df = new DatFile(filePath, title, false, type);
                 df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
 
             } else {
@@ -3230,93 +3175,42 @@ public class Editor3DWindow extends Editor3DDesign {
                     openDatFile(df, where, null);
                     return df;
                 }
-                {
-                    @SuppressWarnings("unchecked")
-                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPartsPtr[0].getData();
-                    if (cachedReferences.contains(df)) {
-                        openDatFile(df, where, null);
-                        return df;
-                    }
+                if (openCachedReference(this.treeItemProjectPartsPtr, df, where)) {
+                    return df;
                 }
-                {
-                    @SuppressWarnings("unchecked")
-                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectSubpartsPtr[0].getData();
-                    if (cachedReferences.contains(df)) {
-                        openDatFile(df, where, null);
-                        return df;
-                    }
+                if (openCachedReference(this.treeItemProjectSubpartsPtr, df, where)) {
+                    return df;
                 }
-                {
-                    @SuppressWarnings("unchecked")
-                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitivesPtr[0].getData();
-                    if (cachedReferences.contains(df)) {
-                        openDatFile(df, where, null);
-                        return df;
-                    }
+                if (openCachedReference(this.treeItemProjectPrimitivesPtr, df, where)) {
+                    return df;
                 }
-                {
-                    @SuppressWarnings("unchecked")
-                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitives48Ptr[0].getData();
-                    if (cachedReferences.contains(df)) {
-                        openDatFile(df, where, null);
-                        return df;
-                    }
+                if (openCachedReference(this.treeItemProjectPrimitives48Ptr, df, where)) {
+                    return df;
                 }
-                {
-                    @SuppressWarnings("unchecked")
-                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitives8Ptr[0].getData();
-                    if (cachedReferences.contains(df)) {
-                        openDatFile(df, where, null);
-                        return df;
-                    }
+                if (openCachedReference(this.treeItemProjectPrimitives8Ptr, df, where)) {
+                    return df;
                 }
                 type = original.getType();
-                df = original;
             }
 
             TreeItem ti;
             switch (type) {
             case SUBPART:
-            {
-                @SuppressWarnings("unchecked")
-                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectSubpartsPtr[0].getData();
-                if (cachedReferences != null) cachedReferences.add(df);
-            }
-            ti = new TreeItem(this.treeItemProjectSubpartsPtr[0]);
-            break;
+                ti = rebuildTreeItem(df, this.treeItemProjectSubpartsPtr);
+                break;
             case PRIMITIVE:
-            {
-                @SuppressWarnings("unchecked")
-                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitivesPtr[0].getData();
-                if (cachedReferences != null) cachedReferences.add(df);
-            }
-            ti = new TreeItem(this.treeItemProjectPrimitivesPtr[0]);
-            break;
+                ti = rebuildTreeItem(df, this.treeItemProjectPrimitivesPtr);
+                break;
             case PRIMITIVE48:
-            {
-                @SuppressWarnings("unchecked")
-                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitives48Ptr[0].getData();
-                if (cachedReferences != null) cachedReferences.add(df);
-            }
-            ti = new TreeItem(this.treeItemProjectPrimitives48Ptr[0]);
-            break;
+                ti = rebuildTreeItem(df, this.treeItemProjectPrimitives48Ptr);
+                break;
             case PRIMITIVE8:
-            {
-                @SuppressWarnings("unchecked")
-                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitives8Ptr[0].getData();
-                if (cachedReferences != null) cachedReferences.add(df);
-            }
-            ti = new TreeItem(this.treeItemProjectPrimitives8Ptr[0]);
-            break;
+                ti = rebuildTreeItem(df, this.treeItemProjectPrimitives8Ptr);
+                break;
             case PART:
             default:
-            {
-                @SuppressWarnings("unchecked")
-                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPartsPtr[0].getData();
-                if (cachedReferences != null) cachedReferences.add(df);
-            }
-            ti = new TreeItem(this.treeItemProjectPartsPtr[0]);
-            break;
+                ti = rebuildTreeItem(df, this.treeItemProjectPartsPtr);
+                break;
             }
 
             StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
@@ -3356,6 +3250,95 @@ public class Editor3DWindow extends Editor3DDesign {
         }
 
         return null;
+    }
+
+    private boolean openCachedReference(TreeItem[] treeItemPtr, DatFile df, OpenInWhat where) {
+        @SuppressWarnings("unchecked")
+        List<DatFile> cachedReferences = (List<DatFile>) treeItemPtr[0].getData();
+        if (cachedReferences.contains(df)) {
+            openDatFile(df, where, null);
+            return true;
+        }
+        
+        return false;
+    }
+
+    private TreeItem rebuildTreeItem(final DatFile df, final TreeItem[] treeItemPtr) {
+        TreeItem ti;
+        {
+            @SuppressWarnings("unchecked")
+            List<DatFile> cachedReferences = (List<DatFile>) treeItemPtr[0].getData();
+            if (cachedReferences != null) cachedReferences.add(df);
+        }
+        ti = new TreeItem(treeItemPtr[0]);
+        return ti;
+    }
+
+    private DatType parseFileType(String filePath) {
+        DatType type = DatType.PART;
+        try (UTF8BufferedReader reader = new UTF8BufferedReader(new File(filePath).getAbsolutePath())) {
+            while (true) {
+                String typ = reader.readLine();
+                if (typ != null) {
+                    typ = typ.trim();
+                    if (!typ.startsWith("0")) { //$NON-NLS-1$
+                        break;
+                    } else {
+                        int i1 = typ.indexOf("!LDRAW_ORG"); //$NON-NLS-1$
+                        if (i1 > -1) {
+                            int i2;
+                            i2 = typ.indexOf("Subpart"); //$NON-NLS-1$
+                            if (i2 > -1 && i1 < i2) {
+                                type = DatType.SUBPART;
+                                break;
+                            }
+                            i2 = typ.indexOf("Part"); //$NON-NLS-1$
+                            if (i2 > -1 && i1 < i2) {
+                                type = DatType.PART;
+                                break;
+                            }
+                            i2 = typ.indexOf("48_Primitive"); //$NON-NLS-1$
+                            if (i2 > -1 && i1 < i2) {
+                                type = DatType.PRIMITIVE48;
+                                break;
+                            }
+                            i2 = typ.indexOf("8_Primitive"); //$NON-NLS-1$
+                            if (i2 > -1 && i1 < i2) {
+                                type = DatType.PRIMITIVE8;
+                                break;
+                            }
+                            i2 = typ.indexOf("Primitive"); //$NON-NLS-1$
+                            if (i2 > -1 && i1 < i2) {
+                                type = DatType.PRIMITIVE;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+        } catch (LDParsingException | FileNotFoundException ex) {
+            NLogger.error(Editor3DWindow.class, ex);
+        }
+        return type;
+    }
+
+    private String parseTitle(String filePath) {
+        final StringBuilder titleSb = new StringBuilder();
+        try (UTF8BufferedReader reader = new UTF8BufferedReader(new File(filePath).getAbsolutePath())) {
+            String title = reader.readLine();
+            if (title != null) {
+                title = title.trim();
+                if (title.length() > 0) {
+                    titleSb.append(" -"); //$NON-NLS-1$
+                    titleSb.append(title.substring(1));
+                }
+            }
+        } catch (LDParsingException | FileNotFoundException ex) {
+            NLogger.error(Editor3DWindow.class, ex);
+        }
+        return titleSb.toString();
     }
 
     public boolean openDatFile(DatFile df, OpenInWhat where, ApplicationWindow tWin) {
