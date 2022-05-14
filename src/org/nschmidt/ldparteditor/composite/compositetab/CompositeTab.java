@@ -171,16 +171,8 @@ public class CompositeTab extends CompositeTabDesign {
                                             if (f2.getParentFile() != null) {
                                                 Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
                                             }
-                                            if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabState.window[0])) {
-                                                {
-                                                    CompositeTab tbtmnewItem = new CompositeTab(tabState.folder[0], SWT.CLOSE);
-                                                    tbtmnewItem.setFolderAndWindow(tabState.folder[0], tabState.window[0]);
-                                                    tbtmnewItem.getState().setFileNameObj(df);
-                                                    tabState.folder[0].setSelection(tbtmnewItem);
-                                                    tbtmnewItem.parseForErrorAndHints();
-                                                    tbtmnewItem.getTextComposite().redraw();
-                                                }
-                                            }
+                                            
+                                            Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabState.window[0]);
                                         }
                                     } else {
                                         DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, f, true);

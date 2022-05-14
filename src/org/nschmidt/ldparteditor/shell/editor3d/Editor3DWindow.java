@@ -3333,7 +3333,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return titleSb.toString();
     }
 
-    public boolean openDatFile(DatFile df, OpenInWhat where, ApplicationWindow tWin) {
+    public void openDatFile(DatFile df, OpenInWhat where, ApplicationWindow tWin) {
         if (where == OpenInWhat.EDITOR_3D || where == OpenInWhat.EDITOR_TEXT_AND_3D) {
             if (renders.isEmpty()) {
                 if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
@@ -3417,24 +3417,35 @@ public class Editor3DWindow extends Editor3DDesign {
                             w.open();
                         }
                         
-                        return true;
+                        // File is already open in a text editor!
+                        return;
                     }
                 }
             }
 
+            EditorTextWindow w = null;
+            // Project.getParsedFiles().add(df); IS NECESSARY HERE
+            Project.getParsedFiles().add(df);
+            Project.addOpenedFile(df);
+            
             if (tWin == null) {
-                EditorTextWindow w = null;
-                // Project.getParsedFiles().add(df); IS NECESSARY HERE
-                Project.getParsedFiles().add(df);
-                Project.addOpenedFile(df);
                 if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
                     w.openNewDatFileTab(df, true);
                 } else {
                     new EditorTextWindow().run(df, false);
                 }
+            } else {
+                if (WorkbenchManager.getUserSettingState().hasSingleTextWindow()) {
+                    if (tWin instanceof Editor3DWindow && !Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
+                        w.openNewDatFileTab(df, true);
+                    } else if (tWin instanceof EditorTextWindow wtxt) {
+                        wtxt.openNewDatFileTab(df, true);
+                    }
+                } else {
+                    new EditorTextWindow().run(df, false);
+                }
             }
         }
-        return false;
     }
 
     public void disableSelectionTab() {

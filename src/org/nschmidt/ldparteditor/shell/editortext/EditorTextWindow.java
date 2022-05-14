@@ -419,16 +419,13 @@ public class EditorTextWindow extends EditorTextDesign {
         if (f.getParentFile() != null && updateLastVisited) {
             Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
         }
-        if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
-            {
-                CompositeTab tbtmnewItem = new CompositeTab(tabFolderPtr[0], SWT.CLOSE);
-                tbtmnewItem.setFolderAndWindow(tabFolderPtr[0], editorTextWindow);
-                tbtmnewItem.getState().setFileNameObj(df);
-                tabFolderPtr[0].setSelection(tbtmnewItem);
-                tbtmnewItem.parseForErrorAndHints();
-                tbtmnewItem.getTextComposite().redraw();
-            }
-        }
+        
+        CompositeTab tbtmnewItem = new CompositeTab(tabFolderPtr[0], SWT.CLOSE);
+        tbtmnewItem.setFolderAndWindow(tabFolderPtr[0], editorTextWindow);
+        tbtmnewItem.getState().setFileNameObj(df);
+        tabFolderPtr[0].setSelection(tbtmnewItem);
+        tbtmnewItem.parseForErrorAndHints();
+        tbtmnewItem.getTextComposite().redraw();
     }
 
     public void registerEvents() {
@@ -456,16 +453,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                             if (f2.getParentFile() != null) {
                                                 Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
                                             }
-                                            if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabFolderPtr[0].getWindow())) {
-                                                {
-                                                    CompositeTab tbtmnewItem = new CompositeTab(tabFolderPtr[0], SWT.CLOSE);
-                                                    tbtmnewItem.setFolderAndWindow(tabFolderPtr[0], tabFolderPtr[0].getWindow());
-                                                    tbtmnewItem.getState().setFileNameObj(df);
-                                                    tabFolderPtr[0].setSelection(tbtmnewItem);
-                                                    tbtmnewItem.parseForErrorAndHints();
-                                                    tbtmnewItem.getTextComposite().redraw();
-                                                }
-                                            }
+                                            Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabFolderPtr[0].getWindow());
                                         }
                                     } else {
                                         DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, f, true);
@@ -541,18 +529,11 @@ public class EditorTextWindow extends EditorTextDesign {
             } else {
                 df = Editor3DWindow.getWindow().createNewDatFile(btnNewPtr[0].getShell(), OpenInWhat.EDITOR_TEXT);
             }
-            if (df != null && isSyncTabs && !Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
+            if (df != null && isSyncTabs) {
+                Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow);
                 final File f = new File(df.getNewName());
                 if (f.getParentFile() != null) {
                     Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
-                }
-                {
-                    CompositeTab tbtmnewItem = new CompositeTab(tabFolderPtr[0], SWT.CLOSE);
-                    tbtmnewItem.setFolderAndWindow(tabFolderPtr[0], editorTextWindow);
-                    tbtmnewItem.getState().setFileNameObj(df);
-                    tabFolderPtr[0].setSelection(tbtmnewItem);
-                    tbtmnewItem.parseForErrorAndHints();
-                    tbtmnewItem.getTextComposite().redraw();
                 }
             }
         });
@@ -1160,16 +1141,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                         if (f2.getParentFile() != null) {
                                             Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
                                         }
-                                        if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabFolderPtr[0].getWindow())) {
-                                            {
-                                                CompositeTab tbtmnewItem = new CompositeTab(tabFolderPtr[0], SWT.CLOSE);
-                                                tbtmnewItem.setFolderAndWindow(tabFolderPtr[0], tabFolderPtr[0].getWindow());
-                                                tbtmnewItem.getState().setFileNameObj(df);
-                                                tabFolderPtr[0].setSelection(tbtmnewItem);
-                                                tbtmnewItem.parseForErrorAndHints();
-                                                tbtmnewItem.getTextComposite().redraw();
-                                            }
-                                        }
+                                        Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabFolderPtr[0].getWindow());
                                     }
                                 } else {
                                     DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, f, true);
@@ -1293,14 +1265,7 @@ public class EditorTextWindow extends EditorTextDesign {
                             if (f.getParentFile() != null) {
                                 Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
                             }
-                            if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
-                                {
-                                    CompositeTab tbtmnewItem = new CompositeTab(tabFolderPtr[0], SWT.CLOSE);
-                                    tbtmnewItem.setFolderAndWindow(tabFolderPtr[0], editorTextWindow);
-                                    tbtmnewItem.getState().setFileNameObj(df);
-                                    tabFolderPtr[0].setSelection(tbtmnewItem);
-                                }
-                            }
+                            Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow);
                         }
                     } else {
                         DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, selected, false);
