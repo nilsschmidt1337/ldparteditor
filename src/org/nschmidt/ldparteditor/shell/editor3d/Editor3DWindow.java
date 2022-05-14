@@ -3150,24 +3150,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 // FIXME Needs code cleanup!!
                 df = original;
 
-                if (canRevert && Project.getUnsavedFiles().contains(df) && Editor3DWindow.getWindow().revert(df)) {
-                    updateTreeUnsavedEntries();
-                    boolean foundTab = false;
-                    for (EditorTextWindow win : Project.getOpenTextWindows()) {
-                        for (CTabItem ci : win.getTabFolder().getItems()) {
-                            CompositeTab ct = (CompositeTab) ci;
-                            if (df.equals(ct.getState().getFileNameObj())) {
-                                foundTab = true;
-                                break;
-                            }
-                        }
-                        if (foundTab) {
-                            break;
-                        }
-                    }
-                    if (foundTab && OpenInWhat.EDITOR_TEXT == where) {
-                        return null;
-                    }
+                if (checkForRevert(canRevert, df, where)) {
+                    return null;
                 }
 
                 df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
@@ -3220,25 +3204,8 @@ public class Editor3DWindow extends Editor3DDesign {
             ti.setText(nameSb.toString());
             ti.setData(df);
 
-            if (canRevert && Project.getUnsavedFiles().contains(df) && Editor3DWindow.getWindow().revert(df)) {
-                Project.setFileToEdit(df);
-                boolean foundTab = false;
-                for (EditorTextWindow win : Project.getOpenTextWindows()) {
-                    for (CTabItem ci : win.getTabFolder().getItems()) {
-                        CompositeTab ct = (CompositeTab) ci;
-                        if (df.equals(ct.getState().getFileNameObj())) {
-                            foundTab = true;
-                            break;
-                        }
-                    }
-                    if (foundTab) {
-                        break;
-                    }
-                }
-                if (foundTab && OpenInWhat.EDITOR_TEXT == where) {
-                    updateTreeUnsavedEntries();
-                    return null;
-                }
+            if (checkForRevert(canRevert, df, where)) {
+                return null;
             }
 
             updateTreeUnsavedEntries();
@@ -3250,6 +3217,31 @@ public class Editor3DWindow extends Editor3DDesign {
         }
 
         return null;
+    }
+
+    private boolean checkForRevert(boolean canRevert, final DatFile df, OpenInWhat where) {
+        if (canRevert && Project.getUnsavedFiles().contains(df) && Editor3DWindow.getWindow().revert(df)) {
+            Project.setFileToEdit(df);
+            boolean foundTab = false;
+            for (EditorTextWindow win : Project.getOpenTextWindows()) {
+                for (CTabItem ci : win.getTabFolder().getItems()) {
+                    CompositeTab ct = (CompositeTab) ci;
+                    if (df.equals(ct.getState().getFileNameObj())) {
+                        foundTab = true;
+                        break;
+                    }
+                }
+                if (foundTab) {
+                    break;
+                }
+            }
+            if (foundTab && OpenInWhat.EDITOR_TEXT == where) {
+                updateTreeUnsavedEntries();
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     private boolean openCachedReference(TreeItem[] treeItemPtr, DatFile df, OpenInWhat where) {
