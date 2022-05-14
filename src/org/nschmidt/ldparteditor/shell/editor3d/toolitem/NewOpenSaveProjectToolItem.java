@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.shell.editor3d.toolitem;
 
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -234,6 +235,6 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
     }
 
     public static void addRecentFile(DatFile dat) {
-        addRecentFile(dat.getNewName());
+        addRecentFile(new File(dat.getNewName()).getAbsolutePath());
     }
 }

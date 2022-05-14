@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.workbench;
 
+import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -516,6 +517,15 @@ public class UserSettingState implements Serializable {
 
     public List<String> getRecentItems() {
         if (recentItems == null) recentItems = new ArrayList<>();
+        for (int i = 0; i < recentItems.size(); i++) {
+            String f = recentItems.get(i);
+            try {
+                recentItems.set(i, new File(f).getAbsolutePath());
+            } catch (SecurityException se) {
+                NLogger.error(getClass(), se.getMessage());
+            }
+        }
+            
         return recentItems;
     }
 
