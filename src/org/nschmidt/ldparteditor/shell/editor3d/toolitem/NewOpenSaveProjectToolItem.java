@@ -224,12 +224,19 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
     private static void addRecentFile(String projectPath) {
         // PrimGen2 uses a temporary "..." projectPath
         if (!"...".equals(projectPath)) { //$NON-NLS-1$
-            final int index = recentItems.indexOf(projectPath);
-            if (index > -1) {
-                recentItems.remove(index);
-            } else if (recentItems.size() > 20) {
-                recentItems.remove(0);
+            boolean removedAnItem = true;
+            while (removedAnItem) {
+                removedAnItem = true;
+                final int index = recentItems.indexOf(projectPath);
+                if (index > -1) {
+                    recentItems.remove(index);
+                } else if (recentItems.size() > 20) {
+                    recentItems.remove(0);
+                } else {
+                    removedAnItem = false;
+                }
             }
+            
             recentItems.add(projectPath);
         }
     }

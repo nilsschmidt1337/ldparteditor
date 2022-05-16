@@ -86,6 +86,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveDatfileToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.workbench.EditorTextWindowState;
@@ -574,50 +575,12 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
         widgetUtil(btnOpenPtr[0]).addSelectionListener(e -> {
-
-            FileDialog fd = new FileDialog(btnOpenPtr[0].getShell(), SWT.MULTI);
-            fd.setText(I18n.E3D_OPEN_DAT_FILE);
-
-            fd.setFilterPath(Project.getLastVisitedPath());
-
-            String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-            fd.setFilterExtensions(filterExt);
-            String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
-            fd.setFilterNames(filterNames);
-
-            String selected = fd.open();
-            if (selected == null) {
-                return;
+            Shell sh = getShell();
+            if (sh == null) {
+                sh = Editor3DWindow.getWindow().getShell();
             }
-
-            for (String fileName : fd.getFileNames()) {
-                final String filePath = fd.getFilterPath() + File.separator + fileName;
-                if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
-                    DatFile df1 = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, filePath, true);
-                    if (df1 != null) {
-                        openNewDatFileTab(df1, true);
-                    }
-                } else {
-                    DatFile df2 = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, filePath, true);
-                    if (df2 != null) {
-                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                            for (CTabItem t : w.getTabFolder().getItems()) {
-                                if (df2.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                    w.getTabFolder().setSelection(t);
-                                    ((CompositeTab) t).getControl().getShell().forceActive();
-                                    if (w.isSeperateWindow()) {
-                                        w.open();
-                                    }
-                                    df2.getVertexManager().setUpdated(true);
-                                }
-                            }
-                        }
-                        df2.getVertexManager().addSnapshot();
-                    }
-                }
-            }
-            Editor3DWindow.getWindow().cleanupClosedData();
-            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
+            
+            NewOpenSaveDatfileToolItem.open(sh, this);
         });
         widgetUtil(btnSavePtr[0]).addSelectionListener(e -> {
             final CompositeTab ct = (CompositeTab) tabFolderPtr[0].getSelection();

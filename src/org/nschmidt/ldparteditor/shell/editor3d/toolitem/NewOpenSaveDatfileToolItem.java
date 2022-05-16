@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composite.ToolItem;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -187,56 +188,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
         });
 
         widgetUtil(btnOpenDatPtr[0]).addSelectionListener(e -> {
-            boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
-            WorkbenchManager.getUserSettingState().setSyncingTabs(false);
-
-            FileDialog fd = new FileDialog(btnOpenDatPtr[0].getShell(), SWT.MULTI);
-            fd.setText(I18n.E3D_OPEN_DAT_FILE);
-
-            fd.setFilterPath(Project.getLastVisitedPath());
-
-            String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-            fd.setFilterExtensions(filterExt);
-            String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
-            fd.setFilterNames(filterNames);
-
-            String selected = fd.open();
-            if (selected == null) {
-                WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
-                return;
-            }
-
-            for (String fileName : fd.getFileNames()) {
-                final String filePath = fd.getFilterPath() + File.separator + fileName;
-                DatFile dat = win.openDatFile(OpenInWhat.EDITOR_3D, filePath, true);
-                if (dat != null) {
-                    NewOpenSaveProjectToolItem.addRecentFile(dat);
-                    final File f = new File(dat.getNewName());
-                    if (f.getParentFile() != null) {
-                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
-                    }
-                    boolean fileIsOpenInTextEditor = false;
-                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                        for (CTabItem t : w.getTabFolder().getItems()) {
-                            if (dat.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                fileIsOpenInTextEditor = true;
-                            }
-                            if (fileIsOpenInTextEditor) break;
-                        }
-                        if (fileIsOpenInTextEditor) break;
-                    }
-                    if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
-                        win.openDatFile(dat, OpenInWhat.EDITOR_TEXT, null);
-                    } else {
-                        Project.getOpenTextWindows().iterator().next().openNewDatFileTab(dat, true);
-                    }
-                    Project.setFileToEdit(dat);
-                }
-            }
-
-            win.updateTabs();
-            WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
-            win.regainFocus();
+            open(btnOpenDatPtr[0].getShell(), null);
         });
 
         widgetUtil(btnSaveDatPtr[0]).addSelectionListener(e -> {
@@ -316,5 +268,63 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
             }
             win.regainFocus();
         });
+    }
+    
+    public static void open(final Shell sh, EditorTextWindow twin) {
+        final Editor3DWindow win = Editor3DWindow.getWindow();
+        boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
+        WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+
+        FileDialog fd = new FileDialog(sh, SWT.MULTI);
+        fd.setText(I18n.E3D_OPEN_DAT_FILE);
+
+        fd.setFilterPath(Project.getLastVisitedPath());
+
+        String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        fd.setFilterExtensions(filterExt);
+        String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
+        fd.setFilterNames(filterNames);
+
+        String selected = fd.open();
+        if (selected == null) {
+            WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
+            return;
+        }
+
+        for (String fileName : fd.getFileNames()) {
+            final String absoluteFilePath = new File(fd.getFilterPath() + File.separator + fileName).getAbsolutePath();
+            DatFile dat = win.openDatFile(OpenInWhat.EDITOR_3D, absoluteFilePath, true);
+            if (dat != null) {
+                NewOpenSaveProjectToolItem.addRecentFile(dat);
+                final File f = new File(dat.getNewName());
+                if (f.getParentFile() != null) {
+                    Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                }
+                boolean fileIsOpenInTextEditor = false;
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        if (dat.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                            fileIsOpenInTextEditor = true;
+                        }
+                        if (fileIsOpenInTextEditor) break;
+                    }
+                    if (fileIsOpenInTextEditor) break;
+                }
+                if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
+                    win.openDatFile(dat, OpenInWhat.EDITOR_TEXT, null);
+                } else {
+                    if (twin == null) {
+                        twin = Project.getOpenTextWindows().iterator().next();
+                    }
+                    
+                    twin.openNewDatFileTab(dat, true);
+                }
+                Project.setFileToEdit(dat);
+            }
+        }
+
+        win.updateTabs();
+        WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
+        win.regainFocus();
     }
 }
