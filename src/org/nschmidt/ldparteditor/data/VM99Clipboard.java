@@ -53,7 +53,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolIte
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
-class VM99Clipboard extends VM28SlantingMatrixProjector {
+class VM99Clipboard extends VM29LineSurfaceIntersector {
 
     private static final List<GData> CLIPBOARD = new ArrayList<>();
     private static final Set<GData> CLIPBOARD_InvNext = Collections.newSetFromMap(new ThreadsafeHashMap<>());

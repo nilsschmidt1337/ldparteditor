@@ -405,6 +405,7 @@ public final class I18n {
     public static final String E3D_CONDLINE_TO_LINE = E3D.getString(getProperty());
     public static final String E3D_CONNECTED = E3D.getString(getProperty());
     public static final String E3D_CONTROL_CLICK_MODIFY = E3D.getString(getProperty());
+    public static final String E3D_CONTROL_CLICK_SURFACE = E3D.getString(getProperty());
     public static final String E3D_COPY_TO_UNOFFICIAL_LIBRARY = E3D.getString(getProperty());
     public static final String E3D_CREATE_NEW_DAT = E3D.getString(getProperty());
     public static final String E3D_CREATE_TRANSFORMED_COPY = E3D.getString(getProperty());
@@ -465,6 +466,7 @@ public final class I18n {
     public static final String E3D_LINE_SIZE_2 = E3D.getString(getProperty());
     public static final String E3D_LINE_SIZE_3 = E3D.getString(getProperty());
     public static final String E3D_LINE_SIZE_4 = E3D.getString(getProperty());
+    public static final String E3D_LINE_SURFACE_INTERSECTION = E3D.getString(getProperty());
     public static final String E3D_LINE_TO_CONDLINE = E3D.getString(getProperty());
     public static final String E3D_LOADING_DATA = E3D.getString(getProperty());
     public static final String E3D_LOADING_LIBRARY = E3D.getString(getProperty());

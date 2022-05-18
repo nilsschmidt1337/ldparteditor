@@ -318,7 +318,7 @@ public class MiscToolItem extends ToolItem {
         NButton btnLineIntersection = new NButton(miscToolItem, Cocoa.getStyle());
         MiscToolItem.btnLineIntersectionPtr[0] = btnLineIntersection;
         btnLineIntersection.setImage(ResourceManager.getImage("icon16_lineintersect.png")); //$NON-NLS-1$
-        btnLineIntersection.setToolTipText(I18n.E3D_LINE_INTERSECTION);
+        btnLineIntersection.setToolTipText(I18n.E3D_LINE_INTERSECTION + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_SURFACE));
 
         NButton btnCondlineToLine = new NButton(miscToolItem, Cocoa.getStyle());
         MiscToolItem.btnCondlineToLinePtr[0] = btnCondlineToLine;
@@ -1906,7 +1906,11 @@ public class MiscToolItem extends ToolItem {
         widgetUtil(btnLineIntersectionPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().getVertexManager().intersectionVerticesBetweenLines3D(true);
+                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
+                    Project.getFileToEdit().getVertexManager().intersectionVerticesBetweenLinesAndSurfaces3D(true);
+                } else {
+                    Project.getFileToEdit().getVertexManager().intersectionVerticesBetweenLines3D(true);
+                }
             }
             regainFocus();
         });
