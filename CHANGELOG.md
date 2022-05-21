@@ -1,3 +1,12 @@
+### 21 May 2022
+With the release of 1.8.56 you are able to...
+-  ...create all intersection points between lines and surfaces in a selection (Ctrl+Click on "Calculate Line Intersection Points").
+-  ...use drag and drop to open a file on the 3D Editor and open it on the Text Editor, too.
+-  ...use the shortkey Shift+L for C2L and Shift+C for L2C.
+-  ...scale "empty" subfiles in X or Z directions without a warning.
+-  ...enable anti-aliasing on all plattforms ("Tools...->Anti-Aliasing", works on Windows, Linux, Mac OS X)
+
+
 ### 26 Apr 2022
 With the release of 1.8.55 you are able to...
 -  ...to see a warning for subpart references with no content. You can also transform empty subparts and "see" them as a single vertex in the 3D editor.
