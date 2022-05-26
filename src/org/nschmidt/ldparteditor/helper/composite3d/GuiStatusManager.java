@@ -29,6 +29,7 @@ import org.eclipse.swt.SWTException;
 import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
@@ -298,6 +299,22 @@ public enum GuiStatusManager {
             needsComma = appendSelectionInfo(sb, "Condline", "Condlines", selectedCondlineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
             appendSelectionInfo(sb, "Subfile", "Subfiles", selectedSubfileCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
             sb.append(") "); //$NON-NLS-1$
+            
+            if (selectedSubfileCount == 1) {
+                updateSubfileSelection(sb, vm);
+            }
+        }
+    }
+    
+    private static void updateSubfileSelection(StringBuilder sb, VertexManager vm) {
+        try {
+            Iterator<GData1> si = vm.getSelectedSubfiles().iterator();
+            GData1 s = si.next();
+            sb.append(" "); //$NON-NLS-1$
+            sb.append(s.getShortName());
+            sb.append(" @ "); //$NON-NLS-1$
+        } catch (Exception consumed) {
+            NLogger.debug(GuiStatusManager.class, consumed);
         }
     }
 
