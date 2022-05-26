@@ -341,25 +341,12 @@ public enum SubfileCompiler {
                     dataSegments.length == 3 && dataSegments[2].equals("INLINE_END") && //$NON-NLS-1$
                     dataSegments[1].equals("!LPE")) && !toFolderStack.isEmpty() && !skipCompile) { //$NON-NLS-1$
 
-                String targetPath;
-                if (Boolean.TRUE.equals(toFolderStack.peek())) {
-                    String folder = Project.getProjectPath() + File.separator + "PARTS"; //$NON-NLS-1$
-                    String folder2 = Project.getProjectPath() + File.separator + "parts"; //$NON-NLS-1$
-                    File file = new File(folder);
-                    if (file.exists())
-                        targetPath = folder + File.separator + name;
-                    else
-                        targetPath = folder2 + File.separator + name;
-                } else {
-                    String folder = Project.getProjectPath() + File.separator + "P"; //$NON-NLS-1$
-                    String folder2 = Project.getProjectPath() + File.separator + "p"; //$NON-NLS-1$
-                    File file = new File(folder);
-                    if (file.exists())
-                        targetPath = folder + File.separator + name;
-                    else
-                        targetPath = folder2 + File.separator + name;
-                }
+                String targetPath = calculateTargetPath(datFile);
                 DatFile df = new DatFile(targetPath);
+                if (!datFile.isProjectFile()) {
+                    df.setProjectFile(false);
+                }
+                
                 df.setText(builder.toString());
                 TreeItem treeToSearch;
                 if (name.startsWith("s" + File.separator) || name.startsWith("S" + File.separator)) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -477,6 +464,50 @@ public enum SubfileCompiler {
             break;
         }
 
+    }
+
+    private static String calculateTargetPath(final DatFile df) {
+        File fileParentFolder = new File(df.getOldName()).getParentFile();
+        String parentFolder = new File(df.getOldName()).getParent();
+        parentFolder = trimParentFolder(parentFolder);
+        String targetPath;
+        if (Boolean.TRUE.equals(toFolderStack.peek())) {
+            String partsFolderUppercase = Project.getProjectPath() + File.separator + "PARTS"; //$NON-NLS-1$
+            String partsFolderLowercase = Project.getProjectPath() + File.separator + "parts"; //$NON-NLS-1$
+            File filePartsFolderUppercase = new File(partsFolderUppercase);
+            if (!df.isProjectFile() && fileParentFolder.exists()) {
+                targetPath = parentFolder + File.separator + name;
+            } else if (filePartsFolderUppercase.exists())
+                targetPath = partsFolderUppercase + File.separator + name;
+            else
+                targetPath = partsFolderLowercase + File.separator + name;
+        } else {
+            String folder = Project.getProjectPath() + File.separator + "P"; //$NON-NLS-1$
+            String folder2 = Project.getProjectPath() + File.separator + "p"; //$NON-NLS-1$
+            File file = new File(folder);
+            if (!df.isProjectFile() && fileParentFolder.exists()) {
+                targetPath = parentFolder + File.separator + name;
+            } else if (file.exists())
+                targetPath = folder + File.separator + name;
+            else
+                targetPath = folder2 + File.separator + name;
+        }
+        return targetPath;
+    }
+
+    private static String trimParentFolder(String parentFolder) {
+        parentFolder = trimParentFolder(parentFolder, File.separator + "S");  //$NON-NLS-1$
+        parentFolder = trimParentFolder(parentFolder, File.separator + "s");  //$NON-NLS-1$
+        parentFolder = trimParentFolder(parentFolder, File.separator + "8");  //$NON-NLS-1$
+        parentFolder = trimParentFolder(parentFolder, File.separator + "48");  //$NON-NLS-1$
+        return parentFolder;
+    }
+
+    private static String trimParentFolder(String parentFolder, String suffix) {
+        if (parentFolder.endsWith(suffix)) {
+            parentFolder = parentFolder.substring(0, parentFolder.length() - suffix.length());
+        }
+        return parentFolder;
     }
 
     private static boolean isValidName(String text) {
