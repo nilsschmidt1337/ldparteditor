@@ -839,7 +839,7 @@ class VM99Clipboard extends VM29LineSurfaceIntersector {
             // Remove the first INVERTNEXT meta above the selection, since it will be included again in the subfile
             if (li.hasNext()) {
                 GData g = li.next().getBefore();
-                if (g.type() == 6 && ((GDataBFC) g).getType() == BFC.INVERTNEXT) {
+                if (g != null && g.type() == 6 && ((GDataBFC) g).getType() == BFC.INVERTNEXT) {
                     dpl.removeByValue(g);
                     g.getBefore().setNext(g.getNext());
                     remove(g);
