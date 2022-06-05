@@ -141,7 +141,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
 
             sb.append("0 !LDRAW_ORG Unofficial_Primitive\n"); //$NON-NLS-1$
-            sb.append("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt\n\n"); //$NON-NLS-1$
+            sb.append("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt\n\n"); //$NON-NLS-1$
 
             sb.append("0 BFC CERTIFY CCW\n\n"); //$NON-NLS-1$
 
@@ -568,7 +568,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
 
         sb.append(type);
-        sb.append("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt\n\n"); //$NON-NLS-1$
+        sb.append("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt\n\n"); //$NON-NLS-1$
 
         if (ccw) {
             sb.append("0 BFC CERTIFY CCW\n\n"); //$NON-NLS-1$

@@ -276,7 +276,7 @@ public class AddToolItem extends ToolItem {
                                         r.println("0 !LDRAW_ORG " + typeSuffix); //$NON-NLS-1$
                                         String license = WorkbenchManager.getUserSettingState().getLicense();
                                         if (license == null || license.isEmpty()) {
-                                            r.println("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
+                                            r.println("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt"); //$NON-NLS-1$
                                         } else {
                                             r.println(license);
                                         }

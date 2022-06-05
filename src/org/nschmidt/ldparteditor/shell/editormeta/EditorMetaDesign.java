@@ -76,9 +76,11 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] evHistory11TxtPtr = new Text[1];
     final Text[] evHistory12TxtPtr = new Text[1];
     final Text[] evHistory13TxtPtr = new Text[1];
+    final NButton[] evHistory13BtnPtr = new NButton[1];
     final Text[] evHistory21TxtPtr = new Text[1];
     final Text[] evHistory22TxtPtr = new Text[1];
     final Text[] evHistory23TxtPtr = new Text[1];
+    final NButton[] evHistory23BtnPtr = new NButton[1];
     final NButton[] evCommentBtnPtr = new NButton[1];
     final Text[] evCommentTxtPtr = new Text[1];
     final Combo[] evBfcCmbPtr = new Combo[1];
@@ -338,9 +340,9 @@ class EditorMetaDesign extends ApplicationWindow {
                         lblLicense.setText("0 !LICENSE "); //$NON-NLS-1$
 
                         Combo cmbLicense = new Combo(cmpLicense, SWT.NONE);
-                        widgetUtil(cmbLicense).setItems("Redistributable under CCAL version 2.0 : see CAreadme.txt", "Not redistributable : see NonCAreadme.txt" ); //$NON-NLS-1$ //$NON-NLS-2$
+                        widgetUtil(cmbLicense).setItems("Licensed under CC BY 4.0 : see CAreadme.txt", "Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt", "Redistributable under CCAL version 2.0 : see CAreadme.txt", "Not redistributable : see NonCAreadme.txt" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                         cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                        cmbLicense.setText(userSettings.getLicense() != null ? userSettings.getLicense() : "Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
+                        cmbLicense.setText(userSettings.getLicense() != null ? userSettings.getLicense() : "Licensed under CC BY 4.0 : see CAreadme.txt"); //$NON-NLS-1$
                         cmbLicense.select(0);
                         evLicenseCmbPtr[0] = cmbLicense;
                     }
@@ -439,7 +441,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                     {
                         Composite cmpHistory1 = new Composite(grpMeta, SWT.NONE);
-                        cmpHistory1.setLayout(new GridLayout(6, false));
+                        cmpHistory1.setLayout(new GridLayout(7, false));
 
                         Label lblHistory11 = new Label(cmpHistory1, SWT.NONE);
                         lblHistory11.setText("0 !HISTORY "); //$NON-NLS-1$
@@ -457,6 +459,11 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Label lblHistory13 = new Label(cmpHistory1, SWT.NONE);
                         lblHistory13.setText("] "); //$NON-NLS-1$
+                        
+                        NButton btnHistory13 = new NButton(cmpHistory1, SWT.TOGGLE);
+                        btnHistory13.setText("[4.0]"); //$NON-NLS-1$
+                        btnHistory13.setSelection(true);
+                        evHistory13BtnPtr[0] = btnHistory13;
 
                         Text txtHistory13 = new Text(cmpHistory1, SWT.SEARCH);
                         txtHistory13.setMessage(I18n.META_HISTORY_4);
@@ -465,7 +472,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                     {
                         Composite cmpHistory2 = new Composite(grpMeta, SWT.NONE);
-                        cmpHistory2.setLayout(new GridLayout(6, false));
+                        cmpHistory2.setLayout(new GridLayout(7, false));
 
                         Label lblHistory21 = new Label(cmpHistory2, SWT.NONE);
                         lblHistory21.setText("or 0 !HISTORY "); //$NON-NLS-1$
@@ -483,6 +490,11 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Label lblHistory23 = new Label(cmpHistory2, SWT.NONE);
                         lblHistory23.setText("} "); //$NON-NLS-1$
+                        
+                        NButton btnHistory23 = new NButton(cmpHistory2, SWT.TOGGLE);
+                        btnHistory23.setText("[4.0]"); //$NON-NLS-1$
+                        btnHistory23.setSelection(true);
+                        evHistory23BtnPtr[0] = btnHistory23;
 
                         Text txtHistory23 = new Text(cmpHistory2, SWT.SEARCH);
                         txtHistory23.setMessage(I18n.META_HISTORY_4);

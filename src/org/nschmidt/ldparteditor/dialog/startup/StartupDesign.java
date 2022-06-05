@@ -163,9 +163,9 @@ class StartupDesign extends Dialog {
 
         Combo cmbLicense = new Combo(cmpContainer, SWT.NONE);
         this.cmbLicensePtr[0] = cmbLicense;
-        widgetUtil(cmbLicense).setItems("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt"); //$NON-NLS-1$ //$NON-NLS-2$
+        widgetUtil(cmbLicense).setItems("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt", "0 !LICENSE Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt", "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmbLicense.setText("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
+        cmbLicense.setText("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt"); //$NON-NLS-1$
         cmbLicense.select(0);
 
         Label lblAuthoringFolderQuestion = new Label(cmpContainer, SWT.NONE);

@@ -3090,7 +3090,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     df.addToTail(new GData0("0 !LDRAW_ORG " + typeSuffix, View.DUMMY_REFERENCE)); //$NON-NLS-1$
                     String license = WorkbenchManager.getUserSettingState().getLicense();
                     if (license == null || license.isEmpty()) {
-                        df.addToTail(new GData0("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", View.DUMMY_REFERENCE)); //$NON-NLS-1$
+                        df.addToTail(new GData0("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt", View.DUMMY_REFERENCE)); //$NON-NLS-1$
                     } else {
                         df.addToTail(new GData0(license, View.DUMMY_REFERENCE));
                     }

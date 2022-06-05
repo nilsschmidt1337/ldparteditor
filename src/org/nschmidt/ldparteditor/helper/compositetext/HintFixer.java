@@ -120,7 +120,7 @@ enum HintFixer {
                 l = h.getLineTYPE();
             String license = WorkbenchManager.getUserSettingState().getLicense();
             if (license == null || license.isEmpty()) {
-                text = QuickFixer.insertAfterLine(l, "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt <br>", text); //$NON-NLS-1$
+                text = QuickFixer.insertAfterLine(l, "0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt <br>", text); //$NON-NLS-1$
             } else {
                 text = QuickFixer.insertAfterLine(l, license + "<br>", text); //$NON-NLS-1$
             }

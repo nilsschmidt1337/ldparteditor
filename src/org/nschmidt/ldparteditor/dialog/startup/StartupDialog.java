@@ -53,7 +53,7 @@ public class StartupDialog extends StartupDesign {
 
     private String unofficialPath = ""; //$NON-NLS-1$
     private String ldrawUserName = ""; //$NON-NLS-1$
-    private String license = "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"; //$NON-NLS-1$
+    private String license = "0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt"; //$NON-NLS-1$
     private String realName = ""; //$NON-NLS-1$
     private Locale locale = Locale.US;
 

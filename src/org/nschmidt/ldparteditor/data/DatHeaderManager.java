@@ -291,8 +291,7 @@ public class DatHeaderManager {
                             // HeaderState._04_LICENSE
                             if (headerState == HeaderState.H04_LICENSE) {
                                 // I expect that this line is a valid License
-                                if ("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LICENSE Not redistributable : see NonCAreadme.txt".equals(normalizedLine)) { //$NON-NLS-1$
+                                if (isValidLicenseLine(normalizedLine)) { //$NON-NLS-1$
                                     h.setLineLICENSE(lineNumber);
                                     h.setHasLICENSE(true);
                                     headerState = HeaderState.H05_OPTIONAL_HELP;
@@ -302,8 +301,7 @@ public class DatHeaderManager {
                                 }
                             } else {
                                 // I don't expect that this line is a valid License
-                                if ("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LICENSE Not redistributable : see NonCAreadme.txt".equals(normalizedLine)) { //$NON-NLS-1$
+                                if (isValidLicenseLine(normalizedLine)) { //$NON-NLS-1$
                                     // Its duplicated
                                     if (h.hasLICENSE()) {
                                         registerHint(lineNumber, "41", I18n.DATPARSER_DUPLICATED_LICENSE, registered, allHints); //$NON-NLS-1$
@@ -697,6 +695,13 @@ public class DatHeaderManager {
             }
         }
         cachedHeaderHints.clear();
+    }
+
+    private boolean isValidLicenseLine(String normalizedLine) {
+        return "0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt".equals(normalizedLine) //$NON-NLS-1$
+            || "0 !LICENSE Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt".equals(normalizedLine) //$NON-NLS-1$
+            || "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt".equals(normalizedLine) //$NON-NLS-1$
+            || "0 !LICENSE Not redistributable : see NonCAreadme.txt".equals(normalizedLine); //$NON-NLS-1$
     }
 
     void deleteHeaderHints() {

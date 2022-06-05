@@ -231,7 +231,7 @@ public enum WorkbenchManager {
         sb.append(StringHelper.getLineDelimiter());
         String license = WorkbenchManager.getUserSettingState().getLicense();
         if (license == null || license.isEmpty()) {
-            sb.append("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
+            sb.append("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt"); //$NON-NLS-1$
         } else {
             sb.append(license);
         }
