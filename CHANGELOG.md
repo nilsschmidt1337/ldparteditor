@@ -1,3 +1,14 @@
+### 06 Jun 2022
+With the release of 1.8.57 you are able to...
+-  ...use the upgraded "!LICENSE" / "!HISTORY" meta command to support the new CC BY 4.0 agreement.
+-  ...know the name of the selected subfile if there is only one subfile selected (shown in status bar).
+-  ...benefit from the fact that linked inlining will happen in the folder the current file was saved in (except for project files).
+
+The following critical issues are fixed:
+1. Rare error while creating a subfile from 3D selection.
+2. "Show selection in 3D view" selected vertices from non-subfile surfaces and lines.
+
+
 ### 21 May 2022
 With the release of 1.8.56 you are able to...
 -  ...create all intersection points between lines and surfaces in a selection (Ctrl+Click on "Calculate Line Intersection Points").
