@@ -991,9 +991,6 @@ public class CompositeTab extends CompositeTabDesign {
                     NLogger.debug(getClass(), "Line {0}", fromLine3); //$NON-NLS-1$
                     NLogger.debug(getClass(), currentLine1);
 
-                    final String license = WorkbenchManager.getUserSettingState().getLicense();
-                    
-                    final boolean hasCCby40License = "0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt".equals(license);
                     final boolean needNewLine1 = StringHelper.isNotBlank(currentLine1);
 
                     final String username;
@@ -1003,7 +1000,7 @@ public class CompositeTab extends CompositeTabDesign {
                         username = " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "] ";    //$NON-NLS-1$//$NON-NLS-2$
                     }
 
-                    final String historyLine = (needNewLine1 ? StringHelper.getLineDelimiter() : "") + "0 !HISTORY " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + username + (hasCCby40License ? "[4.0] " : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+                    final String historyLine = (needNewLine1 ? StringHelper.getLineDelimiter() : "") + "0 !HISTORY " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + username; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                     int delta1 = 0;
                     s13 = compositeTextPtr[0].getOffsetAtLine(toLine3);

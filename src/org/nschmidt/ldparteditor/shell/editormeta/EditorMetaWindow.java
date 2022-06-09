@@ -226,7 +226,6 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 updateHistory1();
             }
         });
-        evHistory13BtnPtr[0].addSelectionListener(e -> updateHistory1());
         evHistory21TxtPtr[0].addModifyListener(e -> updateHistory2());
         evHistory21TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -248,7 +247,6 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 updateHistory2();
             }
         });
-        evHistory23BtnPtr[0].addSelectionListener(e -> updateHistory2());
 
         evCommentTxtPtr[0].addModifyListener(e -> updateComment());
         evCommentTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
@@ -1077,9 +1075,6 @@ public class EditorMetaWindow extends EditorMetaDesign {
         } else {
             sb.append(" "); //$NON-NLS-1$
         }
-        if (evHistory13BtnPtr[0].getSelection()) {
-            sb.append("[4.0] "); //$NON-NLS-1$
-        }
         sb.append(evHistory13TxtPtr[0].getText().trim());
         lblLineToInsertPtr[0].setText(sb.toString());
         lblLineToInsertPtr[0].getParent().layout();
@@ -1095,9 +1090,6 @@ public class EditorMetaWindow extends EditorMetaDesign {
             sb.append("} "); //$NON-NLS-1$
         } else {
             sb.append(" "); //$NON-NLS-1$
-        }
-        if (evHistory23BtnPtr[0].getSelection()) {
-            sb.append("[4.0] "); //$NON-NLS-1$
         }
         sb.append(evHistory23TxtPtr[0].getText().trim());
         lblLineToInsertPtr[0].setText(sb.toString());
