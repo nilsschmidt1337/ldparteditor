@@ -37,7 +37,7 @@ import org.nschmidt.ldparteditor.widget.NButton;
  */
 public class WUtil {
 
-    private static final String NO_MAPPING_FOR_TYPE = "No mapping for type:";
+    private static final String NO_MAPPING_FOR_TYPE = "No mapping for type:"; //$NON-NLS-1$
     private final Widget w;
 
     WUtil(Widget w) {
@@ -90,7 +90,7 @@ public class WUtil {
                 }
             });
         } else if (w != null){
-            NLogger.error(getClass(), NO_MAPPING_FOR_TYPE + w.getClass().getName()); //$NON-NLS-1$
+            NLogger.error(getClass(), NO_MAPPING_FOR_TYPE + w.getClass().getName());
         }
     }
 
@@ -98,7 +98,7 @@ public class WUtil {
         if (w instanceof Combo combo) {
             combo.setItems(items);
         } else if (w != null){
-            NLogger.error(getClass(), NO_MAPPING_FOR_TYPE + w.getClass().getName()); //$NON-NLS-1$
+            NLogger.error(getClass(), NO_MAPPING_FOR_TYPE + w.getClass().getName());
         }
     }
 
@@ -108,7 +108,7 @@ public class WUtil {
         } else if (w instanceof DropTarget droptarget) {
             droptarget.setTransfer(transferAgents);
         } else if (w != null){
-            NLogger.error(getClass(), NO_MAPPING_FOR_TYPE + w.getClass().getName()); //$NON-NLS-1$
+            NLogger.error(getClass(), NO_MAPPING_FOR_TYPE + w.getClass().getName());
         }
     }
 }

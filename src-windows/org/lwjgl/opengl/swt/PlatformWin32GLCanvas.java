@@ -73,7 +73,7 @@ import org.lwjgl.system.windows.User32;
  * @author Kai Burjack
  */
 class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
-    private static final String USE_OWNDC_KEY = "org.eclipse.swt.internal.win32.useOwnDC";
+    private static final String USE_OWNDC_KEY = "org.eclipse.swt.internal.win32.useOwnDC"; //$NON-NLS-1$
 
     private long wglDelayBeforeSwapNVAddr = 0L;
     private boolean wglDelayBeforeSwapNVAddr_set = false;
@@ -201,7 +201,7 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
         if (pixelFormat == 0 || !GDI32.SetPixelFormat(hDCdummy, pixelFormat, pfd)) {
             // Pixel format unsupported
             User32.ReleaseDC(dummyWindowHandle, hDCdummy);
-            throw new SWTException("Unsupported pixel format");
+            throw new SWTException("Unsupported pixel format"); //$NON-NLS-1$
         }
 
         /*
@@ -212,7 +212,7 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
         long dummyContext = WGL.wglCreateContext(hDCdummy);
         if (dummyContext == 0L) {
             User32.ReleaseDC(dummyWindowHandle, hDCdummy);
-            throw new SWTException("Failed to create OpenGL context");
+            throw new SWTException("Failed to create OpenGL context"); //$NON-NLS-1$
         }
 
         // Save current context to restore it later
@@ -224,34 +224,34 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
         if (!success) {
             User32.ReleaseDC(dummyWindowHandle, hDCdummy);
             WGL.wglDeleteContext(dummyContext);
-            throw new SWTException("Failed to make OpenGL context current");
+            throw new SWTException("Failed to make OpenGL context current"); //$NON-NLS-1$
         }
 
         // Query supported WGL extensions
         String wglExtensions = null;
-        long wglGetExtensionsStringARBAddr = WGL.wglGetProcAddress("wglGetExtensionsStringARB");
+        long wglGetExtensionsStringARBAddr = WGL.wglGetProcAddress("wglGetExtensionsStringARB"); //$NON-NLS-1$
         if (wglGetExtensionsStringARBAddr != 0L) {
             long str = JNI.callPP(hDCdummy, wglGetExtensionsStringARBAddr);
             if (str != 0L) {
                 wglExtensions = MemoryUtil.memASCII(str);
             } else {
-                wglExtensions = "";
+                wglExtensions = ""; //$NON-NLS-1$
             }
         } else {
             // Try the EXT extension
-            long wglGetExtensionsStringEXTAddr = WGL.wglGetProcAddress("wglGetExtensionsStringEXT");
+            long wglGetExtensionsStringEXTAddr = WGL.wglGetProcAddress("wglGetExtensionsStringEXT"); //$NON-NLS-1$
             if (wglGetExtensionsStringEXTAddr != 0L) {
                 long str = JNI.callP(wglGetExtensionsStringEXTAddr);
                 if (str != 0L) {
                     wglExtensions = MemoryUtil.memASCII(str);
                 } else {
-                    wglExtensions = "";
+                    wglExtensions = ""; //$NON-NLS-1$
                 }
             } else {
-                wglExtensions = "";
+                wglExtensions = ""; //$NON-NLS-1$
             }
         }
-        String[] splitted = wglExtensions.split(" ");
+        String[] splitted = wglExtensions.split(" "); //$NON-NLS-1$
         Set<String> wglExtensionsList = new HashSet<String>(splitted.length);
         for (String str : splitted) {
             wglExtensionsList.add(str);
@@ -260,7 +260,7 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
         if (!success) {
             WGL.wglDeleteContext(dummyContext);
             WGL.wglMakeCurrent(currentDc, currentContext);
-            throw new SWTException("Could not release dummy DC");
+            throw new SWTException("Could not release dummy DC"); //$NON-NLS-1$
         }
 
         // For some constellations of context attributes, we can stop right here.
@@ -273,26 +273,26 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
             if (!success) {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglMakeCurrent(currentDc, currentContext);
-                throw new SWTException("Could not delete dummy GL context");
+                throw new SWTException("Could not delete dummy GL context"); //$NON-NLS-1$
             }
             long context = WGL.wglCreateContext(hDC);
 
             if (attribs.swapInterval != null) {
-                boolean has_WGL_EXT_swap_control = wglExtensionsList.contains("WGL_EXT_swap_control");
+                boolean has_WGL_EXT_swap_control = wglExtensionsList.contains("WGL_EXT_swap_control"); //$NON-NLS-1$
                 if (!has_WGL_EXT_swap_control) {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglMakeCurrent(currentDc, currentContext);
                     WGL.wglDeleteContext(context);
-                    throw new SWTException("Swap interval requested but WGL_EXT_swap_control is unavailable");
+                    throw new SWTException("Swap interval requested but WGL_EXT_swap_control is unavailable"); //$NON-NLS-1$
                 }
                 if (attribs.swapInterval < 0) {
                     // Only allowed if WGL_EXT_swap_control_tear is available
-                    boolean has_WGL_EXT_swap_control_tear = wglExtensionsList.contains("WGL_EXT_swap_control_tear");
+                    boolean has_WGL_EXT_swap_control_tear = wglExtensionsList.contains("WGL_EXT_swap_control_tear"); //$NON-NLS-1$
                     if (!has_WGL_EXT_swap_control_tear) {
                         User32.ReleaseDC(windowHandle, hDC);
                         WGL.wglMakeCurrent(currentDc, currentContext);
                         WGL.wglDeleteContext(context);
-                        throw new SWTException("Negative swap interval requested but WGL_EXT_swap_control_tear is unavailable");
+                        throw new SWTException("Negative swap interval requested but WGL_EXT_swap_control_tear is unavailable"); //$NON-NLS-1$
                     }
                 }
                 // Make context current to set the swap interval
@@ -301,9 +301,9 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglMakeCurrent(currentDc, currentContext);
                     WGL.wglDeleteContext(context);
-                    throw new SWTException("Could not make GL context current");
+                    throw new SWTException("Could not make GL context current"); //$NON-NLS-1$
                 }
-                long wglSwapIntervalEXTAddr = WGL.wglGetProcAddress("wglSwapIntervalEXT");
+                long wglSwapIntervalEXTAddr = WGL.wglGetProcAddress("wglSwapIntervalEXT"); //$NON-NLS-1$
                 if (wglSwapIntervalEXTAddr != 0L) {
                     JNI.callI(attribs.swapInterval, wglSwapIntervalEXTAddr);
                 }
@@ -311,12 +311,12 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
 
             if (attribs.swapGroupNV > 0 || attribs.swapBarrierNV > 0) {
                 // Only allowed if WGL_NV_swap_group is available
-                boolean has_WGL_NV_swap_group = wglExtensionsList.contains("WGL_NV_swap_group");
+                boolean has_WGL_NV_swap_group = wglExtensionsList.contains("WGL_NV_swap_group"); //$NON-NLS-1$
                 if (!has_WGL_NV_swap_group) {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglMakeCurrent(currentDc, currentContext);
                     WGL.wglDeleteContext(context);
-                    throw new SWTException("Swap group or barrier requested but WGL_NV_swap_group is unavailable");
+                    throw new SWTException("Swap group or barrier requested but WGL_NV_swap_group is unavailable"); //$NON-NLS-1$
                 }
                 // Make context current to join swap group and/or barrier
                 success = WGL.wglMakeCurrent(hDC, context);
@@ -337,7 +337,7 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglMakeCurrent(currentDc, currentContext);
                     WGL.wglDeleteContext(context);
-                    throw new SWTException("Failed while configuring context sharing");
+                    throw new SWTException("Failed while configuring context sharing"); //$NON-NLS-1$
                 }
             }
 
@@ -347,13 +347,13 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglMakeCurrent(currentDc, currentContext);
                 WGL.wglDeleteContext(context);
-                throw new SWTException("Failed to describe pixel format");
+                throw new SWTException("Failed to describe pixel format"); //$NON-NLS-1$
             }
             success = User32.ReleaseDC(windowHandle, hDC);
             if (!success) {
                 WGL.wglMakeCurrent(currentDc, currentContext);
                 WGL.wglDeleteContext(context);
-                throw new SWTException("Could not release DC");
+                throw new SWTException("Could not release DC"); //$NON-NLS-1$
             }
             effective.redSize = pfd.cRedBits();
             effective.greenSize = pfd.cGreenBits();
@@ -375,18 +375,18 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
         }
 
         // Check for WGL_ARB_create_context support
-        if (!wglExtensionsList.contains("WGL_ARB_create_context")) {
+        if (!wglExtensionsList.contains("WGL_ARB_create_context")) { //$NON-NLS-1$
             WGL.wglDeleteContext(dummyContext);
             WGL.wglMakeCurrent(currentDc, currentContext);
-            throw new SWTException("Extended context attributes requested but WGL_ARB_create_context is unavailable");
+            throw new SWTException("Extended context attributes requested but WGL_ARB_create_context is unavailable"); //$NON-NLS-1$
         }
 
         // Obtain wglCreateContextAttribsARB function pointer
-        long wglCreateContextAttribsARBAddr = WGL.wglGetProcAddress("wglCreateContextAttribsARB");
+        long wglCreateContextAttribsARBAddr = WGL.wglGetProcAddress("wglCreateContextAttribsARB"); //$NON-NLS-1$
         if (wglCreateContextAttribsARBAddr == 0L) {
             WGL.wglDeleteContext(dummyContext);
             WGL.wglMakeCurrent(currentDc, currentContext);
-            throw new SWTException("WGL_ARB_create_context available but wglCreateContextAttribsARB is NULL");
+            throw new SWTException("WGL_ARB_create_context available but wglCreateContextAttribsARB is NULL"); //$NON-NLS-1$
         }
 
         IntBuffer attribList = BufferUtils.createIntBuffer(64);
@@ -395,55 +395,55 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
 
         // Obtain wglChoosePixelFormatARB if multisampling or sRGB or floating point pixel format is requested
         if (attribs.samples > 0 || attribs.sRGB || attribs.pixelFormatFloat) {
-            long wglChoosePixelFormatAddr = WGL.wglGetProcAddress("wglChoosePixelFormatARB");
+            long wglChoosePixelFormatAddr = WGL.wglGetProcAddress("wglChoosePixelFormatARB"); //$NON-NLS-1$
             if (wglChoosePixelFormatAddr == 0L) {
                 // Try EXT function (the WGL constants are the same in both extensions)
-                wglChoosePixelFormatAddr = WGL.wglGetProcAddress("wglChoosePixelFormatEXT");
+                wglChoosePixelFormatAddr = WGL.wglGetProcAddress("wglChoosePixelFormatEXT"); //$NON-NLS-1$
                 if (wglChoosePixelFormatAddr == 0L) {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglDeleteContext(dummyContext);
                     WGL.wglMakeCurrent(currentDc, currentContext);
-                    throw new SWTException("No support for wglChoosePixelFormatARB/EXT. Cannot query supported pixel formats.");
+                    throw new SWTException("No support for wglChoosePixelFormatARB/EXT. Cannot query supported pixel formats."); //$NON-NLS-1$
                 }
             }
             if (attribs.samples > 0) {
                 // Check for ARB or EXT extension (their WGL constants have the same value)
-                boolean has_WGL_ARB_multisample = wglExtensionsList.contains("WGL_ARB_multisample");
-                boolean has_WGL_EXT_multisample = wglExtensionsList.contains("WGL_EXT_multisample");
+                boolean has_WGL_ARB_multisample = wglExtensionsList.contains("WGL_ARB_multisample"); //$NON-NLS-1$
+                boolean has_WGL_EXT_multisample = wglExtensionsList.contains("WGL_EXT_multisample"); //$NON-NLS-1$
                 if (!has_WGL_ARB_multisample && !has_WGL_EXT_multisample) {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglDeleteContext(dummyContext);
                     WGL.wglMakeCurrent(currentDc, currentContext);
-                    throw new SWTException("Multisampling requested but neither WGL_ARB_multisample nor WGL_EXT_multisample available");
+                    throw new SWTException("Multisampling requested but neither WGL_ARB_multisample nor WGL_EXT_multisample available"); //$NON-NLS-1$
                 }
                 if (attribs.colorSamplesNV > 0) {
-                    boolean has_WGL_NV_multisample_coverage = wglExtensionsList.contains("WGL_NV_multisample_coverage");
+                    boolean has_WGL_NV_multisample_coverage = wglExtensionsList.contains("WGL_NV_multisample_coverage"); //$NON-NLS-1$
                     if (!has_WGL_NV_multisample_coverage) {
                         User32.ReleaseDC(windowHandle, hDC);
                         WGL.wglDeleteContext(dummyContext);
                         WGL.wglMakeCurrent(currentDc, currentContext);
-                        throw new SWTException("Color samples requested but WGL_NV_multisample_coverage is unavailable");
+                        throw new SWTException("Color samples requested but WGL_NV_multisample_coverage is unavailable"); //$NON-NLS-1$
                     }
                 }
             }
             if (attribs.sRGB) {
                 // Check for WGL_EXT_framebuffer_sRGB
-                boolean has_WGL_EXT_framebuffer_sRGB = wglExtensionsList.contains("WGL_EXT_framebuffer_sRGB");
+                boolean has_WGL_EXT_framebuffer_sRGB = wglExtensionsList.contains("WGL_EXT_framebuffer_sRGB"); //$NON-NLS-1$
                 if (!has_WGL_EXT_framebuffer_sRGB) {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglDeleteContext(dummyContext);
                     WGL.wglMakeCurrent(currentDc, currentContext);
-                    throw new SWTException("sRGB color space requested but WGL_EXT_framebuffer_sRGB is unavailable");
+                    throw new SWTException("sRGB color space requested but WGL_EXT_framebuffer_sRGB is unavailable"); //$NON-NLS-1$
                 }
             }
             if (attribs.pixelFormatFloat) {
                 // Check for WGL_ARB_pixel_format_float
-                boolean has_WGL_ARB_pixel_format_float = wglExtensionsList.contains("WGL_ARB_pixel_format_float");
+                boolean has_WGL_ARB_pixel_format_float = wglExtensionsList.contains("WGL_ARB_pixel_format_float"); //$NON-NLS-1$
                 if (!has_WGL_ARB_pixel_format_float) {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglDeleteContext(dummyContext);
                     WGL.wglMakeCurrent(currentDc, currentContext);
-                    throw new SWTException("Floating-point format requested but WGL_ARB_pixel_format_float is unavailable");
+                    throw new SWTException("Floating-point format requested but WGL_ARB_pixel_format_float is unavailable"); //$NON-NLS-1$
                 }
             }
             // Query matching pixel formats
@@ -454,7 +454,7 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglDeleteContext(dummyContext);
                 WGL.wglMakeCurrent(currentDc, currentContext);
-                throw new SWTException("No supported pixel format found.");
+                throw new SWTException("No supported pixel format found."); //$NON-NLS-1$
             }
             pixelFormat = MemoryUtil.memGetInt(bufferAddr + 4);
             // Describe pixel format for the PIXELFORMATDESCRIPTOR to match the chosen format
@@ -463,18 +463,18 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglDeleteContext(dummyContext);
                 WGL.wglMakeCurrent(currentDc, currentContext);
-                throw new SWTException("Failed to validate supported pixel format.");
+                throw new SWTException("Failed to validate supported pixel format."); //$NON-NLS-1$
             }
             // Obtain extended pixel format attributes
-            long wglGetPixelFormatAttribivAddr = WGL.wglGetProcAddress("wglGetPixelFormatAttribivARB");
+            long wglGetPixelFormatAttribivAddr = WGL.wglGetProcAddress("wglGetPixelFormatAttribivARB"); //$NON-NLS-1$
             if (wglGetPixelFormatAttribivAddr == 0L) {
                 // Try EXT function (function signature is the same)
-                wglGetPixelFormatAttribivAddr = WGL.wglGetProcAddress("wglGetPixelFormatAttribivEXT");
+                wglGetPixelFormatAttribivAddr = WGL.wglGetProcAddress("wglGetPixelFormatAttribivEXT"); //$NON-NLS-1$
                 if (wglGetPixelFormatAttribivAddr == 0L) {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglDeleteContext(dummyContext);
                     WGL.wglMakeCurrent(currentDc, currentContext);
-                    throw new SWTException("No support for wglGetPixelFormatAttribivARB/EXT. Cannot get effective pixel format attributes.");
+                    throw new SWTException("No support for wglGetPixelFormatAttribivARB/EXT. Cannot get effective pixel format attributes."); //$NON-NLS-1$
                 }
             }
             attribList.rewind();
@@ -499,7 +499,7 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglDeleteContext(dummyContext);
                 WGL.wglMakeCurrent(currentDc, currentContext);
-                throw new SWTException("Failed to get pixel format attributes.");
+                throw new SWTException("Failed to get pixel format attributes."); //$NON-NLS-1$
             }
             effective.doubleBuffer = attribValues.get(0) == 1;
             effective.stereo = attribValues.get(1) == 1;
@@ -531,22 +531,22 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
                 profile = WGLARBCreateContextProfile.WGL_CONTEXT_CORE_PROFILE_BIT_ARB;
             }
         } else if (attribs.api == API.GLES) {
-            boolean has_WGL_EXT_create_context_es2_profile = wglExtensionsList.contains("WGL_EXT_create_context_es2_profile");
+            boolean has_WGL_EXT_create_context_es2_profile = wglExtensionsList.contains("WGL_EXT_create_context_es2_profile"); //$NON-NLS-1$
             if (!has_WGL_EXT_create_context_es2_profile) {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglDeleteContext(dummyContext);
                 WGL.wglMakeCurrent(currentDc, currentContext);
-                throw new SWTException("OpenGL ES API requested but WGL_EXT_create_context_es2_profile is unavailable");
+                throw new SWTException("OpenGL ES API requested but WGL_EXT_create_context_es2_profile is unavailable"); //$NON-NLS-1$
             }
             profile = WGLEXTCreateContextES2Profile.WGL_CONTEXT_ES2_PROFILE_BIT_EXT;
         }
         if (profile > 0) {
-            boolean has_WGL_ARB_create_context_profile = wglExtensionsList.contains("WGL_ARB_create_context_profile");
+            boolean has_WGL_ARB_create_context_profile = wglExtensionsList.contains("WGL_ARB_create_context_profile"); //$NON-NLS-1$
             if (!has_WGL_ARB_create_context_profile) {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglDeleteContext(dummyContext);
                 WGL.wglMakeCurrent(currentDc, currentContext);
-                throw new SWTException("OpenGL profile requested but WGL_ARB_create_context_profile is unavailable");
+                throw new SWTException("OpenGL profile requested but WGL_ARB_create_context_profile is unavailable"); //$NON-NLS-1$
             }
             attribList.put(WGLARBCreateContextProfile.WGL_CONTEXT_PROFILE_MASK_ARB).put(profile);
         }
@@ -563,12 +563,12 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
         }
         if (attribs.robustness) {
             // Check for WGL_ARB_create_context_robustness
-            boolean has_WGL_ARB_create_context_robustness = wglExtensions.contains("WGL_ARB_create_context_robustness");
+            boolean has_WGL_ARB_create_context_robustness = wglExtensions.contains("WGL_ARB_create_context_robustness"); //$NON-NLS-1$
             if (!has_WGL_ARB_create_context_robustness) {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglDeleteContext(dummyContext);
                 WGL.wglMakeCurrent(currentDc, currentContext);
-                throw new SWTException("Context with robust buffer access requested but WGL_ARB_create_context_robustness is unavailable");
+                throw new SWTException("Context with robust buffer access requested but WGL_ARB_create_context_robustness is unavailable"); //$NON-NLS-1$
             }
             contextFlags |= WGLARBCreateContextRobustness.WGL_CONTEXT_ROBUST_ACCESS_BIT_ARB;
             if (attribs.loseContextOnReset) {
@@ -578,14 +578,14 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
             }
             if (attribs.contextResetIsolation) {
                 // Check for WGL_ARB_robustness_application_isolation or WGL_ARB_robustness_share_group_isolation
-                boolean has_WGL_ARB_robustness_application_isolation = wglExtensions.contains("WGL_ARB_robustness_application_isolation");
-                boolean has_WGL_ARB_robustness_share_group_isolation = wglExtensions.contains("WGL_ARB_robustness_share_group_isolation");
+                boolean has_WGL_ARB_robustness_application_isolation = wglExtensions.contains("WGL_ARB_robustness_application_isolation"); //$NON-NLS-1$
+                boolean has_WGL_ARB_robustness_share_group_isolation = wglExtensions.contains("WGL_ARB_robustness_share_group_isolation"); //$NON-NLS-1$
                 if (!has_WGL_ARB_robustness_application_isolation && !has_WGL_ARB_robustness_share_group_isolation) {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglDeleteContext(dummyContext);
                     WGL.wglMakeCurrent(currentDc, currentContext);
                     throw new SWTException(
-                            "Robustness isolation requested but neither WGL_ARB_robustness_application_isolation nor WGL_ARB_robustness_share_group_isolation available");
+                            "Robustness isolation requested but neither WGL_ARB_robustness_application_isolation nor WGL_ARB_robustness_share_group_isolation available"); //$NON-NLS-1$
                 }
                 contextFlags |= WGLARBRobustnessApplicationIsolation.WGL_CONTEXT_RESET_ISOLATION_BIT_ARB;
             }
@@ -593,12 +593,12 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
         if (contextFlags > 0)
             attribList.put(WGLARBCreateContext.WGL_CONTEXT_FLAGS_ARB).put(contextFlags);
         if (attribs.contextReleaseBehavior != null) {
-            boolean has_WGL_ARB_context_flush_control = wglExtensionsList.contains("WGL_ARB_context_flush_control");
+            boolean has_WGL_ARB_context_flush_control = wglExtensionsList.contains("WGL_ARB_context_flush_control"); //$NON-NLS-1$
             if (!has_WGL_ARB_context_flush_control) {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglDeleteContext(dummyContext);
                 WGL.wglMakeCurrent(currentDc, currentContext);
-                throw new SWTException("Context release behavior requested but WGL_ARB_context_flush_control is unavailable");
+                throw new SWTException("Context release behavior requested but WGL_ARB_context_flush_control is unavailable"); //$NON-NLS-1$
             }
             if (attribs.contextReleaseBehavior == ReleaseBehavior.NONE)
                 attribList.put(WGLARBContextFlushControl.WGL_CONTEXT_RELEASE_BEHAVIOR_ARB).put(WGLARBContextFlushControl.WGL_CONTEXT_RELEASE_BEHAVIOR_NONE_ARB);
@@ -613,7 +613,7 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
             User32.ReleaseDC(windowHandle, hDC);
             WGL.wglDeleteContext(dummyContext);
             WGL.wglMakeCurrent(currentDc, currentContext);
-            throw new SWTException("Failed to set pixel format.");
+            throw new SWTException("Failed to set pixel format."); //$NON-NLS-1$
         }
         // And create new context with it
         long newCtx = JNI.callPPPP(hDC, attribs.shareContext != null ? attribs.shareContext.context : 0L, attribListAddr, wglCreateContextAttribsARBAddr);
@@ -621,41 +621,41 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
         if (newCtx == 0L) {
             User32.ReleaseDC(windowHandle, hDC);
             WGL.wglMakeCurrent(currentDc, currentContext);
-            throw new SWTException("Failed to create OpenGL context.");
+            throw new SWTException("Failed to create OpenGL context."); //$NON-NLS-1$
         }
         // Make context current for next operations
         WGL.wglMakeCurrent(hDC, newCtx);
         if (attribs.swapInterval != null) {
-            boolean has_WGL_EXT_swap_control = wglExtensionsList.contains("WGL_EXT_swap_control");
+            boolean has_WGL_EXT_swap_control = wglExtensionsList.contains("WGL_EXT_swap_control"); //$NON-NLS-1$
             if (!has_WGL_EXT_swap_control) {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglMakeCurrent(currentDc, currentContext);
                 WGL.wglDeleteContext(newCtx);
-                throw new SWTException("Swap interval requested but WGL_EXT_swap_control is unavailable");
+                throw new SWTException("Swap interval requested but WGL_EXT_swap_control is unavailable"); //$NON-NLS-1$
             }
             if (attribs.swapInterval < 0) {
                 // Only allowed if WGL_EXT_swap_control_tear is available
-                boolean has_WGL_EXT_swap_control_tear = wglExtensionsList.contains("WGL_EXT_swap_control_tear");
+                boolean has_WGL_EXT_swap_control_tear = wglExtensionsList.contains("WGL_EXT_swap_control_tear"); //$NON-NLS-1$
                 if (!has_WGL_EXT_swap_control_tear) {
                     User32.ReleaseDC(windowHandle, hDC);
                     WGL.wglMakeCurrent(currentDc, currentContext);
                     WGL.wglDeleteContext(newCtx);
-                    throw new SWTException("Negative swap interval requested but WGL_EXT_swap_control_tear is unavailable");
+                    throw new SWTException("Negative swap interval requested but WGL_EXT_swap_control_tear is unavailable"); //$NON-NLS-1$
                 }
             }
-            long wglSwapIntervalEXTAddr = WGL.wglGetProcAddress("wglSwapIntervalEXT");
+            long wglSwapIntervalEXTAddr = WGL.wglGetProcAddress("wglSwapIntervalEXT"); //$NON-NLS-1$
             if (wglSwapIntervalEXTAddr != 0L) {
                 JNI.callI(attribs.swapInterval, wglSwapIntervalEXTAddr);
             }
         }
         if (attribs.swapGroupNV > 0 || attribs.swapBarrierNV > 0) {
             // Only allowed if WGL_NV_swap_group is available
-            boolean has_WGL_NV_swap_group = wglExtensionsList.contains("WGL_NV_swap_group");
+            boolean has_WGL_NV_swap_group = wglExtensionsList.contains("WGL_NV_swap_group"); //$NON-NLS-1$
             if (!has_WGL_NV_swap_group) {
                 User32.ReleaseDC(windowHandle, hDC);
                 WGL.wglMakeCurrent(currentDc, currentContext);
                 WGL.wglDeleteContext(newCtx);
-                throw new SWTException("Swap group or barrier requested but WGL_NV_swap_group is unavailable");
+                throw new SWTException("Swap group or barrier requested but WGL_NV_swap_group is unavailable"); //$NON-NLS-1$
             }
             try {
                 wglNvSwapGroupAndBarrier(attribs, bufferAddr, hDC);
@@ -667,8 +667,8 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
             }
         }
         User32.ReleaseDC(windowHandle, hDC);
-        long getInteger = GL.getFunctionProvider().getFunctionAddress("glGetIntegerv");
-        long getString = GL.getFunctionProvider().getFunctionAddress("glGetString");
+        long getInteger = GL.getFunctionProvider().getFunctionAddress("glGetIntegerv"); //$NON-NLS-1$
+        long getString = GL.getFunctionProvider().getFunctionAddress("glGetString"); //$NON-NLS-1$
         effective.api = attribs.api;
         if (atLeast30(attribs.majorVersion, attribs.minorVersion)) {
             JNI.callPV(GL30.GL_MAJOR_VERSION, bufferAddr, getInteger);
@@ -685,7 +685,7 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
             effective.majorVersion = version.major;
             effective.minorVersion = version.minor;
         } else if (attribs.api == API.GLES) {
-            APIVersion version = APIUtil.apiParseVersion(MemoryUtil.memUTF8(Checks.check(JNI.callP(GL11.GL_VERSION, getString))), "OpenGL ES");
+            APIVersion version = APIUtil.apiParseVersion(MemoryUtil.memUTF8(Checks.check(JNI.callP(GL11.GL_VERSION, getString))), "OpenGL ES"); //$NON-NLS-1$
             effective.majorVersion = version.major;
             effective.minorVersion = version.minor;
         }
@@ -707,7 +707,7 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
             effective.samples = MemoryUtil.memGetInt(bufferAddr);
             JNI.callPV(ARBMultisample.GL_SAMPLE_BUFFERS_ARB, bufferAddr, getInteger);
             effective.sampleBuffers = MemoryUtil.memGetInt(bufferAddr);
-            boolean has_WGL_NV_multisample_coverage = wglExtensionsList.contains("WGL_NV_multisample_coverage");
+            boolean has_WGL_NV_multisample_coverage = wglExtensionsList.contains("WGL_NV_multisample_coverage"); //$NON-NLS-1$
             if (has_WGL_NV_multisample_coverage) {
                 JNI.callPV(NVMultisampleCoverage.GL_COLOR_SAMPLES_NV, bufferAddr, getInteger);
                 effective.colorSamplesNV = MemoryUtil.memGetInt(bufferAddr);
@@ -720,33 +720,33 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
 
     private void wglNvSwapGroupAndBarrier(GLData attribs, long bufferAddr, long hDC) throws SWTException {
         int success;
-        long wglQueryMaxSwapGroupsNVAddr = WGL.wglGetProcAddress("wglQueryMaxSwapGroupsNV");
+        long wglQueryMaxSwapGroupsNVAddr = WGL.wglGetProcAddress("wglQueryMaxSwapGroupsNV"); //$NON-NLS-1$
         success = JNI.callPPPI(hDC, bufferAddr, bufferAddr + 4, wglQueryMaxSwapGroupsNVAddr);
         int maxGroups = MemoryUtil.memGetInt(bufferAddr);
         if (maxGroups < attribs.swapGroupNV) {
-            throw new SWTException("Swap group exceeds maximum group index");
+            throw new SWTException("Swap group exceeds maximum group index"); //$NON-NLS-1$
         }
         int maxBarriers = MemoryUtil.memGetInt(bufferAddr + 4);
         if (maxBarriers < attribs.swapBarrierNV) {
-            throw new SWTException("Swap barrier exceeds maximum barrier index");
+            throw new SWTException("Swap barrier exceeds maximum barrier index"); //$NON-NLS-1$
         }
         if (attribs.swapGroupNV > 0) {
-            long wglJoinSwapGroupNVAddr = WGL.wglGetProcAddress("wglJoinSwapGroupNV");
+            long wglJoinSwapGroupNVAddr = WGL.wglGetProcAddress("wglJoinSwapGroupNV"); //$NON-NLS-1$
             if (wglJoinSwapGroupNVAddr == 0L) {
-                throw new SWTException("WGL_NV_swap_group available but wglJoinSwapGroupNV is NULL");
+                throw new SWTException("WGL_NV_swap_group available but wglJoinSwapGroupNV is NULL"); //$NON-NLS-1$
             }
             success = JNI.callPI(hDC, attribs.swapGroupNV, wglJoinSwapGroupNVAddr);
             if (success == 0) {
-                throw new SWTException("Failed to join swap group");
+                throw new SWTException("Failed to join swap group"); //$NON-NLS-1$
             }
             if (attribs.swapBarrierNV > 0) {
-                long wglBindSwapBarrierNVAddr = WGL.wglGetProcAddress("wglBindSwapBarrierNV");
+                long wglBindSwapBarrierNVAddr = WGL.wglGetProcAddress("wglBindSwapBarrierNV"); //$NON-NLS-1$
                 if (wglBindSwapBarrierNVAddr == 0L) {
-                    throw new SWTException("WGL_NV_swap_group available but wglBindSwapBarrierNV is NULL");
+                    throw new SWTException("WGL_NV_swap_group available but wglBindSwapBarrierNV is NULL"); //$NON-NLS-1$
                 }
                 success = JNI.callI(attribs.swapGroupNV, attribs.swapBarrierNV, wglBindSwapBarrierNVAddr);
                 if (success == 0) {
-                    throw new SWTException("Failed to bind swap barrier. Probably no G-Sync card installed.");
+                    throw new SWTException("Failed to bind swap barrier. Probably no G-Sync card installed."); //$NON-NLS-1$
                 }
             }
         }
@@ -778,11 +778,11 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
 
     public boolean delayBeforeSwapNV(GLCanvas canvas, float seconds) {
         if (!wglDelayBeforeSwapNVAddr_set) {
-            wglDelayBeforeSwapNVAddr = WGL.wglGetProcAddress("wglDelayBeforeSwapNV");
+            wglDelayBeforeSwapNVAddr = WGL.wglGetProcAddress("wglDelayBeforeSwapNV"); //$NON-NLS-1$
             wglDelayBeforeSwapNVAddr_set = true;
         }
         if (wglDelayBeforeSwapNVAddr == 0L) {
-            throw new UnsupportedOperationException("wglDelayBeforeSwapNV is unavailable");
+            throw new UnsupportedOperationException("wglDelayBeforeSwapNV is unavailable"); //$NON-NLS-1$
         }
         long hDC = User32.GetDC(canvas.handle);
         int ret = JNI.callPI(hDC, seconds, wglDelayBeforeSwapNVAddr);

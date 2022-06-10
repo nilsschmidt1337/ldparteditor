@@ -38,21 +38,21 @@ public class VKCanvas extends Canvas {
         String platformClassName;
         switch (Platform.get()) {
         case WINDOWS:
-            platformClassName = "org.lwjgl.vulkan.swt.PlatformWin32VKCanvas";
+            platformClassName = "org.lwjgl.vulkan.swt.PlatformWin32VKCanvas"; //$NON-NLS-1$
             break;
         default:
-            throw new AssertionError("NYI");
+            throw new AssertionError("NYI"); //$NON-NLS-1$
         }
         try {
             @SuppressWarnings("unchecked")
             Class<? extends PlatformVKCanvas> clazz = (Class<? extends PlatformVKCanvas>) VKCanvas.class.getClassLoader().loadClass(platformClassName);
             platformCanvas = clazz.newInstance();
         } catch (ClassNotFoundException e) {
-            throw new AssertionError("Platform-specific VKCanvas class not found: " + platformClassName);
+            throw new AssertionError("Platform-specific VKCanvas class not found: " + platformClassName); //$NON-NLS-1$
         } catch (InstantiationException e) {
-            throw new AssertionError("Could not instantiate platform-specific VKCanvas class: " + platformClassName);
+            throw new AssertionError("Could not instantiate platform-specific VKCanvas class: " + platformClassName); //$NON-NLS-1$
         } catch (IllegalAccessException e) {
-            throw new AssertionError("Could not instantiate platform-specific VKCanvas class: " + platformClassName);
+            throw new AssertionError("Could not instantiate platform-specific VKCanvas class: " + platformClassName); //$NON-NLS-1$
         }
     }
 

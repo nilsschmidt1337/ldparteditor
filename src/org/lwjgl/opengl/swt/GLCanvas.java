@@ -45,27 +45,27 @@ public class GLCanvas extends Canvas {
         String platformClassName;
         switch (Platform.get()) {
         case WINDOWS:
-            platformClassName = "org.lwjgl.opengl.swt.PlatformWin32GLCanvas";
+            platformClassName = "org.lwjgl.opengl.swt.PlatformWin32GLCanvas"; //$NON-NLS-1$
             break;
         case LINUX:
-            platformClassName = "org.lwjgl.opengl.swt.PlatformLinuxGLCanvas";
+            platformClassName = "org.lwjgl.opengl.swt.PlatformLinuxGLCanvas"; //$NON-NLS-1$
             break;
         case MACOSX:
-        	platformClassName = "org.lwjgl.opengl.swt.PlatformMacOSXGLCanvas";
+        	platformClassName = "org.lwjgl.opengl.swt.PlatformMacOSXGLCanvas"; //$NON-NLS-1$
         	break;
         default:
-            throw new AssertionError("NYI");
+            throw new AssertionError("NYI"); //$NON-NLS-1$
         }
         try {
             @SuppressWarnings("unchecked")
             Class<? extends PlatformGLCanvas> clazz = (Class<? extends PlatformGLCanvas>) GLCanvas.class.getClassLoader().loadClass(platformClassName);
             platformCanvas = clazz.newInstance();
         } catch (ClassNotFoundException e) {
-            throw new AssertionError("Platform-specific GLCanvas class not found: " + platformClassName);
+            throw new AssertionError("Platform-specific GLCanvas class not found: " + platformClassName); //$NON-NLS-1$
         } catch (InstantiationException e) {
-            throw new AssertionError("Could not instantiate platform-specific GLCanvas class: " + platformClassName);
+            throw new AssertionError("Could not instantiate platform-specific GLCanvas class: " + platformClassName); //$NON-NLS-1$
         } catch (IllegalAccessException e) {
-            throw new AssertionError("Could not instantiate platform-specific GLCanvas class: " + platformClassName);
+            throw new AssertionError("Could not instantiate platform-specific GLCanvas class: " + platformClassName); //$NON-NLS-1$
         }
     }
 

@@ -291,7 +291,7 @@ public class DatHeaderManager {
                             // HeaderState._04_LICENSE
                             if (headerState == HeaderState.H04_LICENSE) {
                                 // I expect that this line is a valid License
-                                if (isValidLicenseLine(normalizedLine)) { //$NON-NLS-1$
+                                if (isValidLicenseLine(normalizedLine)) {
                                     h.setLineLICENSE(lineNumber);
                                     h.setHasLICENSE(true);
                                     headerState = HeaderState.H05_OPTIONAL_HELP;
@@ -301,7 +301,7 @@ public class DatHeaderManager {
                                 }
                             } else {
                                 // I don't expect that this line is a valid License
-                                if (isValidLicenseLine(normalizedLine)) { //$NON-NLS-1$
+                                if (isValidLicenseLine(normalizedLine)) {
                                     // Its duplicated
                                     if (h.hasLICENSE()) {
                                         registerHint(lineNumber, "41", I18n.DATPARSER_DUPLICATED_LICENSE, registered, allHints); //$NON-NLS-1$

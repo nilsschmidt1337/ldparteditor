@@ -101,9 +101,9 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class CompositePrimitive extends Composite {
 
-    private static final String WINDOWS_PRIMITIVE_RULES_LOCATION = "app/primitive_rules.txt";
-    private static final String LINUX_PRIMITIVE_RULES_LOCATION = "/opt/ldparteditor/lib/app/primitive_rules.txt";
-    private static final String MACOS_PRIMITIVE_RULES_LOCATION = "/Applications/LDPartEditor.app/Contents/app/primitive_rules.txt";
+    private static final String WINDOWS_PRIMITIVE_RULES_LOCATION = "app/primitive_rules.txt"; //$NON-NLS-1$
+    private static final String LINUX_PRIMITIVE_RULES_LOCATION = "/opt/ldparteditor/lib/app/primitive_rules.txt"; //$NON-NLS-1$
+    private static final String MACOS_PRIMITIVE_RULES_LOCATION = "/Applications/LDPartEditor.app/Contents/app/primitive_rules.txt"; //$NON-NLS-1$
 
     /** The {@linkplain OpenGLRendererPrimitives} instance */
     private final OpenGLRendererPrimitives openGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20 ? new OpenGLRendererPrimitives20(this) : new OpenGLRendererPrimitives33(this);

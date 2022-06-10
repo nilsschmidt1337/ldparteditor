@@ -617,7 +617,7 @@ public enum MathHelper {
             if (Math.abs(a[p][p]) < 0.000001f) {
                 try {
                     // Throw this exception and catch it immediately to track where the error occurred.
-                    throw new LDPartEditorException(new RuntimeException("Matrix is singular or nearly singular"));
+                    throw new LDPartEditorException(new RuntimeException("Matrix is singular or nearly singular")); //$NON-NLS-1$
                 } catch (LDPartEditorException ex) {
                     NLogger.debug(MathHelper.class, ex);
                 }

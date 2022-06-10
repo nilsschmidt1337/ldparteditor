@@ -41,7 +41,7 @@ class PlatformMacOSXGLCanvas extends AbstractPlatformGLCanvas {
 	private NSOpenGLPixelFormat pixelFormat;
 
 	private static final int MAX_ATTRIB = 32;
-	private static final String GLCONTEXT_KEY = "org.eclipse.swt.internal.cocoa.glcontext";
+	private static final String GLCONTEXT_KEY = "org.eclipse.swt.internal.cocoa.glcontext"; //$NON-NLS-1$
 
 	private NSView view;
 

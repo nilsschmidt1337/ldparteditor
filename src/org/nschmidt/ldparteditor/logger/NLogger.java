@@ -43,9 +43,9 @@ public enum NLogger {
 
     public static boolean debugging = false;
 
-    private static final String DEBUG_PREFIX = "[DEBUG ";
-    private static final String ERROR_PREFIX = "[ERROR ";
-    private static final String LINE_SEPARATOR = "line.separator";
+    private static final String DEBUG_PREFIX = "[DEBUG "; //$NON-NLS-1$
+    private static final String ERROR_PREFIX = "[ERROR "; //$NON-NLS-1$
+    private static final String LINE_SEPARATOR = "line.separator"; //$NON-NLS-1$
 
     /**
      * The error counter. If it reaches 100 within one session, no more caught
@@ -170,7 +170,7 @@ public enum NLogger {
      */
     private static synchronized void debugSync(Class<?> clazz, Throwable t) {
         StringBuilder sb = new StringBuilder();
-        sb.append(DEBUG_PREFIX); //$NON-NLS-1$
+        sb.append(DEBUG_PREFIX);
         sb.append(Version.getVersion());
         sb.append("] @"); //$NON-NLS-1$
         sb.append(clazz.getName());
@@ -192,7 +192,7 @@ public enum NLogger {
         MessageFormat formatter = new MessageFormat("", Locale.ENGLISH); //$NON-NLS-1$
         formatter.applyPattern(message);
         StringBuilder sb = new StringBuilder();
-        sb.append(DEBUG_PREFIX); //$NON-NLS-1$
+        sb.append(DEBUG_PREFIX);
         sb.append(Version.getVersion());
         sb.append("] @"); //$NON-NLS-1$
         sb.append(clazz.getName());
@@ -211,7 +211,7 @@ public enum NLogger {
      */
     private static synchronized void debugSync(Class<?> clazz, String message) {
         StringBuilder sb = new StringBuilder();
-        sb.append(DEBUG_PREFIX); //$NON-NLS-1$
+        sb.append(DEBUG_PREFIX);
         sb.append(Version.getVersion());
         sb.append("] @"); //$NON-NLS-1$
         sb.append(clazz.getName());
@@ -225,7 +225,7 @@ public enum NLogger {
      */
     public static synchronized void error(Class<?> clazz, String message) {
         StringBuilder sb = new StringBuilder();
-        sb.append(DEBUG_PREFIX); //$NON-NLS-1$
+        sb.append(DEBUG_PREFIX);
         sb.append(Version.getVersion());
         sb.append("] @"); //$NON-NLS-1$
         sb.append(clazz.getName());
@@ -282,13 +282,13 @@ public enum NLogger {
         // Write in the old "error_log1.txt" file
         try (FileWriter fw = new FileWriter(ERROR_LOG, true)) {
             StringBuilder sb = new StringBuilder();
-            sb.append(ERROR_PREFIX); //$NON-NLS-1$
+            sb.append(ERROR_PREFIX);
             sb.append(Version.getVersion());
             sb.append("] @"); //$NON-NLS-1$
             sb.append(clazz.getName());
-            sb.append(System.getProperty(LINE_SEPARATOR)); //$NON-NLS-1$
+            sb.append(System.getProperty(LINE_SEPARATOR));
             sb.append(getStackTrace(t));
-            sb.append(System.getProperty(LINE_SEPARATOR)); //$NON-NLS-1$
+            sb.append(System.getProperty(LINE_SEPARATOR));
             fw.write(sb.toString());
             fw.flush();
         } catch (IOException ex) {
@@ -300,13 +300,13 @@ public enum NLogger {
         // Write in the new "error_log2.txt" file
         try (FileWriter fw = new FileWriter(ERROR_LOG2, true)) {
             StringBuilder sb = new StringBuilder();
-            sb.append(ERROR_PREFIX); //$NON-NLS-1$
+            sb.append(ERROR_PREFIX);
             sb.append(Version.getVersion());
             sb.append("] @"); //$NON-NLS-1$
             sb.append(clazz.getName());
-            sb.append(System.getProperty(LINE_SEPARATOR)); //$NON-NLS-1$
+            sb.append(System.getProperty(LINE_SEPARATOR));
             sb.append(getStackTrace(t));
-            sb.append(System.getProperty(LINE_SEPARATOR)); //$NON-NLS-1$
+            sb.append(System.getProperty(LINE_SEPARATOR));
             fw.write(sb.toString());
             fw.flush();
         } catch (IOException ex) {

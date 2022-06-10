@@ -95,7 +95,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 		PointerBuffer fbCfg = glXChooseFBConfig(xDisplay, 0, attribList);
 		if (fbCfg == null || !fbCfg.hasRemaining()) {
 			canvas.dispose();
-			throw new SWTException("Unable to find matching FB Config");
+			throw new SWTException("Unable to find matching FB Config"); //$NON-NLS-1$
 		}
 
 		// convert our fbconfig to a visualinfo so we can apply it to the widget
@@ -138,7 +138,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 		// create the context... pass our display, fbconfig, attributes and any shared context
 		long share = data.shareContext != null ? data.shareContext.context : 0;
 		long context = glXCreateContextAttribsARB(xDisplay, fbCfg.get(0), share, true, attribList);
-		if (context == 0) throw new SWTException("Unable to create context");
+		if (context == 0) throw new SWTException("Unable to create context"); //$NON-NLS-1$
 
 		// Set up SWT event listeners to handle disposal and resize
 		Listener listener = event -> {
@@ -204,13 +204,13 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
             }
         } else if (data.api == API.GLES) {
             if (!caps.GLX_EXT_create_context_es2_profile) {
-                throw new SWTException("OpenGL ES API requested but GLX_EXT_create_context_es2_profile is unavailable");
+                throw new SWTException("OpenGL ES API requested but GLX_EXT_create_context_es2_profile is unavailable"); //$NON-NLS-1$
             }
             profile = GLX_CONTEXT_ES2_PROFILE_BIT_EXT;
         }
         if (profile > 0) {
             if (!caps.GLX_ARB_create_context_profile) {
-                throw new SWTException("OpenGL profile requested but GLX_ARB_create_context_profile is unavailable");
+                throw new SWTException("OpenGL profile requested but GLX_ARB_create_context_profile is unavailable"); //$NON-NLS-1$
             }
             attribList.put(GLX_CONTEXT_PROFILE_MASK_ARB).put(profile);
         }
@@ -226,7 +226,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
         if (data.robustness) {
             // Check for GLX_ARB_create_context_robustness
             if (!caps.GLX_ARB_create_context_robustness) {
-                throw new SWTException("Context with robust buffer access requested but GLX_ARB_create_context_robustness is unavailable");
+                throw new SWTException("Context with robust buffer access requested but GLX_ARB_create_context_robustness is unavailable"); //$NON-NLS-1$
             }
             contextFlags |= GLX_CONTEXT_ROBUST_ACCESS_BIT_ARB;
             if (data.loseContextOnReset) {
@@ -238,7 +238,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
                 // Check for GLX_ARB_robustness_application_isolation or GLX_ARB_robustness_share_group_isolation
                 if (!caps.GLX_ARB_robustness_application_isolation && !caps.GLX_ARB_robustness_share_group_isolation) {
                     throw new SWTException(
-                            "Robustness isolation requested but neither GLX_ARB_robustness_application_isolation nor GLX_ARB_robustness_share_group_isolation available");
+                            "Robustness isolation requested but neither GLX_ARB_robustness_application_isolation nor GLX_ARB_robustness_share_group_isolation available"); //$NON-NLS-1$
                 }
                 contextFlags |= GLX_CONTEXT_RESET_ISOLATION_BIT_ARB;
             }
@@ -248,7 +248,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
         // Release behavior
         if (data.contextReleaseBehavior != null) {
             if (!caps.GLX_ARB_context_flush_control) {
-                throw new SWTException("Context release behavior requested but GLX_ARB_context_flush_control is unavailable");
+                throw new SWTException("Context release behavior requested but GLX_ARB_context_flush_control is unavailable"); //$NON-NLS-1$
             }
             if (data.contextReleaseBehavior == ReleaseBehavior.NONE)
                 attribList.put(GLX_CONTEXT_RELEASE_BEHAVIOR_ARB).put(GLX_CONTEXT_RELEASE_BEHAVIOR_NONE_ARB);

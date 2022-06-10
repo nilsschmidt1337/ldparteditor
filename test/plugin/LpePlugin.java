@@ -13,12 +13,12 @@ public class LpePlugin implements Plugin {
 
     @Override
     public String getPlugInAuthor() {
-        return "Nils Schmidt [BlackBrick89]";
+        return "Nils Schmidt [BlackBrick89]"; //$NON-NLS-1$
     }
 
     @Override
     public String getPlugInName() {
-        return "blah";
+        return "blah"; //$NON-NLS-1$
     }
 
     @Override

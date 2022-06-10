@@ -34,7 +34,7 @@ import org.lwjgl.vulkan.VkPhysicalDevice;
 import org.lwjgl.vulkan.VkWin32SurfaceCreateInfoKHR;
 
 public class PlatformWin32VKCanvas implements PlatformVKCanvas {
-    private static final String USE_OWNDC_KEY = "org.eclipse.swt.internal.win32.useOwnDC";
+    private static final String USE_OWNDC_KEY = "org.eclipse.swt.internal.win32.useOwnDC"; //$NON-NLS-1$
 
     public int checkStyle(Composite parent, int style) {
         // Somehow we need to temporarily set 'org.eclipse.swt.internal.win32.useOwnDC' to true or else context creation on Windows fails...
@@ -60,7 +60,7 @@ public class PlatformWin32VKCanvas implements PlatformVKCanvas {
         int err = vkCreateWin32SurfaceKHR(data.instance, sci, null, pSurface);
         long surface = pSurface.get(0);
         if (err != VK_SUCCESS) {
-            throw new SWTException("Calling vkCreateWin32SurfaceKHR failed with error: " + err);
+            throw new SWTException("Calling vkCreateWin32SurfaceKHR failed with error: " + err); //$NON-NLS-1$
         }
         return surface;
     }

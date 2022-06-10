@@ -293,7 +293,7 @@ public final class GData1 extends GData {
             }
 
             if (depthOne && datFile.getVertexManager().getLineLinkedToVertices().getOrDefault(this, Set.of()).isEmpty()) {
-                GData gdata = DatParser.parseLine("0 !LPE VERTEX 0 0 0", 0, depth, r, g, b, a, this, pMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed).get(0).getGraphicalData();
+                GData gdata = DatParser.parseLine("0 !LPE VERTEX 0 0 0", 0, depth, r, g, b, a, this, pMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed).get(0).getGraphicalData(); //$NON-NLS-1$
                 if (gdata != null) {
                     anchorData.setNext(gdata);
                     anchorData = gdata;
