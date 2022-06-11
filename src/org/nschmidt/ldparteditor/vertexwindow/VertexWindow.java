@@ -237,7 +237,7 @@ public class VertexWindow extends ApplicationWindow {
 
                 Label lblVertexData = new Label(cmpTxt, SWT.NONE);
                 lblVertexData.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                lblVertexData.setText("Vertex data:"); //$NON-NLS-1$ I18N Needs translation!
+                lblVertexData.setText(I18n.E3D_VERTEX_DATA);
 
                 {
                     NButton btnCopy = new NButton(cmpTxt, Cocoa.getStyle());

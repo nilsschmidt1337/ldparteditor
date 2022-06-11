@@ -77,7 +77,7 @@ class SmoothDesign extends Dialog {
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lblPreview = new Label(cmpContainer, SWT.NONE);
-        lblPreview.setText("This dialog supports a realtime preview of the new mesh."); //$NON-NLS-1$ FIXME !i18n!
+        lblPreview.setText(I18n.SMOOTH_REALTIME_PREVIEW);
 
         {
             Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
@@ -101,7 +101,7 @@ class SmoothDesign extends Dialog {
         }
 
         Label lblIter = new Label(cmpContainer, SWT.NONE);
-        lblIter.setText("Iterations:"); //$NON-NLS-1$ FIXME !i18n!
+        lblIter.setText(I18n.SMOOTH_ITERATIONS);
 
         {
             Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
@@ -117,7 +117,7 @@ class SmoothDesign extends Dialog {
         }
 
         Label lblFactor = new Label(cmpContainer, SWT.NONE);
-        lblFactor.setText("Factor:"); //$NON-NLS-1$ FIXME !i18n!
+        lblFactor.setText(I18n.SMOOTH_FACTOR);
 
         {
             Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);

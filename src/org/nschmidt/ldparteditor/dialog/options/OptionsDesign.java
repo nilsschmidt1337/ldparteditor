@@ -20,6 +20,7 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 import java.math.BigDecimal;
 import java.text.Collator;
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,6 +60,7 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialog.key.KeyDialog;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.enumtype.TextTask;
@@ -752,13 +754,13 @@ class OptionsDesign extends ApplicationWindow {
     }
 
     private void showKeyAlreadyInUseWarning(TreeItem parentItem, String keyString) {
-        String actionString = "advanced usage by LDPartEditor"; //$NON-NLS-1$ I18N Needs translation!
+        String actionString = I18n.OPTIONS_ADVANCED_USAGE;
         final MessageBox messageBoxInfo = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
         final Map<String, String> reservedKeysMappedToAction = new HashMap<>();
-        final String inputTheColourNumber = "colour number input";//$NON-NLS-1$ I18N Needs translation!
+        final String inputTheColourNumber = I18n.OPTIONS_COLOUR_NUMBER_INPUT;
 
         for (int n = 0; n < 10; n++) {
-            reservedKeysMappedToAction.put("NUMPAD_" + n, inputTheColourNumber); //$NON-NLS-1$ I18N Needs translation!
+            reservedKeysMappedToAction.put("NUMPAD_" + n, inputTheColourNumber); //$NON-NLS-1$
         }
 
         if (reservedKeysMappedToAction.containsKey(keyString)) {
@@ -773,7 +775,11 @@ class OptionsDesign extends ApplicationWindow {
         }
 
         messageBoxInfo.setText(I18n.DIALOG_INFO);
-        messageBoxInfo.setMessage("The key combination " + keyString + " is already in use for '" + actionString + "'."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+        Object[] messageArguments = {keyString, actionString};
+        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+        formatter.setLocale(MyLanguage.getLocale());
+        formatter.applyPattern(I18n.OPTIONS_KEY_COMBO_IN_USE);
+        messageBoxInfo.setMessage(formatter.format(messageArguments));
         messageBoxInfo.open();
     }
 

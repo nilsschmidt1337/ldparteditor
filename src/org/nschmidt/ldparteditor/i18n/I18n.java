@@ -98,6 +98,8 @@ public final class I18n {
     private static final ResourceBundle C3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Composite3D", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle KEYBOARD = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Keyboard", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle ERRORFIXER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.ErrorFixer", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle SPINNER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Spinner", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle DIRECTION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Direction", MyLanguage.getLocale()); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -114,6 +116,7 @@ public final class I18n {
     public static final String C3D_CONDLINE_MODE = C3D.getString(getProperty());
     public static final String C3D_CONDLINE_VERTICES = C3D.getString(getProperty());
     public static final String C3D_COPLANARITY_MODE = C3D.getString(getProperty());
+    public static final String C3D_DELTA = C3D.getString(getProperty());
     public static final String C3D_GREEN_RED = C3D.getString(getProperty());
     public static final String C3D_GRID_SIZE = C3D.getString(getProperty());
     public static final String C3D_HIDDEN_VERTICES = C3D.getString(getProperty());
@@ -133,6 +136,19 @@ public final class I18n {
     public static final String C3D_REAL_PREVIEW = C3D.getString(getProperty());
     public static final String C3D_RED_BACKFACES = C3D.getString(getProperty());
     public static final String C3D_RENDER_MODE = C3D.getString(getProperty());
+    public static final String C3D_ROTATION = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_CONDLINE = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_CONDLINES = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_LINE = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_LINES = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_QUAD = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_QUADS = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_SUBFILE = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_SUBFILES = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_TRIANGLE = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_TRIANGLES = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_VERTEX = C3D.getString(getProperty());
+    public static final String C3D_SELECTED_VERTICES = C3D.getString(getProperty());
     public static final String C3D_SET_GRID_SIZE = C3D.getString(getProperty());
     public static final String C3D_SHOW_ALL = C3D.getString(getProperty());
     public static final String C3D_SHOW_EDGES = C3D.getString(getProperty());
@@ -141,6 +157,9 @@ public final class I18n {
     public static final String C3D_STUD_LOGO = C3D.getString(getProperty());
     public static final String C3D_SUBFILE_MESH_LINES = C3D.getString(getProperty());
     public static final String C3D_USE_ALWAYS_BLACK_LINES = C3D.getString(getProperty());
+    public static final String C3D_VERTEX_2 = C3D.getString(getProperty());
+    public static final String C3D_VERTEX_3 = C3D.getString(getProperty());
+    public static final String C3D_VERTEX_4 = C3D.getString(getProperty());
     public static final String C3D_VERTICES = C3D.getString(getProperty());
     public static final String C3D_WIREFRAME = C3D.getString(getProperty());
     public static final String C3D_XYZ_AXIS = C3D.getString(getProperty());
@@ -367,6 +386,18 @@ public final class I18n {
     public static final String DIALOG_UNSAVED_CHANGES_TITLE = DIALOG.getString(getProperty());
     public static final String DIALOG_WARNING = DIALOG.getString(getProperty());
     public static final String DIALOG_YES = DIALOG.getString(getProperty());
+    public static final String DIRECTION_ANG_PHI = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_ANG_RHO = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_ANG_THETA = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_CARTESIAN_COORDS = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_DIRECTION_VECTOR = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_MANIPULATOR_X = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_MANIPULATOR_Y = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_MANIPULATOR_Z = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_SPHERICAL_COORDS = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_X = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_Y = DIRECTION.getString(getProperty());
+    public static final String DIRECTION_Z = DIRECTION.getString(getProperty());
     public static final String E3D_ADD_COMMENT = E3D.getString(getProperty());
     public static final String E3D_ADD_CONDLINE = E3D.getString(getProperty());
     public static final String E3D_ADD_DISTANCE = E3D.getString(getProperty());
@@ -686,6 +717,7 @@ public final class I18n {
     public static final String E3D_USER_CONFIG_SELECT_LOAD = E3D.getString(getProperty());
     public static final String E3D_USER_CONFIG_SELECT_SAVE = E3D.getString(getProperty());
     public static final String E3D_USER_CONFIG_SUCCESS = E3D.getString(getProperty());
+    public static final String E3D_VERTEX_DATA = E3D.getString(getProperty());
     public static final String E3D_VERTICES = E3D.getString(getProperty());
     public static final String E3D_VIEWING_ANGLES = E3D.getString(getProperty());
     public static final String E3D_VIEW_ACTIONS = E3D.getString(getProperty());
@@ -971,14 +1003,17 @@ public final class I18n {
     public static final String META_VERTEX_Y = META.getString(getProperty());
     public static final String META_VERTEX_Z = META.getString(getProperty());
     public static final String META_YEAR_RELEASE = META.getString(getProperty());
+    public static final String OPTIONS_ADVANCED_USAGE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_ALLOW_INVALID_SHAPES = OPTIONS.getString(getProperty());
     public static final String OPTIONS_AUTHORING_FOLDER = OPTIONS.getString(getProperty());
     public static final String OPTIONS_AUTHORING_WHERE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_BROWSE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_CHOOSE_LOCALE = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_COLOUR_NUMBER_INPUT = OPTIONS.getString(getProperty());
     public static final String OPTIONS_COPLANARITY_ERROR = OPTIONS.getString(getProperty());
     public static final String OPTIONS_COPLANARITY_WARNING = OPTIONS.getString(getProperty());
     public static final String OPTIONS_DIRECTORY = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_KEY_COMBO_IN_USE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_LDRAW_FOLDER = OPTIONS.getString(getProperty());
     public static final String OPTIONS_LDRAW_NAME = OPTIONS.getString(getProperty());
     public static final String OPTIONS_LICENSE = OPTIONS.getString(getProperty());
@@ -1197,6 +1232,9 @@ public final class I18n {
     public static final String SLANT_TITLE = SLANT.getString(getProperty());
     public static final String SLICERPRO_HINT = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_TITLE = SLICERPRO.getString(getProperty());
+    public static final String SMOOTH_ITERATIONS = SMOOTH.getString(getProperty());
+    public static final String SMOOTH_FACTOR = SMOOTH.getString(getProperty());
+    public static final String SMOOTH_REALTIME_PREVIEW = SMOOTH.getString(getProperty());
     public static final String SMOOTH_TITLE = SMOOTH.getString(getProperty());
     public static final String SORT_BY_COLOUR_ASC = SORT.getString(getProperty());
     public static final String SORT_BY_COLOUR_DESC = SORT.getString(getProperty());
@@ -1208,6 +1246,10 @@ public final class I18n {
     public static final String SORT_SCOPE_FILE = SORT.getString(getProperty());
     public static final String SORT_SCOPE_SELECTION = SORT.getString(getProperty());
     public static final String SORT_TITLE = SORT.getString(getProperty());
+    public static final String SPINNER_MORE_DIGITS_POSSIBLE = SPINNER.getString(getProperty());
+    public static final String SPINNER_REAL_VALUE_DIFFERS = SPINNER.getString(getProperty());
+    public static final String SPINNER_VALID_NUMBER_PLEASE = SPINNER.getString(getProperty());
+    public static final String SPINNER_VALUE_BETWEEN_MIN_MAX = SPINNER.getString(getProperty());
     public static final String SPLASH_CHECK_PLUG_IN = SPLASH.getString(getProperty());
     public static final String SPLASH_ERROR = SPLASH.getString(getProperty());
     public static final String SPLASH_INVALID_OPEN_GL_VERSION = SPLASH.getString(getProperty());

@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.widget;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 
@@ -206,14 +208,22 @@ public class BigDecimalSpinner extends Composite {
                 }
                 if (differenceBetweenDisplayedAndInput) {
                     lblWarn[0].setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
-                    lblWarn[0].setToolTipText("The real value is " + value.toEngineeringString() + " which differs from the displayed number!\nValue between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ I18N Needs translation!
+                    Object[] messageArguments = {value.toEngineeringString(), minimum.toEngineeringString(), maximum.toEngineeringString()};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.getLocale());
+                    formatter.applyPattern(I18n.SPINNER_REAL_VALUE_DIFFERS);
+                    lblWarn[0].setToolTipText(formatter.format(messageArguments));
                 } else {
                     lblWarn[0].setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
-                    lblWarn[0].setToolTipText("Value between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+                    Object[] messageArguments = {minimum.toEngineeringString(), maximum.toEngineeringString()};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.getLocale());
+                    formatter.applyPattern(I18n.SPINNER_VALUE_BETWEEN_MIN_MAX);
+                    lblWarn[0].setToolTipText(formatter.format(messageArguments));
                 }
             } catch (ParseException ex) {
                 lblWarn[0].setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
-                lblWarn[0].setToolTipText("Please insert a valid number."); //$NON-NLS-1$ I18N Needs translation!
+                lblWarn[0].setToolTipText(I18n.SPINNER_VALID_NUMBER_PLEASE);
                 if (!invalidInput) {
                     text = numberFormat.format(value);
                 }
@@ -269,7 +279,7 @@ public class BigDecimalSpinner extends Composite {
         Label warn = new Label(this, SWT.NONE);
         lblWarn[0] = warn;
         warn.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
-        warn.setToolTipText("You can input more digits than displayed."); //$NON-NLS-1$ I18N Needs translation!
+        warn.setToolTipText(I18n.SPINNER_MORE_DIGITS_POSSIBLE);
 
         Label placeholder = new Label(this, SWT.NONE);
         placeholder.setText("  "); //$NON-NLS-1$

@@ -89,7 +89,7 @@ class DirectionDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lblSpecify = new Label(cmpContainer, SWT.NONE);
-        lblSpecify.setText("Direction vector:"); //$NON-NLS-1$ FIXME !i18n!
+        lblSpecify.setText(I18n.DIRECTION_DIRECTION_VECTOR);
 
         Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -115,7 +115,7 @@ class DirectionDesign extends Dialog {
         }
 
         Label lblCartesianCoords = new Label(cmpContainer, I18n.rightToLeftStyle());
-        lblCartesianCoords.setText("Cartesian coordinates:"); //$NON-NLS-1$ FIXME !i18n!
+        lblCartesianCoords.setText(I18n.DIRECTION_CARTESIAN_COORDS);
 
         {
             Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
@@ -123,7 +123,7 @@ class DirectionDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             Label lblXaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
-            lblXaxis.setText("X:"); //$NON-NLS-1$ FIXME !i18n!
+            lblXaxis.setText(I18n.DIRECTION_X);
 
             BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
             this.spnXPtr[0] = spnX;
@@ -139,7 +139,7 @@ class DirectionDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             Label lblYaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
-            lblYaxis.setText("Y:"); //$NON-NLS-1$ FIXME !i18n!
+            lblYaxis.setText(I18n.DIRECTION_Y);
 
             BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
             this.spnYPtr[0] = spnY;
@@ -155,7 +155,7 @@ class DirectionDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             Label lblZaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
-            lblZaxis.setText("Z:"); //$NON-NLS-1$ FIXME !i18n!
+            lblZaxis.setText(I18n.DIRECTION_Z);
 
             BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
             this.spnZPtr[0] = spnZ;
@@ -166,7 +166,7 @@ class DirectionDesign extends Dialog {
         }
 
         Label lblSphericalCoords = new Label(cmpContainer, I18n.rightToLeftStyle());
-        lblSphericalCoords.setText("Spherical coordinates (as defined by ISO 80000-2:2009):"); //$NON-NLS-1$ FIXME !i18n!
+        lblSphericalCoords.setText(I18n.DIRECTION_SPHERICAL_COORDS);
 
         {
             Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
@@ -174,7 +174,7 @@ class DirectionDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             Label lblXaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
-            lblXaxis.setText("r:"); //$NON-NLS-1$ FIXME !i18n!
+            lblXaxis.setText(I18n.DIRECTION_ANG_RHO);
 
             BigDecimalSpinner spnRho = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
             this.spnRhoPtr[0] = spnRho;
@@ -190,7 +190,7 @@ class DirectionDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             Label lblYaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
-            lblYaxis.setText("θ:"); //$NON-NLS-1$ FIXME !i18n!
+            lblYaxis.setText(I18n.DIRECTION_ANG_THETA);
 
             BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
             this.spnThetaPtr[0] = spnY;
@@ -206,7 +206,7 @@ class DirectionDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             Label lblZaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
-            lblZaxis.setText("φ:"); //$NON-NLS-1$ FIXME !i18n!
+            lblZaxis.setText(I18n.DIRECTION_ANG_PHI);
 
             BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
             this.spnPhiPtr[0] = spnZ;
@@ -224,7 +224,7 @@ class DirectionDesign extends Dialog {
             this.btnMXPtr[0] = btnClipboard;
             btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
-            btnClipboard.setText("Use X axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
+            btnClipboard.setText(I18n.DIRECTION_MANIPULATOR_X);
         }
 
         {
@@ -235,7 +235,7 @@ class DirectionDesign extends Dialog {
             this.btnMYPtr[0] = btnClipboard;
             btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
-            btnClipboard.setText("Use Y axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
+            btnClipboard.setText(I18n.DIRECTION_MANIPULATOR_Y);
         }
 
         {
@@ -246,7 +246,7 @@ class DirectionDesign extends Dialog {
             this.btnMZPtr[0] = btnClipboard;
             btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
-            btnClipboard.setText("Use Z axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
+            btnClipboard.setText(I18n.DIRECTION_MANIPULATOR_Z);
         }
 
         cmpContainer.pack();

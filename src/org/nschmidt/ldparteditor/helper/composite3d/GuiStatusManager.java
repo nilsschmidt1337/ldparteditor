@@ -89,18 +89,18 @@ public enum GuiStatusManager {
                     formatForOneSelectedVertex(sb, orderedScreenVertexIterator);
                     break;
                 case 2:
-                    sb.append("2 Vertices @ ~"); //$NON-NLS-1$ I18N Needs translation!
+                    sb.append(I18n.C3D_VERTEX_2 + " @ ~"); //$NON-NLS-1$
                     formatForTwoSelectedVertices(sb, orderedScreenVertexIterator);
                     formatForTwoSelectedVertices(sb, orderedScreenVertexIterator);
                     break;
                 case 3:
-                    sb.append("3 Vertices @ ~"); //$NON-NLS-1$ I18N Needs translation!
+                    sb.append(I18n.C3D_VERTEX_3 + " @ ~"); //$NON-NLS-1$
                     formatForThreeSelectedVertices(sb, orderedScreenVertexIterator);
                     formatForThreeSelectedVertices(sb, orderedScreenVertexIterator);
                     formatForThreeSelectedVertices(sb, orderedScreenVertexIterator);
                     break;
                 case 4:
-                    sb.append("4 Vertices @ ~"); //$NON-NLS-1$ I18N Needs translation!
+                    sb.append(I18n.C3D_VERTEX_4 + " @ ~"); //$NON-NLS-1$
                     formatForFourSelectedVertices(sb, orderedScreenVertexIterator);
                     formatForFourSelectedVertices(sb, orderedScreenVertexIterator);
                     formatForFourSelectedVertices(sb, orderedScreenVertexIterator);
@@ -133,14 +133,14 @@ public enum GuiStatusManager {
                 double day = m.getAccurateRotationY() / Math.PI * 180.0 % 360;
                 double daz = m.getAccurateRotationZ() / Math.PI * 180.0 % 360;
                 if (dax == 0.0 && day == 0.0 && daz == 0.0) {
-                    sb.append("delta: ["); //$NON-NLS-1$ I18N Needs translation!
+                    sb.append(I18n.C3D_DELTA + " ["); //$NON-NLS-1$
                     sb.append(DF4F.format(t.m30));
                     sb.append("; "); //$NON-NLS-1$
                     sb.append(DF4F.format(t.m31));
                     sb.append("; "); //$NON-NLS-1$
                     sb.append(DF4F.format(t.m32));
                 } else {
-                    sb.append("rotation: ["); //$NON-NLS-1$ I18N Needs translation!
+                    sb.append(I18n.C3D_ROTATION + " ["); //$NON-NLS-1$
                     sb.append(DF4F.format(dax));
                     sb.append("; "); //$NON-NLS-1$
                     sb.append(DF4F.format(day));
@@ -203,7 +203,7 @@ public enum GuiStatusManager {
     private static void formatForOneSelectedVertex(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
         try {
             Vertex v = vsi.next().getVertex3D();
-            sb.append(" Vertex @  ["); //$NON-NLS-1$ I18N Needs translation!
+            sb.append(" " + I18n.C3D_SELECTED_VERTEX + " @  ["); //$NON-NLS-1$ //$NON-NLS-2$
             sb.append(DF4F.format(v.xp.multiply(View.unitFactor)));
             sb.append("; "); //$NON-NLS-1$
             sb.append(DF4F.format(v.yp.multiply(View.unitFactor)));
@@ -218,7 +218,7 @@ public enum GuiStatusManager {
     private static void formatForTwoSelectedVertices(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
         try {
             Vertex v = vsi.next().getVertex3D();
-            sb.append("["); //$NON-NLS-1$ I18N Needs translation!
+            sb.append("["); //$NON-NLS-1$
             sb.append(DF2F.format(v.xp.multiply(View.unitFactor)));
             sb.append("; "); //$NON-NLS-1$
             sb.append(DF2F.format(v.yp.multiply(View.unitFactor)));
@@ -233,7 +233,7 @@ public enum GuiStatusManager {
     private static void formatForThreeSelectedVertices(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
         try {
             Vertex v = vsi.next().getVertex3D();
-            sb.append("["); //$NON-NLS-1$ I18N Needs translation!
+            sb.append("["); //$NON-NLS-1$
             sb.append(DF1F.format(v.xp.multiply(View.unitFactor)));
             sb.append(";"); //$NON-NLS-1$
             sb.append(DF1F.format(v.yp.multiply(View.unitFactor)));
@@ -248,7 +248,7 @@ public enum GuiStatusManager {
     private static void formatForFourSelectedVertices(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
         try {
             Vertex v = vsi.next().getVertex3D();
-            sb.append("["); //$NON-NLS-1$ I18N Needs translation!
+            sb.append("["); //$NON-NLS-1$
             sb.append(DF0F.format(v.xp.multiply(View.unitFactor)));
             sb.append(";"); //$NON-NLS-1$
             sb.append(DF0F.format(v.yp.multiply(View.unitFactor)));
@@ -292,12 +292,12 @@ public enum GuiStatusManager {
         if (selectedObjectCount > 0) {
             boolean needsComma = false;
             sb.append("("); //$NON-NLS-1$
-            needsComma = appendSelectionInfo(sb, "Vertex", "Vertices", selectedVerticesCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            needsComma = appendSelectionInfo(sb, "Line", "Lines", selectedLineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            needsComma = appendSelectionInfo(sb, "Triangle", "Triangles", selectedTriangleCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            needsComma = appendSelectionInfo(sb, "Quad", "Quads", selectedQuadCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            needsComma = appendSelectionInfo(sb, "Condline", "Condlines", selectedCondlineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            appendSelectionInfo(sb, "Subfile", "Subfiles", selectedSubfileCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, I18n.C3D_SELECTED_VERTEX, I18n.C3D_SELECTED_VERTICES, selectedVerticesCount, needsComma);
+            needsComma = appendSelectionInfo(sb, I18n.C3D_SELECTED_LINE, I18n.C3D_SELECTED_LINES, selectedLineCount, needsComma);
+            needsComma = appendSelectionInfo(sb, I18n.C3D_SELECTED_TRIANGLE, I18n.C3D_SELECTED_TRIANGLES, selectedTriangleCount, needsComma);
+            needsComma = appendSelectionInfo(sb, I18n.C3D_SELECTED_QUAD, I18n.C3D_SELECTED_QUADS, selectedQuadCount, needsComma);
+            needsComma = appendSelectionInfo(sb, I18n.C3D_SELECTED_CONDLINE, I18n.C3D_SELECTED_CONDLINES, selectedCondlineCount, needsComma);
+            appendSelectionInfo(sb, I18n.C3D_SELECTED_SUBFILE, I18n.C3D_SELECTED_SUBFILES, selectedSubfileCount, needsComma);
             sb.append(") "); //$NON-NLS-1$
             
             if (selectedSubfileCount == 1) {
