@@ -1316,13 +1316,13 @@ class Editor3DDesign extends ApplicationWindow {
                         treeAllParts.setLayoutData(gridData);
                     }
                     {
-                        NButton btnShowMiddle = new NButton(cmpContainer2, SWT.RIGHT_TO_LEFT | Cocoa.getStyle());
+                        NButton btnShowMiddle = new NButton(cmpContainer2, Cocoa.getStyle());
                         this.btnShowMiddlePtr[0] = btnShowMiddle;
                         btnShowMiddle.setImage(ResourceManager.getImage("icon16_middle.png")); //$NON-NLS-1$
                         btnShowMiddle.setToolTipText(I18n.E3D_SASH_MIDDLE);
                     }
                     {
-                        NButton btnSameHeight = new NButton(cmpContainer2, SWT.RIGHT_TO_LEFT | Cocoa.getStyle());
+                        NButton btnSameHeight = new NButton(cmpContainer2, Cocoa.getStyle());
                         this.btnSameHeightPtr[0] = btnSameHeight;
                         btnSameHeight.setImage(ResourceManager.getImage("icon16_sameHeight.png")); //$NON-NLS-1$
                         btnSameHeight.setToolTipText(I18n.E3D_SASH_SAME_HEIGHT);
@@ -1453,7 +1453,7 @@ class Editor3DDesign extends ApplicationWindow {
                         NButton btnZoomInPrimitives = new NButton(cmpSearch, Cocoa.getStyle());
                         this.btnZoomInPrimitivesPtr[0] = btnZoomInPrimitives;
                         btnZoomInPrimitives.setText("+"); //$NON-NLS-1$
-                        NButton btnShowLower = new NButton(cmpSearch, SWT.RIGHT_TO_LEFT | Cocoa.getStyle());
+                        NButton btnShowLower = new NButton(cmpSearch, Cocoa.getStyle());
                         this.btnShowLowerPtr[0] = btnShowLower;
                         btnShowLower.setImage(ResourceManager.getImage("icon16_lower.png")); //$NON-NLS-1$
                         btnShowLower.setToolTipText(I18n.E3D_SASH_LOWER);

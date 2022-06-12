@@ -129,7 +129,7 @@ class SearchDesign extends ApplicationWindow {
 
         grpLocation.layout();
 
-        Composite cmpBtnGrid = new Composite(cmpContainer, SWT.RIGHT_TO_LEFT);
+        Composite cmpBtnGrid = new Composite(cmpContainer, SWT.NONE);
         cmpBtnGrid.setLayoutData(new GridData(SWT.FILL, SWT.LEFT, false, false, 1, 1));
         cmpBtnGrid.setLayout(new GridLayout(2, true));
         {
