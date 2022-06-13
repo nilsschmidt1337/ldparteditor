@@ -20,7 +20,7 @@ class PlugInLoading {
 
         Main.compile(new String[] { "plugin/LpePlugin.java" }); //$NON-NLS-1$
         try {
-            Plugin p = (Plugin) Class.forName("LpePlugin").newInstance(); //$NON-NLS-1$
+            Plugin p = (Plugin) Class.forName("LpePlugin").getDeclaredConstructor().newInstance(); //$NON-NLS-1$
             System.out.println(p.getPlugInName());
         } catch (Exception e) {
             e.printStackTrace();

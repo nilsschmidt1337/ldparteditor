@@ -21,6 +21,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 package org.lwjgl.vulkan.swt;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -46,12 +48,10 @@ public class VKCanvas extends Canvas {
         try {
             @SuppressWarnings("unchecked")
             Class<? extends PlatformVKCanvas> clazz = (Class<? extends PlatformVKCanvas>) VKCanvas.class.getClassLoader().loadClass(platformClassName);
-            platformCanvas = clazz.newInstance();
+            platformCanvas = clazz.getDeclaredConstructor().newInstance();
         } catch (ClassNotFoundException e) {
             throw new AssertionError("Platform-specific VKCanvas class not found: " + platformClassName); //$NON-NLS-1$
-        } catch (InstantiationException e) {
-            throw new AssertionError("Could not instantiate platform-specific VKCanvas class: " + platformClassName); //$NON-NLS-1$
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
             throw new AssertionError("Could not instantiate platform-specific VKCanvas class: " + platformClassName); //$NON-NLS-1$
         }
     }
