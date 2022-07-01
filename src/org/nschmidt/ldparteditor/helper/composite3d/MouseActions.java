@@ -290,6 +290,7 @@ public class MouseActions {
         Matrix4f viewportTranslation = c3d.getTranslation();
         Matrix4f viewportRotation = c3d.getRotation();
         float viewportPixelPerLDU = c3d.getViewportPixelPerLDU();
+        final BigDecimal[] manipulatorSnap = Manipulator.getSnap();
         switch (mouseButtonPressed) {
         case MouseButton.LEFT:
             Vector4f temp;
@@ -317,8 +318,12 @@ public class MouseActions {
             }
             float rx = 0;
             float ry = 0;
+            
+            final boolean snapXaxis = keyboard.isAltPressed();
+            final boolean snapYaxis = keyboard.isShiftPressed();
+            final boolean snapZaxis = keyboard.isCtrlPressed();
 
-            if (keyboard.isCtrlPressed() || Cocoa.IS_COCOA && keyboard.isAltPressed()) {
+            if (snapZaxis) {
                 if (c3d.hasNegDeterminant()) {
                     rx = (float) (Math.atan2(-cSize.y / 2f + oldMousePosition.y, -cSize.x / 2f + oldMousePosition.x)
                             - Math.atan2(-cSize.y / 2f + event.y, -cSize.x / 2f + event.x));
@@ -330,7 +335,7 @@ public class MouseActions {
                 Matrix4f ovrInverse = Matrix4f.invert(oldViewportRotation, null);
                 Matrix4f.transform(ovrInverse, xAxis4fRotation, xAxis4fRotation);
                 Vector3f xAxis3fRotation = new Vector3f(xAxis4fRotation.x, xAxis4fRotation.y, xAxis4fRotation.z);
-                Matrix4f.rotate(rx, xAxis3fRotation, oldViewportRotation, viewportRotation);
+                Matrix4f.rotate(snap(rx, manipulatorSnap), xAxis3fRotation, oldViewportRotation, viewportRotation);
             } else {
                 if (c3d.hasNegDeterminant()) {
                     rx = (event.x - oldMousePosition.x) / cSize.x * (float) Math.PI;
@@ -346,8 +351,15 @@ public class MouseActions {
                 Matrix4f.transform(ovrInverse, yAxis4fRotation, yAxis4fRotation);
                 Vector3f xAxis3fRotation = new Vector3f(xAxis4fRotation.x, xAxis4fRotation.y, xAxis4fRotation.z);
                 Vector3f yAxis3fRotation = new Vector3f(yAxis4fRotation.x, yAxis4fRotation.y, yAxis4fRotation.z);
-                Matrix4f.rotate(rx, yAxis3fRotation, oldViewportRotation, viewportRotation);
-                Matrix4f.rotate(ry, xAxis3fRotation, viewportRotation, viewportRotation);
+                
+                if (snapXaxis) {
+                    Matrix4f.rotate(snap(rx, manipulatorSnap), yAxis3fRotation, oldViewportRotation, viewportRotation);
+                } else if (snapYaxis) {
+                    Matrix4f.rotate(snap(ry, manipulatorSnap), xAxis3fRotation, oldViewportRotation, viewportRotation);
+                } else {
+                    Matrix4f.rotate(rx, yAxis3fRotation, oldViewportRotation, viewportRotation);
+                    Matrix4f.rotate(ry, xAxis3fRotation, viewportRotation, viewportRotation);
+                }
             }
             perspective.calculateOriginData();
             c3d.getVertexManager().getResetTimer().set(true);
@@ -370,7 +382,7 @@ public class MouseActions {
             break;
         }
         c3d.getCursor3D().set(perspective.get3DCoordinatesFromScreen(event.x, event.y));
-        final BigDecimal snapPrecise = Manipulator.getSnap()[0];
+        final BigDecimal snapPrecise = manipulatorSnap[0];
         final float snap = snapPrecise.floatValue() * 1000f;
         final float sx = c3d.getCursor3D().x;
         final float sy = c3d.getCursor3D().y;
@@ -680,6 +692,11 @@ public class MouseActions {
                 }
             }
         }
+    }
+
+    private float snap(float value, BigDecimal[] manipulatorSnap) {
+        final float snap = manipulatorSnap[1].floatValue();
+        return value - value % snap;
     }
 
     public void prepareTranslateViewport() {
