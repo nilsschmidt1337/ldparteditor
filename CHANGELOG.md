@@ -1,3 +1,13 @@
+### 02 Jul 2022
+With the release of 1.8.58 you are able to...
+-  ...press and hold shortkeys to rotate the view around a fixed axis with the mouse (snapping to angles, with Shift, Ctrl and Alt). 
+
+The following critical issues are fixed:
+1. The check for BFC-Meta command was not strict enough (it allowed prefix lines like "0 BFC CERTIFY CCWxyz").
+2. !HISTORY meta command: Removed the [4.0] tag in favor of a fixed implementation date.
+3. Added missing buttons on the UI for area expansion / missing buttons on "Find+Replace" dialog.
+
+
 ### 06 Jun 2022
 With the release of 1.8.57 you are able to...
 -  ...use the upgraded "!LICENSE" / "!HISTORY" meta command to support the new CC BY 4.0 agreement.
