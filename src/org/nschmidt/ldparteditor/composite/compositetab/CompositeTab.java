@@ -804,6 +804,7 @@ public class CompositeTab extends CompositeTabDesign {
                 String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_DUPLICATE : I18n.EDITORTEXT_DUPLICATES;
                 lblProblemCountPtr[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
                 lblProblemCountPtr[0].getParent().layout();
+                compositeTextPtr[0].redraw();
             }
         });
         final CompositeTab me = this;
