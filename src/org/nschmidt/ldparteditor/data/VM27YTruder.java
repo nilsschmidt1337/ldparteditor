@@ -33,6 +33,9 @@ class VM27YTruder extends VM26LineIntersector {
     private static final double EPSILON = 0.000001;
     private static final double SMALL = 0.01;
     private double[] nullv = new double[] { 0.0, 0.0, 0.0 };
+    private static final int X_AXIS = 0;
+    private static final int Y_AXIS = 1;
+    private static final int Z_AXIS = 2;
 
     protected VM27YTruder(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -85,15 +88,15 @@ class VM27YTruder extends VM26LineIntersector {
 
         boolean flag = false;
 
-        if (ys.getAxis() == 0) {
+        if (ys.getAxis() == X_AXIS) {
             x = 1;
             y = 0;
             z = 2;
-        } else if (ys.getAxis() == 1) {
+        } else if (ys.getAxis() == Y_AXIS) {
             x = 0;
             y = 1;
             z = 2;
-        } else if (ys.getAxis() == 2) {
+        } else if (ys.getAxis() == Z_AXIS) {
             x = 0;
             y = 2;
             z = 1;
@@ -101,14 +104,17 @@ class VM27YTruder extends VM26LineIntersector {
 
         int originalLineCount = 0;
         for (GData2 gData2 : originalSelection) {
-            inLine[originalLineCount][0][x] = gData2.x1p.doubleValue();
-            inLine[originalLineCount][0][y] = gData2.y1p.doubleValue();
-            inLine[originalLineCount][0][z] = gData2.z1p.doubleValue();
-            inLine[originalLineCount][1][x] = gData2.x2p.doubleValue();
-            inLine[originalLineCount][1][y] = gData2.y2p.doubleValue();
-            inLine[originalLineCount][1][z] = gData2.z2p.doubleValue();
-            lineUsed[originalLineCount] = 0;
-            originalLineCount++;
+            Vertex[] verts = lines.get(gData2);
+            if (verts != null) {
+                inLine[originalLineCount][0][x] = verts[0].xp.doubleValue();
+                inLine[originalLineCount][0][y] = verts[0].yp.doubleValue();
+                inLine[originalLineCount][0][z] = verts[0].zp.doubleValue();
+                inLine[originalLineCount][1][x] = verts[1].xp.doubleValue();
+                inLine[originalLineCount][1][y] = verts[1].yp.doubleValue();
+                inLine[originalLineCount][1][z] = verts[1].zp.doubleValue();
+                lineUsed[originalLineCount] = 0;
+                originalLineCount++;
+            }
         }
 
         // Extruding...
