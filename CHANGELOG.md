@@ -1,7 +1,7 @@
 ### 05 Jul 2022
 With the release of 1.8.59 the following critical issues are fixed:
 1. The middle mouse button rotation was locked (in combination with the Alt key). 
-2. Different lines were maked as hidden in the text editor.
+2. Different lines were marked as hidden in the text editor.
 3. When the source lines came from an offset subpart, Ytruder's "symmetry across plane" didn't create the correct result. 
 
 
