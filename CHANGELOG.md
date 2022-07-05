@@ -1,3 +1,10 @@
+### 05 Jul 2022
+With the release of 1.8.59 the following critical issues are fixed:
+1. The middle mouse button rotation was locked (in combination with the Alt key). 
+2. Different lines were maked as hidden in the text editor.
+3. When the source lines came from an offset subpart, Ytruder's "symmetry across plane" didn't create the correct result. 
+
+
 ### 02 Jul 2022
 With the release of 1.8.58 you are able to...
 -  ...press and hold shortkeys to rotate the view around a fixed axis with the mouse (snapping to angles, with Shift, Ctrl and Alt). 
