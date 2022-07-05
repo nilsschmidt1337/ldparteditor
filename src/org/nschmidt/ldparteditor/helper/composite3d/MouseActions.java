@@ -86,6 +86,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class MouseActions {
 
+    private static final double PI_8TH = Math.PI / 8d;
+
     private static final long[] lastTextureGC = new long[] { System.currentTimeMillis() };
 
     public static final int MOUSE_LAYOUT_DEFAULT = 0;
@@ -270,9 +272,10 @@ public class MouseActions {
         if (!c3d.getLockableDatFileReference().isDrawSelection()) return;
 
         VertexWindow.placeVertexWindow();
-        c3d.getKeys().setKeyState(SWT.COMMAND, (event.stateMask & SWT.COMMAND) == SWT.COMMAND);
-        c3d.getKeys().setKeyState(SWT.CTRL, (event.stateMask & SWT.CTRL) == SWT.CTRL);
-        c3d.getKeys().setKeyState(SWT.SHIFT, (event.stateMask & SWT.SHIFT) == SWT.SHIFT);
+        checkKeyStatesOfEvent(event, SWT.COMMAND);
+        checkKeyStatesOfEvent(event, SWT.CTRL);
+        checkKeyStatesOfEvent(event, SWT.SHIFT);
+        checkKeyStatesOfEvent(event, SWT.ALT);
 
         {
             long ct = System.currentTimeMillis();
@@ -694,8 +697,12 @@ public class MouseActions {
         }
     }
 
+    private void checkKeyStatesOfEvent(final Event event, final int key) {
+        c3d.getKeys().setKeyState(key, (event.stateMask & key) == key);
+    }
+
     private float snap(float value, BigDecimal[] manipulatorSnap) {
-        final float snap = manipulatorSnap[1].floatValue();
+        final float snap = (float) Math.min(manipulatorSnap[1].floatValue(), PI_8TH);
         return value - value % snap;
     }
 
