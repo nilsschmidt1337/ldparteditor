@@ -185,6 +185,8 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] evPng8TxtPtr = new Text[1];
     final Text[] evPng9TxtPtr = new Text[1];
     final NButton[] evPngBtnPtr = new NButton[1];
+    final Text[] evConst1TxtPtr = new Text[1];
+    final Text[] evConst2TxtPtr = new Text[1];
 
     final Label[] lblLineToInsertPtr  = new Label[1];
 
@@ -901,6 +903,27 @@ class EditorMetaDesign extends ApplicationWindow {
                             txtZ.setMessage(I18n.META_VERTEX_Z);
                             txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
                             evVertex3TxtPtr[0] = txtZ;
+                        }
+                    }
+                    
+                    {
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(4, false));
+                        Label lblConst = new Label(cmpLpe, SWT.NONE);
+                        lblConst.setText("0 !LPE CONST"); //$NON-NLS-1$
+                        {
+                            Text txtConst1 = new Text(cmpLpe, SWT.SEARCH);
+                            txtConst1.setMessage(I18n.META_CONST_NAME);
+                            txtConst1.setToolTipText(I18n.META_CONST_HINT);
+                            evConst1TxtPtr[0] = txtConst1;
+                        }
+                        Label lblEqual = new Label(cmpLpe, SWT.NONE);
+                        lblEqual.setText(" = "); //$NON-NLS-1$
+                        {
+                            Text txtConst2 = new Text(cmpLpe, SWT.SEARCH);
+                            txtConst2.setMessage(I18n.META_CONST_VALUE);
+                            txtConst2.setToolTipText(I18n.META_CONST_HINT);
+                            evConst2TxtPtr[0] = txtConst2;
                         }
                     }
 

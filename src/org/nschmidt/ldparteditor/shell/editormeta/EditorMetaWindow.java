@@ -484,6 +484,24 @@ public class EditorMetaWindow extends EditorMetaDesign {
         });
 
         evTodoTxtPtr[0].addModifyListener(e -> updateLpeTODO());
+        
+        evConst1TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                updateLpeConst();
+            }
+        });
+        
+        evConst1TxtPtr[0].addModifyListener(e -> updateLpeConst());
+        
+        evConst2TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                updateLpeConst();
+            }
+        });
+        
+        evConst2TxtPtr[0].addModifyListener(e -> updateLpeConst());
 
         {
             final org.eclipse.swt.events.FocusAdapter a = new org.eclipse.swt.events.FocusAdapter() {
@@ -955,6 +973,11 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
     private void updateLpeTODO() {
         lblLineToInsertPtr[0].setText("0 !LPE TODO " + evTodoTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
+    }
+    
+    private void updateLpeConst() {
+        lblLineToInsertPtr[0].setText("0 !LPE CONST " + evConst1TxtPtr[0].getText().trim() + " = " + evConst1TxtPtr[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$
         lblLineToInsertPtr[0].getParent().layout();
     }
 

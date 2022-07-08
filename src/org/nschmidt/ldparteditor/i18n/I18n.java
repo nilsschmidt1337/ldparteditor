@@ -917,6 +917,9 @@ public final class I18n {
     public static final String META_COLOUR_HINT = META.getString(getProperty());
     public static final String META_COMMAND_LINE = META.getString(getProperty());
     public static final String META_COMMENT = META.getString(getProperty());
+    public static final String META_CONST_HINT = META.getString(getProperty());
+    public static final String META_CONST_NAME = META.getString(getProperty());
+    public static final String META_CONST_VALUE = META.getString(getProperty());
     public static final String META_CSG_COLLAPSE_1 = META.getString(getProperty());
     public static final String META_CSG_COLLAPSE_2 = META.getString(getProperty());
     public static final String META_CSG_COMPILE = META.getString(getProperty());

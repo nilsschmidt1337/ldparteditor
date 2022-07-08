@@ -18,12 +18,15 @@ package org.nschmidt.ldparteditor.text;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -88,6 +91,8 @@ public enum DatParser {
     private static final Vector3d vertexB2 = new Vector3d();
     private static final Vector3d vertexC2 = new Vector3d();
     private static final Vector3d vertexD2 = new Vector3d();
+    
+    private static final Map<String, String> constants = new TreeMap<>();
 
     public static List<ParsingResult> parseLine(String line, int lineNumber, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed) {
@@ -95,7 +100,6 @@ public enum DatParser {
         // Get the linetype
         int linetype = 0;
         final String[] dataSegments = WHITESPACE.split(line.trim());
-
         char c;
         if (dataSegments.length < 1 || dataSegments[0].length() >  1 || !Character.isDigit(c = dataSegments[0].charAt(0))) {
             result.add(new ParsingResult(I18n.DATPARSER_INVALID_TYPE, "[E0D] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
@@ -191,7 +195,7 @@ public enum DatParser {
                 cValue.setColourNumber(-1);
                 cValue.setType(null);
             } else {
-                return null;
+                return substituteColour(arg, r, g, b, a);
             }
         }
         return cValue;
@@ -289,9 +293,9 @@ public enum DatParser {
                 boolean numberError = false;
                 if (dataSegments.length == 6) {
                     try {
-                        start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
-                        start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
-                        start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
+                        start.setX(parseDecimal(dataSegments[3], Threshold.MC));
+                        start.setY(parseDecimal(dataSegments[4], Threshold.MC));
+                        start.setZ(parseDecimal(dataSegments[5], Threshold.MC));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }
@@ -319,12 +323,12 @@ public enum DatParser {
                         return result;
                     }
                     try {
-                        start.setX(new BigDecimal(dataSegments[4], Threshold.MC));
-                        start.setY(new BigDecimal(dataSegments[5], Threshold.MC));
-                        start.setZ(new BigDecimal(dataSegments[6], Threshold.MC));
-                        end.setX(new BigDecimal(dataSegments[7], Threshold.MC));
-                        end.setY(new BigDecimal(dataSegments[8], Threshold.MC));
-                        end.setZ(new BigDecimal(dataSegments[9], Threshold.MC));
+                        start.setX(parseDecimal(dataSegments[4], Threshold.MC));
+                        start.setY(parseDecimal(dataSegments[5], Threshold.MC));
+                        start.setZ(parseDecimal(dataSegments[6], Threshold.MC));
+                        end.setX(parseDecimal(dataSegments[7], Threshold.MC));
+                        end.setY(parseDecimal(dataSegments[8], Threshold.MC));
+                        end.setZ(parseDecimal(dataSegments[9], Threshold.MC));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }
@@ -348,15 +352,15 @@ public enum DatParser {
                         return result;
                     }
                     try {
-                        vertexA.setX(new BigDecimal(dataSegments[4], Threshold.MC));
-                        vertexA.setY(new BigDecimal(dataSegments[5], Threshold.MC));
-                        vertexA.setZ(new BigDecimal(dataSegments[6], Threshold.MC));
-                        vertexB.setX(new BigDecimal(dataSegments[7], Threshold.MC));
-                        vertexB.setY(new BigDecimal(dataSegments[8], Threshold.MC));
-                        vertexB.setZ(new BigDecimal(dataSegments[9], Threshold.MC));
-                        vertexC.setX(new BigDecimal(dataSegments[10], Threshold.MC));
-                        vertexC.setY(new BigDecimal(dataSegments[11], Threshold.MC));
-                        vertexC.setZ(new BigDecimal(dataSegments[12], Threshold.MC));
+                        vertexA.setX(parseDecimal(dataSegments[4], Threshold.MC));
+                        vertexA.setY(parseDecimal(dataSegments[5], Threshold.MC));
+                        vertexA.setZ(parseDecimal(dataSegments[6], Threshold.MC));
+                        vertexB.setX(parseDecimal(dataSegments[7], Threshold.MC));
+                        vertexB.setY(parseDecimal(dataSegments[8], Threshold.MC));
+                        vertexB.setZ(parseDecimal(dataSegments[9], Threshold.MC));
+                        vertexC.setX(parseDecimal(dataSegments[10], Threshold.MC));
+                        vertexC.setY(parseDecimal(dataSegments[11], Threshold.MC));
+                        vertexC.setZ(parseDecimal(dataSegments[12], Threshold.MC));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }
@@ -451,6 +455,17 @@ public enum DatParser {
                 } catch (Exception consumed) {
                     NLogger.debug(DatParser.class, consumed);
                 }
+            } else if (line.startsWith("CONST", 7) && dataSegments.length == 6 && "=".equals(dataSegments[4]) && !Character.isDigit(dataSegments[3].charAt(0))) { //$NON-NLS-1$ //$NON-NLS-2$
+                if (dataSegments[5].startsWith("-")) { //$NON-NLS-1$
+                    constants.put(dataSegments[3], dataSegments[5]);
+                    constants.put("-" + dataSegments[3], dataSegments[5].substring(1)); //$NON-NLS-1$
+                } else {
+                    constants.put(dataSegments[3], dataSegments[5]);
+                    constants.put("-" + dataSegments[3], "-" + dataSegments[5]); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                
+                // Clear the cache when a constant was changed/defined 
+                GData.parsedLines.clear();
             }
         } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6) && line.equals("0 BFC INVERTNEXT")) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -556,32 +571,32 @@ public enum DatParser {
             float det = 0;
             try {
                 // Offset
-                m30 = new BigDecimal(dataSegments[2]);
+                m30 = parseDecimal(dataSegments[2]);
                 tMatrix.m30 = m30.floatValue() * 1000f;
-                m31 = new BigDecimal(dataSegments[3]);
+                m31 = parseDecimal(dataSegments[3]);
                 tMatrix.m31 = m31.floatValue() * 1000f;
-                m32 = new BigDecimal(dataSegments[4]);
+                m32 = parseDecimal(dataSegments[4]);
                 tMatrix.m32 = m32.floatValue() * 1000f;
                 // First row
-                m00 = new BigDecimal(dataSegments[5]);
+                m00 = parseDecimal(dataSegments[5]);
                 tMatrix.m00 = m00.floatValue();
-                m10 = new BigDecimal(dataSegments[6]);
+                m10 = parseDecimal(dataSegments[6]);
                 tMatrix.m10 = m10.floatValue();
-                m20 = new BigDecimal(dataSegments[7]);
+                m20 = parseDecimal(dataSegments[7]);
                 tMatrix.m20 = m20.floatValue();
                 // Second row
-                m01 = new BigDecimal(dataSegments[8]);
+                m01 = parseDecimal(dataSegments[8]);
                 tMatrix.m01 = m01.floatValue();
-                m11 = new BigDecimal(dataSegments[9]);
+                m11 = parseDecimal(dataSegments[9]);
                 tMatrix.m11 = m11.floatValue();
-                m21 = new BigDecimal(dataSegments[10]);
+                m21 = parseDecimal(dataSegments[10]);
                 tMatrix.m21 = m21.floatValue();
                 // Third row
-                m02 = new BigDecimal(dataSegments[11]);
+                m02 = parseDecimal(dataSegments[11]);
                 tMatrix.m02 = m02.floatValue();
-                m12 = new BigDecimal(dataSegments[12]);
+                m12 = parseDecimal(dataSegments[12]);
                 tMatrix.m12 = m12.floatValue();
-                m22 = new BigDecimal(dataSegments[13]);
+                m22 = parseDecimal(dataSegments[13]);
                 tMatrix.m22 = m22.floatValue();
                 tMatrix.m33 = 1f;
 
@@ -824,13 +839,13 @@ public enum DatParser {
             // [ERROR] Check identical vertices
             try {
                 // Start vertex
-                start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
-                start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
-                start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                start.setX(parseDecimal(dataSegments[2], Threshold.MC));
+                start.setY(parseDecimal(dataSegments[3], Threshold.MC));
+                start.setZ(parseDecimal(dataSegments[4], Threshold.MC));
                 // End vertex
-                end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
-                end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
-                end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                end.setX(parseDecimal(dataSegments[5], Threshold.MC));
+                end.setY(parseDecimal(dataSegments[6], Threshold.MC));
+                end.setZ(parseDecimal(dataSegments[7], Threshold.MC));
 
                 parseError = Vector3d.sub(start, end).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
                 if (parseError) {
@@ -887,17 +902,17 @@ public enum DatParser {
             // [ERROR] Check identical vertices
             try {
                 // 1st vertex
-                vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
-                vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
-                vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                vertexA.setX(parseDecimal(dataSegments[2], Threshold.MC));
+                vertexA.setY(parseDecimal(dataSegments[3], Threshold.MC));
+                vertexA.setZ(parseDecimal(dataSegments[4], Threshold.MC));
                 // 2nd vertex
-                vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
-                vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
-                vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                vertexB.setX(parseDecimal(dataSegments[5], Threshold.MC));
+                vertexB.setY(parseDecimal(dataSegments[6], Threshold.MC));
+                vertexB.setZ(parseDecimal(dataSegments[7], Threshold.MC));
                 // 3rd vertex
-                vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
-                vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
-                vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
+                vertexC.setX(parseDecimal(dataSegments[8], Threshold.MC));
+                vertexC.setY(parseDecimal(dataSegments[9], Threshold.MC));
+                vertexC.setZ(parseDecimal(dataSegments[10], Threshold.MC));
 
                 if (!errorCheckOnly) { // result.size() < 1 &&
                     GData3 data = new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z,
@@ -987,21 +1002,21 @@ public enum DatParser {
             // vertices
             try {
                 // 1st vertex
-                vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
-                vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
-                vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                vertexA.setX(parseDecimal(dataSegments[2], Threshold.MC));
+                vertexA.setY(parseDecimal(dataSegments[3], Threshold.MC));
+                vertexA.setZ(parseDecimal(dataSegments[4], Threshold.MC));
                 // 2nd vertex
-                vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
-                vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
-                vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                vertexB.setX(parseDecimal(dataSegments[5], Threshold.MC));
+                vertexB.setY(parseDecimal(dataSegments[6], Threshold.MC));
+                vertexB.setZ(parseDecimal(dataSegments[7], Threshold.MC));
                 // 3rd vertex
-                vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
-                vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
-                vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
+                vertexC.setX(parseDecimal(dataSegments[8], Threshold.MC));
+                vertexC.setY(parseDecimal(dataSegments[9], Threshold.MC));
+                vertexC.setZ(parseDecimal(dataSegments[10], Threshold.MC));
                 // 4th vertex
-                vertexD.setX(new BigDecimal(dataSegments[11], Threshold.MC));
-                vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
-                vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
+                vertexD.setX(parseDecimal(dataSegments[11], Threshold.MC));
+                vertexD.setY(parseDecimal(dataSegments[12], Threshold.MC));
+                vertexD.setZ(parseDecimal(dataSegments[13], Threshold.MC));
 
 
                 final boolean depthLower1 = depth < 1;
@@ -1186,21 +1201,21 @@ public enum DatParser {
             // [ERROR] Check identical vertices
             try {
                 // start vertex
-                start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
-                start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
-                start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                start.setX(parseDecimal(dataSegments[2], Threshold.MC));
+                start.setY(parseDecimal(dataSegments[3], Threshold.MC));
+                start.setZ(parseDecimal(dataSegments[4], Threshold.MC));
                 // end vertex
-                end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
-                end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
-                end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                end.setX(parseDecimal(dataSegments[5], Threshold.MC));
+                end.setY(parseDecimal(dataSegments[6], Threshold.MC));
+                end.setZ(parseDecimal(dataSegments[7], Threshold.MC));
                 // control vertex I
-                controlI.setX(new BigDecimal(dataSegments[8], Threshold.MC));
-                controlI.setY(new BigDecimal(dataSegments[9], Threshold.MC));
-                controlI.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
+                controlI.setX(parseDecimal(dataSegments[8], Threshold.MC));
+                controlI.setY(parseDecimal(dataSegments[9], Threshold.MC));
+                controlI.setZ(parseDecimal(dataSegments[10], Threshold.MC));
                 // control vertex II
-                controlII.setX(new BigDecimal(dataSegments[11], Threshold.MC));
-                controlII.setY(new BigDecimal(dataSegments[12], Threshold.MC));
-                controlII.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
+                controlII.setX(parseDecimal(dataSegments[11], Threshold.MC));
+                controlII.setY(parseDecimal(dataSegments[12], Threshold.MC));
+                controlII.setZ(parseDecimal(dataSegments[13], Threshold.MC));
 
                 if (Vector3d.sub(start, end).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0) {
                     result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E0D] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
@@ -1222,11 +1237,49 @@ public enum DatParser {
 
         return result;
     }
+    
+    private static BigDecimal parseDecimal(final String segment, final MathContext mc) {
+        try {
+            return new BigDecimal(segment, mc);
+        } catch (NumberFormatException nfe) {
+            return substituteDecimal(segment, nfe);
+        }
+    }
+    
+    private static BigDecimal parseDecimal(final String segment) {
+        try {
+            return new BigDecimal(segment);
+        } catch (NumberFormatException nfe) {
+            return substituteDecimal(segment, nfe);
+        }
+    }
+    
+    private static BigDecimal substituteDecimal(final String segment, NumberFormatException nfe) {
+        if (!constants.isEmpty()) {
+            final String replacement = constants.getOrDefault(segment, "undefined"); //$NON-NLS-1$
+            return new BigDecimal(replacement);
+        } else {
+            throw nfe;
+        }
+    }
+    
+    private static GColour substituteColour(final String arg, float r, float g, float b, float a) {
+        if (!constants.isEmpty()) {
+            final String replacement = constants.getOrDefault(arg, "0x2undefi"); //$NON-NLS-1$
+            return validateColour(replacement, r, g, b, a);
+        }
+        
+        return null;
+    }
 
     public static void triggerPngImageUpdate() {
         if (updatePngImages) {
             updatePngImages = false;
             Editor3DWindow.getWindow().updateBgPictureTab();
         }
+    }
+
+    public static void clearConstants() {
+        constants.clear();
     }
 }

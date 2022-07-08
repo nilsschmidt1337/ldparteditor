@@ -228,6 +228,8 @@ public enum SubfileCompiler {
 
         if (skipCompile && type != 0)
             return;
+        
+        DatParser.clearConstants();
 
         if (gd.getNext() == null && type != 0 && !toFolderStack.isEmpty() && !skipCompile) {
             builder.append(gd.transformAndColourReplace(colour, matrixInv));
