@@ -456,7 +456,7 @@ public enum DatParser {
                     NLogger.debug(DatParser.class, consumed);
                 }
             } else if (line.startsWith("CONST", 7) && dataSegments.length == 6 && "=".equals(dataSegments[4]) && !Character.isDigit(dataSegments[3].charAt(0))) { //$NON-NLS-1$ //$NON-NLS-2$
-                final String evalResult = Evaluator.eval(constants, dataSegments[5]);
+                final String evalResult = Evaluator.eval(dataSegments[3], dataSegments[5]);
                 if (evalResult.startsWith("-")) { //$NON-NLS-1$
                     constants.put(dataSegments[3], evalResult);
                     constants.put("-" + dataSegments[3], evalResult.substring(1)); //$NON-NLS-1$
@@ -1288,5 +1288,6 @@ public enum DatParser {
 
     public static void clearConstants() {
         constants.clear();
+        Evaluator.reset();
     }
 }

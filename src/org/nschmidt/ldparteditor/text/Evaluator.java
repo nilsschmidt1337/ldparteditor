@@ -15,7 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.text;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -30,12 +29,22 @@ import jdk.jshell.SnippetEvent;
 public enum Evaluator {
     INSTANCE;
     
+    private static final String NOT_A_NUMBER = "NaN"; //$NON-NLS-1$
+    private static final int MAX_SNIPPET_COUNT = 10000;
     private static JShell js = JShell.create();
     private static final StringBuilder sb = new StringBuilder();
     private static final Pattern dotLetter = Pattern.compile("\\.\\D", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 
-    static String eval(Map<String, String> constants, String rawExpr) {
-        if (constants.isEmpty()) {
+    private static int snippetCount = 0;
+    
+    static void reset() {
+        snippetCount = 0;
+    }
+    
+    static String eval(String name, String rawExpr) {
+        if (snippetCount == 0 || snippetCount > MAX_SNIPPET_COUNT) {
+            if (js == null) return rawExpr;
+            snippetCount = 0;
             js.close();
             js = JShell.create();
             staticImportMathFunctions("PI", "toDegrees", "toRadians", "sin", "cos", "tan", "round", "abs", "signum", "asin", "acos", "atan", "atan2", "log", "log", "sqrt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$)
@@ -50,28 +59,24 @@ public enum Evaluator {
         
         try {
             if (js == null) return expr;
-            
-            for (Map.Entry<String, String> entry : constants.entrySet()) {
-                final String name = entry.getKey();
-                final String value = entry.getValue();
-                addVariable(name, value);
-            }
-            
+
             // Don't allow multiple lines of code (e.g. "int i = 0; i++;")
             final String result = js.eval(js.sourceCodeAnalysis().analyzeCompletion(expr).source())
                     .stream()
                     .map(SnippetEvent::value)
-                    .map(s -> s.replace("\"", "")) //$NON-NLS-1$ //$NON-NLS-2$
                     .filter(Objects::nonNull)
+                    .map(s -> s.replace("\"", "")) //$NON-NLS-1$ //$NON-NLS-2$
                     .findFirst()
                     .orElse(expr);
             NLogger.debug(Evaluator.class, expr);
             NLogger.debug(Evaluator.class, result);
+            addVariable(name, result);
             return result;
         } catch (Exception e) {
             NLogger.debug(Evaluator.class, expr);
             NLogger.debug(Evaluator.class, e);
-            return "NaN"; //$NON-NLS-1$
+            addVariable(name, NOT_A_NUMBER);
+            return NOT_A_NUMBER;
         }
     }
 
@@ -117,5 +122,6 @@ public enum Evaluator {
         sb.append(";"); //$NON-NLS-1$
         
         js.eval(js.sourceCodeAnalysis().analyzeCompletion(sb.toString()).source());
+        snippetCount++;
     }
 }

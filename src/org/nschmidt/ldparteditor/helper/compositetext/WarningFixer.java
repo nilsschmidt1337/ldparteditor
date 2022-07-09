@@ -16,6 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helper.compositetext;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -24,6 +26,7 @@ import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * @author nils
@@ -32,7 +35,7 @@ import org.nschmidt.ldparteditor.helper.math.Vector3d;
 enum WarningFixer {
     INSTANCE;
 
-    public static String fix(int lineNumber, String sort, String line, String text) {
+    public static String fix(int lineNumber, String sort, String line, String text, String description) {
         int s = Integer.parseInt(sort, 16);
         switch (s) {
         case 204: // Upper- & Mixed-Case File Name
@@ -290,12 +293,44 @@ enum WarningFixer {
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             break;
         case 192: /* FIXME !LPE CONST needs to be inlined */
-            text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
+            final List<String> pair = getPair(description);
+            final String variable = pair.get(0);
+            final String value = pair.get(1);
+            NLogger.debug(WarningFixer.class, variable);
+            NLogger.debug(WarningFixer.class, value);
+            // text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             break;
         default:
             break;
         }
         return text;
+    }
+    
+    
+    private static List<String> getPair(String description) {
+        final  List<String> result = new ArrayList<>();
+        final int lenght = description.length();
+        final StringBuilder sb = new StringBuilder();
+        boolean collectToken = false;
+        for (int i = 0; i < lenght; i++) {
+            final char c = description.charAt(i);
+            
+            
+            if (collectToken) {
+                if (c == ']') {
+                    result.add(sb.toString());
+                    collectToken = false;
+                    sb.setLength(0);
+                } else {
+                    sb.append(c);
+                }
+            }
+            
+            if (c == '[') {
+                collectToken = true;
+            }
+        }        
+        return result;
     }
 
     private static boolean hasGoodDeterminant(String line) {
