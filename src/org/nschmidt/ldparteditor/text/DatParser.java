@@ -52,6 +52,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.colour.GCDithered;
 import org.nschmidt.ldparteditor.data.colour.GCType;
 import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.DatKeyword;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
@@ -455,7 +456,7 @@ public enum DatParser {
                 } catch (Exception consumed) {
                     NLogger.debug(DatParser.class, consumed);
                 }
-            } else if (line.startsWith("CONST", 7) && dataSegments.length == 6 && "=".equals(dataSegments[4]) && !Character.isDigit(dataSegments[3].charAt(0))) { //$NON-NLS-1$ //$NON-NLS-2$
+            } else if (line.startsWith("CONST", 7) && dataSegments.length == 6 && "=".equals(dataSegments[4]) && !Character.isDigit(dataSegments[3].charAt(0)) && !DatKeyword.getKeywords().contains(dataSegments[3])) { //$NON-NLS-1$ //$NON-NLS-2$
                 final String evalResult = Evaluator.eval(dataSegments[3], dataSegments[5]);
                 if (evalResult.startsWith("-")) { //$NON-NLS-1$
                     constants.put(dataSegments[3], evalResult);
@@ -464,6 +465,9 @@ public enum DatParser {
                     constants.put(dataSegments[3], evalResult);
                     constants.put("-" + dataSegments[3], "-" + evalResult); //$NON-NLS-1$ //$NON-NLS-2$
                 }
+                
+                // Don't delete constants on a quick fix, inline them. 
+                result.remove(result.size() - 1);
                 
                 Object[] messageArguments = {dataSegments[3], evalResult};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$

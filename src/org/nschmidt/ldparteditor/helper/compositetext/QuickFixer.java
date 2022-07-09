@@ -56,23 +56,7 @@ public enum QuickFixer {
             return;
 
         List<Integer> lineNumbers = new ArrayList<>();
-        Map<Integer, Set<TreeItem>> issuesInLine = new HashMap<>();
-
-        {
-            Set<Integer> numbers = new HashSet<>();
-            for (TreeItem t : issues) {
-                if (t == null || t.getText(0).isEmpty())
-                    continue;
-                int offset = (Integer) t.getData();
-                Integer i = offset > -1 ? cText.getLineAtOffset(offset) : offset * -1;
-                if (!numbers.contains(i)) {
-                    numbers.add(i);
-                    lineNumbers.add(i);
-                    issuesInLine.put(i, new HashSet<>());
-                }
-                issuesInLine.get(i).add(t);
-            }
-        }
+        Map<Integer, Set<TreeItem>> issuesInLine = calculateIssuesInLine(cText, issues, lineNumbers);
 
         if (lineNumbers.isEmpty()) return;
 
@@ -129,7 +113,7 @@ public enum QuickFixer {
                 if ("H".equals(type)) { //$NON-NLS-1$
                     text2 = HintFixer.fix(l, sort, text2, datFile, h);
                 } else if ("W".equals(type)) { //$NON-NLS-1$
-                    text2 = WarningFixer.fix(l, sort, line, text2, t.getText(0));
+                    text2 = WarningFixer.fix(l, sort, line, text2, t.getText(0), datFile);
                 } else if ("E".equals(type)) { //$NON-NLS-1$
                     text2 = ErrorFixer.fix(l, sort, line, text2, datFile, cText.getShell());
                 }
@@ -147,6 +131,26 @@ public enum QuickFixer {
             cText.setSelection(0);
         }
 
+    }
+
+    private static Map<Integer, Set<TreeItem>> calculateIssuesInLine(StyledText cText, Set<TreeItem> issues, List<Integer> lineNumbers) {
+        final Map<Integer, Set<TreeItem>> issuesInLine = new HashMap<>();
+        final Set<Integer> numbers = new HashSet<>();
+        
+        for (TreeItem t : issues) {
+            if (t == null || t.getText(0).isEmpty())
+                continue;
+            int offset = (Integer) t.getData();
+            Integer i = offset > -1 ? cText.getLineAtOffset(offset) : offset * -1;
+            if (!numbers.contains(i)) {
+                numbers.add(i);
+                lineNumbers.add(i);
+                issuesInLine.put(i, new HashSet<>());
+            }
+            issuesInLine.get(i).add(t);
+        }
+        
+        return issuesInLine;
     }
 
     static String insertBeforeLine(int line, String textToInsert, String text) {

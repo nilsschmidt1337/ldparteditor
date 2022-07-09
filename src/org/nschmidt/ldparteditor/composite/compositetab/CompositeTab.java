@@ -1444,7 +1444,7 @@ public class CompositeTab extends CompositeTabDesign {
                     } else if (sort1.equals(treeItemDuplicatesPtr[0])) {
                         items.add(treeItemDuplicatesPtr[0]);
                     }
-                    if (sort1.getText(2).startsWith("[WFE]")) { //$NON-NLS-1$
+                    if (sort1.getText(2).startsWith("[WFE]") || sort1.getText(2).startsWith("[WC0]")) { //$NON-NLS-1$ //$NON-NLS-2$
                         if (!sorts.contains(sort1.getText(2)))
                             sorts.add(sort1.getText(2));
                     } else if (sort1.getText(2).startsWith("[E01]")) { //$NON-NLS-1$

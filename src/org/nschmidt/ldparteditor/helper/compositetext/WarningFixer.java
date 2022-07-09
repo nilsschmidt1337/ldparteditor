@@ -19,11 +19,16 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.enumtype.DatKeyword;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.helper.math.HashBiMap;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -35,7 +40,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 enum WarningFixer {
     INSTANCE;
 
-    public static String fix(int lineNumber, String sort, String line, String text, String description) {
+    public static String fix(int lineNumber, String sort, String line, String text, String description, DatFile datFile) {
         int s = Integer.parseInt(sort, 16);
         switch (s) {
         case 204: // Upper- & Mixed-Case File Name
@@ -295,13 +300,99 @@ enum WarningFixer {
         case 192: /* FIXME !LPE CONST needs to be inlined */
             final List<String> pair = getPair(description);
             final String variable = pair.get(0);
+            final String variableNeg = "-" +pair.get(0); //$NON-NLS-1$
             final String value = pair.get(1);
-            NLogger.debug(WarningFixer.class, variable);
-            NLogger.debug(WarningFixer.class, value);
-            // text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
+            NLogger.debug(WarningFixer.class, "Variable:" + variable); //$NON-NLS-1$
+            NLogger.debug(WarningFixer.class, "Value   :" + value); //$NON-NLS-1$
+            if (DatKeyword.getKeywords().contains(variable)) break;
+            text = inlineConstant(lineNumber, text, datFile, variable, variableNeg, value);
             break;
         default:
             break;
+        }
+        return text;
+    }
+
+
+    private static String inlineConstant(int lineNumber, String text, DatFile datFile, final String variable,
+            final String variableNeg, final String value) {
+        String line;
+        // Delete the declaration
+        text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
+        lineNumber++;
+        final HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
+        final Pattern whitespace = Pattern.compile("\\s+"); //$NON-NLS-1$
+        final String valueInBrackets = "(" + value + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+        final StringBuilder sb = new StringBuilder();
+        boolean doReplace = false;
+        while (dpl.containsKey(lineNumber + 1)) {
+            line = QuickFixer.getLine(lineNumber, text);
+            lineNumber++;
+            final String[] dataSegments = whitespace.split(line);
+            if (dataSegments.length > 1 && "0".equals(dataSegments[0]) && "//".equals(dataSegments[1])) { //$NON-NLS-1$ //$NON-NLS-2$
+                // Skip comment lines
+                continue;
+            }
+            
+            if (dataSegments.length == 6 && "0".equals(dataSegments[0]) && "!LPE".equals(dataSegments[1]) && "CONST".equals(dataSegments[2]) && "=".equals(dataSegments[4])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                if (variable.equals(dataSegments[3])) {
+                    NLogger.debug(WarningFixer.class, "Same variable defined in line " + lineNumber); //$NON-NLS-1$
+                    break;
+                }
+                
+                String expr = dataSegments[5];
+                if (expr.contains(variable)) {
+                    int index = 0;
+                    int attempts = 0;
+                    while (index != -1 && attempts < 100) {
+                        attempts += 1;
+                        index = expr.indexOf(variable, index);
+                        if (index != -1) {
+                            index += variable.length();
+                            if (index == expr.length()) {
+                                // variable is at the end of the expression
+                                expr  = expr.substring(0, index - variable.length()) +  valueInBrackets;
+                            } else {
+                                // Variable is not at the end, next character must be non-alphabetic and non-numeric
+                                char nextCharacter = expr.charAt(index);
+                                if (!Character.isAlphabetic(nextCharacter) && !Character.isDigit(nextCharacter)) {
+                                    expr  = expr.substring(0, index - variable.length()) + valueInBrackets + expr.substring(index);
+                                    index = 0;
+                                }
+                            }
+                        }
+                    }
+                    
+                    text = QuickFixer.setLine(lineNumber, "0 !LPE CONST " + dataSegments[3] + " = " + expr, text); //$NON-NLS-1$ //$NON-NLS-2$
+                    continue;
+                }
+            }
+
+            sb.setLength(0);
+            for (String seg : dataSegments) {
+                if (seg.equals(variable)) {
+                    sb.append(value);
+                    doReplace = true;
+                } else if (seg.equals(variableNeg)) {
+                    if (value.startsWith("-")) { //$NON-NLS-1$
+                        sb.append(value.substring(1));
+                    } else {
+                        sb.append('-');
+                        sb.append(value);
+                    }
+                    
+                    doReplace = true;
+                } else {
+                    sb.append(seg);
+                }
+                sb.append(' ');
+            }
+            
+            if (doReplace) {
+                sb.setLength(sb.length() - 1);
+                text = QuickFixer.setLine(lineNumber, sb.toString(), text);
+                doReplace = false;
+            }
         }
         return text;
     }
