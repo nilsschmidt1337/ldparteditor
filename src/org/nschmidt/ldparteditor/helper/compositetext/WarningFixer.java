@@ -289,6 +289,9 @@ enum WarningFixer {
         case 1 /* Inlining relict */, 13 /* Unofficial Meta Command */, 254 /* !LPE VERTEX */:
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             break;
+        case 192: /* FIXME !LPE CONST needs to be inlined */
+            text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
+            break;
         default:
             break;
         }

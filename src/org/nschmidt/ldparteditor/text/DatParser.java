@@ -456,13 +456,20 @@ public enum DatParser {
                     NLogger.debug(DatParser.class, consumed);
                 }
             } else if (line.startsWith("CONST", 7) && dataSegments.length == 6 && "=".equals(dataSegments[4]) && !Character.isDigit(dataSegments[3].charAt(0))) { //$NON-NLS-1$ //$NON-NLS-2$
-                if (dataSegments[5].startsWith("-")) { //$NON-NLS-1$
-                    constants.put(dataSegments[3], dataSegments[5]);
-                    constants.put("-" + dataSegments[3], dataSegments[5].substring(1)); //$NON-NLS-1$
+                final String evalResult = Evaluator.eval(constants, dataSegments[5]);
+                if (evalResult.startsWith("-")) { //$NON-NLS-1$
+                    constants.put(dataSegments[3], evalResult);
+                    constants.put("-" + dataSegments[3], evalResult.substring(1)); //$NON-NLS-1$
                 } else {
-                    constants.put(dataSegments[3], dataSegments[5]);
-                    constants.put("-" + dataSegments[3], "-" + dataSegments[5]); //$NON-NLS-1$ //$NON-NLS-2$
+                    constants.put(dataSegments[3], evalResult);
+                    constants.put("-" + dataSegments[3], "-" + evalResult); //$NON-NLS-1$ //$NON-NLS-2$
                 }
+                
+                Object[] messageArguments = {dataSegments[3], evalResult};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.getLocale());
+                formatter.applyPattern(I18n.DATPARSER_CONSTANT_AT);
+                result.add(new ParsingResult(formatter.format(messageArguments), "[WC0] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                 
                 // Clear the cache when a constant was changed/defined 
                 GData.parsedLines.clear();

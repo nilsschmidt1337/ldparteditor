@@ -280,6 +280,7 @@ public final class I18n {
     public static final String DATFILE_MISSING_UNOFFICIAL = DATFILE.getString(getProperty());
     public static final String DATPARSER_COLLINEAR_VERTICES = DATPARSER.getString(getProperty());
     public static final String DATPARSER_CONCAVE_QUADRILATERAL = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_CONSTANT_AT = DATPARSER.getString(getProperty());
     public static final String DATPARSER_COPLANARITY = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DATA_ERROR = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DITHERED_COLOUR = DATPARSER.getString(getProperty());
