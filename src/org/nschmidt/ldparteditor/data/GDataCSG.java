@@ -208,7 +208,7 @@ public final class GDataCSG extends GData {
                 } else {
                     colour = LDConfig.getColour16();
                 }
-                matrix = MathHelper.matrixFromStrings(dataSegments[5], dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[11], dataSegments[14], dataSegments[9],
+                matrix = DatParser.matrixFromStrings(dataSegments[5], dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[11], dataSegments[14], dataSegments[9],
                         dataSegments[12], dataSegments[15], dataSegments[10], dataSegments[13], dataSegments[16]);
             } else {
                 colour = null;
@@ -241,7 +241,7 @@ public final class GDataCSG extends GData {
                 } else {
                     colour = LDConfig.getColour16();
                 }
-                matrix = MathHelper.matrixFromStrings(dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[9], dataSegments[10], dataSegments[11], dataSegments[12],
+                matrix = DatParser.matrixFromStrings(dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[9], dataSegments[10], dataSegments[11], dataSegments[12],
                         dataSegments[13], dataSegments[14], dataSegments[15], dataSegments[16], dataSegments[17]);
             } else {
                 colour = null;

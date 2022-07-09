@@ -640,50 +640,6 @@ public enum MathHelper {
         return x;
     }
 
-    public static Matrix4f matrixFromStrings(String s30, String s31, String s32, String s00, String s05, String s06, String s07, String s08, String s09, String s10, String s11, String s12) {
-        List<String> as = new ArrayList<>();
-        as.add(s30);
-        as.add(s31);
-        as.add(s32);
-        as.add(s00);
-        as.add(s05);
-        as.add(s06);
-        as.add(s07);
-        as.add(s08);
-        as.add(s09);
-        as.add(s10);
-        as.add(s11);
-        as.add(s12);
-        List<Float> af = new ArrayList<>();
-        try {
-            for (String s : as) {
-                af.add(Float.parseFloat(s));
-            }
-        } catch (Exception e) {
-            return null;
-        }
-        Matrix4f tMatrix = new Matrix4f();
-        tMatrix.m30 = af.get(0) * 1000f;
-        tMatrix.m31 = af.get(1) * 1000f;
-        tMatrix.m32 = af.get(2) * 1000f;
-        tMatrix.m00 = af.get(3);
-        tMatrix.m10 = af.get(4);
-        tMatrix.m20 = af.get(5);
-        tMatrix.m01 = af.get(6);
-        tMatrix.m11 = af.get(7);
-        tMatrix.m21 = af.get(8);
-        tMatrix.m02 = af.get(9);
-        tMatrix.m12 = af.get(10);
-        tMatrix.m22 = af.get(11);
-        tMatrix.m33 = 1f;
-
-        float det = tMatrix.determinant();
-        if (Math.abs(det) < Threshold.SINGULARITY_DETERMINANT) {
-            return null;
-        }
-        return tMatrix;
-    }
-
     @SuppressWarnings("java:S2111")
     public static String matrixToString(Matrix4f matrix, int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
         StringBuilder lineBuilder = new StringBuilder();
@@ -793,57 +749,6 @@ public enum MathHelper {
         tmp.m22 = csg.m22;
 
         return matrixToString(Matrix4f.mul(loc, tmp, null));
-    }
-
-    public static Matrix matrixFromStringsPrecise(String s30, String s31, String s32, String s00, String s05, String s06, String s07, String s08, String s09, String s10, String s11, String s12) {
-
-        final BigDecimal[][] mn = new BigDecimal[4][4];
-
-        List<String> as = new ArrayList<>();
-        as.add(s30);
-        as.add(s31);
-        as.add(s32);
-        as.add(s00);
-        as.add(s05);
-        as.add(s06);
-        as.add(s07);
-        as.add(s08);
-        as.add(s09);
-        as.add(s10);
-        as.add(s11);
-        as.add(s12);
-        List<BigDecimal> ab = new ArrayList<>();
-        try {
-            for (String s : as) {
-                ab.add(new BigDecimal(s));
-            }
-        } catch (NumberFormatException e) {
-            return null;
-        }
-        mn[3][0] = ab.get(0);
-        mn[3][1] = ab.get(1);
-        mn[3][2] = ab.get(2);
-        mn[0][0] = ab.get(3);
-        mn[1][0] = ab.get(4);
-        mn[2][0] = ab.get(5);
-        mn[0][1] = ab.get(6);
-        mn[1][1] = ab.get(7);
-        mn[2][1] = ab.get(8);
-        mn[0][2] = ab.get(9);
-        mn[1][2] = ab.get(10);
-        mn[2][2] = ab.get(11);
-        mn[0][3] = BigDecimal.ZERO;
-        mn[1][3] = BigDecimal.ZERO;
-        mn[2][3] = BigDecimal.ZERO;
-        mn[3][3] = BigDecimal.ONE;
-
-        final Matrix result = new Matrix(mn);
-        double det = result.determinant().doubleValue();
-        if (Math.abs(det) < Threshold.SINGULARITY_DETERMINANT) {
-            return null;
-        }
-
-        return result;
     }
 
     public static String matrixToStringPrecise(Matrix matrix) {

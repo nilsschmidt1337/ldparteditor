@@ -247,7 +247,7 @@ public enum SubfileCompiler {
                     dataSegments[1].equals("!LPE")) { //$NON-NLS-1$
                 GColour c = DatParser.validateColour(dataSegments[4], 0f, 0f, 0f, 1f);
                 if (c != null) {
-                    Matrix theMatrix = MathHelper.matrixFromStringsPrecise(dataSegments[5], dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[9], dataSegments[10],
+                    Matrix theMatrix = DatParser.matrixFromStringsPrecise(dataSegments[5], dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[9], dataSegments[10],
                             dataSegments[11], dataSegments[12], dataSegments[13], dataSegments[14], dataSegments[15], dataSegments[16]);
                     if (theMatrix != null) {
                         StringBuilder sb2 = new StringBuilder();
