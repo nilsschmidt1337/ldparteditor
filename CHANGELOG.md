@@ -1,3 +1,11 @@
+### 10 Jul 2022
+With the release of 1.8.60 you are able to...
+-  ...use the "!LPE CONST" meta command to define re-usable constants in parts and subparts.
+-  ...use calculated expressions for constants, too.
+-  ...quick-fix/replace constants with the text editor.
+-  ...combine "!LPE CONST" with "!LPE CSG" meta commands (but not with !TEXMAP commands, yet).
+
+
 ### 05 Jul 2022
 With the release of 1.8.59 the following critical issues are fixed:
 1. The middle mouse button rotation was locked (in combination with the Alt key). 
