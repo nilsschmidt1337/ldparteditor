@@ -1257,11 +1257,19 @@ public enum DatParser {
         }
     }
     
-    private static BigDecimal parseDecimal(final String segment) {
+    public static BigDecimal parseDecimal(final String segment) {
         try {
             return new BigDecimal(segment);
         } catch (NumberFormatException nfe) {
             return substituteDecimal(segment, nfe);
+        }
+    }
+    
+    public static int parseInteger(final String segment) {
+        try {
+            return Integer.parseInt(segment);
+        } catch (NumberFormatException nfe) {
+            return substituteDecimal(segment, nfe).intValueExact();
         }
     }
     

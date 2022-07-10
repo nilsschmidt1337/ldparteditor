@@ -325,13 +325,28 @@ enum WarningFixer {
         final String valueInBrackets = "(" + value + ")"; //$NON-NLS-1$ //$NON-NLS-2$
         final StringBuilder sb = new StringBuilder();
         boolean doReplace = false;
+        boolean isCSGbody = false;
+        boolean isCSGtransform = false;
         while (dpl.containsKey(lineNumber + 1)) {
             line = QuickFixer.getLine(lineNumber, text);
             lineNumber++;
             final String[] dataSegments = whitespace.split(line);
-            if (dataSegments.length > 1 && "0".equals(dataSegments[0]) && "//".equals(dataSegments[1])) { //$NON-NLS-1$ //$NON-NLS-2$
-                // Skip comment lines
-                continue;
+            if (dataSegments.length > 1 && "0".equals(dataSegments[0]) ) { //$NON-NLS-1$
+                if ("//".equals(dataSegments[1]) || "!:".equals(dataSegments[1]) || "!TEXMAP".equals(dataSegments[1])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    // Skip comment and texmap lines
+                    continue;
+                }
+                
+                if (dataSegments.length > 2 && "!LPE".equals(dataSegments[1]) && dataSegments[2].startsWith("CSG_")) { //$NON-NLS-1$ //$NON-NLS-2$
+                    if ("CSG_UNION".equals(dataSegments[2]) || "CSG_DIFFERENCE".equals(dataSegments[2]) || "CSG_INTERSECTION".equals(dataSegments[2]) || "CSG_COMPILE".equals(dataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                        // Skip CSG actions
+                        continue;
+                    }
+                    
+                    isCSGbody = "CSG_EXTRUDE".equals(dataSegments[2]) || "CSG_QUAD".equals(dataSegments[2]) || "CSG_MESH".equals(dataSegments[2]) || "CSG_CUBOID".equals(dataSegments[2]) || "CSG_ELLIPSOID".equals(dataSegments[2]) || "CSG_CYLINDER".equals(dataSegments[2]) || "CSG_CONE".equals(dataSegments[2]) || "CSG_CIRCLE".equals(dataSegments[2]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                    
+                    isCSGtransform = "CSG_TRANSFORM".equals(dataSegments[2]) ; //$NON-NLS-1$
+                }
             }
             
             if (dataSegments.length == 6 && "0".equals(dataSegments[0]) && "!LPE".equals(dataSegments[1]) && "CONST".equals(dataSegments[2]) && "=".equals(dataSegments[4])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -368,9 +383,14 @@ enum WarningFixer {
                 }
             }
 
+            int segCount = 0;
             sb.setLength(0);
             for (String seg : dataSegments) {
-                if (seg.equals(variable)) {
+                segCount++;
+                if (isCSGbody && segCount == 4 || isCSGtransform && (segCount == 4 || segCount == 5)) {
+                    // Don't replace CSG variables
+                    sb.append(seg);
+                } else if (seg.equals(variable)) {
                     sb.append(value);
                     doReplace = true;
                 } else if (seg.equals(variableNeg)) {

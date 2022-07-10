@@ -333,11 +333,11 @@ public final class GDataCSG extends GData {
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else if (dataSegments.length == 17) {
                 try {
-                    extruderConfig.setMaxPathSegmentLength(new BigDecimal(dataSegments[4]));
-                    extruderConfig.setTransitionCount(Integer.parseInt(dataSegments[6]));
-                    extruderConfig.setTransitionCurveControl(new BigDecimal(dataSegments[8]));
-                    extruderConfig.setTransitionCurveCenter(new BigDecimal(dataSegments[10]));
-                    extruderConfig.setRotation(new BigDecimal(dataSegments[12]));
+                    extruderConfig.setMaxPathSegmentLength(DatParser.parseDecimal(dataSegments[4]));
+                    extruderConfig.setTransitionCount(DatParser.parseInteger(dataSegments[6]));
+                    extruderConfig.setTransitionCurveControl(DatParser.parseDecimal(dataSegments[8]));
+                    extruderConfig.setTransitionCurveCenter(DatParser.parseDecimal(dataSegments[10]));
+                    extruderConfig.setRotation(DatParser.parseDecimal(dataSegments[12]));
                     extruderConfig.setCompensation(Boolean.parseBoolean(dataSegments[14]));
                     extruderConfig.setInverted(Boolean.parseBoolean(dataSegments[16]));
                 } catch (Exception ex) {
