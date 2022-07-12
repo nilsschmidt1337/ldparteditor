@@ -4,6 +4,8 @@
     <!--ANT 1.7 is required -->
     <property name="dependenciesFolder"
             value="dependencies" />
+    <property name="sourceFolder"
+            value="src" />
     <property name="binariesFolder"
             value="bin" />
     <property name="targetFolder"
@@ -38,8 +40,6 @@
     
        <property name="libsFolder"
             value="libs" />
-       <property name="sourceFolder"
-            value="src" />
        <property name="linuxSourceFolder"
             value="src-linux" />
        <property name="linuxFolder"
@@ -320,6 +320,8 @@
             <arg value="--copyright"/>
             <arg value="Copyright (c) 2012 - this year, Nils Schmidt" />
         </exec>
+        
+        <delete file="${sourceFolder}/org/lwjgl/opengl/swt/PlatformLinuxGLCanvas.java" />
     </target>
     
     <target name="clean">
@@ -327,6 +329,7 @@
         <delete dir="${targetFolder}" />
         <delete dir="${reportFolder}" />
         <delete dir="${dependenciesFolder}" />
+        <delete file="${sourceFolder}/org/lwjgl/opengl/swt/PlatformLinuxGLCanvas.java" />
     </target>
     
     <target name="junit" depends="create_run_jar">
