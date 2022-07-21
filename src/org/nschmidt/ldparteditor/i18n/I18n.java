@@ -1069,6 +1069,7 @@ public final class I18n {
     public static final String PRIMGEN_DISC = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_DISC_NEGATIVE = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_DIVISIONS = PRIMGEN.getString(getProperty());
+    public static final String PRIMGEN_EDGES_PER_CRO = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_EIGHT = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_FOURTYEIGHT = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_HALF = PRIMGEN.getString(getProperty());

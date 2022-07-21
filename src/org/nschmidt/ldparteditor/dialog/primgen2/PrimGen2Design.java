@@ -73,6 +73,7 @@ class PrimGen2Design extends Dialog {
 
     final IntegerSpinner[] spnDivisionsPtr = new IntegerSpinner[1];
     final IntegerSpinner[] spnSegmentsPtr = new IntegerSpinner[1];
+    final IntegerSpinner[] spnEdgesPerCrossSectionsPtr = new IntegerSpinner[1];
 
     final StyledText[] txtDataPtr = new StyledText[1];
     final StyledText[] txtData2Ptr = new StyledText[1];
@@ -90,6 +91,7 @@ class PrimGen2Design extends Dialog {
     final NButton[] btnTopPtr = new NButton[1];
 
     final Label[] lblTorusTypePtr = new Label[1];
+    final Label[] lblEdgesPerCrossSectionPtr = new Label[1];
     final Label[] lblSizePtr = new Label[1];
     final Label[] lblMajorPtr = new Label[1];
     final Label[] lblMinorPtr = new Label[1];
@@ -137,8 +139,14 @@ class PrimGen2Design extends Dialog {
         Label lblTorusType = new Label(cmpContainer, SWT.NONE);
         this.lblTorusTypePtr[0] = lblTorusType;
         lblTorusType.setText(I18n.PRIMGEN_TORUS_TYPE);
-        lblTorusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+        lblTorusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         lblTorusType.setEnabled(false);
+        
+        Label lblEdgesPerCrossSection = new Label(cmpContainer, SWT.NONE);
+        this.lblEdgesPerCrossSectionPtr[0] = lblEdgesPerCrossSection;
+        lblEdgesPerCrossSection.setText(I18n.PRIMGEN_EDGES_PER_CRO);
+        lblEdgesPerCrossSection.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        lblEdgesPerCrossSection.setEnabled(false);
 
         {
             Label lblDummy = new Label(cmpContainer, SWT.NONE);
@@ -167,8 +175,16 @@ class PrimGen2Design extends Dialog {
         this.cmbTorusTypePtr[0] = cmbTorusType;
         widgetUtil(cmbTorusType).setItems(I18n.PRIMGEN_INSIDE, I18n.PRIMGEN_OUTSIDE, I18n.PRIMGEN_TUBE);
         cmbTorusType.setText(I18n.PRIMGEN_OUTSIDE);
-        cmbTorusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+        cmbTorusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbTorusType.setEnabled(false);
+        
+        IntegerSpinner spnEdgesPerCrossSections = new IntegerSpinner(cmpContainer, SWT.NONE);
+        this.spnEdgesPerCrossSectionsPtr[0] = spnEdgesPerCrossSections;
+        spnEdgesPerCrossSections.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnEdgesPerCrossSections.setMaximum(360);
+        spnEdgesPerCrossSections.setMinimum(1);
+        spnEdgesPerCrossSections.setValue(16);
+        spnEdgesPerCrossSections.setEnabled(false);
 
         {
             Label lblDummy = new Label(cmpContainer, SWT.NONE);
