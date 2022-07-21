@@ -26,7 +26,7 @@ package org.nschmidt.delaunay;
  * as an array of Pnts. Uses simplices; a simplex is represented as an array of
  * Pnts.
  *
- * @author Paul Chew Modified, optimised and customised by Nils Schmidt
+ *         Modified, optimized and customised by Nils Schmidt
  *
  *         Created July 2005. Derived from an earlier, messier version.
  *

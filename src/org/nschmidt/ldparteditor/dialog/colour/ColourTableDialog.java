@@ -19,10 +19,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.GColour;
 
-/**
- * @author nils
- *
- */
 class ColourTableDialog extends ColourTableDesign {
 
     protected ColourTableDialog(Shell parentShell, final GColour[] refCol) {

@@ -24,8 +24,6 @@ import org.nschmidt.ldparteditor.data.Vertex;
  * Absolute precise vector
  *
  * Note: Needs no hashCode() and equals()
- * @author nils
- *
  */
 public class Vector3r {
 

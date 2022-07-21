@@ -73,8 +73,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Stores information about keys pressed on the keyboard and triggers keyboard
  * events.
  *
- * @author nils
- *
  */
 public class KeyStateManager {
 

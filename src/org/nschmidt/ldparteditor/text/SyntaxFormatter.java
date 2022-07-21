@@ -45,8 +45,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * This is not the parser. The parser will be triggered by the dat-file save
  * event!
  *
- * @author nils
- *
  */
 public class SyntaxFormatter {
 

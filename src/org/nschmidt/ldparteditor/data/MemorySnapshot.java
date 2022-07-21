@@ -20,10 +20,6 @@ import java.util.Date;
 
 import org.nschmidt.ldparteditor.logger.NLogger;
 
-/**
- * @author nils
- *
- */
 public class MemorySnapshot {
 
     private final String creation;

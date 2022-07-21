@@ -33,9 +33,6 @@ import org.nschmidt.ldparteditor.i18n.I18n;
  * <p>
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
- *
- * @author nils
- *
  */
 class LogUploadDesign extends Dialog {
 

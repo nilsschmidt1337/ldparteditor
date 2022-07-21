@@ -21,10 +21,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
-/**
- * @author nils
- *
- */
 public enum GraphicalDataTools {
     INSTANCE;
 

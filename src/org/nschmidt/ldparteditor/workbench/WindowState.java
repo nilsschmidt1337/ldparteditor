@@ -22,8 +22,6 @@ import org.eclipse.swt.graphics.Rectangle;
 /**
  * This class represents the state of a window in general
  *
- * @author nils
- *
  */
 public class WindowState implements Serializable {
     // Do not rename fields. It will break backwards compatibility!

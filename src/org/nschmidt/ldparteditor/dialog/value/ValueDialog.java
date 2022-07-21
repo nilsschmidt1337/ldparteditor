@@ -19,10 +19,6 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * @author nils
- *
- */
 public abstract class ValueDialog extends ValueDesign {
 
     /**

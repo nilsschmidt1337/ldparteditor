@@ -17,8 +17,6 @@ package org.nschmidt.ldparteditor.enumtype;
 
 /**
  * Provides useful constants for different perspectives
- *
- * @author nils
  */
 public enum Perspective {
     FRONT, BACK, LEFT, RIGHT, TOP, BOTTOM, TWO_THIRDS;

@@ -23,9 +23,6 @@ import org.nschmidt.ldparteditor.text.FontMetrics;
 
 /**
  * This class contains constant fonts and font information
- *
- * @author nils
- *
  */
 public enum Font {
     INSTANCE;

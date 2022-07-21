@@ -22,9 +22,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
  * This is the separator for any toolbar group.
- *
- * @author nils
- *
  */
 public class ToolSeparator extends Composite {
 

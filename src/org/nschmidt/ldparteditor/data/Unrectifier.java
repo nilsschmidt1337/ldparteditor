@@ -26,9 +26,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * Splits selected quads into triangles
- *
- * @author nils
- *
  */
 public enum Unrectifier {
     INSTANCE;

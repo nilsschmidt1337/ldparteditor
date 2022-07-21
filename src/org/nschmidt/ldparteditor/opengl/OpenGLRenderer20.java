@@ -87,8 +87,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 /**
  * This class draws the 3D view (OpenGL 2.0 compliant)
  *
- * @author nils
- *
  */
 public class OpenGLRenderer20 extends OpenGLRenderer {
 

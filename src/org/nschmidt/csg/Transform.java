@@ -56,8 +56,6 @@ import org.lwjgl.util.vector.Matrix4f;
  * </blockquote>
  *
  * <b>TODO:</b> use quaternions for rotations.
- *
- * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 class Transform {
 

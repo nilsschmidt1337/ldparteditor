@@ -56,10 +56,6 @@ import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-/**
- * @author nils
- *
- */
 class VM00Base {
 
     protected final List<MemorySnapshot> snapshots = new ArrayList<>();

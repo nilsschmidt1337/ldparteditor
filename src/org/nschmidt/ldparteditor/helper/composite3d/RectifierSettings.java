@@ -17,10 +17,6 @@ package org.nschmidt.ldparteditor.helper.composite3d;
 
 import java.math.BigDecimal;
 
-/**
- * @author nils
- *
- */
 public class RectifierSettings {
 
     private BigDecimal maximumAngle = new BigDecimal("0.95"); //$NON-NLS-1$

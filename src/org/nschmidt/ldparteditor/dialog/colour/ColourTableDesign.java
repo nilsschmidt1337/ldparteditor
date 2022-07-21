@@ -42,10 +42,6 @@ import org.nschmidt.ldparteditor.widget.Tree;
 import org.nschmidt.ldparteditor.widget.TreeColumn;
 import org.nschmidt.ldparteditor.widget.TreeItem;
 
-/**
- * @author nils
- *
- */
 class ColourTableDesign extends ApplicationWindow {
 
     private final GColour[] refCol;

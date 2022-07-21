@@ -16,10 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.text;
 
 
-/**
- * @author nils
- *
- */
 public enum StringHelper {
 
     INSTANCE;

@@ -24,10 +24,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
-/**
- * @author nils
- *
- */
 public class ArrowBlunt {
 
     private final FloatBuffer matrix;

@@ -22,10 +22,6 @@ import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
-/**
- * @author nils
- *
- */
 public final class PGData2 extends PGData implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -23,9 +23,6 @@ import org.nschmidt.ldparteditor.widget.NButton;
 
 /**
  * This is a custom toolbar item
- *
- * @author nils
- *
  */
 public class ToolItem extends Composite {
 

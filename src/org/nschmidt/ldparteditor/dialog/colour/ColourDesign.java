@@ -49,9 +49,6 @@ import org.nschmidt.ldparteditor.widget.NButton;
  * <p>
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
- *
- * @author nils
- *
  */
 class ColourDesign extends ApplicationWindow {
 

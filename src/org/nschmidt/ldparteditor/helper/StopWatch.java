@@ -20,8 +20,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 /**
  * Provides simple stop-watch functions.
  *
- * @author nils
- *
  */
 public enum StopWatch {
     INSTANCE;

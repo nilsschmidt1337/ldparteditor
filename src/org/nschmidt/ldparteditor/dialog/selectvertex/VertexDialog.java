@@ -24,9 +24,6 @@ import org.nschmidt.ldparteditor.data.Vertex;
  * Note: This class should be instantiated, it defines all listeners and part of
  * the business logic. It overrides the {@code open()} method to invoke the
  * listener definitions ;)
- *
- * @author nils
- *
  */
 public class VertexDialog extends VertexDesign {
 

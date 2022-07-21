@@ -17,8 +17,6 @@ package org.nschmidt.ldparteditor.enumtype;
 
 /**
  * Task indicator for a pressed key
- * @author nils
- *
  */
 public enum Task {
 

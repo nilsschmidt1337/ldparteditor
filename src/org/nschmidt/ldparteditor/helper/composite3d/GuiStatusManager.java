@@ -48,9 +48,6 @@ import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 /**
  * Manages status text updates, which are triggered by the {@linkplain Composite3D} and
  * changing the {@linkplain Editor3DWindow} text in the status bar
- *
- * @author nils
- *
  */
 public enum GuiStatusManager {
     INSTANCE;

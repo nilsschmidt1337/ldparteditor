@@ -27,8 +27,6 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  * A solid cone.
  *
  * The tessellation can be controlled via the {@link #numSlices} parameter.
- *
- * @author nils;
  */
 public class CSGCone implements Primitive {
 

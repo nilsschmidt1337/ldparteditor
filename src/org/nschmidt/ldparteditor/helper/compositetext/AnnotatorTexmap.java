@@ -31,9 +31,6 @@ import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 
 /**
  * Annotates selected lines
- *
- * @author nils
- *
  */
 public enum AnnotatorTexmap {
     INSTANCE;

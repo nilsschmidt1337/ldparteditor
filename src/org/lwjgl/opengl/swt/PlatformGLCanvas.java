@@ -25,8 +25,6 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * Interface of platform-specific GLCanvas delegate classes.
- * 
- * @author Kai Burjack
  */
 interface PlatformGLCanvas {
 

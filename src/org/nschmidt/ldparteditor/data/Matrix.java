@@ -26,9 +26,6 @@ import org.nschmidt.ldparteditor.helper.math.Vector3d;
 
 /**
  * Immutable, high precision matrix class
- *
- * @author nils
- *
  */
 public final class Matrix {
 

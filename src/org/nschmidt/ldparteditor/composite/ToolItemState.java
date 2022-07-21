@@ -17,10 +17,6 @@ package org.nschmidt.ldparteditor.composite;
 
 import java.io.Serializable;
 
-/**
- * @author nils
- *
- */
 public class ToolItemState implements Serializable {
     // Do not rename fields. It will break backwards compatibility!
 

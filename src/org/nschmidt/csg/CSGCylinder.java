@@ -45,8 +45,6 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  * A solid cylinder.
  *
  * The tessellation can be controlled via the {@link #numSlices} parameter.
- *
- * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public class CSGCylinder implements Primitive {
 

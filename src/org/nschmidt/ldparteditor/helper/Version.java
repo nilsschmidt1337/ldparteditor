@@ -20,8 +20,6 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 /**
  * Provides information about the version of LD Part Editor
  *
- * @author nils
- *
  */
 public enum Version {
     INSTANCE;

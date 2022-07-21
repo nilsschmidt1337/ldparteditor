@@ -21,10 +21,6 @@ import java.util.List;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.helper.math.Vector3r;
 
-/**
- * @author nils
- *
- */
 class IntersectionInfo {
 
     private GData target;

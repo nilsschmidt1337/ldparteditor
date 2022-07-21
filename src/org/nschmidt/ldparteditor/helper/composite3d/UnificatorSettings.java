@@ -17,10 +17,6 @@ package org.nschmidt.ldparteditor.helper.composite3d;
 
 import java.math.BigDecimal;
 
-/**
- * @author nils
- *
- */
 public class UnificatorSettings {
 
     private BigDecimal vertexThreshold = new BigDecimal("0.005"); //$NON-NLS-1$

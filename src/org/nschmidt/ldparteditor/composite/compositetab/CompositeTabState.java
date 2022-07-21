@@ -31,10 +31,6 @@ import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 
-/**
- * @author nils
- *
- */
 public class CompositeTabState {
 
     /** The current {@linkplain ApplicationWindow} of the composite tab */

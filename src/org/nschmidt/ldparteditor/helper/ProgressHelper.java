@@ -24,8 +24,6 @@ import org.eclipse.swt.widgets.ProgressBar;
 /**
  * The helper class for dynamic progress information;
  *
- * @author nils
- *
  */
 public enum ProgressHelper {
     INSTANCE;

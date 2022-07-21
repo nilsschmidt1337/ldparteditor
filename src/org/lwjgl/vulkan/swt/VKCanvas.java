@@ -31,8 +31,6 @@ import org.lwjgl.vulkan.VkPhysicalDevice;
 
 /**
  * A SWT {@link Canvas} that supports to be drawn on using Vulkan.
- * 
- * @author Kai Burjack
  */
 public class VKCanvas extends Canvas {
     private static PlatformVKCanvas platformCanvas;

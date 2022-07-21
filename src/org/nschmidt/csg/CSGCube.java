@@ -45,8 +45,6 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
 /**
  * An axis-aligned solid cuboid defined by {@code center} and {@code dimensions}
  * .
- *
- * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public class CSGCube implements Primitive {
 

@@ -21,8 +21,6 @@ import org.nschmidt.ldparteditor.data.DatFile;
 /**
  * The plug-in interface, which has to be implemented by all plug-ins
  *
- * @author nils
- *
  */
 public interface Plugin {
 

@@ -17,9 +17,6 @@ package org.nschmidt.ldparteditor.enumtype;
 
 /**
  * A enum class for different manipulation origins (local or global)
- *
- * @author nils
- *
  */
 public enum ManipulatorScope {
     LOCAL, GLOBAL

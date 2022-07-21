@@ -39,10 +39,6 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
 
-/**
- * @author nils
- *
- */
 enum ErrorFixer {
     INSTANCE;
 

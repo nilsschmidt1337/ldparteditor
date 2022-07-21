@@ -25,7 +25,7 @@ import org.nschmidt.ldparteditor.enumtype.Threshold;
 /**
  * Holds a 3-tuple BigDecimal vector for maximum numeric precision.
  *
- * @author nils Note: It is not intended to write something like
+ *         Note: It is not intended to write something like
  *         {@code vectorA.X = vectorB.X;} use {@code vectorA.setX(...)} instead.
  */
 public class Vector3d {

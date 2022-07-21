@@ -68,8 +68,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 /**
  * Provides a static parser for LDraw files and lines
  *
- * @author nils
- *
  */
 public enum DatParser {
     INSTANCE;

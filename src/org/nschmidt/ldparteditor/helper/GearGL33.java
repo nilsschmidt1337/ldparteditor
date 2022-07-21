@@ -27,10 +27,6 @@ import org.lwjgl.opengl.GL20;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 
-/**
- * @author nils
- *
- */
 public class GearGL33 {
 
     private final FloatBuffer bvertices;

@@ -44,8 +44,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 /**
  * Math Helper Class
  *
- * @author nils
- *
  */
 public enum MathHelper {
     INSTANCE;

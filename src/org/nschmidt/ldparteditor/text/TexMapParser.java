@@ -51,10 +51,6 @@ import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-/**
- * @author nils
- *
- */
 public enum TexMapParser {
     INSTANCE;
 

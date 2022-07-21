@@ -17,9 +17,6 @@ package org.nschmidt.ldparteditor.enumtype;
 
 /**
  * If a new or existing dat file gets opened, open it in...
- *
- * @author nils
- *
  */
 public enum OpenInWhat {
     EDITOR_3D,

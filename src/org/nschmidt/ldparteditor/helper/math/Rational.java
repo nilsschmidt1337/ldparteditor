@@ -22,8 +22,6 @@ import java.util.Objects;
 
 /**
  * Full immutable rational representation with lower and upper part
- * @author nils
- *
  */
 public class Rational implements Comparable<Rational> {
 

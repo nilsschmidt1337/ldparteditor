@@ -34,8 +34,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 /**
  * Provides a very simple logger
  *
- * @author nils
- *
  */
 // Nothing more to do here..
 public enum NLogger {

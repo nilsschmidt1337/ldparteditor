@@ -41,10 +41,6 @@ import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 
-/**
- * @author nils
- *
- */
 @SuppressWarnings("java:S2111")
 public class Manipulator {
 

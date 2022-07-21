@@ -18,10 +18,6 @@ package org.nschmidt.ldparteditor.enumtype;
 import org.nschmidt.ldparteditor.helper.GearGL20;
 import org.nschmidt.ldparteditor.helper.SphereGL20;
 
-/**
- * @author nils
- *
- */
 public enum GL20Primitives {
     INSTANCE;
 

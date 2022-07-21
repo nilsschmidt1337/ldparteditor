@@ -30,8 +30,6 @@ import org.nschmidt.ldparteditor.enumtype.View;
  * This class provides quick access to all translated Strings and RTL relevant constants (NEVER EVER FORMAT THIS CLASS!)
  * It does not have much documentation, I think this class is not so complex to understand.. ;)
  *
- * @author nils
- *
  */
 public final class I18n {
 

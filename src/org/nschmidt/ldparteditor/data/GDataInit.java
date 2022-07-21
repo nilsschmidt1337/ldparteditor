@@ -21,10 +21,6 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 
-/**
- * @author nils
- *
- */
 final class GDataInit extends GData {
 
     GDataInit(GData1 parent) {

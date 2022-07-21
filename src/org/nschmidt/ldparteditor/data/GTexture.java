@@ -48,10 +48,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 import de.matthiasmann.twl.util.PNGDecoder;
 import de.matthiasmann.twl.util.PNGDecoder.Format;
 
-/**
- * @author nils
- *
- */
 public class GTexture {
 
     static final GTexture NO_TEXTURE = new GTexture();

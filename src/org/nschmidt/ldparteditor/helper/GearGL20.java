@@ -23,10 +23,6 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-/**
- * @author nils
- *
- */
 public class GearGL20 {
 
     private final FloatBuffer bvertices;

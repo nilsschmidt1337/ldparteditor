@@ -72,8 +72,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * The Splash Screen of the application (shows the status of loading the
  * workbench..)
  *
- * @author nils
- *
  */
 public class SplashScreen extends ApplicationWindow {
 

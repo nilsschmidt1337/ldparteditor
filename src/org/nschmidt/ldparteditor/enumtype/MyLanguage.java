@@ -20,10 +20,6 @@ import java.util.Locale;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-/**
- * @author nils
- *
- */
 public enum MyLanguage {
     INSTANCE;
 

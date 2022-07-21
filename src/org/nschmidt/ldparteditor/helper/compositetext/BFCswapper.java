@@ -23,9 +23,6 @@ import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 
 /**
  * Swaps the BFC winding of the current selection
- *
- * @author nils
- *
  */
 public enum BFCswapper {
     INSTANCE;

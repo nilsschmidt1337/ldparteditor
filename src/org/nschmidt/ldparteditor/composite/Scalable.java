@@ -21,9 +21,6 @@ import org.eclipse.swt.custom.SashForm;
  * This is the interface which must be implemented by {@link CompositeContainer}
  * , {@link CompositeScale} and {@link Composite3D}. It is helpful for object
  * relations regarding horizontal and vertical scales.
- *
- * @author nils
- *
  */
 interface Scalable {
 

@@ -20,9 +20,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
  * A colour "constants" provider for the EditorTextWindow class
- *
- * @author nils
- *
  */
 public enum TextEditorColour {
     INSTANCE;

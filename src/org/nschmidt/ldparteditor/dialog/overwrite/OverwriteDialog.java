@@ -21,10 +21,6 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 
-/**
- * @author nils
- *
- */
 public class OverwriteDialog extends OverwriteDesign {
 
     /**

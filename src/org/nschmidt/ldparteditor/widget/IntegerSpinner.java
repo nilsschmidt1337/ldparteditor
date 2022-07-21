@@ -34,10 +34,6 @@ import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 
-/**
- * @author nils
- *
- */
 public class IntegerSpinner extends Composite {
 
     private final NButton[] btnUpPtr = new NButton[1];

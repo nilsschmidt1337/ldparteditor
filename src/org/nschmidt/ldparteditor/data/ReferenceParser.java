@@ -38,11 +38,6 @@ import org.nschmidt.ldparteditor.text.References;
 import org.nschmidt.ldparteditor.widget.TreeItem;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-
-/**
- * @author nils
- *
- */
 public enum ReferenceParser {
     INSTANCE;
 

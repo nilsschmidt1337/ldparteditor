@@ -24,10 +24,6 @@ import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.HeaderState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-/**
- * @author nils
- *
- */
 enum HintFixer {
     INSTANCE;
 

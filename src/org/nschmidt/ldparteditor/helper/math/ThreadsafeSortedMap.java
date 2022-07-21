@@ -24,10 +24,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-/**
- * @author nils
- *
- */
 public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     private final TreeMap<K, V> map;

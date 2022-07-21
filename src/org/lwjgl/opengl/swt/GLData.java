@@ -23,8 +23,6 @@ package org.lwjgl.opengl.swt;
 
 /**
  * Drop-in replacement for SWT's {@link org.eclipse.swt.opengl.GLData} class.
- * 
- * @author Kai Burjack
  */
 public class GLData {
 

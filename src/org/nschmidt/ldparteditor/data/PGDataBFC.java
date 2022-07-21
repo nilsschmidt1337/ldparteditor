@@ -19,10 +19,6 @@ import java.io.Serializable;
 
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
-/**
- * @author nils
- *
- */
 public final class PGDataBFC extends PGData implements Serializable {
 
     private static final long serialVersionUID = 1L;

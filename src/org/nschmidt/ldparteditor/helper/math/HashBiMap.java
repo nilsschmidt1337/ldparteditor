@@ -20,10 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * @author nils
- *
- */
 public class HashBiMap<K, V> implements Map<K, V> {
 
     private final Map<K, V> keyToValue = new HashMap<>();

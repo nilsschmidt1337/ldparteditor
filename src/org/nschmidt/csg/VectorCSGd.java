@@ -35,8 +35,6 @@ package org.nschmidt.csg;
 
 /**
  * 3D Vector3d.
- *
- * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public class VectorCSGd implements Comparable<VectorCSGd>{
 

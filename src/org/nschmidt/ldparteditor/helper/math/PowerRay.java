@@ -22,8 +22,6 @@ import org.nschmidt.ldparteditor.data.Vertex;
  * Ported from VB.net / LDPatternCreator to Java, the original code was 6 years
  * old...
  *
- * @author nils
- *
  */
 public final class PowerRay {
 

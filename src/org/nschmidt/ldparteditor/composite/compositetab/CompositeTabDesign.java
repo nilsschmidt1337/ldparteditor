@@ -45,9 +45,6 @@ import org.nschmidt.ldparteditor.widget.TreeItem;
  * <p>
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
- *
- * @author nils
- *
  */
 class CompositeTabDesign extends CTabItem {
 

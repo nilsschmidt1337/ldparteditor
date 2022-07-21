@@ -24,8 +24,6 @@ import org.nschmidt.ldparteditor.widget.NButton;
 /**
  * Provides useful methods for the selection of widgets
  *
- * @author nils
- *
  */
 public enum WidgetSelectionHelper {
     INSTANCE;

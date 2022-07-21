@@ -43,10 +43,6 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.widget.NButton;
 
-/**
- * @author nils
- *
- */
 public class CompositeScale extends ScalableComposite {
 
     private final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.getLocale()));

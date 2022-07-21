@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
 
-Copyright (c) 2015 Kai Burjack
+Copyright (c) 2015 Kai Burjack, Joshua Slack
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -61,8 +61,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * Linux-specific implementation of methods for GLCanvas.
- * 
- * @author Joshua Slack
  */
 class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 

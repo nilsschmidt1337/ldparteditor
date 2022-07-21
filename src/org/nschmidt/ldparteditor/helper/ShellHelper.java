@@ -25,8 +25,6 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * A helper class for various shell actions (center on screen, ...)
  *
- * @author nils
- *
  */
 public enum ShellHelper {
     INSTANCE;

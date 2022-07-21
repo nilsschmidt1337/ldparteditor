@@ -30,9 +30,6 @@ import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 
 /**
  * Lightweight graphical data class
- *
- * @author nils
- *
  */
 public abstract class GData implements Comparable<GData> {
 

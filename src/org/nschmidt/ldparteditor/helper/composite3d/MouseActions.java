@@ -80,9 +80,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Implementations of the actions which will be performed on
  * {@linkplain Composite3D} by {@code SWT.MouseDown}, {@code SWT.MouseMove} and
  * {@code SWT.MouseUp}
- *
- * @author nils
- *
  */
 public class MouseActions {
 

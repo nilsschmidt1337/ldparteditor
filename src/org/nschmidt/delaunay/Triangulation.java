@@ -38,7 +38,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  * A Triangulation is a Set of Triangles. A Triangulation is unmodifiable as a
  * Set; the only way to change it is to add sites (via delaunayPlace).
  *
- * @author Paul Chew Modified, optimised and customised by Nils Schmidt
+ *         Modified, optimized and customised by Nils Schmidt
  *
  *         Created July 2005. Derived from an earlier, messier version.
  *

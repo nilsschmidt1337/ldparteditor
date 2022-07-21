@@ -25,8 +25,6 @@ import org.eclipse.swt.widgets.Text;
 /**
  * This class provides useful functions for calculating font sizes
  *
- * @author nils
- *
  */
 public enum FontMetrics {
     INSTANCE;

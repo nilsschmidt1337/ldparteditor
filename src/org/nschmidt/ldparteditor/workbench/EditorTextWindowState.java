@@ -17,10 +17,6 @@ package org.nschmidt.ldparteditor.workbench;
 
 import java.io.Serializable;
 
-/**
- * @author nils
- *
- */
 public class EditorTextWindowState implements Serializable {
     // Do not rename fields. It will break backwards compatibility! New values, which were not included in the state before, have to be initialized! (@ WorkbenchManager.loadWorkbench())
     /** V1.00 */

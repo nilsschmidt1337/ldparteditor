@@ -27,10 +27,6 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-/**
- * @author nils
- *
- */
 public class NewProjectDialog extends NewProjectDesign {
 
     private String projectName = ""; //$NON-NLS-1$

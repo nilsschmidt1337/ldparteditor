@@ -20,10 +20,6 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-/**
- * @author nils
- *
- */
 public class Editor3DWindowState implements Serializable {
     // Do not rename fields. It will break backwards compatibility! New values, which were not included in the state before, have to be initialized! (@ WorkbenchManager.loadWorkbench())
 

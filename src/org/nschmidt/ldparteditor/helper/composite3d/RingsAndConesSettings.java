@@ -22,8 +22,6 @@ import java.util.List;
 
 /**
  * Settings for Rings and Cones
- * @author nils
- *
  */
 public class RingsAndConesSettings {
 

@@ -21,8 +21,6 @@ import java.io.IOException;
  * Indicates that the file could not be manipulated. Possible reasons: Defect
  * harddisk, wrong user rights, system defects
  *
- * @author nils
- *
  */
 public class LDParsingException extends IOException {
 

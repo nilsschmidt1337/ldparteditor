@@ -30,9 +30,6 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 
 /**
  * Generates vertex mark footprints, which are highlighted within the editor
- *
- * @author nils
- *
  */
 public enum VertexMarker {
     INSTANCE;

@@ -17,10 +17,6 @@ package org.nschmidt.ldparteditor.helper.composite3d;
 
 import java.math.BigDecimal;
 
-/**
- * @author nils
- *
- */
 public class SelectorSettings {
 
     public static final int EVERYTHING = 0;

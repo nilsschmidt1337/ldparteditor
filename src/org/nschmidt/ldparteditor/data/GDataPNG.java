@@ -31,10 +31,6 @@ import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
-/**
- * @author nils
- *
- */
 public final class GDataPNG extends GData {
 
     private final Vector4f direction;

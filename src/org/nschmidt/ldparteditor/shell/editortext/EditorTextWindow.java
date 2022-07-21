@@ -98,8 +98,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should be instantiated, it defines all listeners and part of
  * the business logic.
  *
- * @author nils
- *
  */
 public class EditorTextWindow extends EditorTextDesign {
 

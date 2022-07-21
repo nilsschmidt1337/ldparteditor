@@ -74,10 +74,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
-/**
- * @author nils
- *
- */
 public final class GDataCSG extends GData {
 
     final CSGType type;

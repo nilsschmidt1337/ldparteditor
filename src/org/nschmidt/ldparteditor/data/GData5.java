@@ -33,10 +33,6 @@ import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 
-/**
- * @author nils
- *
- */
 public final class GData5 extends GData {
 
     final int colourNumber;

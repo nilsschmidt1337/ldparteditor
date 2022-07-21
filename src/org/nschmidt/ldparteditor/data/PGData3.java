@@ -25,10 +25,6 @@ import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 
-/**
- * @author nils
- *
- */
 public final class PGData3 extends PGData implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -17,9 +17,6 @@ package org.nschmidt.ldparteditor.enumtype;
 
 /**
  * Special enum for {@code setXyzOrTranslateOrTransform(...)}
- *
- * @author nils
- *
  */
 public enum TransformationMode {
     TRANSLATE, ROTATE, SCALE, SET

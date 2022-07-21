@@ -23,8 +23,6 @@ import org.lwjgl.opengl.GL11;
 /**
  * The legendary OpenGL teapot!
  *
- * @author nils
- *
  */
 public enum Teapot {
     INSTANCE;

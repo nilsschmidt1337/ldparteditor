@@ -34,9 +34,6 @@ import org.nschmidt.ldparteditor.widget.TreeItem;
 
 /**
  * Fixes all detected problems
- *
- * @author nils
- *
  */
 public enum QuickFixer {
     INSTANCE;

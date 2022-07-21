@@ -32,8 +32,6 @@ import org.nschmidt.ldparteditor.widget.NButton;
 
 /**
  * Utility function wrapper for controls and widgets (e.g. lambda expression syntax sugar)
- * @author nils
- *
  */
 public class WUtil {
 

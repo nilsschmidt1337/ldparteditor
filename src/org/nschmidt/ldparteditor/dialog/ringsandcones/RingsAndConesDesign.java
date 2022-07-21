@@ -41,9 +41,6 @@ import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
  * <p>
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
- *
- * @author nils
- *
  */
 class RingsAndConesDesign extends Dialog {
 

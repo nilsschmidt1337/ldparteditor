@@ -22,8 +22,6 @@ import java.nio.charset.StandardCharsets;
 /**
  * This is the standard {@code PrintWriter} for writing LDraw files
  *
- * @author nils
- *
  */
 public class UTF8PrintWriter implements AutoCloseable {
 

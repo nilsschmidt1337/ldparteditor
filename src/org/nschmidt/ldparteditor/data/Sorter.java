@@ -30,9 +30,6 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 
 /**
  * Sorts selected lines by a given criteria
- *
- * @author nils
- *
  */
 public enum Sorter {
     INSTANCE;

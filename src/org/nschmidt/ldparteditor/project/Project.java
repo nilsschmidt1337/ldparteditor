@@ -38,8 +38,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 /**
  * The static project class
  *
- * @author nils
- *
  */
 public enum Project {
     INSTANCE;

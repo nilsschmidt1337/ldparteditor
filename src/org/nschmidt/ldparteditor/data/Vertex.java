@@ -24,9 +24,6 @@ import org.nschmidt.ldparteditor.helper.math.Vector3r;
 
 /**
  * Full immutable vertex class
- *
- * @author nils
- *
  */
 public class Vertex implements Comparable<Vertex> {
 

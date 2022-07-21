@@ -26,10 +26,6 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.TransferData;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
-/**
- * @author nils
- *
- */
 public class PrimitiveDragAndDropTransfer extends ByteArrayTransfer {
     private static final String TYPENAME = "ldraw_primitive"; //$NON-NLS-1$
     private static final int TYPEID = registerType(TYPENAME);

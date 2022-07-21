@@ -37,8 +37,6 @@ import org.nschmidt.ldparteditor.widget.TreeItem;
 /**
  * "Call me Mike"
  * ;)
- * @author nils
- *
  */
 public class DatHeaderManager {
 

@@ -20,10 +20,6 @@ import java.util.List;
 
 import org.nschmidt.ldparteditor.helper.math.Vector3dd;
 
-/**
- * @author nils
- *
- */
 class IntersectionInfoWithColour {
 
     private List<Vector3dd> allVertices = new ArrayList<>();

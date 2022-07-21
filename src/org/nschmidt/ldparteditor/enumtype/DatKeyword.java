@@ -20,9 +20,6 @@ import java.util.Set;
 
 /**
  * A collection of keywords which will be highlighted in type 0 lines
- *
- * @author nils
- *
  */
 public enum DatKeyword {
     INSTANCE;

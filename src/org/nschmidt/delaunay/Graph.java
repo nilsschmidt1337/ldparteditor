@@ -27,7 +27,7 @@ import java.util.Set;
 /**
  * Straightforward undirected graph implementation. Nodes are generic type N.
  *
- * @author Paul Chew Modified, optimised and customised by Nils Schmidt
+ *         Modified, optimized and customised by Nils Schmidt
  *
  *         Created November, December 2007. For use in Delaunay/Voronoi code.
  *

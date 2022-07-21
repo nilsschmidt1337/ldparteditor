@@ -38,8 +38,6 @@ import org.nschmidt.ldparteditor.data.GColour;
 
 /**
  * A primitive geometry.
- *
- * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 interface Primitive {
 

@@ -40,10 +40,6 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-/**
- * @author nils
- *
- */
 class VM02Add extends VM01SelectHelper {
 
     protected VM02Add(DatFile linkedDatFile) {

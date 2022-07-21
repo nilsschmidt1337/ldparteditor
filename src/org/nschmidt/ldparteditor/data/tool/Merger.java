@@ -31,9 +31,6 @@ import org.nschmidt.ldparteditor.data.Vertex;
 
 /**
  * Merges selected vertices to a target position
- *
- * @author nils
- *
  */
 public enum Merger {
     INSTANCE;

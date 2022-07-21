@@ -32,8 +32,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 /**
  * The resource manager, which returns pictures, sounds and so on..
  *
- * @author nils
- *
  */
 public enum ResourceManager {
     INSTANCE;

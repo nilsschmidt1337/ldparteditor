@@ -26,8 +26,6 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
 
 /**
  * An axis-aligned solid quad defined by {@code center} and {@code dimensions}.
- *
- * @author nils
  */
 public class CSGQuad implements Primitive {
 

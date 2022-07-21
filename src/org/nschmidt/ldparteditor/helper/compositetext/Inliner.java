@@ -36,9 +36,6 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 
 /**
  * Inlines selected lines
- *
- * @author nils
- *
  */
 public enum Inliner {
     INSTANCE;

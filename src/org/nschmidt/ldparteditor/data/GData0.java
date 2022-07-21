@@ -24,10 +24,6 @@ import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 
-/**
- * @author nils
- *
- */
 public final class GData0 extends GData {
 
     private final boolean isSTEP;

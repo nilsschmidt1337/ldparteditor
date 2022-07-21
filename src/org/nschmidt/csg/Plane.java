@@ -41,8 +41,6 @@ import org.nschmidt.ldparteditor.data.DatFile;
 
 /**
  * Represents a plane in 3D space.
- *
- * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public class Plane implements Comparable<Plane> {
 

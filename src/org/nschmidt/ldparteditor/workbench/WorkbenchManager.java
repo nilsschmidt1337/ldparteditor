@@ -38,8 +38,6 @@ import org.nschmidt.ldparteditor.win32appdata.AppData;
 /**
  * The manager for loading or creating a default workbench
  *
- * @author nils
- *
  */
 public enum WorkbenchManager {
     INSTANCE;

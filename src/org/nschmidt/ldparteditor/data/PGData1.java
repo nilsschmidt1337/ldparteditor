@@ -28,10 +28,6 @@ import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.helper.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
-/**
- * @author nils
- *
- */
 public final class PGData1 extends PGData implements Serializable {
 
     private static final long serialVersionUID = 1L;

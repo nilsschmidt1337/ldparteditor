@@ -42,8 +42,6 @@ import java.util.zip.Inflater;
 
 /**
  * A PNGDecoder. The slick PNG decoder is based on this class :)
- *
- * @author Matthias Mann
  */
 public class PNGDecoder {
 

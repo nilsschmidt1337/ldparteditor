@@ -19,8 +19,6 @@ import org.eclipse.swt.widgets.Widget;
 
 /**
  * Provides useful utility functions for controls and widgets (e.g. lambda expression syntax sugar)
- * @author nils
- *
  */
 public enum WidgetUtility {
     INSTANCE;

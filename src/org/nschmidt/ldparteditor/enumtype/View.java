@@ -30,9 +30,6 @@ import org.nschmidt.ldparteditor.text.TextTriangulator;
 
 /**
  * This class provides constants for the 3D view
- *
- * @author nils
- *
  */
 @java.lang.SuppressWarnings({"java:S1104", "java:S1444", "java:S2386"})
 public enum View {

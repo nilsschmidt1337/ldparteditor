@@ -33,10 +33,6 @@ import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
-/**
- * @author nils
- *
- */
 enum WarningFixer {
     INSTANCE;
 

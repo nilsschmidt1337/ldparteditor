@@ -19,10 +19,6 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-/**
- * @author nils
- *
- */
 public enum BufferFactory {
     INSTANCE;
 

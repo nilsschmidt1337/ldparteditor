@@ -26,8 +26,6 @@ import org.nschmidt.ldparteditor.data.PGTimestamp;
 /**
  * This class represents the primitive cache
  *
- * @author nils
- *
  */
 public class PrimitiveCache implements Serializable {
     // Do not rename fields. It will break backwards compatibility! New values, which were not included in the state before, have to be initialized! (@ WorkbenchManager.loadWorkbench())

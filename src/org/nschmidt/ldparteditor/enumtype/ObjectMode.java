@@ -17,9 +17,6 @@ package org.nschmidt.ldparteditor.enumtype;
 
 /**
  * A enum class for different the object modes
- *
- * @author nils
- *
  */
 public enum ObjectMode {
     VERTICES, SUBFILES, LINES, FACES

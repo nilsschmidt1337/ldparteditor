@@ -30,10 +30,6 @@ import org.eclipse.swt.graphics.Image;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
-/**
- * @author nils
- *
- */
 public class TreeItem {
 
     private String[] text;

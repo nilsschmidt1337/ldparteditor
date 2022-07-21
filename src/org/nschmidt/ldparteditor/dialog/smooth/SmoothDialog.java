@@ -32,9 +32,6 @@ import org.nschmidt.ldparteditor.project.Project;
  * Note: This class should be instantiated, it defines all listeners and part of
  * the business logic. It overrides the {@code open()} method to invoke the
  * listener definitions ;)
- *
- * @author nils
- *
  */
 public class SmoothDialog extends SmoothDesign {
 

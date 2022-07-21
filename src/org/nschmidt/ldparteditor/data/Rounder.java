@@ -29,9 +29,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * Rounds selected lines
- *
- * @author nils
- *
  */
 public enum Rounder {
     INSTANCE;

@@ -24,9 +24,6 @@ import org.nschmidt.ldparteditor.widget.TreeItem;
 
 /**
  * Selects/inspects detected problems
- *
- * @author nils
- *
  */
 public enum Inspector {
     INSTANCE;

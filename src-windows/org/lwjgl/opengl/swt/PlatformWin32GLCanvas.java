@@ -69,8 +69,6 @@ import org.lwjgl.system.windows.User32;
 
 /**
  * Windows-specific implementation of methods for GLCanvas.
- * 
- * @author Kai Burjack
  */
 class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
     private static final String USE_OWNDC_KEY = "org.eclipse.swt.internal.win32.useOwnDC"; //$NON-NLS-1$

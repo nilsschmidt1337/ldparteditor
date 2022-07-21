@@ -42,9 +42,6 @@ import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 
 /**
  * Provides functions to set the perspective of the {@linkplain Composite3D}
- *
- * @author nils
- *
  */
 public class PerspectiveCalculator {
 

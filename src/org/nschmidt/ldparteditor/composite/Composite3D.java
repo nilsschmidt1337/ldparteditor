@@ -120,9 +120,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 /**
  * This is the composite for a 3D OpenGL perspective. This object can be divided
  * into two.
- *
- * @author nils
- *
  */
 public class Composite3D extends ScalableComposite {
 

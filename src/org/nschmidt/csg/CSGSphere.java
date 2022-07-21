@@ -42,8 +42,6 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  *
  * The tessellation along the longitude and latitude directions can be
  * controlled via the {@link #numSlices} and {@link #numStacks} parameters.
- *
- * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public class CSGSphere implements Primitive {
 

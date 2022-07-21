@@ -25,8 +25,6 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 /**
  * Provides useful keyboard functions
  *
- * @author nils
- *
  */
 public enum KeyBoardHelper {
     INSTANCE;

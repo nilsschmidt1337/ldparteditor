@@ -104,9 +104,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * the business logic. <b>Unfortunately, this widget has to be disposed if it is
  * moved to another position / window. This leads to the fact that all data has
  * to be externalized within {@linkplain CompositeTabState} </b>
- *
- * @author nils
- *
  */
 public class CompositeTab extends CompositeTabDesign {
 

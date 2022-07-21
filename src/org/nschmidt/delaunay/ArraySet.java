@@ -29,7 +29,7 @@ import java.util.List;
  * An ArrayList implementation of Set. An ArraySet is good for small sets; it
  * has less overhead than a HashSet or a TreeSet.
  *
- * @author Paul Chew Modified, optimized and customised by Nils Schmidt
+ *         Modified, optimized and customised by Nils Schmidt
  *
  *         Created December 2007. For use with Voronoi/Delaunay applet.
  *

@@ -139,8 +139,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should be instantiated once, it defines all listeners and
  * part of the business logic.
  *
- * @author nils
- *
  */
 public class Editor3DWindow extends Editor3DDesign {
 

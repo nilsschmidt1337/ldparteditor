@@ -39,9 +39,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * Helper class for all project regarding actions (Create/Open/Save).
- *
- * @author nils
- *
  */
 public enum ProjectActions {
     INSTANCE;

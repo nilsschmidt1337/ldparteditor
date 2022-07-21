@@ -23,9 +23,6 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 
 /**
  * Manages the idle state of {@linkplain Composite3D}
- *
- * @author nils
- *
  */
 public enum ViewIdleManager {
     INSTANCE;

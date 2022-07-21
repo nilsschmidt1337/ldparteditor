@@ -32,10 +32,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
 
-/**
- * @author nils
- *
- */
 public class Tree {
 
     private final Map<TreeItem, org.eclipse.swt.widgets.TreeItem> swtFromTi = new HashMap<>();

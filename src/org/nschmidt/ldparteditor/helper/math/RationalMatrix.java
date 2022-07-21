@@ -22,8 +22,6 @@ import org.lwjgl.util.vector.Matrix4f;
 /**
  * Immutable, absolute precision matrix class
  *
- * @author nils
- *
  */
 public class RationalMatrix {
 

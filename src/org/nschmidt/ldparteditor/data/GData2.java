@@ -42,10 +42,6 @@ import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolItem;
 
-/**
- * @author nils
- *
- */
 public final class GData2 extends GData {
 
     public final int colourNumber;

@@ -19,10 +19,6 @@ import java.io.Serializable;
 
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
 
-/**
- * @author nils
- *
- */
 public class GColour implements Serializable {
     // Do not rename fields. It will break backwards compatibility!
 

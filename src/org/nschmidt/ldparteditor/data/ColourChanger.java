@@ -23,9 +23,6 @@ import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 
 /**
  * Sorts selected lines by a given criteria
- *
- * @author nils
- *
  */
 public enum ColourChanger {
     INSTANCE;

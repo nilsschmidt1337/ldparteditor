@@ -19,10 +19,6 @@ import java.io.Serializable;
 
 import org.nschmidt.ldparteditor.enumtype.Perspective;
 
-/**
- * @author nils
- *
- */
 public class Composite3DState implements Serializable {
 
     private static final long serialVersionUID = 1L;

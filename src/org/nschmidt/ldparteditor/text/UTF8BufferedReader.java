@@ -25,8 +25,6 @@ import java.nio.charset.StandardCharsets;
 /**
  * This is the standard {@code BufferedReader} for reading LDraw files
  *
- * @author nils
- *
  */
 public class UTF8BufferedReader implements AutoCloseable {
 

@@ -17,9 +17,6 @@ package org.nschmidt.ldparteditor.enumtype;
 
 /**
  * A enum class for different 3D manipulation modes
- *
- * @author nils
- *
  */
 public enum WorkingMode {
     SELECT, MOVE, MOVE_GLOBAL, ROTATE, SCALE, COMBINED

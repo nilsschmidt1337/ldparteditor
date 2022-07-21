@@ -17,10 +17,6 @@ package org.nschmidt.ldparteditor.enumtype;
 
 import org.nschmidt.ldparteditor.helper.GearGL33;
 
-/**
- * @author nils
- *
- */
 public enum GL33Primitives {
     INSTANCE;
     public static final GearGL33 GEAR_MENU = new GearGL33(.005f, 16, .005f, .0025f);

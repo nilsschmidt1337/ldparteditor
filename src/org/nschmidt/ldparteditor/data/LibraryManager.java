@@ -48,8 +48,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * <li>The unofficial parts folder (e.g. D:\LDRAW\Unofficial\)</li>
  * <li>The current project</li>
  * </ul>
- *
- * @author nils
  */
 public enum LibraryManager {
     INSTANCE;
@@ -383,9 +381,6 @@ public enum LibraryManager {
 
     /**
      * This is a helper class, which provides a comparator for DAT file names.
-     *
-     * @author nils
-     *
      */
     private static class DatFileName implements Comparable<DatFileName> {
         /** The DAT file name to compare */

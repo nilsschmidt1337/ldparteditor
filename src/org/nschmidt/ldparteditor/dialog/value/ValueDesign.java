@@ -28,10 +28,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 
-/**
- * @author nils
- *
- */
 class ValueDesign extends Dialog {
 
     private Label[] lblUnitPtr = new Label[1];

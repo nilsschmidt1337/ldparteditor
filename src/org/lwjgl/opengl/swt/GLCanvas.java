@@ -32,8 +32,6 @@ import org.lwjgl.system.Platform;
  * Drop-in replacement for SWT's {@link org.eclipse.swt.opengl.GLCanvas} class.
  * <p>
  * It supports creating OpenGL 3.0 and 3.2 core/compatibility contexts as well as multisampled framebuffers.
- * 
- * @author Kai Burjack
  */
 public class GLCanvas extends Canvas {
     GLData effective;

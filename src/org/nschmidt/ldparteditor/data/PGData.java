@@ -22,9 +22,6 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 /**
  * Lightweight graphical data class
- *
- * @author nils
- *
  */
 public abstract class PGData implements Serializable {
     // Do not rename fields. It will break backwards compatibility!

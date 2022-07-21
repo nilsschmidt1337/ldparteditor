@@ -49,10 +49,6 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 
-/**
- * @author nils
- *
- */
 public enum TextTriangulator {
     INSTANCE;
 

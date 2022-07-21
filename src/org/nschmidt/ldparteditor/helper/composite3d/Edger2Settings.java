@@ -17,10 +17,6 @@ package org.nschmidt.ldparteditor.helper.composite3d;
 
 import java.math.BigDecimal;
 
-/**
- * @author nils
- *
- */
 public class Edger2Settings {
 
     private BigDecimal equalDistance = new BigDecimal("0.0010"); //$NON-NLS-1$

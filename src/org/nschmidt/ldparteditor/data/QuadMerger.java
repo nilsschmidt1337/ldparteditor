@@ -28,9 +28,6 @@ import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 
 /**
  * Splits selected quads into triangles
- *
- * @author nils
- *
  */
 public enum QuadMerger {
     INSTANCE;

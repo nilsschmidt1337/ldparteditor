@@ -25,8 +25,6 @@ import org.lwjgl.vulkan.VkInstance;
 
 /**
  * Contains information to create a {@link VKCanvas}.
- * 
- * @author Kai Burjack
  */
 public class VKData {
 

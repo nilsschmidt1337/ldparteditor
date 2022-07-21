@@ -35,8 +35,6 @@ package org.nschmidt.csg;
 
 /**
  * Bounding box for CSGs.
- *
- * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 class Bounds {
 

@@ -24,8 +24,6 @@ import org.nschmidt.ldparteditor.enumtype.Perspective;
 
 /**
  * The container for a {@link Composite3D} or a {@link CompositeScale}.
- *
- * @author nils
  */
 public class CompositeContainer extends ScalableComposite {
 

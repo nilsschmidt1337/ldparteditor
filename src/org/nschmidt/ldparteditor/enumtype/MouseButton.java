@@ -18,9 +18,6 @@ package org.nschmidt.ldparteditor.enumtype;
 /**
  * Provides useful constants for mouse events (the SWT.BUTTONx constants are not
  * obvious enough)
- *
- * @author nils
- *
  */
 public enum MouseButton {
     INSTANCE;

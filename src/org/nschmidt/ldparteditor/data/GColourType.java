@@ -27,11 +27,6 @@ import org.nschmidt.ldparteditor.data.colour.GCRubber;
 import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.data.colour.GCType;
 
-
-/**
- * @author nils
- *
- */
 public abstract class GColourType implements Serializable {
 
     private static final long serialVersionUID = 1L;

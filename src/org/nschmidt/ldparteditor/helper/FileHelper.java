@@ -32,7 +32,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 /**
  * A helper enum class for file actions
  *
- * @author nils TODO I redesigned this class to match with the Singleton design
+ *         TODO I redesigned this class to match with the Singleton design
  *         pattern as suggested by Joshua Bloch \n This has to be done for all
  *         other static classes too
  */

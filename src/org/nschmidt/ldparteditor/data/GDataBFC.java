@@ -21,10 +21,6 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 
-/**
- * @author nils
- *
- */
 public final class GDataBFC extends GData {
 
     final BFC type;

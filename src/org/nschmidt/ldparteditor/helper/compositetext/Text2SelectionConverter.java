@@ -19,9 +19,6 @@ import org.nschmidt.ldparteditor.data.DatFile;
 
 /**
  * Selects selected lines in the "3D view"
- *
- * @author nils
- *
  */
 public enum Text2SelectionConverter {
     INSTANCE;

@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
 
-Copyright (c) 2015 Kai Burjack
+Copyright (c) 2015 Kai Burjack, Thomas Ibanez
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,8 +32,6 @@ import org.lwjgl.opengl.swt.GLData.Profile;
 
 /**
  * OSX-specific implementation of methods for GLCanvas.
- * 
- * @author Thomas Ibanez
  */
 class PlatformMacOSXGLCanvas extends AbstractPlatformGLCanvas {
 

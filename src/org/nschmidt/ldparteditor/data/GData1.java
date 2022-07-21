@@ -48,10 +48,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.TexMapParser;
 
-/**
- * @author nils
- *
- */
 public final class GData1 extends GData {
 
     private static Set<String> filesWithLogo1 = new HashSet<>();

@@ -74,9 +74,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The DAT file class
- *
- * @author nils
- *
  */
 public final class DatFile {
 

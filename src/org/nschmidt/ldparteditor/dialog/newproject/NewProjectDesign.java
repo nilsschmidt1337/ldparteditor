@@ -35,10 +35,6 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-/**
- * @author nils
- *
- */
 class NewProjectDesign extends Dialog {
 
     Text[] txtProjectPathPtr = new Text[1];

@@ -28,10 +28,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
-/**
- * @author nils
- *
- */
 class OverwriteDesign extends Dialog {
 
     private final String whichFile;

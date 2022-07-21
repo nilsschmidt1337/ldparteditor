@@ -33,8 +33,6 @@ import java.util.Iterator;
  * *different* triangles. Methods equals() and hashCode() are consistent with
  * this rule.
  *
- * @author Paul Chew
- *
  *         Created December 2007. Replaced general simplices with geometric
  *         triangle.
  *

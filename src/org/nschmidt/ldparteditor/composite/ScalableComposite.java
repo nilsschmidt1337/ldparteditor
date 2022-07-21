@@ -19,9 +19,6 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * Abstract class for scalable composites
- *
- * @author nils
- *
  */
 // Nothing more to do here..
 public abstract class ScalableComposite extends Composite implements Scalable {

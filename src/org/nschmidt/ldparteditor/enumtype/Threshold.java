@@ -22,9 +22,6 @@ import java.math.RoundingMode;
 
 /**
  * Contains important threshold variables
- *
- * @author nils
- *
  */
 public enum Threshold implements Serializable {
     INSTANCE;

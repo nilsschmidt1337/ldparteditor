@@ -41,8 +41,6 @@ import org.nschmidt.ldparteditor.state.KeyStateManager;
  * This class represents the permanent state of the application setting with
  * focus on user dependent information (e.g. user name, LDraw path, ...)
  *
- * @author nils
- *
  */
 public class UserSettingState implements Serializable {
     // Do not rename fields. It will break backwards compatibility! New values, which were not included in the state before, have to be initialized! (@ WorkbenchManager.loadWorkbench())

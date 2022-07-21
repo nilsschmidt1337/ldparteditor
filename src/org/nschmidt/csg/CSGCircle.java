@@ -27,8 +27,6 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  * A solid circle.
  *
  * The tessellation can be controlled via the {@link #numSlices} parameter.
- *
- * @author nils
  */
 public class CSGCircle implements Primitive {
 

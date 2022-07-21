@@ -56,9 +56,6 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolI
  * 2.1 Manipulate.. <br>
  * 2.2 Create.. <br>
  * 2.3 Delete vertices
- *
- * @author nils
- *
  */
 public final class VertexManager extends VM99Clipboard {
 

@@ -65,8 +65,6 @@ import swing2swt.layout.BorderLayout;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  *
- * @author nils
- *
  */
 class EditorTextDesign extends ApplicationWindow {
 

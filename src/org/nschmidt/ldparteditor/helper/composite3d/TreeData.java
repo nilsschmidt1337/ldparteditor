@@ -20,10 +20,6 @@ import java.util.Set;
 
 import org.nschmidt.ldparteditor.widget.TreeItem;
 
-/**
- * @author nils
- *
- */
 public class TreeData {
 
     private TreeItem location;

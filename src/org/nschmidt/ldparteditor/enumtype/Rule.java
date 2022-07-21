@@ -17,9 +17,6 @@ package org.nschmidt.ldparteditor.enumtype;
 
 /**
  * Rule indicator for primitive rules
- *
- * @author nils
- *
  */
 public enum Rule {
     STARTS_WITH,

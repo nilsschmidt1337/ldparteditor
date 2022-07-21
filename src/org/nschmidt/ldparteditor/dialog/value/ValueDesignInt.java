@@ -28,10 +28,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 
-/**
- * @author nils
- *
- */
 class ValueDesignInt extends Dialog {
 
     private Label[] lblUnitPtr = new Label[1];

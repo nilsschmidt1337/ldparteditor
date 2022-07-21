@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Google, Inc. - initial API and implementation
+ *    scheglov_ke and Dan Rubel
  *******************************************************************************/
 package org.eclipse.wb.swt;
 
@@ -31,9 +32,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  * <p>
  * This class may be freely distributed as part of any application or plugin.
  * <p>
- *
- * @author scheglov_ke
- * @author Dan Rubel
  */
 public enum SWTResourceManager {
     INSTANCE;

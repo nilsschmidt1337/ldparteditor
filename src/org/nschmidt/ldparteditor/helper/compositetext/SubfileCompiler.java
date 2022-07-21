@@ -66,9 +66,6 @@ import org.nschmidt.ldparteditor.widget.TreeItem;
 
 /**
  * Compiles outlined subfiles (reverse inlining)
- *
- * @author nils
- *
  */
 public enum SubfileCompiler {
     INSTANCE;

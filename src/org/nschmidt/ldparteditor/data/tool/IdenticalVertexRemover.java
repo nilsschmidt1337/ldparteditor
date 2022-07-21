@@ -36,9 +36,6 @@ import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 
 /**
  * Removes objects with identical vertices
- *
- * @author nils
- *
  */
 public enum IdenticalVertexRemover {
     INSTANCE;

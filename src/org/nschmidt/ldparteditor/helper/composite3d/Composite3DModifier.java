@@ -56,9 +56,6 @@ import org.nschmidt.ldparteditor.widget.NButton;
 /**
  * Provides functions to perform view actions for the {@linkplain Composite3D}
  * (e.g. closing, h/v-splitting, rotating)
- *
- * @author nils
- *
  */
 public class Composite3DModifier {
 
