@@ -1,3 +1,8 @@
+### 03 Aug 2022
+With the release of 1.8.61 you are able to...
+-  ...create a mixed mode torus with PrimGen2. 
+
+
 ### 10 Jul 2022
 With the release of 1.8.60 you are able to...
 -  ...use the "!LPE CONST" meta command to define re-usable constants in parts and subparts.
