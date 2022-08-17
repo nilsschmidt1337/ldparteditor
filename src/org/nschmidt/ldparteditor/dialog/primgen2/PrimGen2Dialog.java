@@ -22,7 +22,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -41,6 +43,7 @@ import org.nschmidt.ldparteditor.enumtype.TextTask;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helper.composite3d.ViewIdleManager;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -637,11 +640,13 @@ public class PrimGen2Dialog extends PrimGen2Design {
             String sweep = decformat4f.format(minor * 1d / major);
             String sweep2 = sweep.replace(".", "").substring(sweep.charAt(0) == '0' ? 1 : 0, Math.min(sweep.charAt(0) == '0' ? 5 : 4, sweep.length())); //$NON-NLS-1$ //$NON-NLS-2$
             String frac = "99"; //$NON-NLS-1$
-            if (upper == 1 && lower < 100) {
-                frac = lower + ""; //$NON-NLS-1$
-                if (frac.length() == 1) {
-                    frac = "0" + lower; //$NON-NLS-1$
-                }
+            // 01=1/1, 02=1/2, 04=1/4, 08=1/8, 16=1/16, 32=1/32, 48=1/48
+            if (upper == 2 && lower == 4) {
+                frac = "02"; //$NON-NLS-1$
+            } else if (upper == 1 && lower < 10) {
+                frac = "0" + lower; //$NON-NLS-1$
+            } else if (upper == 1 && lower < 100) {
+                frac = "" + lower; //$NON-NLS-1$
             } else if (upper == 4 && lower == 4) {
                 frac = "01"; //$NON-NLS-1$
             }
@@ -1195,6 +1200,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
         // DONT TOUCH THIS CODE! It simply works...
 
+        final List<Double[]> points = new ArrayList<>();
         final StringBuilder sb2 = new StringBuilder();
         final int INNER = 0;
         final int OUTER = 1;
@@ -1245,6 +1251,30 @@ public class PrimGen2Dialog extends PrimGen2Design {
         {
             int num9 = num - 1;
             num3 = num5;
+            
+            if (type != TUBE) {
+                num3 -= 1;
+                // Add one virtual quad to the segment start
+                objdatLinePoint1X = round4f(Math.cos(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint1Y = round4f(Math.cos(num3 * (360.0 / edgesPerCrossSections) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint1Z = round4f(Math.sin(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint2X = round4f(Math.cos((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint2Y = round4f(Math.cos(num3 * (360.0 / edgesPerCrossSections) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint2Z = round4f(Math.sin((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint3X = round4f(Math.cos((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * (num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * (360.0 / edgesPerCrossSections) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * (num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint4X = round4f(Math.cos(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * (num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint4Y = round4f(Math.cos((num3 + 1) * (360.0 / edgesPerCrossSections) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint4Z = round4f(Math.sin(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * (num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+
+                points.add(new Double[] {objdatLinePoint1X, objdatLinePoint1Y, objdatLinePoint1Z});
+                points.add(new Double[] {objdatLinePoint2X, objdatLinePoint2Y, objdatLinePoint2Z});
+                points.add(new Double[] {objdatLinePoint3X, objdatLinePoint3Y, objdatLinePoint3Z});
+                points.add(new Double[] {objdatLinePoint4X, objdatLinePoint4Y, objdatLinePoint4Z});
+                num3 += 1;
+            }
+            
             while (num3 <= num9)
             {
                 objdatLinePoint1X = round4f(Math.cos(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
@@ -1260,6 +1290,11 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 objdatLinePoint4Y = round4f(Math.cos((num3 + 1) * (360.0 / edgesPerCrossSections) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
                 objdatLinePoint4Z = round4f(Math.sin(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * (num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
 
+                points.add(new Double[] {objdatLinePoint1X, objdatLinePoint1Y, objdatLinePoint1Z});
+                points.add(new Double[] {objdatLinePoint2X, objdatLinePoint2Y, objdatLinePoint2Z});
+                points.add(new Double[] {objdatLinePoint3X, objdatLinePoint3Y, objdatLinePoint3Z});
+                points.add(new Double[] {objdatLinePoint4X, objdatLinePoint4Y, objdatLinePoint4Z});
+                
                 sb2.append("4 16 "); //$NON-NLS-1$
                 if (ccw) {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
@@ -1298,155 +1333,731 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
                 num3++;
             }
+            
+            if (type != TUBE) {
+                // Add one virtual quad to the segment end
+                objdatLinePoint1X = round4f(Math.cos(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint1Y = round4f(Math.cos(num3 * (360.0 / edgesPerCrossSections) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint1Z = round4f(Math.sin(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint2X = round4f(Math.cos((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint2Y = round4f(Math.cos(num3 * (360.0 / edgesPerCrossSections) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint2Z = round4f(Math.sin((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint3X = round4f(Math.cos((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * (num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * (360.0 / edgesPerCrossSections) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * (num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint4X = round4f(Math.cos(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * (num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint4Y = round4f(Math.cos((num3 + 1) * (360.0 / edgesPerCrossSections) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint4Z = round4f(Math.sin(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * (num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+
+                points.add(new Double[] {objdatLinePoint1X, objdatLinePoint1Y, objdatLinePoint1Z});
+                points.add(new Double[] {objdatLinePoint2X, objdatLinePoint2Y, objdatLinePoint2Z});
+                points.add(new Double[] {objdatLinePoint3X, objdatLinePoint3Y, objdatLinePoint3Z});
+                points.add(new Double[] {objdatLinePoint4X, objdatLinePoint4Y, objdatLinePoint4Z});
+            }
         }
+        
         sb2.append("0 // conditional lines\n"); //$NON-NLS-1$
-        double d = 6.2831853071795862 / divisions;
-        double d2 = d; 
-        if (edgesPerCrossSections != divisions) {
-            d = 6.2831853071795862 / edgesPerCrossSections;
+        if (type == OUTER) {
+            addCondlinesForTorusOutside(points, num, num5, num8, sb2, segments == divisions);
+        } else if (type == INNER) {
+            addCondlinesForTorusInside(points, num, num5, num8, sb2, segments == divisions);
+        } else {
+            addCondlinesForTorusTube(points, num, num5, num8, sb2, segments == divisions);
         }
-        for (num2 = 0; num2 <= segments; num2++)
-        {
-            if (num2 == divisions)
-            {
-                break;
-            }
-            int num11 = num;
-            for (num3 = num5; num3 <= num11; num3++)
-            {
-                if (Math.abs(num - num5) == Math.abs(edgesPerCrossSections) && num3 == edgesPerCrossSections)
-                {
-                    break;
-                }
-                if (num2 != segments)
-                {
-                    objdatLinePoint1X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    objdatLinePoint1Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                    objdatLinePoint1Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    objdatLinePoint2X = round4f(Math.cos((num2 + 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    objdatLinePoint2Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                    objdatLinePoint2Z = round4f(Math.sin((num2 + 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    if (divisions == segments && num3 != num5 && num3 != num || type == TUBE)
-                    {
-                        objdatLinePoint3X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
-                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
-                        objdatLinePoint3Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d)) * minor * 1.0 / major;
-                        objdatLinePoint4Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
-                    }
-                    else if (num3 != num5 && num3 != num)
-                    {
-                        objdatLinePoint3X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
-                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
-                        objdatLinePoint3Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d)) * minor * 1.0 / major;
-                        objdatLinePoint4Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
-                    }
-                    else if (num3 != num5)
-                    {
-                        objdatLinePoint3X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin((num3 + 1) * d) / Math.cos(d)) * minor) * 1.0 / major;
-                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d) / Math.cos(d)) * minor * 1.0 / major;
-                        objdatLinePoint3Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin((num3 + 1) * d) / Math.cos(d)) * minor) * 1.0 / major;
-                        objdatLinePoint4X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d)) * minor * 1.0 / major;
-                        objdatLinePoint4Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
-                    }
-                    else
-                    {
-                        objdatLinePoint3X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
-                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
-                        objdatLinePoint3Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin((num3 - 1) * d) / Math.cos(d)) * minor) * 1.0 / major;
-                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d) / Math.cos(d)) * minor * 1.0 / major;
-                        objdatLinePoint4Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin((num3 - 1) * d) / Math.cos(d)) * minor) * 1.0 / major;
-                    }
-
-                    sb2.append("5 24 "); //$NON-NLS-1$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
-                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
-                    sb2.append(" "); //$NON-NLS-1$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
-                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
-                    sb2.append(" "); //$NON-NLS-1$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
-                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
-                    sb2.append(" "); //$NON-NLS-1$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
-                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
-                    sb2.append("\n"); //$NON-NLS-1$
-                }
-                if (num3 != num)
-                {
-                    objdatLinePoint1X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    objdatLinePoint1Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                    objdatLinePoint1Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    objdatLinePoint2X = round4f(Math.cos(num2 * d2)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
-                    objdatLinePoint2Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
-                    objdatLinePoint2Z = round4f(Math.sin(num2 * d2)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
-                    if (divisions == segments || num2 != 0 && num2 != segments)
-                    {
-                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    }
-                    else if (num2 != 0 && num2 != segments)
-                    {
-                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    }
-                    else if (num2 == 0)
-                    {
-                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d2) / Math.cos(d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d2) / Math.cos(d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    }
-                    else
-                    {
-                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d2) / Math.cos(d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d2) / Math.cos(d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
-                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d2)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
-                    }
-
-                    sb2.append("5 24 "); //$NON-NLS-1$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
-                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
-                    sb2.append(" "); //$NON-NLS-1$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
-                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
-                    sb2.append(" "); //$NON-NLS-1$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
-                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
-                    sb2.append(" "); //$NON-NLS-1$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
-                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
-                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
-                    sb2.append("\n"); //$NON-NLS-1$
-                }
-            }
-        }
+        
         return sb2.toString();
+    }
+
+    private void addCondlinesForTorusInside(List<Double[]> points, int num, int num5, int num8, StringBuilder sb2, boolean closed) {
+        int pointIndex = 0;
+        for (int num2 = 0; num2 <= num8; num2++)
+        {
+            double objdatLinePoint1X = points.get(pointIndex + 2)[0];
+            double objdatLinePoint1Y = points.get(pointIndex + 2)[1];
+            double objdatLinePoint1Z = points.get(pointIndex + 2)[2];
+            double objdatLinePoint2X = points.get(pointIndex + 3)[0];
+            double objdatLinePoint2Y = points.get(pointIndex + 3)[1];
+            double objdatLinePoint2Z = points.get(pointIndex + 3)[2];
+            double objdatLinePoint3X = points.get(pointIndex + 2)[0];
+            double objdatLinePoint3Y = points.get(pointIndex + 1)[1];
+            double objdatLinePoint3Z = points.get(pointIndex + 2)[2];
+            double objdatLinePoint4X = points.get(pointIndex + 6)[0];
+            double objdatLinePoint4Y = points.get(pointIndex + 6)[1];
+            double objdatLinePoint4Z = points.get(pointIndex + 6)[2];
+            pointIndex += 4;
+            
+            sb2.append("5 24 "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+            sb2.append("\n"); //$NON-NLS-1$
+            
+            int num9 = num - 1;
+            int num3 = num5;
+            while (num3 <= num9)
+            {
+                if (num3 != num9) {
+                    objdatLinePoint1X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 3)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 3)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 3)[2];
+                    objdatLinePoint3X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint3Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint3Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint4X = points.get(pointIndex + 6)[0];
+                    objdatLinePoint4Y = points.get(pointIndex + 6)[1];
+                    objdatLinePoint4Z = points.get(pointIndex + 6)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                
+                if (num2 == 0 && !closed) {
+                    objdatLinePoint1X = points.get(pointIndex)[0];
+                    objdatLinePoint1Y = points.get(pointIndex)[1];
+                    objdatLinePoint1Z = points.get(pointIndex)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 3)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 3)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 3)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = -points.get(pointIndex + 1)[2];
+                    objdatLinePoint4X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint4Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint4Z = points.get(pointIndex + 1)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                if (num2 < num8) {
+                    objdatLinePoint1X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = points.get(pointIndex)[2];
+                    objdatLinePoint4X = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[0];
+                    objdatLinePoint4Y = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[1];
+                    objdatLinePoint4Z = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                if (num2 == num8 && !closed) {
+                    objdatLinePoint1X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = points.get(pointIndex)[2];
+                    Vector3d p1 = new Vector3d(BigDecimal.valueOf(objdatLinePoint1X), BigDecimal.valueOf(objdatLinePoint1Y), BigDecimal.valueOf(objdatLinePoint1Z));
+                    Vector3d yAxis = new Vector3d(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO);
+                    Vector3d crossP = Vector3d.cross(p1, yAxis);
+                    Vector3d p4 = Vector3d.add(p1, crossP);
+                    objdatLinePoint4X = p4.x.doubleValue();
+                    objdatLinePoint4Y = p4.y.doubleValue();
+                    objdatLinePoint4Z = p4.z.doubleValue();
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                if (num2 == num8 && closed) {
+                    objdatLinePoint1X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = points.get(pointIndex)[2];
+                    objdatLinePoint4X = points.get((num3 - num5) * 4 + 2)[0];
+                    objdatLinePoint4Y = points.get((num3 - num5) * 4 + 2)[1];
+                    objdatLinePoint4Z = points.get((num3 - num5) * 4 + 2)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                num3++;
+                pointIndex += 4;
+            }
+            
+            objdatLinePoint1X = points.get(pointIndex + 1)[0];
+            objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+            objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+            objdatLinePoint2X = points.get(pointIndex)[0];
+            objdatLinePoint2Y = points.get(pointIndex)[1];
+            objdatLinePoint2Z = points.get(pointIndex)[2];
+            objdatLinePoint3X = points.get(pointIndex - 3)[0];
+            objdatLinePoint3Y = points.get(pointIndex - 3)[1];
+            objdatLinePoint3Z = points.get(pointIndex - 3)[2];
+            objdatLinePoint4X = points.get(pointIndex + 2)[0];
+            objdatLinePoint4Y = points.get(pointIndex + 1)[1];
+            objdatLinePoint4Z = points.get(pointIndex + 2)[2];
+            
+            sb2.append("5 24 "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+            sb2.append("\n"); //$NON-NLS-1$
+            pointIndex += 4;
+        }
+    }
+
+    private void addCondlinesForTorusTube(List<Double[]> points, int num, int num5, int num8, StringBuilder sb2, boolean closed) {
+        int pointIndex = 0;
+        for (int num2 = 0; num2 <= num8; num2++)
+        {
+            double objdatLinePoint1X;
+            double objdatLinePoint1Y;
+            double objdatLinePoint1Z;
+            double objdatLinePoint2X;
+            double objdatLinePoint2Y;
+            double objdatLinePoint2Z;
+            double objdatLinePoint3X;
+            double objdatLinePoint3Y;
+            double objdatLinePoint3Z;
+            double objdatLinePoint4X;
+            double objdatLinePoint4Y;
+            double objdatLinePoint4Z;
+            
+            int num9 = num - 1;
+            int num3 = num5;
+            int ringSize = (num9 - num5 + 1) * 4;
+            int ringStart = pointIndex;
+            while (num3 <= num9)
+            {
+                objdatLinePoint1X = points.get(pointIndex + 2)[0];
+                objdatLinePoint1Y = points.get(pointIndex + 2)[1];
+                objdatLinePoint1Z = points.get(pointIndex + 2)[2];
+                objdatLinePoint2X = points.get(pointIndex + 3)[0];
+                objdatLinePoint2Y = points.get(pointIndex + 3)[1];
+                objdatLinePoint2Z = points.get(pointIndex + 3)[2];
+                objdatLinePoint3X = points.get(pointIndex + 1)[0];
+                objdatLinePoint3Y = points.get(pointIndex + 1)[1];
+                objdatLinePoint3Z = points.get(pointIndex + 1)[2];
+                objdatLinePoint4X = points.get(ringStart + (pointIndex + 6) % ringSize)[0];
+                objdatLinePoint4Y = points.get(ringStart + (pointIndex + 6) % ringSize)[1];
+                objdatLinePoint4Z = points.get(ringStart + (pointIndex + 6) % ringSize)[2];
+                
+                sb2.append("5 24 "); //$NON-NLS-1$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                sb2.append(" "); //$NON-NLS-1$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                sb2.append(" "); //$NON-NLS-1$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                sb2.append(" "); //$NON-NLS-1$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                sb2.append("\n"); //$NON-NLS-1$
+                
+                if (num2 == 0 && !closed) {
+                    objdatLinePoint1X = points.get(pointIndex)[0];
+                    objdatLinePoint1Y = points.get(pointIndex)[1];
+                    objdatLinePoint1Z = points.get(pointIndex)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 3)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 3)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 3)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = -points.get(pointIndex + 1)[2];
+                    objdatLinePoint4X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint4Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint4Z = points.get(pointIndex + 1)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                if (num2 < num8) {
+                    objdatLinePoint1X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = points.get(pointIndex)[2];
+                    objdatLinePoint4X = points.get(ringStart + ringSize + (pointIndex + 1) % ringSize)[0];
+                    objdatLinePoint4Y = points.get(ringStart + ringSize + (pointIndex + 1) % ringSize)[1];
+                    objdatLinePoint4Z = points.get(ringStart + ringSize + (pointIndex + 1) % ringSize)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                if (num2 == num8 && !closed) {
+                    objdatLinePoint1X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = points.get(pointIndex)[2];
+                    Vector3d p1 = new Vector3d(BigDecimal.valueOf(objdatLinePoint1X), BigDecimal.valueOf(objdatLinePoint1Y), BigDecimal.valueOf(objdatLinePoint1Z));
+                    Vector3d yAxis = new Vector3d(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO);
+                    Vector3d crossP = Vector3d.cross(p1, yAxis);
+                    Vector3d p4 = Vector3d.add(p1, crossP);
+                    objdatLinePoint4X = p4.x.doubleValue();
+                    objdatLinePoint4Y = p4.y.doubleValue();
+                    objdatLinePoint4Z = p4.z.doubleValue();
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                if (num2 == num8 && closed) {
+                    objdatLinePoint1X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = points.get(pointIndex)[2];
+                    objdatLinePoint4X = points.get((num3 - num5) * 4 + 1)[0];
+                    objdatLinePoint4Y = points.get((num3 - num5) * 4 + 1)[1];
+                    objdatLinePoint4Z = points.get((num3 - num5) * 4 + 1)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                num3++;
+                pointIndex += 4;
+            }
+        }
+    }
+
+    private void addCondlinesForTorusOutside(List<Double[]> points, int num, int num5, int num8, StringBuilder sb2, boolean closed) {
+        int pointIndex = 0;
+        for (int num2 = 0; num2 <= num8; num2++)
+        {
+            double objdatLinePoint1X = points.get(pointIndex + 2)[0];
+            double objdatLinePoint1Y = points.get(pointIndex + 2)[1];
+            double objdatLinePoint1Z = points.get(pointIndex + 2)[2];
+            double objdatLinePoint2X = points.get(pointIndex + 3)[0];
+            double objdatLinePoint2Y = points.get(pointIndex + 3)[1];
+            double objdatLinePoint2Z = points.get(pointIndex + 3)[2];
+            double objdatLinePoint3X = points.get(pointIndex + 6)[0];
+            double objdatLinePoint3Y = points.get(pointIndex + 6)[1];
+            double objdatLinePoint3Z = points.get(pointIndex + 6)[2];
+            double objdatLinePoint4X = points.get(pointIndex + 1)[0];
+            double objdatLinePoint4Y = points.get(pointIndex + 3)[1];
+            double objdatLinePoint4Z = points.get(pointIndex + 1)[2];
+            pointIndex += 4;
+            
+            sb2.append("5 24 "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+            sb2.append("\n"); //$NON-NLS-1$
+            
+            int num9 = num - 1;
+            int num3 = num5;
+            while (num3 <= num9)
+            {
+                if (num3 != num9) {
+                    objdatLinePoint1X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 3)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 3)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 3)[2];
+                    objdatLinePoint3X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint3Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint3Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint4X = points.get(pointIndex + 6)[0];
+                    objdatLinePoint4Y = points.get(pointIndex + 6)[1];
+                    objdatLinePoint4Z = points.get(pointIndex + 6)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                
+                if (num2 == 0 && !closed) {
+                    objdatLinePoint1X = points.get(pointIndex)[0];
+                    objdatLinePoint1Y = points.get(pointIndex)[1];
+                    objdatLinePoint1Z = points.get(pointIndex)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 3)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 3)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 3)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = -points.get(pointIndex + 1)[2];
+                    objdatLinePoint4X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint4Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint4Z = points.get(pointIndex + 1)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                if (num2 < num8) {
+                    objdatLinePoint1X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = points.get(pointIndex)[2];
+                    objdatLinePoint4X = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[0];
+                    objdatLinePoint4Y = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[1];
+                    objdatLinePoint4Z = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                if (num2 == num8 && !closed) {
+                    objdatLinePoint1X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = points.get(pointIndex)[2];
+                    Vector3d p1 = new Vector3d(BigDecimal.valueOf(objdatLinePoint1X), BigDecimal.valueOf(objdatLinePoint1Y), BigDecimal.valueOf(objdatLinePoint1Z));
+                    Vector3d yAxis = new Vector3d(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO);
+                    Vector3d crossP = Vector3d.cross(p1, yAxis);
+                    Vector3d p4 = Vector3d.add(p1, crossP);
+                    objdatLinePoint4X = p4.x.doubleValue();
+                    objdatLinePoint4Y = p4.y.doubleValue();
+                    objdatLinePoint4Z = p4.z.doubleValue();
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                if (num2 == num8 && closed) {
+                    objdatLinePoint1X = points.get(pointIndex + 1)[0];
+                    objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+                    objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+                    objdatLinePoint2X = points.get(pointIndex + 2)[0];
+                    objdatLinePoint2Y = points.get(pointIndex + 2)[1];
+                    objdatLinePoint2Z = points.get(pointIndex + 2)[2];
+                    objdatLinePoint3X = points.get(pointIndex)[0];
+                    objdatLinePoint3Y = points.get(pointIndex)[1];
+                    objdatLinePoint3Z = points.get(pointIndex)[2];
+                    objdatLinePoint4X = points.get((num3 - num5) * 4 + 2)[0];
+                    objdatLinePoint4Y = points.get((num3 - num5) * 4 + 2)[1];
+                    objdatLinePoint4Z = points.get((num3 - num5) * 4 + 2)[2];
+                    
+                    sb2.append("5 24 "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                    sb2.append(" "); //$NON-NLS-1$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                    sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                    sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                    sb2.append("\n"); //$NON-NLS-1$
+                }
+                
+                num3++;
+                pointIndex += 4;
+            }
+            
+            objdatLinePoint1X = points.get(pointIndex + 1)[0];
+            objdatLinePoint1Y = points.get(pointIndex + 1)[1];
+            objdatLinePoint1Z = points.get(pointIndex + 1)[2];
+            objdatLinePoint2X = points.get(pointIndex)[0];
+            objdatLinePoint2Y = points.get(pointIndex)[1];
+            objdatLinePoint2Z = points.get(pointIndex)[2];
+            objdatLinePoint3X = points.get(pointIndex - 3)[0];
+            objdatLinePoint3Y = points.get(pointIndex - 3)[1];
+            objdatLinePoint3Z = points.get(pointIndex - 3)[2];
+            objdatLinePoint4X = points.get(pointIndex + 1)[0];
+            objdatLinePoint4Y = points.get(pointIndex + 2)[1];
+            objdatLinePoint4Z = points.get(pointIndex + 1)[2];
+            
+            sb2.append("5 24 "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+            sb2.append("\n"); //$NON-NLS-1$
+            pointIndex += 4;
+        }
     }
 
     @SuppressWarnings("java:S2111")
