@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -51,6 +52,7 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourType;
+import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
@@ -507,9 +509,13 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             {
                                 Map<GData4, Vertex[]> quads = c3d.getLockableDatFileReference().getVertexManager().getQuads();
                                 Map<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
+                                Set<GData> raytraceSkipSet = c3d.getRaytraceSkipSet();
                                 for (Entry<GData3, Vertex[]> entry : tris2.entrySet()) {
                                     GData3 g = entry.getKey();
                                     Vertex[] v = entry.getValue();
+                                    if (raytraceSkipSet.contains(g)) {
+                                        continue;
+                                    }
                                     Vector4f[] nv = new Vector4f[3];
                                     {
                                         boolean notShown = true;
@@ -582,6 +588,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
                                     GData4 g = entry.getKey();
                                     Vertex[] v = entry.getValue();
+                                    if (raytraceSkipSet.contains(g)) {
+                                        continue;
+                                    }
                                     Vector4f[] nv = new Vector4f[4];
                                     {
                                         boolean notShown = true;

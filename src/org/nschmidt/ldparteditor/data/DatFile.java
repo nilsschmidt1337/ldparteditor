@@ -235,6 +235,7 @@ public final class DatFile {
             }
             break;
         case 5: // Real BFC with texture mapping
+            c3d.clearRaytraceSkipSet();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             data2draw.drawGL20BFCtextured(c3d);
             GDataInit.resetBfcState();
@@ -248,6 +249,8 @@ public final class DatFile {
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 data2draw.drawGL20BFCtextured(c3d);
             }
+            
+            c3d.provideRaytraceSkipSet();
 
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);

@@ -170,6 +170,9 @@ public class Composite3D extends ScalableComposite {
     private final Vector4f screenXY = new Vector4f(0, 0, 0, 1);
 
     private final Set<Vertex> tmpHiddenVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
+    
+    private final Set<GData> tmpRaytraceSkipSet = new HashSet<>();
+    private Set<GData> tmpRaytraceSkipSetResult = new HashSet<>();
 
     public Vector4f getScreenXY() {
         return screenXY;
@@ -2414,5 +2417,23 @@ public class Composite3D extends ScalableComposite {
         final double factor = WorkbenchManager.getUserSettingState().getViewportScaleFactor();
         final Rectangle bounds = super.getBounds();
         return new Rectangle(bounds.x, bounds.y, (int) (bounds.width * factor), (int) (bounds.height * factor));
+    }
+
+    public void clearRaytraceSkipSet() {
+        tmpRaytraceSkipSet.clear();
+    }
+    
+    public void addToRaytraceSkipSet(GData gd) {
+        tmpRaytraceSkipSet.add(gd);
+    }
+
+    public Set<GData> getRaytraceSkipSet() {
+        return tmpRaytraceSkipSetResult;
+    }
+
+    public void provideRaytraceSkipSet() {
+        final Set<GData> result = new HashSet<>();
+        result.addAll(tmpRaytraceSkipSet);
+        tmpRaytraceSkipSetResult = result;
     }
 }

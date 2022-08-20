@@ -1200,6 +1200,8 @@ public final class GData3 extends GData {
                     break;
                 }
             }
+        } else {
+            c3d.addToRaytraceSkipSet(this);
         }
         if (GData.globalFoundTEXMAPNEXT) {
             GData.globalFoundTEXMAPStack.pop();
