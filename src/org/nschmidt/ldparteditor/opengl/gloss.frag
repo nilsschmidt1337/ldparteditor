@@ -224,27 +224,27 @@ void main (void)
     } else if (texColor.a < 1.0) {
        vec4 groundColor = gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
        float groundAlpha = gl_FrontLightModelProduct.sceneColor.a;
-       if (groundAlpha == 1.0) {
+       if (groundAlpha >= 1.0) {
          if (alphaSwitch > 0.0) {
             vec4 textureColor =  (gl_FrontLightModelProduct.sceneColor + lightTextureDiffuse) + lightTextureSpecular * reflectivity;
-            textureColor = textureColor * groundColor;
-            gl_FragColor.r = textureColor.r;
-            gl_FragColor.g = textureColor.g;
-            gl_FragColor.b = textureColor.b;
+            float oneMinusTexAlpha = 1.0 - texColor.a;
+            gl_FragColor.r = textureColor.r * texColor.a + groundColor.r * oneMinusTexAlpha;
+            gl_FragColor.g = textureColor.g * texColor.a + groundColor.g * oneMinusTexAlpha;
+            gl_FragColor.b = textureColor.b * texColor.a + groundColor.b * oneMinusTexAlpha;
             gl_FragColor.a = 1.0;
          } else {
             discard;
          }
        } else {
          if (alphaSwitch > 0.0) {
-            vec4 textureColor =  (gl_FrontLightModelProduct.sceneColor + lightTextureDiffuse) + lightTextureSpecular * reflectivity;
-            float oneMinusGroundAlpha = 1.0 - groundAlpha;
-            gl_FragColor.r = textureColor.r * groundAlpha + groundColor.r * oneMinusGroundAlpha;
-            gl_FragColor.g = textureColor.g * groundAlpha + groundColor.g * oneMinusGroundAlpha;
-            gl_FragColor.b = textureColor.b * groundAlpha + groundColor.b * oneMinusGroundAlpha;
-            gl_FragColor.a = 1.0;
+discard;
          } else {
-            discard;
+            vec4 textureColor =  (gl_FrontLightModelProduct.sceneColor + lightTextureDiffuse) + lightTextureSpecular * reflectivity;
+            float oneMinusTexAlpha = 1.0 - texColor.a;
+            gl_FragColor.r = textureColor.r * texColor.a + groundColor.r * oneMinusTexAlpha;
+            gl_FragColor.g = textureColor.g * texColor.a + groundColor.g * oneMinusTexAlpha;
+            gl_FragColor.b = textureColor.b * texColor.a + groundColor.b * oneMinusTexAlpha;
+            gl_FragColor.a = 1.0;
          }
       }
     } else {
