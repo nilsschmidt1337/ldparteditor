@@ -1,3 +1,10 @@
+### 28 Aug 2022
+With the release of 1.8.62 the following critical issues are fixed:
+1. The generated condline coordinates for the Torus from PrimGen2 did not match the coordinates of the generated quads.
+2. The transparency calculation for TEXMAP images was incorrect on the old OpenGL 2 renderer.
+3. Fallback geometry in TEXMAP sections was shown (in LDraw Standard render mode with the old OpenGL 2 renderer).
+
+
 ### 03 Aug 2022
 With the release of 1.8.61 you are able to...
 -  ...create a mixed mode torus with PrimGen2. 
