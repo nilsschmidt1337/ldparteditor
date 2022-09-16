@@ -106,28 +106,6 @@ public enum FileHelper {
     }
 
     /**
-     * Deletes the content of the directory recursively
-     *
-     * @param dir
-     *            the directory
-     * @throws IOException
-     */
-    public static void deleteDirectory(File dir) throws IOException {
-        if (dir.isDirectory()) {
-            File[] files = dir.listFiles();
-            if (files != null) {
-                for (File f : files) {
-                    deleteDirectory(f);
-                }
-            }
-        }
-
-        if (!Files.deleteIfExists(dir.toPath())) {
-            throw new IOException("Can't delete " + dir.toPath()); //$NON-NLS-1$
-        }
-    }
-
-    /**
      * Checks the (platform indepedend) existance of a given file
      *
      * @param file

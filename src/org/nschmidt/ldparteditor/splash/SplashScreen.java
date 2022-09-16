@@ -379,14 +379,11 @@ public class SplashScreen extends ApplicationWindow {
             // Prepare the default project folder
             try {
                 File projectFolder = new File(Project.DEFAULT_PROJECT_PATH);
-                if (projectFolder.exists()) {
-                    FileHelper.deleteDirectory(projectFolder);
-                }
                 // Well, it should be possible to create this w/o trouble at this time.
-                if (!projectFolder.mkdir()) {
+                if (!projectFolder.exists() && !projectFolder.mkdir()) {
                     throw new SecurityException("Can't create project folder."); //$NON-NLS-1$
                 }
-            } catch (SecurityException | IOException ex) {
+            } catch (SecurityException ex) {
                 NLogger.error(getClass(), ex);
             }
 
