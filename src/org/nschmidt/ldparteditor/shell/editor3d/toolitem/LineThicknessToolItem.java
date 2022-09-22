@@ -38,6 +38,7 @@ public class LineThicknessToolItem extends ToolItem {
     private static final NButton[] btnLineSize2Ptr = new NButton[1];
     private static final NButton[] btnLineSize3Ptr = new NButton[1];
     private static final NButton[] btnLineSize4Ptr = new NButton[1];
+    private static final NButton[] btnLineSize5Ptr = new NButton[1];
 
     public LineThicknessToolItem(Composite parent, int style, boolean isHorizontal) {
         super(parent, style, isHorizontal);
@@ -71,7 +72,12 @@ public class LineThicknessToolItem extends ToolItem {
         btnLineSize4Ptr[0] = btnLineSize4;
         btnLineSize4.setToolTipText(I18n.E3D_LINE_SIZE_4);
         btnLineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
-
+        
+        NButton btnLineSize5 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
+        btnLineSize5Ptr[0] = btnLineSize5;
+        btnLineSize5.setToolTipText(I18n.E3D_LINE_SIZE_5);
+        btnLineSize5.setImage(ResourceManager.getImage("icon16_linesize5.png")); //$NON-NLS-1$
+        
         if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
             NButton btnToggleLinesOpenGL = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
             btnToggleLinesOpenGLPtr[0] = btnToggleLinesOpenGL;
@@ -107,6 +113,10 @@ public class LineThicknessToolItem extends ToolItem {
         });
         widgetUtil(btnLineSize4Ptr[0]).addSelectionListener(e -> {
             setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 4f, btnLineSize4Ptr[0]);
+            regainFocus();
+        });
+        widgetUtil(btnLineSize5Ptr[0]).addSelectionListener(e -> {
+            setLineSize(GL20Primitives.SPHERE5, GL20Primitives.SPHERE_INV5, 400f, .400f, 5f, btnLineSize5Ptr[0]);
             regainFocus();
         });
     }

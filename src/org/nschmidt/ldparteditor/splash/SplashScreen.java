@@ -52,7 +52,6 @@ import org.nschmidt.ldparteditor.data.PGData;
 import org.nschmidt.ldparteditor.data.PGTimestamp;
 import org.nschmidt.ldparteditor.dialog.startup.StartupDialog;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
-import org.nschmidt.ldparteditor.helper.FileHelper;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.ProgressHelper;
 import org.nschmidt.ldparteditor.helper.ShellHelper;

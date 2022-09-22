@@ -496,6 +496,7 @@ public final class I18n {
     public static final String E3D_LINE_SIZE_2 = E3D.getString(getProperty());
     public static final String E3D_LINE_SIZE_3 = E3D.getString(getProperty());
     public static final String E3D_LINE_SIZE_4 = E3D.getString(getProperty());
+    public static final String E3D_LINE_SIZE_5 = E3D.getString(getProperty());
     public static final String E3D_LINE_SURFACE_INTERSECTION = E3D.getString(getProperty());
     public static final String E3D_LINE_TO_CONDLINE = E3D.getString(getProperty());
     public static final String E3D_LOADING_DATA = E3D.getString(getProperty());
