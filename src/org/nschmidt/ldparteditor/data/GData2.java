@@ -44,6 +44,9 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolIte
 
 public final class GData2 extends GData {
 
+    public static final BigDecimal MILLIMETRE_PER_LDU = new BigDecimal("0.4"); //$NON-NLS-1$
+    private static final BigDecimal STUD_PER_LDU = new BigDecimal("0.05"); //$NON-NLS-1$
+    
     public final int colourNumber;
     public final boolean isLine;
 
@@ -741,14 +744,20 @@ public final class GData2 extends GData {
             state--;
         }
         BigDecimal dA = length;
-
+        BigDecimal dmm = dA.multiply(MILLIMETRE_PER_LDU);
+        BigDecimal dst = dA.multiply(STUD_PER_LDU);
+        
         String dxS = numberFormat4f.format(dx);
         String dyS = numberFormat4f.format(dy);
         String dzS = numberFormat4f.format(dz);
         String dAS = numberFormat4f.format(dA);
+        String dmS = numberFormat4f.format(dmm);
+        String dsS = numberFormat4f.format(dst);
         final float oy1 = .015f * zoom;
         final float oy2 = .03f * zoom;
-        final float oy3 = .045f * zoom;
+        final float oy3 = .06f * zoom;
+        final float oy4 = .075f * zoom;
+        final float oy5 = .09f * zoom;
         final float ox1 = -.045f * zoom;
         for (PGData3 tri : View.S) {
             tri.drawText(lineOrigin.x, lineOrigin.y, lineOrigin.z + 100000f, zoom);
@@ -756,19 +765,27 @@ public final class GData2 extends GData {
         for (PGData3 tri : View.DA) {
             tri.drawText(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DX) {
+        for (PGData3 tri : View.Dmm) {
             tri.drawText(textOrigin.x, textOrigin.y + oy1, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DY) {
+        for (PGData3 tri : View.Dst) {
             tri.drawText(textOrigin.x, textOrigin.y + oy2, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DZ) {
+        for (PGData3 tri : View.DX) {
             tri.drawText(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
         }
+        for (PGData3 tri : View.DY) {
+            tri.drawText(textOrigin.x, textOrigin.y + oy4, textOrigin.z + 100000f, zoom);
+        }
+        for (PGData3 tri : View.DZ) {
+            tri.drawText(textOrigin.x, textOrigin.y + oy5, textOrigin.z + 100000f, zoom);
+        }
         drawNumber(dAS, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
-        drawNumber(dxS, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
-        drawNumber(dyS, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
-        drawNumber(dzS, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
+        drawNumber(dmS, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
+        drawNumber(dsS, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
+        drawNumber(dxS, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
+        drawNumber(dyS, textOrigin.x + ox1, textOrigin.y + oy4, textOrigin.z, zoom);
+        drawNumber(dzS, textOrigin.x + ox1, textOrigin.y + oy5, textOrigin.z, zoom);
         PGData3.endDrawText();
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
@@ -929,14 +946,20 @@ public final class GData2 extends GData {
             state--;
         }
         BigDecimal dA = length;
+        BigDecimal dmm = dA.multiply(MILLIMETRE_PER_LDU);
+        BigDecimal dst = dA.multiply(STUD_PER_LDU);
 
         String dxS = numberFormat4f.format(dx);
         String dyS = numberFormat4f.format(dy);
         String dzS = numberFormat4f.format(dz);
         String dAS = numberFormat4f.format(dA);
+        String dmS = numberFormat4f.format(dmm);
+        String dsS = numberFormat4f.format(dst);
         final float oy1 = .015f * zoom;
         final float oy2 = .03f * zoom;
-        final float oy3 = .045f * zoom;
+        final float oy3 = .06f * zoom;
+        final float oy4 = .075f * zoom;
+        final float oy5 = .09f * zoom;
         final float ox1 = -.045f * zoom;
         for (PGData3 tri : View.S) {
             tri.drawTextGL33vao(lineOrigin.x, lineOrigin.y, lineOrigin.z + 100000f, zoom);
@@ -944,18 +967,26 @@ public final class GData2 extends GData {
         for (PGData3 tri : View.DA) {
             tri.drawTextGL33vao(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DX) {
+        for (PGData3 tri : View.Dmm) {
             tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy1, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DY) {
+        for (PGData3 tri : View.Dst) {
             tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy2, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DZ) {
+        for (PGData3 tri : View.DX) {
             tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
         }
+        for (PGData3 tri : View.DY) {
+            tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy4, textOrigin.z + 100000f, zoom);
+        }
+        for (PGData3 tri : View.DZ) {
+            tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy5, textOrigin.z + 100000f, zoom);
+        }
         drawNumberGL33(dAS, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
-        drawNumberGL33(dxS, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
-        drawNumberGL33(dyS, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
-        drawNumberGL33(dzS, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
+        drawNumberGL33(dmS, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
+        drawNumberGL33(dsS, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
+        drawNumberGL33(dxS, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
+        drawNumberGL33(dyS, textOrigin.x + ox1, textOrigin.y + oy4, textOrigin.z, zoom);
+        drawNumberGL33(dzS, textOrigin.x + ox1, textOrigin.y + oy5, textOrigin.z, zoom);
     }
 }

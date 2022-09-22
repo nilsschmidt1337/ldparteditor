@@ -605,6 +605,7 @@ public final class I18n {
     public static final String E3D_PRIMGEN2 = E3D.getString(getProperty());
     public static final String E3D_PROTRACTOR_ANGLE = E3D.getString(getProperty());
     public static final String E3D_PROTRACTOR_LENGTH = E3D.getString(getProperty());
+    public static final String E3D_PROTRACTOR_LENGTH_MM = E3D.getString(getProperty());
     public static final String E3D_QUADS = E3D.getString(getProperty());
     public static final String E3D_READY_STATUS = E3D.getString(getProperty());
     public static final String E3D_RECTIFIER = E3D.getString(getProperty());

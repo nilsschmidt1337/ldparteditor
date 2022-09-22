@@ -208,6 +208,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     final BigDecimalSpinner[] spnSelectionAnglePtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnSelectionLengthPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnSelectionLengthMMPtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnSelectionX1Ptr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnSelectionY1Ptr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnSelectionZ1Ptr = new BigDecimalSpinner[1];
@@ -222,6 +223,7 @@ class Editor3DDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spnSelectionZ4Ptr = new BigDecimalSpinner[1];
     final Label[] lblSelectionAnglePtr = new Label[1];
     final Label[] lblSelectionLengthPtr = new Label[1];
+    final Label[] lblSelectionLengthMMPtr = new Label[1];
     final Label[] lblSelectionX1Ptr = new Label[1];
     final Label[] lblSelectionY1Ptr = new Label[1];
     final Label[] lblSelectionZ1Ptr = new Label[1];
@@ -872,6 +874,19 @@ class Editor3DDesign extends ApplicationWindow {
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmpSelArea, Cocoa.getStyle());
                                 this.spnSelectionLengthPtr[0] = spinner;
+                                spinner.setEnabled(false);
+                                spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
+                                spinner.setMinimum(new BigDecimal("0.00000001")); //$NON-NLS-1$
+                                spinner.setValue(BigDecimal.ONE);
+                                spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+                            }
+                            {
+                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                this.lblSelectionLengthMMPtr[0] = lblLabel;
+                                lblLabel.setText(I18n.E3D_PROTRACTOR_LENGTH_MM);
+                                lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmpSelArea, Cocoa.getStyle());
+                                this.spnSelectionLengthMMPtr[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
                                 spinner.setMinimum(new BigDecimal("0.00000001")); //$NON-NLS-1$
