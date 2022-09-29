@@ -112,7 +112,7 @@ public final class DatFile {
 
     private boolean optimizingCSG = true;
 
-    private DatType type = DatType.PART;
+    private volatile DatType type = DatType.PART;
     private long lastModified = 0;
 
     private String description;
@@ -1718,16 +1718,16 @@ public final class DatFile {
                         String typeSuffix = ""; //$NON-NLS-1$
                         String path = newFile.getParent();
 
-                        if (path.endsWith(File.separator + "S") || path.endsWith(File.separator + "s")) { //$NON-NLS-1$ //$NON-NLS-2$
+                        if (getType() == DatType.SUBPART || path.endsWith(File.separator + "S") || path.endsWith(File.separator + "s")) { //$NON-NLS-1$ //$NON-NLS-2$
                             typeSuffix = "Unofficial_Subpart"; //$NON-NLS-1$
                             folderPrefix = "s\\"; //$NON-NLS-1$
-                        } else if (path.endsWith(File.separator + "P" + File.separator + "48") || path.endsWith(File.separator + "p" + File.separator + "48")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                        } else if (getType() == DatType.PRIMITIVE48 || path.endsWith(File.separator + "P" + File.separator + "48") || path.endsWith(File.separator + "p" + File.separator + "48")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                             typeSuffix = "Unofficial_48_Primitive"; //$NON-NLS-1$
                             folderPrefix = "48\\"; //$NON-NLS-1$
-                        } else if (path.endsWith(File.separator + "P" + File.separator + "8") || path.endsWith(File.separator + "p" + File.separator + "8")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                        } else if (getType() == DatType.PRIMITIVE8 || path.endsWith(File.separator + "P" + File.separator + "8") || path.endsWith(File.separator + "p" + File.separator + "8")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                             typeSuffix = "Unofficial_8_Primitive"; //$NON-NLS-1$
                             folderPrefix = "8\\"; //$NON-NLS-1$
-                        } else if (path.endsWith(File.separator + "P") || path.endsWith(File.separator + "p")) { //$NON-NLS-1$ //$NON-NLS-2$
+                        } else if (getType() == DatType.PRIMITIVE || path.endsWith(File.separator + "P") || path.endsWith(File.separator + "p")) { //$NON-NLS-1$ //$NON-NLS-2$
                             typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
                         } else if (tLine.contains("Flexible_Section")) { //$NON-NLS-1$
                             typeSuffix = "Unofficial_Part Flexible_Section"; //$NON-NLS-1$

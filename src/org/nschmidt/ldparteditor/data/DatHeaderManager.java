@@ -222,23 +222,33 @@ public class DatHeaderManager {
                             // HeaderState._03_TYPE
                             if (headerState == HeaderState.H03_TYPE) {
                                 // I expect that this line is a valid Type
-                                if ("0 !LDRAW_ORG Unofficial_Part".equals(normalizedLine) //$NON-NLS-1$
+                                final boolean isPart = "0 !LDRAW_ORG Unofficial_Part".equals(normalizedLine) //$NON-NLS-1$
                                         || "0 !LDRAW_ORG Unofficial_Part Flexible_Section".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LDRAW_ORG Unofficial_Subpart".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LDRAW_ORG Unofficial_Primitive".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LDRAW_ORG Unofficial_48_Primitive".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LDRAW_ORG Unofficial_8_Primitive".equals(normalizedLine) //$NON-NLS-1$
                                         || "0 !LDRAW_ORG Unofficial_Shortcut".equals(normalizedLine) //$NON-NLS-1$
                                         || "0 !LDRAW_ORG Unofficial_Shortcut Alias".equals(normalizedLine) //$NON-NLS-1$
                                         || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour".equals(normalizedLine) //$NON-NLS-1$
                                         || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour Alias".equals(normalizedLine) //$NON-NLS-1$
                                         || "0 !LDRAW_ORG Unofficial_Part Alias".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LDRAW_ORG Unofficial_Part Physical_Colour".equals(normalizedLine)) { //$NON-NLS-1$
+                                        || "0 !LDRAW_ORG Unofficial_Part Physical_Colour".equals(normalizedLine); //$NON-NLS-1$
+                                final boolean isSubPart = "0 !LDRAW_ORG Unofficial_Subpart".equals(normalizedLine); //$NON-NLS-1$
+                                final boolean isPrimitive = "0 !LDRAW_ORG Unofficial_Primitive".equals(normalizedLine); //$NON-NLS-1$
+                                final boolean isPrimitive48 = "0 !LDRAW_ORG Unofficial_48_Primitive".equals(normalizedLine); //$NON-NLS-1$
+                                final boolean isPrimitive8 = "0 !LDRAW_ORG Unofficial_8_Primitive".equals(normalizedLine); //$NON-NLS-1$
+                                if (isPart
+                                        || isSubPart
+                                        || isPrimitive
+                                        || isPrimitive48
+                                        || isPrimitive8) {
                                     h.setLineTYPE(lineNumber);
                                     h.setHasTYPE(true);
                                     h.setHasUNOFFICIAL(true);
                                     h.setHasUPDATE(false);
                                     headerState = HeaderState.H04_LICENSE;
+                                    if (isPart) df.setType(DatType.PART);
+                                    if (isSubPart) df.setType(DatType.SUBPART);
+                                    if (isPrimitive) df.setType(DatType.PRIMITIVE);
+                                    if (isPrimitive48) df.setType(DatType.PRIMITIVE48);
+                                    if (isPrimitive8) df.setType(DatType.PRIMITIVE8);
                                     break;
                                 } else if ("0 !LDRAW_ORG".equals(normalizedLine)) { //$NON-NLS-1$
                                     h.setLineTYPE(lineNumber);
