@@ -17,9 +17,13 @@ package org.nschmidt.ldparteditor.shell.editor3d.toolitem;
 
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
+import java.math.BigDecimal;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.nschmidt.ldparteditor.composite.ToolItem;
+import org.nschmidt.ldparteditor.dialog.value.ValueDialog;
 import org.nschmidt.ldparteditor.enumtype.GL20Primitives;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
@@ -49,33 +53,33 @@ public class LineThicknessToolItem extends ToolItem {
     private static void createWidgets(LineThicknessToolItem lineThicknessToolItem) {
         NButton btnLineSize0 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize0Ptr[0] = btnLineSize0;
-        btnLineSize0.setToolTipText(I18n.E3D_LINE_SIZE_0);
+        btnLineSize0.setToolTipText(I18n.E3D_LINE_SIZE_0 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnLineSize0.setImage(ResourceManager.getImage("icon16_linesize0.png")); //$NON-NLS-1$
 
         NButton btnLineSize1 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize1Ptr[0] = btnLineSize1;
-        btnLineSize1.setToolTipText(I18n.E3D_LINE_SIZE_1);
+        btnLineSize1.setToolTipText(I18n.E3D_LINE_SIZE_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnLineSize1.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
 
         NButton btnLineSize2 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize2Ptr[0] = btnLineSize2;
-        btnLineSize2.setToolTipText(I18n.E3D_LINE_SIZE_2);
+        btnLineSize2.setToolTipText(I18n.E3D_LINE_SIZE_2 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnLineSize2.setImage(ResourceManager.getImage("icon16_linesize2.png")); //$NON-NLS-1$
 
         NButton btnLineSize3 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize3.setSelection(true);
         btnLineSize3Ptr[0] = btnLineSize3;
-        btnLineSize3.setToolTipText(I18n.E3D_LINE_SIZE_3);
+        btnLineSize3.setToolTipText(I18n.E3D_LINE_SIZE_3 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnLineSize3.setImage(ResourceManager.getImage("icon16_linesize3.png")); //$NON-NLS-1$
 
         NButton btnLineSize4 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize4Ptr[0] = btnLineSize4;
-        btnLineSize4.setToolTipText(I18n.E3D_LINE_SIZE_4);
+        btnLineSize4.setToolTipText(I18n.E3D_LINE_SIZE_4 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnLineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
         
         NButton btnLineSize5 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize5Ptr[0] = btnLineSize5;
-        btnLineSize5.setToolTipText(I18n.E3D_LINE_SIZE_5);
+        btnLineSize5.setToolTipText(I18n.E3D_LINE_SIZE_5 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnLineSize5.setImage(ResourceManager.getImage("icon16_linesize5.png")); //$NON-NLS-1$
         
         if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
@@ -96,42 +100,82 @@ public class LineThicknessToolItem extends ToolItem {
             regainFocus();
         });
         widgetUtil(btnLineSize0Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE0, GL20Primitives.SPHERE_INV0, 0f, 0f, 0.01f, btnLineSize0Ptr[0]);
+            setLineSize(GL20Primitives.SPHERE0, GL20Primitives.SPHERE_INV0, 0f, 0f, 0.01f, btnLineSize0Ptr[0], e);
             regainFocus();
         });
         widgetUtil(btnLineSize1Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, 25f, .025f, 1f, btnLineSize1Ptr[0]);
+            setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, 25f, .025f, 1f, btnLineSize1Ptr[0], e);
             regainFocus();
         });
         widgetUtil(btnLineSize2Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, 50f, .050f, 2f, btnLineSize2Ptr[0]);
+            setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, 50f, .050f, 2f, btnLineSize2Ptr[0], e);
             regainFocus();
         });
         widgetUtil(btnLineSize3Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 3f, btnLineSize3Ptr[0]);
+            setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 3f, btnLineSize3Ptr[0], e);
             regainFocus();
         });
         widgetUtil(btnLineSize4Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 4f, btnLineSize4Ptr[0]);
+            setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 4f, btnLineSize4Ptr[0], e);
             regainFocus();
         });
         widgetUtil(btnLineSize5Ptr[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE5, GL20Primitives.SPHERE_INV5, 400f, .400f, 5f, btnLineSize5Ptr[0]);
+            setLineSize(GL20Primitives.SPHERE5, GL20Primitives.SPHERE_INV5, 400f, .400f, 5f, btnLineSize5Ptr[0], e);
             regainFocus();
         });
+        setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 3f, btnLineSize3Ptr[0], null);
     }
 
-    private static void setLineSize(SphereGL20 sp, SphereGL20 spInv, float lineWidth1000, float lineWidth, float lineWidthGL, NButton btn) {
+    private static void setLineSize(SphereGL20 sp, SphereGL20 spInv, float lineWidth1000, float lineWidth, float lineWidthGL, NButton btn, SelectionEvent e) {
+        if (e != null && Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
+            new ValueDialog(Editor3DWindow.getWindow().getShell(), I18n.E3D_LINE_SCALE, I18n.E3D_LINE_SCALE_EXPLANATION) {
+
+                @Override
+                public void initializeSpinner() {
+                    this.spnValuePtr[0].setMinimum(new BigDecimal("1")); //$NON-NLS-1$
+                    this.spnValuePtr[0].setMaximum(new BigDecimal("10")); //$NON-NLS-1$
+                    this.spnValuePtr[0].setValue(BigDecimal.valueOf(Math.max(WorkbenchManager.getUserSettingState().getLineScaleFactor(), 1f)));
+                }
+
+                @Override
+                public void applyValue() {
+                    WorkbenchManager.getUserSettingState().setLineScaleFactor(this.spnValuePtr[0].getValue().floatValue());
+                }
+            }.open();
+        }
+        
+        final float lineScaleFactor = Math.max(WorkbenchManager.getUserSettingState().getLineScaleFactor(), 1f);
         final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;
-        View.lineWidth1000 = lineWidth1000;
-        View.lineWidth = lineWidth;
-        View.lineWidthGL = lineWidthGL;
+        View.lineWidth1000 = lineWidth1000 * lineScaleFactor;
+        View.lineWidth = lineWidth * lineScaleFactor;
+        View.lineWidthGL = lineWidthGL * lineScaleFactor;
         if (useLegacyGL) {
+            if (lineScaleFactor > 1f) {
+                sp = new SphereGL20(View.lineWidth1000, 8);
+                spInv = new SphereGL20(-View.lineWidth1000, 8);
+            }
+            
             GL20Primitives.sphere = sp;
             GL20Primitives.sphereInv = spInv;
             Editor3DWindow.getWindow().compileAll(false);
         }
-        clickSingleBtn(btn);
+        
+        if (btnToggleLinesOpenGLPtr[0].getSelection()) {
+            View.edgeThreshold = 5e6f;
+        } else {
+            // Intentional quadratic factor
+            View.edgeThreshold = 5e-6f / lineScaleFactor / lineScaleFactor;
+        }
+        
+        if (e != null) {
+            boolean openGLLines = false;
+            if (btnToggleLinesOpenGLPtr[0] != null)
+                openGLLines = btnToggleLinesOpenGLPtr[0].getSelection();
+            clickSingleBtn(btn);
+            btn.setSelection(true);
+            if (btnToggleLinesOpenGLPtr[0] != null)
+                btnToggleLinesOpenGLPtr[0].setSelection(openGLLines);
+        }
     }
 
     private static void regainFocus() {

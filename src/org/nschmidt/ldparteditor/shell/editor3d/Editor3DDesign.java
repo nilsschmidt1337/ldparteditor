@@ -423,15 +423,15 @@ class Editor3DDesign extends ApplicationWindow {
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("CLOSE_VIEW")) { //$NON-NLS-1$
-                lastToolItem = createToolItemCloseView(s.getDrawLocation(), s.getDrawMode()); // LINE_THICKNESS
+                lastToolItem = createToolItemCloseView(s.getDrawLocation(), s.getDrawMode()); // CLOSE_VIEW
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("CHANGE_PERSPECTIVE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemPerspective(s.getDrawLocation(), s.getDrawMode()); // LINE_THICKNESS
+                lastToolItem = createToolItemPerspective(s.getDrawLocation(), s.getDrawMode()); // CHANGE_PERSPECTIVE
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("RENDER_MODE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemRenderMode(s.getDrawLocation(), s.getDrawMode()); // LINE_THICKNESS
+                lastToolItem = createToolItemRenderMode(s.getDrawLocation(), s.getDrawMode()); // RENDER_MODE
                 missingItemsToCreate.remove(obj);
             }
         }
