@@ -71,6 +71,8 @@ class CompositeTabDesign extends CTabItem {
     final MenuItem[] mntmInspectSamePtr = new MenuItem[1];
     final NButton[] btnInspectPtr = new NButton[1];
     final NButton[] btnInspectSamePtr = new NButton[1];
+    
+    final MenuItem[] mntmCopyIssuesPtr = new MenuItem[1];
 
     final Canvas[] canvasLineNumberAreaPtr = new Canvas[1];
     final StyledText[] compositeTextPtr = new StyledText[1];
@@ -231,6 +233,14 @@ class CompositeTabDesign extends CTabItem {
                 mntmInspectSamePtr[0] = mntmInspectSame;
                 mntmInspectSame.setEnabled(true);
                 mntmInspectSame.setText(I18n.COMPOSITETAB_INSPECT_SIMILAR);
+                
+                new MenuItem(mnuTabFolder, SWT.SEPARATOR);
+                
+                MenuItem mntmCopyIssues = new MenuItem(mnuTabFolder, I18n.noBiDirectionalTextStyle());
+                mntmCopyIssuesPtr[0] = mntmCopyIssues;
+                mntmCopyIssues.setEnabled(true);
+                mntmCopyIssues.setText(I18n.COPYNPASTE_COPY);
+                mntmCopyIssues.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
 
                 tree.build();
 

@@ -73,12 +73,14 @@ import org.nschmidt.ldparteditor.enumtype.Font;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.enumtype.TextTask;
+import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helper.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helper.compositetext.Inspector;
+import org.nschmidt.ldparteditor.helper.compositetext.Issue2ClipboardCopier;
 import org.nschmidt.ldparteditor.helper.compositetext.QuickFixer;
 import org.nschmidt.ldparteditor.helper.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.helper.compositetext.VertexMarker;
@@ -1655,7 +1657,8 @@ public class CompositeTab extends CompositeTabDesign {
         widgetUtil(mntmInspectPtr[0]).addSelectionListener(inspect);
         widgetUtil(mntmInspectSamePtr[0]).addSelectionListener(inspectSame);
         widgetUtil(btnInspectPtr[0]).addSelectionListener(inspect);
-        widgetUtil( btnInspectSamePtr[0]).addSelectionListener(inspectSame);
+        widgetUtil(btnInspectSamePtr[0]).addSelectionListener(inspectSame);
+        widgetUtil(mntmCopyIssuesPtr[0]).addSelectionListener(e -> copySelectedIssuesToClipboard());
 
         treeProblemsPtr[0].addSelectionListener(e -> {
             boolean enabled = treeProblemsPtr[0].getSelectionCount() == 1 && treeProblemsPtr[0].getSelection()[0] != null;
@@ -1679,6 +1682,11 @@ public class CompositeTab extends CompositeTabDesign {
                     treeProblemsPtr[0].update();
                     treeProblemsPtr[0].getTree().select(treeProblemsPtr[0].getMapInv().get(sel));
                 }
+            }
+        });
+        treeProblemsPtr[0].addListener(SWT.KeyDown, e -> {
+            if (Cocoa.checkCtrlOrCmdPressed(e.stateMask) && e.keyCode == 'c') {
+                copySelectedIssuesToClipboard();
             }
         });
         compositeContainerPtr[0].addControlListener(new ControlAdapter() {
@@ -1876,6 +1884,45 @@ public class CompositeTab extends CompositeTabDesign {
             st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
             st.forceFocus();
         });
+    }
+
+    private void copySelectedIssuesToClipboard() {
+        Set<TreeItem> items = new HashSet<>();
+        items.addAll(Arrays.asList(treeProblemsPtr[0].getSelection()));
+        if (items.contains(treeItemHintsPtr[0])) {
+            NLogger.debug(getClass(), "+Copy all hints."); //$NON-NLS-1$
+            items.remove(treeItemHintsPtr[0]);
+            for (TreeItem sort2 : treeItemHintsPtr[0].getItems()) {
+                if (!items.contains(sort2))
+                    items.add(sort2);
+            }
+        }
+        if (items.contains(treeItemErrorsPtr[0])) {
+            NLogger.debug(getClass(), "+Copy all errors."); //$NON-NLS-1$
+            items.remove(treeItemErrorsPtr[0]);
+            for (TreeItem sort3 : treeItemErrorsPtr[0].getItems()) {
+                if (!items.contains(sort3))
+                    items.add(sort3);
+            }
+        }
+        if (items.contains(treeItemWarningsPtr[0])) {
+            NLogger.debug(getClass(), "+Copy all warnings."); //$NON-NLS-1$
+            items.remove(treeItemWarningsPtr[0]);
+            for (TreeItem sort4 : treeItemWarningsPtr[0].getItems()) {
+                if (!items.contains(sort4))
+                    items.add(sort4);
+            }
+        }
+        if (items.contains(treeItemDuplicatesPtr[0])) {
+            NLogger.debug(getClass(), "+Copy all duplicates."); //$NON-NLS-1$
+            items.remove(treeItemDuplicatesPtr[0]);
+            for (TreeItem sort5 : treeItemDuplicatesPtr[0].getItems()) {
+                if (!items.contains(sort5))
+                    items.add(sort5);
+            }
+        }
+
+        Issue2ClipboardCopier.copyTextIssues(getTextComposite(), items);
     }
 
     public void setFolderAndWindow(CompositeTabFolder cTabFolder, ApplicationWindow textEditorWindow) {
