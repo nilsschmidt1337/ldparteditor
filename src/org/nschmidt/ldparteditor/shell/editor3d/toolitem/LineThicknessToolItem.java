@@ -160,7 +160,7 @@ public class LineThicknessToolItem extends ToolItem {
             Editor3DWindow.getWindow().compileAll(false);
         }
         
-        if (btnToggleLinesOpenGLPtr[0].getSelection()) {
+        if (btnToggleLinesOpenGLPtr[0] != null && btnToggleLinesOpenGLPtr[0].getSelection()) {
             View.edgeThreshold = 5e6f;
         } else {
             // Intentional quadratic factor
