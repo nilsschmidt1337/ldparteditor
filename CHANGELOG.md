@@ -1,3 +1,15 @@
+### 01 Oct 2022
+With the release of 1.8.63 you are able to...
+-  ...keep all files from the initial temporary project on application restart.
+-  ...see the D value (distance) of the distance meter not only shown in "LDU" but also in "mm" and "Stud".
+-  ...copy hint/error/warning messages to the clipboard to paste it to the PartsTracker.
+-  ...have a customizable line size button where you can set the thickness of the line for yourself (Ctrl+Click on a line size button). 
+-  ...use more line size buttons (five).
+
+The following critical issues are fixed:
+1. "Save as..." removed sometimes a correct directory prefix (e.g. "48\") from the file header.
+
+
 ### 28 Aug 2022
 With the release of 1.8.62 the following critical issues are fixed:
 1. The generated condline coordinates for the Torus from PrimGen2 did not match the coordinates of the generated quads.
