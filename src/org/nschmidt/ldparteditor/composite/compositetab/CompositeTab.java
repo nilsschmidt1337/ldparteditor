@@ -1659,6 +1659,7 @@ public class CompositeTab extends CompositeTabDesign {
         widgetUtil(btnInspectPtr[0]).addSelectionListener(inspect);
         widgetUtil(btnInspectSamePtr[0]).addSelectionListener(inspectSame);
         widgetUtil(mntmCopyIssuesPtr[0]).addSelectionListener(e -> copySelectedIssuesToClipboard());
+        widgetUtil(btnCopyIssuesPtr[0]).addSelectionListener(e -> copySelectedIssuesToClipboard());
 
         treeProblemsPtr[0].addSelectionListener(e -> {
             boolean enabled = treeProblemsPtr[0].getSelectionCount() == 1 && treeProblemsPtr[0].getSelection()[0] != null;
@@ -1666,6 +1667,7 @@ public class CompositeTab extends CompositeTabDesign {
             btnInspectSamePtr[0].setEnabled(enabled);
             btnQuickFixPtr[0].setEnabled(enabled);
             btnQuickFixSamePtr[0].setEnabled(enabled);
+            btnCopyIssuesPtr[0].setEnabled(enabled);
         });
         treeProblemsPtr[0].addListener(SWT.MouseDoubleClick, e -> {
             final TreeItem[] selection = treeProblemsPtr[0].getSelection();
@@ -2011,6 +2013,7 @@ public class CompositeTab extends CompositeTabDesign {
         ct.btnInspectSamePtr[0] = this.btnInspectSamePtr[0];
         ct.btnQuickFixPtr[0] = this.btnQuickFixPtr[0];
         ct.btnQuickFixSamePtr[0] = this.btnQuickFixSamePtr[0];
+        ct.btnCopyIssuesPtr[0] = this.btnCopyIssuesPtr[0];
         ct.lblProblemCountPtr[0] = this.lblProblemCountPtr[0];
         try {
             ct.setControl(this.tabState.getTab().getControl());

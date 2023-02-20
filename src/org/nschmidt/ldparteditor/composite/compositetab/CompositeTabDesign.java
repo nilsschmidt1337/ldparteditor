@@ -66,6 +66,7 @@ class CompositeTabDesign extends CTabItem {
     final MenuItem[] mntmQuickFixSamePtr = new MenuItem[1];
     final NButton[] btnQuickFixPtr = new NButton[1];
     final NButton[] btnQuickFixSamePtr = new NButton[1];
+    final NButton[] btnCopyIssuesPtr = new NButton[1];
 
     final MenuItem[] mntmInspectPtr = new MenuItem[1];
     final MenuItem[] mntmInspectSamePtr = new MenuItem[1];
@@ -165,11 +166,11 @@ class CompositeTabDesign extends CTabItem {
                 tabFolderPartInformation.setSelection(tbtmPartProblems);
                 Composite cmpPartProblems = new Composite(tabFolderPartInformation, SWT.NONE);
                 tbtmPartProblems.setControl(cmpPartProblems);
-                cmpPartProblems.setLayout(new GridLayout(5, false));
+                cmpPartProblems.setLayout(new GridLayout(8, false));
 
                 Label lblProblemCount = new Label(cmpPartProblems, SWT.NONE);
                 this.lblProblemCountPtr[0] = lblProblemCount;
-                lblProblemCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 5, 1));
+                lblProblemCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 8, 1));
                 lblProblemCount.setText("0 " + I18n.EDITORTEXT_ERRORS + ", 0 " + I18n.EDITORTEXT_WARNINGS + ", 0 " + I18n.EDITORTEXT_OTHERS + ", 0 " + I18n.EDITORTEXT_DUPLICATES); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
                 Tree tree = new Tree(cmpPartProblems, SWT.BORDER | SWT.MULTI, 128);
@@ -177,7 +178,7 @@ class CompositeTabDesign extends CTabItem {
                 treeProblemsPtr[0] = tree;
                 tree.setLinesVisible(true);
                 tree.setHeaderVisible(true);
-                tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 1));
+                tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
 
                 TreeColumn trclmnDescription = new TreeColumn(tree, SWT.NONE);
                 trclmnDescription.setWidth(598);
@@ -239,7 +240,7 @@ class CompositeTabDesign extends CTabItem {
                 MenuItem mntmCopyIssues = new MenuItem(mnuTabFolder, I18n.noBiDirectionalTextStyle());
                 mntmCopyIssuesPtr[0] = mntmCopyIssues;
                 mntmCopyIssues.setEnabled(true);
-                mntmCopyIssues.setText(I18n.COPYNPASTE_COPY);
+                mntmCopyIssues.setText(I18n.COMPOSITETAB_COPY_PROBLEM_INFO);
                 mntmCopyIssues.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
 
                 tree.build();
@@ -260,6 +261,9 @@ class CompositeTabDesign extends CTabItem {
                 btnInspectSame.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
                 btnInspectSame.setText(I18n.COMPOSITETAB_INSPECT_SIMILAR);
 
+                Label lblSeparator2 = new Label(cmpPartProblems, SWT.NONE);
+                lblSeparator2.setText(" "); //$NON-NLS-1$
+                
                 NButton btnQuickFix = new NButton(cmpPartProblems, SWT.NONE);
                 this.btnQuickFixPtr[0] = btnQuickFix;
                 btnQuickFix.setEnabled(false);
@@ -271,6 +275,15 @@ class CompositeTabDesign extends CTabItem {
                 btnQuickFixSame.setEnabled(false);
                 btnQuickFixSame.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                 btnQuickFixSame.setText(I18n.COMPOSITETAB_QUICK_FIX_SIMILAR);
+                
+                Label lblSeparator3 = new Label(cmpPartProblems, SWT.NONE);
+                lblSeparator3.setText(" "); //$NON-NLS-1$
+                
+                NButton btnCopyIssues = new NButton(cmpPartProblems, SWT.NONE);
+                this.btnCopyIssuesPtr[0] = btnCopyIssues;
+                btnCopyIssues.setEnabled(false);
+                btnCopyIssues.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
+                btnCopyIssues.setText(I18n.COMPOSITETAB_COPY_PROBLEM_INFO);
             }
             composite.pack();
             sashForm.setWeights(2, 1);

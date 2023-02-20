@@ -236,6 +236,7 @@ public final class I18n {
     public static final String COLOUR_X_AXIS_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_Y_AXIS_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_Z_AXIS_COLOUR = COLOUR.getString(getProperty());
+    public static final String COMPOSITETAB_COPY_PROBLEM_INFO = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_DESCRIPTION = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_DUPLICATES = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_ERRORS = COMPOSITETAB.getString(getProperty());
