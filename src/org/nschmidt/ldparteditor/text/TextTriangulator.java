@@ -52,7 +52,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 public enum TextTriangulator {
     INSTANCE;
 
-    public static Set<GData> triangulateText(Font font, final float r, final float g, final float b, final String text, final double flatness, final double interpolateFlatness, final GData1 parent, final DatFile datFile, int fontHeight) {
+    public static Set<GData> triangulateText(Font font, final float r, final float g, final float b, final String text, final double flatness, final double interpolateFlatness, final GData1 parent, final DatFile datFile, int fontHeight, int mode) {
         final GlyphVector vector = font.createGlyphVector(new FontRenderContext(null, false, false), text);
 
         final Set<GData> finalTriangleSet = Collections.synchronizedSet(new HashSet<>());
@@ -87,7 +87,7 @@ public enum TextTriangulator {
                             threads[j] = new Thread(() -> {
                                 Shape characterShape = vector.getGlyphOutline(i[0]);
                                 NLogger.debug(TextTriangulator.class, "Triangulating {0}", text.charAt(i[0])); //$NON-NLS-1$
-                                Set<GData> characterTriangleSet = triangulateShape(monitor, characterShape, flatness, interpolateFlatness, parent, datFile, scale, r, g, b);
+                                Set<GData> characterTriangleSet = triangulateShape(monitor, characterShape, flatness, interpolateFlatness, parent, datFile, scale, r, g, b, mode);
                                 if (characterTriangleSet.isEmpty()) {
                                     counter.decrementAndGet();
                                 }
@@ -139,7 +139,7 @@ public enum TextTriangulator {
     }
 
     private static Set<GData> triangulateShape(IProgressMonitor monitor, Shape shape, double flatness, double interpolateFlatness, GData1 parent, DatFile datFile, double scale, float r, float g,
-            float b) {
+            float b, int mode) {
         PathIterator shapePathIterator = shape.getPathIterator(null, flatness);
 
         /*
@@ -308,7 +308,7 @@ public enum TextTriangulator {
                         anchor = gdt;
                         finalTriangleSet.add(gdt);
                     }
-                } else if (!(point1.coord(0) == tri.get(0).coord(0) && point1.coord(1) == tri.get(0).coord(1)
+                } else if (mode != 1 && !(point1.coord(0) == tri.get(0).coord(0) && point1.coord(1) == tri.get(0).coord(1)
 
                         ||
 

@@ -2313,7 +2313,7 @@ public class MiscToolItem extends ToolItem {
                         }
                         GData anchorData = df.getDrawChainTail();
                         int lineNumber = df.getDrawPerLineNoClone().getKey(anchorData);
-                        Set<GData> triangleSet = TextTriangulator.triangulateText(myFont, r, g, b, ts.getText().trim(), ts.getFlatness().doubleValue(), ts.getInterpolateFlatness().doubleValue(), View.DUMMY_REFERENCE, df, ts.getFontHeight().intValue());
+                        Set<GData> triangleSet = TextTriangulator.triangulateText(myFont, r, g, b, ts.getText().trim(), ts.getFlatness().doubleValue(), ts.getInterpolateFlatness().doubleValue(), View.DUMMY_REFERENCE, df, ts.getFontHeight().intValue(), ts.getMode());
                         for (GData gda3 : triangleSet) {
                             lineNumber++;
                             df.getDrawPerLineNoClone().put(lineNumber, gda3);

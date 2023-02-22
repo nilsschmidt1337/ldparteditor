@@ -29,6 +29,7 @@ public class Txt2DatSettings {
     private FontData fontData = null;
     private String text = "";  //$NON-NLS-1$
     private RGB rgb = null;
+    private int mode = 0;
     public BigDecimal getInterpolateFlatness() {
         return interpolateFlatness;
     }
@@ -70,5 +71,11 @@ public class Txt2DatSettings {
     }
     public void setRGB(RGB rgb) {
         this.rgb = rgb;
+    }
+    public int getMode() {
+        return mode;
+    }
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 }

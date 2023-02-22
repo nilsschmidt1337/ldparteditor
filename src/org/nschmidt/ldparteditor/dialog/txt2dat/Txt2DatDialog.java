@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.dialog.txt2dat;
 
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -60,6 +61,7 @@ public class Txt2DatDialog extends Txt2DatDesign {
             ts.setRGB(fd.getRGB());
         });
         txtTextPtr[0].addModifyListener(e -> ts.setText(txtTextPtr[0].getText()));
+        cmbModePtr[0].addListener(SWT.Selection, event -> ts.setMode(cmbModePtr[0].getSelectionIndex()));
         return super.open();
     }
 

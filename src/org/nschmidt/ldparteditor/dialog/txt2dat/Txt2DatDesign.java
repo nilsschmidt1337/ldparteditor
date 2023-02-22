@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.txt2dat;
 
+import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
+
 import java.math.BigDecimal;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -22,6 +24,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -49,6 +52,7 @@ class Txt2DatDesign extends Dialog {
     final BigDecimalSpinner[] spnFontHeightPtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnDeltaAnglePtr = new BigDecimalSpinner[1];
     final Text[] txtTextPtr = new Text[1];
+    final Combo[] cmbModePtr = new Combo[1];
 
     Txt2DatDesign(Shell parentShell, Txt2DatSettings ts) {
         super(parentShell);
@@ -88,6 +92,16 @@ class Txt2DatDesign extends Dialog {
         this.txtTextPtr[0] = txtText;
         txtText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         txtText.setText(ts.getText());
+        
+        Label lblMode = new Label(cmpContainer, SWT.NONE);
+        lblMode.setText(I18n.TXT2DAT_MODE);
+        
+        Combo cmbMode = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmbModePtr[0] = cmbMode;
+        widgetUtil(cmbMode).setItems(I18n.TXT2DAT_SINGLE_LETTERS, I18n.TXT2DAT_ONLY_CHARACTERS);
+        cmbMode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbMode.setText(cmbMode.getItem(ts.getMode()));
+        cmbMode.select(ts.getMode());
 
         Label lblUse180deg = new Label(cmpContainer, SWT.NONE);
         lblUse180deg.setText(I18n.TXT2DAT_FLATNESS);

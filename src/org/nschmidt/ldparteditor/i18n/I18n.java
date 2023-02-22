@@ -1306,7 +1306,10 @@ public final class I18n {
     public static final String TXT2DAT_FONT = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_FONT_HEIGHT = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_INTERPOLATE_FLATNESS = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_MODE = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_ONLY_CHARACTERS = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_SELECT = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_SINGLE_LETTERS = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_TEXT = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_TITLE = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_TRIANGULATE = TXT2DAT.getString(getProperty());
