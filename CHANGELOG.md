@@ -1,3 +1,11 @@
+### 24 Feb 2023
+With the release of 1.8.64 you are able to...
+-  ...benefit from a new Rectifier default setting (it will not convert quad to rect when the quad has adjacent condlines by default).
+-  ...use the "Copy" command on the icon bar at the bottom of the tab, mirrored from the contextual of the "Problems" tab
+-  ...have a single background bounding rectangle for the whole string (txt2dat).
+-  ...use an alternative option to not have a background but only the characters themselves (txt2dat).
+
+
 ### 01 Oct 2022
 With the release of 1.8.63 you are able to...
 -  ...keep all files from the initial temporary project on application restart.
