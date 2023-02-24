@@ -81,37 +81,61 @@ public enum TextTriangulator {
                     try
                     {
                         monitor.beginTask(I18n.TXT2DAT_TRIANGULATE, IProgressMonitor.UNKNOWN);
-                        for (int j = 0; j < vector.getNumGlyphs(); j++) {
-                            final int[] i = new int[1];
-                            i[0] = j;
-                            threads[j] = new Thread(() -> {
-                                Shape characterShape = vector.getGlyphOutline(i[0]);
-                                NLogger.debug(TextTriangulator.class, "Triangulating {0}", text.charAt(i[0])); //$NON-NLS-1$
-                                Set<GData> characterTriangleSet = triangulateShape(monitor, characterShape, flatness, interpolateFlatness, parent, datFile, scale, r, g, b, mode);
-                                if (characterTriangleSet.isEmpty()) {
-                                    counter.decrementAndGet();
-                                }
-
-                                NLogger.debug(TextTriangulator.class, "Triangulating [Done] {0}", text.charAt(i[0])); //$NON-NLS-1$
-
-                                synchronized (finalTriangleSet) {
-                                    finalTriangleSet.addAll(characterTriangleSet);
-                                }
-                            });
-                            threads[j].start();
-                        }
-                        boolean isRunning = true;
-                        while (isRunning) {
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException ie) {
-                                Thread.currentThread().interrupt();
-                                throw new LDPartEditorException(ie);
+                        if (mode == 2) {
+                            List<Shape> shapes = new ArrayList<>();
+                            List<Pnt> places = new ArrayList<>();
+                            for (int j = 0; j < vector.getNumGlyphs(); j++) {
+                                if (monitor.isCanceled()) return;
+                                Shape characterShape = vector.getGlyphOutline(j);
+                                NLogger.debug(TextTriangulator.class, "Shaping {0}", text.charAt(j)); //$NON-NLS-1$
+                                shapes.add(characterShape);
+                                places.addAll(convertShapeToPlaces(monitor, characterShape, flatness, interpolateFlatness));
+                                NLogger.debug(TextTriangulator.class, "Shaping [Done] {0}", text.charAt(j)); //$NON-NLS-1$
                             }
-                            isRunning = false;
-                            for (Thread thread : threads) {
-                                if (thread.isAlive())
-                                    isRunning = true;
+                            
+                            NLogger.debug(TextTriangulator.class, "Triangulating {0}", text); //$NON-NLS-1$
+                            Set<GData> characterTriangleSet = triangulateShape(monitor, shapes, places, parent, datFile, scale, r, g, b, mode);
+                            NLogger.debug(TextTriangulator.class, "Triangulating [Done] {0}", text); //$NON-NLS-1$
+                            
+                            synchronized (finalTriangleSet) {
+                                finalTriangleSet.addAll(characterTriangleSet);
+                            }
+                        } else {
+                            for (int j = 0; j < vector.getNumGlyphs(); j++) {
+                                final int[] i = new int[1];
+                                i[0] = j;
+                                threads[j] = new Thread(() -> {
+                                    Shape characterShape = vector.getGlyphOutline(i[0]);
+                                    NLogger.debug(TextTriangulator.class, "Triangulating {0}", text.charAt(i[0])); //$NON-NLS-1$
+                                    List<Shape> shapes = new ArrayList<>();
+                                    shapes.add(characterShape);
+                                    List<Pnt> places = convertShapeToPlaces(monitor, characterShape, flatness, interpolateFlatness);
+                                    Set<GData> characterTriangleSet = triangulateShape(monitor, shapes, places, parent, datFile, scale, r, g, b, mode);
+                                    if (characterTriangleSet.isEmpty()) {
+                                        counter.decrementAndGet();
+                                    }
+    
+                                    NLogger.debug(TextTriangulator.class, "Triangulating [Done] {0}", text.charAt(i[0])); //$NON-NLS-1$
+    
+                                    synchronized (finalTriangleSet) {
+                                        finalTriangleSet.addAll(characterTriangleSet);
+                                    }
+                                });
+                                threads[j].start();
+                            }
+                            boolean isRunning = true;
+                            while (isRunning) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException ie) {
+                                    Thread.currentThread().interrupt();
+                                    throw new LDPartEditorException(ie);
+                                }
+                                isRunning = false;
+                                for (Thread thread : threads) {
+                                    if (thread.isAlive())
+                                        isRunning = true;
+                                }
                             }
                         }
                     }
@@ -137,24 +161,17 @@ public enum TextTriangulator {
 
         return finalTriangleSet;
     }
-
-    private static Set<GData> triangulateShape(IProgressMonitor monitor, Shape shape, double flatness, double interpolateFlatness, GData1 parent, DatFile datFile, double scale, float r, float g,
-            float b, int mode) {
-        PathIterator shapePathIterator = shape.getPathIterator(null, flatness);
-
+    
+    private static List<Pnt> convertShapeToPlaces(IProgressMonitor monitor, Shape shape, double flatness, double interpolateFlatness) {
         /*
          * Add all points of the shape to the triangulation
          */
+        PathIterator shapePathIterator = shape.getPathIterator(null, flatness);
+
         double x = 0;
         double y = 0;
         double px;
         double py;
-
-        double minX = Double.MAX_VALUE;
-        double minY = Double.MAX_VALUE;
-
-        double maxX = -Double.MAX_VALUE;
-        double maxY = -Double.MAX_VALUE;
 
         List<Pnt> places = new ArrayList<>();
 
@@ -180,14 +197,6 @@ public enum TextTriangulator {
                 Pnt p2 = new Pnt(x, y);
 
                 places.add(p1);
-                if (px > maxX)
-                    maxX = px;
-                if (py > maxY)
-                    maxY = py;
-                if (px < minX)
-                    minX = px;
-                if (py < minY)
-                    minY = py;
 
                 Pnt lengthVector = new Pnt(x - px, y - py);
 
@@ -207,14 +216,6 @@ public enum TextTriangulator {
                     ll = ll - start;
                     while (ll > interpolateFlatness) {
                         places.add(new Pnt(cx, cy));
-                        if (cx > maxX)
-                            maxX = cx;
-                        if (cy > maxY)
-                            maxY = cy;
-                        if (cx < minX)
-                            minX = cx;
-                        if (cy < minY)
-                            minY = cy;
 
                         cx = cx + nx;
                         cy = cy + ny;
@@ -224,14 +225,6 @@ public enum TextTriangulator {
                 }
 
                 places.add(p2);
-                if (x > maxX)
-                    maxX = x;
-                if (y > maxY)
-                    maxY = y;
-                if (x < minX)
-                    minX = x;
-                if (y < minY)
-                    minY = y;
                 break;
             case PathIterator.SEG_QUADTO:
                 break;
@@ -245,7 +238,13 @@ public enum TextTriangulator {
 
             shapePathIterator.next();
         }
+        
+        return places;
+    }
 
+    private static Set<GData> triangulateShape(IProgressMonitor monitor, List<Shape> shapes, List<Pnt> places, GData1 parent, DatFile datFile, double scale, float r, float g,
+            float b, int mode) {
+  
         /*
          * Build the triangle which encompasses the shape (-0.5,+1) - (+0.5,+1)
          * - (0,-1)
@@ -257,6 +256,25 @@ public enum TextTriangulator {
         Set<GData> finalTriangleSet = new HashSet<>();
 
         if (!places.isEmpty()) {
+            double minX = Double.MAX_VALUE;
+            double minY = Double.MAX_VALUE;
+
+            double maxX = -Double.MAX_VALUE;
+            double maxY = -Double.MAX_VALUE;
+            
+            for (Pnt place : places) {
+                double px = place.coord(0);
+                double py = place.coord(1);
+                if (px > maxX)
+                    maxX = px;
+                if (py > maxY)
+                    maxY = py;
+                if (px < minX)
+                    minX = px;
+                if (py < minY)
+                    minY = py;
+            }
+            
 
             GData anchor = new GData0(null, View.DUMMY_REFERENCE);
 
@@ -291,7 +309,7 @@ public enum TextTriangulator {
                 midX /= 3.0;
                 midY /= 3.0;
 
-                if (shape.contains(midX, midY)) {
+                if (shapesContains(shapes, midX, midY)) {
                     double[] vec1 = new double[] { point3.coord(0) - point1.coord(0), point3.coord(1) - point1.coord(1) };
                     double[] vec2 = new double[] { point3.coord(0) - point2.coord(0), point3.coord(1) - point2.coord(1) };
                     double wind = vec1[0] * vec2[1] - vec1[1] * vec2[0];
@@ -366,6 +384,14 @@ public enum TextTriangulator {
         }
 
         return finalTriangleSet;
+    }
+
+    static boolean shapesContains(List<Shape> shapes, double x, double y) {
+        for (Shape shape : shapes) {
+            if (shape.contains(x, y)) return true;
+        }
+        
+        return false;
     }
 
     public static Set<PGData3> triangulateGLText(org.eclipse.swt.graphics.Font font, final String text, final double flatness, final double interpolateFlatness, float fontHeight) {

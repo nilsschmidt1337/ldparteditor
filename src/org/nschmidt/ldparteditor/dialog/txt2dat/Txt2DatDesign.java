@@ -98,7 +98,7 @@ class Txt2DatDesign extends Dialog {
         
         Combo cmbMode = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbModePtr[0] = cmbMode;
-        widgetUtil(cmbMode).setItems(I18n.TXT2DAT_SINGLE_LETTERS, I18n.TXT2DAT_ONLY_CHARACTERS);
+        widgetUtil(cmbMode).setItems(I18n.TXT2DAT_SINGLE_LETTERS, I18n.TXT2DAT_ONLY_CHARACTERS, I18n.TXT2DAT_SINGLE_BACKGROUND);
         cmbMode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbMode.setText(cmbMode.getItem(ts.getMode()));
         cmbMode.select(ts.getMode());
