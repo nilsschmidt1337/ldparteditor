@@ -22,7 +22,6 @@ import org.eclipse.swt.graphics.RGB;
 
 public class Txt2DatSettings {
 
-    private BigDecimal interpolateFlatness = new BigDecimal("0.5"); //$NON-NLS-1$
     private BigDecimal flatness = new BigDecimal("0.2"); //$NON-NLS-1$
     private BigDecimal fontHeight = new BigDecimal("100"); //$NON-NLS-1$
     private BigDecimal deltaAngle = new BigDecimal("12.5"); //$NON-NLS-1$
@@ -30,12 +29,6 @@ public class Txt2DatSettings {
     private String text = "";  //$NON-NLS-1$
     private RGB rgb = null;
     private int mode = 0;
-    public BigDecimal getInterpolateFlatness() {
-        return interpolateFlatness;
-    }
-    public void setInterpolateFlatness(BigDecimal interpolateFlatness) {
-        this.interpolateFlatness = interpolateFlatness;
-    }
     public BigDecimal getFlatness() {
         return flatness;
     }

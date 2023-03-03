@@ -48,7 +48,7 @@ class Txt2DatDesign extends Dialog {
     // Use final only for subclass/listener references!
     final NButton[] btnChooseFontPtr = new NButton[1];
     final BigDecimalSpinner[] spnFlatnessPtr = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spnInterpolateFlatnessPtr = new BigDecimalSpinner[1];
+    // final BigDecimalSpinner[] spnMarginPercentagePtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnFontHeightPtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnDeltaAnglePtr = new BigDecimalSpinner[1];
     final Text[] txtTextPtr = new Text[1];
@@ -113,15 +113,15 @@ class Txt2DatDesign extends Dialog {
         spnFlatness.setMinimum(new BigDecimal(0));
         spnFlatness.setValue(ts.getFlatness());
 
-        Label lblAf = new Label(cmpContainer, SWT.NONE);
-        lblAf.setText(I18n.TXT2DAT_INTERPOLATE_FLATNESS);
-
-        BigDecimalSpinner spnInterpolateFlatness = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spnInterpolateFlatnessPtr[0] = spnInterpolateFlatness;
-        spnInterpolateFlatness.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spnInterpolateFlatness.setMaximum(new BigDecimal(1000));
-        spnInterpolateFlatness.setMinimum(new BigDecimal(0));
-        spnInterpolateFlatness.setValue(ts.getInterpolateFlatness());
+//        Label lblAf = new Label(cmpContainer, SWT.NONE);
+//        lblAf.setText(I18n.TXT2DAT_MARGIN_PERCENTAGE);
+//
+//        BigDecimalSpinner spnMarginPercentage = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+//        this.spnMarginPercentagePtr[0] = spnMarginPercentage;
+//        spnMarginPercentage.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+//        spnMarginPercentage.setMaximum(new BigDecimal(100));
+//        spnMarginPercentage.setMinimum(new BigDecimal(0));
+//        spnMarginPercentage.setValue(ts.getInterpolateFlatness());
 
         Label lblAc = new Label(cmpContainer, SWT.NONE);
         lblAc.setText(I18n.TXT2DAT_FONT_HEIGHT);

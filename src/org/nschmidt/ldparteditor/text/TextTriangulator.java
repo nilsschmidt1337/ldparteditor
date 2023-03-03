@@ -51,7 +51,7 @@ import org.tinfour.constrained.delaunay.SimpleTriangle;
 public enum TextTriangulator {
     INSTANCE;
 
-    public static Set<GData> triangulateText(Font font, final float r, final float g, final float b, final String text, final double flatness, final double interpolateFlatness, final GData1 parent, final DatFile datFile, int fontHeight, int mode) {
+    public static Set<GData> triangulateText(Font font, final float r, final float g, final float b, final String text, final double flatness, final GData1 parent, final DatFile datFile, int fontHeight, int mode) {
         final GlyphVector vector = font.createGlyphVector(new FontRenderContext(null, false, false), text);
 
         final Set<GData> finalTriangleSet = Collections.synchronizedSet(new HashSet<>());

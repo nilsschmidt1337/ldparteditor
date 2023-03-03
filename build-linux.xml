@@ -275,6 +275,7 @@
         
         <!-- Copy resource files for Linux with GTK3 (64-bit) -->
         <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+		<copy file="NOTICE.md" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         

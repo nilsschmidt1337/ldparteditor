@@ -46,7 +46,7 @@ public class Txt2DatDialog extends Txt2DatDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spnInterpolateFlatnessPtr[0].addValueChangeListener(spn -> ts.setInterpolateFlatness(spn.getValue()));
+        // spnMarginPercentagePtr[0].addValueChangeListener(spn -> ts.setInterpolateFlatness(spn.getValue()));
         spnFlatnessPtr[0].addValueChangeListener(spn -> ts.setFlatness(spn.getValue()));
         spnFontHeightPtr[0].addValueChangeListener(spn -> ts.setFontHeight(spn.getValue()));
         spnDeltaAnglePtr[0].addValueChangeListener(spn -> ts.setDeltaAngle(spn.getValue()));
