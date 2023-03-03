@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.RGB;
 public class Txt2DatSettings {
 
     private BigDecimal interpolateFlatness = new BigDecimal("0.5"); //$NON-NLS-1$
-    private BigDecimal flatness = new BigDecimal("0.1"); //$NON-NLS-1$
+    private BigDecimal flatness = new BigDecimal("0.2"); //$NON-NLS-1$
     private BigDecimal fontHeight = new BigDecimal("100"); //$NON-NLS-1$
     private BigDecimal deltaAngle = new BigDecimal("12.5"); //$NON-NLS-1$
     private FontData fontData = null;

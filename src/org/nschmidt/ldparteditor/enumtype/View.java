@@ -60,34 +60,34 @@ public enum View {
     public static float lineWidth = 0.100f;
     public static float lineWidthGL = 1.5f;
 
-    public static final Set<PGData3> FRONT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_FRONT, 0.07, 0.3, .012f * (1f + IconSize.getIconsize() / 4f));
-    public static final Set<PGData3> BACK = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BACK, 0.07, 0.3, .012f * (1f + IconSize.getIconsize() / 4f));
-    public static final Set<PGData3> BOTTOM = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BOTTOM, 0.07, 0.3, .012f * (1f + IconSize.getIconsize() / 4f));
-    public static final Set<PGData3> LEFT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_LEFT, 0.07, 0.3, .012f * (1f + IconSize.getIconsize() / 4f));
-    public static final Set<PGData3> RIGHT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_RIGHT, 0.07, 0.3, .012f * (1f + IconSize.getIconsize() / 4f));
-    public static final Set<PGData3> TOP = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_TOP, 0.07, 0.3, .012f * (1f + IconSize.getIconsize() / 4f));
+    public static final Set<PGData3> FRONT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_FRONT, 0.07, .012f * (1f + IconSize.getIconsize() / 4f));
+    public static final Set<PGData3> BACK = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BACK, 0.07, .012f * (1f + IconSize.getIconsize() / 4f));
+    public static final Set<PGData3> BOTTOM = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BOTTOM, 0.07, .012f * (1f + IconSize.getIconsize() / 4f));
+    public static final Set<PGData3> LEFT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_LEFT, 0.07, .012f * (1f + IconSize.getIconsize() / 4f));
+    public static final Set<PGData3> RIGHT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_RIGHT, 0.07, .012f * (1f + IconSize.getIconsize() / 4f));
+    public static final Set<PGData3> TOP = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_TOP, 0.07, .012f * (1f + IconSize.getIconsize() / 4f));
 
-    public static final Set<PGData3> S = TextTriangulator.triangulateGLText(Font.MONOSPACE, "*", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> D0 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "0", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> D1 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "1", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> D2 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "2", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> D3 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "3", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> D4 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "4", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> D5 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "5", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> D6 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "6", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> D7 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "7", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> D8 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "8", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> D9 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "9", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> DDot = TextTriangulator.triangulateGLText(Font.MONOSPACE, ".", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> DComma = TextTriangulator.triangulateGLText(Font.MONOSPACE, ",", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> DDegree = TextTriangulator.triangulateGLText(Font.MONOSPACE, "°", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> DX = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dX =", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> DY = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dY =", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> DZ = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dZ =", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> DA = TextTriangulator.triangulateGLText(Font.MONOSPACE, "D  =", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> Dmm = TextTriangulator.triangulateGLText(Font.MONOSPACE, "Dmm=", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> Dst = TextTriangulator.triangulateGLText(Font.MONOSPACE, "Dst=", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> DM = TextTriangulator.triangulateGLText(Font.MONOSPACE, "-", 0.07, 0.3); //$NON-NLS-1$
+    public static final Set<PGData3> S = TextTriangulator.triangulateGLText(Font.MONOSPACE, "*", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> D0 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "0", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> D1 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "1", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> D2 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "2", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> D3 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "3", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> D4 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "4", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> D5 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "5", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> D6 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "6", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> D7 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "7", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> D8 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "8", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> D9 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "9", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> DDot = TextTriangulator.triangulateGLText(Font.MONOSPACE, ".", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> DComma = TextTriangulator.triangulateGLText(Font.MONOSPACE, ",", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> DDegree = TextTriangulator.triangulateGLText(Font.MONOSPACE, "°", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> DX = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dX =", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> DY = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dY =", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> DZ = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dZ =", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> DA = TextTriangulator.triangulateGLText(Font.MONOSPACE, "D  =", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> Dmm = TextTriangulator.triangulateGLText(Font.MONOSPACE, "Dmm=", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> Dst = TextTriangulator.triangulateGLText(Font.MONOSPACE, "Dst=", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> DM = TextTriangulator.triangulateGLText(Font.MONOSPACE, "-", 0.07); //$NON-NLS-1$
 
     public static final int NUM_CORES = Runtime.getRuntime().availableProcessors();
 
