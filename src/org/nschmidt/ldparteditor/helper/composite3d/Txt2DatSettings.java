@@ -28,7 +28,8 @@ public class Txt2DatSettings {
     private FontData fontData = null;
     private String text = "";  //$NON-NLS-1$
     private RGB rgb = null;
-    private int mode = 0;
+    private int mode = 2;
+    private boolean reload = false;
     public BigDecimal getFlatness() {
         return flatness;
     }
@@ -70,5 +71,11 @@ public class Txt2DatSettings {
     }
     public void setMode(int mode) {
         this.mode = mode;
+    }
+    public boolean isReload() {
+        return reload;
+    }
+    public void setReload(boolean reload) {
+        this.reload = reload;
     }
 }

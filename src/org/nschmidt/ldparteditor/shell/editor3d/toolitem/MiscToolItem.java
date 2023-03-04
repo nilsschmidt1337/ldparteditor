@@ -2273,7 +2273,15 @@ public class MiscToolItem extends ToolItem {
                     }
                     VertexManager vm = df.getVertexManager();
                     vm.addSnapshot();
-                    if (new Txt2DatDialog(Editor3DWindow.getWindow().getShell(), ts).open() == IDialogConstants.OK_ID && !ts.getText().trim().isEmpty()) {
+                    
+                    
+                    int dialogResult;
+                    do {
+                        ts.setReload(false);
+                        dialogResult = new Txt2DatDialog(Editor3DWindow.getWindow().getShell(), ts).open();
+                    } while (ts.isReload());
+                    
+                    if (dialogResult == IDialogConstants.OK_ID && !ts.getText().trim().isEmpty()) {
 
                         java.awt.Font myFont;
                         float r = 0.1f;

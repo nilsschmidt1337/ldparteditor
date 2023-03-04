@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
+import org.nschmidt.ldparteditor.enumtype.Font;
 import org.nschmidt.ldparteditor.helper.composite3d.Txt2DatSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
@@ -77,7 +79,7 @@ class Txt2DatDesign extends Dialog {
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lblCoordsPrec = new Label(cmpContainer, SWT.NONE);
-        lblCoordsPrec.setText(I18n.TXT2DAT_FONT);
+        lblCoordsPrec.setText(I18n.TXT2DAT_FONT + " [" + (ts.getFontData() == null ? Font.SYSTEM.getFontData()[0].getName() : ts.getFontData().getName()) + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 
         NButton spnVequ = new NButton(cmpContainer, SWT.NONE);
         this.btnChooseFontPtr[0] = spnVequ;
@@ -89,7 +91,8 @@ class Txt2DatDesign extends Dialog {
 
         Text txtText = new Text(cmpContainer, SWT.NONE);
         this.txtTextPtr[0] = txtText;
-        txtText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        if (ts.getFontData() != null) txtText.setFont(SWTResourceManager.getFont(ts.getFontData().getName(), ts.getFontData().getHeight(), ts.getFontData().getStyle()));
+        txtText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 4));
         txtText.setText(ts.getText());
         
         Label lblMode = new Label(cmpContainer, SWT.NONE);

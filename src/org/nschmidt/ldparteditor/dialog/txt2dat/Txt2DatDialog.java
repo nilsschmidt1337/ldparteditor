@@ -58,6 +58,8 @@ public class Txt2DatDialog extends Txt2DatDesign {
             }
             ts.setFontData(fd.open());
             ts.setRGB(fd.getRGB());
+            ts.setReload(true);
+            getShell().close();
         });
         txtTextPtr[0].addModifyListener(e -> ts.setText(txtTextPtr[0].getText()));
         cmbModePtr[0].addListener(SWT.Selection, event -> ts.setMode(cmbModePtr[0].getSelectionIndex()));
