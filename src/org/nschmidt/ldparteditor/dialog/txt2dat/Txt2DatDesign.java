@@ -48,7 +48,7 @@ class Txt2DatDesign extends Dialog {
     // Use final only for subclass/listener references!
     final NButton[] btnChooseFontPtr = new NButton[1];
     final BigDecimalSpinner[] spnFlatnessPtr = new BigDecimalSpinner[1];
-    // final BigDecimalSpinner[] spnMarginPercentagePtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnMarginPercentagePtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnFontHeightPtr = new BigDecimalSpinner[1];
     final Text[] txtTextPtr = new Text[1];
     final Combo[] cmbModePtr = new Combo[1];
@@ -112,15 +112,15 @@ class Txt2DatDesign extends Dialog {
         spnFlatness.setMinimum(new BigDecimal(0));
         spnFlatness.setValue(ts.getFlatness());
 
-//        Label lblAf = new Label(cmpContainer, SWT.NONE);
-//        lblAf.setText(I18n.TXT2DAT_MARGIN_PERCENTAGE);
-//
-//        BigDecimalSpinner spnMarginPercentage = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-//        this.spnMarginPercentagePtr[0] = spnMarginPercentage;
-//        spnMarginPercentage.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-//        spnMarginPercentage.setMaximum(new BigDecimal(100));
-//        spnMarginPercentage.setMinimum(new BigDecimal(0));
-//        spnMarginPercentage.setValue(ts.getInterpolateFlatness());
+        Label lblAf = new Label(cmpContainer, SWT.NONE);
+        lblAf.setText(I18n.TXT2DAT_MARGIN);
+
+        BigDecimalSpinner spnMarginPercentage = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spnMarginPercentagePtr[0] = spnMarginPercentage;
+        spnMarginPercentage.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnMarginPercentage.setMaximum(new BigDecimal(100));
+        spnMarginPercentage.setMinimum(new BigDecimal(0));
+        spnMarginPercentage.setValue(ts.getMarginPercentage());
 
         Label lblAc = new Label(cmpContainer, SWT.NONE);
         lblAc.setText(I18n.TXT2DAT_FONT_HEIGHT);

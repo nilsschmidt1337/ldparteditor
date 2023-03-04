@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.RGB;
 public class Txt2DatSettings {
 
     private BigDecimal flatness = new BigDecimal("0.2"); //$NON-NLS-1$
+    private BigDecimal marginPercentage = new BigDecimal(1);
     private BigDecimal fontHeight = new BigDecimal("100"); //$NON-NLS-1$
     private FontData fontData = null;
     private String text = "";  //$NON-NLS-1$
@@ -33,6 +34,12 @@ public class Txt2DatSettings {
     }
     public void setFlatness(BigDecimal flatness) {
         this.flatness = flatness;
+    }
+    public BigDecimal getMarginPercentage() {
+        return marginPercentage;
+    }
+    public void setMarginPercentage(BigDecimal marginPercentage) {
+        this.marginPercentage = marginPercentage;
     }
     public BigDecimal getFontHeight() {
         return fontHeight;

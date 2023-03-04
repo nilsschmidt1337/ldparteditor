@@ -51,7 +51,7 @@ import org.tinfour.constrained.delaunay.SimpleTriangle;
 public enum TextTriangulator {
     INSTANCE;
 
-    public static Set<GData> triangulateText(Font font, final float r, final float g, final float b, final String text, final double flatness, final GData1 parent, final DatFile datFile, int fontHeight, int mode) {
+    public static Set<GData> triangulateText(Font font, final float r, final float g, final float b, final String text, final double flatness, final double marginPercentage, final GData1 parent, final DatFile datFile, int fontHeight, int mode) {
         final GlyphVector vector = font.createGlyphVector(new FontRenderContext(null, false, false), text);
 
         final Set<GData> finalTriangleSet = Collections.synchronizedSet(new HashSet<>());
@@ -86,7 +86,7 @@ public enum TextTriangulator {
                             for (int j = 0; j < vector.getNumGlyphs(); j++) {
                                 shapes.add(vector.getGlyphOutline(j));
                             }
-                            Set<GData> characterTriangleSet = triangulateShape(monitor, shapes, parent, datFile, flatness, scale, r, g, b, mode);
+                            Set<GData> characterTriangleSet = triangulateShape(monitor, shapes, parent, datFile, flatness, marginPercentage, scale, r, g, b, mode);
                             NLogger.debug(TextTriangulator.class, "Triangulating [Done] {0}", text); //$NON-NLS-1$
                             
                             synchronized (finalTriangleSet) {
@@ -101,7 +101,7 @@ public enum TextTriangulator {
                                     NLogger.debug(TextTriangulator.class, "Triangulating {0}", text.charAt(i[0])); //$NON-NLS-1$
                                     List<Shape> shapes = new ArrayList<>();
                                     shapes.add(characterShape);
-                                    Set<GData> characterTriangleSet = triangulateShape(monitor, shapes, parent, datFile, flatness, scale, r, g, b, mode);
+                                    Set<GData> characterTriangleSet = triangulateShape(monitor, shapes, parent, datFile, flatness, marginPercentage, scale, r, g, b, mode);
                                     if (characterTriangleSet.isEmpty()) {
                                         counter.decrementAndGet();
                                     }
@@ -156,7 +156,7 @@ public enum TextTriangulator {
         return finalTriangleSet;
     }
 
-    private static Set<GData> triangulateShape(IProgressMonitor monitor, List<Shape> shapes, GData1 parent, DatFile datFile, double flatness, double scale, float r, float g,
+    private static Set<GData> triangulateShape(IProgressMonitor monitor, List<Shape> shapes, GData1 parent, DatFile datFile, double flatness, double marginPercentage, double scale, float r, float g,
             float b, int mode) {
         
         double minX = Double.MAX_VALUE;
@@ -230,12 +230,14 @@ public enum TextTriangulator {
             }
         }
         
+        // default is 1% marginPercentage => marginPercentage / 100.0 = 0.01
+        marginPercentage = marginPercentage / 100.0;
         if (!outlines.isEmpty()) {
             PolygonConstraint poly = new PolygonConstraint();
-            poly.add(new Pnt(minX - (maxX - minX) * 0.01, minY - (maxY - minY) * 0.01));
-            poly.add(new Pnt(minX - (maxX - minX) * 0.01, maxY + (maxY - minY) * 0.01));
-            poly.add(new Pnt(maxX + (maxX - minX) * 0.01, maxY + (maxY - minY) * 0.01));
-            poly.add(new Pnt(maxX + (maxX - minX) * 0.01, minY - (maxY - minY) * 0.01));
+            poly.add(new Pnt(minX - (maxX - minX) * marginPercentage, minY - (maxY - minY) * marginPercentage));
+            poly.add(new Pnt(minX - (maxX - minX) * marginPercentage, maxY + (maxY - minY) * marginPercentage));
+            poly.add(new Pnt(maxX + (maxX - minX) * marginPercentage, maxY + (maxY - minY) * marginPercentage));
+            poly.add(new Pnt(maxX + (maxX - minX) * marginPercentage, minY - (maxY - minY) * marginPercentage));
             outlines.add(poly);
         }
         
