@@ -50,7 +50,6 @@ class Txt2DatDesign extends Dialog {
     final BigDecimalSpinner[] spnFlatnessPtr = new BigDecimalSpinner[1];
     // final BigDecimalSpinner[] spnMarginPercentagePtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnFontHeightPtr = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spnDeltaAnglePtr = new BigDecimalSpinner[1];
     final Text[] txtTextPtr = new Text[1];
     final Combo[] cmbModePtr = new Combo[1];
 
@@ -132,15 +131,6 @@ class Txt2DatDesign extends Dialog {
         spnFontHeight.setMaximum(new BigDecimal(10000));
         spnFontHeight.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
         spnFontHeight.setValue(ts.getFontHeight());
-
-        Label lblAe = new Label(cmpContainer, SWT.NONE);
-        lblAe.setText(I18n.TXT2DAT_ANGLE);
-        BigDecimalSpinner spnDeltaAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spnDeltaAnglePtr[0] = spnDeltaAngle;
-        spnDeltaAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spnDeltaAngle.setMaximum(new BigDecimal(30));
-        spnDeltaAngle.setMinimum(new BigDecimal(0));
-        spnDeltaAngle.setValue(ts.getDeltaAngle());
 
         cmpContainer.pack();
         return cmpContainer;

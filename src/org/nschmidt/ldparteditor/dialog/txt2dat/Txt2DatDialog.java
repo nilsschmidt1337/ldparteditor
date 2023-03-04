@@ -49,7 +49,6 @@ public class Txt2DatDialog extends Txt2DatDesign {
         // spnMarginPercentagePtr[0].addValueChangeListener(spn -> ts.setInterpolateFlatness(spn.getValue()));
         spnFlatnessPtr[0].addValueChangeListener(spn -> ts.setFlatness(spn.getValue()));
         spnFontHeightPtr[0].addValueChangeListener(spn -> ts.setFontHeight(spn.getValue()));
-        spnDeltaAnglePtr[0].addValueChangeListener(spn -> ts.setDeltaAngle(spn.getValue()));
         widgetUtil(btnChooseFontPtr[0]).addSelectionListener(e -> {
             final FontDialog fd = new FontDialog(getShell());
             final FontData data = ts.getFontData();

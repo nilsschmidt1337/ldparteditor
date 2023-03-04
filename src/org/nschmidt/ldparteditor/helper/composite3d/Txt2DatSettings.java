@@ -24,7 +24,6 @@ public class Txt2DatSettings {
 
     private BigDecimal flatness = new BigDecimal("0.2"); //$NON-NLS-1$
     private BigDecimal fontHeight = new BigDecimal("100"); //$NON-NLS-1$
-    private BigDecimal deltaAngle = new BigDecimal("12.5"); //$NON-NLS-1$
     private FontData fontData = null;
     private String text = "";  //$NON-NLS-1$
     private RGB rgb = null;
@@ -40,12 +39,6 @@ public class Txt2DatSettings {
     }
     public void setFontHeight(BigDecimal fontHeight) {
         this.fontHeight = fontHeight;
-    }
-    public BigDecimal getDeltaAngle() {
-        return deltaAngle;
-    }
-    public void setDeltaAngle(BigDecimal deltaAngle) {
-        this.deltaAngle = deltaAngle;
     }
     public FontData getFontData() {
         return fontData;

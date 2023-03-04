@@ -1301,11 +1301,9 @@ public final class I18n {
     public static final String TRANSLATE_Y = TRANSLATE.getString(getProperty());
     public static final String TRANSLATE_Z = TRANSLATE.getString(getProperty());
     public static final String TREEITEM_LINE = TREEITEM.getString(getProperty());
-    public static final String TXT2DAT_ANGLE = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_FLATNESS = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_FONT = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_FONT_HEIGHT = TXT2DAT.getString(getProperty());
-    public static final String TXT2DAT_INTERPOLATE_FLATNESS = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_MODE = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_ONLY_CHARACTERS = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_SELECT = TXT2DAT.getString(getProperty());
