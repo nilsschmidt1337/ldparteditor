@@ -1,3 +1,14 @@
+### 06 Mar 2023
+With the release of 1.8.65 you are able to...
+-  ...see the currently used font name and style (txt2dat).
+-  ...add a small margin on all sides, so that the text is completely included in background (txt2dat).
+
+The following critical issues are fixed:
+1. [txt2dat] There was a glitch in "w" top (Arial font, default parameters).
+2. [txt2dat] Removed parameter "min angle between line segments" which had no action.
+3. [txt2dat] Removed the unnecessary "interpolate flatness" parameter.
+
+
 ### 24 Feb 2023
 With the release of 1.8.64 you are able to...
 -  ...benefit from a new Rectifier default setting (it will not convert quad to rect when the quad has adjacent condlines by default).
