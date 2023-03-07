@@ -25,10 +25,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.cocoa.NSNotificationCenter;
 import org.eclipse.swt.internal.cocoa.NSOpenGLContext;
 import org.eclipse.swt.internal.cocoa.NSOpenGLPixelFormat;
+import org.eclipse.swt.internal.cocoa.NSRect;
 import org.eclipse.swt.internal.cocoa.NSView;
 import org.eclipse.swt.internal.cocoa.OS;
 import org.eclipse.swt.widgets.Listener;
 import org.lwjgl.opengl.swt.GLData.Profile;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * OSX-specific implementation of methods for GLCanvas.
@@ -38,7 +40,8 @@ class PlatformMacOSXGLCanvas extends AbstractPlatformGLCanvas {
 	private NSOpenGLContext context;
 	private NSOpenGLPixelFormat pixelFormat;
 
-	private static final int MAX_ATTRIB = 32;
+	private static final long CONVERT_RECT_TO_BACKING = OS.sel_registerName("convertRectToBacking:");
+    private static final int MAX_ATTRIB = 32;
 	private static final String GLCONTEXT_KEY = "org.eclipse.swt.internal.cocoa.glcontext"; //$NON-NLS-1$
 
 	private NSView view;
@@ -222,8 +225,21 @@ class PlatformMacOSXGLCanvas extends AbstractPlatformGLCanvas {
 
 	@Override
 	public boolean makeCurrent(GLCanvas canvas, long context) {
+	    // Determine the scale factor
+	    final NSRect bounds = this.view.bounds();
+	    final NSRect backingBounds =  convertRectToBacking(bounds);
+	    final double scaleFactor = backingBounds.width / bounds.width;
+	    WorkbenchManager.getUserSettingState().setViewportScaleFactor(scaleFactor);
+	    
+	    // Make the context current
 		new NSOpenGLContext(context).makeCurrentContext();
 		return true;
+	}
+	
+	private NSRect convertRectToBacking(NSRect theRect) {
+	    NSRect result = new NSRect();
+	    OS.objc_msgSend_stret(result, this.view.id, CONVERT_RECT_TO_BACKING, theRect);
+	    return result;
 	}
 
 	@Override
