@@ -112,9 +112,13 @@ class VM09WindingChange extends VM08SlicerPro {
 
         List<GData> modData = new ArrayList<>();
 
+        for (GData2 gd : effSelectedLines)
+            modData.add(changeWinding(gd));
         for (GData3 gd : effSelectedTriangles)
             modData.add(changeWinding(gd));
         for (GData4 gd : effSelectedQuads)
+            modData.add(changeWinding(gd));
+        for (GData5 gd : effSelectedCondlines)
             modData.add(changeWinding(gd));
 
         modData.addAll(effSelectedLines);
@@ -144,9 +148,7 @@ class VM09WindingChange extends VM08SlicerPro {
             }
         }
 
-        if (!selectedTriangles.isEmpty())
-            setModifiedNoSync();
-        if (!selectedQuads.isEmpty())
+        if (!selectedLines.isEmpty() || !selectedTriangles.isEmpty() || !selectedQuads.isEmpty() || !selectedCondlines.isEmpty())
             setModifiedNoSync();
 
         // 4. Subfile Based Change & Selection
@@ -343,17 +345,34 @@ class VM09WindingChange extends VM08SlicerPro {
 
     private GData changeWinding(GData gData) {
         GData result = null;
-        if (gData.type() < 4) {
+        switch (gData.type()) {
+        case 2:
+            GData2 gd2 = (GData2) gData;
+            GData2 newGdata2 = new GData2(gd2.parent, gd2.colourNumber, gd2.r, gd2.g, gd2.b, gd2.a, gd2.x2p, gd2.y2p, gd2.z2p, gd2.x1p, gd2.y1p, gd2.z1p, gd2.x2, gd2.y2, gd2.z2, gd2.x1, gd2.y1, gd2.z1, linkedDatFile, gd2.isLine);
+            result = newGdata2;
+            break;
+        case 3:
             GData3 gd3 = (GData3) gData;
             GData3 newGdata3 = new GData3(gd3.colourNumber, gd3.r, gd3.g, gd3.b, gd3.a, gd3.x2p, gd3.y2p, gd3.z2p, gd3.x1p, gd3.y1p, gd3.z1p, gd3.x3p, gd3.y3p, gd3.z3p, gd3.x2, gd3.y2, gd3.z2, gd3.x1, gd3.y1, gd3.z1, gd3.x3,
                     gd3.y3, gd3.z3, -gd3.xn, -gd3.yn, -gd3.zn, gd3.parent, linkedDatFile, gd3.isTriangle);
             result = newGdata3;
-        } else {
+            break;
+        case 4:
             GData4 gd4 = (GData4) gData;
             GData4 newGdata4 = new GData4(gd4.colourNumber, gd4.r, gd4.g, gd4.b, gd4.a, gd4.x3p, gd4.y3p, gd4.z3p, gd4.x2p, gd4.y2p, gd4.z2p, gd4.x1p, gd4.y1p, gd4.z1p, gd4.x4p, gd4.y4p, gd4.z4p, gd4.x3, gd4.y3, gd4.z3, gd4.x2,
                     gd4.y2, gd4.z2, gd4.x1, gd4.y1, gd4.z1, gd4.x4, gd4.y4, gd4.z4, -gd4.xn, -gd4.yn, -gd4.zn, gd4.parent, linkedDatFile);
             result = newGdata4;
+            break;
+        case 5:
+            GData5 gd5 = (GData5) gData;
+            GData5 newGdata5 = new GData5(gd5.colourNumber, gd5.r, gd5.g, gd5.b, gd5.a, gd5.x2p, gd5.y2p, gd5.z2p, gd5.x1p, gd5.y1p, gd5.z1p, gd5.x3p, gd5.y3p, gd5.z3p, gd5.x4p, gd5.y4p, gd5.z4p,
+                    gd5.x2, gd5.y2, gd5.z2, gd5.x1, gd5.y1, gd5.z1, gd5.x3, gd5.y3, gd5.z3, gd5.x4, gd5.y4, gd5.z4, gd5.parent, linkedDatFile);
+            result = newGdata5;
+            break;
+        default:
+            throw new AssertionError(); 
         }
+        
         linker(gData, result);
         return result;
     }
