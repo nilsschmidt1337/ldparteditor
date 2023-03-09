@@ -1711,22 +1711,33 @@ public class CompositeTab extends CompositeTabDesign {
 
                 NLogger.debug(getClass(), "Mouse down on Line Number Area"); //$NON-NLS-1$
 
-                NLogger.debug(getClass(), "y_offset" + yOffset); //$NON-NLS-1$
-                NLogger.debug(getClass(), "height" + height); //$NON-NLS-1$
-                NLogger.debug(getClass(), "start_line" + startLine); //$NON-NLS-1$
-                NLogger.debug(getClass(), "end_line" + endLine); //$NON-NLS-1$
-
-                NLogger.debug(getClass(), "e.y" + e.y); //$NON-NLS-1$
+                NLogger.debug(getClass(), "y_offset " + yOffset); //$NON-NLS-1$
+                NLogger.debug(getClass(), "height " + height); //$NON-NLS-1$
+                NLogger.debug(getClass(), "start_line " + startLine); //$NON-NLS-1$
+                NLogger.debug(getClass(), "end_line " + endLine); //$NON-NLS-1$
+                
+                NLogger.debug(getClass(), "e.y " + e.y); //$NON-NLS-1$
 
 
                 int line = (e.y - yOffset) / caretHeight + startLine;
+                
+                boolean removeLineDelimiter = compositeTextPtr[0].getSelectionText().endsWith(StringHelper.getLineDelimiter());
 
                 NLogger.debug(getClass(), "Line " + line); //$NON-NLS-1$
                 line--;
 
                 final int oldSelectionStart = compositeTextPtr[0].getSelection().x;
                 final int oldSelectionEnd = compositeTextPtr[0].getSelection().y;
-
+                try {
+                    int oldLine = compositeTextPtr[0].getLineAtOffset(oldSelectionStart);
+                    NLogger.debug(getClass(), "oldLine " + (oldLine - 1)); //$NON-NLS-1$
+                    removeLineDelimiter = removeLineDelimiter && line == oldLine;
+                } catch (IllegalArgumentException consumed) {
+                    NLogger.debug(CompositeTab.class, consumed);
+                }
+                
+                NLogger.debug(getClass(), "removeLineDelimiter " + removeLineDelimiter); //$NON-NLS-1$
+                
                 if ((e.stateMask & SWT.CTRL) != 0) {
                     try {
                         int newstart = compositeTextPtr[0].getOffsetAtLine(line + 1);
@@ -1747,7 +1758,7 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                 } else {
                     try {
-                        compositeTextPtr[0].setSelection(compositeTextPtr[0].getOffsetAtLine(line + 1), compositeTextPtr[0].getOffsetAtLine(line));
+                        compositeTextPtr[0].setSelection(compositeTextPtr[0].getOffsetAtLine(line), compositeTextPtr[0].getOffsetAtLine(line + 1));
                     } catch (IllegalArgumentException iae) {
                         try {
                             compositeTextPtr[0].setSelection(compositeTextPtr[0].getText().length(), compositeTextPtr[0].getOffsetAtLine(line));
@@ -1757,7 +1768,7 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                 }
                 try {
-                    if (compositeTextPtr[0].getSelectionText().endsWith(StringHelper.getLineDelimiter())) {
+                    if (removeLineDelimiter && compositeTextPtr[0].getSelectionText().endsWith(StringHelper.getLineDelimiter())) {
                         compositeTextPtr[0].setSelection(compositeTextPtr[0].getSelection().x, compositeTextPtr[0].getSelection().y - StringHelper.getLineDelimiter().length());
                     }
                 } catch (IllegalArgumentException consumed) {
