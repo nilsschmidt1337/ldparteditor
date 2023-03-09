@@ -256,6 +256,17 @@ public class VM21Merger extends VM20Manipulator {
                         Vector4f sub = Vector4f.sub(next, vertex.toVector4fm(), null);
                         float d2 = sub.lengthSquared();
                         if (d2 < minDist) {
+                            // Don't merge to condline control points
+                            boolean dontMerge = true;
+                            for (VertexManifestation mani : vertexLinkedToPositionInFile.getOrDefault(vertex, Set.of())) {
+                                if (!(mani.gdata() instanceof GData5) || mani.position() < 2) {
+                                    dontMerge = false;
+                                    break;
+                                }
+                            }
+                            
+                            if (dontMerge) continue;
+                            
                             minVertex = vertex;
                             minDist = d2;
                         }
