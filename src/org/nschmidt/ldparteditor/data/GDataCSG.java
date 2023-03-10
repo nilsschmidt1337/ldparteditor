@@ -676,7 +676,7 @@ public final class GDataCSG extends GData {
                                 Object[] messageArguments = {getNiceString()};
                                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                                 formatter.setLocale(MyLanguage.getLocale());
-                                formatter.applyPattern(I18n.DATFILE_INLINED);
+                                formatter.applyPattern(I18n.DATFILE_INLINE_START);
 
                                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
 
@@ -716,6 +716,9 @@ public final class GDataCSG extends GData {
                                     lineBuilder3.append(floatToString(g3V3.z / 1000f));
                                     sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
                                 }
+                                
+                                formatter.applyPattern(I18n.DATFILE_INLINE_END);
+                                sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
                             }
                         });
                     } catch (InvocationTargetException consumed) {

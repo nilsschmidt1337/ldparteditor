@@ -266,8 +266,9 @@ public final class I18n {
     public static final String DATFILE_CSG_TO_COMPILE = DATFILE.getString(getProperty());
     public static final String DATFILE_FOUND_T_JUNCTION = DATFILE.getString(getProperty());
     public static final String DATFILE_HEADER_HINT = DATFILE.getString(getProperty());
-    public static final String DATFILE_INLINED = DATFILE.getString(getProperty());
+    public static final String DATFILE_INLINE_END = DATFILE.getString(getProperty());
     public static final String DATFILE_INLINE_PREFIX = DATFILE.getString(getProperty());
+    public static final String DATFILE_INLINE_START = DATFILE.getString(getProperty());
     public static final String DATFILE_INVALID_UPDATE = DATFILE.getString(getProperty());
     public static final String DATFILE_LINE = DATFILE.getString(getProperty());
     public static final String DATFILE_MISSING_AUTHOR = DATFILE.getString(getProperty());

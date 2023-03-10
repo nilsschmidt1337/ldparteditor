@@ -1762,7 +1762,7 @@ public final class GData1 extends GData {
                 Object[] messageArguments = {getNiceString()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.getLocale());
-                formatter.applyPattern(I18n.DATFILE_INLINED);
+                formatter.applyPattern(I18n.DATFILE_INLINE_START);
 
                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
             }
@@ -2203,8 +2203,19 @@ public final class GData1 extends GData {
                 break;
             }
         }
-        if (Inliner.withSubfileReference)
+        if (Inliner.withSubfileReference) {
             sb.append("0 !LPE INLINE_END<br>"); //$NON-NLS-1$
+        } else {
+            if (!(Inliner.recursively && !this.equals(this.firstRef)) && !Inliner.noComment) {
+
+                Object[] messageArguments = {shortName};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.getLocale());
+                formatter.applyPattern(I18n.DATFILE_INLINE_END);
+
+                sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
+            }
+        }
         if (lastBFC == BFC.NOCLIP) {
             sb.append(new GDataBFC(BFC.CLIP, this).toString() + "<br>"); //$NON-NLS-1$
         }
