@@ -27,6 +27,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 class PartReviewDesign extends Dialog {
 
@@ -41,7 +43,8 @@ class PartReviewDesign extends Dialog {
 
     private Button[] btnOkPtr = new Button[1];
     private Button[] btnCancelPtr = new Button[1];
-    private final Text[] txtFilePtr = new Text[1];
+    final Text[] txtFilePtr = new Text[1];
+    final NButton[] btnVerbosePtr = new NButton[1];
 
     /**
      * Create contents of the dialog.
@@ -57,10 +60,10 @@ class PartReviewDesign extends Dialog {
 
         if (alreadyReviewing) {
             Label lblInfo = new Label(cmpContainer, SWT.NONE);
-            lblInfo.setText(I18n.E3D_PART_REVIEW_ALREADY);
+            lblInfo.setText(I18n.PARTREVIEW_ALREADY);
         } else {
             Label lblPartName = new Label(cmpContainer, SWT.NONE);
-            lblPartName.setText(I18n.E3D_PART_REVIEW_ENTER_PART_NAME);
+            lblPartName.setText(I18n.PARTREVIEW_ENTER_PART_NAME);
 
             Text txtFile2 = new Text(cmpContainer, SWT.NONE);
             this.txtFilePtr[0] = txtFile2;
@@ -69,10 +72,14 @@ class PartReviewDesign extends Dialog {
             gd.horizontalAlignment = SWT.FILL;
             txtFile2.setLayoutData(gd);
 
-            this.txtFilePtr[0].addModifyListener(e -> fileName = txtFilePtr[0].getText());
-
             Label lblInfo = new Label(cmpContainer, SWT.NONE);
-            lblInfo.setText(I18n.E3D_PART_REVIEW_INFO);
+            lblInfo.setText(I18n.PARTREVIEW_INFO);
+            
+            NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+            this.btnVerbosePtr[0] = btnVerbose;
+            btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            btnVerbose.setText(I18n.PARTREVIEW_VERBOSE);
+            btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerbosePartReview());
         }
 
         cmpContainer.pack();

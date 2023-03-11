@@ -73,6 +73,7 @@ public final class I18n {
     private static final ResourceBundle ISECALC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Isecalc", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle LINES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.LinesPattern", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle OPTIONS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Options", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle PARTREVIEW = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PartReview", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle PATHTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PathTruder", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle YTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.YTruder", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle PRIMGEN = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PrimGen", MyLanguage.getLocale()); //$NON-NLS-1$
@@ -580,12 +581,6 @@ public final class I18n {
     public static final String E3D_PALETTE_SAVE = E3D.getString(getProperty());
     public static final String E3D_PALETTE_SET_SIZE = E3D.getString(getProperty());
     public static final String E3D_PARSE_INLINE = E3D.getString(getProperty());
-    public static final String E3D_PART_REVIEW = E3D.getString(getProperty());
-    public static final String E3D_PART_REVIEW_ALREADY = E3D.getString(getProperty());
-    public static final String E3D_PART_REVIEW_CHECK = E3D.getString(getProperty());
-    public static final String E3D_PART_REVIEW_ENTER_PART_NAME = E3D.getString(getProperty());
-    public static final String E3D_PART_REVIEW_ERROR = E3D.getString(getProperty());
-    public static final String E3D_PART_REVIEW_INFO = E3D.getString(getProperty());
     public static final String E3D_PATH_TRUDER = E3D.getString(getProperty());
     public static final String E3D_PIPETTE = E3D.getString(getProperty());
     public static final String E3D_PORTABLE_NETWORK_GRAPHICS = E3D.getString(getProperty());
@@ -1038,6 +1033,14 @@ public final class I18n {
     public static final String OPTIONS_TRANSLATE_BY_CURSOR = OPTIONS.getString(getProperty());
     public static final String OPTIONS_UNOFFICIAL_FOLDER = OPTIONS.getString(getProperty());
     public static final String OPTIONS_UNOFFICIAL_WHERE = OPTIONS.getString(getProperty());
+    public static final String PARTREVIEW_ALREADY = PARTREVIEW.getString(getProperty());
+    public static final String PARTREVIEW_CHECK = PARTREVIEW.getString(getProperty());
+    public static final String PARTREVIEW_ENTER_PART_NAME = PARTREVIEW.getString(getProperty());
+    public static final String PARTREVIEW_ERROR = PARTREVIEW.getString(getProperty());
+    public static final String PARTREVIEW_INFO = PARTREVIEW.getString(getProperty());
+    public static final String PARTREVIEW_TITLE = PARTREVIEW.getString(getProperty());
+    public static final String PARTREVIEW_VERBOSE = PARTREVIEW.getString(getProperty());
+    public static final String PARTREVIEW_VERBOSE_MSG = PARTREVIEW.getString(getProperty());
     public static final String PARTS_HI_RES_PRIMITIVES = PARTS.getString(getProperty());
     public static final String PARTS_LOW_RES_PRIMITIVES = PARTS.getString(getProperty());
     public static final String PARTS_PARTS = PARTS.getString(getProperty());

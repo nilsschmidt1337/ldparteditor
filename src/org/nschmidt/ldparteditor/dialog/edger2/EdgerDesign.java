@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The edger2 dialog
@@ -154,7 +155,7 @@ class EdgerDesign extends TrayDialog {
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btnVerbose.setText(I18n.EDGER_VERBOSE);
-        btnVerbose.setSelection(es.isVerbose());
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseEdger2());
 
         Label lbl1 = new Label(cmpContainer, SWT.NONE);
         lbl1.setText(I18n.EDGER_CONDITION_1);

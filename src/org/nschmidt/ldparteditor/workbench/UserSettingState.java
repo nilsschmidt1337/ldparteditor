@@ -230,6 +230,23 @@ public class UserSettingState implements Serializable {
     private boolean invertingWheelZoomDirection = false;
     
     private float lineScaleFactor = 1f;
+    
+    private boolean verbosePartReview = false;
+    private boolean verboseEdger2 = false;
+    private boolean verboseTxt2Dat = false;
+    private boolean verboseRectifier = false;
+    private boolean verboseIsecalc  = false;
+    private boolean verboseSlicerPro = false;
+    private boolean verboseIntersector = false;
+    private boolean verboseSlantingMatrixProjector = false;
+    private boolean verboseLines2Pattern = false;
+    private boolean verbosePathTruder = false;
+    private boolean verboseYTruder = false;
+    private boolean verboseSymSplitter = false;
+    private boolean verboseUnificator = false;
+    private boolean verboseRingsAndCones = false;
+    private boolean verboseTJunctionFinder = false;
+    private boolean verboseMeshReducer = false;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -1268,6 +1285,134 @@ public class UserSettingState implements Serializable {
     
     public float getLineScaleFactor() {
         return lineScaleFactor;
+    }
+
+    public boolean isVerbosePartReview() {
+        return verbosePartReview;
+    }
+
+    public void setVerbosePartReview(boolean verbosePartReview) {
+        this.verbosePartReview = verbosePartReview;
+    }
+
+    public boolean isVerboseEdger2() {
+        return verboseEdger2;
+    }
+
+    public void setVerboseEdger2(boolean verboseEdger2) {
+        this.verboseEdger2 = verboseEdger2;
+    }
+
+    public boolean isVerboseTxt2Dat() {
+        return verboseTxt2Dat;
+    }
+
+    public void setVerboseTxt2Dat(boolean verboseTxt2Dat) {
+        this.verboseTxt2Dat = verboseTxt2Dat;
+    }
+
+    public boolean isVerboseRectifier() {
+        return verboseRectifier;
+    }
+
+    public void setVerboseRectifier(boolean verboseRectifier) {
+        this.verboseRectifier = verboseRectifier;
+    }
+
+    public boolean isVerboseIsecalc() {
+        return verboseIsecalc;
+    }
+
+    public void setVerboseIsecalc(boolean verboseIsecalc) {
+        this.verboseIsecalc = verboseIsecalc;
+    }
+
+    public boolean isVerboseSlicerPro() {
+        return verboseSlicerPro;
+    }
+
+    public void setVerboseSlicerPro(boolean verboseSlicerPro) {
+        this.verboseSlicerPro = verboseSlicerPro;
+    }
+
+    public boolean isVerboseIntersector() {
+        return verboseIntersector;
+    }
+
+    public void setVerboseIntersector(boolean verboseIntersector) {
+        this.verboseIntersector = verboseIntersector;
+    }
+
+    public boolean isVerboseSlantingMatrixProjector() {
+        return verboseSlantingMatrixProjector;
+    }
+
+    public void setVerboseSlantingMatrixProjector(boolean verboseSlantingMatrixProjector) {
+        this.verboseSlantingMatrixProjector = verboseSlantingMatrixProjector;
+    }
+
+    public boolean isVerboseLines2Pattern() {
+        return verboseLines2Pattern;
+    }
+
+    public void setVerboseLines2Pattern(boolean verboseLines2Pattern) {
+        this.verboseLines2Pattern = verboseLines2Pattern;
+    }
+
+    public boolean isVerbosePathTruder() {
+        return verbosePathTruder;
+    }
+
+    public void setVerbosePathTruder(boolean verbosePathTruder) {
+        this.verbosePathTruder = verbosePathTruder;
+    }
+
+    public boolean isVerboseYTruder() {
+        return verboseYTruder;
+    }
+
+    public void setVerboseYTruder(boolean verboseYTruder) {
+        this.verboseYTruder = verboseYTruder;
+    }
+
+    public boolean isVerboseSymSplitter() {
+        return verboseSymSplitter;
+    }
+
+    public void setVerboseSymSplitter(boolean verboseSymSplitter) {
+        this.verboseSymSplitter = verboseSymSplitter;
+    }
+
+    public boolean isVerboseUnificator() {
+        return verboseUnificator;
+    }
+
+    public void setVerboseUnificator(boolean verboseUnificator) {
+        this.verboseUnificator = verboseUnificator;
+    }
+
+    public boolean isVerboseRingsAndCones() {
+        return verboseRingsAndCones;
+    }
+
+    public void setVerboseRingsAndCones(boolean verboseRingsAndCones) {
+        this.verboseRingsAndCones = verboseRingsAndCones;
+    }
+
+    public boolean isVerboseTJunctionFinder() {
+        return verboseTJunctionFinder;
+    }
+
+    public void setVerboseTJunctionFinder(boolean verboseTJunctionFinder) {
+        this.verboseTJunctionFinder = verboseTJunctionFinder;
+    }
+
+    public boolean isVerboseMeshReducer() {
+        return verboseMeshReducer;
+    }
+
+    public void setVerboseMeshReducer(boolean verboseMeshReducer) {
+        this.verboseMeshReducer = verboseMeshReducer;
     }
 
     public void setLineScaleFactor(float lineScaleFactor) {

@@ -19,6 +19,7 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.Edger2Settings;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  *
@@ -51,7 +52,7 @@ public class EdgerDialog extends EdgerDesign {
         widgetUtil(cmbCPtr[0]).addSelectionListener(e -> es.setCondlineOnQuads(cmbCPtr[0].getSelectionIndex() == 1));
         widgetUtil(cmbUPtr[0]).addSelectionListener(e -> es.setUnmatchedMode(cmbUPtr[0].getSelectionIndex()));
         widgetUtil(cmbScopePtr[0]).addSelectionListener(e -> es.setScope(cmbScopePtr[0].getSelectionIndex()));
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> es.setVerbose(btnVerbosePtr[0].getSelection()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseEdger2(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

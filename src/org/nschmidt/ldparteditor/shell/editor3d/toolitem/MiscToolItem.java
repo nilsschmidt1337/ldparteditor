@@ -41,6 +41,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -599,7 +600,7 @@ public class MiscToolItem extends ToolItem {
 
         MenuItem mntmPartReview = new MenuItem(mnuTools, SWT.PUSH);
         MiscToolItem.mntmPartReviewPtr[0] = mntmPartReview;
-        mntmPartReview.setText(I18n.E3D_PART_REVIEW);
+        mntmPartReview.setText(I18n.PARTREVIEW_TITLE);
 
         MenuItem mntmEdger2 = new MenuItem(mnuTools, SWT.PUSH);
         MiscToolItem.mntmEdger2Ptr[0] = mntmEdger2;
@@ -1629,7 +1630,7 @@ public class MiscToolItem extends ToolItem {
                         new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
                             @Override
                             public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                                monitor.beginTask(I18n.E3D_PART_REVIEW, IProgressMonitor.UNKNOWN);
+                                monitor.beginTask(I18n.PARTREVIEW_TITLE, IProgressMonitor.UNKNOWN);
 
                                 String fileName = PartReviewDialog.getFileName().toLowerCase(Locale.ENGLISH);
                                 if (!fileName.endsWith(".dat")) fileName = fileName + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -1647,16 +1648,33 @@ public class MiscToolItem extends ToolItem {
                                 if (source == null) source = FileHelper.downloadPartFile("p/8/" + fileName, monitor); //$NON-NLS-1$
                                 if (source == null) source = FileHelper.downloadPartFile("p/48/" + fileName, monitor); //$NON-NLS-1$
                                 if (source == null) {
-                                    MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
-                                    messageBox.setText(I18n.DIALOG_ERROR);
-                                    messageBox.setMessage(I18n.E3D_PART_REVIEW_ERROR);
-                                    messageBox.open();
+                                    Display.getDefault().syncExec(() -> {
+                                        MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
+                                        messageBox.setText(I18n.DIALOG_ERROR);
+                                        messageBox.setMessage(I18n.PARTREVIEW_ERROR);
+                                        messageBox.open();
+                                    });
                                     return;
                                 }
 
                                 Set<String> files = new HashSet<>();
                                 files.add(fileName);
                                 List<String> list = buildFileList(source, new ArrayList<>(), files, monitor);
+                                
+                                if (WorkbenchManager.getUserSettingState().isVerbosePartReview()) {
+                                    String mainFileName = fileName;
+                                    Object[] messageArguments = { fileName,
+                                            files.stream().filter(n -> !mainFileName.equals(n)).sorted().collect(Collectors.joining(", ")) }; //$NON-NLS-1$
+                                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                    formatter.setLocale(MyLanguage.getLocale());
+                                    formatter.applyPattern(I18n.PARTREVIEW_VERBOSE_MSG);
+                                    Display.getDefault().syncExec(() -> {
+                                        MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                                        messageBox.setText(I18n.DIALOG_INFO);
+                                        messageBox.setMessage(formatter.format(messageArguments));
+                                        messageBox.open();
+                                    });
+                                }
 
                                 final String fileName2 = fileName;
                                 final String source2 = source;
@@ -1863,7 +1881,7 @@ public class MiscToolItem extends ToolItem {
 
                             if (files.contains(fileName)) continue;
                             files.add(fileName);
-                            monitor.subTask(I18n.E3D_PART_REVIEW_CHECK + fileName);
+                            monitor.subTask(I18n.PARTREVIEW_CHECK + fileName);
                             String source2 = FileHelper.downloadPartFile("parts/" + fileName, monitor); //$NON-NLS-1$
                             if (source2 == null) source2 = FileHelper.downloadPartFile("parts/s/" + fileName, monitor); //$NON-NLS-1$
                             if (source2 == null) source2 = FileHelper.downloadPartFile("p/" + fileName, monitor); //$NON-NLS-1$
@@ -1988,18 +2006,18 @@ public class MiscToolItem extends ToolItem {
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new EdgerDialog(Editor3DWindow.getWindow().getShell(), es).open() == IDialogConstants.OK_ID) {
-
+                        final boolean verbose = WorkbenchManager.getUserSettingState().isVerboseEdger2();
                         final Set<GData2> oldLines = new HashSet<>();
-                        final int oldCondlineCount = es.isVerbose() ? vm.getCondlines().size() : 0;
-                        final int oldLineCount = es.isVerbose() ? vm.getLines().size() : 0;
-                        if (es.isVerbose()) {
+                        final int oldCondlineCount = verbose ? vm.getCondlines().size() : 0;
+                        final int oldLineCount = verbose ? vm.getLines().size() : 0;
+                        if (verbose) {
                             oldLines.addAll(vm.getLines().keySet());
                         }
 
                         vm.addSnapshot();
                         vm.addEdges(es);
 
-                        if (es.isVerbose()) {
+                        if (verbose) {
                             int unmatchedLines = 0;
                             for (GData2 g2 : vm.getLines().keySet()) {
                                 if (!oldLines.contains(g2) && g2.colourNumber == 4) {
