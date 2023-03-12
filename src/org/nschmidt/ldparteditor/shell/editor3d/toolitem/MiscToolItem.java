@@ -2062,7 +2062,7 @@ public class MiscToolItem extends ToolItem {
 
                         final int[] result = vm.rectify(rs, true, true);
 
-                        if (rs.isVerbose()) {
+                        if (WorkbenchManager.getUserSettingState().isVerboseRectifier()) {
                             MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
                             messageBox.setText(I18n.DIALOG_INFO);
 

@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The rectifier dialog
@@ -130,7 +131,7 @@ class RectifierDesign extends Dialog {
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btnVerbose.setText(I18n.RECTIFIER_VERBOSE);
-        btnVerbose.setSelection(rs.isVerbose());
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseRectifier());
 
         cmpContainer.pack();
         return cmpContainer;
