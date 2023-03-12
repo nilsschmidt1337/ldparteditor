@@ -74,9 +74,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         super(linkedDatFile);
     }
 
-    public void isecalc(IsecalcSettings is) {
+    public int isecalc(IsecalcSettings is) {
 
-        if (linkedDatFile.isReadOnly()) return;
+        if (linkedDatFile.isReadOnly()) return 0;
 
         final List<GData2> newLines = new ArrayList<>();
         final List<GData> surfsToParse;
@@ -288,6 +288,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         }
 
         validateState();
+        return newLines.size();
     }
 
     public void intersector(final IntersectorSettings ins, boolean syncWithTextEditor) {

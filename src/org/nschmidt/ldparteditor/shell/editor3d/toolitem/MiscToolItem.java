@@ -2094,7 +2094,17 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new IsecalcDialog(Editor3DWindow.getWindow().getShell(), is).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
-                        vm.isecalc(is);
+                        final int createdLineCount = vm.isecalc(is);
+                        if (WorkbenchManager.getUserSettingState().isVerboseIsecalc()) {
+                            Object[] messageArguments = { createdLineCount };
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.getLocale());
+                            formatter.applyPattern(I18n.ISECALC_VERBOSE_MSG);
+                            MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                            messageBox.setText(I18n.DIALOG_INFO);
+                            messageBox.setMessage(formatter.format(messageArguments));
+                            messageBox.open();
+                        }
                     }
                     regainFocus();
                     return;

@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.IsecalcSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The rounding precision dialog
@@ -40,6 +42,7 @@ class IsecalcDesign extends Dialog {
 
     final IsecalcSettings is;
     final Combo[] cmbScopePtr = new Combo[1];
+    final NButton[] btnVerbosePtr = new NButton[1];
 
     // Use final only for subclass/listener references!
 
@@ -65,6 +68,9 @@ class IsecalcDesign extends Dialog {
 
         Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        
+        Label lblHint = new Label(cmpContainer, SWT.NONE);
+        lblHint.setText(I18n.ISECALC_HINT);
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
@@ -72,6 +78,12 @@ class IsecalcDesign extends Dialog {
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(is.getScope()));
         cmbScope.select(is.getScope());
+        
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.ISECALC_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseIsecalc());
 
         cmpContainer.pack();
         return cmpContainer;
