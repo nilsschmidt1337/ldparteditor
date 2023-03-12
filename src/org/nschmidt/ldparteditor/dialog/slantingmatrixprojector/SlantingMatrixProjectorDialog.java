@@ -15,9 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.slantingmatrixprojector;
 
+import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
+
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.helper.composite3d.SlantingMatrixProjectorSettings;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  *
@@ -42,8 +45,7 @@ public class SlantingMatrixProjectorDialog extends SlantingMatrixProjectorDesign
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseSlantingMatrixProjector(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
-
 }

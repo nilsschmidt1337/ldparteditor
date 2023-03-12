@@ -1242,11 +1242,15 @@ public final class I18n {
     public static final String SLANT_MATRIX_FOR_XZ = SLANT.getString(getProperty());
     public static final String SLANT_MATRIX_FOR_YZ = SLANT.getString(getProperty());
     public static final String SLANT_MATRIX_READY = SLANT.getString(getProperty());
+    public static final String SLANT_NO_SELECTION_NOTHING = SLANT.getString(getProperty());
+    public static final String SLANT_NO_SELECTION_RESULT = SLANT.getString(getProperty());
     public static final String SLANT_NO_SELECTION_THREE_AXES = SLANT.getString(getProperty());
     public static final String SLANT_NO_SELECTION_TWO_AXES = SLANT.getString(getProperty());
     public static final String SLANT_RESET_SUBFILE_ORIENTATION = SLANT.getString(getProperty());
     public static final String SLANT_SET_ORIGIN = SLANT.getString(getProperty());
     public static final String SLANT_TITLE = SLANT.getString(getProperty());
+    public static final String SLANT_VERBOSE = SLANT.getString(getProperty());
+    public static final String SLANT_VERBOSE_MSG = SLANT.getString(getProperty());
     public static final String SLICERPRO_HINT = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_TITLE = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_VERBOSE = SLICERPRO.getString(getProperty());

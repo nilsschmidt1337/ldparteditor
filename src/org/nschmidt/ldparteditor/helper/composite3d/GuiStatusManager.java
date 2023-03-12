@@ -277,7 +277,7 @@ public enum GuiStatusManager {
         Editor3DWindow.getStatusLabel().update();
     }
 
-    private static void updateSelection(StringBuilder sb, VertexManager vm) {
+    public static void updateSelection(StringBuilder sb, VertexManager vm) {
         int selectedObjectCount = 0;
         int selectedSubfileCount = vm.getSelectedSubfiles().size();
         int selectedLineCount = vm.getSelectedLines().size();

@@ -271,9 +271,9 @@ class VM28SlantingMatrixProjector extends VM27YTruder {
         return result;
     }
 
-    public void projectWithSlantingMatrix(SlantingMatrixProjectorSettings settings) {
+    public int[] projectWithSlantingMatrix(SlantingMatrixProjectorSettings settings) {
         if (axis1 == null || axis2 == null) {
-            return;
+            return new int[0];
         }
 
         final boolean moveSubfilesToOrigin = settings.isResettingSubfileTransformation();
@@ -313,5 +313,6 @@ class VM28SlantingMatrixProjector extends VM27YTruder {
             reSelectSubFiles();
         }
         transformSelection(transformation, null, MiscToggleToolItem.isMovingAdjacentData());
+        return new int[] {1};
     }
 }

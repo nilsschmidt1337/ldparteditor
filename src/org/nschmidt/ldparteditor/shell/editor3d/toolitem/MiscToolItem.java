@@ -121,6 +121,7 @@ import org.nschmidt.ldparteditor.helper.Version;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helper.composite3d.Edger2Settings;
+import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helper.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.IsecalcSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.MeshReducerSettings;
@@ -2184,7 +2185,34 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new SlantingMatrixProjectorDialog(Editor3DWindow.getWindow().getShell(), vm, mps).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
-                        vm.projectWithSlantingMatrix(mps);
+                        final int[] result = vm.projectWithSlantingMatrix(mps);
+                        if (WorkbenchManager.getUserSettingState().isVerboseSlantingMatrixProjector()) {
+                            if (result.length == 0) {
+                                MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                                messageBox.setText(I18n.DIALOG_INFO);
+                                messageBox.setMessage(I18n.SLANT_NO_SELECTION_RESULT);
+                                messageBox.open();
+                            } else {
+                                final StringBuilder sbSelection = new StringBuilder();
+                                final String matrix = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter()).toLDrawString();
+                                GuiStatusManager.updateSelection(sbSelection, vm);
+                                String selectionString = sbSelection.toString().trim();
+                                if (selectionString.isEmpty()) {
+                                    selectionString = I18n.SLANT_NO_SELECTION_NOTHING;
+                                } else {
+                                    selectionString += c3d.getLockableDatFileReference().getShortName();
+                                }
+                                
+                                Object[] messageArguments = { matrix, selectionString, mps.isResettingSubfileTransformation(), mps.isMovingOriginToAxisCenter() };
+                                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                formatter.setLocale(MyLanguage.getLocale());
+                                formatter.applyPattern(I18n.SLANT_VERBOSE_MSG);
+                                MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                                messageBox.setText(I18n.DIALOG_INFO);
+                                messageBox.setMessage(formatter.format(messageArguments));
+                                messageBox.open();
+                            }
+                        }
                     }
                     regainFocus();
                     return;

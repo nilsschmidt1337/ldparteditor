@@ -42,6 +42,7 @@ import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.composite3d.SlantingMatrixProjectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The SlantingMatrixProjector dialog
@@ -67,6 +68,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
     private final Text[] m31Ptr = new Text[1];
     private final Text[] m32Ptr = new Text[1];
     private final Text[] m33Ptr = new Text[1];
+    final NButton[] btnVerbosePtr = new NButton[1];
 
     // Use final only for subclass/listener references!
     private final VertexManager vm;
@@ -151,6 +153,12 @@ class SlantingMatrixProjectorDesign extends Dialog {
             lblInfo.setText(I18n.SLANT_HOW_TO);
             break;
         }
+        
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.SLANT_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseSlantingMatrixProjector());
 
         cmpContainer.pack();
         return cmpContainer;
