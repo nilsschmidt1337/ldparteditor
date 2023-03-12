@@ -291,7 +291,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         return newLines.size();
     }
 
-    public void intersector(final IntersectorSettings ins, boolean syncWithTextEditor) {
+    public int[] intersector(final IntersectorSettings ins, boolean syncWithTextEditor) {
         Composite3D c3d =  linkedDatFile.getLastSelectedComposite();
         NLogger.debug(getClass(), "Intersector - (C) Nils Schmidt 2015"); //$NON-NLS-1$
         NLogger.debug(getClass(), "======================"); //$NON-NLS-1$
@@ -651,10 +651,12 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             NLogger.debug(getClass(), "Done."); //$NON-NLS-1$
 
             validateState();
-
+            return new int[] {newLines.size(), newTriangles.size(), newCondlines.size(), linesToDelete.size(), trisToDelete.size(), quadsToDelete.size(), condlinesToDelete.size()};
         } else {
             NLogger.debug(getClass(), "No 3D view selected. Cancel process."); //$NON-NLS-1$
         }
+        
+        return new int[] {0, 0, 0, 0, 0, 0, 0};
     }
 
     private Set<GData2> intersectionLines(GData g1, GData g2) {

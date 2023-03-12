@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The intersector dialog
@@ -43,6 +44,7 @@ class IntersectorDesign extends Dialog {
     final Combo[] cmbColourisePtr = new Combo[1];
     final NButton[] btnHideOtherPtr = new NButton[1];
     final Combo[] cmbScopePtr = new Combo[1];
+    final NButton[] btnVerbosePtr = new NButton[1];
 
     // Use final only for subclass/listener references!
 
@@ -93,6 +95,12 @@ class IntersectorDesign extends Dialog {
             cmbColourise.setText(cmbColourise.getItem(ins.isColourise() ? 1 : 0));
             cmbColourise.select(ins.isColourise() ? 1 : 0);
         }
+        
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.INTERSECTOR_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseIntersector());
 
         cmpContainer.pack();
         return cmpContainer;

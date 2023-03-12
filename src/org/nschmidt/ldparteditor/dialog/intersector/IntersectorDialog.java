@@ -20,6 +20,7 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.IntersectorSettings;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  *
@@ -46,6 +47,7 @@ public class IntersectorDialog extends IntersectorDesign {
         cmbScopePtr[0].addListener(SWT.Selection, event -> ins.setScope(cmbScopePtr[0].getSelectionIndex()));
         cmbColourisePtr[0].addListener(SWT.Selection, event -> ins.setColourise(cmbColourisePtr[0].getSelectionIndex() == 1));
         widgetUtil(btnHideOtherPtr[0]).addSelectionListener(e -> ins.setHidingOther(btnHideOtherPtr[0].getSelection()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseIntersector(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 

@@ -2150,7 +2150,25 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new IntersectorDialog(Editor3DWindow.getWindow().getShell(), ins).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
-                        vm.intersector(ins, true);
+                        final int[] result = vm.intersector(ins, true);
+                        if (WorkbenchManager.getUserSettingState().isVerboseIntersector()) {
+                            final int createdLinesCount = result[0];
+                            final int createdTriangleCount = result[1];
+                            final int createdCondlineCount = result[2];
+                            final int deletedLineCount = result[3];
+                            final int deletedTriangleCount = result[4];
+                            final int deletedQuadCount = result[5];
+                            final int deletedCondlineCount = result[6];
+                            Object[] messageArguments = { createdLinesCount, createdTriangleCount, createdCondlineCount, 
+                                    deletedLineCount, deletedTriangleCount, deletedQuadCount, deletedCondlineCount };
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.getLocale());
+                            formatter.applyPattern(I18n.INTERSECTOR_VERBOSE_MSG);
+                            MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                            messageBox.setText(I18n.DIALOG_INFO);
+                            messageBox.setMessage(formatter.format(messageArguments));
+                            messageBox.open();
+                        }
                     }
                     regainFocus();
                     return;

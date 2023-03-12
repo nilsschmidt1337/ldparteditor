@@ -798,6 +798,8 @@ public final class I18n {
     public static final String INTERSECTOR_SCOPE_FILE = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_SCOPE_SELECTION = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_TITLE = INTERSECTOR.getString(getProperty());
+    public static final String INTERSECTOR_VERBOSE = INTERSECTOR.getString(getProperty());
+    public static final String INTERSECTOR_VERBOSE_MSG = INTERSECTOR.getString(getProperty());
     public static final String ISECALC_HINT = ISECALC.getString(getProperty());
     public static final String ISECALC_SCOPE_FILE = ISECALC.getString(getProperty());
     public static final String ISECALC_SCOPE_SELECTION = ISECALC.getString(getProperty());
