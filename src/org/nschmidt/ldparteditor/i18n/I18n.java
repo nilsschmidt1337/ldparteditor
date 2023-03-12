@@ -1317,6 +1317,8 @@ public final class I18n {
     public static final String TXT2DAT_TEXT = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_TITLE = TXT2DAT.getString(getProperty());
     public static final String TXT2DAT_TRIANGULATE = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_VERBOSE = TXT2DAT.getString(getProperty());
+    public static final String TXT2DAT_VERBOSE_MSG = TXT2DAT.getString(getProperty());
     public static final String UNIFICATOR_SCOPE_FILE = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_SCOPE_SELECTION = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_SNAP_ON = UNIFICATOR.getString(getProperty());

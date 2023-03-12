@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.Txt2DatSettings;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  *
@@ -63,6 +64,7 @@ public class Txt2DatDialog extends Txt2DatDesign {
         });
         txtTextPtr[0].addModifyListener(e -> ts.setText(txtTextPtr[0].getText()));
         cmbModePtr[0].addListener(SWT.Selection, event -> ts.setMode(cmbModePtr[0].getSelectionIndex()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseTxt2Dat(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 

@@ -2340,6 +2340,17 @@ public class MiscToolItem extends ToolItem {
                         GData anchorData = df.getDrawChainTail();
                         int lineNumber = df.getDrawPerLineNoClone().getKey(anchorData);
                         Set<GData> triangleSet = TextTriangulator.triangulateText(myFont, r, g, b, ts.getText().trim(), ts.getFlatness().doubleValue(), ts.getMarginPercentage().doubleValue(), View.DUMMY_REFERENCE, df, ts.getFontHeight().intValue(), ts.getMode());
+                        if (WorkbenchManager.getUserSettingState().isVerboseTxt2Dat()) {
+                            Object[] messageArguments = { ts.getText().trim().length(), triangleSet.size()};
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.getLocale());
+                            formatter.applyPattern(I18n.TXT2DAT_VERBOSE_MSG);
+                            MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                            messageBox.setText(I18n.DIALOG_INFO);
+                            messageBox.setMessage(formatter.format(messageArguments));
+                            messageBox.open();
+                        }
+                        
                         for (GData gda3 : triangleSet) {
                             lineNumber++;
                             df.getDrawPerLineNoClone().put(lineNumber, gda3);

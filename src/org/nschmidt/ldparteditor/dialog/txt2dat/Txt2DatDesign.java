@@ -36,6 +36,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.Txt2DatSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The rounding precision dialog
@@ -54,6 +55,7 @@ class Txt2DatDesign extends Dialog {
     final BigDecimalSpinner[] spnFontHeightPtr = new BigDecimalSpinner[1];
     final Text[] txtTextPtr = new Text[1];
     final Combo[] cmbModePtr = new Combo[1];
+    final NButton[] btnVerbosePtr = new NButton[1];
 
     Txt2DatDesign(Shell parentShell, Txt2DatSettings ts) {
         super(parentShell);
@@ -134,6 +136,12 @@ class Txt2DatDesign extends Dialog {
         spnFontHeight.setMaximum(new BigDecimal(10000));
         spnFontHeight.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
         spnFontHeight.setValue(ts.getFontHeight());
+        
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.TXT2DAT_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseTxt2Dat());
 
         cmpContainer.pack();
         return cmpContainer;
