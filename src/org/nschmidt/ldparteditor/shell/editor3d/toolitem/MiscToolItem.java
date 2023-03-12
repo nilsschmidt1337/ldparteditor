@@ -2120,7 +2120,21 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new SlicerProDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
-                        vm.slicerpro();
+                        final int[] result = vm.slicerpro();
+                        if (WorkbenchManager.getUserSettingState().isVerboseSlicerPro()) {
+                            final int createdTriangleCount = result[0];
+                            final int createdQuadCount = result[1];
+                            final int deletedTriangleCount = result[2];
+                            final int deletedQuadCount = result[3];
+                            Object[] messageArguments = { createdTriangleCount, createdQuadCount, deletedTriangleCount, deletedQuadCount };
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.getLocale());
+                            formatter.applyPattern(I18n.SLICERPRO_VERBOSE_MSG);
+                            MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                            messageBox.setText(I18n.DIALOG_INFO);
+                            messageBox.setMessage(formatter.format(messageArguments));
+                            messageBox.open();
+                        }
                     }
                     regainFocus();
                     return;

@@ -1247,6 +1247,8 @@ public final class I18n {
     public static final String SLANT_TITLE = SLANT.getString(getProperty());
     public static final String SLICERPRO_HINT = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_TITLE = SLICERPRO.getString(getProperty());
+    public static final String SLICERPRO_VERBOSE = SLICERPRO.getString(getProperty());
+    public static final String SLICERPRO_VERBOSE_MSG = SLICERPRO.getString(getProperty());
     public static final String SMOOTH_ITERATIONS = SMOOTH.getString(getProperty());
     public static final String SMOOTH_FACTOR = SMOOTH.getString(getProperty());
     public static final String SMOOTH_REALTIME_PREVIEW = SMOOTH.getString(getProperty());

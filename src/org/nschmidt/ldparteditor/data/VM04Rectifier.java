@@ -852,7 +852,7 @@ class VM04Rectifier extends VM03Adjacency {
                                 setModifiedNoSync();
                             }
 
-
+                            result2[0] += 2;
 
                             lines1.retainAll(lines3);
                             lines2.retainAll(lines4);

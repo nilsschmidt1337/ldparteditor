@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The rounding precision dialog
@@ -35,6 +37,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 class SlicerProDesign extends Dialog {
 
     // Use final only for subclass/listener references!
+    final NButton[] btnVerbosePtr = new NButton[1];
 
     SlicerProDesign(Shell parentShell) {
         super(parentShell);
@@ -60,6 +63,12 @@ class SlicerProDesign extends Dialog {
 
         Label lblHowto = new Label(cmpContainer, SWT.NONE);
         lblHowto.setText(I18n.SLICERPRO_HINT);
+        
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.SLICERPRO_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseSlicerPro());
 
         cmpContainer.pack();
         return cmpContainer;

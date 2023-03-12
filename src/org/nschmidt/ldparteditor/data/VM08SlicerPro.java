@@ -55,8 +55,8 @@ class VM08SlicerPro extends VM07PathTruder {
         super(linkedDatFile);
     }
 
-    public void slicerpro() {
-        if (linkedDatFile.isReadOnly()) return;
+    public int[] slicerpro() {
+        if (linkedDatFile.isReadOnly()) return new int[] {0, 0, 0, 0};
         Composite3D c3d =  linkedDatFile.getLastSelectedComposite();
         NLogger.debug(getClass(), "SlicerPro2 - (C) Nils Schmidt 2015"); //$NON-NLS-1$
         NLogger.debug(getClass(), "======================"); //$NON-NLS-1$
@@ -378,7 +378,7 @@ class VM08SlicerPro extends VM07PathTruder {
             RectifierSettings rs = new RectifierSettings();
             rs.setScope(1);
             rs.setNoBorderedQuadToRectConversation(true);
-            rectify(rs, false, false);
+            final int[] result = rectify(rs, false, false);
 
             clearSelection();
             setModified(true, true);
@@ -386,10 +386,12 @@ class VM08SlicerPro extends VM07PathTruder {
             NLogger.debug(getClass(), "Done."); //$NON-NLS-1$
 
             validateState();
-
+            return new int[] {newTriangles.size() - result[0], result[0] / 2, trisToDelete.size(), quadsToDelete.size()};
         } else {
             NLogger.debug(getClass(), "No 3D view selected. Cancel process."); //$NON-NLS-1$
         }
+        
+        return new int[] {0, 0, 0, 0};
     }
 
     private boolean intersectRayTriangle(Vector3r origin2d, Vertex dir, Vector3r target2d, Vector3r target2d2, Vector3r target2d3, Vector3r ip) {
