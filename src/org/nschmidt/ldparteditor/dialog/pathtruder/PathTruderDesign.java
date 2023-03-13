@@ -33,6 +33,8 @@ import org.nschmidt.ldparteditor.helper.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
+import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The PathTruder dialog
@@ -54,7 +56,8 @@ class PathTruderDesign extends Dialog {
     final BigDecimalSpinner[] spnTransCurvePtr = new BigDecimalSpinner[1];
     final Combo[] cmbShapeCompensationPtr = new Combo[1];
     final Combo[] cmbBfcInvertPtr = new Combo[1];
-
+    final NButton[] btnVerbosePtr = new NButton[1];
+    
     PathTruderDesign(Shell parentShell, PathTruderSettings ps) {
         super(parentShell);
         this.ps = ps;
@@ -160,6 +163,12 @@ class PathTruderDesign extends Dialog {
         cmbBfcInvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbBfcInvert.setText(ps.isInverted() ? cmbBfcInvert.getItem(1) : cmbBfcInvert.getItem(0));
         cmbBfcInvert.select(ps.isInverted() ? 1 : 0);
+        
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.PATHTRUDER_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerbosePathTruder());
 
         cmpContainer.pack();
         return cmpContainer;

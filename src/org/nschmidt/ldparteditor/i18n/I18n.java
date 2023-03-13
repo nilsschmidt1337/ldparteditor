@@ -1067,6 +1067,8 @@ public final class I18n {
     public static final String PATHTRUDER_SHAPE_COMP_1 = PATHTRUDER.getString(getProperty());
     public static final String PATHTRUDER_SHAPE_COMP_2 = PATHTRUDER.getString(getProperty());
     public static final String PATHTRUDER_TITLE = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_VERBOSE = PATHTRUDER.getString(getProperty());
+    public static final String PATHTRUDER_VERBOSE_MSG = PATHTRUDER.getString(getProperty());
     public static final String PERSPECTIVE_BACK = PERSPECTIVE.getString(getProperty());
     public static final String PERSPECTIVE_BOTTOM = PERSPECTIVE.getString(getProperty());
     public static final String PERSPECTIVE_FRONT = PERSPECTIVE.getString(getProperty());

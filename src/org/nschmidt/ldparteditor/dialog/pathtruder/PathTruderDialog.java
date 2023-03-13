@@ -15,9 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.pathtruder;
 
+import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.PathTruderSettings;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  *
@@ -52,6 +55,7 @@ public class PathTruderDialog extends PathTruderDesign {
         spnMaxPathSegmentLengthPtr[0].addValueChangeListener(spn -> ps.setMaxPathSegmentLength(spn.getValue()));
         cmbBfcInvertPtr[0].addListener(SWT.Selection, event -> ps.setInverted(cmbBfcInvertPtr[0].getSelectionIndex() == 1));
         cmbShapeCompensationPtr[0].addListener(SWT.Selection, event -> ps.setCompensation(cmbShapeCompensationPtr[0].getSelectionIndex() == 1));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerbosePathTruder(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 

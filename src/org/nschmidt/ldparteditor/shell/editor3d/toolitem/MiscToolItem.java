@@ -2255,7 +2255,20 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new PathTruderDialog(Editor3DWindow.getWindow().getShell(), ps).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        final int oldLineCount = vm.getLines().size();
+                        final int oldTriangleCount = vm.getTriangles().size();
+                        final int oldQuadCount = vm.getQuads().size();
                         vm.pathTruder(ps, true, null);
+                        if (WorkbenchManager.getUserSettingState().isVerbosePathTruder()) {
+                            Object[] messageArguments = { vm.getLines().size() - oldLineCount, vm.getTriangles().size() - oldTriangleCount, vm.getQuads().size() - oldQuadCount };
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.getLocale());
+                            formatter.applyPattern(I18n.PATHTRUDER_VERBOSE_MSG);
+                            MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                            messageBox.setText(I18n.DIALOG_INFO);
+                            messageBox.setMessage(formatter.format(messageArguments));
+                            messageBox.open();
+                        }
                     }
                     regainFocus();
                     return;
