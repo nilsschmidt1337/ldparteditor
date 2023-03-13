@@ -2228,7 +2228,18 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new Lines2PatternDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        final int oldTriangleCount = vm.getTriangles().size();
                         vm.lines2pattern();
+                        if (WorkbenchManager.getUserSettingState().isVerboseLines2Pattern()) {
+                            Object[] messageArguments = { vm.getTriangles().size() - oldTriangleCount };
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.getLocale());
+                            formatter.applyPattern(I18n.LINES_VERBOSE_MSG);
+                            MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                            messageBox.setText(I18n.DIALOG_INFO);
+                            messageBox.setMessage(formatter.format(messageArguments));
+                            messageBox.open();
+                        }
                     }
                     regainFocus();
                     return;

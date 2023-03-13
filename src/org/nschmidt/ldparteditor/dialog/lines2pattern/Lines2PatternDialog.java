@@ -15,7 +15,10 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.lines2pattern;
 
+import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
+
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  *
@@ -39,8 +42,7 @@ public class Lines2PatternDialog extends Lines2PatternDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseLines2Pattern(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
-
 }

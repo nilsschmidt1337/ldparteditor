@@ -911,6 +911,8 @@ public final class I18n {
     public static final String LINES_HINT = LINES.getString(getProperty());
     public static final String LINES_SCOPE_SELECTION = LINES.getString(getProperty());
     public static final String LINES_TITLE = LINES.getString(getProperty());
+    public static final String LINES_VERBOSE = LINES.getString(getProperty());
+    public static final String LINES_VERBOSE_MSG = LINES.getString(getProperty());
     public static final String MESHREDUCE_DESTROY_COLOURS = MESHREDUCE.getString(getProperty());
     public static final String MESHREDUCE_KEEP_COLOURS = MESHREDUCE.getString(getProperty());
     public static final String MESHREDUCE_MODE = MESHREDUCE.getString(getProperty());

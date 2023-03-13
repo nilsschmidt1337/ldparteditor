@@ -28,6 +28,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The intersector dialog
@@ -37,6 +39,8 @@ import org.nschmidt.ldparteditor.i18n.I18n;
  */
 class Lines2PatternDesign extends Dialog {
 
+    final NButton[] btnVerbosePtr = new NButton[1];
+    
     // Use final only for subclass/listener references!
 
     Lines2PatternDesign(Shell parentShell) {
@@ -71,6 +75,12 @@ class Lines2PatternDesign extends Dialog {
         Label lblInfo = new Label(cmpContainer, SWT.NONE);
         lblInfo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         lblInfo.setText(I18n.LINES_HINT);
+        
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.LINES_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseLines2Pattern());
 
         cmpContainer.pack();
         return cmpContainer;
