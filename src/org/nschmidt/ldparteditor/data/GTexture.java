@@ -732,7 +732,7 @@ public class GTexture {
                 // Try to download the png file from the parts tracker if part review mode is enabled
                 if (Editor3DWindow.getWindow().isReviewingAPart()) {
                     try {
-                        final URL url = new URL("https://www.ldraw.org/library/unofficial/parts/textures/" + filename); //$NON-NLS-1$
+                        final URL url = new URL("https://library.ldraw.org/library/unofficial/parts/textures/" + filename); //$NON-NLS-1$
                         in = url.openStream();
                     } catch (IOException ioe) {
                         NLogger.debug(GTexture.class, ioe);

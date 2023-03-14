@@ -34,6 +34,7 @@ import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.helper.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
@@ -47,19 +48,10 @@ public enum LDConfigUtils {
         final Editor3DWindow win = Editor3DWindow.getWindow();
         final List<String> lines = new ArrayList<>();
 
-        try {
-            URL go = new URL("https://www.ldraw.org/library/official/ldconfig.ldr");//$NON-NLS-1$
-            URLConnection uc = go.openConnection();
-            try (BufferedReader in =
-                    new BufferedReader(
-                            new InputStreamReader(
-                                    uc.getInputStream()))) {
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    lines.add(inputLine);
-                }
-            }
-        } catch (IOException ioe) {
+        downloadLDConfig(lines, "https://library.ldraw.org/library/official/LDConfig.ldr"); //$NON-NLS-1$
+        if (lines.isEmpty()) downloadLDConfig(lines, "https://library.ldraw.org/library/official/ldconfig.ldr"); //$NON-NLS-1$
+        
+        if (lines.isEmpty()) {
             MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
             messageBoxError.setText(I18n.DIALOG_ERROR);
             messageBoxError.setMessage(I18n.E3D_CANT_CONNECT_TO_LDRAW_ORG);
@@ -100,6 +92,24 @@ public enum LDConfigUtils {
         messageBoxDone.setText(I18n.DIALOG_INFO);
         messageBoxDone.setMessage(I18n.E3D_FILE_WAS_REPLACED);
         messageBoxDone.open();
+    }
+
+    private static void downloadLDConfig(final List<String> lines, final String url) {
+        try {
+            URL go = new URL(url);
+            URLConnection uc = go.openConnection();
+            try (BufferedReader in =
+                    new BufferedReader(
+                            new InputStreamReader(
+                                    uc.getInputStream()))) {
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    lines.add(inputLine);
+                }
+            }
+        } catch (IOException consumed) {
+            NLogger.debug(LDConfigUtils.class, consumed);
+        }
     }
 
     public static void reloadLDConfig(String path) {

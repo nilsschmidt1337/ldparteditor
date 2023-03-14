@@ -121,7 +121,7 @@ public enum FileHelper {
     public static String downloadPartFile(String name, IProgressMonitor monitor) {
         final StringBuilder sb = new StringBuilder();
         try {
-            final URL url = new URL("https://www.ldraw.org/library/unofficial/" + name); //$NON-NLS-1$
+            final URL url = new URL("https://library.ldraw.org/library/unofficial/" + name); //$NON-NLS-1$
             try (InputStreamReader in = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
                 final int size = getFileSize(url);
                 monitor.beginTask(name, size);

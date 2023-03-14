@@ -1641,7 +1641,7 @@ public class MiscToolItem extends ToolItem {
 
                                 // Download first, then build the views
 
-                                // https://www.ldraw.org/library/unofficial
+                                // https://library.ldraw.org/library/unofficial
                                 monitor.beginTask(fileName, IProgressMonitor.UNKNOWN);
                                 String source = FileHelper.downloadPartFile("parts/" + fileName, monitor); //$NON-NLS-1$
                                 if (source == null) source = FileHelper.downloadPartFile("parts/s/" + fileName, monitor); //$NON-NLS-1$
