@@ -1339,6 +1339,8 @@ public final class I18n {
     public static final String UNIFICATOR_SNAP_ON = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_SUBPART_VERTICES = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_TITLE = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_VERBOSE = UNIFICATOR.getString(getProperty());
+    public static final String UNIFICATOR_VERBOSE_MSG = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_VERTEX_SNAP = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_VERTEX_UNIFIATION = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_VERTICES = UNIFICATOR.getString(getProperty());

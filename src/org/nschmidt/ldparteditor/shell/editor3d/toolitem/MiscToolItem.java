@@ -2329,7 +2329,22 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new UnificatorDialog(Editor3DWindow.getWindow().getShell(), us).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        final int oldVertexCount = vm.getVertices().size();
+                        final int oldLineCount = vm.getLines().size();
+                        final int oldTriangleCount = vm.getTriangles().size();
+                        final int oldQuadCount = vm.getQuads().size();
+                        final int oldCondlineCount = vm.getCondlines().size();
                         vm.unificator(us);
+                        if (WorkbenchManager.getUserSettingState().isVerboseUnificator()) {
+                            Object[] messageArguments = { oldVertexCount - vm.getVertices().size(), oldLineCount - vm.getLines().size(), oldTriangleCount - vm.getTriangles().size(), oldQuadCount - vm.getQuads().size(), oldCondlineCount - vm.getCondlines().size() };
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.getLocale());
+                            formatter.applyPattern(I18n.UNIFICATOR_VERBOSE_MSG);
+                            MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                            messageBox.setText(I18n.DIALOG_INFO);
+                            messageBox.setMessage(formatter.format(messageArguments));
+                            messageBox.open();
+                        }
                     }
                     regainFocus();
                     return;

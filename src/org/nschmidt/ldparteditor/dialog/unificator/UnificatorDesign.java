@@ -32,6 +32,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The unificator dialog
@@ -47,6 +49,8 @@ class UnificatorDesign extends Dialog {
 
     final Combo[] cmbWhatToUnifyPtr = new Combo[1];
     final Combo[] cmbScopePtr = new Combo[1];
+    
+    final NButton[] btnVerbosePtr = new NButton[1];
 
     // Use final only for subclass/listener references!
 
@@ -111,6 +115,12 @@ class UnificatorDesign extends Dialog {
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(us.getScope()));
         cmbScope.select(us.getScope());
+        
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.UNIFICATOR_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseUnificator());
 
         cmpContainer.pack();
         return cmpContainer;

@@ -15,9 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.unificator;
 
+import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.UnificatorSettings;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  *
@@ -45,6 +48,7 @@ public class UnificatorDialog extends UnificatorDesign {
         cmbScopePtr[0].addListener(SWT.Selection, event -> us.setScope(cmbScopePtr[0].getSelectionIndex()));
         cmbWhatToUnifyPtr[0].addListener(SWT.Selection, event -> us.setSnapOn(cmbWhatToUnifyPtr[0].getSelectionIndex()));
         spnSubfileThresholdPtr[0].addValueChangeListener(spn -> us.setSubvertexThreshold(spn.getValue()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseUnificator(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 
