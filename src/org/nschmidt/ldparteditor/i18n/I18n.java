@@ -1388,6 +1388,8 @@ public final class I18n {
     public static final String YTRUDER_TITLE = YTRUDER.getString(getProperty());
     public static final String YTRUDER_TRANSLATION_BY_DISTANCE = YTRUDER.getString(getProperty());
     public static final String YTRUDER_VALUE = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_VERBOSE = YTRUDER.getString(getProperty());
+    public static final String YTRUDER_VERBOSE_MSG = YTRUDER.getString(getProperty());
     public static final String YTRUDER_X = YTRUDER.getString(getProperty());
     public static final String YTRUDER_Y = YTRUDER.getString(getProperty());
     public static final String YTRUDER_Z = YTRUDER.getString(getProperty());

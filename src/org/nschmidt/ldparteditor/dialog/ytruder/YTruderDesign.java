@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.YTruderSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The YTruder dialog
@@ -54,6 +55,7 @@ class YTruderDesign extends Dialog {
     final NButton[] btnSymmetryAcrossPlanePtr = new NButton[1];
     final NButton[] btnProjectionOnPlanePtr = new NButton[1];
     final NButton[] btnExtrudeRadiallyPtr = new NButton[1];
+    final NButton[] btnVerbosePtr = new NButton[1];
 
     YTruderDesign(Shell parentShell, YTruderSettings ys) {
         super(parentShell);
@@ -138,6 +140,12 @@ class YTruderDesign extends Dialog {
         widgetUtil(cmbAxis).setItems(I18n.YTRUDER_X, I18n.YTRUDER_Y, I18n.YTRUDER_Z);
         cmbAxis.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbAxis.select(ys.getAxis());
+        
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.YTRUDER_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseYTruder());
 
         cmpContainer.pack();
         return cmpContainer;

@@ -2284,7 +2284,20 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new YTruderDialog(Editor3DWindow.getWindow().getShell(), ys).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        final int oldLineCount = vm.getLines().size();
+                        final int oldTriangleCount = vm.getTriangles().size();
+                        final int oldQuadCount = vm.getQuads().size();
                         vm.yTruder(ys);
+                        if (WorkbenchManager.getUserSettingState().isVerboseYTruder()) {
+                            Object[] messageArguments = { vm.getLines().size() - oldLineCount, vm.getTriangles().size() - oldTriangleCount, vm.getQuads().size() - oldQuadCount };
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.getLocale());
+                            formatter.applyPattern(I18n.YTRUDER_VERBOSE_MSG);
+                            MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                            messageBox.setText(I18n.DIALOG_INFO);
+                            messageBox.setMessage(formatter.format(messageArguments));
+                            messageBox.open();
+                        }
                     }
                     regainFocus();
                     return;

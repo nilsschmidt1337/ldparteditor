@@ -20,6 +20,7 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.YTruderSettings;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  *
@@ -51,6 +52,7 @@ public class YTruderDialog extends YTruderDesign {
         widgetUtil(btnSymmetryAcrossPlanePtr[0]).addSelectionListener(e -> ys.setMode(2));
         widgetUtil(btnProjectionOnPlanePtr[0]).addSelectionListener(e -> ys.setMode(3));
         widgetUtil(btnExtrudeRadiallyPtr[0]).addSelectionListener(e -> ys.setMode(4));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseYTruder(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }
