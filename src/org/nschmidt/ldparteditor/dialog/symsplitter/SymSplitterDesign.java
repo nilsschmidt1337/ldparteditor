@@ -32,6 +32,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The symsplitter dialog
@@ -51,6 +53,7 @@ class SymSplitterDesign extends Dialog {
     final Combo[] cmbColourisePtr = new Combo[1];
     final Combo[] cmbValidatePtr = new Combo[1];
     final Combo[] cmbCutAcrossPtr = new Combo[1];
+    final NButton[] btnVerbosePtr = new NButton[1];
 
     // Use final only for subclass/listener references!
 
@@ -154,6 +157,12 @@ class SymSplitterDesign extends Dialog {
         cmbScope.setText(cmbScope.getItem(0));
         cmbScope.select(0);
         cmbScope.setEnabled(false);
+        
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.SYMSPLITTER_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseSymSplitter());
 
         cmpContainer.pack();
         return cmpContainer;

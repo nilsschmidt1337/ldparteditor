@@ -15,9 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.symsplitter;
 
+import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.SymSplitterSettings;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  *
@@ -49,6 +52,7 @@ public class SymSplitterDialog extends SymSplitterDesign {
         cmbCutAcrossPtr[0].addListener(SWT.Selection, event -> ss.setCutAcross(cmbCutAcrossPtr[0].getSelectionIndex() == 1));
         cmbValidatePtr[0].addListener(SWT.Selection, event -> ss.setValidate(cmbValidatePtr[0].getSelectionIndex() == 1));
         spnPrecisionPtr[0].addValueChangeListener(spn -> ss.setPrecision(spn.getValue()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseSymSplitter(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

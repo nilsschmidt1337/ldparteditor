@@ -40,9 +40,9 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
         super(linkedDatFile);
     }
 
-    public void symSplitter(SymSplitterSettings sims) {
+    public int[] symSplitter(SymSplitterSettings sims) {
 
-        if (linkedDatFile.isReadOnly()) return;
+        if (linkedDatFile.isReadOnly()) return new int[] {0, 0, 0};
 
         setModifiedNoSync();
         final String originalContent = linkedDatFile.getText();
@@ -53,6 +53,9 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
         final BigDecimal p = sims.getPrecision();
         final boolean needMerge = BigDecimal.ZERO.compareTo(p) != 0;
         final int sp = sims.getSplitPlane();
+        int elementCountFront = 0;
+        int elementCountBetween = 0;
+        int elementCountBehind = 0;
         boolean wasModified = false;
 
         if (sims.isCutAcross()) {
@@ -73,7 +76,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                 splitPlane = new GData4(16, .5f, .5f, .5f, 1f, o, a, a, o, a, an, o, an, an, o, an, a, new Vector3d(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO), View.DUMMY_REFERENCE, linkedDatFile);
                 break;
             default:
-                return;
+                return new int[] {0, 0, 0};
             }
             linkedDatFile.addToTail(splitPlane);
 
@@ -229,7 +232,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                 }
             }
             if (g == null) {
-                return;
+                return new int[] {0, 0, 0};
             } else {
                 lastHeaderLine = g.getBefore();
             }
@@ -940,8 +943,13 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                 setModified(false, true);
             }
 
+            elementCountFront = before.size();
+            elementCountBetween = between.size();
+            elementCountBehind = behind.size();
         }
         validateState();
+        
+        return new int[] {elementCountFront, elementCountBetween, elementCountBehind};
     }
 
     private void hide(GData gdata) {

@@ -1301,6 +1301,8 @@ public final class I18n {
     public static final String SYMSPLITTER_SPLITTING_PLANE = SYMSPLITTER.getString(getProperty());
     public static final String SYMSPLITTER_TITLE = SYMSPLITTER.getString(getProperty());
     public static final String SYMSPLITTER_VALIDATION = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_VERBOSE = SYMSPLITTER.getString(getProperty());
+    public static final String SYMSPLITTER_VERBOSE_MSG = SYMSPLITTER.getString(getProperty());
     public static final String SYMSPLITTER_VERTEX_THRESHOLD = SYMSPLITTER.getString(getProperty());
     public static final String SYMSPLITTER_XM = SYMSPLITTER.getString(getProperty());
     public static final String SYMSPLITTER_XP = SYMSPLITTER.getString(getProperty());

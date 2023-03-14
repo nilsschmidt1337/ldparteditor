@@ -244,9 +244,6 @@ public class UserSettingState implements Serializable {
     private boolean verboseYTruder = false;
     private boolean verboseSymSplitter = false;
     private boolean verboseUnificator = false;
-    private boolean verboseRingsAndCones = false;
-    private boolean verboseTJunctionFinder = false;
-    private boolean verboseMeshReducer = false;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -1389,30 +1386,6 @@ public class UserSettingState implements Serializable {
 
     public void setVerboseUnificator(boolean verboseUnificator) {
         this.verboseUnificator = verboseUnificator;
-    }
-
-    public boolean isVerboseRingsAndCones() {
-        return verboseRingsAndCones;
-    }
-
-    public void setVerboseRingsAndCones(boolean verboseRingsAndCones) {
-        this.verboseRingsAndCones = verboseRingsAndCones;
-    }
-
-    public boolean isVerboseTJunctionFinder() {
-        return verboseTJunctionFinder;
-    }
-
-    public void setVerboseTJunctionFinder(boolean verboseTJunctionFinder) {
-        this.verboseTJunctionFinder = verboseTJunctionFinder;
-    }
-
-    public boolean isVerboseMeshReducer() {
-        return verboseMeshReducer;
-    }
-
-    public void setVerboseMeshReducer(boolean verboseMeshReducer) {
-        this.verboseMeshReducer = verboseMeshReducer;
     }
 
     public void setLineScaleFactor(float lineScaleFactor) {

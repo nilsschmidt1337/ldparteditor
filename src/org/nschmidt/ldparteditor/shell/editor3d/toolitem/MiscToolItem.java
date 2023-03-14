@@ -2313,7 +2313,31 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new SymSplitterDialog(Editor3DWindow.getWindow().getShell(), sims).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
-                        vm.symSplitter(sims);
+                        final int oldVertexCount = vm.getVertices().size();
+                        final int oldLineCount = vm.getLines().size();
+                        final int oldTriangleCount = vm.getTriangles().size();
+                        final int oldQuadCount = vm.getQuads().size();
+                        final int oldCondlineCount = vm.getCondlines().size();
+                        final int[] result = vm.symSplitter(sims);
+                        if (WorkbenchManager.getUserSettingState().isVerboseSymSplitter()) {
+                            Object[] messageArguments = { result[0], result[1], result[2], 
+                                    Math.max(0, oldVertexCount - vm.getVertices().size()), 
+                                    Math.max(0, oldLineCount - vm.getLines().size()), 
+                                    Math.max(0, oldTriangleCount - vm.getTriangles().size()), 
+                                    Math.max(0, oldQuadCount - vm.getQuads().size()), 
+                                    Math.max(0, oldCondlineCount - vm.getCondlines().size()),
+                                    Math.max(0, vm.getLines().size() - oldLineCount), 
+                                    Math.max(0, vm.getTriangles().size() - oldTriangleCount), 
+                                    Math.max(0, vm.getQuads().size() - oldQuadCount), 
+                                    Math.max(0, vm.getCondlines().size() - oldCondlineCount) };
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.getLocale());
+                            formatter.applyPattern(I18n.SYMSPLITTER_VERBOSE_MSG);
+                            MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                            messageBox.setText(I18n.DIALOG_INFO);
+                            messageBox.setMessage(formatter.format(messageArguments));
+                            messageBox.open();
+                        }
                     }
                     regainFocus();
                     return;
