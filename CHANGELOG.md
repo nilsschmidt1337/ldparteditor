@@ -1,3 +1,16 @@
+### 15 Mar 2023
+With the release of 1.8.66 you are able to...
+-  ...use the change winding tool (j) on type 2 and type 5 lines, swapping the end points.
+-  ...have the "verbose" option common to nearly all tools, and be remembered between sessions. 
+-  ...deep inline a subfile and it will mark the end of that subfile, too.
+-  ...have the CR LF at the end of a line to be included in the selection when you click on a line number.
+
+The following critical issues are fixed:
+1. "Merge To Nearest Vertex" recognized condline control points as vertices to merge for.
+2. The LDraw library URL was outdated (www.ldraw.org -> library.ldraw.org).
+3. 3D scenes only rendered to 1/4 of 3D window in some rare cases.
+
+
 ### 06 Mar 2023
 With the release of 1.8.65 you are able to...
 -  ...see the currently used font name and style (txt2dat).
