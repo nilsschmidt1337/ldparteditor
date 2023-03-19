@@ -277,7 +277,7 @@
         
         <exec executable="jlink" failonerror="true">
             <arg value="--add-modules"/>
-            <arg value="java.base,java.compiler,java.desktop,java.logging,java.management,java.prefs,java.rmi,java.scripting,java.xml,jdk.unsupported,jdk.jshell,jdk.compiler,jdk.internal.ed,jdk.internal.le,jdk.internal.opt"/>
+            <arg value="java.base,java.compiler,java.desktop,java.logging,java.management,java.prefs,java.rmi,java.scripting,java.xml,jdk.unsupported,jdk.jshell,jdk.compiler,jdk.internal.ed,jdk.internal.le,jdk.internal.opt,jdk.crypto.ec"/>
             <arg value="--no-header-files" />
             <arg value="--strip-debug"/>
             <arg value="--no-man-pages"/>
