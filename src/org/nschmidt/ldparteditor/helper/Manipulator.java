@@ -822,6 +822,17 @@ public class Manipulator {
                 break;
             default:
                 rotate = false;
+                xRotatingBackwards = false;
+                xRotatingForwards = false;
+                
+                yRotatingBackwards = false;
+                yRotatingForwards = false;
+                
+                zRotatingBackwards = false;
+                zRotatingForwards = false;
+                
+                vRotatingBackwards = false;
+                vRotatingForwards = false;
             }
 
             if (rotate) {
@@ -1049,10 +1060,29 @@ public class Manipulator {
     public void applyTranslation(Composite3D c3d) {
         if (modified) {
             c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, MiscToggleToolItem.isMovingAdjacentData());
+            normalizeAxisValues();
             initialScaleOld = initialScaleNew;
             Editor3DWindow.getWindow().updateInitialScale(initialScaleNew, factorScale, false);
         }
         resetTranslation();
+    }
+
+    private void normalizeAxisValues() {
+        Vector3d x = new Vector3d(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
+        Vector3d y = new Vector3d(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
+        Vector3d z = new Vector3d(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
+        x.normalise(x);
+        y.normalise(y);
+        z.normalise(z);
+        accurateXaxis[0] = x.x;
+        accurateXaxis[1] = x.y;
+        accurateXaxis[2] = x.z;
+        accurateYaxis[0] = y.x;
+        accurateYaxis[1] = y.y;
+        accurateYaxis[2] = y.z;
+        accurateZaxis[0] = z.x;
+        accurateZaxis[1] = z.y;
+        accurateZaxis[2] = z.z;
     }
 
     public void applyTranslationAtSelect(Composite3D c3d) {
