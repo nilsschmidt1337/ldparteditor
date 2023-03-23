@@ -817,7 +817,7 @@ public class KeyStateManager {
                         break;
                     case TRANSFORM_UP, TRANSFORM_UP_COPY, TRANSFORM_RIGHT, TRANSFORM_RIGHT_COPY:
                         if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || TransformationModeToolItem.getWorkingAction() == WorkingMode.SELECT) break;
-                        if (tmpCtrlPressed) {
+                        if (tmpCtrlPressed || tmpCmdPressed) {
                             MiscToggleToolItem.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                             vm.copy();
@@ -831,7 +831,7 @@ public class KeyStateManager {
                         break;
                     case TRANSFORM_DOWN, TRANSFORM_DOWN_COPY, TRANSFORM_LEFT, TRANSFORM_LEFT_COPY:
                         if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || TransformationModeToolItem.getWorkingAction() == WorkingMode.SELECT) break;
-                        if (tmpCtrlPressed) {
+                        if (tmpCtrlPressed || tmpCmdPressed) {
                             MiscToggleToolItem.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                             vm.copy();
