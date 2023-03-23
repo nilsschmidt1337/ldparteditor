@@ -177,6 +177,19 @@ public class SyntaxFormatter {
         }
         e.styles = styles.toArray(new StyleRange[0]);
     }
+    
+    /**
+     * Extends the style range of the text with a hint-underline-style.
+     *
+     * @param range
+     *            the reference to the style range
+     */
+    private void setHintStyle(StyleRange range) {
+        range.underline = true;
+        range.underlineStyle = SWT.UNDERLINE_ERROR;
+        range.underlineColor = TextEditorColour.getLineHintUnderline();
+        range.length = range.length - 1;
+    }
 
     /**
      * Extends the style range of the text with a error-underline-style.
@@ -543,18 +556,21 @@ public class SyntaxFormatter {
             // Offset
             try {
                 Float.parseFloat(dataSegments[2]);
+                if (dataSegments[2].toUpperCase().contains("E")) setHintStyle(styles.get(3)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(3));
                 numberError = true;
             }
             try {
                 Float.parseFloat(dataSegments[3]);
+                if (dataSegments[3].toUpperCase().contains("E")) setHintStyle(styles.get(4)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(4));
                 numberError = true;
             }
             try {
                 Float.parseFloat(dataSegments[4]);
+                if (dataSegments[4].toUpperCase().contains("E")) setHintStyle(styles.get(5)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(5));
                 numberError = true;
@@ -562,18 +578,21 @@ public class SyntaxFormatter {
             // First row
             try {
                 tMatrix.m00 = Float.parseFloat(dataSegments[5]);
+                if (dataSegments[5].toUpperCase().contains("E")) setHintStyle(styles.get(6)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(6));
                 numberError = true;
             }
             try {
                 tMatrix.m01 = Float.parseFloat(dataSegments[6]);
+                if (dataSegments[6].toUpperCase().contains("E")) setHintStyle(styles.get(7)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(7));
                 numberError = true;
             }
             try {
                 tMatrix.m02 = Float.parseFloat(dataSegments[7]);
+                if (dataSegments[7].toUpperCase().contains("E")) setHintStyle(styles.get(8)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(8));
                 numberError = true;
@@ -581,18 +600,21 @@ public class SyntaxFormatter {
             // Second row
             try {
                 tMatrix.m10 = Float.parseFloat(dataSegments[8]);
+                if (dataSegments[8].toUpperCase().contains("E")) setHintStyle(styles.get(9)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(9));
                 numberError = true;
             }
             try {
                 tMatrix.m11 = Float.parseFloat(dataSegments[9]);
+                if (dataSegments[9].toUpperCase().contains("E")) setHintStyle(styles.get(10)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(10));
                 numberError = true;
             }
             try {
                 tMatrix.m12 = Float.parseFloat(dataSegments[10]);
+                if (dataSegments[10].toUpperCase().contains("E")) setHintStyle(styles.get(11)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(11));
                 numberError = true;
@@ -600,18 +622,21 @@ public class SyntaxFormatter {
             // Third row
             try {
                 tMatrix.m20 = Float.parseFloat(dataSegments[11]);
+                if (dataSegments[11].toUpperCase().contains("E")) setHintStyle(styles.get(12)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(12));
                 numberError = true;
             }
             try {
                 tMatrix.m21 = Float.parseFloat(dataSegments[12]);
+                if (dataSegments[12].toUpperCase().contains("E")) setHintStyle(styles.get(13)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(13));
                 numberError = true;
             }
             try {
                 tMatrix.m22 = Float.parseFloat(dataSegments[13]);
+                if (dataSegments[13].toUpperCase().contains("E")) setHintStyle(styles.get(14)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(14));
                 numberError = true;
@@ -765,18 +790,21 @@ public class SyntaxFormatter {
             // Start vertex
             try {
                 start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                if (dataSegments[2].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(3)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(3));
                 numberError = true;
             }
             try {
                 start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                if (dataSegments[3].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(4)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(4));
                 numberError = true;
             }
             try {
                 start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                if (dataSegments[4].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(5)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(5));
                 numberError = true;
@@ -784,18 +812,21 @@ public class SyntaxFormatter {
             // End vertex
             try {
                 end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                if (dataSegments[5].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(6)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(6));
                 numberError = true;
             }
             try {
                 end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                if (dataSegments[6].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(7)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(7));
                 numberError = true;
             }
             try {
                 end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                if (dataSegments[7].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(8)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(8));
                 numberError = true;
@@ -895,18 +926,21 @@ public class SyntaxFormatter {
             // 1st vertex
             try {
                 vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                if (dataSegments[2].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(3)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(3));
                 numberError = true;
             }
             try {
                 vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                if (dataSegments[3].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(4)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(4));
                 numberError = true;
             }
             try {
                 vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                if (dataSegments[4].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(5)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(5));
                 numberError = true;
@@ -914,18 +948,21 @@ public class SyntaxFormatter {
             // 2nd vertex
             try {
                 vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                if (dataSegments[5].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(6)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(6));
                 numberError = true;
             }
             try {
                 vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                if (dataSegments[6].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(7)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(7));
                 numberError = true;
             }
             try {
                 vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                if (dataSegments[7].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(8)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(8));
                 numberError = true;
@@ -933,18 +970,21 @@ public class SyntaxFormatter {
             // 3rd vertex
             try {
                 vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+                if (dataSegments[8].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(9)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(9));
                 numberError = true;
             }
             try {
                 vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+                if (dataSegments[9].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(10)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(10));
                 numberError = true;
             }
             try {
                 vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
+                if (dataSegments[10].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(11)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(11));
                 numberError = true;
@@ -1077,18 +1117,21 @@ public class SyntaxFormatter {
             // 1st vertex
             try {
                 vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                if (dataSegments[2].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(3)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(3));
                 numberError = true;
             }
             try {
                 vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                if (dataSegments[3].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(4)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(4));
                 numberError = true;
             }
             try {
                 vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                if (dataSegments[4].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(5)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(5));
                 numberError = true;
@@ -1096,18 +1139,21 @@ public class SyntaxFormatter {
             // 2nd vertex
             try {
                 vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                if (dataSegments[5].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(6)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(6));
                 numberError = true;
             }
             try {
                 vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                if (dataSegments[6].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(7)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(7));
                 numberError = true;
             }
             try {
                 vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                if (dataSegments[7].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(8)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(8));
                 numberError = true;
@@ -1115,18 +1161,21 @@ public class SyntaxFormatter {
             // 3rd vertex
             try {
                 vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+                if (dataSegments[8].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(9)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(9));
                 numberError = true;
             }
             try {
                 vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+                if (dataSegments[9].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(10)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(10));
                 numberError = true;
             }
             try {
                 vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
+                if (dataSegments[10].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(11)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(11));
                 numberError = true;
@@ -1134,18 +1183,21 @@ public class SyntaxFormatter {
             // 4th vertex
             try {
                 vertexD.setX(new BigDecimal(dataSegments[11], Threshold.MC));
+                if (dataSegments[11].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(12)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(12));
                 numberError = true;
             }
             try {
                 vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
+                if (dataSegments[12].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(13)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(13));
                 numberError = true;
             }
             try {
                 vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
+                if (dataSegments[13].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(14)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(14));
                 numberError = true;
@@ -1326,18 +1378,21 @@ public class SyntaxFormatter {
             // start vertex
             try {
                 start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                if (dataSegments[2].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(3)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(3));
                 numberError = true;
             }
             try {
                 start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                if (dataSegments[3].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(4)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(4));
                 numberError = true;
             }
             try {
                 start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                if (dataSegments[4].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(5)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(5));
                 numberError = true;
@@ -1345,18 +1400,21 @@ public class SyntaxFormatter {
             // end vertex
             try {
                 end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                if (dataSegments[5].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(6)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(6));
                 numberError = true;
             }
             try {
                 end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                if (dataSegments[6].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(7)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(7));
                 numberError = true;
             }
             try {
                 end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                if (dataSegments[7].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(8)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(8));
                 numberError = true;
@@ -1364,18 +1422,21 @@ public class SyntaxFormatter {
             // control vertex I
             try {
                 controlI.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+                if (dataSegments[8].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(9)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(9));
                 numberError = true;
             }
             try {
                 controlI.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+                if (dataSegments[9].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(10)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(10));
                 numberError = true;
             }
             try {
                 controlI.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
+                if (dataSegments[10].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(11)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(11));
                 numberError = true;
@@ -1383,18 +1444,21 @@ public class SyntaxFormatter {
             // control vertex II
             try {
                 controlII.setX(new BigDecimal(dataSegments[11], Threshold.MC));
+                if (dataSegments[11].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(12)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(12));
                 numberError = true;
             }
             try {
                 controlII.setY(new BigDecimal(dataSegments[12], Threshold.MC));
+                if (dataSegments[12].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(13)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(13));
                 numberError = true;
             }
             try {
                 controlII.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
+                if (dataSegments[13].toUpperCase().contains("E") && !replaceVertex) setHintStyle(styles.get(14)); //$NON-NLS-1$
             } catch (NumberFormatException nfe) {
                 setErrorStyle(styles.get(14));
                 numberError = true;

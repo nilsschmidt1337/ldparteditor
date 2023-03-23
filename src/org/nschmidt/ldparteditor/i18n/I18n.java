@@ -295,6 +295,7 @@ public final class I18n {
     public static final String DATPARSER_DUPLICATED_TYPE = DATPARSER.getString(getProperty());
     public static final String DATPARSER_FILENAME_WHITESPACE = DATPARSER.getString(getProperty());
     public static final String DATPARSER_FILE_NOT_FOUND = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_FORMAT_HINT = DATPARSER.getString(getProperty());
     public static final String DATPARSER_HEADER_HINT = DATPARSER.getString(getProperty());
     public static final String DATPARSER_HISTORY_WRONG_ORDER = DATPARSER.getString(getProperty());
     public static final String DATPARSER_HOURGLASS_QUADRILATERAL = DATPARSER.getString(getProperty());

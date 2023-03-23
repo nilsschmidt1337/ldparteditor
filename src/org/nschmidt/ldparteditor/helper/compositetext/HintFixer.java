@@ -16,9 +16,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helper.compositetext;
 
 import java.io.File;
+import java.math.BigDecimal;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.HeaderState;
@@ -27,7 +29,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 enum HintFixer {
     INSTANCE;
 
-    public static String fix(int lineNumber, String sort, String text, DatFile datFile, HeaderState h) {
+    public static String fix(int lineNumber, String sort, String line, String text, DatFile datFile, HeaderState h) {
         DatType type = datFile.getType();
         int s = Integer.parseInt(sort, 16);
         int l = 0;
@@ -133,6 +135,28 @@ enum HintFixer {
             if (h.hasLICENSE())
                 l = h.getLineLICENSE();
             text = QuickFixer.insertAfterLine(l, "<br>0 BFC CERTIFY CCW<br>", text); //$NON-NLS-1$
+            break;
+        case 254: // There are numbers with scientific notation
+            StringBuilder sb = new StringBuilder();
+            String[] dataSegments = line.trim().split(" "); //$NON-NLS-1$
+            int count = 0;
+            for (String seg : dataSegments) {
+                if (!seg.trim().equals("")) {  //$NON-NLS-1$
+                    count++;
+                    try {
+                        BigDecimal number = new BigDecimal(seg);
+                        if (seg.toUpperCase().contains("E") && count < 15) { //$NON-NLS-1$
+                            sb.append(MathHelper.bigDecimalToString(number));
+                        } else {
+                            sb.append(seg);
+                        }
+                    } catch (NumberFormatException nfe) {
+                        sb.append(seg);
+                    }
+                }
+                sb.append(" "); //$NON-NLS-1$
+            }
+            text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
             break;
         default:
             break;

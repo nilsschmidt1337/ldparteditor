@@ -161,10 +161,10 @@ public class DatHeaderManager {
                                 if (normalizedLine.startsWith("0 Name: ") && normalizedLine.length() > 12 && normalizedLine.endsWith(".dat")) { //$NON-NLS-1$ //$NON-NLS-2$
                                     // Its duplicated
                                     if (h.hasNAME()) {
-                                        registerHint(lineNumber, "11", I18n.DATPARSER_DUPLICATED_FILENAME, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "11", I18n.DATPARSER_DUPLICATED_FILENAME, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H01_NAME) { // Its misplaced
-                                            registerHint(lineNumber, "12", I18n.DATPARSER_MISPLACED_FILENAME, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "12", I18n.DATPARSER_MISPLACED_FILENAME, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setLineNAME(lineNumber);
                                         h.setHasNAME(true);
@@ -205,10 +205,10 @@ public class DatHeaderManager {
                                     if (author.length() > 0 && author.indexOf("[]") == -1 && indexBrL && indexBrR && (liL == -1 || author.indexOf(" [") != -1) && liL <= liR && 0 < liL * liR) { //$NON-NLS-1$ //$NON-NLS-2$
                                         // Its duplicated
                                         if (h.hasAUTHOR()) {
-                                            registerHint(lineNumber, "21", I18n.DATPARSER_DUPLICATED_AUTHOR, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "21", I18n.DATPARSER_DUPLICATED_AUTHOR, registered, allHints); //$NON-NLS-1$
                                         } else {
                                             if (headerState > HeaderState.H02_AUTHOR) { // Its misplaced
-                                                registerHint(lineNumber, "22", I18n.DATPARSER_MISPLACED_AUTHOR, registered, allHints); //$NON-NLS-1$
+                                                registerHeaderHint(lineNumber, "22", I18n.DATPARSER_MISPLACED_AUTHOR, registered, allHints); //$NON-NLS-1$
                                             }
                                             h.setLineAUTHOR(lineNumber);
                                             h.setHasAUTHOR(true);
@@ -283,10 +283,10 @@ public class DatHeaderManager {
                                 if (normalizedLine.startsWith("0 !LDRAW_ORG")) { //$NON-NLS-1$
                                     // Its duplicated
                                     if (h.hasTYPE() || h.getLineTYPE() > -1) {
-                                        registerHint(lineNumber, "33", I18n.DATPARSER_DUPLICATED_TYPE, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "33", I18n.DATPARSER_DUPLICATED_TYPE, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H03_TYPE) { // Its misplaced
-                                            registerHint(lineNumber, "34", I18n.DATPARSER_MISPLACED_TYPE, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "34", I18n.DATPARSER_MISPLACED_TYPE, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setLineTYPE(lineNumber);
                                         h.setHasTYPE(true);
@@ -312,10 +312,10 @@ public class DatHeaderManager {
                                 if (isValidLicenseLine(normalizedLine)) {
                                     // Its duplicated
                                     if (h.hasLICENSE()) {
-                                        registerHint(lineNumber, "41", I18n.DATPARSER_DUPLICATED_LICENSE, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "41", I18n.DATPARSER_DUPLICATED_LICENSE, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H04_LICENSE) { // Its misplaced
-                                            registerHint(lineNumber, "42", I18n.DATPARSER_MISPLACED_LICENSE, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "42", I18n.DATPARSER_MISPLACED_LICENSE, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setLineLICENSE(lineNumber);
                                         h.setHasLICENSE(true);
@@ -345,10 +345,10 @@ public class DatHeaderManager {
                                 if (normalizedLine.startsWith("0 !HELP")) { //$NON-NLS-1$
                                     // Its duplicated
                                     if (h.hasHELP()) {
-                                        registerHint(lineNumber, "51", I18n.DATPARSER_SPLIT_HELP, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "51", I18n.DATPARSER_SPLIT_HELP, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H05_OPTIONAL_HELP) { // Its misplaced
-                                            registerHint(lineNumber, "52", I18n.DATPARSER_MISPLACED_HELP, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "52", I18n.DATPARSER_MISPLACED_HELP, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setLineHELPstart(lineNumber);
                                         h.setHasHELP(true);
@@ -378,10 +378,10 @@ public class DatHeaderManager {
                                         || "0 BFC NOCERTIFY".equals(normalizedLine)) { //$NON-NLS-1$
                                     // Its duplicated
                                     if (h.hasBFC()) {
-                                        registerHint(lineNumber, "61", I18n.DATPARSER_DUPLICATED_BFC, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "61", I18n.DATPARSER_DUPLICATED_BFC, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H06_BFC) { // Its misplaced
-                                            registerHint(lineNumber, "62", I18n.DATPARSER_MISPLACED_BFC_0, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "62", I18n.DATPARSER_MISPLACED_BFC_0, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setLineBFC(lineNumber);
                                         h.setHasBFC(true);
@@ -406,10 +406,10 @@ public class DatHeaderManager {
                                 if (normalizedLine.startsWith("0 !CATEGORY ")) { //$NON-NLS-1$
                                     // Its duplicated
                                     if (h.hasCATEGORY()) {
-                                        registerHint(lineNumber, "71", I18n.DATPARSER_DUPLICATED_CATEGORY, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "71", I18n.DATPARSER_DUPLICATED_CATEGORY, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H07_OPTIONAL_CATEGORY) { // Its misplaced
-                                            registerHint(lineNumber, "72", I18n.DATPARSER_MISPLACED_CATEGORY, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "72", I18n.DATPARSER_MISPLACED_CATEGORY, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setHasCATEGORY(true);
                                         headerState = HeaderState.H08_OPTIONAL_KEYWORDS;
@@ -433,10 +433,10 @@ public class DatHeaderManager {
                                 if (normalizedLine.startsWith("0 !KEYWORDS ")) { //$NON-NLS-1$
                                     // Its duplicated
                                     if (h.hasKEYWORDS()) {
-                                        registerHint(lineNumber, "81", I18n.DATPARSER_SPLIT_KEYWORD, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "81", I18n.DATPARSER_SPLIT_KEYWORD, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H08_OPTIONAL_KEYWORDS) { // Its misplaced
-                                            registerHint(lineNumber, "82", I18n.DATPARSER_MISPLACED_KEYWORD, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "82", I18n.DATPARSER_MISPLACED_KEYWORD, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setHasKEYWORDS(true);
                                         headerState = HeaderState.H08_OPTIONAL_KEYWORDS;
@@ -460,10 +460,10 @@ public class DatHeaderManager {
                                 if (normalizedLine.startsWith("0 !CMDLINE ")) { //$NON-NLS-1$
                                     // Its duplicated
                                     if (h.hasCMDLINE()) {
-                                        registerHint(lineNumber, "91", I18n.DATPARSER_DUPLICATED_COMMAND_LINE, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "91", I18n.DATPARSER_DUPLICATED_COMMAND_LINE, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H09_OPTIONAL_CMDLINE) { // Its misplaced
-                                            registerHint(lineNumber, "92", I18n.DATPARSER_MISPLACED_COMMAND_LINE, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "92", I18n.DATPARSER_MISPLACED_COMMAND_LINE, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setHasCMDLINE(true);
                                         headerState = HeaderState.H10_OPTIONAL_HISTORY;
@@ -479,7 +479,7 @@ public class DatHeaderManager {
                                     if (h.hasHISTORY()) {
                                         final String lh = h.getLastHistoryEntry();
                                         if (lh != null && normalizedLine.substring(0, "0 !HISTORY YYYY-MM-DD".length()).compareTo(lh) < 0) { //$NON-NLS-1$
-                                            registerHint(lineNumber, "A3", I18n.DATPARSER_HISTORY_WRONG_ORDER, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "A3", I18n.DATPARSER_HISTORY_WRONG_ORDER, registered, allHints); //$NON-NLS-1$
                                         }
                                     } else {
                                         h.setLastHistoryEntry(normalizedLine.substring(0, "0 !HISTORY YYYY-MM-DD".length())); //$NON-NLS-1$
@@ -495,10 +495,10 @@ public class DatHeaderManager {
                                 if (normalizedLine.startsWith("0 !HISTORY ")) { //$NON-NLS-1$
                                     // Its duplicated
                                     if (h.hasHISTORY()) {
-                                        registerHint(lineNumber, "A1", I18n.DATPARSER_SPLIT_HISTORY, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "A1", I18n.DATPARSER_SPLIT_HISTORY, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H10_OPTIONAL_HISTORY) { // Its misplaced
-                                            registerHint(lineNumber, "A2", I18n.DATPARSER_MISPLACED_HISTORY, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "A2", I18n.DATPARSER_MISPLACED_HISTORY, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setHasHISTORY(true);
                                         headerState = HeaderState.H10_OPTIONAL_HISTORY;
@@ -522,10 +522,10 @@ public class DatHeaderManager {
                                 if (normalizedLine.startsWith("0 // ")) { //$NON-NLS-1$
                                     // Its duplicated
                                     if (h.hasCOMMENT()) {
-                                        registerHint(lineNumber, "B1", I18n.DATPARSER_SPLIT_COMMMENT, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "B1", I18n.DATPARSER_SPLIT_COMMMENT, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H11_OPTIONAL_COMMENT) { // Its misplaced
-                                            registerHint(lineNumber, "B2", I18n.DATPARSER_MISPLACED_COMMENT, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "B2", I18n.DATPARSER_MISPLACED_COMMENT, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setHasCOMMENT(true);
                                         headerState = HeaderState.H11_OPTIONAL_COMMENT;
@@ -561,10 +561,10 @@ public class DatHeaderManager {
                                         || normalizedLine.equals("0 BFC INVERTNEXT"))) { //$NON-NLS-1$
                                     // Its duplicated
                                     if (h.hasBFC2()) {
-                                        registerHint(lineNumber, "C1", I18n.DATPARSER_SPLIT_BFC, registered, allHints); //$NON-NLS-1$
+                                        registerHeaderHint(lineNumber, "C1", I18n.DATPARSER_SPLIT_BFC, registered, allHints); //$NON-NLS-1$
                                     } else {
                                         if (headerState > HeaderState.H12_OPTIONAL_BFC2) { // Its misplaced
-                                            registerHint(lineNumber, "C2", I18n.DATPARSER_MISPLACED_BFC, registered, allHints); //$NON-NLS-1$
+                                            registerHeaderHint(lineNumber, "C2", I18n.DATPARSER_MISPLACED_BFC, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setHasBFC2(true);
                                         headerState = HeaderState.H12_OPTIONAL_BFC2;
@@ -579,12 +579,32 @@ public class DatHeaderManager {
                                 h.setLineTITLE(lineNumber);
                                 h.setHasTITLE(true);
                                 if (headerState != HeaderState.H00_TITLE) {
-                                    registerHint(lineNumber, "02", I18n.DATPARSER_MISPLACED_TITLE, registered, allHints); //$NON-NLS-1$
+                                    registerHeaderHint(lineNumber, "02", I18n.DATPARSER_MISPLACED_TITLE, registered, allHints); //$NON-NLS-1$
                                 } else {
                                     headerState = HeaderState.H01_NAME;
                                 }
                             }
                             break;
+                        }
+                    }
+                    
+                    if (gd != null) {
+                        // Check on numbers with scientific notation
+                        if (gd.type() > 0 && gd.type() < 6) {
+                            gd = gd.before;
+                            lineNumber -= 1;
+                        }
+                        int index = 0;
+                        while ((gd = gd.next) != null) {
+                            lineNumber += 1;
+                            int type = gd.type();
+                            if (type > 0 && type < 6) {
+                                String trimmedLine = gd.toString().trim();
+                                if (type == 1 && -1 != (index = trimmedLine.indexOf(((GData1) gd).shortName))) trimmedLine = trimmedLine.substring(0, index);
+                                if (trimmedLine.toUpperCase().contains("E")) { //$NON-NLS-1$
+                                    registerFormatHint(lineNumber, "FE", I18n.DATPARSER_INVALID_NUMBER_FORMAT, registered, allHints); //$NON-NLS-1$
+                                }
+                            }
                         }
                     }
 
@@ -616,30 +636,30 @@ public class DatHeaderManager {
                         }
 
                         if (!h.hasTITLE()) {
-                            registerHint(-60 * r1 + -1 * (1 - r1), "00", I18n.DATFILE_MISSING_TITLE, registered, allHints); //$NON-NLS-1$
+                            registerHeaderHint(-60 * r1 + -1 * (1 - r1), "00", I18n.DATFILE_MISSING_TITLE, registered, allHints); //$NON-NLS-1$
                         }
                         if (!h.hasNAME()) {
-                            registerHint(-50 * r2 + -2 * (1 - r2), "10", I18n.DATFILE_MISSING_FILENAME, registered, allHints); //$NON-NLS-1$
+                            registerHeaderHint(-50 * r2 + -2 * (1 - r2), "10", I18n.DATFILE_MISSING_FILENAME, registered, allHints); //$NON-NLS-1$
                         }
                         if (!h.hasAUTHOR()) {
-                            registerHint(-40 * r3 + -3 * (1 - r3), "20", I18n.DATFILE_MISSING_AUTHOR, registered, allHints); //$NON-NLS-1$
+                            registerHeaderHint(-40 * r3 + -3 * (1 - r3), "20", I18n.DATFILE_MISSING_AUTHOR, registered, allHints); //$NON-NLS-1$
                         }
                         if (!h.hasTYPE()) {
-                            registerHint(-30 * r4 + -4 * (1 - r4), "30", I18n.DATFILE_MISSING_PART_TYPE, registered, allHints); //$NON-NLS-1$
+                            registerHeaderHint(-30 * r4 + -4 * (1 - r4), "30", I18n.DATFILE_MISSING_PART_TYPE, registered, allHints); //$NON-NLS-1$
                         } else if (!h.hasUNOFFICIAL()) {
-                            registerHint(-30 * r4 + -4 * (1 - r4), "31", I18n.DATFILE_MISSING_UNOFFICIAL, registered, allHints); //$NON-NLS-1$
+                            registerHeaderHint(-30 * r4 + -4 * (1 - r4), "31", I18n.DATFILE_MISSING_UNOFFICIAL, registered, allHints); //$NON-NLS-1$
                         } else if (h.hasUPDATE()) {
-                            registerHint(-30 * r4 + -4 * (1 - r4), "32", I18n.DATFILE_INVALID_UPDATE, registered, allHints); //$NON-NLS-1$
+                            registerHeaderHint(-30 * r4 + -4 * (1 - r4), "32", I18n.DATFILE_INVALID_UPDATE, registered, allHints); //$NON-NLS-1$
                         }
                         if (!h.hasLICENSE()) {
-                            registerHint(-20 * r5 + -5 * (1 - r5), "40", I18n.DATFILE_MISSING_LICENSE, registered, allHints); //$NON-NLS-1$
+                            registerHeaderHint(-20 * r5 + -5 * (1 - r5), "40", I18n.DATFILE_MISSING_LICENSE, registered, allHints); //$NON-NLS-1$
                         }
                         if (!h.hasBFC()) {
-                            registerHint(-10 * r6 + -6 * (1 - r6), "60", I18n.DATFILE_MISSING_BFC, registered, allHints); //$NON-NLS-1$
+                            registerHeaderHint(-10 * r6 + -6 * (1 - r6), "60", I18n.DATFILE_MISSING_BFC, registered, allHints); //$NON-NLS-1$
                         }
 
                         if (hasCSG) {
-                            registerHint(-999, "42", I18n.DATFILE_CSG_TO_COMPILE, registered, allHints); //$NON-NLS-1$
+                            registerHeaderHint(-999, "42", I18n.DATFILE_CSG_TO_COMPILE, registered, allHints); //$NON-NLS-1$
                         }
                     }
 
@@ -724,17 +744,21 @@ public class DatHeaderManager {
         return state;
     }
 
-    private void registerHint(int lineNumber, String errno, String message, boolean[] registered, List<ParsingResult> allHints) {
-        registerHint(lineNumber, errno, new Object[]{}, message, registered, allHints);
+    private void registerHeaderHint(int lineNumber, String errno, String message, boolean[] registered, List<ParsingResult> allHints) {
+        registerHint(lineNumber, errno, new Object[]{}, message, I18n.DATPARSER_HEADER_HINT, registered, allHints);
+    }
+    
+    private void registerFormatHint(int lineNumber, String errno, String message, boolean[] registered, List<ParsingResult> allHints) {
+        registerHint(lineNumber, errno, new Object[]{}, message, I18n.DATPARSER_FORMAT_HINT, registered, allHints);
     }
 
-    private void registerHint(int lineNumber, String errno, Object[] args, String message, boolean[] registered, List<ParsingResult> allHints) {
+    private void registerHint(int lineNumber, String errno, Object[] args, String message, String typeDescription, boolean[] registered, List<ParsingResult> allHints) {
         registered[0] = true;
         Object[] messageArguments = args;
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.getLocale());
         formatter.applyPattern(message);
-        allHints.add(new ParsingResult(formatter.format(messageArguments), "[H" + errno + "] " + I18n.DATPARSER_HEADER_HINT, ResultType.HINT, lineNumber)); //$NON-NLS-1$ //$NON-NLS-2$
+        allHints.add(new ParsingResult(formatter.format(messageArguments), "[H" + errno + "] " + typeDescription, ResultType.HINT, lineNumber)); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     private boolean isNotBlank(String str) {
