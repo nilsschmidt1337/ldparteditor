@@ -498,6 +498,12 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 final int iterations = intersections.size();
                                 final int chunks = View.NUM_CORES;
                                 final Thread[] threads = new Thread[chunks];
+                                
+                                if (NLogger.debugging) {
+                                    for (IntersectionInfoWithColour intersection : intersections) {
+                                        NLogger.debug(getClass(), "Intersection:\n" + intersection.toString()); //$NON-NLS-1$
+                                    }
+                                }
 
 
                                 final String maxIterations = "/" + iterations;//$NON-NLS-1$
@@ -921,7 +927,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
     @SuppressWarnings("java:S2111")
     private IntersectionInfoWithColour getIntersectionInfo(GData origin, Set<GData> targetSurfs, IntersectorSettings ins) {
-
+        NLogger.debug(getClass(), "Calculate intersection info for {0}.", origin.toString()); //$NON-NLS-1$
+        
         final BigDecimal minDist = new BigDecimal(".0001"); //$NON-NLS-1$
 
         final int ot = origin.type();
@@ -1039,8 +1046,10 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 }
 
 
+                NLogger.debug(getClass(), "Result A"); //$NON-NLS-1$
                 return new IntersectionInfoWithColour(resultColours, resultVertices, resultIsLine);
             } else {
+                NLogger.debug(getClass(), "Result B"); //$NON-NLS-1$
                 return null;
             }
 
@@ -1173,6 +1182,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             }
             break;
             default:
+                NLogger.debug(getClass(), "Result C"); //$NON-NLS-1$
                 return null;
             }
 
@@ -1389,9 +1399,15 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     }
                 }
 
-                if (resultVertices.isEmpty()) return null;
+                if (resultVertices.isEmpty()) {
+                    NLogger.debug(getClass(), "Result D"); //$NON-NLS-1$
+                    return null;
+                }
+                
+                NLogger.debug(getClass(), "Result E"); //$NON-NLS-1$
                 return new IntersectionInfoWithColour(resultColours, resultVertices, resultIsLine);
             } else {
+                NLogger.debug(getClass(), "Result F"); //$NON-NLS-1$
                 return null;
             }
         }

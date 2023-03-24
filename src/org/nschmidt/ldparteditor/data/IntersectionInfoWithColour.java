@@ -22,6 +22,7 @@ import org.nschmidt.ldparteditor.helper.math.Vector3dd;
 
 class IntersectionInfoWithColour {
 
+    private static final String SIZE = "Size: "; //$NON-NLS-1$
     private List<Vector3dd> allVertices = new ArrayList<>();
     private List<GColour> colours = new ArrayList<>();
     private List<Integer> isLine = new ArrayList<>();
@@ -54,5 +55,25 @@ class IntersectionInfoWithColour {
 
     public void setIsLine(List<Integer> isLine) {
         this.isLine = isLine;
+    }
+    
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(SIZE);
+        sb.append(allVertices.size());
+        sb.append(' ');
+        sb.append(allVertices.toString());
+        sb.append('\n');
+        sb.append(SIZE);
+        sb.append(colours.size());
+        sb.append(' ');
+        sb.append(colours.toString());
+        sb.append('\n');
+        sb.append(SIZE);
+        sb.append(isLine.size());
+        sb.append(' ');
+        sb.append(isLine.toString());
+        return sb.toString();
     }
 }
