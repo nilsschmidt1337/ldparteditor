@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -573,12 +574,24 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             NLogger.debug(getClass(), "Check for identical vertices and collinearity."); //$NON-NLS-1$
             final Set<GData3> trisToDelete2 = new HashSet<>();
             {
+                final Set<String> duplicateTris = new HashSet<>();
+                final StringBuilder sb = new StringBuilder();
                 for (GData3 g3 : newTriangles) {
+                    sb.setLength(0);
                     Vertex[] verts = triangles.get(g3);
                     SortedSet<Vertex> verts2 = new TreeSet<>();
                     verts2.addAll(Arrays.asList(verts));
-                    if (verts2.size() < 3 || g3.isCollinear()) {
+                    for (Vertex v : verts2) {
+                        sb.append(v.xp.setScale(6, RoundingMode.HALF_UP));
+                        sb.append(v.yp.setScale(6, RoundingMode.HALF_UP));
+                        sb.append(v.zp.setScale(6, RoundingMode.HALF_UP));
+                    }
+                    
+                    String triString = sb.toString();
+                    if (verts2.size() < 3 || g3.isCollinear() || duplicateTris.contains(triString)) {
                         trisToDelete2.add(g3);
+                    } else {
+                        duplicateTris.add(triString);
                     }
                 }
             }
@@ -1211,11 +1224,6 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                             Vector3dd v3 = l.get(0);
                             Vector3dd v4 = l.get(1);
                             if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4) && intersectLineLineSegmentUnidirectional(v1, v2, v3, v4)) {
-                                intersect = true;
-                                break;
-                            }
-                            if (Vector3d.manhattan(v1, v3).compareTo(minDist) < 0 && Vector3d.manhattan(v2, v4).compareTo(minDist) < 0 ||
-                                    Vector3d.manhattan(v2, v3).compareTo(minDist) < 0 && Vector3d.manhattan(v1, v4).compareTo(minDist) < 0) {
                                 intersect = true;
                                 break;
                             }
