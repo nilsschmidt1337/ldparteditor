@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -47,6 +48,14 @@ import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.FocusEvent;
@@ -55,6 +64,7 @@ import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
+import org.eclipse.swt.graphics.Point;
 import org.lwjgl.opengl.swt.GLCanvas;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -95,6 +105,8 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialog.copy.CopyDialog;
 import org.nschmidt.ldparteditor.dialog.newproject.NewProjectDialog;
+import org.nschmidt.ldparteditor.dnd.OpenedFilesTabDragAndDropTransfer;
+import org.nschmidt.ldparteditor.dnd.OpenedFilesTabDragAndDropType;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enumtype.MouseButton;
@@ -2027,6 +2039,63 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         widgetUtil(btnSyncTabsPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setSyncingTabs(btnSyncTabsPtr[0].getSelection()));
+        
+        int operations = DND.DROP_MOVE;
+        final int[] sourceIndex = new int[] {0};
+        final DragSource source = new DragSource(tabFolderOpenDatFilesPtr[0], operations);
+        widgetUtil(source).setTransfer(OpenedFilesTabDragAndDropTransfer.getInstance());
+        source.addDragListener(new DragSourceListener() {
+            @Override
+            public void dragStart(DragSourceEvent event) {
+                final int selectionIndex = tabFolderOpenDatFilesPtr[0].getSelectionIndex();
+                event.doit = selectionIndex > 0 && !View.DUMMY_DATFILE.equals(tabFolderOpenDatFilesPtr[0].getSelection().getData());
+                if (event.doit) {
+                    sourceIndex[0] = selectionIndex;
+                }
+            }
+
+            @Override
+            public void dragSetData(DragSourceEvent event) {
+                event.data = new OpenedFilesTabDragAndDropType();
+            }
+
+            @Override
+            public void dragFinished(DragSourceEvent event) {
+                // Implementation is not required.
+            }
+        });
+
+        DropTarget target = new DropTarget(tabFolderOpenDatFilesPtr[0], operations);
+        widgetUtil(target).setTransfer(OpenedFilesTabDragAndDropTransfer.getInstance(), FileTransfer.getInstance());
+        target.addDropListener(new DropTargetAdapter() {
+            @Override
+            public void dragOver(DropTargetEvent event) {
+                Point dpos = tabFolderOpenDatFilesPtr[0].toDisplay(1, 1);
+                Point pos = new Point(event.x - dpos.x, event.y - dpos.y);
+                CTabItem item = tabFolderOpenDatFilesPtr[0].getItem(pos);
+                if (item != null && !View.DUMMY_DATFILE.equals(item.getData())) {
+                    tabFolderOpenDatFilesPtr[0].setSelection(item);
+                }
+            }
+
+            @Override
+            public void drop(DropTargetEvent event) {
+                if (OpenedFilesTabDragAndDropTransfer.getInstance().isSupportedType(event.currentDataType)) {
+                    final int startIndex = sourceIndex[0];
+                    final int selectionIndex = tabFolderOpenDatFilesPtr[0].getSelectionIndex();
+                    if (startIndex == selectionIndex) return;
+                    final CTabItem[] items = tabFolderOpenDatFilesPtr[0].getItems();
+                    final List<CTabItem> itemList = new ArrayList<>(Arrays.asList(items));
+
+                    CTabItem temp = items[startIndex];
+                    itemList.remove(startIndex);
+                    itemList.add(selectionIndex, temp);
+
+                    Editor3DWindow.getWindow().updateTabs(itemList.toArray(new CTabItem[0]));
+                    NLogger.debug(getClass(), "Re-arranged 3D editor tab."); //$NON-NLS-1$
+                }
+            }
+        });
 
         txtSearchPtr[0].setText(" "); //$NON-NLS-1$
         txtSearchPtr[0].setText(""); //$NON-NLS-1$
@@ -2635,9 +2704,18 @@ public class Editor3DWindow extends Editor3DDesign {
         this.treeParts[0].redraw();
         updateTabs();
     }
-
+    
     public synchronized void updateTabs() {
+        updateTabs(tabFolderOpenDatFilesPtr[0].getItems());
+    }
 
+    public synchronized void updateTabs(CTabItem[] items) {
+        List<DatFile> oldOpenFiles = new ArrayList<>();
+        for (CTabItem cti : items) {
+            oldOpenFiles.add((DatFile) cti.getData());
+        }
+        
+        
         boolean isSelected = false;
         if (tabFolderOpenDatFilesPtr[0].getData() != null) {
             return;
@@ -2660,7 +2738,24 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
 
-        for (DatFile df2 : Project.getOpenedFiles()) {
+        // Copy list of opened files
+        List<DatFile> openFiles = new ArrayList<>();
+        openFiles.addAll(Project.getOpenedFiles());
+        
+        // Iterate in the old order, just to keep it
+        for (DatFile df2 : oldOpenFiles) {
+            if (!openFiles.contains(df2)) continue;
+            openFiles.remove(df2);
+            CTabItem tItem = new CTabItem(tabFolderOpenDatFilesPtr[0], SWT.NONE);
+            tItem.setText(df2.getShortName() + (Project.getUnsavedFiles().contains(df2) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
+            tItem.setData(df2);
+            if (df2.equals(Project.getFileToEdit())) {
+                tabFolderOpenDatFilesPtr[0].setSelection(tItem);
+                isSelected = true;
+            }
+        }
+        
+        for (DatFile df2 : openFiles) {
             CTabItem tItem = new CTabItem(tabFolderOpenDatFilesPtr[0], SWT.NONE);
             tItem.setText(df2.getShortName() + (Project.getUnsavedFiles().contains(df2) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
             tItem.setData(df2);
