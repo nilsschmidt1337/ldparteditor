@@ -200,7 +200,9 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                 }
             }
 
-            intersector(new IntersectorSettings(), false);
+            final IntersectorSettings is = new IntersectorSettings();
+            is.setIgnoreSubfileContent(true);
+            intersector(is, false);
 
             showAll();
             clearSelection();

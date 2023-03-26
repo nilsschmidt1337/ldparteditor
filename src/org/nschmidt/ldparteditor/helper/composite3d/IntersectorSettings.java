@@ -19,6 +19,7 @@ public class IntersectorSettings {
     private int scope = 1;
     private boolean colourise = false;
     private boolean hidingOther = false;
+    private boolean ignoreSubfileContent = false;
     public int getScope() {
         return scope;
     }
@@ -36,5 +37,11 @@ public class IntersectorSettings {
     }
     public void setHidingOther(boolean hidingOther) {
         this.hidingOther = hidingOther;
+    }
+    public boolean isIgnoreSubfileContent() {
+        return ignoreSubfileContent;
+    }
+    public void setIgnoreSubfileContent(boolean ignoreSubfileContent) {
+        this.ignoreSubfileContent = ignoreSubfileContent;
     }
 }

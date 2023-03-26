@@ -315,7 +315,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             {
                 Set<GData3> tris = triangles.keySet();
                 for (GData3 tri : tris) {
-                    if (!hiddenData.contains(tri)) {
+                    if (!hiddenData.contains(tri) && (!ins.isIgnoreSubfileContent() || lineLinkedToVertices.containsKey(tri))) {
                         targetSurfs.add(tri);
                     }
                 }
@@ -323,7 +323,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             {
                 Set<GData4> qs = quads.keySet();
                 for (GData4 quad : qs) {
-                    if (!hiddenData.contains(quad)) {
+                    if (!hiddenData.contains(quad) && (!ins.isIgnoreSubfileContent() || lineLinkedToVertices.containsKey(quad))) {
                         targetSurfs.add(quad);
                     }
                 }
