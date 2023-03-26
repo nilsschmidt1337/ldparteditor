@@ -1,3 +1,16 @@
+### 26 Mar 2023
+With the release of 1.8.67 you are able to...
+-  ...see a hint on numbers with scientific notation.
+
+The following critical issues are fixed:
+1. The 3D manipulator orientation gets polluted.
+2. LDPE was not able to download from library.ldraw.org
+3. The tabs in the 3D editor couldn't be moved around. The text editor was not affected.
+4. SymSplitter cutted with data from subfiles too, in addition to the cutting plane (see images on https://github.com/nilsschmidt1337/ldparteditor/issues/959 )
+5. Intersector calculated sometimes wrong results with some triangles missing.
+6. It was not possible to do a "copy + transform" action on MacOS X with the cursor keys (see https://github.com/nilsschmidt1337/ldparteditor/issues/958 ).
+
+
 ### 15 Mar 2023
 With the release of 1.8.66 you are able to...
 -  ...use the change winding tool (j) on type 2 and type 5 lines, swapping the end points.
