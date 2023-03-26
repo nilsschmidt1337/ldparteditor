@@ -595,6 +595,54 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     }
                 }
             }
+            
+            final Set<GData2> linesToDelete2 = new HashSet<>();
+            {
+                final Set<String> duplicateLines = new HashSet<>();
+                final StringBuilder sb = new StringBuilder();
+                for (GData2 g2 : newLines) {
+                    sb.setLength(0);
+                    Vertex[] verts = lines.get(g2);
+                    SortedSet<Vertex> verts2 = new TreeSet<>();
+                    verts2.addAll(Arrays.asList(verts));
+                    for (Vertex v : verts2) {
+                        sb.append(v.xp.setScale(6, RoundingMode.HALF_UP));
+                        sb.append(v.yp.setScale(6, RoundingMode.HALF_UP));
+                        sb.append(v.zp.setScale(6, RoundingMode.HALF_UP));
+                    }
+                    
+                    String lineString = sb.toString();
+                    if (verts2.size() < 2 || duplicateLines.contains(lineString)) {
+                        linesToDelete2.add(g2);
+                    } else {
+                        duplicateLines.add(lineString);
+                    }
+                }
+            }
+            
+            final Set<GData5> condlinesToDelete2 = new HashSet<>();
+            {
+                final Set<String> duplicateLines = new HashSet<>();
+                final StringBuilder sb = new StringBuilder();
+                for (GData5 g5 : newCondlines) {
+                    sb.setLength(0);
+                    Vertex[] verts = condlines.get(g5);
+                    SortedSet<Vertex> verts2 = new TreeSet<>();
+                    verts2.addAll(Arrays.asList(verts));
+                    for (Vertex v : verts2) {
+                        sb.append(v.xp.setScale(6, RoundingMode.HALF_UP));
+                        sb.append(v.yp.setScale(6, RoundingMode.HALF_UP));
+                        sb.append(v.zp.setScale(6, RoundingMode.HALF_UP));
+                    }
+                    
+                    String lineString = sb.toString();
+                    if (verts2.size() < 4 || duplicateLines.contains(lineString)) {
+                        condlinesToDelete2.add(g5);
+                    } else {
+                        duplicateLines.add(lineString);
+                    }
+                }
+            }
 
 
             if (isCancelled[0] == 0) {
@@ -644,8 +692,14 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             NLogger.debug(getClass(), "Delete new, but invalid objects."); //$NON-NLS-1$
 
             newTriangles.removeAll(trisToDelete2);
+            newLines.removeAll(linesToDelete2);
+            newCondlines.removeAll(condlinesToDelete2);
             selectedTriangles.addAll(trisToDelete2);
+            selectedLines.addAll(linesToDelete2);
+            selectedCondlines.addAll(condlinesToDelete2);
             selectedData.addAll(selectedTriangles);
+            selectedData.addAll(selectedLines);
+            selectedData.addAll(selectedCondlines);
             delete(false, false);
 
             // Round to 6 decimal places
