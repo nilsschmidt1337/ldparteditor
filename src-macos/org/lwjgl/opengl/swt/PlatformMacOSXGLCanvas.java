@@ -40,7 +40,7 @@ class PlatformMacOSXGLCanvas extends AbstractPlatformGLCanvas {
 	private NSOpenGLContext context;
 	private NSOpenGLPixelFormat pixelFormat;
 
-	private static final long CONVERT_RECT_TO_BACKING = OS.sel_registerName("convertRectToBacking:");
+	private static final long CONVERT_RECT_TO_BACKING = OS.sel_registerName("convertRectToBacking:"); //$NON-NLS-1$
     private static final int MAX_ATTRIB = 32;
 	private static final String GLCONTEXT_KEY = "org.eclipse.swt.internal.cocoa.glcontext"; //$NON-NLS-1$
 

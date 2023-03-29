@@ -1495,7 +1495,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         updateBgPictureTab();
                     }
 
-                    FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
+                    FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
                     fd.setText(I18n.E3D_OPEN_PNG_IMAGE);
                     try {
                         File f = new File(png.texturePath);
