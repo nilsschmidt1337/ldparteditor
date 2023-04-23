@@ -1890,6 +1890,9 @@ public final class DatFile {
     }
 
     public void setLastSelectedComposite(Composite3D lastSelectedComposite) {
+        if (lastSelectedComposite != null && !lastSelectedComposite.isDisposed()) {
+            Editor3DWindow.getWindow().refreshLockedPerspectiveButton(lastSelectedComposite);
+        }
         this.lastSelectedComposite = lastSelectedComposite;
     }
 

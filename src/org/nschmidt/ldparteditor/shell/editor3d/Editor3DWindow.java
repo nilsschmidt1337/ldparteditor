@@ -4069,6 +4069,9 @@ public class Editor3DWindow extends Editor3DDesign {
             if (states.containsKey(c3d)) {
                 c3d.importState(states.get(c3d));
             }
+        } else {
+            // Don't lock the view when there is no state saved.
+            c3d.getPerspectiveCalculator().setRotationLock(false);
         }
     }
 

@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.shell.editor3d.toolitem;
 
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.composite.ToolItem;
@@ -38,11 +39,18 @@ public class PerspectiveToolItem extends ToolItem {
     private static final NButton[] btnPerspectiveLeftPtr = new NButton[1];
     private static final NButton[] btnPerspectiveRightPtr = new NButton[1];
     private static final NButton[] btnPerspectiveTwoThirdsPtr = new NButton[1];
+    private static final NButton[] btnPerspectiveLockPtr = new NButton[1];
 
     public PerspectiveToolItem(Composite parent, int style, boolean isHorizontal) {
         super(parent, style, isHorizontal);
         createWidgets(this);
         addListeners();
+    }
+    
+    public static void refreshPerspectiveLockButton(Composite3D c3d) {
+        if (c3d != null) {
+            btnPerspectiveLockPtr[0].setSelection(c3d.getPerspectiveCalculator().hasRotationLock());
+        }
     }
 
     private static void createWidgets(PerspectiveToolItem perspectiveToolItem) {
@@ -80,65 +88,51 @@ public class PerspectiveToolItem extends ToolItem {
         btnPerspectiveTwoThirdsPtr[0] = btnPerspectiveTwoThirds;
         KeyStateManager.addTooltipText(btnPerspectiveTwoThirds, I18n.PERSPECTIVE_TWO_THIRDS, Task.PERSPECTIVE_TWO_THIRDS);
         btnPerspectiveTwoThirds.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+        
+        NButton btnPerspectiveLock = new NButton(perspectiveToolItem, Cocoa.getStyle() | SWT.TOGGLE);
+        btnPerspectiveLockPtr[0] = btnPerspectiveLock;
+        btnPerspectiveLock.setToolTipText(I18n.PERSPECTIVE_LOCK);
+        btnPerspectiveLock.setImage(ResourceManager.getImage("icon16_lock.png")); //$NON-NLS-1$
     }
 
     private static void addListeners() {
-        widgetUtil(btnPerspectiveFrontPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPerspectiveFrontPtr[0]).addSelectionListener(e ->
+            changePerspective(Perspective.FRONT)
+        );
+        widgetUtil(btnPerspectiveBackPtr[0]).addSelectionListener(e ->
+            changePerspective(Perspective.BACK)
+        );
+        widgetUtil(btnPerspectiveLeftPtr[0]).addSelectionListener(e ->
+            changePerspective(Perspective.LEFT)
+        );
+        widgetUtil(btnPerspectiveRightPtr[0]).addSelectionListener(e ->
+            changePerspective(Perspective.RIGHT)
+        );
+        widgetUtil(btnPerspectiveTopPtr[0]).addSelectionListener(e ->
+            changePerspective(Perspective.TOP)
+        );
+        widgetUtil(btnPerspectiveBottomPtr[0]).addSelectionListener(e ->
+            changePerspective(Perspective.BOTTOM)
+        );
+        widgetUtil(btnPerspectiveTwoThirdsPtr[0]).addSelectionListener(e ->
+            changePerspective(Perspective.TWO_THIRDS)
+        );
+        widgetUtil(btnPerspectiveLockPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.FRONT);
-                c3d.setPerspectiveOnContextMenu(Perspective.FRONT);
+                c3d.getPerspectiveCalculator().setRotationLock(btnPerspectiveLockPtr[0].getSelection());
             }
-            regainFocus();
         });
-        widgetUtil(btnPerspectiveBackPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.BACK);
-                c3d.setPerspectiveOnContextMenu(Perspective.BACK);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveLeftPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.LEFT);
-                c3d.setPerspectiveOnContextMenu(Perspective.LEFT);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveRightPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.RIGHT);
-                c3d.setPerspectiveOnContextMenu(Perspective.RIGHT);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveTopPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
-                c3d.setPerspectiveOnContextMenu(Perspective.TOP);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveBottomPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.BOTTOM);
-                c3d.setPerspectiveOnContextMenu(Perspective.BOTTOM);
-            }
-            regainFocus();
-        });
-        widgetUtil(btnPerspectiveTwoThirdsPtr[0]).addSelectionListener(e -> {
-            Composite3D c3d = getCurrentCoposite3d();
-            if (c3d != null) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.TWO_THIRDS);
-                c3d.setPerspectiveOnContextMenu(Perspective.TWO_THIRDS);
-            }
-            regainFocus();
-        });
+    }
+
+    private static void changePerspective(Perspective perspective) {
+        Composite3D c3d = getCurrentCoposite3d();
+        if (c3d != null) {
+            c3d.getPerspectiveCalculator().setPerspective(perspective);
+            c3d.setPerspectiveOnContextMenu(perspective);
+        }
+        
+        regainFocus();
     }
 
     private static Composite3D getCurrentCoposite3d() {

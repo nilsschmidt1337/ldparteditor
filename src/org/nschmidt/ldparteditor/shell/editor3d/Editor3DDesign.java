@@ -1836,4 +1836,8 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
     }
+    
+    public void refreshLockedPerspectiveButton(Composite3D lastSelectedComposite) {
+        PerspectiveToolItem.refreshPerspectiveLockButton(lastSelectedComposite);
+    }
 }

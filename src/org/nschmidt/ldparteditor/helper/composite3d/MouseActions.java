@@ -308,7 +308,7 @@ public class MouseActions {
             c3d.getVertexManager().getResetTimer().set(true);
             break;
         case MouseButton.MIDDLE:
-            if (c3d.isDoingSelection())
+            if (c3d.isDoingSelection() || c3d.getPerspectiveCalculator().hasRotationLock())
                 break;
             if (c3d.isClassicPerspective()) {
                 c3d.setClassicPerspective(false);

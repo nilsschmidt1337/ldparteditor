@@ -54,6 +54,8 @@ public class PerspectiveCalculator {
     private Vector4f offset = new Vector4f(0, 0, 0, 1f);
     /** The effective clipping value [NOT PUBLIC YET] */
     private float zEff;
+    /** Indicates if the rotation is locked */
+    private boolean rotationLock;
 
     /** Magic number for numerical stability [NOT PUBLIC YET] */
     private final Rational tx = new Rational(new BigDecimal("0.146432")); //$NON-NLS-1$
@@ -72,6 +74,7 @@ public class PerspectiveCalculator {
      *            the perspective value from {@linkplain Perspective}.
      */
     public void setPerspective(Perspective perspective) {
+        if (rotationLock) return;
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
         c3d.getTranslation().load(id);
@@ -444,6 +447,14 @@ public class PerspectiveCalculator {
 
     public void setZoomExponent(float zoomExponent) {
         this.zoomExponent = zoomExponent;
+    }
+    
+    public boolean hasRotationLock() {
+        return rotationLock;
+    }
+
+    public void setRotationLock(boolean rotationLock) {
+        this.rotationLock = rotationLock;
     }
 
     public Vector4f getOffset() {

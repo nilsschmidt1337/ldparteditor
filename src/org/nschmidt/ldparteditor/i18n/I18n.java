@@ -1074,6 +1074,7 @@ public final class I18n {
     public static final String PERSPECTIVE_BOTTOM = PERSPECTIVE.getString(getProperty());
     public static final String PERSPECTIVE_FRONT = PERSPECTIVE.getString(getProperty());
     public static final String PERSPECTIVE_LEFT = PERSPECTIVE.getString(getProperty());
+    public static final String PERSPECTIVE_LOCK = PERSPECTIVE.getString(getProperty());
     public static final String PERSPECTIVE_RIGHT = PERSPECTIVE.getString(getProperty());
     public static final String PERSPECTIVE_TOP = PERSPECTIVE.getString(getProperty());
     public static final String PERSPECTIVE_TWO_THIRDS = PERSPECTIVE.getString(getProperty());

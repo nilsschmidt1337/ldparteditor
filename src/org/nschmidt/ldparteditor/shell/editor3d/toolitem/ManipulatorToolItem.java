@@ -442,7 +442,7 @@ public class ManipulatorToolItem extends ToolItem {
             Vector4f a1 = c3d.getManipulator().getXaxis();
             Vector4f a2 = c3d.getManipulator().getYaxis();
             Vector4f a3 = c3d.getManipulator().getZaxis();
-            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getPerspectiveCalculator().hasRotationLock()) {
                 c3d.setClassicPerspective(false);
                 WidgetSelectionHelper.unselectAllChildButtons(c3d.getViewAnglesMenu());
                 Matrix4f rot = new Matrix4f();

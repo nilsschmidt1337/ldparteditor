@@ -2247,6 +2247,7 @@ public class Composite3D extends ScalableComposite {
         state.setNegDeterminant(negDeterminant);
         state.setZoomExponent(getPerspectiveCalculator().getZoomExponent());
         state.setOffset(getPerspectiveCalculator().getOffset());
+        state.setRotationLock(getPerspectiveCalculator().hasRotationLock());
 
         state.getViewportTranslation().load(viewportTranslation);
         state.getViewportRotation().load(viewportRotation);
@@ -2277,6 +2278,7 @@ public class Composite3D extends ScalableComposite {
         negDeterminant = state.hasNegDeterminant();
         getPerspectiveCalculator().setZoomExponent(state.getZoomExponent());
         getPerspectiveCalculator().setOffset(state.getOffset());
+        getPerspectiveCalculator().setRotationLock(state.hasRotationLock());
 
         viewportTranslation.load(state.getViewportTranslation());
         viewportRotation.load(state.getViewportRotation());

@@ -58,6 +58,8 @@ public class Composite3DViewState {
 
     private final Set<Vertex> hiddenVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
     private final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
+    
+    private boolean rotationLock = false;
 
     float getZoom() {
         return zoom;
@@ -157,5 +159,13 @@ public class Composite3DViewState {
 
     public Set<Vertex> getSelectedVertices() {
         return selectedVertices;
+    }
+    
+    public boolean hasRotationLock() {
+        return rotationLock;
+    }
+
+    public void setRotationLock(boolean rotationLock) {
+        this.rotationLock = rotationLock;
     }
 }
