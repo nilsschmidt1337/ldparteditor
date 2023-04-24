@@ -2366,8 +2366,11 @@ public class Composite3D extends ScalableComposite {
         final int tmpRenderMode = state.getRenderMode();
         final int tmpLineMode = state.getLineMode();
         final Perspective tmpPerspective = state.getPerspective();
+        final boolean tmpRotationLock = getPerspectiveCalculator().hasRotationLock();
         setGridScale(state.getGridScale());
+        getPerspectiveCalculator().setRotationLock(false);
         getPerspectiveCalculator().setPerspective(tmpPerspective);
+        getPerspectiveCalculator().setRotationLock(tmpRotationLock);
         setOriginShown(state.isShowOrigin());
         setShowingLabels(state.isShowLabel());
         setSmoothShading(state.isSmooth());
