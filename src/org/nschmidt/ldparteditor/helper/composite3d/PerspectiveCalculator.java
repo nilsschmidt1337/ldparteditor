@@ -72,9 +72,11 @@ public class PerspectiveCalculator {
      *
      * @param perspective
      *            the perspective value from {@linkplain Perspective}.
+     * 
+     * @return true, if the perspective was set 
      */
-    public void setPerspective(Perspective perspective) {
-        if (rotationLock) return;
+    public boolean setPerspective(Perspective perspective) {
+        if (rotationLock) return false;
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
         c3d.getTranslation().load(id);
@@ -146,6 +148,7 @@ public class PerspectiveCalculator {
         break;
         }
         calculateOriginData();
+        return true;
     }
 
     /**

@@ -554,9 +554,13 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmFront = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmFrontPtr[0] = mntmFront;
             widgetUtil(mntmFront).addSelectionListener(e -> {
+                if (perspective.hasRotationLock()) {
+                    ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
+                    return;
+                }
+                
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
-                ((MenuItem) e.widget).setSelection(true);
-                perspective.setPerspective(Perspective.FRONT);
+                ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.FRONT));
             });
             mntmFront.setImage(ResourceManager.getImage("icon16_front.png")); //$NON-NLS-1$
             mntmFront.setText(I18n.PERSPECTIVE_FRONT);
@@ -565,9 +569,13 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmBack = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmBackPtr[0] = mntmBack;
             widgetUtil(mntmBack).addSelectionListener(e -> {
+                if (perspective.hasRotationLock()) {
+                    ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
+                    return;
+                }
+                
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
-                ((MenuItem) e.widget).setSelection(true);
-                perspective.setPerspective(Perspective.BACK);
+                ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.BACK));
             });
             mntmBack.setImage(ResourceManager.getImage("icon16_back.png")); //$NON-NLS-1$
             mntmBack.setText(I18n.PERSPECTIVE_BACK);
@@ -575,9 +583,13 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmLeft = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmLeftPtr[0] = mntmLeft;
             widgetUtil(mntmLeft).addSelectionListener(e -> {
+                if (perspective.hasRotationLock()) {
+                    ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
+                    return;
+                }
+                
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
-                ((MenuItem) e.widget).setSelection(true);
-                perspective.setPerspective(Perspective.LEFT);
+                ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.LEFT));
             });
             mntmLeft.setImage(ResourceManager.getImage("icon16_left.png")); //$NON-NLS-1$
             mntmLeft.setText(I18n.PERSPECTIVE_LEFT);
@@ -585,9 +597,13 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmRight = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmRightPtr[0] = mntmRight;
             widgetUtil(mntmRight).addSelectionListener(e -> {
+                if (perspective.hasRotationLock()) {
+                    ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
+                    return;
+                }
+                
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
-                ((MenuItem) e.widget).setSelection(true);
-                perspective.setPerspective(Perspective.RIGHT);
+                ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.RIGHT));
             });
             mntmRight.setImage(ResourceManager.getImage("icon16_right.png")); //$NON-NLS-1$
             mntmRight.setText(I18n.PERSPECTIVE_RIGHT);
@@ -595,9 +611,13 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmTop = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmTopPtr[0] = mntmTop;
             widgetUtil(mntmTop).addSelectionListener(e -> {
+                if (perspective.hasRotationLock()) {
+                    ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
+                    return;
+                }
+                
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
-                ((MenuItem) e.widget).setSelection(true);
-                perspective.setPerspective(Perspective.TOP);
+                ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.TOP));
             });
             mntmTop.setImage(ResourceManager.getImage("icon16_top.png")); //$NON-NLS-1$
             mntmTop.setText(I18n.PERSPECTIVE_TOP);
@@ -605,9 +625,13 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmBottom = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmBottomPtr[0] = mntmBottom;
             widgetUtil(mntmBottom).addSelectionListener(e -> {
+                if (perspective.hasRotationLock()) {
+                    ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
+                    return;
+                }
+                
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
-                ((MenuItem) e.widget).setSelection(true);
-                perspective.setPerspective(Perspective.BOTTOM);
+                ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.BOTTOM));
             });
             mntmBottom.setImage(ResourceManager.getImage("icon16_bottom.png")); //$NON-NLS-1$
             mntmBottom.setText(I18n.PERSPECTIVE_BOTTOM);
@@ -617,6 +641,11 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmTwoThirds = new MenuItem(mnuViewAngles, SWT.NONE);
             this.mntmTwoThirdsPtr[0] = mntmTwoThirds;
             widgetUtil(mntmTwoThirds).addSelectionListener(e -> {
+                if (perspective.hasRotationLock()) {
+                    ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
+                    return;
+                }
+                
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 perspective.setPerspective(Perspective.TWO_THIRDS);
             });
@@ -2395,6 +2424,7 @@ public class Composite3D extends ScalableComposite {
     }
 
     public void setPerspectiveOnContextMenu(Perspective perspective) {
+        if (getPerspectiveCalculator().hasRotationLock()) return;
         getMntmFront().setSelection(perspective == Perspective.FRONT);
         getMntmBack().setSelection(perspective == Perspective.BACK);
         getMntmLeft().setSelection(perspective == Perspective.LEFT);
