@@ -309,9 +309,19 @@ public class SyntaxFormatter {
         for (String segment : textSegments) {
             if (segment.isEmpty() || segment.equals("0")) { //$NON-NLS-1$
                 offset++;
-            } else if (segment.equals("//") || segment.equals("Author:")) { //$NON-NLS-1$ //$NON-NLS-2$
-                return; // We got a real comment or a author entry here. Do not
+            } else if (segment.equals("//")) { //$NON-NLS-1$
+                return; // We got a real comment here. Do not
                 // highlight other KEYWORDS in these lines
+            } else if (segment.equals("Name:") || segment.equals("Author:")) { //$NON-NLS-1$ //$NON-NLS-2$
+                // We got a real name or a author entry here. Do not
+                // highlight other KEYWORDS in these lines
+                StyleRange headerStyleRange = new StyleRange();
+                headerStyleRange.start = offset;
+                headerStyleRange.length = segment.length();
+                headerStyleRange.fontStyle = SWT.BOLD | SWT.ITALIC;
+                headerStyleRange.foreground = TextEditorColour.getLineCommentFont();
+                styles.add(headerStyleRange);
+                return;
             } else if (segment.equals("!HISTORY") || segment.equals("!HELP")) { //$NON-NLS-1$ //$NON-NLS-2$
                 // We got a history/help entry here. Do not highlight other
                 // KEYWORDS in these lines
