@@ -1,3 +1,12 @@
+# 04 Jun 2023
+With the release of 1.8.68 you are able to...
+-  ...lock/unlock the viewport rotation.
+-  ...see "Author:" and "Name:" formatted as bold and italic in the text editor.
+
+The following critical issue is fixed:
+1. The "Browse..." button for the Background Picture path opened a dialog to "save" the image instead of "open".
+
+
 ### 26 Mar 2023
 With the release of 1.8.67 you are able to...
 -  ...see a hint on numbers with scientific notation.
