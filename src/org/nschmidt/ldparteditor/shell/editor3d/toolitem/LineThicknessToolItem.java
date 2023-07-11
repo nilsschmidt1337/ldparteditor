@@ -157,7 +157,7 @@ public class LineThicknessToolItem extends ToolItem {
             
             GL20Primitives.sphere = sp;
             GL20Primitives.sphereInv = spInv;
-            Editor3DWindow.getWindow().compileAll(false);
+            Editor3DWindow.getWindow().updateLineThickness();
         }
         
         if (btnToggleLinesOpenGLPtr[0] != null && btnToggleLinesOpenGLPtr[0].getSelection()) {

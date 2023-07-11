@@ -97,8 +97,6 @@ public final class GData5 extends GData {
         this.g = g;
         this.b = b;
         this.a = a;
-        this.lGeom = MathHelper.getLineVertices(new Vector3f(x1.floatValue(), y1.floatValue(), z1.floatValue()), new Vector3f(x2.floatValue(), y2.floatValue(), z2.floatValue()),
-                parent.productMatrix);
         this.x1p = x1;
         this.y1p = y1;
         this.z1p = z1;
@@ -123,6 +121,7 @@ public final class GData5 extends GData {
         this.x4 = x4p.floatValue() * 1000f;
         this.y4 = y4p.floatValue() * 1000f;
         this.z4 = z4p.floatValue() * 1000f;
+        this.lGeom = MathHelper.getLineVertices(new Vector3f(this.x1, this.y1, this.z1), new Vector3f(this.x2, this.y2, this.z2), parent.productMatrix);
         datFile.getVertexManager().add(this);
         sA2.x = this.x1;
         sB2.x = this.x2;
@@ -173,7 +172,7 @@ public final class GData5 extends GData {
         this.x4 = x42;
         this.y4 = y42;
         this.z4 = z42;
-        this.lGeom = MathHelper.getLineVertices1000(new Vector3f(this.x1, this.y1, this.z1), new Vector3f(this.x2, this.y2, this.z2), parent.productMatrix);
+        this.lGeom = MathHelper.getLineVertices(new Vector3f(this.x1, this.y1, this.z1), new Vector3f(this.x2, this.y2, this.z2), parent.productMatrix);
         datFile.getVertexManager().add(this);
         sA2.x = this.x1;
         sB2.x = this.x2;
@@ -263,7 +262,7 @@ public final class GData5 extends GData {
         this.x4 = v4.x;
         this.y4 = v4.y;
         this.z4 = v4.z;
-        this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
+        this.lGeom = MathHelper.getLineVertices(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
         sA2.x = this.x1;
         sB2.x = this.x2;
         sC2.x = this.x3;
@@ -321,7 +320,7 @@ public final class GData5 extends GData {
         this.x4 = v4.x;
         this.y4 = v4.y;
         this.z4 = v4.z;
-        this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
+        this.lGeom = MathHelper.getLineVertices(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
         datFile.getVertexManager().add(this);
         sA2.x = this.x1;
         sB2.x = this.x2;
@@ -1077,5 +1076,12 @@ public final class GData5 extends GData {
 
     boolean wasShown() {
         return wasShown;
+    }
+    
+    public void updateLine() {
+        float[][] lGeomNew = MathHelper.getLineVertices(new Vector3f(this.x1, this.y1, this.z1), new Vector3f(this.x2, this.y2, this.z2), parent.productMatrix);
+        for (int i = 0; i < 21; i++) {
+            System.arraycopy(lGeomNew[i], 0, this.lGeom[i], 0, 3);
+        }
     }
 }

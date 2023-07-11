@@ -94,6 +94,7 @@ import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData0;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData2;
+import org.nschmidt.ldparteditor.data.GData5;
 import org.nschmidt.ldparteditor.data.GDataBFC;
 import org.nschmidt.ldparteditor.data.GDataPNG;
 import org.nschmidt.ldparteditor.data.GraphicalDataTools;
@@ -3764,6 +3765,26 @@ public class Editor3DWindow extends Editor3DDesign {
         for (DatFile df : dfs) {
             df.getVertexManager().addSnapshot();
             SubfileCompiler.compile(df, false, forceParsing);
+        }
+    }
+    
+    public void updateLineThickness() {
+        Set<DatFile> dfs = new HashSet<>();
+        for (OpenGLRenderer renderer : renders) {
+            dfs.add(renderer.getC3D().getLockableDatFileReference());
+        }
+        
+        for (DatFile df : dfs) {
+            df.getVertexManager().addSnapshot();
+            Set<GData2> lines = df.getVertexManager().getLines().keySet();
+            for (GData2 line : lines) {
+                line.updateLine();
+            }
+            
+            Set<GData5> condlines = df.getVertexManager().getCondlines().keySet();
+            for (GData5 condline : condlines) {
+                condline.updateLine();
+            }
         }
     }
 
