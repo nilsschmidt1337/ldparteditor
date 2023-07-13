@@ -662,7 +662,10 @@ public final class DatFile {
                     }
                     g = g.next;
                 }
-                if (validState) {
+                
+                if (g != null && g.type() == 0 && g.toString().trim().startsWith("1 ")) { //$NON-NLS-1$
+                    // It's okay, if it is formally an invalid reference line (which falls back to a comment (type = 0))
+                } else if (validState) {
                     final Axis flatAxis;
                     if ((flatAxis = getVertexManager().isFlatOnAxis((GData1) g)) != Axis.NONE) {
                         position = compositeText.getOffsetAtLine(lineNumber - 1);
@@ -850,7 +853,10 @@ public final class DatFile {
                     }
                     g = g.next;
                 }
-                if (validState) {
+                
+                if (g != null && g.type() == 0 && g.toString().trim().startsWith("1 ")) { //$NON-NLS-1$
+                    // It's okay, if it is formally an invalid reference line (which falls back to a comment (type = 0))
+                } else if (validState) {
                     final Axis flatAxis;
                     if ((flatAxis = getVertexManager().isFlatOnAxis((GData1) g)) != Axis.NONE) {
                         position = compositeText.getOffsetAtLine(lineNumber - 1);

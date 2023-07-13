@@ -549,6 +549,8 @@ public class DuplicateManager {
                             }
                         }
                         break;
+                        case 6:
+                            break;
                         default:
                             if (!trimmedLine.isEmpty()) {
                                 if (lastCommentLine != null && lastCommentLine.equals(normalizedLine)) {
