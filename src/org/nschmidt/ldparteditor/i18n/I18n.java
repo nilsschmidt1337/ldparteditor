@@ -670,6 +670,7 @@ public final class I18n {
     public static final String E3D_SPLIT_N_TIMES = E3D.getString(getProperty());
     public static final String E3D_SPLIT_QUAD = E3D.getString(getProperty());
     public static final String E3D_SPLIT_VERTICALLY = E3D.getString(getProperty());
+    public static final String E3D_STL_FILE = E3D.getString(getProperty());
     public static final String E3D_STOP_SELECTION_AT_EDGES = E3D.getString(getProperty());
     public static final String E3D_SUBDIVIDE_CATMULL_CLARK = E3D.getString(getProperty());
     public static final String E3D_SUBDIVIDE_LOOP = E3D.getString(getProperty());

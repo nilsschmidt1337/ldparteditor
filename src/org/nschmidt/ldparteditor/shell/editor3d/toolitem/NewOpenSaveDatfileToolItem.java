@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.shell.editor3d.toolitem;
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -46,6 +47,8 @@ import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
+import org.nschmidt.ldparteditor.text.Stl2Dat;
+import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -280,9 +283,9 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
 
         fd.setFilterPath(Project.getLastVisitedPath());
 
-        String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        String[] filterExt = { "*.dat", "*.stl", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         fd.setFilterExtensions(filterExt);
-        String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
+        String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_STL_FILE, I18n.E3D_ALL_FILES};
         fd.setFilterNames(filterNames);
 
         String selected = fd.open();
@@ -292,7 +295,21 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
         }
 
         for (String fileName : fd.getFileNames()) {
-            final String absoluteFilePath = new File(fd.getFilterPath() + File.separator + fileName).getAbsolutePath();
+            final String absoluteFilePath;
+            if (fileName.toLowerCase().endsWith(".stl")) { //$NON-NLS-1$
+                NLogger.debug(NewOpenSaveDatfileToolItem.class, "Convert stl-file to dat-file..."); //$NON-NLS-1$
+                String stlFilePath = new File(fd.getFilterPath() + File.separator + fileName).getAbsolutePath();
+                absoluteFilePath = new File(fd.getFilterPath() + File.separator + fileName).getAbsolutePath() + ".dat"; //$NON-NLS-1$
+                try (UTF8PrintWriter r = new UTF8PrintWriter(absoluteFilePath)) {
+                    r.println(Stl2Dat.convertStlToDatFile(stlFilePath, WorkbenchManager.getUserSettingState()));
+                    r.flush();
+                } catch (IOException ioe) {
+                    NLogger.debug(NewOpenSaveDatfileToolItem.class, ioe);
+                }
+            } else {
+                absoluteFilePath = new File(fd.getFilterPath() + File.separator + fileName).getAbsolutePath();
+            }
+            
             DatFile dat = win.openDatFile(OpenInWhat.EDITOR_3D, absoluteFilePath, true);
             if (dat != null) {
                 NewOpenSaveProjectToolItem.addRecentFile(dat);
