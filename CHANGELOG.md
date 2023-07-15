@@ -1,3 +1,12 @@
+# 15 Jul 2023
+With the release of 1.8.69 you are able to...
+-  ...import STL files (via "Open Part File" -> choose "STL-File (*.stl)", instead of "LDraw Source File (*.dat)").
+
+The following critical issues are fixed:
+1. Switching the line size caused long reloading times.
+2. "BFC INVERTNEXT" was invalid when the previous subfile was not found.
+
+
 # 04 Jun 2023
 With the release of 1.8.68 you are able to...
 -  ...lock/unlock the viewport rotation.
