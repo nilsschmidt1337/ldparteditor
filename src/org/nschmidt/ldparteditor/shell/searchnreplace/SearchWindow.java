@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.shell.searchnreplace;
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.FocusEvent;
@@ -28,7 +27,6 @@ import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.text.StringHelper;
 
 public class SearchWindow extends SearchDesign {
 
@@ -139,20 +137,27 @@ public class SearchWindow extends SearchDesign {
 
                     {
                         int offset1 = textComposite.getSelectionRange().x;
-                        selectionStart = textComposite.getOffsetAtLine(offset1 > -1 ? textComposite.getLineAtOffset(offset1) : offset1 * -1);
+                        selectionStart = textComposite.getOffsetAtLine(offset1 > -1 ? textComposite.getLineAtOffset(offset1) : 0);
                     }
 
                     {
                         int offset2 = textComposite.getSelectionRange().x + textComposite.getSelectionRange().y;
-                        selectionEnd = textComposite.getOffsetAtLine((offset2 > -1 ? textComposite.getLineAtOffset(offset2) : offset2 * -1) + 1);
+                        int line = (offset2 > -1 ? textComposite.getLineAtOffset(offset2) : 0);
+                        selectionEnd = textComposite.getOffsetAtLine(line) + textComposite.getLine(line).length();
                     }
 
                     textComposite.setSelectionRange(selectionStart, selectionEnd - selectionStart);
                 } else {
                     scopeAll = true;
+                    selectionStart = 0;
+                    selectionEnd = 0;
                 }
             } catch (IllegalArgumentException iae) {
                 NLogger.debug(SearchWindow.class, iae);
+                scopeAll = true;
+                selectionStart = 0;
+                selectionEnd = 0;
+                rbSelectedLinesPtr[0].setSelection(false);
             }
         });
 
@@ -190,7 +195,8 @@ public class SearchWindow extends SearchDesign {
         getShell().update();
     }
 
-    private void find() {
+    private boolean find() {
+        final boolean result;
         setDisabledButtonStatus();
 
         if (btnFindPtr[0].isEnabled()) {
@@ -214,16 +220,26 @@ public class SearchWindow extends SearchDesign {
                     if (textComposite.getSelectionRange().x == 0  && textComposite.getSelectionRange().y == 0 && text.startsWith(criteria)) {
                         textComposite.setSelectionRange(0, len);
                         textComposite.showSelection();
+                        
+                        result = true;
                     } else {
 
-                        int index = text.indexOf(criteria, textComposite.getSelectionRange().x + len);
+                        int index = text.indexOf(criteria, textComposite.getSelectionRange().x);
 
+                        if (index != -1 && textComposite.getSelectionRange().y != len) {
+                            // Continue
+                        } else {
+                            index = text.indexOf(criteria, textComposite.getSelectionRange().x + len);
+                        }
+                        
                         if (index != -1) {
                             if (!scopeAll && index > selectionEnd) {
                                 textComposite.setSelectionRange(selectionStart, 0);
+                                result = false;
                             } else {
                                 textComposite.setSelectionRange(index, len);
                                 textComposite.showSelection();
+                                result = true;
                             }
                         } else {
                             if (scopeAll) {
@@ -231,6 +247,8 @@ public class SearchWindow extends SearchDesign {
                             } else {
                                 textComposite.setSelectionRange(selectionStart, 0);
                             }
+                            
+                            result = false;
                         }
                     }
 
@@ -241,9 +259,11 @@ public class SearchWindow extends SearchDesign {
                     if (index != -1) {
                         if (!scopeAll && index < selectionStart) {
                             textComposite.setSelectionRange(selectionEnd, 0);
+                            result = false;
                         } else {
                             textComposite.setSelectionRange(index, len);
                             textComposite.showSelection();
+                            result = true;
                         }
                     } else {
                         if (scopeAll) {
@@ -251,10 +271,18 @@ public class SearchWindow extends SearchDesign {
                         } else {
                             textComposite.setSelectionRange(selectionEnd, 0);
                         }
+                        
+                        result = false;
                     }
                 }
+            } else {
+                result = false;
             }
+        } else {
+            result = false;
         }
+        
+        return result;
     }
 
     private void replace() {
@@ -307,63 +335,32 @@ public class SearchWindow extends SearchDesign {
         if (textComposite == null || tab != null && !tab.getState().getFileNameObj().getVertexManager().isUpdated()) return;
         setDisabledButtonStatus();
 
+        final boolean forward = rbForwardPtr[0].getSelection();
+        rbForwardPtr[0].setSelection(true);
+        if (scopeAll) {
+            textComposite.setSelectionRange(0, 0);
+        }
+        
         if (btnFindPtr[0].isEnabled()) {
-
-            final String criteria;
-
-            final String replacement = txtReplacePtr[0].getText();
-
-            if (cbCaseSensitivePtr[0].getSelection()) {
-                criteria = txtFindPtr[0].getText();
-            } else {
-                criteria = txtFindPtr[0].getText().toLowerCase(Locale.ENGLISH);
-            }
-            int len = criteria.length();
-            if (len > 0) {
-
-                if (rbAllPtr[0].getSelection()) {
-                    try {
-                        if (cbCaseSensitivePtr[0].getSelection()) {
-                            textComposite.setText(textComposite.getText().replace(Pattern.quote(criteria), replacement));
-                        } else {
-                            textComposite.setText(textComposite.getText().replace("(?i)" + Pattern.quote(criteria), replacement)); //$NON-NLS-1$
-                        }
-                    } catch (Exception consumed) {
-                        NLogger.debug(SearchWindow.class, consumed);
-                    }
-                } else {
-
-                    textComposite.setSelectionRange(selectionStart, selectionEnd - selectionStart);
-
-                    String textToReplace = textComposite.getSelectionText();
-                    if (!textToReplace.isEmpty()) {
-                        try {
-                            if (cbCaseSensitivePtr[0].getSelection()) {
-                                textToReplace = textToReplace.replace(Pattern.quote(criteria), replacement);
-                            } else {
-                                textToReplace = textToReplace.replace("(?i)" + Pattern.quote(criteria), replacement); //$NON-NLS-1$
-                            }
-
-                            textComposite.insert(textToReplace);
-                            if (rbSelectedLinesPtr[0].getSelection()) {
-                                textComposite.setSelectionRange(selectionStart, textToReplace.length() - StringHelper.getLineDelimiter().length());
-                            } else {
-                                textComposite.setSelectionRange(selectionStart, textToReplace.length());
-                            }
-
-                        } catch (Exception consumed) {
-                            NLogger.debug(SearchWindow.class, consumed);
-                        }
-                    }
-                }
+            int delta = txtReplacePtr[0].getText().length() - txtFindPtr[0].getText().length();
+            while (find()) {
+                replace();
+                // Move the cursor
+                textComposite.setSelectionRange(textComposite.getSelectionRange().x + txtFindPtr[0].getText().length(), 0);
+                selectionEnd += delta;
             }
         }
+        
+        rbForwardPtr[0].setSelection(forward);
     }
 
     public void setScopeToAll() {
         try {
             rbAllPtr[0].setSelection(true);
             rbSelectedLinesPtr[0].setSelection(false);
+            scopeAll = true;
+            selectionStart = 0;
+            selectionEnd = 0;
             getShell().update();
         } catch (Exception consumed) {
             NLogger.debug(SearchWindow.class, consumed);
