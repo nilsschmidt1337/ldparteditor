@@ -53,20 +53,16 @@ import org.nschmidt.ldparteditor.composite.CompositeContainer;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTabFolder;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTabState;
-import org.nschmidt.ldparteditor.data.ColourChanger;
 import org.nschmidt.ldparteditor.data.DatFile;
-import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.QuadMerger;
 import org.nschmidt.ldparteditor.data.QuadSplitter;
 import org.nschmidt.ldparteditor.data.Rounder;
 import org.nschmidt.ldparteditor.data.Unrectifier;
 import org.nschmidt.ldparteditor.data.VertexManager;
-import org.nschmidt.ldparteditor.dialog.colour.ColourDialog;
 import org.nschmidt.ldparteditor.dialog.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialog.sort.SortDialog;
 import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropTransfer;
 import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropType;
-import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.View;
@@ -902,35 +898,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnPalettePtr[0]).addSelectionListener(e -> {
-            final GColour[] gColour2 = new GColour[1];
-            new ColourDialog(btnPalettePtr[0].getShell(), gColour2, true).run();
-            if (gColour2[0] != null) {
-                int num = gColour2[0].getColourNumber();
-                if (!LDConfig.hasColour(num)) {
-                    num = -1;
-                }
-
-                CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
-                if (selection != null) {
-                    DatFile df = selection.getState().getFileNameObj();
-                    if (!df.isReadOnly() && df.getVertexManager().isUpdated()) {
-                        NLogger.debug(getClass(), "Change colours..."); //$NON-NLS-1$
-                        final StyledText st = selection.getTextComposite();
-                        int s1 = st.getSelectionRange().x;
-                        int s2 = s1 + st.getSelectionRange().y;
-                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                        fromLine++;
-                        toLine++;
-                        NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                        ColourChanger.changeColour(fromLine, toLine, df, num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
-                        st.forceFocus();
-                    }
-                }
-            }
-        });
+        initPaletteEvent();
 
         widgetUtil(btnInlineLinkedPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
