@@ -137,6 +137,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     private int cubeMapLoc = -1;
     private int cubeMapMatteLoc = -1;
     private int cubeMapMetalLoc = -1;
+    private int cubeMapPearlLoc = -1;
     private int alphaSwitchLoc = -1;
     private int normalSwitchLoc = -1;
     private int noTextureSwitch = -1;
@@ -219,6 +220,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 cubeMapLoc = GL20.glGetUniformLocation(pGlossId, "cubeMap"); //$NON-NLS-1$
                 cubeMapMatteLoc = GL20.glGetUniformLocation(pGlossId, "cubeMapMatte"); //$NON-NLS-1$
                 cubeMapMetalLoc = GL20.glGetUniformLocation(pGlossId, "cubeMapMetal"); //$NON-NLS-1$
+                cubeMapPearlLoc = GL20.glGetUniformLocation(pGlossId, "cubeMapPearl"); //$NON-NLS-1$
                 alphaSwitchLoc = GL20.glGetUniformLocation(pGlossId, "alphaSwitch"); //$NON-NLS-1$
                 normalSwitchLoc = GL20.glGetUniformLocation(pGlossId, "normalSwitch"); //$NON-NLS-1$
                 noTextureSwitch = GL20.glGetUniformLocation(pGlossId, "noTextureSwitch"); //$NON-NLS-1$
@@ -2198,5 +2200,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
     public int getCubeMapMetalLoc() {
         return cubeMapMetalLoc;
+    }
+    
+    public int getCubeMapPearlLoc() {
+        return cubeMapPearlLoc;
     }
 }

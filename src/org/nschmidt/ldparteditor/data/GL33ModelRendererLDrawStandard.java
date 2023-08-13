@@ -58,6 +58,7 @@ public class GL33ModelRendererLDrawStandard {
     private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GTexture CUBEMAP_MATTE_TEXTURE = new GTexture(TexType.PLANAR, "matte_metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 3, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
+    private static final GTexture CUBEMAP_PEARL_TEXTURE = new GTexture(TexType.PLANAR, "pearl.png", null, 4, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
 
     private static Set<String> filesWithLogo1 = new HashSet<>();
     private static Set<String> filesWithLogo2 = new HashSet<>();
@@ -128,13 +129,16 @@ public class GL33ModelRendererLDrawStandard {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
 
         GL20.glEnableVertexAttribArray(0);
-        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, 0);
 
         GL20.glEnableVertexAttribArray(1);
-        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4l);
+        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, 3 * 4l);
 
         GL20.glEnableVertexAttribArray(2);
-        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4l);
+        GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, (3 + 3) * 4l);
+        
+        GL20.glEnableVertexAttribArray(3);
+        GL20.glVertexAttribPointer(3, 2, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, (3 + 3 + 4) * 4l);
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
@@ -563,14 +567,14 @@ public class GL33ModelRendererLDrawStandard {
                         final GData3 gd3 = (GData3) gd;
                         if (gd3.isTriangle) {
                             if (gw.noclip) {
-                                localTriangleSize += 60;
+                                localTriangleSize += 72;
                                 if (gd3.a < 1f) {
                                     transparentTriangleVertexCount += 6;
                                 } else {
                                     triangleVertexCount += 6;
                                 }
                             } else {
-                                localTriangleSize += 30;
+                                localTriangleSize += 36;
                                 if (gd3.a < 1f) {
                                     transparentTriangleVertexCount += 3;
                                 } else {
@@ -582,14 +586,14 @@ public class GL33ModelRendererLDrawStandard {
                     case 4:
                         final GData4 gd4 = (GData4) gd;
                         if (gw.noclip) {
-                            localTriangleSize += 120;
+                            localTriangleSize += 144;
                             if (gd4.a < 1f) {
                                 transparentTriangleVertexCount += 12;
                             } else {
                                 triangleVertexCount += 12;
                             }
                         } else {
-                            localTriangleSize += 60;
+                            localTriangleSize += 72;
                             if (gd4.a < 1f) {
                                 transparentTriangleVertexCount += 6;
                             } else {
@@ -725,6 +729,14 @@ public class GL33ModelRendererLDrawStandard {
                                 pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                 pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                 pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                uv(0, 0f, 0f, triangleData, tempIndex);
+                                uv(1, 0f, d1, triangleData, tempIndex);
+                                uv(2, d2, d1, triangleData, tempIndex);
+                                uv(3, 0f, 0f, triangleData, tempIndex);
+                                uv(4, d2, d1, triangleData, tempIndex);
+                                uv(5, 0f, d1, triangleData, tempIndex);
                                 colourise(0, 6, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
                                 if (smoothShading) {
                                     normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
@@ -766,6 +778,9 @@ public class GL33ModelRendererLDrawStandard {
                                     case RUBBER:
                                         colourise(0, 3, gd3.r, gd3.g, gd3.b, 5.2f, triangleData, tempIndex);
                                         break;
+                                    case PEARL:
+                                        colourise(0, 3, gd3.r, gd3.g, gd3.b, 6.2f, triangleData, tempIndex);
+                                        break;
                                     default:
                                         colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
                                         break;
@@ -797,10 +812,20 @@ public class GL33ModelRendererLDrawStandard {
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                         pointAt(1, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                         pointAt(2, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                        float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                        float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                        uv(0, 0f, 0f, triangleData, tempIndex);
+                                        uv(1, 0f, d1, triangleData, tempIndex);
+                                        uv(2, d2, d1, triangleData, tempIndex);
                                     } else {
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                         pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                         pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                        float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                        uv(0, 0f, 0f, triangleData, tempIndex);
+                                        uv(1, 0f, d1, triangleData, tempIndex);
+                                        uv(2, d2, d1, triangleData, tempIndex);
                                     }
                                     break;
                                 case CCW:
@@ -825,10 +850,20 @@ public class GL33ModelRendererLDrawStandard {
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                         pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                         pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                        float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                        uv(0, 0f, 0f, triangleData, tempIndex);
+                                        uv(1, 0f, d1, triangleData, tempIndex);
+                                        uv(2, d2, d1, triangleData, tempIndex);
                                     } else {
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                         pointAt(1, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                         pointAt(2, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                        float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                        float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                        uv(0, 0f, 0f, triangleData, tempIndex);
+                                        uv(1, 0f, d1, triangleData, tempIndex);
+                                        uv(2, d2, d1, triangleData, tempIndex);
                                     }
                                     break;
                                 case NOCERTIFY:
@@ -836,6 +871,11 @@ public class GL33ModelRendererLDrawStandard {
                                     pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                     pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                     colourise(0, 3, 0f, 0f, 0f, 0f, triangleData, tempIndex);
+                                    float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                    float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                    uv(0, 0f, 0f, triangleData, tempIndex);
+                                    uv(1, 0f, d1, triangleData, tempIndex);
+                                    uv(2, d2, d1, triangleData, tempIndex);
                                     break;
                                 default:
                                     break;
@@ -924,6 +964,23 @@ public class GL33ModelRendererLDrawStandard {
                             pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                             pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                             pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                            
+                            float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                            float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                            
+                            uv(0, 0f, 0f, triangleData, tempIndex);
+                            uv(1, 0f, d1, triangleData, tempIndex);
+                            uv(2, d2, d1, triangleData, tempIndex);
+                            uv(3, 0f, 0f, triangleData, tempIndex);
+                            uv(4, 0f, d1, triangleData, tempIndex);
+                            uv(5, d2, d1, triangleData, tempIndex);
+                            
+                            uv(6, 0f, 0f, triangleData, tempIndex);
+                            uv(7, 0f, d1, triangleData, tempIndex);
+                            uv(8, d2, d1, triangleData, tempIndex);
+                            uv(9, 0f, 0f, triangleData, tempIndex);
+                            uv(10, 0f, d1, triangleData, tempIndex);
+                            uv(11, d2, d1, triangleData, tempIndex);
 
                             colourise(0, 12, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
                             if (smoothShading) {
@@ -970,6 +1027,9 @@ public class GL33ModelRendererLDrawStandard {
                                 case RUBBER:
                                     colourise(0, 6, gd4.r, gd4.g, gd4.b, 5.2f, triangleData, tempIndex);
                                     break;
+                                case PEARL:
+                                    colourise(0, 6, gd4.r, gd4.g, gd4.b, 6.2f, triangleData, tempIndex);
+                                    break;
                                 default:
                                     colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
                                     break;
@@ -1007,6 +1067,14 @@ public class GL33ModelRendererLDrawStandard {
                                     pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                     pointAt(4, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                     pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                    float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                    uv(0, 0f, 0f, triangleData, tempIndex);
+                                    uv(1, 0f, d1, triangleData, tempIndex);
+                                    uv(2, d2, d1, triangleData, tempIndex);
+                                    uv(3, 0f, 0f, triangleData, tempIndex);
+                                    uv(4, 0f, d1, triangleData, tempIndex);
+                                    uv(5, d2, d1, triangleData, tempIndex);
                                 } else {
                                     pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                     pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
@@ -1014,6 +1082,14 @@ public class GL33ModelRendererLDrawStandard {
                                     pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                     pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
                                     pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                    float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                    uv(0, 0f, 0f, triangleData, tempIndex);
+                                    uv(1, 0f, d1, triangleData, tempIndex);
+                                    uv(2, d2, d1, triangleData, tempIndex);
+                                    uv(3, 0f, 0f, triangleData, tempIndex);
+                                    uv(4, 0f, d1, triangleData, tempIndex);
+                                    uv(5, d2, d1, triangleData, tempIndex);
                                 }
                                 break;
                             case CCW:
@@ -1045,6 +1121,14 @@ public class GL33ModelRendererLDrawStandard {
                                     pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                     pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
                                     pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                    float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                    uv(0, 0f, 0f, triangleData, tempIndex);
+                                    uv(1, 0f, d1, triangleData, tempIndex);
+                                    uv(2, d2, d1, triangleData, tempIndex);
+                                    uv(3, 0f, 0f, triangleData, tempIndex);
+                                    uv(4, 0f, d1, triangleData, tempIndex);
+                                    uv(5, d2, d1, triangleData, tempIndex);
                                 } else {
                                     pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                     pointAt(1, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
@@ -1052,6 +1136,14 @@ public class GL33ModelRendererLDrawStandard {
                                     pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                     pointAt(4, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                     pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                    float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                    uv(0, 0f, 0f, triangleData, tempIndex);
+                                    uv(1, 0f, d1, triangleData, tempIndex);
+                                    uv(2, d2, d1, triangleData, tempIndex);
+                                    uv(3, 0f, 0f, triangleData, tempIndex);
+                                    uv(4, 0f, d1, triangleData, tempIndex);
+                                    uv(5, d2, d1, triangleData, tempIndex);
                                 }
                                 break;
                             case NOCERTIFY:
@@ -1062,6 +1154,14 @@ public class GL33ModelRendererLDrawStandard {
                                 pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                 pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
                                 pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
+                                float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
+                                uv(0, 0f, 0f, triangleData, tempIndex);
+                                uv(1, 0f, d1, triangleData, tempIndex);
+                                uv(2, d2, d1, triangleData, tempIndex);
+                                uv(3, 0f, 0f, triangleData, tempIndex);
+                                uv(4, 0f, d1, triangleData, tempIndex);
+                                uv(5, d2, d1, triangleData, tempIndex);
                                 break;
                             default:
                                 break;
@@ -1172,6 +1272,7 @@ public class GL33ModelRendererLDrawStandard {
         CUBEMAP_TEXTURE.bindGL33(renderer, mainShader);
         CUBEMAP_MATTE_TEXTURE.bindGL33(renderer, mainShader);
         CUBEMAP_METAL_TEXTURE.bindGL33(renderer, mainShader);
+        CUBEMAP_PEARL_TEXTURE.bindGL33(renderer, mainShader);
 
         if (c3d.isLightOn()) {
             mainShader.setFactor(.9f);
@@ -1205,13 +1306,16 @@ public class GL33ModelRendererLDrawStandard {
             lock.unlock();
 
             GL20.glEnableVertexAttribArray(0);
-            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 0);
+            GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, 0);
 
             GL20.glEnableVertexAttribArray(1);
-            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, 3 * 4l);
+            GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, 3 * 4l);
 
             GL20.glEnableVertexAttribArray(2);
-            GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4l);
+            GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, (3 + 3) * 4l);
+            
+            GL20.glEnableVertexAttribArray(3);
+            GL20.glVertexAttribPointer(3, 2, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, (3 + 3 + 4) * 4l);
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         }
@@ -1618,7 +1722,7 @@ public class GL33ModelRendererLDrawStandard {
     private void normal(int offset, int times, float xn, float yn, float zn,
             float[] vertexData, int i) {
         for (int j = 0; j < times; j++) {
-            int pos = (offset + i + j) * 10;
+            int pos = (offset + i + j) * 12;
             vertexData[pos + 3] = xn;
             vertexData[pos + 4] = yn;
             vertexData[pos + 5] = zn;
@@ -1628,12 +1732,18 @@ public class GL33ModelRendererLDrawStandard {
     private void colourise(int offset, int times, float r, float g, float b,
             float a, float[] vertexData, int i) {
         for (int j = 0; j < times; j++) {
-            int pos = (offset + i + j) * 10;
+            int pos = (offset + i + j) * 12;
             vertexData[pos + 6] = r;
             vertexData[pos + 7] = g;
             vertexData[pos + 8] = b;
             vertexData[pos + 9] = a;
         }
+    }
+    
+    private void uv(int offset, float u, float v, float[] vertexData, int i) {
+        int pos = (offset + i) * 12;
+        vertexData[pos + 10] = u;
+        vertexData[pos + 11] = v;
     }
 
     private void colourise7(int offset, int times, float r, float g, float b,
@@ -1659,7 +1769,7 @@ public class GL33ModelRendererLDrawStandard {
 
     private void pointAt(int offset, float x, float y, float z,
             float[] vertexData, int i) {
-        int pos = (offset + i) * 10;
+        int pos = (offset + i) * 12;
         vertexData[pos] = x;
         vertexData[pos + 1] = y;
         vertexData[pos + 2] = z;

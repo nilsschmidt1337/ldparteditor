@@ -97,7 +97,6 @@ public final class DatFile {
     private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 3, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GDataTEX CUBEMAP_METAL = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_METAL_TEXTURE, View.DUMMY_REFERENCE); //$NON-NLS-1$
 
-
     private final VertexManager vertices = new VertexManager(this);
 
     private Vertex nearestObjVertex1 = null;
@@ -246,6 +245,7 @@ public final class DatFile {
             new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL20BFCtextured(c3d.getComposite3D());
             CUBEMAP_METAL.drawGL20BFCtextured(c3d);
             new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL20BFCtextured(c3d.getComposite3D());
+            
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 data2draw.drawGL20BFCtextured(c3d);
             }

@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.data.colour.GCRubber;
 import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 @java.lang.SuppressWarnings({"java:S1104", "java:S1444"})
 public enum LDConfig {
@@ -241,8 +242,13 @@ public enum LDConfig {
                            GColour colour = new GColour(index, r, g, b, 1f, new GCMetal());
                            colourFromIndex.put(index, colour);
                        } else if (line.contains(" PEARLESCENT")) { //$NON-NLS-1$
-                           GColour colour = new GColour(index, r, g, b, .99f, new GCPearl());
-                           colourFromIndex.put(index, colour);
+                           if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
+                               GColour colour = new GColour(index, r, g, b, .99f, new GCPearl());
+                               colourFromIndex.put(index, colour);
+                           } else {
+                               GColour colour = new GColour(index, r, g, b, 1f, new GCPearl());
+                               colourFromIndex.put(index, colour);
+                           }
                        } else {
                            GColour colour = new GColour(index, r, g, b, 1f);
                            if (line.contains(" MATERIAL")) { //$NON-NLS-1$

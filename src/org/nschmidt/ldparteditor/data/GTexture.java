@@ -59,6 +59,7 @@ public class GTexture {
     private Map<OpenGLRenderer, Integer> openGlIdCubemap = new HashMap<>();
     private Map<OpenGLRenderer, Integer> openGlIdCubemapMatte = new HashMap<>();
     private Map<OpenGLRenderer, Integer> openGlIdCubemapMetal = new HashMap<>();
+    private Map<OpenGLRenderer, Integer> openGlIdCubemapPearl = new HashMap<>();
     private Map<OpenGLRenderer, Boolean> openGlDisposed = new HashMap<>();
 
     private String texture = ""; //$NON-NLS-1$
@@ -484,6 +485,7 @@ public class GTexture {
         int idCubemap = -1;
         int idCubemapMatte = -1;
         int idCubemapMetal = -1;
+        int idCubemapPearl = -1;
         boolean disposed = true;
 
         if (openGlDisposed.containsKey(renderer)) {
@@ -493,6 +495,7 @@ public class GTexture {
             idCubemap = openGlIdCubemap.get(renderer);
             idCubemapMatte = openGlIdCubemapMatte.get(renderer);
             idCubemapMetal = openGlIdCubemapMetal.get(renderer);
+            idCubemapPearl = openGlIdCubemapPearl.get(renderer);
         } else {
             openGlDisposed.put(renderer, true);
         }
@@ -515,6 +518,9 @@ public class GTexture {
                 case 3:
                     idCubemapMetal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
                     break;
+                case 4:
+                    idCubemapPearl = loadPNGTexture("pearl.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
+                    break;
                 default:
                     break;
                 }
@@ -526,6 +532,7 @@ public class GTexture {
             openGlIdCubemap.put(renderer, idCubemap);
             openGlIdCubemapMatte.put(renderer, idCubemapMatte);
             openGlIdCubemapMetal.put(renderer, idCubemapMetal);
+            openGlIdCubemapPearl.put(renderer, idCubemapPearl);
         } else if (id != -1) {
             accessTime = System.currentTimeMillis();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
@@ -562,6 +569,11 @@ public class GTexture {
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D, idCubemapMetal);
                     GL20.glUniform1i(renderer.getCubeMapMetalLoc(), 16); // Texture unit 16 is for cube maps.
                     break;
+                case 4:
+                    GL13.glActiveTexture(GL13.GL_TEXTURE0 + 32);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idCubemapPearl);
+                    GL20.glUniform1i(renderer.getCubeMapPearlLoc(), 32); // Texture unit 32 is for cube maps.
+                    break;
                 default:
                     break;
                 }
@@ -576,6 +588,7 @@ public class GTexture {
         int idCubemap = -1;
         int idCubemapMatte = -1;
         int idCubemapMetal = -1;
+        int idCubemapPearl = -1;
         boolean disposed = true;
 
         if (openGlDisposed.containsKey(renderer)) {
@@ -585,6 +598,7 @@ public class GTexture {
             idCubemap = openGlIdCubemap.get(renderer);
             idCubemapMatte = openGlIdCubemapMatte.get(renderer);
             idCubemapMetal = openGlIdCubemapMetal.get(renderer);
+            idCubemapPearl = openGlIdCubemapPearl.get(renderer);
         } else {
             openGlDisposed.put(renderer, true);
         }
@@ -605,6 +619,9 @@ public class GTexture {
                 case 3:
                     idCubemapMetal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
                     break;
+                case 4:
+                    idCubemapPearl = loadPNGTexture("pearl.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
+                    break;
                 default:
                     break;
                 }
@@ -616,6 +633,7 @@ public class GTexture {
             openGlIdCubemap.put(renderer, idCubemap);
             openGlIdCubemapMatte.put(renderer, idCubemapMatte);
             openGlIdCubemapMetal.put(renderer, idCubemapMetal);
+            openGlIdCubemapPearl.put(renderer, idCubemapPearl);
         } else if (id != -1) {
             accessTime = System.currentTimeMillis();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
@@ -638,6 +656,11 @@ public class GTexture {
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 16);
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D, idCubemapMetal);
                     GL20.glUniform1i(shader.getUniformLocation("cubeMapMetal"), 16); // Texture unit 16 is for cube maps. //$NON-NLS-1$
+                    break;
+                case 4:
+                    GL13.glActiveTexture(GL13.GL_TEXTURE0 + 32);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idCubemapPearl);
+                    GL20.glUniform1i(shader.getUniformLocation("cubeMapPearl"), 32); // Texture unit 32 is for cube maps. //$NON-NLS-1$
                     break;
                 default:
                     break;

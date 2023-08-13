@@ -3,7 +3,7 @@
 layout(location = 0) in vec3 in_position;
 layout(location = 1) in vec3 in_normal;
 layout(location = 2) in vec4 in_color;
-layout(location = 3) in vec2 in_tex;  
+layout(location = 3) in vec2 in_tex;
 
 uniform float factor;
 uniform float pngswitch;
@@ -21,9 +21,10 @@ out vec2 tex;
 
 void main()
 {
-    if (pngswitch > 0.5f || texmapswitch > 0.5f) {
+    if (pngswitch > 0.5f || texmapswitch > 0.5f || (in_color.a > 1.2f && in_color.a < 7.0f)) {
         tex = in_tex;
     }
+    
     gl_Position = projection * view * model * vec4(in_position, 1.0f);
     position = vec3(view * model * vec4(in_position, 1.0f));
     sceneColor = vec4(in_color.r * factor, in_color.g * factor, in_color.b * factor, in_color.a);
