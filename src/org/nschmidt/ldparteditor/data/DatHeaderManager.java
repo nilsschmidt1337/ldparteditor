@@ -595,7 +595,7 @@ public class DatHeaderManager {
                             lineNumber -= 1;
                         }
                         int index = 0;
-                        while ((gd = gd.next) != null) {
+                        while (gd != null && (gd = gd.next) != null) {
                             lineNumber += 1;
                             int type = gd.type();
                             if (type > 0 && type < 6) {
