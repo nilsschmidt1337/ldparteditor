@@ -59,6 +59,15 @@ public class SerialKiller extends ObjectInputStream {
             "java.util.Locale", //$NON-NLS-1$
             "java.util.concurrent.atomic.AtomicBoolean", //$NON-NLS-1$
             "org.nschmidt.ldparteditor.data.GColour", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.data.colour.GCChrome", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.data.colour.GCDithered", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.data.colour.GCGlitter", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.data.colour.GCMatteMetal", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.data.colour.GCMetal", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.data.colour.GCPearl", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.data.colour.GCRubber", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.data.colour.GCSpeckle", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.data.colour.GCType", //$NON-NLS-1$
             "org.nschmidt.ldparteditor.workbench.PrimitiveCache", //$NON-NLS-1$
             "java.util.HashMap", //$NON-NLS-1$
             "org.nschmidt.ldparteditor.data.PGData", //$NON-NLS-1$
