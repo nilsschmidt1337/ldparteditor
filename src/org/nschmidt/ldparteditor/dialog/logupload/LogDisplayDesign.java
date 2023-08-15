@@ -29,18 +29,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
- * The intersector dialog
+ * The dialog to display the log file
  * <p>
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class LogUploadDesign extends Dialog {
+class LogDisplayDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
     private final String source;
 
-    LogUploadDesign(Shell parentShell, String source) {
+    LogDisplayDesign(Shell parentShell, String source) {
         super(parentShell);
         this.source = source;
     }
@@ -58,7 +58,7 @@ class LogUploadDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lblSpecify = new Label(cmpContainer, SWT.NONE);
-        lblSpecify.setText(I18n.E3D_LOG_UPLOAD_DATA);
+        lblSpecify.setText(I18n.E3D_LOG_SHOW_DATA);
 
         Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -79,6 +79,5 @@ class LogUploadDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 }

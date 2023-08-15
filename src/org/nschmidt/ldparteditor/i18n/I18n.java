@@ -509,11 +509,9 @@ public final class I18n {
     public static final String E3D_LOADING_LIBRARY = E3D.getString(getProperty());
     public static final String E3D_LOADING_PRIMITIVES = E3D.getString(getProperty());
     public static final String E3D_LOCAL = E3D.getString(getProperty());
-    public static final String E3D_LOG_UPLOAD_DATA = E3D.getString(getProperty());
-    public static final String E3D_LOG_UPLOAD_LIMIT = E3D.getString(getProperty());
-    public static final String E3D_LOG_UPLOAD_NO_LOG_FILES = E3D.getString(getProperty());
-    public static final String E3D_LOG_UPLOAD_SUCCESS = E3D.getString(getProperty());
-    public static final String E3D_LOG_UPLOAD_UNEXPECTED_EXCEPTION = E3D.getString(getProperty());
+    public static final String E3D_LOG_SHOW_DATA = E3D.getString(getProperty());
+    public static final String E3D_LOG_SHOW_NO_LOG_FILES = E3D.getString(getProperty());
+    public static final String E3D_LOG_SHOW_UNEXPECTED_EXCEPTION = E3D.getString(getProperty());
     public static final String E3D_MANIPULATOR_TO_AVG = E3D.getString(getProperty());
     public static final String E3D_MANIPULATOR_TO_EDGE = E3D.getString(getProperty());
     public static final String E3D_MANIPULATOR_TO_EDGE_N = E3D.getString(getProperty());
@@ -659,6 +657,7 @@ public final class I18n {
     public static final String E3D_SET_ICON_SIZE = E3D.getString(getProperty());
     public static final String E3D_SET_XYZ = E3D.getString(getProperty());
     public static final String E3D_SHOW_ALL = E3D.getString(getProperty());
+    public static final String E3D_SHOW_ERROR_LOGS = E3D.getString(getProperty());
     public static final String E3D_SLANTING_MATRIX_PROJECTOR = E3D.getString(getProperty());
     public static final String E3D_SLICER_PRO = E3D.getString(getProperty());
     public static final String E3D_SMOOTH = E3D.getString(getProperty());
@@ -710,7 +709,6 @@ public final class I18n {
     public static final String E3D_UNGROUP = E3D.getString(getProperty());
     public static final String E3D_UNIFICATOR = E3D.getString(getProperty());
     public static final String E3D_UNSAVED_FILES = E3D.getString(getProperty());
-    public static final String E3D_UPLOAD_ERROR_LOGS = E3D.getString(getProperty());
     public static final String E3D_USER_CONFIG_FAIL_LOAD = E3D.getString(getProperty());
     public static final String E3D_USER_CONFIG_FAIL_SAVE = E3D.getString(getProperty());
     public static final String E3D_USER_CONFIG_FILE = E3D.getString(getProperty());

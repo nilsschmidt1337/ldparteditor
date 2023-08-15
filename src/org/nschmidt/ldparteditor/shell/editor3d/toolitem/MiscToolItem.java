@@ -17,18 +17,11 @@ package org.nschmidt.ldparteditor.shell.editor3d.toolitem;
 
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
@@ -79,7 +72,7 @@ import org.nschmidt.ldparteditor.dialog.edger2.EdgerDialog;
 import org.nschmidt.ldparteditor.dialog.intersector.IntersectorDialog;
 import org.nschmidt.ldparteditor.dialog.isecalc.IsecalcDialog;
 import org.nschmidt.ldparteditor.dialog.lines2pattern.Lines2PatternDialog;
-import org.nschmidt.ldparteditor.dialog.logupload.LogUploadDialog;
+import org.nschmidt.ldparteditor.dialog.logupload.LogDisplayDialog;
 import org.nschmidt.ldparteditor.dialog.meshreducer.MeshReducerDialog;
 import org.nschmidt.ldparteditor.dialog.options.OptionsDialog;
 import org.nschmidt.ldparteditor.dialog.partreview.PartReviewDialog;
@@ -257,7 +250,7 @@ public class MiscToolItem extends ToolItem {
     private static final MenuItem[] mntmSavePalettePtr = new MenuItem[1];
     private static final MenuItem[] mntmSetPaletteSizePtr = new MenuItem[1];
 
-    private static final MenuItem[] mntmUploadLogsPtr = new MenuItem[1];
+    private static final MenuItem[] mntmShowLogsPtr = new MenuItem[1];
     private static final MenuItem[] mntmAntiAliasingPtr = new MenuItem[1];
     private static final MenuItem[] mntmOpenGL33EnginePtr = new MenuItem[1];
     private static final MenuItem[] mntmVulkanEnginePtr = new MenuItem[1];
@@ -767,9 +760,9 @@ public class MiscToolItem extends ToolItem {
 
         new MenuItem(mnuTools, SWT.SEPARATOR);
 
-        MenuItem mntmUploadErrorLog = new MenuItem(mnuTools, SWT.PUSH);
-        MiscToolItem.mntmUploadLogsPtr[0] = mntmUploadErrorLog;
-        mntmUploadErrorLog.setText(I18n.E3D_UPLOAD_ERROR_LOGS);
+        MenuItem mntmShowErrorLog = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmShowLogsPtr[0] = mntmShowErrorLog;
+        mntmShowErrorLog.setText(I18n.E3D_SHOW_ERROR_LOGS);
 
         new MenuItem(mnuTools, SWT.SEPARATOR);
 
@@ -2810,7 +2803,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmUploadLogsPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmShowLogsPtr[0]).addSelectionListener(e -> {
 
             String source = ""; //$NON-NLS-1$
 
@@ -2846,7 +2839,7 @@ public class MiscToolItem extends ToolItem {
                     NLogger.error(Editor3DWindow.class, ex);
                     MessageBox messageBox1 = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
                     messageBox1.setText(I18n.DIALOG_ERROR);
-                    messageBox1.setMessage(I18n.E3D_LOG_UPLOAD_UNEXPECTED_EXCEPTION);
+                    messageBox1.setMessage(I18n.E3D_LOG_SHOW_UNEXPECTED_EXCEPTION);
                     messageBox1.open();
                     regainFocus();
                     return;
@@ -2854,105 +2847,14 @@ public class MiscToolItem extends ToolItem {
             } else {
                 MessageBox messageBox2 = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
                 messageBox2.setText(I18n.DIALOG_INFO);
-                messageBox2.setMessage(I18n.E3D_LOG_UPLOAD_NO_LOG_FILES);
+                messageBox2.setMessage(I18n.E3D_LOG_SHOW_NO_LOG_FILES);
                 messageBox2.open();
                 regainFocus();
                 return;
             }
 
-            LogUploadDialog dialog = new LogUploadDialog(Editor3DWindow.getWindow().getShell(), source);
-
-            if (dialog.open() == IDialogConstants.OK_ID) {
-
-                if (mntmUploadLogsPtr[0].getData() == null) {
-                    mntmUploadLogsPtr[0].setData(0);
-                } else {
-                    int uploadCount = (int) mntmUploadLogsPtr[0].getData();
-                    uploadCount++;
-                    if (uploadCount > 16) {
-                        MessageBox messageBox3 = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                        messageBox3.setText(I18n.DIALOG_WARNING);
-                        messageBox3.setMessage(I18n.E3D_LOG_UPLOAD_LIMIT);
-                        messageBox3.open();
-                        regainFocus();
-                        return;
-                    }
-                    mntmUploadLogsPtr[0].setData(uploadCount);
-                }
-
-                try {
-                    Thread.sleep(2000);
-                    String url = "http://pastebin.com/api/api_post.php"; //$NON-NLS-1$
-                    String charset = StandardCharsets.UTF_8.name();  // Or in Java 7 and later, use the constant: java.nio.charset.StandardCharsets.UTF_8.name()
-                    String title = "[LDPartEditor " + I18n.VERSION_VERSION + "]"; //$NON-NLS-1$ //$NON-NLS-2$
-                    String devKey = "79cf77977cd2d798dd02f07d93b01ddb"; //$NON-NLS-1$
-
-                    StringBuilder code2 = new StringBuilder();
-
-                    File l12 = new File(NLogger.ERROR_LOG);
-                    File l22 = new File(NLogger.ERROR_LOG2);
-
-                    if (l12.exists() || l22.exists()) {
-
-                        if (l12.exists()) {
-                            try (UTF8BufferedReader b12 = new UTF8BufferedReader(NLogger.ERROR_LOG)) {
-                                String line3;
-                                while ((line3 = b12.readLine()) != null) {
-                                    code2.append(line3);
-                                    code2.append(StringHelper.getLineDelimiter());
-                                }
-                            }
-                        }
-
-                        if (l22.exists()) {
-                            try (UTF8BufferedReader b22 = new UTF8BufferedReader(NLogger.ERROR_LOG2)) {
-                                String line4;
-                                while ((line4 = b22.readLine()) != null) {
-                                    code2.append(line4);
-                                    code2.append(StringHelper.getLineDelimiter());
-                                }
-                            }
-                        }
-
-                        String query = String.format("api_option=paste&api_user_key=%s&api_paste_private=%s&api_paste_name=%s&api_dev_key=%s&api_paste_code=%s",  //$NON-NLS-1$
-                                URLEncoder.encode("4cc892c8052bd17d805a1a2907ee8014", charset), //$NON-NLS-1$
-                                URLEncoder.encode("0", charset),//$NON-NLS-1$
-                                URLEncoder.encode(title, charset),
-                                URLEncoder.encode(devKey, charset),
-                                URLEncoder.encode(code2.toString(), charset)
-                                );
-
-                        URLConnection connection = new URL(url).openConnection();
-                        connection.setDoOutput(true); // Triggers POST.
-                        connection.setRequestProperty("Accept-Charset", charset); //$NON-NLS-1$
-                        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset); //$NON-NLS-1$ //$NON-NLS-2$
-
-                        try (OutputStream output = connection.getOutputStream()) {
-                            output.write(query.getBytes(charset));
-                        }
-
-                        BufferedReader response =new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-                        MessageBox messageBox4 = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                        messageBox4.setText(I18n.DIALOG_INFO);
-                        Object[] messageArguments = {response.readLine()};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.getLocale());
-                        formatter.applyPattern(I18n.E3D_LOG_UPLOAD_SUCCESS);
-                        messageBox4.setMessage(formatter.format(messageArguments));
-                        messageBox4.open();
-                    } else {
-                        MessageBox messageBox5 = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                        messageBox5.setText(I18n.DIALOG_INFO);
-                        messageBox5.setMessage(I18n.E3D_LOG_UPLOAD_NO_LOG_FILES);
-                        messageBox5.open();
-                    }
-                } catch (Exception e12) {
-                    MessageBox messageBox6 = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
-                    messageBox6.setText(I18n.DIALOG_INFO);
-                    messageBox6.setMessage(I18n.E3D_LOG_UPLOAD_UNEXPECTED_EXCEPTION);
-                    messageBox6.open();
-                }
-            }
+            LogDisplayDialog dialog = new LogDisplayDialog(Editor3DWindow.getWindow().getShell(), source);
+            dialog.open();
             regainFocus();
         });
 

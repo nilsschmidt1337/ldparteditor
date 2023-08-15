@@ -24,14 +24,14 @@ import org.eclipse.swt.widgets.Shell;
  * the business logic. It overrides the {@code open()} method to invoke the
  * listener definitions ;)
  */
-public class LogUploadDialog extends LogUploadDesign {
+public class LogDisplayDialog extends LogDisplayDesign {
 
     /**
      * Create the dialog.
      *
      * @param parentShell
      */
-    public LogUploadDialog(Shell parentShell, String source) {
+    public LogDisplayDialog(Shell parentShell, String source) {
         super(parentShell, source);
     }
 
