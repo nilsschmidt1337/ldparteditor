@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -121,19 +122,24 @@ public enum FileHelper {
     public static String downloadPartFile(String name, IProgressMonitor monitor) {
         final StringBuilder sb = new StringBuilder();
         try {
-            final URL url = new URL("https://library.ldraw.org/library/unofficial/" + name); //$NON-NLS-1$
-            try (InputStreamReader in = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
-                final int size = getFileSize(url);
-                monitor.beginTask(name, size);
-                int progress = 0;
-                int c;
-                while ((c = in.read()) != -1) {
-                    sb.append((char) c);
-                    if (progress < size) {
-                        monitor.worked(1);
-                        progress++;
+            try {
+                final URL url = new URL("https://library.ldraw.org/library/unofficial/" + name); //$NON-NLS-1$
+                try (InputStreamReader in = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
+                    final int size = getFileSize(url);
+                    monitor.beginTask(name, size);
+                    int progress = 0;
+                    int c;
+                    while ((c = in.read()) != -1) {
+                        sb.append((char) c);
+                        if (progress < size) {
+                            monitor.worked(1);
+                            progress++;
+                        }
                     }
                 }
+            } catch (FileNotFoundException e) {
+                NLogger.debug(FileHelper.class, "Can't find " + e.getMessage()); //$NON-NLS-1$
+                return null;
             }
         } catch (IOException e) {
             NLogger.error(FileHelper.class, e);
