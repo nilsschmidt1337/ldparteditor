@@ -3962,6 +3962,13 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
     }
+    
+    public void closeAllTabs() {
+        for (CTabItem ti : tabFolderOpenDatFilesPtr[0].getItems()) {
+            ti.dispose();
+        }
+    }
+
 
     public static AtomicBoolean getNoSyncDeadlock() {
         return no_sync_deadlock;

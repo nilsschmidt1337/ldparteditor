@@ -1232,7 +1232,6 @@ class Editor3DDesign extends ApplicationWindow {
                         treeItemNewPart.setData(Project.getFileToEdit());
                         Project.addUnsavedFile(Project.getFileToEdit());
 
-
                         if (NLogger.debugging) {
                             try (UTF8BufferedReader reader = new UTF8BufferedReader("testsource.txt")) { //$NON-NLS-1$
                                 StringBuilder sb = new StringBuilder();

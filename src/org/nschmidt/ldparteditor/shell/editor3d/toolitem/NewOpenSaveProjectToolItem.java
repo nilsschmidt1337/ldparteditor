@@ -90,6 +90,8 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
             if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), false)) {
                 addRecentFile(Project.getProjectPath());
             }
+            
+            win.updateTreeUnsavedEntries();
             win.regainFocus();
         });
         widgetUtil(btnOpenPtr[0]).addSelectionListener(e -> {
@@ -108,8 +110,9 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                 win.getOfficialParts().setData(null);
                 win.getSearchText().setText(" "); //$NON-NLS-1$
                 win.getSearchText().setText(""); //$NON-NLS-1$
-                win.updateTreeUnsavedEntries();
             }
+            
+            win.updateTreeUnsavedEntries();
             win.regainFocus();
         });
         widgetUtil(btnSavePtr[0]).addSelectionListener(new WidgetSelectionListener() {
@@ -175,6 +178,8 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                         Project.setLastVisitedPath(Project.getProjectPath());
                     }
                 }
+                
+                win.updateTreeUnsavedEntries();
                 win.regainFocus();
             }
 

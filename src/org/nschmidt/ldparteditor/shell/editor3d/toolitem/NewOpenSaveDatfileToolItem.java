@@ -161,8 +161,10 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                                 win.getOfficialParts().setData(null);
                                 win.getSearchText().setText(" "); //$NON-NLS-1$
                                 win.getSearchText().setText(""); //$NON-NLS-1$
-                                win.updateTreeUnsavedEntries();
                             }
+                            
+                            Project.setFileToEdit(View.DUMMY_DATFILE);
+                            win.updateTreeUnsavedEntries();
                             win.regainFocus();
                         });
                     }

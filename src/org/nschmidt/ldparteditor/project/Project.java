@@ -72,6 +72,15 @@ public enum Project {
         createFileStructure(withFolders);
         updateEditor();
 
+        clearProjectTree();
+
+        Editor3DWindow.getWindow().getShell().update();
+        Editor3DWindow.getWindow().getProjectParts().getParent().build();
+        Editor3DWindow.getWindow().getProjectParts().getParent().redraw();
+        Editor3DWindow.getWindow().getProjectParts().getParent().update();
+    }
+
+    public static void clearProjectTree() {
         Editor3DWindow.getWindow().getProjectParts().getItems().clear();
         Editor3DWindow.getWindow().getProjectParts().setData(new ArrayList<>());
 
@@ -86,11 +95,6 @@ public enum Project {
 
         Editor3DWindow.getWindow().getProjectPrimitives8().getItems().clear();
         Editor3DWindow.getWindow().getProjectPrimitives8().setData(new ArrayList<>());
-
-        Editor3DWindow.getWindow().getShell().update();
-        Editor3DWindow.getWindow().getProjectParts().getParent().build();
-        Editor3DWindow.getWindow().getProjectParts().getParent().redraw();
-        Editor3DWindow.getWindow().getProjectParts().getParent().update();
     }
 
     /**

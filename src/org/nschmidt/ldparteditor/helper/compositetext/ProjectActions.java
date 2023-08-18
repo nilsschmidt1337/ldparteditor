@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.dialog.newproject.NewProjectDialog;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
+import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -132,7 +133,16 @@ public enum ProjectActions {
                             w.closeAllTabs();
                         }
                     }
+                    
                     Editor3DWindow.getWindow().closeAllComposite3D();
+                    
+                    // Remove all opened files, unless they are unsaved
+                    Project.getOpenedFiles().removeIf(df -> !Project.getUnsavedFiles().contains(df));
+                    Editor3DWindow.getWindow().closeAllTabs();
+                    Project.setFileToEdit(View.DUMMY_DATFILE);
+                    
+                    // We may clear all old project informations
+                    Project.clearProjectTree();
                 } else if (result == SWT.YES) {
                     // Keep the files open and continue
                 } else return false;
