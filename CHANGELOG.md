@@ -1,3 +1,17 @@
+# 19 Aug 2023
+With the release of 1.8.70 you are able to...
+-  ...show the error logfiles only ("Tools..." -> "Show Error Logs"). I removed and disabled the upload feature.
+-  ...get no error log entry for the case when a file could not be downloaded for part review from library.ldraw.org (there is still an error dialog, when this happens).
+-  ...get a better renderer result for pearlescent material with the new OpenGL 3.3 renderer pipeline.
+
+The following critical issues are fixed:
+1. "Replace all" did not work in the text editor.
+2. Changing the colour palette in the text editor disabled the "More..." colour button.
+3. It was not possible to save special colours to the custom palette (e.g. CHROME, RUBBER, METAL, ...)
+4. The feature which checked the part file header for hints had hiccups (uncritical). 
+5. A saved part file was not closed when the user wanted to open or create a new project and decided not keep the current files and views open.
+
+
 # 15 Jul 2023
 With the release of 1.8.69 you are able to...
 -  ...import STL files (via "Open Part File" -> choose "STL-File (*.stl)", instead of "LDraw Source File (*.dat)").
