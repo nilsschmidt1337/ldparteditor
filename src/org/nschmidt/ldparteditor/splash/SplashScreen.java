@@ -52,7 +52,6 @@ import org.nschmidt.ldparteditor.data.PGData;
 import org.nschmidt.ldparteditor.data.PGTimestamp;
 import org.nschmidt.ldparteditor.dialog.startup.StartupDialog;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
-import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.ProgressHelper;
 import org.nschmidt.ldparteditor.helper.ShellHelper;
 import org.nschmidt.ldparteditor.helper.Version;
@@ -316,20 +315,12 @@ public class SplashScreen extends ApplicationWindow {
             display.readAndDispatch();
         }
         // Close the splash..
-        try {
-            Thread.sleep(800);
-        } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
-            throw new LDPartEditorException(ie);
-        }
         close();
         while (!bar.isDisposed()) {
             if (!Display.getCurrent().readAndDispatch()) {
                 Display.getCurrent().sleep();
             }
         }
-        // ..and dispose the splash image, because it is not needed anymore
-        ResourceManager.disposeImage("imgSplash.png"); //$NON-NLS-1$
         // Check if we were ran into trouble..
         if (threadReturn[0] != ReturnType.NO_ERROR) {
             MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
