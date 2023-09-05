@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -763,7 +764,10 @@ public class GTexture {
                 }
 
                 if (in == null) {
-                    if (fileExists) {
+                    if (datFile.getBinaryData().hasFile(filename)) {
+                        final byte[] source = datFile.getBinaryData().getFileBytes(filename);
+                        in = new ByteArrayInputStream(source);
+                    } else if (fileExists) {
                         // Open the PNG file as an FileInputStream
                         filename = fileToOpen.getAbsolutePath();
                         in = new FileInputStream(filename);

@@ -31,6 +31,7 @@ public enum DatKeyword {
         keywords.add("!CATEGORY"); //$NON-NLS-1$
         keywords.add("!CMDLINE"); //$NON-NLS-1$
         keywords.add("!COLOUR"); //$NON-NLS-1$
+        keywords.add("!DATA"); //$NON-NLS-1$
         keywords.add("!HELP"); //$NON-NLS-1$
         keywords.add("!HISTORY"); //$NON-NLS-1$
         keywords.add("!KEYWORDS"); //$NON-NLS-1$

@@ -758,6 +758,10 @@ public final class I18n {
     public static final String EDITORTEXT_COMMENT = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_COMPILE = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_COMPILE_CSG = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_DATA_ERROR = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_DATA_EXPORT = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_DATA_IMPORT = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_DATA_NO_SELECTION = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_DRAW_SELECTION = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_DRAW_UNTIL_SELECTION = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_DUPLICATE = EDITORTEXT.getString(getProperty());

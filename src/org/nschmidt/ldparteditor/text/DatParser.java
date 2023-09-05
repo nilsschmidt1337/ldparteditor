@@ -43,6 +43,7 @@ import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GData5;
 import org.nschmidt.ldparteditor.data.GDataBFC;
+import org.nschmidt.ldparteditor.data.GDataBinary;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.GDataPNG;
 import org.nschmidt.ldparteditor.data.Matrix;
@@ -267,6 +268,19 @@ public enum DatParser {
                 result.add(new ParsingResult(I18n.DATPARSER_INVALID_TEXMAP, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             } else {
                 result.add(new ParsingResult(newLPEmetaTag));
+            }
+        } else if (line.startsWith("0 !DATA")) { //$NON-NLS-1$
+            if (dataSegments.length <= 2) {
+                Object[] messageArguments = {dataSegments.length, 3};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.getLocale());
+                formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
+                GData0 fallbackComment = new GData0(line, parent);
+                result.add(new ParsingResult(fallbackComment));
+                result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
+            } else if (!errorCheckOnly) {
+                GDataBinary newBinaryDataMetaTag = new GDataBinary(line, datFile, parent);
+                result.add(new ParsingResult(newBinaryDataMetaTag));
             }
         } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
             GData newLPEmetaTag = TexMapParser.parseTEXMAP(dataSegments, line, parent);

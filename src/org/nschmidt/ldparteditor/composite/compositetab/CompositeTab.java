@@ -78,6 +78,7 @@ import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.ViewIdleManager;
+import org.nschmidt.ldparteditor.helper.compositetext.DataMetacommandExporter;
 import org.nschmidt.ldparteditor.helper.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helper.compositetext.Inspector;
 import org.nschmidt.ldparteditor.helper.compositetext.Issue2ClipboardCopier;
@@ -1833,6 +1834,28 @@ public class CompositeTab extends CompositeTabDesign {
         widgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> tabState.folder[0].copy());
         widgetUtil(mntmCutPtr[0]).addSelectionListener(e -> tabState.folder[0].cut());
         widgetUtil(mntmPastePtr[0]).addSelectionListener(e -> tabState.folder[0].paste());
+        
+        widgetUtil(mntmImportPngDataPtr[0]).addSelectionListener(e -> {
+            if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
+                return;
+            }
+            
+            final DatFile df = tabState.getFileNameObj();
+            final VertexManager vm = df.getVertexManager();
+            vm.addSnapshot();
+            // TODO Needs implementation!
+        });
+        widgetUtil(mntmExportPngDataPtr[0]).addSelectionListener(e -> {
+            final DatFile df = tabState.getFileNameObj();
+            final StyledText st = getTextComposite();
+            int s1 = st.getSelectionRange().x;
+            int s2 = s1 + st.getSelectionRange().y;
+            int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+            int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+            fromLine++;
+            toLine++;
+            DataMetacommandExporter.export(fromLine, toLine, df);
+        });
 
         widgetUtil(mntmDrawSelectionPtr[0]).addSelectionListener(e -> {
             if (!tabState.getFileNameObj().getVertexManager().isUpdated()){

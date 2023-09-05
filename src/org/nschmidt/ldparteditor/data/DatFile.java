@@ -130,6 +130,7 @@ public final class DatFile {
     private HistoryManager history = new HistoryManager(this);
     private DuplicateManager duplicate = new DuplicateManager(this);
     private DatHeaderManager datHeader = new DatHeaderManager(this);
+    private final BinaryDataRegistry binaryData = new BinaryDataRegistry();
 
     public static DatFile createDatFileForReview(String path) {
         return new DatFile(path, true);
@@ -2049,5 +2050,9 @@ public final class DatFile {
 
     public boolean isFromPartReview() {
         return fromPartReview;
+    }
+
+    public BinaryDataRegistry getBinaryData() {
+        return binaryData;
     }
 }

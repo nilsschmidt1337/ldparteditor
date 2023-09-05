@@ -62,6 +62,9 @@ class CompositeTabDesign extends CTabItem {
     final MenuItem[] mntmDeletePtr = new MenuItem[1];
     final MenuItem[] mntmPastePtr = new MenuItem[1];
 
+    final MenuItem[] mntmImportPngDataPtr = new MenuItem[1];
+    final MenuItem[] mntmExportPngDataPtr = new MenuItem[1];
+    
     final MenuItem[] mntmQuickFixPtr = new MenuItem[1];
     final MenuItem[] mntmQuickFixSamePtr = new MenuItem[1];
     final NButton[] btnQuickFixPtr = new NButton[1];
@@ -333,6 +336,18 @@ class CompositeTabDesign extends CTabItem {
             mntmDelete.setText(I18n.COPYNPASTE_DELETE);
             mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
             mntmDeletePtr[0] = mntmDelete;
+            
+            new MenuItem(menu[0], SWT.SEPARATOR);
+
+            MenuItem mntmImportPngData = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmImportPngData.setText(I18n.EDITORTEXT_DATA_IMPORT);
+            mntmImportPngData.setImage(ResourceManager.getImage("icon16_bgpic.png")); //$NON-NLS-1$
+            mntmImportPngDataPtr[0] = mntmImportPngData;
+            
+            MenuItem mntmExportPngData = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmExportPngData.setText(I18n.EDITORTEXT_DATA_EXPORT);
+            mntmExportPngData.setImage(ResourceManager.getImage("icon16_bgpic.png")); //$NON-NLS-1$
+            mntmExportPngDataPtr[0] = mntmExportPngData;
         }
     }
 }
