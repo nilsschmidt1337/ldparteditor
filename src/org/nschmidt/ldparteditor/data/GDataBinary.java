@@ -29,6 +29,9 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  */
 public final class GDataBinary extends GData {
 
+    /** 4 chars = 3 bytes  => 64.000 chars = 48.000 bytes */
+    private static final int MAX_LENGTH_OF_BASE64_STRING = 64_000;
+    
     private final DatFile df; 
     
     public GDataBinary(String text, DatFile df, GData1 parent) {
@@ -43,7 +46,7 @@ public final class GDataBinary extends GData {
         final StringBuilder base64Sb = new StringBuilder();
         
         GData gd = this.next;
-        while (gd != null) {
+        while (gd != null && base64Sb.length() <= MAX_LENGTH_OF_BASE64_STRING) {
             final String line = whitespace.matcher(gd.toString()).replaceAll(" ").trim(); //$NON-NLS-1$
             if (line.startsWith("0 !: ")) { //$NON-NLS-1$
                 final String encodedSubstring = line.substring(5);
@@ -58,12 +61,83 @@ public final class GDataBinary extends GData {
         final String encodedString = base64Sb.toString();
         
         try {
-            return Base64.getDecoder().decode(encodedString);
+            // Don't allow more than a constant amount of chars
+            if (encodedString.length() <= MAX_LENGTH_OF_BASE64_STRING) {
+                final byte[] preFilteredData = Base64.getDecoder().decode(encodedString);
+                return filterMaliciousContent(preFilteredData);
+            }
         } catch (IllegalArgumentException iae) {
             NLogger.debug(GDataBinary.class, iae);
         }
         
         return new byte[0];
+    }
+    
+    /**
+     * Malicious content can be attached to the end of the file after the IEND tag which typically marks the
+     * end of the image file. We don't want to read or store this! 
+     * @param data the byte array to filter
+     * @return the filtered array
+     */
+    private byte[] filterMaliciousContent(byte[] data) {
+        int state = 0;
+        int length = 0;
+        int dataLength = 0;
+        for (byte b : data) {
+            if (dataLength > 0) {
+                break;
+            }
+            
+            // Encoders and decoders must treat the codes as fixed binary values,
+            // not character strings.
+            switch (b) {
+            case 73: { // I
+                if (state == 0) {
+                    state = 1;
+                } else {
+                    state = 0;
+                }
+                
+                break;
+            }
+            case 69: { // E
+                if (state == 1) {
+                    state = 2;
+                } else {
+                    state = 0;
+                }
+                
+                break;
+            }
+            case 78: { // N
+                if (state == 2) {
+                    state = 3;
+                } else {
+                    state = 0;
+                }
+                
+                break;
+            }
+            case 68: { // D
+                if (state == 3) {
+                    // + 4 Byte CRC for IEND
+                    dataLength = Math.min(length + 5, data.length);
+                } else {
+                    state = 0;
+                }
+                
+                break;
+            }
+            default:
+                // Do nothing.
+            }
+            
+            length++;
+        }
+        
+        final byte[] resultData = new byte[dataLength];
+        System.arraycopy(data, 0, resultData, 0, dataLength);
+        return resultData;
     }
 
     @Override

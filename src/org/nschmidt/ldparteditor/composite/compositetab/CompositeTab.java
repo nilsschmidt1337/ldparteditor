@@ -1854,7 +1854,7 @@ public class CompositeTab extends CompositeTabDesign {
             int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
             fromLine++;
             toLine++;
-            DataMetacommandExporter.export(fromLine, toLine, df);
+            DataMetacommandExporter.export(fromLine, toLine, df, tabState.window[0].getShell());
         });
 
         widgetUtil(mntmDrawSelectionPtr[0]).addSelectionListener(e -> {
