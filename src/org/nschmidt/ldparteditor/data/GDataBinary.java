@@ -15,6 +15,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Base64;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -23,6 +26,8 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
+
+import de.matthiasmann.twl.util.PNGSizeDeterminer;
 
 /**
  * Holds binary base64 encoded data
@@ -80,63 +85,33 @@ public final class GDataBinary extends GData {
      * @return the filtered array
      */
     private byte[] filterMaliciousContent(byte[] data) {
-        int state = 0;
-        int length = 0;
+        
         int dataLength = 0;
-        for (byte b : data) {
-            if (dataLength > 0) {
-                break;
-            }
-            
-            // Encoders and decoders must treat the codes as fixed binary values,
-            // not character strings.
-            switch (b) {
-            case 73: { // I
-                if (state == 0) {
-                    state = 1;
-                } else {
-                    state = 0;
-                }
-                
-                break;
-            }
-            case 69: { // E
-                if (state == 1) {
-                    state = 2;
-                } else {
-                    state = 0;
-                }
-                
-                break;
-            }
-            case 78: { // N
-                if (state == 2) {
-                    state = 3;
-                } else {
-                    state = 0;
-                }
-                
-                break;
-            }
-            case 68: { // D
-                if (state == 3) {
-                    // + 4 Byte CRC for IEND
-                    dataLength = Math.min(length + 5, data.length);
-                } else {
-                    state = 0;
-                }
-                
-                break;
-            }
-            default:
-                // Do nothing.
-            }
-            
-            length++;
+        try (InputStream in = new ByteArrayInputStream(data)) {
+            dataLength = new PNGSizeDeterminer(in).size();
+        } catch (IOException ioe) {
+            NLogger.debug(GDataBinary.class, ioe);
+            return new byte[0];
         }
         
-        final byte[] resultData = new byte[dataLength];
+        final byte[] resultData = new byte[dataLength + 12];
         System.arraycopy(data, 0, resultData, 0, dataLength);
+        
+        // Add IEND tag (12 Bytes)
+        resultData[dataLength + 0] = 0x00;
+        resultData[dataLength + 1] = 0x00;
+        resultData[dataLength + 2] = 0x00;
+        resultData[dataLength + 3] = 0x00;
+        
+        resultData[dataLength + 4] = 0x49;
+        resultData[dataLength + 5] = 0x45;
+        resultData[dataLength + 6] = 0x4E;
+        resultData[dataLength + 7] = 0x44;
+        
+        resultData[dataLength + 8] = (byte) 0xAE;
+        resultData[dataLength + 9] = 0x42;
+        resultData[dataLength + 10] = 0x60;
+        resultData[dataLength + 11] = (byte) 0x82;
         return resultData;
     }
 
