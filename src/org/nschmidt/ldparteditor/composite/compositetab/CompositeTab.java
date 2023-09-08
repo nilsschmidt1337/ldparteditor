@@ -79,6 +79,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helper.compositetext.DataMetacommandExporter;
+import org.nschmidt.ldparteditor.helper.compositetext.DataMetacommandImporter;
 import org.nschmidt.ldparteditor.helper.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helper.compositetext.Inspector;
 import org.nschmidt.ldparteditor.helper.compositetext.Issue2ClipboardCopier;
@@ -1843,7 +1844,11 @@ public class CompositeTab extends CompositeTabDesign {
             final DatFile df = tabState.getFileNameObj();
             final VertexManager vm = df.getVertexManager();
             vm.addSnapshot();
-            // TODO Needs implementation!
+            final StyledText st = getTextComposite();
+            int offset = st.getCaretOffset();
+            int toLine = offset > -1 ? st.getLineAtOffset(offset) : offset * -1;
+            toLine++;
+            DataMetacommandImporter.importPng(st, toLine, df, tabState.window[0].getShell());
         });
         widgetUtil(mntmExportPngDataPtr[0]).addSelectionListener(e -> {
             final DatFile df = tabState.getFileNameObj();

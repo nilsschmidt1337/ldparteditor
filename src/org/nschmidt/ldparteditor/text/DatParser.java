@@ -282,6 +282,8 @@ public enum DatParser {
                 GDataBinary newBinaryDataMetaTag = new GDataBinary(line, datFile, parent);
                 result.add(new ParsingResult(newBinaryDataMetaTag));
             }
+            
+            result.add(new ParsingResult(I18n.DATPARSER_UNOFFICIAL_META_COMMAND, "[W0D] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
         } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
             GData newLPEmetaTag = TexMapParser.parseTEXMAP(dataSegments, line, parent);
             if (newLPEmetaTag == null) {
