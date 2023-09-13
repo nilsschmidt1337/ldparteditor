@@ -391,6 +391,7 @@ public class Editor3DWindow extends Editor3DDesign {
         widgetUtil(btnShowUpper1Ptr[0]).addSelectionListener(sa);
         widgetUtil(btnShowUpper2Ptr[0]).addSelectionListener(sa);
         widgetUtil(btnShowUpper3Ptr[0]).addSelectionListener(sa);
+        widgetUtil(btnShowUpper4Ptr[0]).addSelectionListener(sa);
 
         widgetUtil(btnShowMiddlePtr[0]).addSelectionListener(e -> {
             int[] w = leftSash[0].getWeights();

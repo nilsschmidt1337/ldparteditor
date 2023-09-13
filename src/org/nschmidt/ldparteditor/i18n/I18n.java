@@ -440,6 +440,7 @@ public final class I18n {
     public static final String E3D_CONNECTED = E3D.getString(getProperty());
     public static final String E3D_CONTROL_CLICK_MODIFY = E3D.getString(getProperty());
     public static final String E3D_CONTROL_CLICK_SURFACE = E3D.getString(getProperty());
+    public static final String E3D_CONVERTER = E3D.getString(getProperty());
     public static final String E3D_COPY_TO_UNOFFICIAL_LIBRARY = E3D.getString(getProperty());
     public static final String E3D_CREATE_NEW_DAT = E3D.getString(getProperty());
     public static final String E3D_CREATE_TRANSFORMED_COPY = E3D.getString(getProperty());

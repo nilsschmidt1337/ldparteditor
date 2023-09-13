@@ -149,6 +149,7 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnShowUpper1Ptr = new NButton[1];
     final NButton[] btnShowUpper2Ptr = new NButton[1];
     final NButton[] btnShowUpper3Ptr = new NButton[1];
+    final NButton[] btnShowUpper4Ptr = new NButton[1];
     final NButton[] btnShowMiddlePtr = new NButton[1];
     final NButton[] btnShowLowerPtr = new NButton[1];
     final NButton[] btnSameHeightPtr = new NButton[1];
@@ -571,7 +572,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lblTabHeader = new Label(cmpSnappingArea, Cocoa.getStyle());
                                 lblTabHeader.setText(I18n.E3D_SNAPPING);
-                                lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
+                                lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                                 NButton btnShowUpper = new NButton(cmpSnappingArea, Cocoa.getStyle());
                                 this.btnShowUpper1Ptr[0] = btnShowUpper;
                                 btnShowUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
@@ -666,48 +667,110 @@ class Editor3DDesign extends ApplicationWindow {
                             lblSpacer1.setText(" "); //$NON-NLS-1$
                             lblSpacer1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
-                            Label separator = new Label(cmpSnappingArea, SWT.SEPARATOR | SWT.HORIZONTAL);
-                            separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+                            Label separator2 = new Label(cmpSnappingArea, SWT.SEPARATOR | SWT.HORIZONTAL);
+                            separator2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                             Label lblSpacer2 = new Label(cmpSnappingArea, Cocoa.getStyle());
                             lblSpacer2.setText(" "); //$NON-NLS-1$
                             lblSpacer2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel4 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblNewLabel8 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            lblNewLabel8.setText(I18n.E3D_THRESH_FOR_ADDING_ELEMENTS_3D);
+                            lblNewLabel8.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
+                            final BigDecimalSpinner spinnerT3D = new BigDecimalSpinner(cmpSnappingArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                            spinnerT3D.setMaximum(BigDecimal.ONE);
+                            spinnerT3D.setMinimum(BigDecimal.ZERO);
+                            spinnerT3D.setValue(userSettings.getFuzziness3D());
+                            spinnerT3D.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            spinnerT3D.addValueChangeListener(spn -> WorkbenchManager.getUserSettingState().setFuzziness3D(spn.getValue()));
+
+                            Label lblNewLabel9 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            lblNewLabel9.setText(I18n.E3D_THRESH_FOR_ADDING_ELEMENTS_2D);
+                            lblNewLabel9.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
+                            final IntegerSpinner spinnerT2D = new IntegerSpinner(cmpSnappingArea, Cocoa.getStyle());
+                            spinnerT2D.setMaximum(9999);
+                            spinnerT2D.setMinimum(1);
+                            spinnerT2D.setValue(userSettings.getFuzziness2D());
+                            spinnerT2D.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            spinnerT2D.addValueChangeListener(spn -> WorkbenchManager.getUserSettingState().setFuzziness2D(spn.getValue()));
+
+                            Label lblSpacer3 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            lblSpacer3.setText(" "); //$NON-NLS-1$
+                            lblSpacer3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
+                            cmpScroll.setMinSize(cmpSnappingArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+                        }
+                        
+                        CTabItem tItem21 = new CTabItem(tabFolderSettings, Cocoa.getStyle());
+                        tItem21.setText("(2)"); //$NON-NLS-1$
+                        tItem21.setToolTipText(I18n.E3D_CONVERTER);
+                        {
+                            final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
+                            Composite cmpConverterArea = new Composite(cmpScroll, Cocoa.getStyle());
+                            tItem21.setControl(cmpScroll);
+                            cmpScroll.setContent(cmpConverterArea);
+                            cmpScroll.setExpandHorizontal(true);
+                            cmpScroll.setExpandVertical(true);
+
+                            cmpConverterArea.setLayout(new GridLayout(3, false));
+                            ((GridLayout) cmpConverterArea.getLayout()).verticalSpacing = 0;
+                            ((GridLayout) cmpConverterArea.getLayout()).marginHeight = 0;
+                            ((GridLayout) cmpConverterArea.getLayout()).marginWidth = 0;
+
+                            {
+                                Label lblTabHeader = new Label(cmpConverterArea, Cocoa.getStyle());
+                                lblTabHeader.setText(I18n.E3D_CONVERTER);
+                                lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+                                NButton btnShowUpper = new NButton(cmpConverterArea, Cocoa.getStyle());
+                                this.btnShowUpper2Ptr[0] = btnShowUpper;
+                                btnShowUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
+                                btnShowUpper.setToolTipText(I18n.E3D_SASH_UPPER);
+                                btnShowUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1));
+                            }
+                            
+                            Label lblSpacer1 = new Label(cmpConverterArea, Cocoa.getStyle());
+                            lblSpacer1.setText(" "); //$NON-NLS-1$
+                            lblSpacer1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
+                            Label lblNewLabel4 = new Label(cmpConverterArea, Cocoa.getStyle());
                             lblNewLabel4.setText(I18n.UNITS_NAME_LDU + " [" + I18n.UNITS_LDU + "]"); //$NON-NLS-1$ //$NON-NLS-2$
                             lblNewLabel4.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
-                            final BigDecimalSpinner spinnerLDU = new BigDecimalSpinner(cmpSnappingArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                            final BigDecimalSpinner spinnerLDU = new BigDecimalSpinner(cmpConverterArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                             spinnerLDU.setMaximum(new BigDecimal("9999.99999999")); //$NON-NLS-1$
                             spinnerLDU.setMinimum(new BigDecimal("-9999.99999999")); //$NON-NLS-1$
                             spinnerLDU.setValue(BigDecimal.ZERO);
                             spinnerLDU.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel5 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblNewLabel5 = new Label(cmpConverterArea, Cocoa.getStyle());
                             lblNewLabel5.setText(I18n.UNITS_NAME_SECONDARY + " [" + I18n.UNITS_SECONDARY + "]"); //$NON-NLS-1$ //$NON-NLS-2$
                             lblNewLabel5.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
-                            final BigDecimalSpinner spinnerMM = new BigDecimalSpinner(cmpSnappingArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                            final BigDecimalSpinner spinnerMM = new BigDecimalSpinner(cmpConverterArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                             spinnerMM.setMaximum(new BigDecimal("9999.99999999")); //$NON-NLS-1$
                             spinnerMM.setMinimum(new BigDecimal("-9999.99999999")); //$NON-NLS-1$
                             spinnerMM.setValue(BigDecimal.ZERO);
                             spinnerMM.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel6 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblNewLabel6 = new Label(cmpConverterArea, Cocoa.getStyle());
                             lblNewLabel6.setText(I18n.UNITS_NAME_TERTIARY + " [" + I18n.UNITS_TERTIARY + "]"); //$NON-NLS-1$ //$NON-NLS-2$
                             lblNewLabel6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
-                            final BigDecimalSpinner spinnerStud = new BigDecimalSpinner(cmpSnappingArea, Cocoa.getStyle(), View.NUMBER_FORMAT1F);
+                            final BigDecimalSpinner spinnerStud = new BigDecimalSpinner(cmpConverterArea, Cocoa.getStyle(), View.NUMBER_FORMAT1F);
                             spinnerStud.setMaximum(new BigDecimal("9999.99999999")); //$NON-NLS-1$
                             spinnerStud.setMinimum(new BigDecimal("-9999.99999999")); //$NON-NLS-1$
                             spinnerStud.setValue(BigDecimal.ZERO);
                             spinnerStud.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel7 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblNewLabel7 = new Label(cmpConverterArea, Cocoa.getStyle());
                             lblNewLabel7.setText(I18n.UNITS_NAME_PRIMARY + " [" + I18n.UNITS_PRIMARY + "]"); //$NON-NLS-1$ //$NON-NLS-2$
                             lblNewLabel7.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
-                            final BigDecimalSpinner spinnerInch = new BigDecimalSpinner(cmpSnappingArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                            final BigDecimalSpinner spinnerInch = new BigDecimalSpinner(cmpConverterArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                             spinnerInch.setMaximum(new BigDecimal("9999.99999999")); //$NON-NLS-1$
                             spinnerInch.setMinimum(new BigDecimal("-9999.99999999")); //$NON-NLS-1$
                             spinnerInch.setValue(BigDecimal.ZERO);
@@ -750,47 +813,10 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.MC));
                                 change.set(false);
                             });
-
-                            Label separator2 = new Label(cmpSnappingArea, SWT.SEPARATOR | SWT.HORIZONTAL);
-                            separator2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-
-                            Label lblSpacer3 = new Label(cmpSnappingArea, Cocoa.getStyle());
-                            lblSpacer3.setText(" "); //$NON-NLS-1$
-                            lblSpacer3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-
-                            Label lblNewLabel8 = new Label(cmpSnappingArea, Cocoa.getStyle());
-                            lblNewLabel8.setText(I18n.E3D_THRESH_FOR_ADDING_ELEMENTS_3D);
-                            lblNewLabel8.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-
-                            final BigDecimalSpinner spinnerT3D = new BigDecimalSpinner(cmpSnappingArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
-                            spinnerT3D.setMaximum(BigDecimal.ONE);
-                            spinnerT3D.setMinimum(BigDecimal.ZERO);
-                            spinnerT3D.setValue(userSettings.getFuzziness3D());
-                            spinnerT3D.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-
-                            spinnerT3D.addValueChangeListener(spn -> WorkbenchManager.getUserSettingState().setFuzziness3D(spn.getValue()));
-
-                            Label lblNewLabel9 = new Label(cmpSnappingArea, Cocoa.getStyle());
-                            lblNewLabel9.setText(I18n.E3D_THRESH_FOR_ADDING_ELEMENTS_2D);
-                            lblNewLabel9.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-
-                            final IntegerSpinner spinnerT2D = new IntegerSpinner(cmpSnappingArea, Cocoa.getStyle());
-                            spinnerT2D.setMaximum(9999);
-                            spinnerT2D.setMinimum(1);
-                            spinnerT2D.setValue(userSettings.getFuzziness2D());
-                            spinnerT2D.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-
-                            spinnerT2D.addValueChangeListener(spn -> WorkbenchManager.getUserSettingState().setFuzziness2D(spn.getValue()));
-
-                            Label lblSpacer4 = new Label(cmpSnappingArea, Cocoa.getStyle());
-                            lblSpacer4.setText(" "); //$NON-NLS-1$
-                            lblSpacer4.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-
-                            cmpScroll.setMinSize(cmpSnappingArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
                         }
 
                         CTabItem tItem2 = new CTabItem(tabFolderSettings, Cocoa.getStyle());
-                        tItem2.setText("(2)"); //$NON-NLS-1$
+                        tItem2.setText("(3)"); //$NON-NLS-1$
                         tItem2.setToolTipText(I18n.E3D_SELECTION);
                         {
                             final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
@@ -808,9 +834,9 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lblTabHeader = new Label(cmpSelArea, Cocoa.getStyle());
                                 lblTabHeader.setText(I18n.E3D_SELECTION);
-                                lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
+                                lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                                 NButton btnShowUpper = new NButton(cmpSelArea, Cocoa.getStyle());
-                                this.btnShowUpper2Ptr[0] = btnShowUpper;
+                                this.btnShowUpper3Ptr[0] = btnShowUpper;
                                 btnShowUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
                                 btnShowUpper.setToolTipText(I18n.E3D_SASH_UPPER);
                                 btnShowUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1));
@@ -1053,7 +1079,7 @@ class Editor3DDesign extends ApplicationWindow {
                         }
 
                         CTabItem tItem3 = new CTabItem(tabFolderSettings, Cocoa.getStyle());
-                        tItem3.setText("(3)"); //$NON-NLS-1$
+                        tItem3.setText("(4)"); //$NON-NLS-1$
                         tItem3.setToolTipText(I18n.E3D_BACKGROUND_IMAGE);
 
                         {
@@ -1072,9 +1098,9 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Label lblTabHeader = new Label(cmpBgArea, Cocoa.getStyle());
                                 lblTabHeader.setText(I18n.E3D_BACKGROUND_IMAGE);
-                                lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
+                                lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                                 NButton btnShowUpper = new NButton(cmpBgArea, Cocoa.getStyle());
-                                this.btnShowUpper3Ptr[0] = btnShowUpper;
+                                this.btnShowUpper4Ptr[0] = btnShowUpper;
                                 btnShowUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
                                 btnShowUpper.setToolTipText(I18n.E3D_SASH_UPPER);
                                 btnShowUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1));
