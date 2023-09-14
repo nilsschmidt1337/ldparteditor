@@ -704,9 +704,6 @@ public class KeyStateManager {
                         mouseEvent.x = (int) mpos.x;
                         mouseEvent.y = (int) mpos.y;
                         lc3d.getMouse().mouseDown(mouseEvent);
-                        // mouseDown will switch mouse buttons in case of active re-mapping
-                        mouseEvent.button = MouseButton.MIDDLE;
-                        lc3d.getCanvas().getDisplay().post(mouseEvent);
                         break;
                     }
                     case REDO:
@@ -991,7 +988,6 @@ public class KeyStateManager {
                             mouseEvent.x = (int) mpos.x;
                             mouseEvent.y = (int) mpos.y;
                             lc3d.getMouse().mouseUp(mouseEvent);
-                            lc3d.getCanvas().getDisplay().post(mouseEvent);
                             break;
                         }
                     default:
@@ -1033,9 +1029,6 @@ public class KeyStateManager {
                         mouseEvent.x = (int) mpos.x;
                         mouseEvent.y = (int) mpos.y;
                         cp.mouseDown(mouseEvent);
-                        // mouseDown will switch mouse buttons in case of active re-mapping
-                        mouseEvent.button = MouseButton.LEFT;
-                        cp.getCanvas().getDisplay().post(mouseEvent);
                         break;
                     }
                     case RMB:
@@ -1049,9 +1042,6 @@ public class KeyStateManager {
                             mouseEvent.x = (int) mpos.x;
                             mouseEvent.y = (int) mpos.y;
                             cp.mouseDown(mouseEvent);
-                            // mouseDown will switch mouse buttons in case of active re-mapping
-                            mouseEvent.button = MouseButton.RIGHT;
-                            cp.getCanvas().getDisplay().post(mouseEvent);
                         }
                         break;
                     }
@@ -1065,9 +1055,6 @@ public class KeyStateManager {
                         mouseEvent.x = (int) mpos.x;
                         mouseEvent.y = (int) mpos.y;
                         cp.mouseDown(mouseEvent);
-                        // mouseDown will switch mouse buttons in case of active re-mapping
-                        mouseEvent.button = MouseButton.MIDDLE;
-                        cp.getCanvas().getDisplay().post(mouseEvent);
                         break;
                     }
                     default:
@@ -1108,7 +1095,6 @@ public class KeyStateManager {
                         mouseEvent.x = (int) mpos.x;
                         mouseEvent.y = (int) mpos.y;
                         cp.mouseUp(mouseEvent);
-                        cp.getCanvas().getDisplay().post(mouseEvent);
                         break;
                     }
                     case RMB:
@@ -1122,7 +1108,6 @@ public class KeyStateManager {
                             mouseEvent.x = (int) mpos.x;
                             mouseEvent.y = (int) mpos.y;
                             cp.mouseUp(mouseEvent);
-                            cp.getCanvas().getDisplay().post(mouseEvent);
                         }
                         break;
                     }
@@ -1136,7 +1121,6 @@ public class KeyStateManager {
                         mouseEvent.x = (int) mpos.x;
                         mouseEvent.y = (int) mpos.y;
                         cp.mouseUp(mouseEvent);
-                        cp.getCanvas().getDisplay().post(mouseEvent);
                         break;
                     }
                     default:

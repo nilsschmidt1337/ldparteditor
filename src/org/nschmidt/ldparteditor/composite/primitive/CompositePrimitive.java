@@ -319,6 +319,7 @@ public class CompositePrimitive extends Composite {
             openGL.drawScene(event.x, event.y);
         });
 
+        canvas.addListener(SWT.MouseEnter, this::mouseUp);
         canvas.addListener(SWT.MouseUp, this::mouseUp);
         canvas.addListener(SWT.Paint, event -> openGL.drawScene(-1, -1));
         canvas.addListener(SWT.MouseVerticalWheel, event -> {

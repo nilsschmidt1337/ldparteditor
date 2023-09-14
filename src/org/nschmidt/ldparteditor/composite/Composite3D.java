@@ -81,6 +81,7 @@ import org.nschmidt.ldparteditor.dialog.snapshot.SnapshotDialog;
 import org.nschmidt.ldparteditor.dialog.value.ValueDialog;
 import org.nschmidt.ldparteditor.dnd.PrimitiveDragAndDropTransfer;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.MouseButton;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.Perspective;
 import org.nschmidt.ldparteditor.enumtype.Task;
@@ -2424,6 +2425,15 @@ public class Composite3D extends ScalableComposite {
 
     public void setHasMouse(boolean hasMouse) {
         this.hasMouse = hasMouse;
+        
+        if (hasMouse) {
+            Event mouseEvent = new Event();
+            mouseEvent.type = SWT.MouseUp;
+            Vector2f mpos = getMousePosition();
+            mouseEvent.x = (int) mpos.x;
+            mouseEvent.y = (int) mpos.y;
+            getMouse().mouseUp(mouseEvent);
+        }
     }
 
     public void setPerspectiveOnContextMenu(Perspective perspective) {
