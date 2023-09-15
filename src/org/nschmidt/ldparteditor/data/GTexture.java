@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
@@ -756,9 +758,9 @@ public class GTexture {
                 // Try to download the png file from the parts tracker if part review mode is enabled
                 if (Editor3DWindow.getWindow().isReviewingAPart()) {
                     try {
-                        final URL url = new URL("https://library.ldraw.org/library/unofficial/parts/textures/" + filename); //$NON-NLS-1$
+                        final URL url = new URI("https://library.ldraw.org/library/unofficial/parts/textures/" + filename).toURL(); //$NON-NLS-1$
                         in = url.openStream();
-                    } catch (IOException ioe) {
+                    } catch (IOException | URISyntaxException ioe) {
                         NLogger.debug(GTexture.class, ioe);
                     }
                 }

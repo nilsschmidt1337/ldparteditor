@@ -52,7 +52,7 @@ public class PlatformWin32VKCanvas implements PlatformVKCanvas {
 
     @Override
     public long create(Composite composite, VKData data) {
-        VkWin32SurfaceCreateInfoKHR sci = VkWin32SurfaceCreateInfoKHR.callocStack()
+        VkWin32SurfaceCreateInfoKHR sci = VkWin32SurfaceCreateInfoKHR.calloc(stackGet())
 		        .sType(VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR)
 		        .hinstance(OS.GetModuleHandle(null))
 		        .hwnd(composite.handle);

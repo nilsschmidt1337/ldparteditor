@@ -20,6 +20,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -123,7 +125,7 @@ public enum FileHelper {
         final StringBuilder sb = new StringBuilder();
         try {
             try {
-                final URL url = new URL("https://library.ldraw.org/library/unofficial/" + name); //$NON-NLS-1$
+                final URL url = new URI("https://library.ldraw.org/library/unofficial/" + name).toURL(); //$NON-NLS-1$
                 try (InputStreamReader in = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
                     final int size = getFileSize(url);
                     monitor.beginTask(name, size);
@@ -137,7 +139,7 @@ public enum FileHelper {
                         }
                     }
                 }
-            } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException | URISyntaxException e) {
                 NLogger.debug(FileHelper.class, "Can't find " + e.getMessage()); //$NON-NLS-1$
                 return null;
             }
