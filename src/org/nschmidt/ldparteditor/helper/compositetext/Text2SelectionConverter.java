@@ -15,7 +15,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helper.compositetext;
 
+import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * Selects selected lines in the "3D view"
@@ -26,16 +28,29 @@ public enum Text2SelectionConverter {
     /**
      * Selects selected lines in the "3D view"
      *
-     * @param cText
-     *            the selected CompositeText
+     * @param st
+     *            the selected StyledText, can be null.
      * @param lineStart
      *            start line number to annotate
      * @param lineEnd
      *            end line number to annotate
      * @param datFile
      */
-    public static void convert(int lineStart, int lineEnd, DatFile datFile) {
+    public static void convert(StyledText st, int lineStart, int lineEnd, DatFile datFile) {
         datFile.getVertexManager().clearSelection();
+        
+        if (st != null) {
+            final boolean oneLine = lineStart == lineEnd;
+            NLogger.debug(Text2SelectionConverter.class, "One line selected: " + oneLine); //$NON-NLS-1$
+            final String selectionText = st.getSelectionText();
+            
+            // detect if the last line is just selected at the beginning if multiple lines are selected
+            if (!oneLine && (selectionText.endsWith("\n") || selectionText.endsWith("\r"))) { //$NON-NLS-1$ //$NON-NLS-2$
+                NLogger.debug(Text2SelectionConverter.class, "Removed last line from selection."); //$NON-NLS-1$
+                lineEnd--;
+            }
+        }
+        
         lineEnd++;
         for (int line = lineStart; line < lineEnd; line++) {
             datFile.getVertexManager().addTextLineToSelection(line);

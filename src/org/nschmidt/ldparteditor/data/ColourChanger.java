@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.helper.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.project.Project;
@@ -27,8 +28,8 @@ import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 public enum ColourChanger {
     INSTANCE;
 
-    public static void changeColour(int lineStart, int lineEnd, DatFile datFile, int colourNumber, float r, float g, float b, float a) {
-        Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
+    public static void changeColour(StyledText st, int lineStart, int lineEnd, DatFile datFile, int colourNumber, float r, float g, float b, float a) {
+        Text2SelectionConverter.convert(st, lineStart, lineEnd, datFile);
         datFile.getVertexManager().skipSyncTimer();
         datFile.getVertexManager().colourChangeSelection(colourNumber, r, g, b, a, true);
         for (EditorTextWindow w : Project.getOpenTextWindows()) {

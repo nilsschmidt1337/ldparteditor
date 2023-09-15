@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.math.RoundingMode;
 
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTabState;
 import org.nschmidt.ldparteditor.helper.compositetext.Text2SelectionConverter;
@@ -41,7 +42,7 @@ public enum Rounder {
      *            end line number to round
      * @param datFile
      */
-    public static void round(CompositeTabState st, int lineStart, int lineEnd, DatFile datFile) {
+    public static void round(StyledText st, CompositeTabState cts, int lineStart, int lineEnd, DatFile datFile) {
 
         if (datFile.isReadOnly())
             return;
@@ -55,21 +56,21 @@ public enum Rounder {
         final boolean onY = userSettings.isRoundY();
         final boolean onZ = userSettings.isRoundZ();
 
-        if (st != null && st.isReplacingVertex() && vm.getVertexToReplace() != null && vm.getVertices().contains(vm.getVertexToReplace())) {
+        if (cts != null && cts.isReplacingVertex() && vm.getVertexToReplace() != null && vm.getVertices().contains(vm.getVertexToReplace())) {
             vm.clearSelection();
-            Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
+            Text2SelectionConverter.convert(st, lineStart, lineEnd, datFile);
             vm.skipSyncTimer();
             vm.backupHideShowState();
             GDataCSG.resetCSG(datFile, false);
             GDataCSG.forceRecompile(datFile);
-            Vertex vOld = new Vertex(st.getToReplaceX(), st.getToReplaceY(), st.getToReplaceZ());
+            Vertex vOld = new Vertex(cts.getToReplaceX(), cts.getToReplaceY(), cts.getToReplaceZ());
             int coordsDecimalPlaces = userSettings.getCoordsPrecision();
             Vertex vNew = new Vertex(onX ? vOld.xp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.xp, onY ? vOld.yp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.yp, onZ ? vOld.zp.setScale(coordsDecimalPlaces,
                     RoundingMode.HALF_UP) : vOld.zp);
             vm.changeVertexDirectFast(vOld, vNew, true);
-            st.setToReplaceX(vNew.xp);
-            st.setToReplaceY(vNew.yp);
-            st.setToReplaceZ(vNew.zp);
+            cts.setToReplaceX(vNew.xp);
+            cts.setToReplaceY(vNew.yp);
+            cts.setToReplaceZ(vNew.zp);
             vm.setVertexToReplace(vNew);
             vm.setModifiedNoSync();
             datFile.getVertexManager().restoreHideShowState();
@@ -79,7 +80,7 @@ public enum Rounder {
 
         } else {
 
-            Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
+            Text2SelectionConverter.convert(st, lineStart, lineEnd, datFile);
             datFile.getVertexManager().skipSyncTimer();
             datFile.getVertexManager().backupHideShowState();
             datFile.getVertexManager()

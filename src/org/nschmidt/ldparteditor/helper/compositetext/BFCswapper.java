@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helper.compositetext;
 
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.project.Project;
@@ -30,16 +31,16 @@ public enum BFCswapper {
     /**
      * Swaps the BFC winding of the current selection
      *
-     * @param cText
-     *            the selected CompositeText
+     * @param StyledText
+     *            the selected StyledText
      * @param lineStart
      *            start line number to annotate
      * @param lineEnd
      *            end line number to annotate
      * @param datFile
      */
-    public static void swap(int lineStart, int lineEnd, DatFile datFile) {
-        Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
+    public static void swap(StyledText st, int lineStart, int lineEnd, DatFile datFile) {
+        Text2SelectionConverter.convert(st, lineStart, lineEnd, datFile);
         datFile.getVertexManager().backupHideShowState();
         datFile.getVertexManager().skipSyncTimer();
         datFile.getVertexManager().windingChangeSelection(true);

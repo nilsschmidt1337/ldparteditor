@@ -788,7 +788,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 toLine++;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                Text2SelectionConverter.convert(fromLine, toLine, selection.getState().getFileNameObj());
+                Text2SelectionConverter.convert(st, fromLine, toLine, selection.getState().getFileNameObj());
                 selection.getState().getFileNameObj().addHistory();
                 st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
                 st.forceFocus();
@@ -879,7 +879,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 toLine++;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                QuadMerger.mergeTrianglesIntoQuad(fromLine, toLine, selection.getState().getFileNameObj());
+                QuadMerger.mergeTrianglesIntoQuad(st, fromLine, toLine, selection.getState().getFileNameObj());
                 st.forceFocus();
             }
         });
@@ -943,7 +943,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 Inliner.noComment = false;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                BFCswapper.swap(fromLine, toLine, selection.getState().getFileNameObj());
+                BFCswapper.swap(st, fromLine, toLine, selection.getState().getFileNameObj());
                 st.forceFocus();
             }
         });
@@ -977,7 +977,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 toLine++;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                Rounder.round(selection.getState(), fromLine, toLine, selection.getState().getFileNameObj());
+                Rounder.round(st, selection.getState(), fromLine, toLine, selection.getState().getFileNameObj());
                 st.forceFocus();
             }
         });

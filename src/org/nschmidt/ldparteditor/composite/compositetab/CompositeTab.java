@@ -933,7 +933,7 @@ public class CompositeTab extends CompositeTabDesign {
                     toLine2++;
                     NLogger.debug(getClass(), "From line {0}", fromLine2); //$NON-NLS-1$
                     NLogger.debug(getClass(), "To   line {0}", toLine2); //$NON-NLS-1$
-                    Rounder.round(tabState, fromLine2, toLine2, df);
+                    Rounder.round(st2, tabState, fromLine2, toLine2, df);
                     st2.forceFocus();
                     break;
                 }
@@ -1877,10 +1877,10 @@ public class CompositeTab extends CompositeTabDesign {
             int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
             fromLine++;
             toLine++;
-            Text2SelectionConverter.convert(fromLine, toLine, df);
+            Text2SelectionConverter.convert(st, fromLine, toLine, df);
             vm.selectInverse(new SelectorSettings());
             vm.hideSelection();
-            Text2SelectionConverter.convert(fromLine, toLine, df);
+            Text2SelectionConverter.convert(st, fromLine, toLine, df);
             df.addHistory();
             st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
             st.forceFocus();
@@ -1900,10 +1900,10 @@ public class CompositeTab extends CompositeTabDesign {
             int toLine = st.getLineCount();
             fromLine++;
             if (Math.min(fromLine, toLine) != toLine) {
-                Text2SelectionConverter.convert(Math.min(fromLine + 1, toLine), toLine, df);
+                Text2SelectionConverter.convert(st, Math.min(fromLine + 1, toLine), toLine, df);
                 vm.hideSelection();
             }
-            Text2SelectionConverter.convert(1, fromLine, df);
+            Text2SelectionConverter.convert(st, 1, fromLine, df);
             df.addHistory();
             st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
             st.forceFocus();
@@ -2104,7 +2104,7 @@ public class CompositeTab extends CompositeTabDesign {
         int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
         fromLine++;
         toLine++;
-        Text2SelectionConverter.convert(fromLine, toLine, df);
+        Text2SelectionConverter.convert(st, fromLine, toLine, df);
         vm.hideSelection();
         df.addHistory();
         st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
@@ -2125,7 +2125,7 @@ public class CompositeTab extends CompositeTabDesign {
         int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
         fromLine++;
         toLine++;
-        Text2SelectionConverter.convert(fromLine, toLine, df);
+        Text2SelectionConverter.convert(st, fromLine, toLine, df);
         vm.showSelection();
         df.addHistory();
         st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
