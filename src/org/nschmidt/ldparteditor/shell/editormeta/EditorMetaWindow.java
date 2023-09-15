@@ -975,7 +975,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
     }
     
     private void updateLpeConst() {
-        lblLineToInsertPtr[0].setText("0 !LPE CONST " + evConst1TxtPtr[0].getText().trim() + " = " + evConst1TxtPtr[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$
+        lblLineToInsertPtr[0].setText("0 !LPE CONST " + evConst1TxtPtr[0].getText().trim() + " = " + evConst2TxtPtr[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$
         lblLineToInsertPtr[0].getParent().layout();
     }
 

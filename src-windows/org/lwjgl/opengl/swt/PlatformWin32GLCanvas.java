@@ -172,7 +172,7 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
         validateAttributes(attribs);
 
         // Find this exact pixel format, though for now without multisampling. This comes later!
-        PIXELFORMATDESCRIPTOR pfd = PIXELFORMATDESCRIPTOR.callocStack();
+        PIXELFORMATDESCRIPTOR pfd = PIXELFORMATDESCRIPTOR.calloc(stack);
         pfd.nSize((short) PIXELFORMATDESCRIPTOR.SIZEOF);
         pfd.nVersion((short) 1); // this should always be 1
         pfd.dwLayerMask(GDI32.PFD_MAIN_PLANE);
@@ -678,12 +678,8 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
             effective.debug = (effectiveContextFlags & GL43.GL_CONTEXT_FLAG_DEBUG_BIT) != 0;
             effective.forwardCompatible = (effectiveContextFlags & GL30.GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT) != 0;
             effective.robustness = (effectiveContextFlags & ARBRobustness.GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT_ARB) != 0;
-        } else if (attribs.api == API.GL) {
+        } else if (attribs.api == API.GL || attribs.api == API.GLES) {
             APIVersion version = APIUtil.apiParseVersion(MemoryUtil.memUTF8(Checks.check(JNI.callP(GL11.GL_VERSION, getString))));
-            effective.majorVersion = version.major;
-            effective.minorVersion = version.minor;
-        } else if (attribs.api == API.GLES) {
-            APIVersion version = APIUtil.apiParseVersion(MemoryUtil.memUTF8(Checks.check(JNI.callP(GL11.GL_VERSION, getString))), "OpenGL ES"); //$NON-NLS-1$
             effective.majorVersion = version.major;
             effective.minorVersion = version.minor;
         }

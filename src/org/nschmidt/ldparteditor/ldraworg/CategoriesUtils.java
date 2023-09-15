@@ -18,6 +18,8 @@ package org.nschmidt.ldparteditor.ldraworg;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.MessageFormat;
@@ -40,7 +42,7 @@ public enum CategoriesUtils {
         final List<String> categories = new ArrayList<>();
 
         try {
-            URL go = new URL("https://www.ldraw.org/library/tracker/ref/catkeyfaq/"); //$NON-NLS-1$
+            URL go = new URI("https://www.ldraw.org/library/tracker/ref/catkeyfaq/").toURL(); //$NON-NLS-1$
             URLConnection uc = go.openConnection();
             try (BufferedReader in =
                     new BufferedReader(
@@ -96,7 +98,7 @@ public enum CategoriesUtils {
                     });
                 }
             }
-        } catch (IOException ioe) {
+        } catch (IOException | URISyntaxException ioe) {
             MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
             messageBoxError.setText(I18n.DIALOG_ERROR);
             messageBoxError.setMessage(I18n.E3D_CANT_CONNECT_TO_LDRAW_ORG);

@@ -117,9 +117,9 @@
             
         <!-- JARs from LWJGL -->
         <get-and-checksum
-            file="lwjgl3.zip"
+            file="lwjgl3.3.zip"
             destdir="${dependenciesFolder}"
-            checksum="d4f9620bea367fc5d226e2199c45e9b7b25a03a0"
+            checksum="0bcf240bdbc7116fcdba0163b33e748c090dc54d"
             dir="buildfiles-v2" />
         <get-and-checksum
             file="lwjgl_util.jar"
@@ -142,7 +142,7 @@
         
         <unzip src="${swt.macosx.zipfile}" dest="${dependenciesFolder}/${macosxFolder}"/>
         <unzip src="${dependenciesFolder}/${macosxFolder}/swt.jar" dest="${dependenciesFolder}/${macosxFolder}"/>
-        <unzip src="${dependenciesFolder}/lwjgl3.zip" dest="${libsFolder}"/>
+        <unzip src="${dependenciesFolder}/lwjgl3.3.zip" dest="${libsFolder}"/>
         
         <copy todir="${sourceFolder}" >
             <fileset dir="${macosxSourceFolder}" includes="**"/>
@@ -222,7 +222,7 @@
             destdir="${targetFolder}"
             includeantruntime="false"
             encoding="utf8"
-            debug="on" source="17" target="17" >
+            debug="on" source="21" target="21" >
             <classpath refid="master-classpath"/>
          </javac>
         
@@ -246,14 +246,14 @@
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-3.2.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengl-3.2.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengles-3.2.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-vulkan-3.2.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-3.2.3-natives-macos.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengl-3.2.3-natives-macos.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengles-3.2.3-natives-macos.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-vulkan-3.2.3-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengles.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-vulkan.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengl-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengles-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-vulkan-natives-macos.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
@@ -360,7 +360,7 @@
            destdir="${targetFolder}"
            includeantruntime="false"
            encoding="utf8"
-           debug="on" source="17" target="17" >
+           debug="on" source="21" target="21" >
            <classpath refid="master-classpath"/>
            <classpath path="${targetFolder}" />
         </javac>

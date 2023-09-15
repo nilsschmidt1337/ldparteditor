@@ -18,6 +18,8 @@ package org.nschmidt.ldparteditor.ldraworg;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.MessageFormat;
@@ -96,7 +98,7 @@ public enum LDConfigUtils {
 
     private static void downloadLDConfig(final List<String> lines, final String url) {
         try {
-            URL go = new URL(url);
+            URL go = new URI(url).toURL();
             URLConnection uc = go.openConnection();
             try (BufferedReader in =
                     new BufferedReader(
@@ -107,7 +109,7 @@ public enum LDConfigUtils {
                     lines.add(inputLine);
                 }
             }
-        } catch (IOException consumed) {
+        } catch (IOException | URISyntaxException consumed) {
             NLogger.debug(LDConfigUtils.class, consumed);
         }
     }

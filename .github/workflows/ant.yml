@@ -24,12 +24,12 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ./dependencies
-        key: swt-jface-lwjgl3zip-tools-windows-v3
-    - name: Set up JDK 17
+        key: swt-jface-lwjgl3zip-tools-windows-v4
+    - name: Set up JDK 21
       uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
-        java-version: 17
+        java-version: 21
     - name: Build with Ant
       run: ant -noinput -buildfile build-windows.xml
     - name: Publish Test Report
@@ -55,12 +55,12 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ./dependencies
-        key: swt-jface-lwjgl3zip-tools-linux-v3
-    - name: Set up JDK 17
+        key: swt-jface-lwjgl3zip-tools-linux-v4
+    - name: Set up JDK 21
       uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
-        java-version: 17
+        java-version: 21
     - name: Build with Ant
       run: ant -noinput -buildfile build-linux.xml
     - name: Publish Test Report
@@ -86,12 +86,12 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ./dependencies
-        key: swt-jface-lwjgl3zip-tools-macos-v3
-    - name: Set up JDK 17
+        key: swt-jface-lwjgl3zip-tools-macos-v4
+    - name: Set up JDK 21
       uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
-        java-version: '17.0.7+7'
+        java-version: 21
     - name: Build with Ant
       run: ant -noinput -buildfile build-macos.xml
     - name: Publish Test Report
