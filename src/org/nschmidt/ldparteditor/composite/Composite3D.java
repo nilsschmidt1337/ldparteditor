@@ -81,7 +81,6 @@ import org.nschmidt.ldparteditor.dialog.snapshot.SnapshotDialog;
 import org.nschmidt.ldparteditor.dialog.value.ValueDialog;
 import org.nschmidt.ldparteditor.dnd.PrimitiveDragAndDropTransfer;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
-import org.nschmidt.ldparteditor.enumtype.MouseButton;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.Perspective;
 import org.nschmidt.ldparteditor.enumtype.Task;

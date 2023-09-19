@@ -1,3 +1,15 @@
+# 19 Sep 2023
+With the release of 1.8.71 you are able to...
+-  ...benefit from a slightly faster program start (technical details: JDK upgrade from version 17 to 21, LWJGL upgrade from version 3.2 to 3.3)
+-  ...use the !DATA meta command (currently limited to small PNGs of 42KB size)
+-  ...access the unit converter in a separate tab.
+-  ...have a new "double-arrow" icon for the "Update/Compile Subfile Data" function.
+
+The following critical issues are fixed:
+1. [Linux-only] Rotating the 3D view via keyboard shortcut (not middle mouse button) warped the viewport and let it "jump".
+2. Selecting a line via click on the line number in the text editor and then showing the selection in the 3D view, selected the next line, too.
+
+
 # 19 Aug 2023
 With the release of 1.8.70 you are able to...
 -  ...show the error logfiles only ("Tools..." -> "Show Error Logs"). I removed and disabled the upload feature.
