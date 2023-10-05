@@ -1345,7 +1345,7 @@ public class MouseActions {
 
     }
 
-    public void checkSyncEditMode(VertexManager vm, DatFile datfile) {
+    public static void checkSyncEditMode(VertexManager vm, DatFile datfile) {
         if (WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) {
             Vertex v = null;
             if (vm.getSelectedVertices().size() == 1) {

@@ -41,6 +41,7 @@ import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helper.math.HashBiMap;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
@@ -492,6 +493,7 @@ class VM99Clipboard extends VM29LineSurfaceIntersector {
         final GColour col16 = LDConfig.getColour16();
         if (!CLIPBOARD.isEmpty()) {
             clearSelection();
+            MouseActions.checkSyncEditMode(linkedDatFile.getVertexManager(), linkedDatFile);
             if (InsertAtCursorPositionToolItem.isInsertingAtCursorPosition()) {
                 for (GData g : CLIPBOARD) {
                     if (g.type() == 0 && (!insertVertices || g.text.startsWith("0 //~")) //$NON-NLS-1$
@@ -665,6 +667,7 @@ class VM99Clipboard extends VM29LineSurfaceIntersector {
             }
             setModified(true, true);
             updateUnsavedStatus();
+            MouseActions.checkSyncEditMode(linkedDatFile.getVertexManager(), linkedDatFile);
         }
     }
 

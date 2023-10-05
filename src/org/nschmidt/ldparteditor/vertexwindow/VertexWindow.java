@@ -43,6 +43,7 @@ import org.nschmidt.ldparteditor.enumtype.TransformationMode;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.ShellHelper;
+import org.nschmidt.ldparteditor.helper.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
@@ -135,7 +136,7 @@ public class VertexWindow extends ApplicationWindow {
             final VertexManager vm = df.getVertexManager();
             vm.setXyzOrTranslateOrTransform(selectedVertex, null, TransformationMode.SET, true, true, true, true, true, ManipulatorScope.GLOBAL);
             vm.setVertexToReplace(selectedVertex);
-            lastHoveredC3d.getMouse().checkSyncEditMode(vm, df);
+            MouseActions.checkSyncEditMode(vm, df);
         });
     }
 
@@ -151,7 +152,7 @@ public class VertexWindow extends ApplicationWindow {
             vm.setXyzOrTranslateOrTransform(selectedVertex, null, TransformationMode.SET, true, true, true, true, true, ManipulatorScope.GLOBAL);
         }
         vm.setVertexToReplace(selectedVertex);
-        lastHoveredC3d.getMouse().checkSyncEditMode(vm, df);
+        MouseActions.checkSyncEditMode(vm, df);
     }
 
     /**

@@ -49,6 +49,7 @@ import org.nschmidt.ldparteditor.enumtype.WorkingMode;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.KeyBoardHelper;
 import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
+import org.nschmidt.ldparteditor.helper.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.helper.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -538,31 +539,31 @@ public class KeyStateManager {
                         break;
                     case MODE_COMBINED:
                         c3d.getManipulator().applyTranslation(c3d);
-                        c3d.getMouse().checkSyncEditMode(vm, df);
+                        MouseActions.checkSyncEditMode(vm, df);
                         TransformationModeToolItem.setWorkingAction(WorkingMode.COMBINED);
                         AddToolItem.disableAddAction();
                         break;
                     case MODE_MOVE:
                         c3d.getManipulator().applyTranslation(c3d);
-                        c3d.getMouse().checkSyncEditMode(vm, df);
+                        MouseActions.checkSyncEditMode(vm, df);
                         TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                         AddToolItem.disableAddAction();
                         break;
                     case MODE_ROTATE:
                         c3d.getManipulator().applyTranslation(c3d);
-                        c3d.getMouse().checkSyncEditMode(vm, df);
+                        MouseActions.checkSyncEditMode(vm, df);
                         TransformationModeToolItem.setWorkingAction(WorkingMode.ROTATE);
                         AddToolItem.disableAddAction();
                         break;
                     case MODE_SCALE:
                         c3d.getManipulator().applyTranslation(c3d);
-                        c3d.getMouse().checkSyncEditMode(vm, df);
+                        MouseActions.checkSyncEditMode(vm, df);
                         TransformationModeToolItem.setWorkingAction(WorkingMode.SCALE);
                         AddToolItem.disableAddAction();
                         break;
                     case MODE_SELECT:
                         c3d.getManipulator().applyTranslation(c3d);
-                        c3d.getMouse().checkSyncEditMode(vm, df);
+                        MouseActions.checkSyncEditMode(vm, df);
                         TransformationModeToolItem.setWorkingAction(WorkingMode.SELECT);
                         AddToolItem.disableAddAction();
                         break;
@@ -822,7 +823,7 @@ public class KeyStateManager {
                         }
                         c3d.getManipulator().smallIncrement(TransformationModeToolItem.getWorkingAction(), win.getWorkingLayer(), ManipulatorScopeToolItem.getTransformationScope(), c3d);
                         c3d.getManipulator().applyTranslation(c3d);
-                        c3d.getMouse().checkSyncEditMode(vm, df);
+                        MouseActions.checkSyncEditMode(vm, df);
                         c3d.getManipulator().resetTranslation();
                         c3d.getMouse().syncManipulator();
                         break;
@@ -836,7 +837,7 @@ public class KeyStateManager {
                         }
                         c3d.getManipulator().smallDecrement(TransformationModeToolItem.getWorkingAction(), win.getWorkingLayer(), ManipulatorScopeToolItem.getTransformationScope(), c3d);
                         c3d.getManipulator().applyTranslation(c3d);
-                        c3d.getMouse().checkSyncEditMode(vm, df);
+                        MouseActions.checkSyncEditMode(vm, df);
                         c3d.getManipulator().resetTranslation();
                         c3d.getMouse().syncManipulator();
                         break;
