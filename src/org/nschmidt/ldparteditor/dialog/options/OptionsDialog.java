@@ -163,6 +163,10 @@ public class OptionsDialog extends OptionsDesign {
             Threshold.coplanarityAngleError = angle;
             userSettingState.setCoplanarityAngleError(angle);
         });
+        spnDataFileSizeLimitPtr[0].addValueChangeListener(spn -> {
+            final int sizeLimitInKiloBytes = spnDataFileSizeLimitPtr[0].getValue();
+            userSettingState.setDataFileSizeLimit(sizeLimitInKiloBytes);
+        });
         spnViewportScalePtr[0].addValueChangeListener(spn -> {
             final double scaleFactor = spnViewportScalePtr[0].getValue().doubleValue();
             userSettingState.setViewportScaleFactor(scaleFactor);

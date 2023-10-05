@@ -26,6 +26,7 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 import de.matthiasmann.twl.util.PNGSizeDeterminer;
 
@@ -34,9 +35,6 @@ import de.matthiasmann.twl.util.PNGSizeDeterminer;
  */
 public final class GDataBinary extends GData {
 
-    /** 4 chars = 3 bytes  => 64.000 chars = 48.000 bytes */
-    private static final int MAX_LENGTH_OF_BASE64_STRING = 64_000;
-    
     private final DatFile df; 
     
     public GDataBinary(String text, DatFile df, GData1 parent) {
@@ -47,11 +45,13 @@ public final class GDataBinary extends GData {
     }
     
     public byte[] loadBinary() {
+        // 4 chars = 3 bytes  => 64.000 chars = 48.000 bytes
+        final int maxLengthOfBase64String = WorkbenchManager.getUserSettingState().getDataFileSizeLimit() * 1_000 / 3 * 4;
         final Pattern whitespace = Pattern.compile("\\s+"); //$NON-NLS-1$
         final StringBuilder base64Sb = new StringBuilder();
         
         GData gd = this.next;
-        while (gd != null && base64Sb.length() <= MAX_LENGTH_OF_BASE64_STRING) {
+        while (gd != null && base64Sb.length() <= maxLengthOfBase64String) {
             final String line = whitespace.matcher(gd.toString()).replaceAll(" ").trim(); //$NON-NLS-1$
             if (line.startsWith("0 !: ")) { //$NON-NLS-1$
                 final String encodedSubstring = line.substring(5);
@@ -67,7 +67,7 @@ public final class GDataBinary extends GData {
         
         try {
             // Don't allow more than a constant amount of chars
-            if (encodedString.length() <= MAX_LENGTH_OF_BASE64_STRING) {
+            if (encodedString.length() <= maxLengthOfBase64String) {
                 final byte[] preFilteredData = Base64.getDecoder().decode(encodedString);
                 return filterMaliciousContent(preFilteredData);
             }

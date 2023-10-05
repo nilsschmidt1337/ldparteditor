@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.helper.compositetext;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.MessageFormat;
 import java.util.Base64;
 
 import org.eclipse.swt.SWT;
@@ -27,10 +28,12 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.text.StringHelper;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * Exports !DATA meta-commands to a file (PNG only)
@@ -72,7 +75,8 @@ public enum DataMetacommandImporter {
         final File selectedFile = new File(selected);
         long fileSize = selectedFile.length();
         
-        final boolean noSelection = fileSize == 0 || fileSize > 45_000;
+        final int fileSizeLimit = WorkbenchManager.getUserSettingState().getDataFileSizeLimit() * 1_000;
+        final boolean noSelection = fileSize == 0 || fileSize > fileSizeLimit;
         
 
         String text = cText.getText();
@@ -123,7 +127,13 @@ public enum DataMetacommandImporter {
         } else {
             MessageBox messageBoxError = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK);
             messageBoxError.setText(I18n.DIALOG_WARNING);
-            messageBoxError.setMessage(I18n.EDITORTEXT_DATA_ERROR_IMPORT);
+            
+            Object[] messageArguments = {WorkbenchManager.getUserSettingState().getDataFileSizeLimit()};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.getLocale());
+            formatter.applyPattern(I18n.EDITORTEXT_DATA_ERROR_IMPORT);
+            
+            messageBoxError.setMessage(formatter.format(messageArguments));
             messageBoxError.open();
         }
     }
@@ -148,7 +158,13 @@ public enum DataMetacommandImporter {
             NLogger.debug(DataMetacommandImporter.class, ioe);
             MessageBox messageBoxError = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
             messageBoxError.setText(I18n.DIALOG_ERROR);
-            messageBoxError.setMessage(I18n.EDITORTEXT_DATA_ERROR_IMPORT);
+            
+            Object[] messageArguments = {WorkbenchManager.getUserSettingState().getDataFileSizeLimit()};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.getLocale());
+            formatter.applyPattern(I18n.EDITORTEXT_DATA_ERROR_IMPORT);
+            
+            messageBoxError.setMessage(formatter.format(messageArguments));
             messageBoxError.open();
         }
         

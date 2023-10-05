@@ -72,6 +72,7 @@ import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.widget.Tree;
 import org.nschmidt.ldparteditor.widget.TreeColumn;
@@ -103,6 +104,7 @@ class OptionsDesign extends ApplicationWindow {
     final NButton[] btnBrowseAuthoringPathPtr = new NButton[1];
     final BigDecimalSpinner[] spnCoplanarityWarningPtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnCoplanarityErrorPtr = new BigDecimalSpinner[1];
+    final IntegerSpinner[] spnDataFileSizeLimitPtr = new IntegerSpinner[1];
     final BigDecimalSpinner[] spnViewportScalePtr = new BigDecimalSpinner[1];
     final Map<String, Locale> localeMap = new HashMap<>();
 
@@ -248,6 +250,22 @@ class OptionsDesign extends ApplicationWindow {
                 spnCoplanarityError.setValue(new BigDecimal(Threshold.coplanarityAngleError));
                 spnCoplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
+                {
+                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                }
+                
+                Label lblDataFileSizeLimit = new Label(cmpContainer, SWT.NONE);
+                lblDataFileSizeLimit.setText(I18n.OPTIONS_DATA_FILE_SIZE_LIMIT);
+                lblDataFileSizeLimit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                
+                IntegerSpinner spnDataFileSizeLimit = new IntegerSpinner(cmpContainer, Cocoa.getStyle());
+                this.spnDataFileSizeLimitPtr[0] = spnDataFileSizeLimit;
+                spnDataFileSizeLimit.setMaximum(1024_000);
+                spnDataFileSizeLimit.setMinimum(45);
+                spnDataFileSizeLimit.setValue(userSettings.getDataFileSizeLimit());
+                spnDataFileSizeLimit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                
                 {
                     Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

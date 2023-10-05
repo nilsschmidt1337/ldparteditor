@@ -1028,6 +1028,7 @@ public final class I18n {
     public static final String OPTIONS_COLOUR_NUMBER_INPUT = OPTIONS.getString(getProperty());
     public static final String OPTIONS_COPLANARITY_ERROR = OPTIONS.getString(getProperty());
     public static final String OPTIONS_COPLANARITY_WARNING = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_DATA_FILE_SIZE_LIMIT = OPTIONS.getString(getProperty());
     public static final String OPTIONS_DIRECTORY = OPTIONS.getString(getProperty());
     public static final String OPTIONS_KEY_COMBO_IN_USE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_LDRAW_FOLDER = OPTIONS.getString(getProperty());

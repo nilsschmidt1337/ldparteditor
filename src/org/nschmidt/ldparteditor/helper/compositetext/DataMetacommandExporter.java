@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.text.MessageFormat;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -31,10 +32,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataBinary;
+import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.helper.math.HashBiMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 import de.matthiasmann.twl.util.PNGDecoder;
 import de.matthiasmann.twl.util.PNGDecoder.Format;
@@ -119,7 +122,14 @@ public enum DataMetacommandExporter {
         if (noSelection) {
             MessageBox messageBoxError = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK);
             messageBoxError.setText(I18n.DIALOG_WARNING);
-            messageBoxError.setMessage(I18n.EDITORTEXT_DATA_NO_SELECTION);
+            
+            Object[] messageArguments = {WorkbenchManager.getUserSettingState().getDataFileSizeLimit()};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.getLocale());
+            formatter.applyPattern(I18n.EDITORTEXT_DATA_NO_SELECTION);
+            
+            messageBoxError.setMessage(formatter.format(messageArguments));
+            
             messageBoxError.open();
         }
     }

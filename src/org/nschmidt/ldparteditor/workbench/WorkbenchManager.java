@@ -122,6 +122,8 @@ public enum WorkbenchManager {
         if (Math.abs(WorkbenchManager.userSettingState.getViewportScaleFactor() - 0.0) < 0.001) {
             WorkbenchManager.userSettingState.setViewportScaleFactor(1.0);
         }
+        
+        WorkbenchManager.userSettingState.setDataFileSizeLimit(Math.clamp(WorkbenchManager.userSettingState.getDataFileSizeLimit(), 45, 1024_000));
 
         Threshold.coplanarityAngleWarning = WorkbenchManager.userSettingState.getCoplanarityAngleWarning();
         Threshold.coplanarityAngleError = WorkbenchManager.userSettingState.getCoplanarityAngleError();
