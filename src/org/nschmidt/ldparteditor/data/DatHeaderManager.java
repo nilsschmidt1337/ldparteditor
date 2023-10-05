@@ -607,6 +607,41 @@ public class DatHeaderManager {
                             }
                         }
                     }
+                    
+                    // Check on wrong comment lines with just one slash
+                    gd = firstEntry;
+                    if (gd != null) {
+                        lineNumber = 0;
+                        gd = gd.before;
+                        while (gd != null && (gd = gd.next) != null) {
+                            lineNumber += 1;
+                            int type = gd.type();
+                            if (type == 0) {
+                                
+                                String trimmedLine = gd.toString().stripLeading();
+                                String[] dataSegments = trimmedLine.split("\\s+"); //$NON-NLS-1$
+
+                                // Remove double spaces (essential for complex types)
+                                String normalizedLine;
+                                StringBuilder normalized = new StringBuilder();
+                                for (String string : dataSegments) {
+                                    normalized.append(string);
+                                    normalized.append(" "); //$NON-NLS-1$
+                                }
+                                normalizedLine = normalized.toString().stripLeading();
+
+                                if (normalizedLine.startsWith("0 / ")) { //$NON-NLS-1$
+                                    normalizedLine = normalizedLine.trim();
+                                    normalizedLine = normalizedLine.substring(0, Math.min(normalizedLine.length(), 16)) + (normalizedLine.length() > 16 ? "..." : ""); //$NON-NLS-1$ //$NON-NLS-2$
+                                    Object[] messageArguments = {normalizedLine};
+                                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                    formatter.setLocale(MyLanguage.getLocale());
+                                    formatter.applyPattern(I18n.DATPARSER_INVALID_COMMENT);
+                                    registerFormatHint(lineNumber, "C0", formatter.format(messageArguments), registered, allHints); //$NON-NLS-1$
+                                }
+                            }
+                        }
+                    }
 
                     if (firstEntry != null) {
                         registered[0] = false;

@@ -136,27 +136,49 @@ enum HintFixer {
                 l = h.getLineLICENSE();
             text = QuickFixer.insertAfterLine(l, "<br>0 BFC CERTIFY CCW<br>", text); //$NON-NLS-1$
             break;
-        case 254: // There are numbers with scientific notation
-            StringBuilder sb = new StringBuilder();
-            String[] dataSegments = line.trim().split(" "); //$NON-NLS-1$
-            int count = 0;
-            for (String seg : dataSegments) {
-                if (!seg.trim().equals("")) {  //$NON-NLS-1$
-                    count++;
-                    try {
-                        BigDecimal number = new BigDecimal(seg);
-                        if (seg.toUpperCase().contains("E") && count < 15) { //$NON-NLS-1$
-                            sb.append(MathHelper.bigDecimalToString(number));
+        case 192: // The comment has just one slash.
+            {
+                StringBuilder sb = new StringBuilder();
+                String trimmedLine = line.trim();
+                String[] dataSegments = trimmedLine.split("\\s+"); //$NON-NLS-1$
+                boolean hasFixedSlash = false;
+                for (String seg : dataSegments) {
+                    if (!seg.trim().equals("")) {  //$NON-NLS-1$
+                        if (!hasFixedSlash && "/".equals(seg)) { //$NON-NLS-1$
+                            sb.append("//"); //$NON-NLS-1$
+                            hasFixedSlash = true;
                         } else {
                             sb.append(seg);
                         }
-                    } catch (NumberFormatException nfe) {
-                        sb.append(seg);
                     }
+                    sb.append(" "); //$NON-NLS-1$
                 }
-                sb.append(" "); //$NON-NLS-1$
+                text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
             }
-            text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
+            break;
+        case 254: // There are numbers with scientific notation
+            {
+                StringBuilder sb = new StringBuilder();
+                String[] dataSegments = line.trim().split(" "); //$NON-NLS-1$
+                int count = 0;
+                for (String seg : dataSegments) {
+                    if (!seg.trim().equals("")) {  //$NON-NLS-1$
+                        count++;
+                        try {
+                            BigDecimal number = new BigDecimal(seg);
+                            if (seg.toUpperCase().contains("E") && count < 15) { //$NON-NLS-1$
+                                sb.append(MathHelper.bigDecimalToString(number));
+                            } else {
+                                sb.append(seg);
+                            }
+                        } catch (NumberFormatException nfe) {
+                            sb.append(seg);
+                        }
+                    }
+                    sb.append(" "); //$NON-NLS-1$
+                }
+                text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
+            }
             break;
         default:
             break;
