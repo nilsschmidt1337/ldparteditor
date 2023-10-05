@@ -855,6 +855,7 @@ public final class I18n {
     public static final String KEYBOARD_LMB = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_MERGE_TO_AVG = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_MERGE_TO_LAST = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_MERGE_TO_NEAREST_VERTEX = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_MMB = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_MODE_COMBINED = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_MODE_MOVE = KEYBOARD.getString(getProperty());

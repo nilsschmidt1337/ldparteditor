@@ -220,6 +220,7 @@ public class KeyStateManager {
             addTask(Task.FLIP_ROTATE_VERTICES, 'f');
             addTask(Task.MERGE_TO_AVERAGE, SWT.COMMAND, 'w');
             addTask(Task.MERGE_TO_LAST, SWT.COMMAND, 'e');
+            addTask(Task.MERGE_TO_NEAREST_VERTEX, SWT.COMMAND, 'n');
             addTask(Task.SPLIT, SWT.ALT, 'v');
 
             addTask(Task.LMB, 'k');
@@ -352,6 +353,7 @@ public class KeyStateManager {
             addTask(Task.FLIP_ROTATE_VERTICES, 'f');
             addTask(Task.MERGE_TO_AVERAGE, SWT.CTRL, 'w');
             addTask(Task.MERGE_TO_LAST, SWT.CTRL, 'e');
+            addTask(Task.MERGE_TO_NEAREST_VERTEX, SWT.CTRL, 'n');
             addTask(Task.SPLIT, SWT.ALT, 'v');
 
             addTask(Task.LMB, 'k');
@@ -788,6 +790,9 @@ public class KeyStateManager {
                         break;
                     case MERGE_TO_LAST:
                         vm.merge(MergeTo.LAST_SELECTED, true, false);
+                        break;
+                    case MERGE_TO_NEAREST_VERTEX:
+                        vm.merge(MergeTo.NEAREST_VERTEX, true, false);
                         break;
                     case SPLIT:
                         vm.split(2);

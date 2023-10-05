@@ -79,6 +79,7 @@ public enum Task {
     FLIP_ROTATE_VERTICES,
     MERGE_TO_AVERAGE,
     MERGE_TO_LAST,
+    MERGE_TO_NEAREST_VERTEX,
     SPLIT,
 
     LMB,

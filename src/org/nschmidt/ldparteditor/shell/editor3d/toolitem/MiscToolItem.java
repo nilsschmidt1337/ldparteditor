@@ -531,7 +531,7 @@ public class MiscToolItem extends ToolItem {
 
         MenuItem mntmMergeToNearestVertex = new MenuItem(mnuMerge, SWT.PUSH);
         MiscToolItem.mntmMergeToNearestVertexPtr[0] = mntmMergeToNearestVertex;
-        mntmMergeToNearestVertex.setText(I18n.E3D_MERGE_TO_NEAREST_VERTEX);
+        KeyStateManager.addKeyText(mntmMergeToNearestVertex, I18n.E3D_MERGE_TO_NEAREST_VERTEX, Task.MERGE_TO_NEAREST_VERTEX);
 
         MenuItem mntmMergeToNearestEdge = new MenuItem(mnuMerge, SWT.PUSH);
         MiscToolItem.mntmMergeToNearestEdgePtr[0] = mntmMergeToNearestEdge;
