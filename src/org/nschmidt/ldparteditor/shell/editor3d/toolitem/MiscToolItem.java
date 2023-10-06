@@ -2009,6 +2009,7 @@ public class MiscToolItem extends ToolItem {
                         }
 
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         vm.addEdges(es);
 
                         if (verbose) {
@@ -2053,6 +2054,7 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new RectifierDialog(Editor3DWindow.getWindow().getShell(), rs).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
 
                         final int[] result = vm.rectify(rs, true, true);
 
@@ -2088,6 +2090,7 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new IsecalcDialog(Editor3DWindow.getWindow().getShell(), is).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         final int createdLineCount = vm.isecalc(is);
                         if (WorkbenchManager.getUserSettingState().isVerboseIsecalc()) {
                             Object[] messageArguments = { createdLineCount };
@@ -2114,6 +2117,7 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new SlicerProDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         final int[] result = vm.slicerpro();
                         if (WorkbenchManager.getUserSettingState().isVerboseSlicerPro()) {
                             final int createdTriangleCount = result[0];
@@ -2144,6 +2148,7 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new IntersectorDialog(Editor3DWindow.getWindow().getShell(), ins).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         final int[] result = vm.intersector(ins, true);
                         if (WorkbenchManager.getUserSettingState().isVerboseIntersector()) {
                             final int createdLinesCount = result[0];
@@ -2178,6 +2183,7 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new SlantingMatrixProjectorDialog(Editor3DWindow.getWindow().getShell(), vm, mps).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         final int[] result = vm.projectWithSlantingMatrix(mps);
                         if (WorkbenchManager.getUserSettingState().isVerboseSlantingMatrixProjector()) {
                             if (result.length == 0) {
@@ -2221,6 +2227,7 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new Lines2PatternDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         final int oldTriangleCount = vm.getTriangles().size();
                         vm.lines2pattern();
                         if (WorkbenchManager.getUserSettingState().isVerboseLines2Pattern()) {
@@ -2248,6 +2255,7 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new PathTruderDialog(Editor3DWindow.getWindow().getShell(), ps).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         final int oldLineCount = vm.getLines().size();
                         final int oldTriangleCount = vm.getTriangles().size();
                         final int oldQuadCount = vm.getQuads().size();
@@ -2277,6 +2285,7 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new YTruderDialog(Editor3DWindow.getWindow().getShell(), ys).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         final int oldLineCount = vm.getLines().size();
                         final int oldTriangleCount = vm.getTriangles().size();
                         final int oldQuadCount = vm.getQuads().size();
@@ -2306,6 +2315,7 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new SymSplitterDialog(Editor3DWindow.getWindow().getShell(), sims).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         final int oldVertexCount = vm.getVertices().size();
                         final int oldLineCount = vm.getLines().size();
                         final int oldTriangleCount = vm.getTriangles().size();
@@ -2346,6 +2356,7 @@ public class MiscToolItem extends ToolItem {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new UnificatorDialog(Editor3DWindow.getWindow().getShell(), us).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         final int oldVertexCount = vm.getVertices().size();
                         final int oldLineCount = vm.getLines().size();
                         final int oldTriangleCount = vm.getTriangles().size();
@@ -2376,6 +2387,7 @@ public class MiscToolItem extends ToolItem {
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                     if (new RingsAndConesDialog(Editor3DWindow.getWindow().getShell(), ris).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
+                        c3d.getLockableDatFileReference().getVertexManager().skipSyncTimer();
                         RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), c3d.getLockableDatFileReference(), Editor3DWindow.getWindow().getCompositePrimitive().getPrimitives(), ris, true);
                     }
                     regainFocus();
@@ -2393,6 +2405,7 @@ public class MiscToolItem extends ToolItem {
                     if (new TJunctionDialog(Editor3DWindow.getWindow().getShell(), tjs).open() == IDialogConstants.OK_ID) {
                         VertexManager vm = df.getVertexManager();
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         vm.fixTjunctions(tjs);
                     }
                     regainFocus();
@@ -2410,6 +2423,7 @@ public class MiscToolItem extends ToolItem {
                     if (new MeshReducerDialog(Editor3DWindow.getWindow().getShell(), ms).open() == IDialogConstants.OK_ID) {
                         VertexManager vm = df.getVertexManager();
                         vm.addSnapshot();
+                        vm.skipSyncTimer();
                         vm.meshReduce(0, ms);
                     }
                     regainFocus();
@@ -2439,7 +2453,7 @@ public class MiscToolItem extends ToolItem {
                     } while (ts.isReload());
                     
                     if (dialogResult == IDialogConstants.OK_ID && !ts.getText().trim().isEmpty()) {
-
+                        vm.skipSyncTimer();
                         java.awt.Font myFont;
                         float r = 0.1f;
                         float g = 0.1f;
