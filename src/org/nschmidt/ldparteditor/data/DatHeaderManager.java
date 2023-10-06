@@ -601,8 +601,13 @@ public class DatHeaderManager {
                             if (type > 0 && type < 6) {
                                 String trimmedLine = gd.toString().trim();
                                 if (type == 1 && -1 != (index = trimmedLine.indexOf(((GData1) gd).shortName))) trimmedLine = trimmedLine.substring(0, index);
-                                if (trimmedLine.toUpperCase().contains("E")) { //$NON-NLS-1$
-                                    registerFormatHint(lineNumber, "FE", I18n.DATPARSER_INVALID_NUMBER_FORMAT, registered, allHints); //$NON-NLS-1$
+                                String[] dataSegments = trimmedLine.split("\\s+"); //$NON-NLS-1$
+                                for (int i = 2; i < dataSegments.length; i++) {
+                                    String string = dataSegments[i];
+                                    if (string.toUpperCase().contains("E")) { //$NON-NLS-1$
+                                        registerFormatHint(lineNumber, "FE", I18n.DATPARSER_INVALID_NUMBER_FORMAT, registered, allHints); //$NON-NLS-1$
+                                        break;
+                                    }
                                 }
                             }
                         }
