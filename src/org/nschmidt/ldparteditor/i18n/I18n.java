@@ -1214,6 +1214,9 @@ public final class I18n {
     public static final String RECTIFIER_VERBOSE_MSG = RECTIFIER.getString(getProperty());
     public static final String ROTATE_PIVOT = ROTATE.getString(getProperty());
     public static final String ROTATE_PIVOT_CLIPBOARD = ROTATE.getString(getProperty());
+    public static final String ROTATE_PIVOT_INITIAL_A = ROTATE.getString(getProperty());
+    public static final String ROTATE_PIVOT_INITIAL_B = ROTATE.getString(getProperty());
+    public static final String ROTATE_PIVOT_INITIAL_C = ROTATE.getString(getProperty());
     public static final String ROTATE_PIVOT_MANIPULATOR = ROTATE.getString(getProperty());
     public static final String ROTATE_TITLE = ROTATE.getString(getProperty());
     public static final String ROTATE_X = ROTATE.getString(getProperty());
@@ -1228,6 +1231,9 @@ public final class I18n {
     public static final String ROUND_Z = ROUND.getString(getProperty());
     public static final String SCALE_PIVOT = SCALE.getString(getProperty());
     public static final String SCALE_PIVOT_CLIPBOARD = SCALE.getString(getProperty());
+    public static final String SCALE_PIVOT_INITIAL_A = SCALE.getString(getProperty());
+    public static final String SCALE_PIVOT_INITIAL_B = SCALE.getString(getProperty());
+    public static final String SCALE_PIVOT_INITIAL_C = SCALE.getString(getProperty());
     public static final String SCALE_PIVOT_MANIPULATOR = SCALE.getString(getProperty());
     public static final String SCALE_TITLE = SCALE.getString(getProperty());
     public static final String SCALE_X = SCALE.getString(getProperty());

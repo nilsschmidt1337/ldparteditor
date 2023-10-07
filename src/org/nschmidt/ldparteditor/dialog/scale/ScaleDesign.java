@@ -76,6 +76,8 @@ class ScaleDesign extends Dialog {
     Vertex p = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex m = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+    private final boolean isLoadingClipboardVertex;
+    private final boolean isLoadingManipulatorPosition;
 
     ScaleDesign(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition, ManipulatorScope scope) {
         super(parentShell);
@@ -91,8 +93,15 @@ class ScaleDesign extends Dialog {
         if (clipboardVertices.size() == 1) {
             p = clipboardVertices.iterator().next();
             c = new Vertex(p.xp, p.yp, p.zp);
+            isLoadingClipboardVertex = true;
+            isLoadingManipulatorPosition = false;
         } else if (transformationMode == ManipulatorScope.LOCAL && manipulatorPosition != null) {
             p = new Vertex(m.xp, m.yp, m.zp);
+            isLoadingClipboardVertex = false;
+            isLoadingManipulatorPosition = true;
+        } else {
+            isLoadingClipboardVertex = false;
+            isLoadingManipulatorPosition = false;
         }
     }
 
@@ -220,6 +229,19 @@ class ScaleDesign extends Dialog {
             btnPivotClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnPivotClipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
             btnPivotClipboard.setText(I18n.SCALE_PIVOT_CLIPBOARD);
+        }
+        
+        if (!isLoadingClipboardVertex) {
+            Label lblClipboardVertex = new Label(cmpContainer, SWT.NONE);
+            lblClipboardVertex.setText(I18n.SCALE_PIVOT_INITIAL_A);
+        } else {
+            Label lblClipboardVertex = new Label(cmpContainer, SWT.NONE);
+            lblClipboardVertex.setText(I18n.SCALE_PIVOT_INITIAL_B);
+        }
+        
+        if (isLoadingManipulatorPosition) {
+            Label lblManipulatorPosition = new Label(cmpContainer, SWT.NONE);
+            lblManipulatorPosition.setText(I18n.SCALE_PIVOT_INITIAL_C);
         }
 
         {
