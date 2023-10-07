@@ -228,7 +228,7 @@ class VM00Base {
                 return;
             }
             final AtomicInteger tid2 = new AtomicInteger(tid.incrementAndGet());
-            final Thread syncThread = new Thread(() -> {
+            Thread.ofVirtual().start(() -> {
                 openThreads.incrementAndGet();
                 do {
                     if (skipTimer.get()) {
@@ -339,7 +339,6 @@ class VM00Base {
                     }
                 }
             });
-            syncThread.start();
         } finally {
             try {
                 lock.unlock();
