@@ -1,3 +1,16 @@
+# 07 Oct 2023
+With the release of 1.8.72 you are able to...
+-  ...use a shortcut for "Merge to Nearest Vertex" (Ctrl+N).
+-  ...see a hint for wrong comment lines with just one slash (with quick-fix option).
+-  ...benefit from the fact that running a tool in the "3D Editor" will update the "Text Editor" immediately.
+-  ...see additional hints for the pivot point in the "Rotate" and "Scale".
+-  ...set the filesize limit for the !DATA meta command (in the program options).
+
+The following critical issues are fixed:
+1. Pasting something via clipboard did not deselect the currently selected vertex.
+2. A direct colour is not an invalid number (when it contains the letter "E").
+
+
 # 19 Sep 2023
 With the release of 1.8.71 you are able to...
 -  ...benefit from a slightly faster program start (technical details: JDK upgrade from version 17 to 21, LWJGL upgrade from version 3.2 to 3.3)
