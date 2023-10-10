@@ -214,7 +214,8 @@ public class PerspectiveCalculator {
         }
         if (gridSize > 10f) {
             gridSize = gridSize / 2f;
-        }
+        } // gridSize < 10f can't happen
+        
         gridSize = gridSize * 10f * c3d.getGridScale();
         int mx = (int) (c3d.getBounds().width / gridSize + 4) / 2;
         int my = (int) (c3d.getBounds().height / gridSize + 4) / 2;

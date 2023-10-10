@@ -3,7 +3,7 @@ With the release of 1.8.72 you are able to...
 -  ...use a shortcut for "Merge to Nearest Vertex" (Ctrl+N).
 -  ...see a hint for wrong comment lines with just one slash (with quick-fix option).
 -  ...benefit from the fact that running a tool in the "3D Editor" will update the "Text Editor" immediately.
--  ...see additional hints for the pivot point in the "Rotate" and "Scale".
+-  ...see additional hints for the pivot point in the "Rotate" and "Scale" dialog.
 -  ...set the filesize limit for the !DATA meta command (in the program options).
 
 The following critical issues are fixed:
