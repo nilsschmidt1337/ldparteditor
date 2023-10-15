@@ -102,6 +102,7 @@ import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.MergeTo;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
+import org.nschmidt.ldparteditor.enumtype.Perspective;
 import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.TransformationMode;
@@ -203,6 +204,8 @@ public class MiscToolItem extends ToolItem {
     private static final MenuItem[] mntmTranslatePtr = new MenuItem[1];
     private static final MenuItem[] mntmRotatePtr = new MenuItem[1];
     private static final MenuItem[] mntmScalePtr = new MenuItem[1];
+
+    private static final MenuItem[] mntmSnapToGridPtr = new MenuItem[1];
 
     private static final MenuItem[] mntmFlipPtr = new MenuItem[1];
     private static final MenuItem[] mntmSmoothPtr = new MenuItem[1];
@@ -492,6 +495,8 @@ public class MiscToolItem extends ToolItem {
         btnMergeNSplit.setText(I18n.E3D_MERGE_SPLIT);
         final Menu mnuMerge = new Menu(miscToolItem.getShell(), SWT.POP_UP);
         widgetUtil(btnMergeNSplit).addSelectionListener(e -> {
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            MiscToolItem.mntmSnapToGridPtr[0].setEnabled(c3d != null && c3d.isClassicPerspective());
             Point loc = btnMergeNSplit.getLocation();
             Rectangle rect = btnMergeNSplit.getBounds();
             Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
@@ -568,6 +573,12 @@ public class MiscToolItem extends ToolItem {
         MenuItem mntmScale = new MenuItem(mnuMerge, SWT.PUSH);
         MiscToolItem.mntmScalePtr[0] = mntmScale;
         mntmScale.setText(I18n.E3D_SCALE_SELECTION);
+
+        new MenuItem(mnuMerge, SWT.SEPARATOR);
+
+        MenuItem mntmSnapToGrid = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmSnapToGridPtr[0] = mntmSnapToGrid;
+        mntmSnapToGrid.setText(I18n.E3D_SNAP_TO_GRID);
 
         new MenuItem(mnuMerge, SWT.SEPARATOR);
 
@@ -1286,6 +1297,43 @@ public class MiscToolItem extends ToolItem {
                 }
             }
             regainFocus();
+        });
+        
+        widgetUtil(mntmSnapToGridPtr[0]).addSelectionListener(e -> {
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final boolean snapOnX;
+                final boolean snapOnY;
+                final boolean snapOnZ;
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK:
+                    snapOnX = true;
+                    snapOnY = true;
+                    snapOnZ = false;
+                    break;
+                case TOP, BOTTOM:
+                    snapOnX = true;
+                    snapOnY = false;
+                    snapOnZ = true;
+                    break;
+                case LEFT, RIGHT:
+                    snapOnX = false;
+                    snapOnY = true;
+                    snapOnZ = true;
+                    break;
+                case TWO_THIRDS:
+                default:
+                    return;
+                }
+                
+                NLogger.debug(MiscToggleToolItem.class, "Perspective :" + perspective); //$NON-NLS-1$
+                NLogger.debug(MiscToggleToolItem.class, "Snap on X   :" + snapOnX); //$NON-NLS-1$
+                NLogger.debug(MiscToggleToolItem.class, "Snap on Y   :" + snapOnY); //$NON-NLS-1$
+                NLogger.debug(MiscToggleToolItem.class, "Snap on Z   :" + snapOnZ); //$NON-NLS-1$
+                
+                // FIXME Needs implementation!
+            }
         });
 
         widgetUtil(mntmSelectSingleVertexPtr[0]).addSelectionListener(e -> {

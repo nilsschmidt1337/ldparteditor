@@ -665,6 +665,7 @@ public final class I18n {
     public static final String E3D_SMOOTH = E3D.getString(getProperty());
     public static final String E3D_SNAPPING = E3D.getString(getProperty());
     public static final String E3D_SNAPSHOT = E3D.getString(getProperty());
+    public static final String E3D_SNAP_TO_GRID = E3D.getString(getProperty());
     public static final String E3D_SPLIT = E3D.getString(getProperty());
     public static final String E3D_SPLIT_EDGES = E3D.getString(getProperty());
     public static final String E3D_SPLIT_HORIZONTALLY = E3D.getString(getProperty());
