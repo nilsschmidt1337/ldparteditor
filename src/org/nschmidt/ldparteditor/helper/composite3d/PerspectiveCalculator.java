@@ -229,6 +229,7 @@ public class PerspectiveCalculator {
         grid[2].set(0f, -gridSize);
         // Multiplicants
         grid[3].set(mx, my);
+        c3d.setGridSize((float) (Math.round(gridSize / c3d.getZoom() * 100.0) / 100_000.0d));
         gridSize = gridSize * 10f;
         int mx10 = (int) (c3d.getBounds().width / gridSize + 4) / 2;
         int my10 = (int) (c3d.getBounds().height / gridSize + 4) / 2;

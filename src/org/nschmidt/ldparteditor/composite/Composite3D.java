@@ -211,7 +211,9 @@ public class Composite3D extends ScalableComposite {
      * y-direction, cell count)
      */
     private final Vector4f[] gridData = new Vector4f[] { new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f() };
-
+    
+    private float gridSize = 0f;
+    
     /** the {@linkplain GLCanvas} */
     private final GLCanvas canvas;
     private final GLCapabilities capabilities;
@@ -1572,6 +1574,17 @@ public class Composite3D extends ScalableComposite {
      */
     public Vector4f[] getGrid() {
         return gridData;
+    }
+    
+    public void setGridSize(float gridSize) {
+        this.gridSize = gridSize;
+    }
+    
+    /**
+     * @return the grid size in LDU.
+     */
+    public float getGridSize() {
+        return gridSize;
     }
 
     /**

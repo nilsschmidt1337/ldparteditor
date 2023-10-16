@@ -1332,6 +1332,13 @@ public class MiscToolItem extends ToolItem {
                 NLogger.debug(MiscToggleToolItem.class, "Snap on Y   :" + snapOnY); //$NON-NLS-1$
                 NLogger.debug(MiscToggleToolItem.class, "Snap on Z   :" + snapOnZ); //$NON-NLS-1$
                 
+                final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                final float gridSize = c3d.getGridSize();
+                final Set<Vertex> sv = vm.getSelectedVertices();
+                
+                NLogger.debug(MiscToggleToolItem.class, "Grid size   :" + gridSize + " LDU"); //$NON-NLS-1$ //$NON-NLS-2$
+                NLogger.debug(MiscToggleToolItem.class, "Vertex count:" + sv.size()); //$NON-NLS-1$
+                
                 // FIXME Needs implementation!
             }
         });
