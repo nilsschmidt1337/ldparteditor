@@ -1336,15 +1336,18 @@ public class MiscToolItem extends ToolItem {
                 NLogger.debug(MiscToggleToolItem.class, "Snap on Z   :" + snapOnZ); //$NON-NLS-1$
                 
                 final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                vm.addSnapshot();
+                vm.skipSyncTimer();
+                
+                // Make sure to snap the vertices of selected objects
+                vm.selectObjectVertices();
+                
                 final float gridSize = c3d.getGridSize();
                 final Set<Vertex> selectedVertices = new TreeSet<>(vm.getSelectedVertices());
                 final Set<GData1> selectedSubfiles = new TreeSet<>(vm.getSelectedSubfiles());
                 
                 NLogger.debug(MiscToggleToolItem.class, "Grid size   :" + gridSize + " LDU"); //$NON-NLS-1$ //$NON-NLS-2$
                 NLogger.debug(MiscToggleToolItem.class, "Vertex count:" + selectedVertices.size()); //$NON-NLS-1$
-                
-                vm.addSnapshot();
-                vm.skipSyncTimer();
                 
                 final BigDecimal gridSizePrecise = BigDecimal.valueOf(gridSize);
                 
