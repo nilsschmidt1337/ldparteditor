@@ -312,16 +312,20 @@ public class VM20Manipulator extends VM19ColourChanger {
             }
         }
     }
-
+    
     /**
-     *
-     * @param transformation
-     *            the transformation matrix
-     * @param moveAdjacentData
-     *            {@code true} if all data should be transformed which is
-     *            adjacent to the current selection
-     */
+    *
+    * @param transformation
+    *            the transformation matrix
+    * @param moveAdjacentData
+    *            {@code true} if all data should be transformed which is
+    *            adjacent to the current selection
+    */
     public final void transformSelection(Matrix transformation, Vector3d newVertex, boolean moveAdjacentData) {
+        transformSelection(transformation, newVertex, moveAdjacentData, true);
+    }
+
+    public final void transformSelection(Matrix transformation, Vector3d newVertex, boolean moveAdjacentData, boolean addHistory) {
         if (linkedDatFile.isReadOnly())
             return;
 
@@ -584,7 +588,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                 setModifiedNoSync();
             }
 
-            if (isModified()) {
+            if (isModified() && addHistory) {
                 selectedData.addAll(selectedLines);
                 selectedData.addAll(selectedTriangles);
                 selectedData.addAll(selectedQuads);

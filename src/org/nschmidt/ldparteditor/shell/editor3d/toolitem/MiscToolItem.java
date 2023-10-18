@@ -1370,8 +1370,19 @@ public class MiscToolItem extends ToolItem {
                     final BigDecimal newY = snapOnY ? snapToNearest(gridSize, gridSizePrecise, subM.m31.abs()).multiply(new BigDecimal(subM.m31.signum())).subtract(subM.m31) : BigDecimal.ZERO;
                     final BigDecimal newZ = snapOnZ ? snapToNearest(gridSize, gridSizePrecise, subM.m32.abs()).multiply(new BigDecimal(subM.m32.signum())).subtract(subM.m32) : BigDecimal.ZERO;
                     
-                    final Matrix m = subM.translate(new BigDecimal[]{newX, newY, newZ});
-                    vm.transformSubfile(g, m, false, false);
+                    final Matrix m = View.ACCURATE_ID.translate(new BigDecimal[]{newX, newY, newZ});
+                    
+                    vm.backupSelection();
+                    vm.clearSelection2();
+                    vm.getSelectedSubfiles().add(g);
+                    vm.reSelectSubFiles();
+                    vm.transformSelection(m, null, MiscToggleToolItem.isMovingAdjacentData(), false);
+                    final GData1 sub = vm.getSelectedSubfiles().stream().findAny().orElse(null);
+                    vm.restoreSelection();
+                    if (sub != null) {
+                        vm.getSelectedSubfiles().add(sub);
+                    }
+                    
                     modified = true;
                 }
                 
@@ -1381,6 +1392,7 @@ public class MiscToolItem extends ToolItem {
                 
                 if (modified && (!selectedVertices.isEmpty() || !selectedSubfiles.isEmpty())) {
                     NLogger.debug(MiscToggleToolItem.class, "Snapping done"); //$NON-NLS-1$
+                    vm.validateState();
                     vm.setModified(true, true);
                 }
             }
