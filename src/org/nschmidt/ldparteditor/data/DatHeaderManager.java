@@ -603,6 +603,7 @@ public class DatHeaderManager {
                                 if (type == 1 && -1 != (index = trimmedLine.indexOf(((GData1) gd).shortName))) trimmedLine = trimmedLine.substring(0, index);
                                 String[] dataSegments = trimmedLine.split("\\s+"); //$NON-NLS-1$
                                 for (int i = 2; i < dataSegments.length; i++) {
+                                    if (type == 2 && i == 2 && !((GData2) gd).isLine) continue;
                                     String string = dataSegments[i];
                                     if (string.toUpperCase().contains("E")) { //$NON-NLS-1$
                                         registerFormatHint(lineNumber, "FE", I18n.DATPARSER_INVALID_NUMBER_FORMAT, registered, allHints); //$NON-NLS-1$
