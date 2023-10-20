@@ -208,6 +208,7 @@ public class MiscToolItem extends ToolItem {
     private static final MenuItem[] mntmScalePtr = new MenuItem[1];
 
     private static final MenuItem[] mntmSnapToGridPtr = new MenuItem[1];
+    private static final MenuItem[] mntmAlignAndDistribute = new MenuItem[1];
 
     private static final MenuItem[] mntmFlipPtr = new MenuItem[1];
     private static final MenuItem[] mntmSmoothPtr = new MenuItem[1];
@@ -499,6 +500,7 @@ public class MiscToolItem extends ToolItem {
         widgetUtil(btnMergeNSplit).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             MiscToolItem.mntmSnapToGridPtr[0].setEnabled(c3d != null && c3d.isClassicPerspective());
+            MiscToolItem.mntmAlignAndDistribute[0].setEnabled(c3d != null && c3d.isClassicPerspective());
             Point loc = btnMergeNSplit.getLocation();
             Rectangle rect = btnMergeNSplit.getBounds();
             Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
@@ -577,6 +579,77 @@ public class MiscToolItem extends ToolItem {
         mntmScale.setText(I18n.E3D_SCALE_SELECTION);
 
         new MenuItem(mnuMerge, SWT.SEPARATOR);
+
+        MenuItem mntmAlignAndDistribute = new MenuItem(mnuMerge, SWT.CASCADE);
+        MiscToolItem.mntmAlignAndDistribute[0] = mntmAlignAndDistribute;
+        mntmAlignAndDistribute.setText(I18n.E3D_ALIGN_AND_DISTRIBUTE);
+        
+        final Menu mnuAlignAndDistribute = new Menu(mntmAlignAndDistribute);
+        mntmAlignAndDistribute.setMenu(mnuAlignAndDistribute);
+
+        MenuItem mntmAlignLeftEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmAlignLeftEdges.setImage(ResourceManager.getImage("icon16_align_left.png")); //$NON-NLS-1$
+        mntmAlignLeftEdges.setText(I18n.E3D_ALIGN_LEFT_EDGES);
+        
+        MenuItem mntmAlignHorizontalCenters = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmAlignHorizontalCenters.setImage(ResourceManager.getImage("icon16_align_horizontal.png")); //$NON-NLS-1$
+        mntmAlignHorizontalCenters.setText(I18n.E3D_ALIGN_HORIZONTAL_CENTERS);
+        
+        MenuItem mntmAlignRightEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmAlignRightEdges.setImage(ResourceManager.getImage("icon16_align_right.png")); //$NON-NLS-1$
+        mntmAlignRightEdges.setText(I18n.E3D_ALIGN_RIGHT_EDGES);
+        
+        new MenuItem(mnuAlignAndDistribute, SWT.SEPARATOR);
+        
+        MenuItem mntmAlignTopEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmAlignTopEdges.setImage(ResourceManager.getImage("icon16_align_top.png")); //$NON-NLS-1$
+        mntmAlignTopEdges.setText(I18n.E3D_ALIGN_TOP_EDGES);
+        
+        MenuItem mntmAlignVerticalCenters = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmAlignVerticalCenters.setImage(ResourceManager.getImage("icon16_align_vertical.png")); //$NON-NLS-1$
+        mntmAlignVerticalCenters.setText(I18n.E3D_ALIGN_VERTICAL_CENTERS);
+        
+        MenuItem mntmAlignBottomEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmAlignBottomEdges.setImage(ResourceManager.getImage("icon16_align_bottom.png")); //$NON-NLS-1$
+        mntmAlignBottomEdges.setText(I18n.E3D_ALIGN_BOTTOM_EDGES);
+        
+        new MenuItem(mnuAlignAndDistribute, SWT.SEPARATOR);
+        
+        MenuItem mntmDistributeTopEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmDistributeTopEdges.setImage(ResourceManager.getImage("icon16_distribute_top.png")); //$NON-NLS-1$
+        mntmDistributeTopEdges.setText(I18n.E3D_DISTRIBUTE_TOP_EDGES);
+        
+        MenuItem mntmDistributeVerticalEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmDistributeVerticalEdges.setImage(ResourceManager.getImage("icon16_distribute_vertical.png")); //$NON-NLS-1$
+        mntmDistributeVerticalEdges.setText(I18n.E3D_DISTRIBUTE_VERTICAL_CENTERS);
+        
+        MenuItem mntmDistributeBottomEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmDistributeBottomEdges.setImage(ResourceManager.getImage("icon16_distribute_bottom.png")); //$NON-NLS-1$
+        mntmDistributeBottomEdges.setText(I18n.E3D_DISTRIBUTE_BOTTOM_EDGES);
+        
+        new MenuItem(mnuAlignAndDistribute, SWT.SEPARATOR);
+        
+        MenuItem mntmDistributeLeftEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmDistributeLeftEdges.setImage(ResourceManager.getImage("icon16_distribute_left.png")); //$NON-NLS-1$
+        mntmDistributeLeftEdges.setText(I18n.E3D_DISTRIBUTE_LEFT_EDGES);
+        
+        MenuItem mntmDistributeHorizontalCenters = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmDistributeHorizontalCenters.setImage(ResourceManager.getImage("icon16_distribute_horizontal.png")); //$NON-NLS-1$
+        mntmDistributeHorizontalCenters.setText(I18n.E3D_DISTRIBUTE_HORIZONTAL_CENTERS);
+        
+        MenuItem mntmDistributeRightEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmDistributeRightEdges.setImage(ResourceManager.getImage("icon16_distribute_right.png")); //$NON-NLS-1$
+        mntmDistributeRightEdges.setText(I18n.E3D_DISTRIBUTE_RIGHT_EDGES);
+        
+        new MenuItem(mnuAlignAndDistribute, SWT.SEPARATOR);
+        
+        MenuItem mntmDistributeVertically = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmDistributeVertically.setImage(ResourceManager.getImage("icon16_spacing_vertical.png")); //$NON-NLS-1$
+        mntmDistributeVertically.setText(I18n.E3D_DISTRIBUTE_VERTICALLY);
+        
+        MenuItem mntmDistributeHorizontally = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        mntmDistributeHorizontally.setImage(ResourceManager.getImage("icon16_spacing_horizontal.png")); //$NON-NLS-1$
+        mntmDistributeHorizontally.setText(I18n.E3D_DISTRIBUTE_HORIZONTALLY);
 
         MenuItem mntmSnapToGrid = new MenuItem(mnuMerge, SWT.PUSH);
         MiscToolItem.mntmSnapToGridPtr[0] = mntmSnapToGrid;
