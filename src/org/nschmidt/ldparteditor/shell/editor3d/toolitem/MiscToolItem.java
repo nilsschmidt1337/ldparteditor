@@ -216,7 +216,7 @@ public class MiscToolItem extends ToolItem {
     private static final MenuItem[] mntmAlignVerticalCentersPtr = new MenuItem[1];
     private static final MenuItem[] mntmAlignBottomEdgesPtr = new MenuItem[1];
     private static final MenuItem[] mntmDistributeTopEdgesPtr = new MenuItem[1];
-    private static final MenuItem[] mntmDistributeVerticalEdgesPtr = new MenuItem[1];
+    private static final MenuItem[] mntmDistributeVerticalCentersPtr = new MenuItem[1];
     private static final MenuItem[] mntmDistributeBottomEdgesPtr = new MenuItem[1];
     private static final MenuItem[] mntmDistributeLeftEdgesPtr = new MenuItem[1];
     private static final MenuItem[] mntmDistributeHorizontalCentersPtr = new MenuItem[1];
@@ -640,10 +640,10 @@ public class MiscToolItem extends ToolItem {
         mntmDistributeTopEdges.setImage(ResourceManager.getImage("icon16_distribute_top.png")); //$NON-NLS-1$
         mntmDistributeTopEdges.setText(I18n.E3D_DISTRIBUTE_TOP_EDGES);
         
-        MenuItem mntmDistributeVerticalEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
-        MiscToolItem.mntmDistributeVerticalEdgesPtr[0] = mntmDistributeVerticalEdges;
-        mntmDistributeVerticalEdges.setImage(ResourceManager.getImage("icon16_distribute_vertical.png")); //$NON-NLS-1$
-        mntmDistributeVerticalEdges.setText(I18n.E3D_DISTRIBUTE_VERTICAL_CENTERS);
+        MenuItem mntmDistributeVerticalCenters = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
+        MiscToolItem.mntmDistributeVerticalCentersPtr[0] = mntmDistributeVerticalCenters;
+        mntmDistributeVerticalCenters.setImage(ResourceManager.getImage("icon16_distribute_vertical.png")); //$NON-NLS-1$
+        mntmDistributeVerticalCenters.setText(I18n.E3D_DISTRIBUTE_VERTICAL_CENTERS);
         
         MenuItem mntmDistributeBottomEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmDistributeBottomEdgesPtr[0] = mntmDistributeBottomEdges;
@@ -1402,6 +1402,62 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
         
+        widgetUtil(mntmAlignLeftEdgesPtr[0]).addSelectionListener(e -> {
+           // FIXME Needs implementation!
+        });
+        
+        widgetUtil(mntmAlignHorizontalCentersPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+        
+        widgetUtil(mntmAlignRightEdgesPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+        
+        widgetUtil(mntmAlignTopEdgesPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+        
+        widgetUtil(mntmAlignVerticalCentersPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+        
+        widgetUtil(mntmAlignBottomEdgesPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+        
+        widgetUtil(mntmDistributeLeftEdgesPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+        
+        widgetUtil(mntmDistributeVerticalCentersPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+        
+        widgetUtil(mntmDistributeRightEdgesPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+        
+        widgetUtil(mntmDistributeTopEdgesPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+         
+        widgetUtil(mntmDistributeHorizontalCentersPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+         
+        widgetUtil(mntmDistributeBottomEdgesPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+         
+        widgetUtil(mntmDistributeVerticallyPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+         
+        widgetUtil(mntmDistributeHorizontallyPtr[0]).addSelectionListener(e -> {
+            // FIXME Needs implementation!
+        });
+         
         widgetUtil(mntmSnapToGridPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
