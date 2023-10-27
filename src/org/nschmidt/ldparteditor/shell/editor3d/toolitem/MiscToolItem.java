@@ -98,6 +98,7 @@ import org.nschmidt.ldparteditor.dialog.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialog.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialog.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.dialog.ytruder.YTruderDialog;
+import org.nschmidt.ldparteditor.enumtype.AlignAndDistributeAxis;
 import org.nschmidt.ldparteditor.enumtype.IconSize;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
@@ -1451,11 +1452,41 @@ public class MiscToolItem extends ToolItem {
         });
          
         widgetUtil(mntmDistributeVerticallyPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK, LEFT, RIGHT:
+                    distributeEqually(AlignAndDistributeAxis.Y);
+                    break;
+                case TOP, BOTTOM:
+                    distributeEqually(AlignAndDistributeAxis.Z);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
          
         widgetUtil(mntmDistributeHorizontallyPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK, TOP, BOTTOM:
+                    distributeEqually(AlignAndDistributeAxis.X);
+                    break;
+                case LEFT, RIGHT:
+                    distributeEqually(AlignAndDistributeAxis.Z);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
          
         widgetUtil(mntmSnapToGridPtr[0]).addSelectionListener(e -> {
@@ -3236,6 +3267,11 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
+    }
+
+    private static void distributeEqually(AlignAndDistributeAxis axis) {
+        NLogger.debug(MiscToolItem.class, "Distribute equally on axis {0}.", axis); //$NON-NLS-1$
+        // FIXME Needs implementation!
     }
 
     private static BigDecimal snapToNearest(final float gridSize, final BigDecimal gridSizePrecise, BigDecimal v) {
