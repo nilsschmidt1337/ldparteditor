@@ -1428,27 +1428,135 @@ public class MiscToolItem extends ToolItem {
         });
         
         widgetUtil(mntmDistributeLeftEdgesPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case BACK:
+                    distribute(AlignAndDistributeAxis.X_MAX);
+                    break;
+                case TOP, BOTTOM, FRONT:
+                    distribute(AlignAndDistributeAxis.X_MIN);
+                    break;
+                case LEFT:
+                    distribute(AlignAndDistributeAxis.Z_MAX);
+                    break;
+                case RIGHT:
+                    distribute(AlignAndDistributeAxis.Z_MIN);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
         
-        widgetUtil(mntmDistributeVerticalCentersPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+        widgetUtil(mntmDistributeHorizontalCentersPtr[0]).addSelectionListener(e -> {
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK, TOP, BOTTOM:
+                    distribute(AlignAndDistributeAxis.X_AVG);
+                    break;
+                case LEFT, RIGHT:
+                    distribute(AlignAndDistributeAxis.Z_AVG);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
         
         widgetUtil(mntmDistributeRightEdgesPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case BACK:
+                    distribute(AlignAndDistributeAxis.X_MIN);
+                    break;
+                case TOP, BOTTOM, FRONT:
+                    distribute(AlignAndDistributeAxis.X_MAX);
+                    break;
+                case LEFT:
+                    distribute(AlignAndDistributeAxis.Z_MIN);
+                    break;
+                case RIGHT:
+                    distribute(AlignAndDistributeAxis.Z_MAX);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
         
         widgetUtil(mntmDistributeTopEdgesPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK, LEFT, RIGHT:
+                    distribute(AlignAndDistributeAxis.Y_MIN);
+                    break;
+                case TOP:
+                    distribute(AlignAndDistributeAxis.Z_MAX);
+                    break;
+                case BOTTOM:
+                    distribute(AlignAndDistributeAxis.Z_MIN);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
          
-        widgetUtil(mntmDistributeHorizontalCentersPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+        widgetUtil(mntmDistributeVerticalCentersPtr[0]).addSelectionListener(e -> {
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK, LEFT, RIGHT:
+                    distribute(AlignAndDistributeAxis.Y_AVG);
+                    break;
+                case TOP, BOTTOM:
+                    distribute(AlignAndDistributeAxis.Z_AVG);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
          
         widgetUtil(mntmDistributeBottomEdgesPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK, LEFT, RIGHT:
+                    distribute(AlignAndDistributeAxis.Y_MAX);
+                    break;
+                case TOP:
+                    distribute(AlignAndDistributeAxis.Z_MIN);
+                    break;
+                case BOTTOM:
+                    distribute(AlignAndDistributeAxis.Z_MAX);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
          
         widgetUtil(mntmDistributeVerticallyPtr[0]).addSelectionListener(e -> {
@@ -3269,6 +3377,11 @@ public class MiscToolItem extends ToolItem {
 
     }
 
+    private static void distribute(AlignAndDistributeAxis axis) {
+        NLogger.debug(MiscToolItem.class, "Distribute on axis {0}.", axis); //$NON-NLS-1$
+        // FIXME Needs implementation!
+    }
+    
     private static void distributeEqually(AlignAndDistributeAxis axis) {
         NLogger.debug(MiscToolItem.class, "Distribute equally on axis {0}.", axis); //$NON-NLS-1$
         // FIXME Needs implementation!
