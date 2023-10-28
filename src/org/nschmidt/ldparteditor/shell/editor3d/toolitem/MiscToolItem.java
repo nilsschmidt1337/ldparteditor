@@ -1404,27 +1404,135 @@ public class MiscToolItem extends ToolItem {
         });
         
         widgetUtil(mntmAlignLeftEdgesPtr[0]).addSelectionListener(e -> {
-           // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case BACK:
+                    align(AlignAndDistributeAxis.X_MAX);
+                    break;
+                case TOP, BOTTOM, FRONT:
+                    align(AlignAndDistributeAxis.X_MIN);
+                    break;
+                case LEFT:
+                    align(AlignAndDistributeAxis.Z_MAX);
+                    break;
+                case RIGHT:
+                    align(AlignAndDistributeAxis.Z_MIN);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
         
         widgetUtil(mntmAlignHorizontalCentersPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK, TOP, BOTTOM:
+                    align(AlignAndDistributeAxis.X_AVG);
+                    break;
+                case LEFT, RIGHT:
+                    align(AlignAndDistributeAxis.Z_AVG);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
         
         widgetUtil(mntmAlignRightEdgesPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case BACK:
+                    align(AlignAndDistributeAxis.X_MIN);
+                    break;
+                case TOP, BOTTOM, FRONT:
+                    align(AlignAndDistributeAxis.X_MAX);
+                    break;
+                case LEFT:
+                    align(AlignAndDistributeAxis.Z_MIN);
+                    break;
+                case RIGHT:
+                    align(AlignAndDistributeAxis.Z_MAX);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
         
         widgetUtil(mntmAlignTopEdgesPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK, LEFT, RIGHT:
+                    align(AlignAndDistributeAxis.Y_MIN);
+                    break;
+                case TOP:
+                    align(AlignAndDistributeAxis.Z_MAX);
+                    break;
+                case BOTTOM:
+                    align(AlignAndDistributeAxis.Z_MIN);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
         
         widgetUtil(mntmAlignVerticalCentersPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK, LEFT, RIGHT:
+                    align(AlignAndDistributeAxis.Y_AVG);
+                    break;
+                case TOP, BOTTOM:
+                    align(AlignAndDistributeAxis.Z_AVG);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
         
         widgetUtil(mntmAlignBottomEdgesPtr[0]).addSelectionListener(e -> {
-            // FIXME Needs implementation!
+            final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+            if (c3d != null && c3d.isClassicPerspective()) {
+                final Perspective perspective = c3d.getPerspectiveIndex();
+                switch (perspective) {
+                case FRONT, BACK, LEFT, RIGHT:
+                    align(AlignAndDistributeAxis.Y_MAX);
+                    break;
+                case TOP:
+                    align(AlignAndDistributeAxis.Z_MIN);
+                    break;
+                case BOTTOM:
+                    align(AlignAndDistributeAxis.Z_MAX);
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            regainFocus();
         });
         
         widgetUtil(mntmDistributeLeftEdgesPtr[0]).addSelectionListener(e -> {
@@ -3376,15 +3484,41 @@ public class MiscToolItem extends ToolItem {
         });
 
     }
+    
+    private static void align(AlignAndDistributeAxis axis) {
+        final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+        if (c3d != null) {
+            final DatFile df = c3d.getLockableDatFileReference();
+            if (df.isReadOnly()) return;
+            final VertexManager vm = df.getVertexManager();
+            vm.addSnapshot();
+            NLogger.debug(MiscToolItem.class, "Align on axis {0}.", axis); //$NON-NLS-1$
+            // FIXME Needs implementation!
+        }
+    }
 
     private static void distribute(AlignAndDistributeAxis axis) {
-        NLogger.debug(MiscToolItem.class, "Distribute on axis {0}.", axis); //$NON-NLS-1$
-        // FIXME Needs implementation!
+        final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+        if (c3d != null) {
+            final DatFile df = c3d.getLockableDatFileReference();
+            if (df.isReadOnly()) return;
+            final VertexManager vm = df.getVertexManager();
+            vm.addSnapshot();
+            NLogger.debug(MiscToolItem.class, "Distribute on axis {0}.", axis); //$NON-NLS-1$
+            // FIXME Needs implementation!
+        }
     }
     
     private static void distributeEqually(AlignAndDistributeAxis axis) {
-        NLogger.debug(MiscToolItem.class, "Distribute equally on axis {0}.", axis); //$NON-NLS-1$
-        // FIXME Needs implementation!
+        final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+        if (c3d != null) {
+            final DatFile df = c3d.getLockableDatFileReference();
+            if (df.isReadOnly()) return;
+            final VertexManager vm = df.getVertexManager();
+            vm.addSnapshot();
+            NLogger.debug(MiscToolItem.class, "Distribute equally on axis {0}.", axis); //$NON-NLS-1$
+            // FIXME Needs implementation!
+        }
     }
 
     private static BigDecimal snapToNearest(final float gridSize, final BigDecimal gridSizePrecise, BigDecimal v) {
