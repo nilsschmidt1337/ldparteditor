@@ -98,7 +98,7 @@ import org.nschmidt.ldparteditor.dialog.unificator.UnificatorDialog;
 import org.nschmidt.ldparteditor.dialog.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialog.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.dialog.ytruder.YTruderDialog;
-import org.nschmidt.ldparteditor.enumtype.AlignAndDistributeAxis;
+import org.nschmidt.ldparteditor.enumtype.AlignAndDistribute;
 import org.nschmidt.ldparteditor.enumtype.IconSize;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
@@ -1409,16 +1409,16 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case BACK:
-                    align(AlignAndDistributeAxis.X_MAX);
+                    align(AlignAndDistribute.X_MAX);
                     break;
                 case TOP, BOTTOM, FRONT:
-                    align(AlignAndDistributeAxis.X_MIN);
+                    align(AlignAndDistribute.X_MIN);
                     break;
                 case LEFT:
-                    align(AlignAndDistributeAxis.Z_MAX);
+                    align(AlignAndDistribute.Z_MAX);
                     break;
                 case RIGHT:
-                    align(AlignAndDistributeAxis.Z_MIN);
+                    align(AlignAndDistribute.Z_MIN);
                     break;
                 default:
                     break;
@@ -1434,10 +1434,10 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case FRONT, BACK, TOP, BOTTOM:
-                    align(AlignAndDistributeAxis.X_AVG);
+                    align(AlignAndDistribute.X_AVG);
                     break;
                 case LEFT, RIGHT:
-                    align(AlignAndDistributeAxis.Z_AVG);
+                    align(AlignAndDistribute.Z_AVG);
                     break;
                 default:
                     break;
@@ -1453,16 +1453,16 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case BACK:
-                    align(AlignAndDistributeAxis.X_MIN);
+                    align(AlignAndDistribute.X_MIN);
                     break;
                 case TOP, BOTTOM, FRONT:
-                    align(AlignAndDistributeAxis.X_MAX);
+                    align(AlignAndDistribute.X_MAX);
                     break;
                 case LEFT:
-                    align(AlignAndDistributeAxis.Z_MIN);
+                    align(AlignAndDistribute.Z_MIN);
                     break;
                 case RIGHT:
-                    align(AlignAndDistributeAxis.Z_MAX);
+                    align(AlignAndDistribute.Z_MAX);
                     break;
                 default:
                     break;
@@ -1478,13 +1478,13 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case FRONT, BACK, LEFT, RIGHT:
-                    align(AlignAndDistributeAxis.Y_MIN);
+                    align(AlignAndDistribute.Y_MIN);
                     break;
                 case TOP:
-                    align(AlignAndDistributeAxis.Z_MAX);
+                    align(AlignAndDistribute.Z_MAX);
                     break;
                 case BOTTOM:
-                    align(AlignAndDistributeAxis.Z_MIN);
+                    align(AlignAndDistribute.Z_MIN);
                     break;
                 default:
                     break;
@@ -1500,10 +1500,10 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case FRONT, BACK, LEFT, RIGHT:
-                    align(AlignAndDistributeAxis.Y_AVG);
+                    align(AlignAndDistribute.Y_AVG);
                     break;
                 case TOP, BOTTOM:
-                    align(AlignAndDistributeAxis.Z_AVG);
+                    align(AlignAndDistribute.Z_AVG);
                     break;
                 default:
                     break;
@@ -1519,13 +1519,13 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case FRONT, BACK, LEFT, RIGHT:
-                    align(AlignAndDistributeAxis.Y_MAX);
+                    align(AlignAndDistribute.Y_MAX);
                     break;
                 case TOP:
-                    align(AlignAndDistributeAxis.Z_MIN);
+                    align(AlignAndDistribute.Z_MIN);
                     break;
                 case BOTTOM:
-                    align(AlignAndDistributeAxis.Z_MAX);
+                    align(AlignAndDistribute.Z_MAX);
                     break;
                 default:
                     break;
@@ -1541,16 +1541,16 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case BACK:
-                    distribute(AlignAndDistributeAxis.X_MAX);
+                    distribute(AlignAndDistribute.X_MAX);
                     break;
                 case TOP, BOTTOM, FRONT:
-                    distribute(AlignAndDistributeAxis.X_MIN);
+                    distribute(AlignAndDistribute.X_MIN);
                     break;
                 case LEFT:
-                    distribute(AlignAndDistributeAxis.Z_MAX);
+                    distribute(AlignAndDistribute.Z_MAX);
                     break;
                 case RIGHT:
-                    distribute(AlignAndDistributeAxis.Z_MIN);
+                    distribute(AlignAndDistribute.Z_MIN);
                     break;
                 default:
                     break;
@@ -1566,10 +1566,10 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case FRONT, BACK, TOP, BOTTOM:
-                    distribute(AlignAndDistributeAxis.X_AVG);
+                    distribute(AlignAndDistribute.X_AVG);
                     break;
                 case LEFT, RIGHT:
-                    distribute(AlignAndDistributeAxis.Z_AVG);
+                    distribute(AlignAndDistribute.Z_AVG);
                     break;
                 default:
                     break;
@@ -1585,16 +1585,16 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case BACK:
-                    distribute(AlignAndDistributeAxis.X_MIN);
+                    distribute(AlignAndDistribute.X_MIN);
                     break;
                 case TOP, BOTTOM, FRONT:
-                    distribute(AlignAndDistributeAxis.X_MAX);
+                    distribute(AlignAndDistribute.X_MAX);
                     break;
                 case LEFT:
-                    distribute(AlignAndDistributeAxis.Z_MIN);
+                    distribute(AlignAndDistribute.Z_MIN);
                     break;
                 case RIGHT:
-                    distribute(AlignAndDistributeAxis.Z_MAX);
+                    distribute(AlignAndDistribute.Z_MAX);
                     break;
                 default:
                     break;
@@ -1610,13 +1610,13 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case FRONT, BACK, LEFT, RIGHT:
-                    distribute(AlignAndDistributeAxis.Y_MIN);
+                    distribute(AlignAndDistribute.Y_MIN);
                     break;
                 case TOP:
-                    distribute(AlignAndDistributeAxis.Z_MAX);
+                    distribute(AlignAndDistribute.Z_MAX);
                     break;
                 case BOTTOM:
-                    distribute(AlignAndDistributeAxis.Z_MIN);
+                    distribute(AlignAndDistribute.Z_MIN);
                     break;
                 default:
                     break;
@@ -1632,10 +1632,10 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case FRONT, BACK, LEFT, RIGHT:
-                    distribute(AlignAndDistributeAxis.Y_AVG);
+                    distribute(AlignAndDistribute.Y_AVG);
                     break;
                 case TOP, BOTTOM:
-                    distribute(AlignAndDistributeAxis.Z_AVG);
+                    distribute(AlignAndDistribute.Z_AVG);
                     break;
                 default:
                     break;
@@ -1651,13 +1651,13 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case FRONT, BACK, LEFT, RIGHT:
-                    distribute(AlignAndDistributeAxis.Y_MAX);
+                    distribute(AlignAndDistribute.Y_MAX);
                     break;
                 case TOP:
-                    distribute(AlignAndDistributeAxis.Z_MIN);
+                    distribute(AlignAndDistribute.Z_MIN);
                     break;
                 case BOTTOM:
-                    distribute(AlignAndDistributeAxis.Z_MAX);
+                    distribute(AlignAndDistribute.Z_MAX);
                     break;
                 default:
                     break;
@@ -1673,10 +1673,10 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case FRONT, BACK, LEFT, RIGHT:
-                    distributeEqually(AlignAndDistributeAxis.Y);
+                    distributeEqually(AlignAndDistribute.Y);
                     break;
                 case TOP, BOTTOM:
-                    distributeEqually(AlignAndDistributeAxis.Z);
+                    distributeEqually(AlignAndDistribute.Z);
                     break;
                 default:
                     break;
@@ -1692,10 +1692,10 @@ public class MiscToolItem extends ToolItem {
                 final Perspective perspective = c3d.getPerspectiveIndex();
                 switch (perspective) {
                 case FRONT, BACK, TOP, BOTTOM:
-                    distributeEqually(AlignAndDistributeAxis.X);
+                    distributeEqually(AlignAndDistribute.X);
                     break;
                 case LEFT, RIGHT:
-                    distributeEqually(AlignAndDistributeAxis.Z);
+                    distributeEqually(AlignAndDistribute.Z);
                     break;
                 default:
                     break;
@@ -3485,7 +3485,7 @@ public class MiscToolItem extends ToolItem {
 
     }
     
-    private static void align(AlignAndDistributeAxis axis) {
+    private static void align(AlignAndDistribute axis) {
         final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
         if (c3d != null) {
             final DatFile df = c3d.getLockableDatFileReference();
@@ -3493,13 +3493,13 @@ public class MiscToolItem extends ToolItem {
             final VertexManager vm = df.getVertexManager();
             vm.addSnapshot();
             NLogger.debug(MiscToolItem.class, "Align on axis {0}.", axis); //$NON-NLS-1$
-            final List<List<GData>> groups = calculateSelectionGroups(vm);
+            final List<List<GData>> groups = AlignAndDistribute.calculateSelectionGroups(vm);
             NLogger.debug(MiscToolItem.class, "Identified {0} selected group(s).", groups.size()); //$NON-NLS-1$
             // FIXME Needs implementation!
         }
     }
 
-    private static void distribute(AlignAndDistributeAxis axis) {
+    private static void distribute(AlignAndDistribute axis) {
         final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
         if (c3d != null) {
             final DatFile df = c3d.getLockableDatFileReference();
@@ -3507,13 +3507,13 @@ public class MiscToolItem extends ToolItem {
             final VertexManager vm = df.getVertexManager();
             vm.addSnapshot();
             NLogger.debug(MiscToolItem.class, "Distribute on axis {0}.", axis); //$NON-NLS-1$
-            final List<List<GData>> groups = calculateSelectionGroups(vm);
+            final List<List<GData>> groups = AlignAndDistribute.calculateSelectionGroups(vm);
             NLogger.debug(MiscToolItem.class, "Identified {0} selected group(s).", groups.size()); //$NON-NLS-1$
             // FIXME Needs implementation!
         }
     }
     
-    private static void distributeEqually(AlignAndDistributeAxis axis) {
+    private static void distributeEqually(AlignAndDistribute axis) {
         final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
         if (c3d != null) {
             final DatFile df = c3d.getLockableDatFileReference();
@@ -3521,38 +3521,10 @@ public class MiscToolItem extends ToolItem {
             final VertexManager vm = df.getVertexManager();
             vm.addSnapshot();
             NLogger.debug(MiscToolItem.class, "Distribute equally on axis {0}.", axis); //$NON-NLS-1$
-            final List<List<GData>> groups = calculateSelectionGroups(vm);
+            final List<List<GData>> groups = AlignAndDistribute.calculateSelectionGroups(vm);
             NLogger.debug(MiscToolItem.class, "Identified {0} selected group(s).", groups.size()); //$NON-NLS-1$
             // FIXME Needs implementation!
         }
-    }
-    
-    private static List<List<GData>> calculateSelectionGroups(final VertexManager vm) {
-        final List<List<GData>> result = new ArrayList<>();
-        // If "Move Adjacent Data" is on, then adjacent selected data should be considered as a group. This will cause O(n²) complexity.
-        // Subfile content should be ignored, since it can't be transformed (only the subfile as a whole can be moved)
-        vm.validateState();
-        Set<GData> selection = new TreeSet<>(vm.getSelectedData());
-        // Add selected vertex meta commands
-        for (Vertex vert : vm.getSelectedVertices()) {
-            vm.getLinkedVertexMetaCommands(vert).stream()
-                .findFirst().ifPresent(selection::add);
-        }
-        NLogger.debug(MiscToolItem.class, "=> Original selection contains {0} object(s).", selection.size()); //$NON-NLS-1$
-        selection.removeIf(data -> !vm.getLineLinkedToVertices().containsKey(data));
-        NLogger.debug(MiscToolItem.class, "=> Selection without subfile data contains {0} object(s).", selection.size()); //$NON-NLS-1$
-        
-        final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
-        if (moveAdjacentData) {
-            // FIXME Needs implementation!
-        } else {
-            // Every object stands for itself (no adjacency)
-            for (GData data : selection) {
-                result.add(List.of(data));
-            }
-        }
-        
-        return result;
     }
 
     private static BigDecimal snapToNearest(final float gridSize, final BigDecimal gridSizePrecise, BigDecimal v) {
