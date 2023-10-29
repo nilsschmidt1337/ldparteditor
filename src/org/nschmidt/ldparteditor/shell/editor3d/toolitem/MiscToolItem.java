@@ -3493,6 +3493,8 @@ public class MiscToolItem extends ToolItem {
             final VertexManager vm = df.getVertexManager();
             vm.addSnapshot();
             NLogger.debug(MiscToolItem.class, "Align on axis {0}.", axis); //$NON-NLS-1$
+            final List<List<GData>> groups = calculateSelectionGroups(vm);
+            NLogger.debug(MiscToolItem.class, "Identified {0} selected group(s).", groups.size()); //$NON-NLS-1$
             // FIXME Needs implementation!
         }
     }
@@ -3505,6 +3507,8 @@ public class MiscToolItem extends ToolItem {
             final VertexManager vm = df.getVertexManager();
             vm.addSnapshot();
             NLogger.debug(MiscToolItem.class, "Distribute on axis {0}.", axis); //$NON-NLS-1$
+            final List<List<GData>> groups = calculateSelectionGroups(vm);
+            NLogger.debug(MiscToolItem.class, "Identified {0} selected group(s).", groups.size()); //$NON-NLS-1$
             // FIXME Needs implementation!
         }
     }
@@ -3517,8 +3521,38 @@ public class MiscToolItem extends ToolItem {
             final VertexManager vm = df.getVertexManager();
             vm.addSnapshot();
             NLogger.debug(MiscToolItem.class, "Distribute equally on axis {0}.", axis); //$NON-NLS-1$
+            final List<List<GData>> groups = calculateSelectionGroups(vm);
+            NLogger.debug(MiscToolItem.class, "Identified {0} selected group(s).", groups.size()); //$NON-NLS-1$
             // FIXME Needs implementation!
         }
+    }
+    
+    private static List<List<GData>> calculateSelectionGroups(final VertexManager vm) {
+        final List<List<GData>> result = new ArrayList<>();
+        // If "Move Adjacent Data" is on, then adjacent selected data should be considered as a group. This will cause O(n²) complexity.
+        // Subfile content should be ignored, since it can't be transformed (only the subfile as a whole can be moved)
+        vm.validateState();
+        Set<GData> selection = new TreeSet<>(vm.getSelectedData());
+        // Add selected vertex meta commands
+        for (Vertex vert : vm.getSelectedVertices()) {
+            vm.getLinkedVertexMetaCommands(vert).stream()
+                .findFirst().ifPresent(selection::add);
+        }
+        NLogger.debug(MiscToolItem.class, "=> Original selection contains {0} object(s).", selection.size()); //$NON-NLS-1$
+        selection.removeIf(data -> !vm.getLineLinkedToVertices().containsKey(data));
+        NLogger.debug(MiscToolItem.class, "=> Selection without subfile data contains {0} object(s).", selection.size()); //$NON-NLS-1$
+        
+        final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
+        if (moveAdjacentData) {
+            // FIXME Needs implementation!
+        } else {
+            // Every object stands for itself (no adjacency)
+            for (GData data : selection) {
+                result.add(List.of(data));
+            }
+        }
+        
+        return result;
     }
 
     private static BigDecimal snapToNearest(final float gridSize, final BigDecimal gridSizePrecise, BigDecimal v) {
