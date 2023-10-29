@@ -15,6 +15,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shell.editor3d.toolitem;
 
+import static org.nschmidt.ldparteditor.enumtype.AlignAndDistribute.align;
+import static org.nschmidt.ldparteditor.enumtype.AlignAndDistribute.distribute;
+import static org.nschmidt.ldparteditor.enumtype.AlignAndDistribute.distributeEqually;
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.io.File;
@@ -1734,10 +1737,10 @@ public class MiscToolItem extends ToolItem {
                     return;
                 }
                 
-                NLogger.debug(MiscToggleToolItem.class, "Perspective :" + perspective); //$NON-NLS-1$
-                NLogger.debug(MiscToggleToolItem.class, "Snap on X   :" + snapOnX); //$NON-NLS-1$
-                NLogger.debug(MiscToggleToolItem.class, "Snap on Y   :" + snapOnY); //$NON-NLS-1$
-                NLogger.debug(MiscToggleToolItem.class, "Snap on Z   :" + snapOnZ); //$NON-NLS-1$
+                NLogger.debug(MiscToolItem.class, "Perspective :" + perspective); //$NON-NLS-1$
+                NLogger.debug(MiscToolItem.class, "Snap on X   :" + snapOnX); //$NON-NLS-1$
+                NLogger.debug(MiscToolItem.class, "Snap on Y   :" + snapOnY); //$NON-NLS-1$
+                NLogger.debug(MiscToolItem.class, "Snap on Z   :" + snapOnZ); //$NON-NLS-1$
                 
                 final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                 vm.addSnapshot();
@@ -1750,8 +1753,8 @@ public class MiscToolItem extends ToolItem {
                 final Set<Vertex> selectedVertices = new TreeSet<>(vm.getSelectedVertices());
                 final Set<GData1> selectedSubfiles = new TreeSet<>(vm.getSelectedSubfiles());
                 
-                NLogger.debug(MiscToggleToolItem.class, "Grid size   :" + gridSize + " LDU"); //$NON-NLS-1$ //$NON-NLS-2$
-                NLogger.debug(MiscToggleToolItem.class, "Vertex count:" + selectedVertices.size()); //$NON-NLS-1$
+                NLogger.debug(MiscToolItem.class, "Grid size   :" + gridSize + " LDU"); //$NON-NLS-1$ //$NON-NLS-2$
+                NLogger.debug(MiscToolItem.class, "Vertex count:" + selectedVertices.size()); //$NON-NLS-1$
                 
                 final BigDecimal gridSizePrecise = BigDecimal.valueOf(gridSize);
                 
@@ -1795,7 +1798,7 @@ public class MiscToolItem extends ToolItem {
                 }
                 
                 if (modified && (!selectedVertices.isEmpty() || !selectedSubfiles.isEmpty())) {
-                    NLogger.debug(MiscToggleToolItem.class, "Snapping done"); //$NON-NLS-1$
+                    NLogger.debug(MiscToolItem.class, "Snapping done"); //$NON-NLS-1$
                     vm.validateState();
                     vm.setModified(true, true);
                 }
@@ -3485,48 +3488,6 @@ public class MiscToolItem extends ToolItem {
 
     }
     
-    private static void align(AlignAndDistribute axis) {
-        final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
-        if (c3d != null) {
-            final DatFile df = c3d.getLockableDatFileReference();
-            if (df.isReadOnly()) return;
-            final VertexManager vm = df.getVertexManager();
-            vm.addSnapshot();
-            NLogger.debug(MiscToolItem.class, "Align on axis {0}.", axis); //$NON-NLS-1$
-            final List<List<GData>> groups = AlignAndDistribute.calculateSelectionGroups(vm);
-            NLogger.debug(MiscToolItem.class, "Identified {0} selected group(s).", groups.size()); //$NON-NLS-1$
-            // FIXME Needs implementation!
-        }
-    }
-
-    private static void distribute(AlignAndDistribute axis) {
-        final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
-        if (c3d != null) {
-            final DatFile df = c3d.getLockableDatFileReference();
-            if (df.isReadOnly()) return;
-            final VertexManager vm = df.getVertexManager();
-            vm.addSnapshot();
-            NLogger.debug(MiscToolItem.class, "Distribute on axis {0}.", axis); //$NON-NLS-1$
-            final List<List<GData>> groups = AlignAndDistribute.calculateSelectionGroups(vm);
-            NLogger.debug(MiscToolItem.class, "Identified {0} selected group(s).", groups.size()); //$NON-NLS-1$
-            // FIXME Needs implementation!
-        }
-    }
-    
-    private static void distributeEqually(AlignAndDistribute axis) {
-        final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
-        if (c3d != null) {
-            final DatFile df = c3d.getLockableDatFileReference();
-            if (df.isReadOnly()) return;
-            final VertexManager vm = df.getVertexManager();
-            vm.addSnapshot();
-            NLogger.debug(MiscToolItem.class, "Distribute equally on axis {0}.", axis); //$NON-NLS-1$
-            final List<List<GData>> groups = AlignAndDistribute.calculateSelectionGroups(vm);
-            NLogger.debug(MiscToolItem.class, "Identified {0} selected group(s).", groups.size()); //$NON-NLS-1$
-            // FIXME Needs implementation!
-        }
-    }
-
     private static BigDecimal snapToNearest(final float gridSize, final BigDecimal gridSizePrecise, BigDecimal v) {
         float value = v.floatValue();
         float distA = value % gridSize;
