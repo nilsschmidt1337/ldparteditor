@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.helper.SelectionGroup;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
@@ -47,8 +48,9 @@ public enum AlignAndDistribute {
             if (df.isReadOnly()) return;
             final VertexManager vm = df.getVertexManager();
             NLogger.debug(AlignAndDistribute.class, "Align on axis {0}.", axis); //$NON-NLS-1$
-            final List<List<GData>> groups = addSnapshotAndPrepareGroupSelection(vm);
+            final List<SelectionGroup> groups = addSnapshotAndPrepareGroupSelection(vm);
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) to align.", groups.size()); //$NON-NLS-1$
+            calcuateMinMaxAvgForGroups(groups, vm, axis);
             // FIXME Needs implementation!
             
             finishModification(vm, groups);
@@ -62,8 +64,9 @@ public enum AlignAndDistribute {
             if (df.isReadOnly()) return;
             final VertexManager vm = df.getVertexManager();
             NLogger.debug(AlignAndDistribute.class, "Distribute on axis {0}.", axis); //$NON-NLS-1$
-            final List<List<GData>> groups = addSnapshotAndPrepareGroupSelection(vm);
+            final List<SelectionGroup> groups = addSnapshotAndPrepareGroupSelection(vm);
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) to distribute.", groups.size()); //$NON-NLS-1$
+            calcuateMinMaxAvgForGroups(groups, vm, axis);
             // FIXME Needs implementation!
             
             finishModification(vm, groups);
@@ -77,21 +80,97 @@ public enum AlignAndDistribute {
             if (df.isReadOnly()) return;
             final VertexManager vm = df.getVertexManager();
             NLogger.debug(AlignAndDistribute.class, "Distribute equally on axis {0}.", axis); //$NON-NLS-1$
-            final List<List<GData>> groups = addSnapshotAndPrepareGroupSelection(vm);
+            final List<SelectionGroup> groups = addSnapshotAndPrepareGroupSelection(vm);
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) for equal distribution.", groups.size()); //$NON-NLS-1$
+            calcuateMinMaxAvgForGroups(groups, vm, axis);
             // FIXME Needs implementation!
             
             finishModification(vm, groups);
         }
     }
     
-    private static List<List<GData>> addSnapshotAndPrepareGroupSelection(final VertexManager vm) {
+    private static void calcuateMinMaxAvgForGroups(final List<SelectionGroup> groups, final VertexManager vm, final AlignAndDistribute axis) {
+        final List<SelectionGroup> groupsToDelete = new ArrayList<>();
+        final boolean xAxis = axis == X || axis == X_MIN || axis == X_MAX || axis == X_AVG;
+        final boolean yAxis = axis == Y || axis == Y_MIN || axis == Y_MAX || axis == Y_AVG;
+        final boolean zAxis = axis == Z || axis == Z_MIN || axis == Z_MAX || axis == Z_AVG;
+        for (SelectionGroup selectionGroup : groups) {
+            final Set<Vertex> vertices = new TreeSet<>();
+            final Map<GData, Set<VertexInfo>> llv = vm.getLineLinkedToVertices();
+            
+            BigDecimal min = null;
+            BigDecimal max = null;
+            BigDecimal avg = null;
+            
+            for (GData data : selectionGroup.group()) {
+                final Set<VertexInfo> vis = llv.getOrDefault(data, Set.of());
+                for (VertexInfo vi : vis) {
+                    // Don't look at condline control points
+                    if (data.type() == 5 && vi.getPosition() > 1) continue;
+                    final Vertex v = vi.getVertex();
+                    if (xAxis && (min != null && min.compareTo(v.xp) > 0 || min == null)) {
+                        min = v.xp;
+                    }
+                    
+                    if (yAxis && (min != null && min.compareTo(v.yp) > 0 || min == null)) {
+                        min = v.yp;
+                    }
+                    
+                    if (zAxis && (min != null && min.compareTo(v.zp) > 0 || min == null)) {
+                        min = v.zp;
+                    }
+                    
+                    if (xAxis && (max != null && max.compareTo(v.xp) < 0 || max == null)) {
+                        max = v.xp;
+                    }
+                    
+                    if (yAxis && (max != null && max.compareTo(v.yp) < 0 || max == null)) {
+                        max = v.yp;
+                    }
+                    
+                    if (zAxis && (max != null && max.compareTo(v.zp) < 0 || max == null)) {
+                        max = v.zp;
+                    }
+                    
+                    vertices.add(v);
+                }
+            }
+            
+            final int size = vertices.size();
+            if (size > 0) {
+                avg = BigDecimal.ZERO;
+                for (Vertex vertex : vertices) {
+                    if (xAxis) avg = avg.add(vertex.xp);
+                    if (yAxis) avg = avg.add(vertex.yp);
+                    if (zAxis) avg = avg.add(vertex.zp);
+                }
+                
+                avg = avg.divide(BigDecimal.valueOf(size), Threshold.MC);
+                NLogger.debug(AlignAndDistribute.class, "Min : {0} of group {1}", min, selectionGroup); //$NON-NLS-1$
+                NLogger.debug(AlignAndDistribute.class, "Max : {0}", max); //$NON-NLS-1$
+                NLogger.debug(AlignAndDistribute.class, "Avg : {0}", avg); //$NON-NLS-1$
+            } else {
+                // Remove this group because it does not contain a vertex (should not happen)
+                groupsToDelete.add(selectionGroup);
+                NLogger.debug(AlignAndDistribute.class, "Group was deleted : {0}", selectionGroup); //$NON-NLS-1$
+            }
+            
+            
+            selectionGroup.min()[0] = min;
+            selectionGroup.max()[0] = max;
+            selectionGroup.avg()[0] = avg;
+        }
+        
+        groups.removeAll(groupsToDelete);
+    }
+
+    private static List<SelectionGroup> addSnapshotAndPrepareGroupSelection(final VertexManager vm) {
         vm.addSnapshot();
         vm.skipSyncTimer();
         return calculateSelectionGroups(vm);
     }
     
-    private static void finishModification(final VertexManager vm, final List<List<GData>> groups) {
+    private static void finishModification(final VertexManager vm, final List<SelectionGroup> groups) {
         final Set<GData1> selectedSubfiles = new TreeSet<>(vm.getSelectedSubfiles());
         if (!selectedSubfiles.isEmpty()) {
             vm.reSelectSubFiles();
@@ -113,7 +192,6 @@ public enum AlignAndDistribute {
         
         final BigDecimal gridSizePrecise = BigDecimal.valueOf(gridSize);
         
-        boolean modified = false;
         for (Vertex v : selectedVertices) {
             // Don't snap the vertex if it is a subfile vertex.
             final Set<GData> linkedData = vm.getLinkedSurfacesSubfilesAndLines(v);
@@ -123,7 +201,7 @@ public enum AlignAndDistribute {
             final BigDecimal newY = BigDecimal.ZERO;
             final BigDecimal newZ = BigDecimal.ZERO;
             
-            modified = vm.changeVertexDirectFast(v, new Vertex(new BigDecimal[]{newX, newY, newZ}), true) || modified;
+            vm.changeVertexDirectFast(v, new Vertex(new BigDecimal[]{newX, newY, newZ}), true);
         }
         
         for (GData1 g : selectedSubfiles) {
@@ -144,13 +222,11 @@ public enum AlignAndDistribute {
             if (sub != null) {
                 vm.getSelectedSubfiles().add(sub);
             }
-            
-            modified = true;
         }
     }
 
-    private static List<List<GData>> calculateSelectionGroups(final VertexManager vm) {
-        final List<List<GData>> result = new ArrayList<>();
+    private static List<SelectionGroup> calculateSelectionGroups(final VertexManager vm) {
+        final List<SelectionGroup> result = new ArrayList<>();
         // If "Move Adjacent Data" is on, then adjacent selected data (n) should be considered as a group. This will cause O(n²) complexity.
         // Subfile content should be ignored, since it can't be transformed (only the subfile as a whole can be moved)
         vm.validateState();
@@ -181,7 +257,7 @@ public enum AlignAndDistribute {
                     
                     for (VertexInfo viA : vertsA) {
                         // Don't look at condline control points
-                        if (dataA.type() == 5 && viA.getPosition() > 1) continue; 
+                        if (dataA.type() == 5 && viA.getPosition() > 1) continue;
                         for (VertexInfo viB : vertsB) {
                             if (dataB.type() == 5 && viB.getPosition() > 1) continue;
                             final Vertex vA = viA.getVertex();
@@ -217,20 +293,24 @@ public enum AlignAndDistribute {
             }
             
             // We determined all adjacent groups
-            result.addAll(new HashSet<>(groups.values()));
+            result.addAll(new HashSet<>(groups.values()).stream().map(AlignAndDistribute::asSelectionGroup).toList());
             
             // Data without adjacency stands for itself
             for (GData data : selection) {
                 if (groups.containsKey(data)) continue;
-                result.add(List.of(data));
+                result.add(asSelectionGroup(List.of(data)));
             }
         } else {
             // Every object stands for itself (no adjacency)
             for (GData data : selection) {
-                result.add(List.of(data));
+                result.add(asSelectionGroup(List.of(data)));
             }
         }
         
         return result;
+    }
+    
+    private static SelectionGroup asSelectionGroup(final List<GData> group) {
+        return new SelectionGroup(group, new BigDecimal[1], new BigDecimal[1], new BigDecimal[1]);
     }
 }
