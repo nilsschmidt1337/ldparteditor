@@ -50,16 +50,46 @@ public enum AlignAndDistribute {
             NLogger.debug(AlignAndDistribute.class, "Align on axis {0}.", axis); //$NON-NLS-1$
             final List<SelectionGroup> groups = addSnapshotAndPrepareGroupSelection(vm);
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) to align.", groups.size()); //$NON-NLS-1$
+            if (groups.isEmpty()) return;
             calcuateMinMaxAvgForGroups(groups, vm, axis);
             final boolean alignOnX = axis == X_AVG || axis == X_MAX || axis == X_MIN;
             final boolean alignOnY = axis == Y_AVG || axis == Y_MAX || axis == Y_MIN;
             final boolean alignOnZ = axis == Z_AVG || axis == Z_MAX || axis == Z_MIN;
+            final boolean alignAvg = axis == X_AVG || axis == Y_AVG || axis == Z_AVG;
+            final boolean alignMin = axis == X_MIN || axis == Y_MIN || axis == Z_MIN;
+            final boolean alignMax = axis == X_MAX || axis == Y_MAX || axis == Z_MAX;
             
+            BigDecimal avg = BigDecimal.ZERO;
+            BigDecimal min = groups.get(0).min()[0];
+            BigDecimal max = groups.get(0).max()[0];
             
             for (SelectionGroup group : groups) {
+                if (group.min()[0].compareTo(min) < 0) {
+                    min = group.min()[0];
+                }
+                if (group.max()[0].compareTo(max) > 0) {
+                    max = group.max()[0];
+                }
                 
-                // FIXME Needs implementation!
-                final BigDecimal delta = BigDecimal.ONE;
+                avg = avg.add(group.avg()[0]);
+            }
+            
+            avg = avg.divide(BigDecimal.valueOf(groups.size()), Threshold.MC);
+            
+            for (SelectionGroup group : groups) {
+                final BigDecimal delta;
+                if (alignAvg) {
+                    // average = destination
+                    // source + delta = destination
+                    // delta = destination - source
+                    delta = avg.subtract(group.avg()[0]);
+                } else if (alignMin) {
+                    delta = min.subtract(group.min()[0]);
+                } else if (alignMax) {
+                    delta = max.subtract(group.max()[0]);
+                } else {
+                    delta = BigDecimal.ZERO;
+                }
                 
                 vm.backupSelection();
                 vm.clearSelection2();
