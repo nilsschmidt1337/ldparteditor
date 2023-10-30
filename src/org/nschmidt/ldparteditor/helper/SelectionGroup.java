@@ -16,10 +16,37 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helper;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.nschmidt.ldparteditor.data.GData;
 
 public record SelectionGroup(List<GData> group, BigDecimal[] min, BigDecimal[] avg, BigDecimal[] max) {
+    @Override
+    public String toString() {
+        return "SelectionGroup [group=" + group + ", min=" + Arrays.toString(min) + ", avg=" + Arrays.toString(avg) + ", max=" + Arrays.toString(max) + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.hashCode(avg);
+        result = prime * result + Arrays.hashCode(max);
+        result = prime * result + Arrays.hashCode(min);
+        result = prime * result + Objects.hash(group);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof SelectionGroup))
+            return false;
+        SelectionGroup other = (SelectionGroup) obj;
+        return Arrays.equals(avg, other.avg) && Objects.equals(group, other.group) && Arrays.equals(max, other.max)
+                && Arrays.equals(min, other.min);
+    }
 }
