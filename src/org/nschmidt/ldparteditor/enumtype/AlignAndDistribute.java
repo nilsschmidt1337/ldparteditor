@@ -51,7 +51,30 @@ public enum AlignAndDistribute {
             final List<SelectionGroup> groups = addSnapshotAndPrepareGroupSelection(vm);
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) to align.", groups.size()); //$NON-NLS-1$
             calcuateMinMaxAvgForGroups(groups, vm, axis);
-            // FIXME Needs implementation!
+            final boolean alignOnX = axis == X_AVG || axis == X_MAX || axis == X_MIN;
+            final boolean alignOnY = axis == Y_AVG || axis == Y_MAX || axis == Y_MIN;
+            final boolean alignOnZ = axis == Z_AVG || axis == Z_MAX || axis == Z_MIN;
+            
+            
+            for (SelectionGroup group : groups) {
+                
+                // FIXME Needs implementation!
+                final BigDecimal delta = BigDecimal.ONE;
+                
+                vm.backupSelection();
+                vm.clearSelection2();
+                final Set<Integer> selectedLineNumbers = vm.addToSelection(group.group());
+                final BigDecimal deltaX = alignOnX ? delta : BigDecimal.ZERO;
+                final BigDecimal deltaY = alignOnY ? delta : BigDecimal.ZERO;
+                final BigDecimal deltaZ = alignOnZ ? delta : BigDecimal.ZERO;
+                
+                final Matrix m = View.ACCURATE_ID.translate(new BigDecimal[]{deltaX, deltaY, deltaZ});
+                vm.transformSelection(m, null, MiscToggleToolItem.isMovingAdjacentData(), false);
+                vm.restoreSelection();
+                for (int number : selectedLineNumbers) {
+                    vm.addTextLineToSelection(number); 
+                }
+            }
             
             finishModification(vm, groups);
         }
@@ -66,6 +89,7 @@ public enum AlignAndDistribute {
             NLogger.debug(AlignAndDistribute.class, "Distribute on axis {0}.", axis); //$NON-NLS-1$
             final List<SelectionGroup> groups = addSnapshotAndPrepareGroupSelection(vm);
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) to distribute.", groups.size()); //$NON-NLS-1$
+            if (groups.size() <= 2) return;
             calcuateMinMaxAvgForGroups(groups, vm, axis);
             // FIXME Needs implementation!
             
@@ -82,6 +106,7 @@ public enum AlignAndDistribute {
             NLogger.debug(AlignAndDistribute.class, "Distribute equally on axis {0}.", axis); //$NON-NLS-1$
             final List<SelectionGroup> groups = addSnapshotAndPrepareGroupSelection(vm);
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) for equal distribution.", groups.size()); //$NON-NLS-1$
+            if (groups.size() <= 2) return;
             calcuateMinMaxAvgForGroups(groups, vm, axis);
             // FIXME Needs implementation!
             
@@ -137,15 +162,12 @@ public enum AlignAndDistribute {
             }
             
             final int size = vertices.size();
-            if (size > 0) {
-                avg = BigDecimal.ZERO;
-                for (Vertex vertex : vertices) {
-                    if (xAxis) avg = avg.add(vertex.xp);
-                    if (yAxis) avg = avg.add(vertex.yp);
-                    if (zAxis) avg = avg.add(vertex.zp);
-                }
+            if (size > 0 && min != null && max != null) {
+                avg = min.add(max).divide(BigDecimal.TWO, Threshold.MC);
+                selectionGroup.min()[0] = min;
+                selectionGroup.max()[0] = max;
+                selectionGroup.avg()[0] = avg;
                 
-                avg = avg.divide(BigDecimal.valueOf(size), Threshold.MC);
                 NLogger.debug(AlignAndDistribute.class, "Min : {0} of group {1}", min, selectionGroup); //$NON-NLS-1$
                 NLogger.debug(AlignAndDistribute.class, "Max : {0}", max); //$NON-NLS-1$
                 NLogger.debug(AlignAndDistribute.class, "Avg : {0}", avg); //$NON-NLS-1$
@@ -154,11 +176,6 @@ public enum AlignAndDistribute {
                 groupsToDelete.add(selectionGroup);
                 NLogger.debug(AlignAndDistribute.class, "Group was deleted : {0}", selectionGroup); //$NON-NLS-1$
             }
-            
-            
-            selectionGroup.min()[0] = min;
-            selectionGroup.max()[0] = max;
-            selectionGroup.avg()[0] = avg;
         }
         
         groups.removeAll(groupsToDelete);
@@ -183,48 +200,6 @@ public enum AlignAndDistribute {
         }
     }
     
-    private static void removeThisMethodLater(final VertexManager vm) {
-        // Make sure to snap the vertices of selected objects
-        
-        final float gridSize = 0;
-        final Set<Vertex> selectedVertices = new TreeSet<>(vm.getSelectedVertices());
-        final Set<GData1> selectedSubfiles = new TreeSet<>(vm.getSelectedSubfiles());
-        
-        final BigDecimal gridSizePrecise = BigDecimal.valueOf(gridSize);
-        
-        for (Vertex v : selectedVertices) {
-            // Don't snap the vertex if it is a subfile vertex.
-            final Set<GData> linkedData = vm.getLinkedSurfacesSubfilesAndLines(v);
-            if (linkedData.stream().anyMatch(g -> g.type() == 1)) continue;
-            
-            final BigDecimal newX = BigDecimal.ZERO;
-            final BigDecimal newY = BigDecimal.ZERO;
-            final BigDecimal newZ = BigDecimal.ZERO;
-            
-            vm.changeVertexDirectFast(v, new Vertex(new BigDecimal[]{newX, newY, newZ}), true);
-        }
-        
-        for (GData1 g : selectedSubfiles) {
-            final Matrix subM = g.getAccurateProductMatrix();
-            final BigDecimal newX = BigDecimal.ZERO;
-            final BigDecimal newY = BigDecimal.ZERO;
-            final BigDecimal newZ = BigDecimal.ZERO;
-            
-            final Matrix m = View.ACCURATE_ID.translate(new BigDecimal[]{newX, newY, newZ});
-            
-            vm.backupSelection();
-            vm.clearSelection2();
-            vm.getSelectedSubfiles().add(g);
-            vm.reSelectSubFiles();
-            vm.transformSelection(m, null, MiscToggleToolItem.isMovingAdjacentData(), false);
-            final GData1 sub = vm.getSelectedSubfiles().stream().findAny().orElse(null);
-            vm.restoreSelection();
-            if (sub != null) {
-                vm.getSelectedSubfiles().add(sub);
-            }
-        }
-    }
-
     private static List<SelectionGroup> calculateSelectionGroups(final VertexManager vm) {
         final List<SelectionGroup> result = new ArrayList<>();
         // If "Move Adjacent Data" is on, then adjacent selected data (n) should be considered as a group. This will cause O(n²) complexity.

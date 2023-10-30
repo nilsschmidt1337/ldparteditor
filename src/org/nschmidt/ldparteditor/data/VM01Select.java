@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
@@ -814,5 +815,24 @@ class VM01Select extends VM00Snapshot {
                 selectedVertices.add(verts[1]);
             }
         }
+    }
+    
+    /**
+     * Adds a group of lines to the selection.
+     * It will ignore subfile content
+     * @param group the group of graphical data to select
+     * @return a set of line numbers for each selected object
+     */
+    public synchronized Set<Integer> addToSelection(List<GData> group) {
+        final Set<Integer> lines = new TreeSet<>();
+        for (GData data : group) {
+            final Integer line = linkedDatFile.getDrawPerLineNoClone().getKey(data);
+            if (line != null) {
+                lines.add(line);
+                addTextLineToSelection(line);
+            }
+        }
+        
+        return lines;
     }
 }
