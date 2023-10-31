@@ -79,7 +79,7 @@ public enum AlignAndDistribute {
             for (SelectionGroup group : groups) {
                 final BigDecimal delta;
                 if (alignAvg) {
-                    // average = destination
+                    // destination = average 
                     // source + delta = destination
                     // delta = destination - source
                     delta = avg.subtract(group.avg()[0]);
@@ -224,7 +224,65 @@ public enum AlignAndDistribute {
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) for equal distribution.", groups.size()); //$NON-NLS-1$
             if (groups.size() <= 2) return;
             calculateMinMaxAvgForGroups(groups, vm, axis);
-            // FIXME Needs implementation!
+            final boolean distributeOnX = axis == X;
+            final boolean distributeOnY = axis == Y;
+            final boolean distributeOnZ = axis == Z;
+            
+            BigDecimal min = groups.get(0).min()[0];
+            BigDecimal max = min;
+            
+            BigDecimal selectionLength = BigDecimal.ZERO;
+            
+            for (SelectionGroup group : groups) {
+                final BigDecimal minValue = group.min()[0];
+                final BigDecimal maxValue = group.max()[0];
+                if (minValue.compareTo(min) < 0) {
+                    min = minValue;
+                }
+                if (maxValue.compareTo(max) > 0) {
+                    max = maxValue;
+                }
+                
+                selectionLength = selectionLength.add(maxValue.subtract(minValue));
+            }
+            
+            groups.sort((a, b) -> a.min()[0].compareTo(b.min()[0]));
+            
+            final BigDecimal span = max.subtract(min);
+            final BigDecimal freeSpace = span.subtract(selectionLength);
+            final BigDecimal gapOrOverlapSize = freeSpace.divide(BigDecimal.valueOf(groups.size() - 1L), Threshold.MC);
+            
+            // When free space is greater zero, than we can distribute the gaps equally, otherwise we need to distribute the overlaps(!) equally.
+            
+            final int limit = groups.size() - 1;
+            for (int i = 1; i < limit; i++)  {
+                final SelectionGroup group = groups.get(i);
+                final SelectionGroup previousGroup = groups.get(i - 1);
+                final BigDecimal delta;
+                
+                // destination = previousGroup.max + gapOrOverlapSize
+                // source = group.min
+                // source + delta = destination
+                // delta = destination - source
+                delta = previousGroup.max()[0].add(gapOrOverlapSize).subtract(group.min()[0]);
+                
+                // Add delta to the maximum, because it was moved.
+                group.max()[0] = group.max()[0].add(delta);
+                
+                vm.backupSelection();
+                vm.clearSelection2();
+                final Set<Integer> selectedLineNumbers = vm.addToSelection(group.group());
+                final BigDecimal deltaX = distributeOnX ? delta : BigDecimal.ZERO;
+                final BigDecimal deltaY = distributeOnY ? delta : BigDecimal.ZERO;
+                final BigDecimal deltaZ = distributeOnZ ? delta : BigDecimal.ZERO;
+                
+                final Matrix m = View.ACCURATE_ID.translate(new BigDecimal[]{deltaX, deltaY, deltaZ});
+                vm.transformSelection(m, null, MiscToggleToolItem.isMovingAdjacentData(), false);
+                vm.restoreSelection();
+                for (int number : selectedLineNumbers) {
+                    vm.addTextLineToSelection(number); 
+                }
+            }
             
             finishModification(vm, groups);
         }
