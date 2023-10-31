@@ -17,12 +17,12 @@ package org.nschmidt.ldparteditor.enumtype;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.SequencedSet;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.composite.Composite3D;
@@ -51,7 +51,7 @@ public enum AlignAndDistribute {
             final List<SelectionGroup> groups = addSnapshotAndPrepareGroupSelection(vm);
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) to align.", groups.size()); //$NON-NLS-1$
             if (groups.isEmpty()) return;
-            calcuateMinMaxAvgForGroups(groups, vm, axis);
+            calculateMinMaxAvgForGroups(groups, vm, axis);
             final boolean alignOnX = axis == X_AVG || axis == X_MAX || axis == X_MIN;
             final boolean alignOnY = axis == Y_AVG || axis == Y_MAX || axis == Y_MIN;
             final boolean alignOnZ = axis == Z_AVG || axis == Z_MAX || axis == Z_MIN;
@@ -120,8 +120,94 @@ public enum AlignAndDistribute {
             final List<SelectionGroup> groups = addSnapshotAndPrepareGroupSelection(vm);
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) to distribute.", groups.size()); //$NON-NLS-1$
             if (groups.size() <= 2) return;
-            calcuateMinMaxAvgForGroups(groups, vm, axis);
-            // FIXME Needs implementation!
+            calculateMinMaxAvgForGroups(groups, vm, axis);
+            final boolean distributeOnX = axis == X_AVG || axis == X_MAX || axis == X_MIN;
+            final boolean distributeOnY = axis == Y_AVG || axis == Y_MAX || axis == Y_MIN;
+            final boolean distributeOnZ = axis == Z_AVG || axis == Z_MAX || axis == Z_MIN;
+            final boolean distributeAvg = axis == X_AVG || axis == Y_AVG || axis == Z_AVG;
+            final boolean distributeMin = axis == X_MIN || axis == Y_MIN || axis == Z_MIN;
+            final boolean distributeMax = axis == X_MAX || axis == Y_MAX || axis == Z_MAX;
+            
+            BigDecimal min;
+            BigDecimal max;
+            if (distributeMin) {
+                min = groups.get(0).min()[0];
+            } else if (distributeMax) {
+                min = groups.get(0).max()[0];
+            } else if (distributeAvg) {
+                min = groups.get(0).avg()[0];
+            } else {
+                min = BigDecimal.ZERO;
+            }
+            
+            max = min;
+            
+            for (SelectionGroup group : groups) {
+                final BigDecimal value;
+                if (distributeMin) {
+                    value = group.min()[0];
+                } else if (distributeMax) {
+                    value = group.max()[0];
+                } else if (distributeAvg) {
+                    value = group.avg()[0];
+                } else {
+                    value = BigDecimal.ZERO;
+                }
+                
+                if (value.compareTo(min) < 0) {
+                    min = value;
+                }
+                if (value.compareTo(max) > 0) {
+                    max = value;
+                }
+            }
+            
+            final BigDecimal span = max.subtract(min);
+            final BigDecimal increment = span.divide(BigDecimal.valueOf(groups.size() - 1L), Threshold.MC);
+            BigDecimal destination = min;
+            
+            groups.sort((a, b) -> {
+                if (distributeAvg) {
+                    return a.avg()[0].compareTo(b.avg()[0]);
+                } else if (distributeMin) {
+                    return a.min()[0].compareTo(b.min()[0]);
+                } else if (distributeMax) {
+                    return a.max()[0].compareTo(b.max()[0]);
+                } else {
+                    return a.avg()[0].compareTo(b.avg()[0]);
+                }
+            });
+            
+            for (SelectionGroup group : groups) {
+                final BigDecimal delta;
+                if (distributeAvg) {
+                    // source + delta = destination
+                    // delta = destination - source
+                    delta = destination.subtract(group.avg()[0]);
+                } else if (distributeMin) {
+                    delta = destination.subtract(group.min()[0]);
+                } else if (distributeMax) {
+                    delta = destination.subtract(group.max()[0]);
+                } else {
+                    delta = BigDecimal.ZERO;
+                }
+                
+                destination = destination.add(increment);
+                
+                vm.backupSelection();
+                vm.clearSelection2();
+                final Set<Integer> selectedLineNumbers = vm.addToSelection(group.group());
+                final BigDecimal deltaX = distributeOnX ? delta : BigDecimal.ZERO;
+                final BigDecimal deltaY = distributeOnY ? delta : BigDecimal.ZERO;
+                final BigDecimal deltaZ = distributeOnZ ? delta : BigDecimal.ZERO;
+                
+                final Matrix m = View.ACCURATE_ID.translate(new BigDecimal[]{deltaX, deltaY, deltaZ});
+                vm.transformSelection(m, null, MiscToggleToolItem.isMovingAdjacentData(), false);
+                vm.restoreSelection();
+                for (int number : selectedLineNumbers) {
+                    vm.addTextLineToSelection(number); 
+                }
+            }
             
             finishModification(vm, groups);
         }
@@ -137,14 +223,14 @@ public enum AlignAndDistribute {
             final List<SelectionGroup> groups = addSnapshotAndPrepareGroupSelection(vm);
             NLogger.debug(AlignAndDistribute.class, "Identified {0} selected group(s) for equal distribution.", groups.size()); //$NON-NLS-1$
             if (groups.size() <= 2) return;
-            calcuateMinMaxAvgForGroups(groups, vm, axis);
+            calculateMinMaxAvgForGroups(groups, vm, axis);
             // FIXME Needs implementation!
             
             finishModification(vm, groups);
         }
     }
     
-    private static void calcuateMinMaxAvgForGroups(final List<SelectionGroup> groups, final VertexManager vm, final AlignAndDistribute axis) {
+    private static void calculateMinMaxAvgForGroups(final List<SelectionGroup> groups, final VertexManager vm, final AlignAndDistribute axis) {
         final List<SelectionGroup> groupsToDelete = new ArrayList<>();
         final boolean xAxis = axis == X || axis == X_MIN || axis == X_MAX || axis == X_AVG;
         final boolean yAxis = axis == Y || axis == Y_MIN || axis == Y_MAX || axis == Y_AVG;
@@ -232,8 +318,9 @@ public enum AlignAndDistribute {
     
     private static List<SelectionGroup> calculateSelectionGroups(final VertexManager vm) {
         final List<SelectionGroup> result = new ArrayList<>();
-        // If "Move Adjacent Data" is on, then adjacent selected data (n) should be considered as a group. This will cause O(n²) complexity.
-        // Subfile content should be ignored, since it can't be transformed (only the subfile as a whole can be moved)
+        // If "Move Adjacent Data" is on, then adjacent selected data (n) should be considered as a group.
+        // This will cause nearly O(n * log n) complexity, because of the TreeMap "vgroups", which indicates if a vertex is already part of a group.
+        // Subfile content should be ignored, since it can't be transformed (only the subfile as a whole can be moved).
         vm.validateState();
         final SequencedSet<GData> selection = new TreeSet<>(vm.getSelectedData());
         // Add selected vertex meta commands
@@ -247,64 +334,45 @@ public enum AlignAndDistribute {
         
         final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
         if (moveAdjacentData) {
-            final Map<GData, List<GData>> groups = new HashMap<>();
-            int i = 0;
-            for (GData dataA : selection) {
-                final Set<VertexInfo> vertsA = vm.getLineLinkedToVertices().getOrDefault(dataA, Set.of());
-                int j = 0;
-                for (GData dataB : selection) {
-                    if (j <= i) {
-                        j++;
-                        continue;
-                    }
+            final Map<Vertex, Set<GData>> vgroups = new TreeMap<>();
+            for (GData data : selection) {
+                final Set<VertexInfo> vis = vm.getLineLinkedToVertices().getOrDefault(data, Set.of());
+                boolean needsGroup = true;
+                for (VertexInfo vi : vis) {
+                    // Don't look at condline control points
+                    if (data.type() == 5 && vi.getPosition() > 1) continue;
                     
-                    final Set<VertexInfo> vertsB = vm.getLineLinkedToVertices().getOrDefault(dataB, Set.of());
-                    
-                    for (VertexInfo viA : vertsA) {
-                        // Don't look at condline control points
-                        if (dataA.type() == 5 && viA.getPosition() > 1) continue;
-                        for (VertexInfo viB : vertsB) {
-                            if (dataB.type() == 5 && viB.getPosition() > 1) continue;
-                            final Vertex vA = viA.getVertex();
-                            final Vertex vB = viB.getVertex();
-                            // isNeighbour? Does it really make sense to check for neighbors?
-                            // They are only connected via a connecting edge, they do not share a common vertex. 
-                            if (vA.compareTo(vB) == 0) { // or vm.isNeighbour(vA, vB)
-                                if (!groups.containsKey(dataA) && !groups.containsKey(dataB)) {
-                                    final List<GData> group = new ArrayList<>(2);
-                                    group.add(dataA);
-                                    group.add(dataB);
-                                    groups.put(dataA, group);
-                                    groups.put(dataB, group);
-                                } else if (groups.containsKey(dataA) && groups.containsKey(dataB)) {
-                                    // Don't add them if there already part of a group
-                                } else if (groups.containsKey(dataA)) {
-                                    final List<GData> group = groups.get(dataA);
-                                    group.add(dataB);
-                                    groups.put(dataB, group);
-                                } else if (groups.containsKey(dataB)) {
-                                    final List<GData> group = groups.get(dataB);
-                                    group.add(dataA);
-                                    groups.put(dataA, group);
-                                }
-                            }
+                    final Vertex v = vi.getVertex();
+                    if (vgroups.containsKey(v)) {
+                        final Set<GData> group = vgroups.get(v);
+                        group.add(data);
+                        for (VertexInfo vi2 : vis) {
+                            // Don't look at condline control points
+                            if (data.type() == 5 && vi2.getPosition() > 1) continue;
+                            final Vertex v2 = vi2.getVertex();
+                            vgroups.put(v2, group);
                         }
+                        
+                        needsGroup = false;
+                        break;
                     }
-                    
-                    j++;
                 }
                 
-                i++;
+                if (needsGroup) {
+                    final Set<GData> group = new HashSet<>();
+                    group.add(data);
+                    
+                    for (VertexInfo vi2 : vis) {
+                        // Don't look at condline control points
+                        if (data.type() == 5 && vi2.getPosition() > 1) continue;
+                        final Vertex v2 = vi2.getVertex();
+                        vgroups.put(v2, group);
+                    }
+                }
             }
             
-            // We determined all adjacent groups
-            result.addAll(new HashSet<>(groups.values()).stream().map(AlignAndDistribute::asSelectionGroup).toList());
-            
-            // Data without adjacency stands for itself
-            for (GData data : selection) {
-                if (groups.containsKey(data)) continue;
-                result.add(asSelectionGroup(List.of(data)));
-            }
+            // We determined all adjacent groups and data without adjacency stands for itself
+            result.addAll(new HashSet<>(vgroups.values()).stream().map(ArrayList::new).map(AlignAndDistribute::asSelectionGroup).toList());
         } else {
             // Every object stands for itself (no adjacency)
             for (GData data : selection) {
