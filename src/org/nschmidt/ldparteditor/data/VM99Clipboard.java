@@ -51,8 +51,10 @@ import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.InsertAtCursorPositionToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 class VM99Clipboard extends VM29LineSurfaceIntersector {
 
@@ -667,7 +669,7 @@ class VM99Clipboard extends VM29LineSurfaceIntersector {
             }
             setModified(true, true);
             updateUnsavedStatus();
-            MouseActions.checkSyncEditMode(linkedDatFile.getVertexManager(), linkedDatFile);
+            if (!WorkbenchManager.getUserSettingState().isDisableMAD3D() && MiscToggleToolItem.isMovingAdjacentData()) MouseActions.checkSyncEditMode(linkedDatFile.getVertexManager(), linkedDatFile);
         }
     }
 
