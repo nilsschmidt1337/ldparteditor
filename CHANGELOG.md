@@ -1,3 +1,15 @@
+# 01 Nov 2023
+With the release of 1.8.73 you are able to...
+-  ...align and distribute objects (isolated vertices, lines, triangles, quads and subfiles). It behaves differently if "Move Adjacent Data" is ON or OFF. ON keeps the objects connected together. OFF will seperate them.
+-  ...snap vertices and subfiles to the current grid.
+-  ...auto-remove superfluous arguments from text lines (type 1,2,3,4,5) and also add missing ones.
+-  ...benefit from the fact that pasting a single vertex will not enable "Single Vertex Modification" if "Automatically disable "Move Adjacent Data" on paste (3D Editor)" is checked.
+-  ...benefit from a slightly faster 3D editor (e.g. lower latency when you add a triangle).
+
+The following critical issue is fixed:
+1. Wrong "Invalid number format" warning on "!LPE DISTANCE".
+
+
 # 07 Oct 2023
 With the release of 1.8.72 you are able to...
 -  ...use a shortcut for "Merge to Nearest Vertex" (Ctrl+N).
