@@ -17,7 +17,9 @@ package org.nschmidt.ldparteditor.helper.compositetext;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -546,6 +548,69 @@ enum ErrorFixer {
             } else {
                 text = QuickFixer.setLine(lineNumber + 1, newReference, text);
             }
+        }
+        break;
+        case 71: // Wrong argument count (reference, line, triangle, quad, condline) [15+, 8, 11, 14, 14]
+        {
+            final String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
+            final String lineType = dataSegments[0]; // The first segment is always there
+            final String[] newDataSegments;
+            
+            switch (lineType) {
+            case "1": { //$NON-NLS-1$
+                newDataSegments = new String[15];
+                System.arraycopy(dataSegments, 0, newDataSegments, 0, Math.min(15, dataSegments.length));
+                // Fill missing data with defaults
+                for (int i = dataSegments.length; i < 15; i++) {
+                    if (i == 1) {
+                        newDataSegments[i] = "16"; //$NON-NLS-1$
+                    } else if (i == 14) {
+                        newDataSegments[i] = "subfile.dat"; //$NON-NLS-1$
+                    } else {
+                        newDataSegments[i] = "0"; //$NON-NLS-1$
+                    }
+                }
+                
+                break;
+            }
+            case "2": { //$NON-NLS-1$
+                newDataSegments = new String[8];
+                System.arraycopy(dataSegments, 0, newDataSegments, 0, Math.min(8, dataSegments.length));
+                // Fill missing data with defaults
+                for (int i = dataSegments.length; i < 8; i++) newDataSegments[i] = i == 1 ? "24" : "0"; //$NON-NLS-1$ //$NON-NLS-2$
+                
+                break;
+            }
+            case "3": { //$NON-NLS-1$
+                newDataSegments = new String[11];
+                System.arraycopy(dataSegments, 0, newDataSegments, 0, Math.min(11, dataSegments.length));
+                // Fill missing data with defaults
+                for (int i = dataSegments.length; i < 11; i++) newDataSegments[i] = i == 1 ? "16" : "0"; //$NON-NLS-1$ //$NON-NLS-2$
+                
+                break;
+            }
+            case "4": { //$NON-NLS-1$
+                newDataSegments = new String[14];
+                System.arraycopy(dataSegments, 0, newDataSegments, 0, Math.min(14, dataSegments.length));
+                // Fill missing data with defaults
+                for (int i = dataSegments.length; i < 14; i++) newDataSegments[i] = i == 1 ? "16" : "0"; //$NON-NLS-1$ //$NON-NLS-2$
+                
+                break;
+            }
+            case "5": { //$NON-NLS-1$
+                newDataSegments = new String[14];
+                System.arraycopy(dataSegments, 0, newDataSegments, 0, Math.min(14, dataSegments.length));
+                // Fill missing data with defaults
+                for (int i = dataSegments.length; i < 14; i++) newDataSegments[i] = i == 1 ? "24" : "0"; //$NON-NLS-1$ //$NON-NLS-2$
+                
+                break;
+            }
+            default:
+                newDataSegments = dataSegments;
+                break;
+            }
+            
+            text = QuickFixer.setLine(lineNumber + 1, Arrays.stream(newDataSegments).collect(Collectors.joining(" ")), text); //$NON-NLS-1$
         }
         break;
         default:

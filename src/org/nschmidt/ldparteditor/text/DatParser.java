@@ -566,7 +566,7 @@ public enum DatParser {
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E47] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(dataSegments[1], r, g, b, a);
@@ -853,7 +853,7 @@ public enum DatParser {
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E47] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(dataSegments[1], r, g, b, a);
@@ -916,7 +916,7 @@ public enum DatParser {
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E47] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(dataSegments[1], r, g, b, a);
@@ -1015,7 +1015,7 @@ public enum DatParser {
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E47] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(dataSegments[1], r, g, b, a);
@@ -1215,7 +1215,7 @@ public enum DatParser {
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E47] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(dataSegments[1], r, g, b, a);

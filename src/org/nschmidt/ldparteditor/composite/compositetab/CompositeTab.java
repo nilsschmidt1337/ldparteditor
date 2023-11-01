@@ -1434,6 +1434,7 @@ public class CompositeTab extends CompositeTabDesign {
                 if (!vm.isUpdated()) return;
                 Set<TreeItem> items = new HashSet<>();
                 Set<String> sorts = new HashSet<>();
+                boolean fixArgumentCount = false;
                 for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
                     if (sort1 == null) continue;
                     if (sort1.equals(treeItemHintsPtr[0])) {
@@ -1451,6 +1452,11 @@ public class CompositeTab extends CompositeTabDesign {
                     } else if (sort1.getText(2).startsWith("[E01]")) { //$NON-NLS-1$
                         if (!sorts.contains(sort1.getText(2)))
                             sorts.add(sort1.getText(2));
+                    } else if (sort1.getText(2).startsWith("[E47]")) { //$NON-NLS-1$
+                        if (!sorts.contains(sort1.getText(2))) {
+                            sorts.add(sort1.getText(2));
+                            fixArgumentCount = true;
+                        }
                     } else {
                         if (!sorts.contains(sort1.getText(0)))
                             sorts.add(sort1.getText(0));
@@ -1462,7 +1468,7 @@ public class CompositeTab extends CompositeTabDesign {
                         items.add(sort2);
                 }
                 for (TreeItem sort3 : treeItemErrorsPtr[0].getItems()) {
-                    if (sorts.contains(sort3.getText(0)) && !items.contains(sort3))
+                    if (sorts.contains(sort3.getText(0)) && !items.contains(sort3) || fixArgumentCount && sort3.getText(2).startsWith("[E47]") && !items.contains(sort3)) //$NON-NLS-1$
                         items.add(sort3);
                 }
                 for (TreeItem sort4 : treeItemWarningsPtr[0].getItems()) {
