@@ -101,13 +101,6 @@
          style="stop-color:#d2d2d2;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
-       id="linearGradient4155">
-      <stop
-         style="stop-color:#241f1c;stop-opacity:1;"
-         offset="0"
-         id="stop4157" />
-    </linearGradient>
-    <linearGradient
        id="linearGradient4149"
        osb:paint="solid">
       <stop
@@ -198,7 +191,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
         <cc:license
            rdf:resource="http://artlibre.org/licence/lal" />
       </cc:Work>
