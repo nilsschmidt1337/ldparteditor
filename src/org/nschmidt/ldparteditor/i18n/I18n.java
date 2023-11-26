@@ -1379,9 +1379,14 @@ public final class I18n {
     public static final String UNIFICATOR_VERTEX_UNIFIATION = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_VERTICES = UNIFICATOR.getString(getProperty());
     public static final String UNIFICATOR_VERTICES_SUBPART_VERTICES = UNIFICATOR.getString(getProperty());
-    public static final String UNITS_FACTOR_PRIMARY = UNITS.getString(getProperty());
-    public static final String UNITS_FACTOR_SECONDARY = UNITS.getString(getProperty());
-    public static final String UNITS_FACTOR_TERTIARY = UNITS.getString(getProperty());
+    public static final String UNITS_FACTOR_INCH_TO_LDU = UNITS.getString(getProperty());
+    public static final String UNITS_FACTOR_INCH_TO_MM = UNITS.getString(getProperty());
+    public static final String UNITS_FACTOR_LDU_TO_INCH = UNITS.getString(getProperty());
+    public static final String UNITS_FACTOR_LDU_TO_MM = UNITS.getString(getProperty());
+    public static final String UNITS_FACTOR_LDU_TO_STUD = UNITS.getString(getProperty());
+    public static final String UNITS_FACTOR_MM_TO_INCH = UNITS.getString(getProperty());
+    public static final String UNITS_FACTOR_MM_TO_LDU = UNITS.getString(getProperty());
+    public static final String UNITS_FACTOR_STUD_TO_LDU = UNITS.getString(getProperty());
     public static final String UNITS_LDU = UNITS.getString(getProperty());
     public static final String UNITS_NAME_LDU = UNITS.getString(getProperty());
     public static final String UNITS_NAME_PRIMARY = UNITS.getString(getProperty());

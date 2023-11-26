@@ -781,36 +781,36 @@ class Editor3DDesign extends ApplicationWindow {
                             spinnerLDU.addValueChangeListener(spn -> {
                                 if (change.get()) return;
                                 change.set(true);
-                                spinnerInch.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.MC));
-                                spinnerMM.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.MC));
-                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
+                                spinnerInch.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_INCH), Threshold.MC));
+                                spinnerMM.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_MM), Threshold.MC));
+                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_STUD), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
                                 change.set(false);
                             });
 
                             spinnerInch.addValueChangeListener(spn -> {
                                 if (change.get()) return;
                                 change.set(true);
-                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.MC));
-                                spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.MC));
-                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
+                                spinnerLDU.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_INCH_TO_LDU), Threshold.MC));
+                                spinnerMM.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_INCH_TO_MM), Threshold.MC));
+                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_STUD), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
                                 change.set(false);
                             });
 
                             spinnerMM.addValueChangeListener(spn -> {
                                 if (change.get()) return;
                                 change.set(true);
-                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.MC));
-                                spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.MC));
-                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
+                                spinnerLDU.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_MM_TO_LDU), Threshold.MC));
+                                spinnerInch.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_MM_TO_INCH), Threshold.MC));
+                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_STUD), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
                                 change.set(false);
                             });
 
                             spinnerStud.addValueChangeListener(spn -> {
                                 if (change.get()) return;
                                 change.set(true);
-                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.MC));
-                                spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.MC));
-                                spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.MC));
+                                spinnerLDU.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_STUD_TO_LDU), Threshold.MC));
+                                spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_INCH), Threshold.MC));
+                                spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_MM), Threshold.MC));
                                 change.set(false);
                             });
                         }
