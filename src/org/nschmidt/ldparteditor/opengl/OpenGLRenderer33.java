@@ -1067,6 +1067,40 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     new Arrow(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, 0f, l,  0f, cone_height, cone_width, line_width).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
                     new Arrow(Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB, 0f, 0f, l,  cone_height, cone_width, line_width).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
                     stack.glPopMatrix();
+                    
+                    if (userSettings.isShowingAxisLabels()) {
+                        GL11.glDisable(GL11.GL_CULL_FACE);
+                        GL11.glDisable(GL11.GL_DEPTH_TEST);
+                        final float l20th = l / 20f;
+                        
+                        final Vector4f xAxis = new Vector4f(l20th, 0f, 0f, 1f);
+                        final Vector4f yAxis = new Vector4f(0f, l20th, 0f, 1f);
+                        final Vector4f zAxis = new Vector4f(0f, 0f, l20th, 1f);
+                        
+                        Matrix4f.transform(c3d.getRotation(), xAxis, xAxis);
+                        Matrix4f.transform(c3d.getRotation(), yAxis, yAxis);
+                        Matrix4f.transform(c3d.getRotation(), zAxis, zAxis);
+
+                        PGData3.beginDrawTextGL33(shaderProgram2D);
+                        stack.setShader(shaderProgram2D);
+                        stack.glLoadIdentity();
+                        stack.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
+                        for (PGData3 tri : View.X) {
+                            tri.drawTextGL33(xAxis.x, xAxis.y, viewportOriginAxis[0].z);
+                        }
+                        
+                        for (PGData3 tri : View.Y) {
+                            tri.drawTextGL33(yAxis.x, yAxis.y, viewportOriginAxis[0].z);
+                        }
+                        
+                        for (PGData3 tri : View.Z) {
+                            tri.drawTextGL33(zAxis.x, zAxis.y, viewportOriginAxis[0].z);
+                        }
+                        PGData3.endDrawTextGL33(shaderProgram2);
+                        stack.setShader(shaderProgram2);
+                        GL11.glEnable(GL11.GL_CULL_FACE);
+                        GL11.glEnable(GL11.GL_DEPTH_TEST);
+                    }
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 if (c3d.isShowingLabels() && c3d.isClassicPerspective()) {

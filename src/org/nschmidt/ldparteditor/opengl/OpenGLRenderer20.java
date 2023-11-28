@@ -1843,7 +1843,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     new Arrow(Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB, 0f, 0f, l,  cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
                     GL11.glPopMatrix();
                     
-                    if (true || userSettings.isShowingAxisLabels()) {
+                    if (userSettings.isShowingAxisLabels()) {
                         final float l20th = l / 20f;
                         GL11.glPushMatrix();
                         final Vector4f xAxis = new Vector4f(l20th, 0f, 0f, 1f);

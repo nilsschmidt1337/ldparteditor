@@ -88,6 +88,7 @@ class OptionsDesign extends ApplicationWindow {
     NButton[] btnDisableMAD3DPtr = new NButton[1];
     NButton[] btnDisableMADtextPtr = new NButton[1];
     NButton[] btnInvertInvertWheelZoomDirectionPtr = new NButton[1];
+    NButton[] btnShowAxisLabelsPtr = new NButton[1];
     NButton[] btnOkPtr = new NButton[1];
 
     final Combo[] cmbTextWinArrPtr = new Combo[1];
@@ -208,6 +209,11 @@ class OptionsDesign extends ApplicationWindow {
                 this.btnDisableMADtextPtr[0] = btnDisableMADtext;
                 btnDisableMADtext.setText(I18n.OPTIONS_MAD_2);
                 btnDisableMADtext.setSelection(userSettings.isDisableMADtext());
+                
+                NButton btnShowAxisLabels = new NButton(cmpContainer, SWT.CHECK);
+                this.btnShowAxisLabelsPtr[0] = btnShowAxisLabels;
+                btnShowAxisLabels.setText(I18n.KEYBOARD_SHOW_AXIS_LABELS);
+                btnShowAxisLabels.setSelection(userSettings.isShowingAxisLabels());
 
                 {
                     Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -412,6 +418,7 @@ class OptionsDesign extends ApplicationWindow {
                 btnInvertInvertWheelZoomDirection.setText(I18n.KEYBOARD_INVERT_WHEEL_ZOOM_DIRECTION);
                 btnInvertInvertWheelZoomDirection.setSelection(userSettings.isInvertingWheelZoomDirection());
 
+                
                 {
                     Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

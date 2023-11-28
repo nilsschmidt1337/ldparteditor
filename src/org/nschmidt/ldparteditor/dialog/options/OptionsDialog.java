@@ -22,6 +22,7 @@ import java.util.Locale;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
@@ -38,6 +39,7 @@ public class OptionsDialog extends OptionsDesign {
         super(parentShell);
     }
 
+    @SuppressWarnings("java:S2696")
     public void run() {
         final OptionsDialog me = this;
         this.setBlockOnOpen(true);
@@ -58,6 +60,18 @@ public class OptionsDialog extends OptionsDesign {
         widgetUtil(btnDisableMAD3DPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btnDisableMAD3DPtr[0].getSelection()));
         widgetUtil(btnDisableMADtextPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMADtext(btnDisableMADtextPtr[0].getSelection()));
         widgetUtil(btnInvertInvertWheelZoomDirectionPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btnInvertInvertWheelZoomDirectionPtr[0].getSelection()));
+        widgetUtil(btnShowAxisLabelsPtr[0]).addSelectionListener(e -> {
+            WorkbenchManager.getUserSettingState().setShowingAxisLabels(btnShowAxisLabelsPtr[0].getSelection());
+            if (WorkbenchManager.getUserSettingState().isShowingAxisLabels()) {
+                Colour.textColourR = 1.0f;
+                Colour.textColourG = 0.75f;
+                Colour.textColourB = 0.80f;
+            } else {
+                Colour.textColourR = 0f;
+                Colour.textColourG = 0f;
+                Colour.textColourB = 0f;
+            }
+        });
 
         widgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
