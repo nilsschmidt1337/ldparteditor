@@ -25,11 +25,15 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
+import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Arrow;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class OpenGLRendererPrimitives20 implements OpenGLRendererPrimitives {
 
@@ -82,6 +86,7 @@ public class OpenGLRendererPrimitives20 implements OpenGLRendererPrimitives {
     @Override
     public void drawScene(float mouseX, float mouseY) {
 
+        final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
         final GLCanvas canvas = cp.getCanvas();
 
         if (!canvas.isCurrent()) {
@@ -233,6 +238,38 @@ public class OpenGLRendererPrimitives20 implements OpenGLRendererPrimitives {
         new Arrow(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, 0f, .5f,0f, .00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
         new Arrow(Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB, 0f, 0f, .5f,.00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
         GL11.glPopMatrix();
+        
+        if (true || userSettings.isShowingAxisLabels()) {
+            final float l20th = .025f;
+            GL11.glPushMatrix();
+            final Vector4f xAxis = new Vector4f(-l20th, 0f, 0f, 1f);
+            final Vector4f yAxis = new Vector4f(0f, l20th, 0f, 1f);
+            final Vector4f zAxis = new Vector4f(0f, 0f, l20th, 1f);
+            Matrix4f.transform(cp.getRotation(), xAxis, xAxis);
+            Matrix4f.transform(cp.getRotation(), yAxis, yAxis);
+            Matrix4f.transform(cp.getRotation(), zAxis, zAxis);
+            
+            
+            GL11.glTranslatef(viewportWidth - .05f, viewportHeight - .05f, 0f);
+            GL11.glScalef(-1f, 1f, 1f);
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            
+            PGData3.beginDrawText();
+            for (PGData3 tri : View.X) {
+                tri.drawText(-xAxis.x, xAxis.y, xAxis.z);
+            }
+            
+            for (PGData3 tri : View.Y) {
+                tri.drawText(-yAxis.x, yAxis.y, yAxis.z);
+            }
+            
+            for (PGData3 tri : View.Z) {
+                tri.drawText(-zAxis.x, zAxis.y, zAxis.z);
+            }
+            PGData3.endDrawText();
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GL11.glPopMatrix();
+        }
 
         cp.setMaxY(y - 22f);
 

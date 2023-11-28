@@ -246,6 +246,8 @@ public class UserSettingState implements Serializable {
     private boolean verboseUnificator = false;
     
     private int dataFileSizeLimit = 45;
+    
+    private boolean showingAxisLabels = false;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -1400,5 +1402,13 @@ public class UserSettingState implements Serializable {
 
     public void setDataFileSizeLimit(int dataFileSizeLimit) {
         this.dataFileSizeLimit = dataFileSizeLimit;
+    }
+    
+    public void setShowingAxisLabels(boolean showingAxisLabels) {
+        this.showingAxisLabels = showingAxisLabels;
+    }
+
+    public boolean isShowingAxisLabels() {
+        return showingAxisLabels;
     }
 }

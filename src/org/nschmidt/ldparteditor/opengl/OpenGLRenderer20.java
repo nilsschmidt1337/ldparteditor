@@ -1835,12 +1835,44 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         line_width = 2f;
                     }
                     GL11.glPushMatrix();
+                    
                     GL11.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
                     GL11.glMultMatrixf(rotation);
                     new Arrow(Colour.xAxisColourR, Colour.xAxisColourG, Colour.xAxisColourB, l,  0f, 0f, cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
                     new Arrow(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, 0f, l,  0f, cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
                     new Arrow(Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB, 0f, 0f, l,  cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
                     GL11.glPopMatrix();
+                    
+                    if (true || userSettings.isShowingAxisLabels()) {
+                        final float l20th = l / 20f;
+                        GL11.glPushMatrix();
+                        final Vector4f xAxis = new Vector4f(l20th, 0f, 0f, 1f);
+                        final Vector4f yAxis = new Vector4f(0f, l20th, 0f, 1f);
+                        final Vector4f zAxis = new Vector4f(0f, 0f, l20th, 1f);
+                        Matrix4f.transform(c3d.getRotation(), xAxis, xAxis);
+                        Matrix4f.transform(c3d.getRotation(), yAxis, yAxis);
+                        Matrix4f.transform(c3d.getRotation(), zAxis, zAxis);
+                        
+                        GL11.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
+                        GL11.glDisable(GL11.GL_DEPTH_TEST);
+                        GL11.glDisable(GL11.GL_CULL_FACE);
+                        PGData3.beginDrawText();
+                        for (PGData3 tri : View.X) {
+                            tri.drawText(xAxis.x, xAxis.y, xAxis.z);
+                        }
+                        
+                        for (PGData3 tri : View.Y) {
+                            tri.drawText(yAxis.x, yAxis.y, yAxis.z);
+                        }
+                        
+                        for (PGData3 tri : View.Z) {
+                            tri.drawText(zAxis.x, zAxis.y, zAxis.z);
+                        }
+                        PGData3.endDrawText();
+                        GL11.glEnable(GL11.GL_CULL_FACE);
+                        GL11.glEnable(GL11.GL_DEPTH_TEST);
+                        GL11.glPopMatrix();
+                    }
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 if (c3d.isShowingLabels() && c3d.isClassicPerspective()) {

@@ -88,6 +88,9 @@ public enum View {
     public static final Set<PGData3> Dmm = TextTriangulator.triangulateGLText(Font.MONOSPACE, "Dmm=", 0.07); //$NON-NLS-1$
     public static final Set<PGData3> Dst = TextTriangulator.triangulateGLText(Font.MONOSPACE, "Dst=", 0.07); //$NON-NLS-1$
     public static final Set<PGData3> DM = TextTriangulator.triangulateGLText(Font.MONOSPACE, "-", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> X = TextTriangulator.triangulateGLText(Font.MONOSPACE, "x", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> Y = TextTriangulator.triangulateGLText(Font.MONOSPACE, "y", 0.07); //$NON-NLS-1$
+    public static final Set<PGData3> Z = TextTriangulator.triangulateGLText(Font.MONOSPACE, "z", 0.07); //$NON-NLS-1$
 
     public static final int NUM_CORES = Runtime.getRuntime().availableProcessors();
 
