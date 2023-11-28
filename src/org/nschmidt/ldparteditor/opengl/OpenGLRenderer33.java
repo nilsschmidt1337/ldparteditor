@@ -1071,11 +1071,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     if (userSettings.isShowingAxisLabels()) {
                         GL11.glDisable(GL11.GL_CULL_FACE);
                         GL11.glDisable(GL11.GL_DEPTH_TEST);
-                        final float l20th = l / 20f;
+                        final float length20th = l / 20f;
                         
-                        final Vector4f xAxis = new Vector4f(l20th, 0f, 0f, 1f);
-                        final Vector4f yAxis = new Vector4f(0f, l20th, 0f, 1f);
-                        final Vector4f zAxis = new Vector4f(0f, 0f, l20th, 1f);
+                        final Vector4f xAxis = new Vector4f(length20th, 0f, 0f, 1f);
+                        final Vector4f yAxis = new Vector4f(0f, length20th, 0f, 1f);
+                        final Vector4f zAxis = new Vector4f(0f, 0f, length20th, 1f);
                         
                         Matrix4f.transform(c3d.getRotation(), xAxis, xAxis);
                         Matrix4f.transform(c3d.getRotation(), yAxis, yAxis);

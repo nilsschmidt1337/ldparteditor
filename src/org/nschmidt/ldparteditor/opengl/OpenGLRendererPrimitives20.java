@@ -240,11 +240,11 @@ public class OpenGLRendererPrimitives20 implements OpenGLRendererPrimitives {
         GL11.glPopMatrix();
         
         if (userSettings.isShowingAxisLabels()) {
-            final float l20th = .025f;
+            final float length = .025f;
             GL11.glPushMatrix();
-            final Vector4f xAxis = new Vector4f(-l20th, 0f, 0f, 1f);
-            final Vector4f yAxis = new Vector4f(0f, l20th, 0f, 1f);
-            final Vector4f zAxis = new Vector4f(0f, 0f, l20th, 1f);
+            final Vector4f xAxis = new Vector4f(-length, 0f, 0f, 1f);
+            final Vector4f yAxis = new Vector4f(0f, length, 0f, 1f);
+            final Vector4f zAxis = new Vector4f(0f, 0f, length, 1f);
             Matrix4f.transform(cp.getRotation(), xAxis, xAxis);
             Matrix4f.transform(cp.getRotation(), yAxis, yAxis);
             Matrix4f.transform(cp.getRotation(), zAxis, zAxis);
