@@ -3151,6 +3151,9 @@ public class MiscToolItem extends ToolItem {
         widgetUtil(mntmOptionsPtr[0]).addSelectionListener(e -> {
             OptionsDialog dialog = new OptionsDialog(Editor3DWindow.getWindow().getShell());
             dialog.run();
+            for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                renderer.getC3D().getMntmAxisLabel().setSelection(WorkbenchManager.getUserSettingState().isShowingAxisLabels());
+            }
             regainFocus();
         });
 

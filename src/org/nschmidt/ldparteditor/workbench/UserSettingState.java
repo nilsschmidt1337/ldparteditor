@@ -176,6 +176,8 @@ public class UserSettingState implements Serializable {
     private float[] gridColour = null;
     private float[] rubberBandColour = null;
     private float[] textColour = null;
+    private float[] textColourAlt = null;
+    private float[] textColourDefault = null;
     private float[] xAxisColour = null;
     private float[] yAxisColour = null;
     private float[] zAxisColour = null;
@@ -708,6 +710,8 @@ public class UserSettingState implements Serializable {
         rubberBandColour = new float[] {Colour.rubberBandColourR,Colour.rubberBandColourG,Colour.rubberBandColourB};
 
         textColour = new float[] {Colour.textColourR,Colour.textColourG,Colour.textColourB};
+        textColourAlt = new float[] {Colour.textColourAltR,Colour.textColourAltG,Colour.textColourAltB};
+        textColourDefault = new float[] {Colour.textColourDefaultR,Colour.textColourDefaultG,Colour.textColourDefaultB};
 
         xAxisColour = new float[] {Colour.xAxisColourR,Colour.xAxisColourG,Colour.xAxisColourB};
         yAxisColour = new float[] {Colour.yAxisColourR,Colour.yAxisColourG,Colour.yAxisColourB};
@@ -952,7 +956,37 @@ public class UserSettingState implements Serializable {
             Colour.textColourG = textColour[1];
             Colour.textColourB = textColour[2];
         }
-
+        
+        if (textColourAlt != null) {
+            Colour.textColourAltR = textColourAlt[0];
+            Colour.textColourAltG = textColourAlt[1];
+            Colour.textColourAltB = textColourAlt[2];
+        } else {
+            Colour.textColourAltR = 1.0f;
+            Colour.textColourAltG = 0.5019608f;
+            Colour.textColourAltB = 0.0f;
+        }
+        
+        if (textColourDefault != null) {
+            Colour.textColourDefaultR = textColourDefault[0];
+            Colour.textColourDefaultG = textColourDefault[1];
+            Colour.textColourDefaultB = textColourDefault[2];
+        } else {
+            Colour.textColourDefaultR = Colour.textColourR;
+            Colour.textColourDefaultG = Colour.textColourG;
+            Colour.textColourDefaultB = Colour.textColourB;
+        }
+        
+        if (isShowingAxisLabels()) {
+            Colour.textColourR = Colour.textColourAltR;
+            Colour.textColourG = Colour.textColourAltG;
+            Colour.textColourB = Colour.textColourAltB;
+        } else {
+            Colour.textColourR = Colour.textColourDefaultR;
+            Colour.textColourR = Colour.textColourDefaultG;
+            Colour.textColourR = Colour.textColourDefaultB;
+        }
+        
         if (xAxisColour != null) {
             Colour.xAxisColourR = xAxisColour[0];
             Colour.xAxisColourG = xAxisColour[1];

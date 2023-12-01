@@ -596,7 +596,7 @@ class OptionsDesign extends ApplicationWindow {
 
                 final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, 67);
                 treeColours = tree;
-
+                
                 tree.setLinesVisible(true);
                 tree.setHeaderVisible(true);
                 tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -658,7 +658,18 @@ class OptionsDesign extends ApplicationWindow {
                 registerColour(trtmEditor3D, I18n.COLOUR_SELECTED_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.condlineSelectedColourR, Colour.condlineSelectedColourG, Colour.condlineSelectedColourB}, (r, g, b) -> { Colour.condlineSelectedColourR = r; Colour.condlineSelectedColourG = g; Colour.condlineSelectedColourB = b;});
                 registerColour(trtmEditor3D, I18n.COLOUR_SELECTED_MANIPULATOR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB}, (r, g, b) -> { Colour.manipulatorSelectedColourR = r; Colour.manipulatorSelectedColourG = g; Colour.manipulatorSelectedColourB = b;});
                 registerColour(trtmEditor3D, I18n.COLOUR_RUBBERBAND_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.rubberBandColourR, Colour.rubberBandColourG, Colour.rubberBandColourB}, (r, g, b) -> { Colour.rubberBandColourR = r; Colour.rubberBandColourG = g; Colour.rubberBandColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_TEXT_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.textColourR, Colour.textColourG, Colour.textColourB}, (r, g, b) -> { Colour.textColourR = r; Colour.textColourG = g; Colour.textColourB = b;});
+                registerColour(trtmEditor3D, I18n.COLOUR_TEXT_COLOUR_1, ColourType.OPENGL_COLOUR, new Object[]{Colour.textColourDefaultR, Colour.textColourDefaultG, Colour.textColourDefaultB}, (r, g, b) -> {
+                    Colour.textColourDefaultR = r; Colour.textColourDefaultG = g; Colour.textColourDefaultB = b;
+                    if (!userSettings.isShowingAxisLabels()) {
+                        Colour.textColourR = r; Colour.textColourG = g; Colour.textColourB = b;
+                    }
+                });
+                registerColour(trtmEditor3D, I18n.COLOUR_TEXT_COLOUR_2, ColourType.OPENGL_COLOUR, new Object[]{Colour.textColourAltR, Colour.textColourAltG, Colour.textColourAltB}, (r, g, b) -> {
+                    Colour.textColourAltR = r; Colour.textColourAltG = g; Colour.textColourAltB = b;
+                    if (userSettings.isShowingAxisLabels()) {
+                        Colour.textColourR = r; Colour.textColourG = g; Colour.textColourB = b;
+                    }
+                });
                 registerColour(trtmEditor3D, I18n.COLOUR_X_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.xAxisColourR, Colour.xAxisColourG, Colour.xAxisColourB}, (r, g, b) -> { Colour.xAxisColourR = r; Colour.xAxisColourG = g; Colour.xAxisColourB = b;});
                 registerColour(trtmEditor3D, I18n.COLOUR_Y_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB}, (r, g, b) -> { Colour.yAxisColourR = r; Colour.yAxisColourG = g; Colour.yAxisColourB = b;});
                 registerColour(trtmEditor3D, I18n.COLOUR_Z_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB}, (r, g, b) -> { Colour.zAxisColourR = r; Colour.zAxisColourG = g; Colour.zAxisColourB = b;});

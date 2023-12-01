@@ -62,14 +62,15 @@ public class OptionsDialog extends OptionsDesign {
         widgetUtil(btnInvertInvertWheelZoomDirectionPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btnInvertInvertWheelZoomDirectionPtr[0].getSelection()));
         widgetUtil(btnShowAxisLabelsPtr[0]).addSelectionListener(e -> {
             WorkbenchManager.getUserSettingState().setShowingAxisLabels(btnShowAxisLabelsPtr[0].getSelection());
+            
             if (WorkbenchManager.getUserSettingState().isShowingAxisLabels()) {
-                Colour.textColourR = 1.0f;
-                Colour.textColourG = 0.75f;
-                Colour.textColourB = 0.80f;
+                Colour.textColourR = Colour.textColourAltR;
+                Colour.textColourG = Colour.textColourAltG;
+                Colour.textColourB = Colour.textColourAltB;
             } else {
-                Colour.textColourR = 0f;
-                Colour.textColourG = 0f;
-                Colour.textColourB = 0f;
+                Colour.textColourR = Colour.textColourDefaultR;
+                Colour.textColourG = Colour.textColourDefaultG;
+                Colour.textColourB = Colour.textColourDefaultB;
             }
         });
 

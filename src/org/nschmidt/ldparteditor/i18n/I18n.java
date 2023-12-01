@@ -112,6 +112,7 @@ public final class I18n {
     }
     // Constants (Need case sensitive sorting!)
     public static final String C3D_ANAGLYPH_3D = C3D.getString(getProperty());
+    public static final String C3D_AXIS_LABEL = C3D.getString(getProperty());
     public static final String C3D_CONDLINE_MODE = C3D.getString(getProperty());
     public static final String C3D_CONDLINE_VERTICES = C3D.getString(getProperty());
     public static final String C3D_COPLANARITY_MODE = C3D.getString(getProperty());
@@ -218,7 +219,8 @@ public final class I18n {
     public static final String COLOUR_SELECTED_MANIPULATOR_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_SELECTED_VERTEX_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_SHOWN_CONDLINE_COLOUR = COLOUR.getString(getProperty());
-    public static final String COLOUR_TEXT_COLOUR = COLOUR.getString(getProperty());
+    public static final String COLOUR_TEXT_COLOUR_1 = COLOUR.getString(getProperty());
+    public static final String COLOUR_TEXT_COLOUR_2 = COLOUR.getString(getProperty());
     public static final String COLOUR_TEXT_EDITOR_BG_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_TEXT_EDITOR_BOX_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_TEXT_EDITOR_COLOUR_ATTR_COLOUR = COLOUR.getString(getProperty());

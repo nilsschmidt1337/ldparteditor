@@ -80,6 +80,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialog.snapshot.SnapshotDialog;
 import org.nschmidt.ldparteditor.dialog.value.ValueDialog;
 import org.nschmidt.ldparteditor.dnd.PrimitiveDragAndDropTransfer;
+import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.Perspective;
@@ -115,6 +116,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 import org.nschmidt.ldparteditor.widget.listener.Win32MouseWheelFilter;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -173,7 +175,7 @@ public class Composite3D extends ScalableComposite {
     
     private final Set<GData> tmpRaytraceSkipSet = new HashSet<>();
     private Set<GData> tmpRaytraceSkipSetResult = new HashSet<>();
-
+    
     public Vector4f getScreenXY() {
         return screenXY;
     }
@@ -275,6 +277,7 @@ public class Composite3D extends ScalableComposite {
     public final MenuItem[] mntmWireframeModePtr = new MenuItem[1];
     private final MenuItem[] mntmAnaglyphPtr = new MenuItem[1];
     private final MenuItem[] mntmAxisPtr = new MenuItem[1];
+    private final MenuItem[] mntmAxisLabelPtr = new MenuItem[1];
     private final MenuItem[] mntmAlwaysBlackPtr = new MenuItem[1];
     private final MenuItem[] mntmHideAllPtr = new MenuItem[1];
     private final MenuItem[] mntmStdLinesPtr = new MenuItem[1];
@@ -882,6 +885,24 @@ public class Composite3D extends ScalableComposite {
             widgetUtil(mntmAxis).addSelectionListener(e -> c3dModifier.switchAxis(mntmAxis.getSelection()));
             mntmAxis.setText(I18n.C3D_XYZ_AXIS);
             mntmAxis.setSelection(true);
+            
+            final MenuItem mntmAxisLabel = new MenuItem(mnuViewActions, SWT.CHECK);
+            this.mntmAxisLabelPtr[0] = mntmAxisLabel;
+            widgetUtil(mntmAxisLabel).addSelectionListener(e -> {
+                final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
+                userSettings.setShowingAxisLabels(!userSettings.isShowingAxisLabels());
+                if (userSettings.isShowingAxisLabels()) {
+                    Colour.textColourR = Colour.textColourAltR; Colour.textColourG = Colour.textColourAltG; Colour.textColourB = Colour.textColourAltB;
+                } else {
+                    Colour.textColourR = Colour.textColourDefaultR; Colour.textColourG = Colour.textColourDefaultG; Colour.textColourB = Colour.textColourDefaultB;
+                }
+                
+                for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                    renderer.getC3D().getMntmAxisLabel().setSelection(userSettings.isShowingAxisLabels());
+                }
+            });
+            mntmAxisLabel.setText(I18n.C3D_AXIS_LABEL);
+            mntmAxisLabel.setSelection(WorkbenchManager.getUserSettingState().isShowingAxisLabels());
 
             final MenuItem mntmLabel = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmLabelPtr[0] = mntmLabel;
@@ -1868,6 +1889,10 @@ public class Composite3D extends ScalableComposite {
     public MenuItem getMntmAxis() {
         return mntmAxisPtr[0];
     }
+    
+    public MenuItem getMntmAxisLabel() {
+        return mntmAxisLabelPtr[0];
+    }
 
     public MenuItem getMntmAlwaysBlack() {
         return mntmAlwaysBlackPtr[0];
@@ -2423,6 +2448,7 @@ public class Composite3D extends ScalableComposite {
         getMntmControlPointVertices().setSelection(state.isCondlineControlPoints());
         getMntmStudLogo().setSelection(state.isStudLogo());
         getMntmAxis().setSelection(state.isShowAxis());
+        getMntmAxisLabel().setSelection(WorkbenchManager.getUserSettingState().isShowingAxisLabels());
         getMntmAnaglyph().setSelection(state.isAnaglyph3d());
         setRenderModeOnContextMenu(tmpRenderMode);
 

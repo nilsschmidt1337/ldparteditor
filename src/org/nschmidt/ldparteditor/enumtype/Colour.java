@@ -154,6 +154,14 @@ public enum Colour {
     public static float textColourR = 0f;
     public static float textColourG = 0f;
     public static float textColourB = 0f;
+    
+    public static float textColourAltR = 1.0f;
+    public static float textColourAltG = 0.5019608f;
+    public static float textColourAltB = 0f;
+    
+    public static float textColourDefaultR = 0f;
+    public static float textColourDefaultG = 0f;
+    public static float textColourDefaultB = 0f;
 
     public static float xAxisColourR = 1f;
     public static float xAxisColourG = 0f;
