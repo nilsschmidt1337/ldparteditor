@@ -1071,18 +1071,55 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     if (userSettings.isShowingAxisLabels()) {
                         GL11.glDisable(GL11.GL_CULL_FACE);
                         GL11.glDisable(GL11.GL_DEPTH_TEST);
+                        PGData3.beginDrawTextGL33(shaderProgram2D);
+                        stack.setShader(shaderProgram2D);
                         final float length20th = l / 20f;
+                        final float length = l / 10f;
                         
                         final Vector4f xAxis = new Vector4f(length20th, 0f, 0f, 1f);
                         final Vector4f yAxis = new Vector4f(0f, length20th, 0f, 1f);
                         final Vector4f zAxis = new Vector4f(0f, 0f, length20th, 1f);
                         
-                        Matrix4f.transform(c3d.getRotation(), xAxis, xAxis);
-                        Matrix4f.transform(c3d.getRotation(), yAxis, yAxis);
-                        Matrix4f.transform(c3d.getRotation(), zAxis, zAxis);
-
-                        PGData3.beginDrawTextGL33(shaderProgram2D);
-                        stack.setShader(shaderProgram2D);
+                        final Matrix4f trans = c3d.getTranslation();
+                        final Matrix4f rotation = c3d.getRotation();
+                        
+                        Matrix4f.transform(rotation, xAxis, xAxis);
+                        Matrix4f.transform(rotation, yAxis, yAxis);
+                        Matrix4f.transform(rotation, zAxis, zAxis);
+                        
+                        if (!ldrawStandardMode && TransformationModeToolItem.getWorkingAction() != WorkingMode.SELECT && TransformationModeToolItem.getWorkingAction() != WorkingMode.ROTATE) {
+                            final Vector4f manipulatorPos = new Vector4f(mx * zoom, my * zoom, mz * zoom, 1f);
+                            Vector4f.add(manipulatorPos, new Vector4f(trans.m30 * zoom, trans.m31 * zoom, trans.m32 * zoom, 0f), manipulatorPos);
+                            Matrix4f.transform(rotation, manipulatorPos, manipulatorPos);
+                            
+                            final Vector4f manipulatorXAxis = new Vector4f(length, 0f, 0f, 1f);
+                            final Vector4f manipulatorYAxis = new Vector4f(0f, length, 0f, 1f);
+                            final Vector4f manipulatorZAxis = new Vector4f(0f, 0f, length, 1f);
+                            
+                            final Matrix4f rot = Matrix4f.invert(manipulator.getAccurateRotation().getMatrix4f(), new Matrix4f());
+                            Matrix4f.transform(rot, manipulatorXAxis, manipulatorXAxis);
+                            Matrix4f.transform(rot, manipulatorYAxis, manipulatorYAxis);
+                            Matrix4f.transform(rot, manipulatorZAxis, manipulatorZAxis);
+                            Matrix4f.transform(rotation, manipulatorXAxis, manipulatorXAxis);
+                            Matrix4f.transform(rotation, manipulatorYAxis, manipulatorYAxis);
+                            Matrix4f.transform(rotation, manipulatorZAxis, manipulatorZAxis);
+                            
+                            
+                            stack.glLoadIdentity();
+                            stack.glTranslatef(manipulatorPos.x, manipulatorPos.y, 0f);
+                            for (PGData3 tri : View.X) {
+                                tri.drawTextGL33(manipulatorXAxis.x, manipulatorXAxis.y, viewportOriginAxis[0].z);
+                            }
+                            
+                            for (PGData3 tri : View.Y) {
+                                tri.drawTextGL33(manipulatorYAxis.x, manipulatorYAxis.y, viewportOriginAxis[0].z);
+                            }
+                            
+                            for (PGData3 tri : View.Z) {
+                                tri.drawTextGL33(manipulatorZAxis.x, manipulatorZAxis.y, viewportOriginAxis[0].z);
+                            }
+                        }
+                        
                         stack.glLoadIdentity();
                         stack.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
                         for (PGData3 tri : View.X) {

@@ -228,7 +228,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
 
         stack.glPushMatrix();
         stack.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
-        stack.glMultMatrixf(cp.getRotation());
+        stack.glMultMatrixf(rotation);
 
         new Arrow(Colour.xAxisColourR, Colour.xAxisColourG, Colour.xAxisColourB, -.5f,0f, 0f, .00015f, .00004f, 2f).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
         new Arrow(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, 0f, .5f,0f, .00015f, .00004f, 2f).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
@@ -245,9 +245,9 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
             final Vector4f yAxis = new Vector4f(0f, length, 0f, 1f);
             final Vector4f zAxis = new Vector4f(0f, 0f, length, 1f);
             
-            Matrix4f.transform(cp.getRotation(), xAxis, xAxis);
-            Matrix4f.transform(cp.getRotation(), yAxis, yAxis);
-            Matrix4f.transform(cp.getRotation(), zAxis, zAxis);
+            Matrix4f.transform(rotation, xAxis, xAxis);
+            Matrix4f.transform(rotation, yAxis, yAxis);
+            Matrix4f.transform(rotation, zAxis, zAxis);
 
             PGData3.beginDrawTextGL33(shaderProgram2D);
             stack.setShader(shaderProgram2D);
@@ -278,8 +278,6 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
             PGData3.endDrawTextGL33(shaderProgram);
             stack.setShader(shaderProgram);
             stack.glPopMatrix();
-            // GL11.glEnable(GL11.GL_DEPTH_TEST);
-            // GL11.glEnable(GL11.GL_CULL_FACE);
         }
         
         cp.setMaxY(y - 22f);
