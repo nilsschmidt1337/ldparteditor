@@ -1844,18 +1844,58 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     GL11.glPopMatrix();
                     
                     if (userSettings.isShowingAxisLabels()) {
+                        GL11.glDisable(GL11.GL_DEPTH_TEST);
+                        GL11.glDisable(GL11.GL_CULL_FACE);
                         final float length20th = l / 20f;
-                        GL11.glPushMatrix();
+                        final Matrix4f rotation2 = c3d.getRotation();
                         final Vector4f xAxis = new Vector4f(length20th, 0f, 0f, 1f);
                         final Vector4f yAxis = new Vector4f(0f, length20th, 0f, 1f);
                         final Vector4f zAxis = new Vector4f(0f, 0f, length20th, 1f);
-                        Matrix4f.transform(c3d.getRotation(), xAxis, xAxis);
-                        Matrix4f.transform(c3d.getRotation(), yAxis, yAxis);
-                        Matrix4f.transform(c3d.getRotation(), zAxis, zAxis);
-                        
+                        Matrix4f.transform(rotation2, xAxis, xAxis);
+                        Matrix4f.transform(rotation2, yAxis, yAxis);
+                        Matrix4f.transform(rotation2, zAxis, zAxis);
+
+                        final boolean ldrawStandardMode = c3d.getRenderMode() == 5;
+                        if (!ldrawStandardMode && TransformationModeToolItem.getWorkingAction() != WorkingMode.SELECT && TransformationModeToolItem.getWorkingAction() != WorkingMode.ROTATE) {
+                            final float length = l / 10f;
+                            final Matrix4f translation = c3d.getTranslation();
+                            final Vector4f manipulatorPos = new Vector4f(mx * zoom, my * zoom, mz * zoom, 1f);
+                            Vector4f.add(manipulatorPos, new Vector4f(translation.m30 * zoom, translation.m31 * zoom, translation.m32 * zoom, 0f), manipulatorPos);
+                            Matrix4f.transform(rotation2, manipulatorPos, manipulatorPos);
+                            
+                            final Vector4f manipulatorXAxis = new Vector4f(length, 0f, 0f, 1f);
+                            final Vector4f manipulatorYAxis = new Vector4f(0f, length, 0f, 1f);
+                            final Vector4f manipulatorZAxis = new Vector4f(0f, 0f, length, 1f);
+                            
+                            final Matrix4f rot = Matrix4f.invert(manipulator.getAccurateRotation().getMatrix4f(), new Matrix4f());
+                            Matrix4f.transform(rot, manipulatorXAxis, manipulatorXAxis);
+                            Matrix4f.transform(rot, manipulatorYAxis, manipulatorYAxis);
+                            Matrix4f.transform(rot, manipulatorZAxis, manipulatorZAxis);
+                            Matrix4f.transform(rotation2, manipulatorXAxis, manipulatorXAxis);
+                            Matrix4f.transform(rotation2, manipulatorYAxis, manipulatorYAxis);
+                            Matrix4f.transform(rotation2, manipulatorZAxis, manipulatorZAxis);
+                            
+                            GL11.glPushMatrix();
+                            GL11.glLoadIdentity();
+                            GL11.glTranslatef(manipulatorPos.x, manipulatorPos.y, 0f);
+                            PGData3.beginDrawText();
+                            for (PGData3 tri : View.X) {
+                                tri.drawText(manipulatorXAxis.x, manipulatorXAxis.y, manipulatorXAxis.z);
+                            }
+                            
+                            for (PGData3 tri : View.Y) {
+                                tri.drawText(manipulatorYAxis.x, manipulatorYAxis.y, manipulatorYAxis.z);
+                            }
+                            
+                            for (PGData3 tri : View.Z) {
+                                tri.drawText(manipulatorZAxis.x, manipulatorZAxis.y, manipulatorZAxis.z);
+                            }
+                            PGData3.endDrawText();
+                            GL11.glPopMatrix();
+                        }
+                            
+                        GL11.glPushMatrix();
                         GL11.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
-                        GL11.glDisable(GL11.GL_DEPTH_TEST);
-                        GL11.glDisable(GL11.GL_CULL_FACE);
                         PGData3.beginDrawText();
                         for (PGData3 tri : View.X) {
                             tri.drawText(xAxis.x, xAxis.y, xAxis.z);

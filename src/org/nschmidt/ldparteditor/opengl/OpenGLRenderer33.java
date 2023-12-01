@@ -1074,13 +1074,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         PGData3.beginDrawTextGL33(shaderProgram2D);
                         stack.setShader(shaderProgram2D);
                         final float length20th = l / 20f;
-                        final float length = l / 10f;
                         
                         final Vector4f xAxis = new Vector4f(length20th, 0f, 0f, 1f);
                         final Vector4f yAxis = new Vector4f(0f, length20th, 0f, 1f);
                         final Vector4f zAxis = new Vector4f(0f, 0f, length20th, 1f);
                         
-                        final Matrix4f trans = c3d.getTranslation();
                         final Matrix4f rotation = c3d.getRotation();
                         
                         Matrix4f.transform(rotation, xAxis, xAxis);
@@ -1088,8 +1086,10 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         Matrix4f.transform(rotation, zAxis, zAxis);
                         
                         if (!ldrawStandardMode && TransformationModeToolItem.getWorkingAction() != WorkingMode.SELECT && TransformationModeToolItem.getWorkingAction() != WorkingMode.ROTATE) {
+                            final float length = l / 10f;
+                            final Matrix4f translation = c3d.getTranslation();
                             final Vector4f manipulatorPos = new Vector4f(mx * zoom, my * zoom, mz * zoom, 1f);
-                            Vector4f.add(manipulatorPos, new Vector4f(trans.m30 * zoom, trans.m31 * zoom, trans.m32 * zoom, 0f), manipulatorPos);
+                            Vector4f.add(manipulatorPos, new Vector4f(translation.m30 * zoom, translation.m31 * zoom, translation.m32 * zoom, 0f), manipulatorPos);
                             Matrix4f.transform(rotation, manipulatorPos, manipulatorPos);
                             
                             final Vector4f manipulatorXAxis = new Vector4f(length, 0f, 0f, 1f);
