@@ -2891,6 +2891,7 @@ public class Editor3DWindow extends Editor3DDesign {
         cmpSyncAndReviewPtr[0].getParent().layout(true);
 
         this.reviewingAPart = reviewingAPart;
+        updateTreeUnsavedEntries();
     }
 
     public ManipulatorAxisMode getWorkingLayer() {

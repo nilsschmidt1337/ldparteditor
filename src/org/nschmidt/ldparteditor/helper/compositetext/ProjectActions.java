@@ -50,6 +50,9 @@ public enum ProjectActions {
      * @param createOnlyDefault
      */
     public static boolean createNewProject(Editor3DWindow win, boolean createOnlyDefault) {
+        if (Editor3DWindow.getWindow().isReviewingAPart()) {
+            Editor3DWindow.getWindow().setReviewingAPart(false, null);
+        }
         if (askForUnsavedChanges(win, createOnlyDefault, true) && !createOnlyDefault && new NewProjectDialog(false).open() == IDialogConstants.OK_ID) {
             while (new File(Project.getTempProjectPath()).isDirectory()) {
                 MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.YES | SWT.CANCEL | SWT.NO);
@@ -277,6 +280,9 @@ public enum ProjectActions {
      * @param path
      */
     public static boolean openProject(String path) {
+        if (Editor3DWindow.getWindow().isReviewingAPart()) {
+            Editor3DWindow.getWindow().setReviewingAPart(false, null);
+        }
 
         if (askForUnsavedChanges(Editor3DWindow.getWindow(), false, true)) {
 
