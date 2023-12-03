@@ -2857,6 +2857,15 @@ public class Editor3DWindow extends Editor3DDesign {
     public boolean isReviewingAPart() {
         return reviewingAPart;
     }
+    
+    public boolean endReviewingAPart() {
+        if (isReviewingAPart()) {
+           setReviewingAPart(false, null);
+           return true;
+        }
+        
+        return false;
+    }
 
     @SuppressWarnings("unchecked")
     public void setReviewingAPart(boolean reviewingAPart, Set<DatFile> partsForReview) {
@@ -2864,7 +2873,7 @@ public class Editor3DWindow extends Editor3DDesign {
             NButton btnEndPartReview = new NButton(cmpSyncAndReviewPtr[0], SWT.NONE);
             btnEndPartReview.setText(I18n.E3D_END_PART_REVIEW);
             btnEndPartReview.setData(partsForReview);
-            widgetUtil(btnEndPartReview).addSelectionListener(e -> setReviewingAPart(false, null));
+            widgetUtil(btnEndPartReview).addSelectionListener(e -> endReviewingAPart());
         } else {
             // Close all review files
             partsForReview = (Set<DatFile>) cmpSyncAndReviewPtr[0].getChildren()[1].getData();

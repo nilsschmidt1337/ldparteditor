@@ -2130,11 +2130,11 @@ public class MiscToolItem extends ToolItem {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
+                if (Editor3DWindow.getWindow().endReviewingAPart()) {
+                    return;
+                }
+
                 if (new PartReviewDialog(Editor3DWindow.getWindow().getShell(), Editor3DWindow.getWindow().isReviewingAPart()).open() == IDialogConstants.OK_ID) {
-                    if (Editor3DWindow.getWindow().isReviewingAPart()) {
-                        Editor3DWindow.getWindow().setReviewingAPart(false, null);
-                        return;
-                    }
 
                     final Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
                     winState.setThreeDwindowConfig(Editor3DWindow.getWindow().getC3DStates());
