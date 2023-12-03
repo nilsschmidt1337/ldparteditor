@@ -64,6 +64,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolIte
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveDatfileToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
@@ -719,11 +720,19 @@ public class KeyStateManager {
                         break;
                     case SAVE:
                         if (!df.isReadOnly()) {
-                            if (df.save()) {
+                            if (df.isVirtual()) {
+                                if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                                    Project.removeUnsavedFile(df);
+                                    Project.removeOpenedFile(df);
+                                    if (!win.closeDatfile(df)) {
+                                        Project.addOpenedFile(df);
+                                        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
+                                    }
+                                }
+                            } else if (df.save()) {
                                 NewOpenSaveProjectToolItem.addRecentFile(df);
                                 Project.removeUnsavedFile(df);
                                 Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-                                pressedKeyCodes.remove(keyCode);
                             } else {
                                 MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
                                 messageBoxError.setText(I18n.DIALOG_ERROR);
@@ -731,6 +740,7 @@ public class KeyStateManager {
                                 messageBoxError.open();
                             }
                         }
+                        pressedKeyCodes.remove(keyCode);
                         break;
                     case SELECT_ALL:
                         vm.selectAll(MiscToolItem.loadSelectorSettings(), true);

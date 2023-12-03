@@ -50,6 +50,7 @@ public enum Project {
     private static String tempProjectPath = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath();
     private static String lastVisitedPath = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath();
     private static boolean defaultProject = true;
+    private static boolean keepingItOpen = false;
 
     /** A set of all open EditorTextWindow instances */
     private static Set<EditorTextWindow> openTextWindows = new HashSet<>();
@@ -382,6 +383,14 @@ public enum Project {
 
     public static void setLastVisitedPath(String lastVisitedPath) {
         Project.lastVisitedPath = lastVisitedPath;
+    }
+
+    public static boolean isKeepingItOpen() {
+        return keepingItOpen;
+    }
+
+    public static void setKeepingItOpen(boolean keepingItOpen) {
+        Project.keepingItOpen = keepingItOpen;
     }
 
 }

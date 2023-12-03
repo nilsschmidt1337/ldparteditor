@@ -131,6 +131,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveDatfileToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
@@ -2177,6 +2178,7 @@ public class Editor3DWindow extends Editor3DDesign {
     protected void handleShellCloseEvent() {
         Set<DatFile> unsavedFiles = new HashSet<>(Project.getUnsavedFiles());
         for (DatFile df : unsavedFiles) {
+            if (df.isVirtual()) continue;
             final String text = df.getText();
             if ((!text.equals(df.getOriginalText()) || df.isVirtual() && !text.trim().isEmpty()) && !text.equals(WorkbenchManager.getDefaultFileHeader())) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
@@ -2194,6 +2196,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     // Remove file from tree
                     updateTreeRemoveEntry(df);
                 } else if (result == SWT.YES) {
+                    // Don't save virtual files (drafts or files for review)
                     if (df.save()) {
                         NewOpenSaveProjectToolItem.addRecentFile(df);
                     } else {
@@ -3135,8 +3138,10 @@ public class Editor3DWindow extends Editor3DDesign {
         }
     }
 
-    public DatFile createNewDatFile(Shell sh, OpenInWhat where) {
+    public DatFile createNewDatFile(Shell sh, OpenInWhat where, boolean isDraft) {
 
+        int draftCount = 1;
+        
         FileDialog fd = new FileDialog(sh, SWT.SAVE);
         fd.setText(I18n.E3D_CREATE_NEW_DAT);
 
@@ -3148,7 +3153,16 @@ public class Editor3DWindow extends Editor3DDesign {
         fd.setFilterNames(filterNames);
 
         while (true) {
-            String selected = fd.open();
+            String selected;
+            if (isDraft) {
+                if (Project.isDefaultProject()) {
+                    selected = Project.getTempProjectPath() + File.separator + "parts" + File.separator + I18n.E3D_DRAFT + draftCount + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
+                } else {
+                    selected = Project.getProjectPath() + File.separator + "parts" + File.separator + I18n.E3D_DRAFT + draftCount + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            } else {
+                selected = fd.open();
+            }
             NLogger.debug(Editor3DWindow.class, selected);
 
             if (selected != null) {
@@ -3158,14 +3172,20 @@ public class Editor3DWindow extends Editor3DDesign {
                 DatFile df = new DatFile(selected);
 
                 if (isFileNameAllocated(selected, df, true)) {
-                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-                    messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
-                    messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
-
-                    int result = messageBox.open();
-
-                    if (result == SWT.CANCEL) {
-                        break;
+                    if (isDraft) {
+                        draftCount++;
+                        // Limit to 1.000 draft files
+                        if (draftCount > 1000) break;
+                    } else {
+                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
+                        messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
+                        messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
+    
+                        int result = messageBox.open();
+    
+                        if (result == SWT.CANCEL) {
+                            break;
+                        }
                     }
                 } else {
 
@@ -3226,6 +3246,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     cachedReferences.add(df);
 
                     Project.addUnsavedFile(df);
+                    Project.addOpenedFile(df);
                     updateTreeRenamedEntries();
                     updateTreeUnsavedEntries();
                     updateTreeSelectedDatFile(df);
@@ -3841,7 +3862,14 @@ public class Editor3DWindow extends Editor3DDesign {
             if (result == SWT.NO) {
                 result2 = true;
             } else if (result == SWT.YES) {
-                if (df.save()) {
+                if (df.isVirtual()) {
+                    if (NewOpenSaveDatfileToolItem.saveAs(this, df)) {
+                        Project.removeUnsavedFile(df);
+                        Project.removeOpenedFile(df);
+                    }
+                    
+                    result2 = true;
+                } else if (df.save()) {
                     NewOpenSaveProjectToolItem.addRecentFile(df);
                     result2 = true;
                 } else {

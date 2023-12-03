@@ -356,7 +356,7 @@ class EditorTextDesign extends ApplicationWindow {
         {
             NButton btnNew = new NButton(toolItemNewOpenSave, Cocoa.getStyle());
             this.btnNewPtr[0] = btnNew;
-            btnNew.setToolTipText(I18n.E3D_NEW_DAT);
+            btnNew.setToolTipText(Cocoa.replaceCtrlByCmd(I18n.E3D_NEW_DAT));
             btnNew.setImage(ResourceManager.getImage("icon16_document-newdat.png")); //$NON-NLS-1$
         }
         {

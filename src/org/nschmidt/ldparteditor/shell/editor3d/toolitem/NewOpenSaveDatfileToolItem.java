@@ -69,7 +69,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
     private void createWidgets(NewOpenSaveDatfileToolItem newOpenSaveDatfileToolItem) {
         NButton btnNewDat = new NButton(newOpenSaveDatfileToolItem, Cocoa.getStyle());
         this.btnNewDatPtr[0] = btnNewDat;
-        btnNewDat.setToolTipText(I18n.E3D_NEW_DAT);
+        btnNewDat.setToolTipText(Cocoa.replaceCtrlByCmd(I18n.E3D_NEW_DAT));
         btnNewDat.setImage(ResourceManager.getImage("icon16_document-newdat.png")); //$NON-NLS-1$
 
         NButton btnOpenDAT = new NButton(newOpenSaveDatfileToolItem, Cocoa.getStyle());
@@ -163,7 +163,11 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                                 win.getSearchText().setText(""); //$NON-NLS-1$
                             }
                             
-                            Project.setFileToEdit(View.DUMMY_DATFILE);
+                            if (Project.isKeepingItOpen()) {
+                                Project.setKeepingItOpen(false);
+                            } else {
+                                Project.setFileToEdit(View.DUMMY_DATFILE);
+                            }
                             win.updateTreeUnsavedEntries();
                             win.regainFocus();
                         });
@@ -181,7 +185,8 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
         });
 
         widgetUtil(btnNewDatPtr[0]).addSelectionListener(e -> {
-            DatFile dat = win.createNewDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D);
+            final boolean isDraft = Cocoa.checkCtrlOrCmdPressed(e.stateMask);
+            DatFile dat = win.createNewDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, isDraft);
             if (dat != null) {
                 NewOpenSaveProjectToolItem.addRecentFile(dat);
                 final File f = new File(dat.getNewName());
@@ -199,15 +204,27 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
         widgetUtil(btnSaveDatPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().equals(View.DUMMY_DATFILE)) {
                 final DatFile df = Project.getFileToEdit();
-                NewOpenSaveProjectToolItem.addRecentFile(df);
-                if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
-                    if (df.save()) {
-                        NewOpenSaveProjectToolItem.addRecentFile(df);
-                        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-                    } else {
-                        MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBoxError.setText(I18n.DIALOG_ERROR);
-                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
+                if (df.isVirtual()) {
+                    if (saveAs(win, df)) {
+                        Project.removeUnsavedFile(df);
+                        Project.removeOpenedFile(df);
+                        if (!win.closeDatfile(df)) {
+                            Project.addOpenedFile(df);
+                            win.updateTabs();
+                        }
+                    }
+                } else {
+                    NewOpenSaveProjectToolItem.addRecentFile(df);
+                    if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
+                        // "Save As..." for virtual files (see above)
+                        if (df.save()) {
+                            NewOpenSaveProjectToolItem.addRecentFile(df);
+                            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
+                        } else {
+                            MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                            messageBoxError.setText(I18n.DIALOG_ERROR);
+                            messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
+                        }
                     }
                 }
             }
@@ -215,66 +232,77 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
         });
 
         widgetUtil(btnSaveAsDatPtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null && !Project.getFileToEdit().equals(View.DUMMY_DATFILE)) {
-                final DatFile df2 = Project.getFileToEdit();
-
-                FileDialog fd = new FileDialog(win.getShell(), SWT.SAVE);
-                fd.setText(I18n.E3D_SAVE_DAT_FILE_AS);
-                fd.setOverwrite(true);
-
-                File parentDirectory = new File(df2.getNewName()).getParentFile();
-                if (parentDirectory.exists()) {
-                    fd.setFilterPath(parentDirectory.getAbsolutePath());
-                } else {
-                    fd.setFilterPath(Project.getLastVisitedPath());
-                }
-
-                String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-                fd.setFilterExtensions(filterExt);
-                String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
-                fd.setFilterNames(filterNames);
-
-                while (true) {
-                    try {
-                        String selected = fd.open();
-                        if (selected != null) {
-
-                            if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
-                                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-                                messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
-                                messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
-
-                                int result = messageBox.open();
-
-                                if (result == SWT.CANCEL) {
-                                    break;
-                                } else if (result == SWT.RETRY) {
-                                    continue;
-                                }
-                            }
-
-                            df2.saveAs(selected);
-
-                            DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, selected, false);
-                            if (df != null) {
-                                NewOpenSaveProjectToolItem.addRecentFile(df);
-                                final File f2 = new File(df.getNewName());
-                                if (f2.getParentFile() != null) {
-                                    Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
-                                }
-                            }
-                        }
-                    } catch (Exception ex) {
-                        NLogger.error(getClass(), ex);
-                    }
-                    break;
-                }
-
-            }
+            saveAs(win, Project.getFileToEdit());
             win.regainFocus();
         });
     }
     
+    public static boolean saveAs(Editor3DWindow win, DatFile fileToEdit) {
+        if (fileToEdit != null && !fileToEdit.equals(View.DUMMY_DATFILE)) {
+            final DatFile df2 = fileToEdit;
+
+            FileDialog fd = new FileDialog(win.getShell(), SWT.SAVE);
+            fd.setText(I18n.E3D_SAVE_DAT_FILE_AS);
+            fd.setOverwrite(true);
+
+            File parentDirectory = new File(df2.getNewName()).getParentFile();
+            if (parentDirectory.exists()) {
+                fd.setFilterPath(parentDirectory.getAbsolutePath());
+            } else {
+                fd.setFilterPath(Project.getLastVisitedPath());
+            }
+
+            String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+            fd.setFilterExtensions(filterExt);
+            String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
+            fd.setFilterNames(filterNames);
+            
+            if (df2.isVirtual()) {
+                fd.setFileName(new File(df2.getNewName()).getName());
+            }
+
+            while (true) {
+                try {
+                    String selected = fd.open();
+                    if (selected != null) {
+
+                        if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
+                            MessageBox messageBox = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
+                            messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
+                            messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
+
+                            int result = messageBox.open();
+
+                            if (result == SWT.CANCEL) {
+                                break;
+                            } else if (result == SWT.RETRY) {
+                                continue;
+                            }
+                        }
+
+                        df2.saveAs(selected);
+
+                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, selected, false);
+                        if (df != null) {
+                            NewOpenSaveProjectToolItem.addRecentFile(df);
+                            final File f2 = new File(df.getNewName());
+                            if (f2.getParentFile() != null) {
+                                Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
+                            }
+                        }
+                        
+                        return true;
+                    }
+                } catch (Exception ex) {
+                    NLogger.error(NewOpenSaveDatfileToolItem.class, ex);
+                }
+                break;
+            }
+        }
+            
+        return false;
+    }
+
     public static void open(final Shell sh, EditorTextWindow twin) {
         final Editor3DWindow win = Editor3DWindow.getWindow();
         boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();

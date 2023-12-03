@@ -92,6 +92,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveDatfileToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
@@ -950,7 +951,16 @@ public class CompositeTab extends CompositeTabDesign {
                 case EDITORTEXT_SAVE:
                     if (!df.isReadOnly()) {
                         final Shell sh3 = compositeTextPtr[0].getDisplay().getActiveShell();
-                        if (df.save()) {
+                        if (df.isVirtual()) {
+                            if (NewOpenSaveDatfileToolItem.saveAs(Editor3DWindow.getWindow(), df)) {
+                                Project.removeUnsavedFile(df);
+                                Project.removeOpenedFile(df);
+                                if (!Editor3DWindow.getWindow().closeDatfile(df)) {
+                                    Project.addOpenedFile(df);
+                                    Editor3DWindow.getWindow().updateTreeUnsavedEntries();
+                                }
+                            }
+                        } else if (df.save()) {
                             NewOpenSaveProjectToolItem.addRecentFile(df);
                             Project.removeUnsavedFile(df);
                             Editor3DWindow.getWindow().updateTreeUnsavedEntries();

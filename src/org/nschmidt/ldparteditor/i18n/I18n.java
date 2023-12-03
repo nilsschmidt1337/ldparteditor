@@ -466,6 +466,7 @@ public final class I18n {
     public static final String E3D_DISTRIBUTE_VERTICAL_CENTERS = E3D.getString(getProperty());
     public static final String E3D_DOWNLOAD_CATEGORIES = E3D.getString(getProperty());
     public static final String E3D_DOWNLOAD_LD_CONFIG = E3D.getString(getProperty());
+    public static final String E3D_DRAFT = E3D.getString(getProperty());
     public static final String E3D_DRAG_HINT = E3D.getString(getProperty());
     public static final String E3D_EDGER_2 = E3D.getString(getProperty());
     public static final String E3D_END_PART_REVIEW = E3D.getString(getProperty());
@@ -660,6 +661,7 @@ public final class I18n {
     public static final String E3D_SAVE_ALL = E3D.getString(getProperty());
     public static final String E3D_SAVE_AS = E3D.getString(getProperty());
     public static final String E3D_SAVE_DAT_FILE_AS = E3D.getString(getProperty());
+    public static final String E3D_SAVE_PROJECT = E3D.getString(getProperty());
     public static final String E3D_SCALE = E3D.getString(getProperty());
     public static final String E3D_SCALE_INITIAL = E3D.getString(getProperty());
     public static final String E3D_SCALE_SELECTION = E3D.getString(getProperty());

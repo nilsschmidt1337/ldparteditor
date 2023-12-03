@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.composite.ToolItem;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.LibraryManager;
-import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helper.compositetext.ProjectActions;
@@ -39,7 +38,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.widget.TreeItem;
 
@@ -75,7 +73,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
 
         NButton btnSave = new NButton(newOpenSaveProjectToolItem, Cocoa.getStyle());
         btnSavePtr[0] = btnSave;
-        KeyStateManager.addTooltipText(btnSave, I18n.E3D_SAVE, Task.SAVE);
+        btnSave.setToolTipText(I18n.E3D_SAVE_PROJECT);
         btnSave.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
 
         NButton btnSaveAll = new NButton(newOpenSaveProjectToolItem, Cocoa.getStyle());
@@ -121,7 +119,16 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                 if (win.getPartsTree().getSelectionCount() == 1) {
                     if (win.getPartsTree().getSelection()[0].getData() instanceof DatFile df) {
                         if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
-                            if (df.save()) {
+                            if (df.isVirtual()) {
+                                if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                                    Project.removeUnsavedFile(df);
+                                    Project.removeOpenedFile(df);
+                                    if (!win.closeDatfile(df)) {
+                                        Project.addOpenedFile(df);
+                                        win.updateTreeUnsavedEntries();
+                                    }
+                                }
+                            } else if (df.save()) {
                                 addRecentFile(df);
                                 win.updateTreeUnsavedEntries();
                             } else {
@@ -138,7 +145,16 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                         List<DatFile> dfs = (List<DatFile>) win.getPartsTree().getSelection()[0].getData();
                         for (DatFile df : dfs) {
                             if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
-                                if (df.save()) {
+                                if (df.isVirtual()) {
+                                    if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                                        Project.removeUnsavedFile(df);
+                                        Project.removeOpenedFile(df);
+                                        if (!win.closeDatfile(df)) {
+                                            Project.addOpenedFile(df);
+                                            win.updateTreeUnsavedEntries();
+                                        }
+                                    }
+                                } else if (df.save()) {
                                     addRecentFile(df);
                                     Project.removeUnsavedFile(df);
                                     win.updateTreeUnsavedEntries();
@@ -188,7 +204,16 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                 List<DatFile> dfs = (List<DatFile>) ti.getData();
                 for (DatFile df : dfs) {
                     if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
-                        if (df.save()) {
+                        if (df.isVirtual()) {
+                            if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                                Project.removeUnsavedFile(df);
+                                Project.removeOpenedFile(df);
+                                if (!win.closeDatfile(df)) {
+                                    Project.addOpenedFile(df);
+                                    win.updateTreeUnsavedEntries();
+                                }
+                            }
+                        } else if (df.save()) {
                             addRecentFile(df);
                             Project.removeUnsavedFile(df);
                             win.updateTreeUnsavedEntries();
@@ -207,7 +232,16 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
             Set<DatFile> dfs = new HashSet<>(Project.getUnsavedFiles());
             for (DatFile df : dfs) {
                 if (!df.isReadOnly()) {
-                    if (df.save()) {
+                    if (df.isVirtual()) {
+                        if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                            Project.removeUnsavedFile(df);
+                            Project.removeOpenedFile(df);
+                            if (!win.closeDatfile(df)) {
+                                Project.addOpenedFile(df);
+                                win.updateTreeUnsavedEntries();
+                            }
+                        }
+                    } else if (df.save()) {
                         addRecentFile(df);
                         Project.removeUnsavedFile(df);
                     } else {

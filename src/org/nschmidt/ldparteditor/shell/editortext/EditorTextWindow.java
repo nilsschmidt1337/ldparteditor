@@ -345,7 +345,9 @@ public class EditorTextWindow extends EditorTextDesign {
                         }
                     }
                 } else if (result == SWT.YES) {
-                    if (df.save()) {
+                    if (df.isVirtual()) {
+                        saveAs(df, new File(df.getNewName()).getName(), null);
+                    } else if (df.save()) {
                         NewOpenSaveProjectToolItem.addRecentFile(df);
                         ((CompositeTab) tabFolderPtr[0].getSelection()).getTextComposite().setText(df.getText());
                     } else {
@@ -553,12 +555,13 @@ public class EditorTextWindow extends EditorTextDesign {
         if (btnSameWidthPtr[0] != null) widgetUtil(btnSameWidthPtr[0]).addSelectionListener(e -> Editor3DWindow.getWindow().getSplitSashForm().setWeights(50, 50));
 
         widgetUtil(btnNewPtr[0]).addSelectionListener(e -> {
+            final boolean isDraft = Cocoa.checkCtrlOrCmdPressed(e.stateMask);
             final boolean isSyncTabs = WorkbenchManager.getUserSettingState().isSyncingTabs();
             DatFile df;
             if (isSyncTabs) {
-                df = Editor3DWindow.getWindow().createNewDatFile(btnNewPtr[0].getShell(), OpenInWhat.EDITOR_3D);
+                df = Editor3DWindow.getWindow().createNewDatFile(btnNewPtr[0].getShell(), OpenInWhat.EDITOR_3D, isDraft);
             } else {
-                df = Editor3DWindow.getWindow().createNewDatFile(btnNewPtr[0].getShell(), OpenInWhat.EDITOR_TEXT);
+                df = Editor3DWindow.getWindow().createNewDatFile(btnNewPtr[0].getShell(), OpenInWhat.EDITOR_TEXT, isDraft);
             }
             if (df != null && isSyncTabs) {
                 Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow);
@@ -581,12 +584,13 @@ public class EditorTextWindow extends EditorTextDesign {
             if (ct != null) {
                 CompositeTabState state = ct.getState();
                 DatFile df = state.getFileNameObj();
-                NewOpenSaveProjectToolItem.addRecentFile(df);
                 final Point selection = ct.getTextComposite().getSelection();
                 final int x = selection.x;
                 final int y = selection.y;
                 if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
-                    if (df.save()) {
+                    if (df.isVirtual()) {
+                        saveAs(df, new File(df.getNewName()).getName(), null);
+                    } else if (df.save()) {
                         NewOpenSaveProjectToolItem.addRecentFile(df);
                         Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                         ((CompositeTab) tabFolderPtr[0].getSelection()).getTextComposite().setText(state.getFileNameObj().getText());
@@ -602,7 +606,12 @@ public class EditorTextWindow extends EditorTextDesign {
         });
         widgetUtil(btnSaveAsPtr[0]).addSelectionListener(e -> {
             if (tabFolderPtr[0].getSelection() != null) {
-                saveAs(((CompositeTab) tabFolderPtr[0].getSelection()).getState().getFileNameObj(), null, null);
+                final DatFile df = ((CompositeTab) tabFolderPtr[0].getSelection()).getState().getFileNameObj();
+                if (df.isVirtual()) {
+                    saveAs(df, new File(df.getNewName()).getName(), null);
+                } else {
+                    saveAs(df, null, null);
+                }
             }
         });
         widgetUtil(btnCutPtr[0]).addSelectionListener(e -> tabFolderPtr[0].cut());

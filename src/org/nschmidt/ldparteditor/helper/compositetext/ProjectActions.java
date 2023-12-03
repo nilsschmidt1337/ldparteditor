@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveDatfileToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.widget.TreeItem;
@@ -102,8 +103,18 @@ public enum ProjectActions {
                     if (result == SWT.NO) {
                         // Remove file from tree
                         Editor3DWindow.getWindow().updateTreeRemoveEntry(df);
+                        Project.removeOpenedFile(df);
                     } else if (result == SWT.YES) {
-                        if (df.save()) {
+                        if (df.isVirtual()) {
+                            if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                                Project.removeUnsavedFile(df);
+                                Project.removeOpenedFile(df);
+                                if (!win.closeDatfile(df)) {
+                                    Project.addOpenedFile(df);
+                                    Editor3DWindow.getWindow().updateTreeUnsavedEntries();
+                                }
+                            }
+                        } else if (df.save()) {
                             NewOpenSaveProjectToolItem.addRecentFile(df);
                             Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                         } else {
@@ -123,7 +134,8 @@ public enum ProjectActions {
                 messageBoxOpenFiles.setMessage(I18n.DIALOG_KEEP_FILES_OPEN);
 
                 int result = messageBoxOpenFiles.open();
-
+                Project.setKeepingItOpen(false);
+                
                 if (result == SWT.NO) {
                     Set<EditorTextWindow> ow = new HashSet<>(Project.getOpenTextWindows());
                     for (EditorTextWindow w : ow) {
@@ -145,6 +157,8 @@ public enum ProjectActions {
                     Project.clearProjectTree();
                 } else if (result == SWT.YES) {
                     // Keep the files open and continue
+                    Project.setKeepingItOpen(true);
+                    win.updateTabs();
                 } else return false;
             }
             {
