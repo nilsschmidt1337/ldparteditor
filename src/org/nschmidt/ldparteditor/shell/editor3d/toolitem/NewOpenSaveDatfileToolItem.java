@@ -266,7 +266,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                     String selected = fd.open();
                     if (selected != null) {
 
-                        if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
+                        if (win.isFileNameAllocated(selected, new DatFile(selected), true)) {
                             MessageBox messageBox = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
                             messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
                             messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
@@ -282,7 +282,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
 
                         df2.saveAs(selected);
 
-                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, selected, false);
+                        DatFile df = win.openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, selected, false);
                         if (df != null) {
                             NewOpenSaveProjectToolItem.addRecentFile(df);
                             final File f2 = new File(df.getNewName());

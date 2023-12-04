@@ -85,7 +85,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
     private static void addListeners() {
         final Editor3DWindow win = Editor3DWindow.getWindow();
         widgetUtil(btnNewPtr[0]).addSelectionListener(e -> {
-            if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), false)) {
+            if (ProjectActions.createNewProject(win, false)) {
                 addRecentFile(Project.getProjectPath());
             }
             
@@ -170,7 +170,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                     } else if (win.getPartsTree().getSelection()[0].getData() instanceof String) {
                         if (win.getPartsTree().getSelection()[0].equals(win.getProject())) {
                             NLogger.debug(getClass(), "Save the project..."); //$NON-NLS-1$
-                            if (Project.isDefaultProject() && ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
+                            if (Project.isDefaultProject() && ProjectActions.createNewProject(win, true)) {
                                 Project.setLastVisitedPath(Project.getProjectPath());
                             }
 
@@ -190,9 +190,15 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                     }
                 } else {
                     NLogger.debug(getClass(), "Save the project..."); //$NON-NLS-1$
-                    if (Project.isDefaultProject() && ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
+                    if (Project.isDefaultProject() && ProjectActions.createNewProject(win, true)) {
                         Project.setLastVisitedPath(Project.getProjectPath());
                     }
+                    
+                    iterateOverItems(win.getProjectParts());
+                    iterateOverItems(win.getProjectSubparts());
+                    iterateOverItems(win.getProjectPrimitives());
+                    iterateOverItems(win.getProjectPrimitives48());
+                    iterateOverItems(win.getProjectPrimitives8());
                 }
                 
                 win.updateTreeUnsavedEntries();
