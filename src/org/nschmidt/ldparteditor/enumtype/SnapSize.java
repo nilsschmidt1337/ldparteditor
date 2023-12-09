@@ -16,5 +16,5 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.enumtype;
 
 public enum SnapSize {
-    FINE, MEDIUM, COARSE
+    FINE, MEDIUM, COARSE, STUD
 }

@@ -325,6 +325,7 @@ public class Editor3DWindow extends Editor3DDesign {
         // Set the snapping
         Manipulator.setSnap(
                 WorkbenchManager.getUserSettingState().getMediumMoveSnap(),
+                WorkbenchManager.getUserSettingState().getMediumMoveSnap(),
                 WorkbenchManager.getUserSettingState().getMediumRotateSnap(),
                 WorkbenchManager.getUserSettingState().getMediumScaleSnap()
                 );
@@ -453,15 +454,28 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        widgetUtil(btnStudPtr[0]).addSelectionListener(e -> {
+            BigDecimal m = WorkbenchManager.getUserSettingState().getStudMoveSnap();
+            BigDecimal r = WorkbenchManager.getUserSettingState().getStudRotateSnap();
+            BigDecimal s = WorkbenchManager.getUserSettingState().getStudScaleSnap();
+            snapSize = SnapSize.STUD;
+            spnMovePtr[0].setEnabled(false);
+            spnMovePtr[0].setValue(m);
+            spnRotatePtr[0].setValue(r);
+            spnScalePtr[0].setValue(s);
+            Manipulator.setSnap(new BigDecimal(8), BigDecimal.TEN, r, s);
+            regainFocus();
+        });
         widgetUtil(btnCoarsePtr[0]).addSelectionListener(e -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getCoarseMoveSnap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getCoarseRotateSnap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getCoarseScaleSnap();
             snapSize = SnapSize.COARSE;
+            spnMovePtr[0].setEnabled(true);
             spnMovePtr[0].setValue(m);
             spnRotatePtr[0].setValue(r);
             spnScalePtr[0].setValue(s);
-            Manipulator.setSnap(m, r, s);
+            Manipulator.setSnap(m, m, r, s);
             regainFocus();
         });
         widgetUtil(btnMediumPtr[0]).addSelectionListener(e -> {
@@ -469,10 +483,11 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal r = WorkbenchManager.getUserSettingState().getMediumRotateSnap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getMediumScaleSnap();
             snapSize = SnapSize.MEDIUM;
+            spnMovePtr[0].setEnabled(true);
             spnMovePtr[0].setValue(m);
             spnRotatePtr[0].setValue(r);
             spnScalePtr[0].setValue(s);
-            Manipulator.setSnap(m, r, s);
+            Manipulator.setSnap(m, m, r, s);
             regainFocus();
         });
         widgetUtil(btnFinePtr[0]).addSelectionListener(e -> {
@@ -480,11 +495,62 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal r = WorkbenchManager.getUserSettingState().getFineRotateSnap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getFineScaleSnap();
             snapSize = SnapSize.FINE;
+            spnMovePtr[0].setEnabled(true);
             spnMovePtr[0].setValue(m);
             spnRotatePtr[0].setValue(r);
             spnScalePtr[0].setValue(s);
-            Manipulator.setSnap(m, r, s);
+            Manipulator.setSnap(m, m, r, s);
             regainFocus();
+        });
+
+        btnStudPtr[0].addListener(SWT.MouseDown, event -> {
+            if (event.button == MouseButton.RIGHT) {
+
+                try {
+                    if (btnStudPtr[0].getMenu() != null) {
+                        btnStudPtr[0].getMenu().dispose();
+                    }
+                } catch (Exception ex) {
+                    NLogger.debug(Editor3DWindow.class, ex);
+                }
+
+                Menu gridMenu = new Menu(btnStudPtr[0]);
+                btnStudPtr[0].setMenu(gridMenu);
+                mnuStudMenuPtr[0] = gridMenu;
+
+                MenuItem mntmGridStudDefault = new MenuItem(gridMenu, I18n.noBiDirectionalTextStyle());
+                mntmGridStudDefaultPtr[0] = mntmGridStudDefault;
+                mntmGridStudDefault.setEnabled(true);
+                mntmGridStudDefault.setText(I18n.E3D_GRID_STUD_DEFAULT);
+
+                widgetUtil(mntmGridStudDefaultPtr[0]).addSelectionListener(e -> {
+                    WorkbenchManager.getUserSettingState().setStudMoveSnap(BigDecimal.TEN);
+                    WorkbenchManager.getUserSettingState().setStudRotateSnap(new BigDecimal("90")); //$NON-NLS-1$
+                    WorkbenchManager.getUserSettingState().setStudScaleSnap(BigDecimal.ONE);
+                    BigDecimal m = WorkbenchManager.getUserSettingState().getStudMoveSnap();
+                    BigDecimal r = WorkbenchManager.getUserSettingState().getStudRotateSnap();
+                    BigDecimal s = WorkbenchManager.getUserSettingState().getStudScaleSnap();
+                    snapSize = SnapSize.STUD;
+                    spnMovePtr[0].setValue(m);
+                    spnRotatePtr[0].setValue(r);
+                    spnScalePtr[0].setValue(s);
+                    Manipulator.setSnap(new BigDecimal(8), BigDecimal.TEN, r, s);
+                    btnStudPtr[0].setSelection(true);
+                    btnCoarsePtr[0].setSelection(false);
+                    btnMediumPtr[0].setSelection(false);
+                    btnFinePtr[0].setSelection(false);
+                    regainFocus();
+                });
+
+                java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
+                final int x = (int) b.getX();
+                final int y = (int) b.getY();
+
+                Menu menu = mnuStudMenuPtr[0];
+                menu.setLocation(x, y);
+                menu.setVisible(true);
+                regainFocus();
+            }
         });
 
         btnCoarsePtr[0].addListener(SWT.MouseDown, event -> {
@@ -518,7 +584,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     spnMovePtr[0].setValue(m);
                     spnRotatePtr[0].setValue(r);
                     spnScalePtr[0].setValue(s);
-                    Manipulator.setSnap(m, r, s);
+                    Manipulator.setSnap(m, m, r, s);
+                    btnStudPtr[0].setSelection(false);
                     btnCoarsePtr[0].setSelection(true);
                     btnMediumPtr[0].setSelection(false);
                     btnFinePtr[0].setSelection(false);
@@ -567,7 +634,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     spnMovePtr[0].setValue(m);
                     spnRotatePtr[0].setValue(r);
                     spnScalePtr[0].setValue(s);
-                    Manipulator.setSnap(m, r, s);
+                    Manipulator.setSnap(m, m, r, s);
+                    btnStudPtr[0].setSelection(false);
                     btnCoarsePtr[0].setSelection(false);
                     btnMediumPtr[0].setSelection(true);
                     btnFinePtr[0].setSelection(false);
@@ -616,7 +684,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     spnMovePtr[0].setValue(m);
                     spnRotatePtr[0].setValue(r);
                     spnScalePtr[0].setValue(s);
-                    Manipulator.setSnap(m, r, s);
+                    Manipulator.setSnap(m, m, r, s);
+                    btnStudPtr[0].setSelection(false);
                     btnCoarsePtr[0].setSelection(false);
                     btnMediumPtr[0].setSelection(false);
                     btnFinePtr[0].setSelection(true);
@@ -640,6 +709,12 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal s;
             m = spn.getValue();
             switch (snapSize) {
+            case STUD:
+                WorkbenchManager.getUserSettingState().setStudMoveSnap(BigDecimal.TEN);
+                r = WorkbenchManager.getUserSettingState().getStudRotateSnap();
+                s = WorkbenchManager.getUserSettingState().getStudScaleSnap();
+                Manipulator.setSnap(new BigDecimal(8), BigDecimal.TEN, r, s);
+                return;
             case FINE:
                 WorkbenchManager.getUserSettingState().setFineMoveSnap(m);
                 r = WorkbenchManager.getUserSettingState().getFineRotateSnap();
@@ -657,7 +732,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 s = WorkbenchManager.getUserSettingState().getCoarseScaleSnap();
                 break;
             }
-            Manipulator.setSnap(m, r, s);
+            Manipulator.setSnap(m, m, r, s);
         });
 
         spnRotatePtr[0].addValueChangeListener(spn -> {
@@ -666,6 +741,12 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal s;
             r = spn.getValue();
             switch (snapSize) {
+            case STUD:
+                m = WorkbenchManager.getUserSettingState().getStudMoveSnap();
+                WorkbenchManager.getUserSettingState().setStudRotateSnap(r);
+                s = WorkbenchManager.getUserSettingState().getStudScaleSnap();
+                Manipulator.setSnap(new BigDecimal(8), BigDecimal.TEN, r, s);
+                return;
             case FINE:
                 m = WorkbenchManager.getUserSettingState().getFineMoveSnap();
                 WorkbenchManager.getUserSettingState().setFineRotateSnap(r);
@@ -683,7 +764,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 s = WorkbenchManager.getUserSettingState().getCoarseScaleSnap();
                 break;
             }
-            Manipulator.setSnap(m, r, s);
+            Manipulator.setSnap(m, m, r, s);
         });
 
         spnScalePtr[0].addValueChangeListener(spn -> {
@@ -692,6 +773,11 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal s;
             s = spn.getValue();
             switch (snapSize) {
+            case STUD:
+                r = WorkbenchManager.getUserSettingState().getStudRotateSnap();
+                WorkbenchManager.getUserSettingState().setStudScaleSnap(s);
+                Manipulator.setSnap(new BigDecimal(8), BigDecimal.TEN, r, s);
+                return;
             case FINE:
                 m = WorkbenchManager.getUserSettingState().getFineMoveSnap();
                 r = WorkbenchManager.getUserSettingState().getFineRotateSnap();
@@ -709,7 +795,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 WorkbenchManager.getUserSettingState().setCoarseScaleSnap(s);
                 break;
             }
-            Manipulator.setSnap(m, r, s);
+            Manipulator.setSnap(m, m, r, s);
         });
 
         spnScaleInitialPtr[0].addValueChangeListener(spn -> Manipulator.setInitialScale(spn.getValue()));

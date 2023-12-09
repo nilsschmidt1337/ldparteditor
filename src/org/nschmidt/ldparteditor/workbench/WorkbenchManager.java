@@ -87,7 +87,9 @@ public enum WorkbenchManager {
                 if (WorkbenchManager.userSettingState.getOpenGLVersion() == 0) {
                     WorkbenchManager.userSettingState.setOpenGLVersion(20);
                 }
-                Manipulator.setSnap(WorkbenchManager.userSettingState.getMediumMoveSnap(), WorkbenchManager.userSettingState.getMediumRotateSnap(),
+                Manipulator.setSnap(WorkbenchManager.userSettingState.getMediumMoveSnap(),
+                        WorkbenchManager.userSettingState.getMediumMoveSnap(),
+                        WorkbenchManager.userSettingState.getMediumRotateSnap(),
                         WorkbenchManager.userSettingState.getMediumScaleSnap());
                 try {
                     WorkbenchManager.primitiveCache = (PrimitiveCache) settingsFileStream.readObject();
@@ -123,6 +125,19 @@ public enum WorkbenchManager {
             WorkbenchManager.userSettingState.setViewportScaleFactor(1.0);
         }
         
+
+        if (WorkbenchManager.userSettingState.getStudMoveSnap() == null) {
+            WorkbenchManager.userSettingState.setStudMoveSnap(BigDecimal.TEN);
+        }
+
+        if (WorkbenchManager.userSettingState.getStudRotateSnap() == null) {
+            WorkbenchManager.userSettingState.setStudRotateSnap(new BigDecimal("90")); //$NON-NLS-1$
+        }
+
+        if (WorkbenchManager.userSettingState.getStudScaleSnap() == null) {
+            WorkbenchManager.userSettingState.setStudScaleSnap(BigDecimal.ONE);
+        }
+
         WorkbenchManager.userSettingState.setDataFileSizeLimit(Math.clamp(WorkbenchManager.userSettingState.getDataFileSizeLimit(), 45, 1024_000));
 
         Threshold.coplanarityAngleWarning = WorkbenchManager.userSettingState.getCoplanarityAngleWarning();

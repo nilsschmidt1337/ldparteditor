@@ -111,6 +111,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     final Menu[] mnuTreeMenuPtr = new Menu[1];
 
+    final Menu[] mnuStudMenuPtr = new Menu[1];
     final Menu[] mnuCoarseMenuPtr = new Menu[1];
     final Menu[] mnuMediumMenuPtr = new Menu[1];
     final Menu[] mnuFineMenuPtr = new Menu[1];
@@ -124,6 +125,7 @@ class Editor3DDesign extends ApplicationWindow {
     private Composite cmpWest;
     protected static Composite status;
 
+    final MenuItem[] mntmGridStudDefaultPtr = new MenuItem[1];
     final MenuItem[] mntmGridCoarseDefaultPtr = new MenuItem[1];
     final MenuItem[] mntmGridMediumDefaultPtr = new MenuItem[1];
     final MenuItem[] mntmGridFineDefaultPtr = new MenuItem[1];
@@ -157,6 +159,7 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnShowRightPtr = new NButton[1];
     final NButton[] btnSameWidthPtr = new NButton[1];
 
+    final NButton[] btnStudPtr = new NButton[1];
     final NButton[] btnCoarsePtr = new NButton[1];
     final NButton[] btnMediumPtr = new NButton[1];
     final NButton[] btnFinePtr = new NButton[1];
@@ -584,6 +587,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 Composite cmpDummy = new Composite(cmpSnappingArea, Cocoa.getStyle());
                                 cmpDummy.setLayout(new FillLayout(SWT.HORIZONTAL));
 
+                                NButton btnStud = new NButton(cmpDummy, SWT.RADIO);
+                                this.btnStudPtr[0] = btnStud;
+                                btnStud.setImage(ResourceManager.getImage("icon8_stud.png")); //$NON-NLS-1$
+                                btnStud.setToolTipText(I18n.E3D_STUD);
+
                                 NButton btnCoarse = new NButton(cmpDummy, SWT.RADIO);
                                 this.btnCoarsePtr[0] = btnCoarse;
                                 btnCoarse.setImage(ResourceManager.getImage("icon8_coarse.png")); //$NON-NLS-1$
@@ -600,7 +608,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 btnFine.setImage(ResourceManager.getImage("icon8_fine.png")); //$NON-NLS-1$
                                 btnFine.setToolTipText(I18n.E3D_FINE);
 
-                                cmpDummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 3, 1));
+                                cmpDummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 4, 1));
                             }
 
                             {

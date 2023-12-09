@@ -96,12 +96,12 @@ public class Manipulator {
     private Vector4f vRotateArrow = new Vector4f(0f, 0f, 1f, 1f);
 
     private static BigDecimal snapXtranslate = new BigDecimal("100"); //$NON-NLS-1$
-    private static BigDecimal snapZtranslate = new BigDecimal("100"); //$NON-NLS-1$
     private static BigDecimal snapYtranslate = new BigDecimal("100"); //$NON-NLS-1$
+    private static BigDecimal snapZtranslate = new BigDecimal("100"); //$NON-NLS-1$
 
     private static final float SNAP_X_SCALE = 400f;
-    private static final float SNAP_Z_SCALE = 400f;
     private static final float SNAP_Y_SCALE = 400f;
+    private static final float SNAP_Z_SCALE = 400f;
 
     private static BigDecimal factorScale = new BigDecimal("1.1"); //$NON-NLS-1$
 
@@ -123,7 +123,7 @@ public class Manipulator {
         initialScaleNew = length;
     }
 
-    public static void setSnap(BigDecimal trans, BigDecimal rot, BigDecimal scale) {
+    public static void setSnap(BigDecimal transY, BigDecimal transXZ, BigDecimal rot, BigDecimal scale) {
 
         try {
             final int angle = rot.intValueExact();
@@ -167,9 +167,9 @@ public class Manipulator {
         }
 
         rot = rot.divide(new BigDecimal(180), Threshold.MC).multiply(BigDecimal.valueOf(Math.PI));
-        snapXtranslate = trans;
-        snapZtranslate = trans;
-        snapYtranslate = trans;
+        snapXtranslate = transXZ;
+        snapYtranslate = transY;
+        snapZtranslate = transXZ;
 
         factorScale = scale;
 
@@ -1187,7 +1187,7 @@ public class Manipulator {
         }
 
         if (yTranslate) {
-            if (l < snapZtranslate.floatValue() * 1000f)
+            if (l < snapYtranslate.floatValue() * 1000f)
                 return temp;
             Vector4f vector = new Vector4f(yAxis);
             Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
@@ -1198,8 +1198,8 @@ public class Manipulator {
             if (dA.lengthSquared() != 0f)
                 dA.normalise();
 
-            float factor = Math.max(l - l % (snapZtranslate.floatValue() * 1000f), snapZtranslate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapZtranslate, Threshold.MC)), snapZtranslate);
+            float factor = Math.max(l - l % (snapYtranslate.floatValue() * 1000f), snapYtranslate.floatValue() * 1000f);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapYtranslate, Threshold.MC)), snapYtranslate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = yAxis.x * factor;
@@ -1226,7 +1226,7 @@ public class Manipulator {
         }
 
         if (zTranslate) {
-            if (l < snapYtranslate.floatValue() * 1000f)
+            if (l < snapZtranslate.floatValue() * 1000f)
                 return temp;
             Vector4f vector = new Vector4f(zAxis);
             Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
@@ -1237,8 +1237,8 @@ public class Manipulator {
             if (dA.lengthSquared() != 0f)
                 dA.normalise();
 
-            float factor = Math.max(l - l % (snapYtranslate.floatValue() * 1000f), snapYtranslate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapYtranslate, Threshold.MC)), snapYtranslate);
+            float factor = Math.max(l - l % (snapZtranslate.floatValue() * 1000f), snapZtranslate.floatValue() * 1000f);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapZtranslate, Threshold.MC)), snapZtranslate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = zAxis.x * factor;
@@ -1889,8 +1889,8 @@ public class Manipulator {
             if (dA.lengthSquared() != 0f)
                 dA.normalise();
 
-            float factor = Math.max(l - l % (snapZtranslate.floatValue() * 1000f), snapZtranslate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapZtranslate, Threshold.MC)), snapZtranslate);
+            float factor = Math.max(l - l % (snapYtranslate.floatValue() * 1000f), snapYtranslate.floatValue() * 1000f);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapYtranslate, Threshold.MC)), snapYtranslate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = yAxis.x * factor;
@@ -2114,8 +2114,8 @@ public class Manipulator {
         }
 
         if (yTranslate) {
-            float factor = snapZtranslate.floatValue() * 1000f * fdir;
-            BigDecimal factorPrecise = snapZtranslate.multiply(ddir);
+            float factor = snapYtranslate.floatValue() * 1000f * fdir;
+            BigDecimal factorPrecise = snapYtranslate.multiply(ddir);
             transformation.m30 = yAxis.x * factor;
             transformation.m31 = yAxis.y * factor;
             transformation.m32 = yAxis.z * factor;
@@ -2130,8 +2130,8 @@ public class Manipulator {
         }
 
         if (zTranslate) {
-            float factor = snapYtranslate.floatValue() * 1000f * fdir;
-            BigDecimal factorPrecise = snapYtranslate.multiply(ddir);
+            float factor = snapZtranslate.floatValue() * 1000f * fdir;
+            BigDecimal factorPrecise = snapZtranslate.multiply(ddir);
             transformation.m30 = zAxis.x * factor;
             transformation.m31 = zAxis.y * factor;
             transformation.m32 = zAxis.z * factor;

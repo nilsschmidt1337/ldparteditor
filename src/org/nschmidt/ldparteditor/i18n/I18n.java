@@ -486,6 +486,7 @@ public final class I18n {
     public static final String E3D_GRID_COARSE_DEFAULT = E3D.getString(getProperty());
     public static final String E3D_GRID_FINE_DEFAULT = E3D.getString(getProperty());
     public static final String E3D_GRID_MEDIUM_DEFAULT = E3D.getString(getProperty());
+    public static final String E3D_GRID_STUD_DEFAULT = E3D.getString(getProperty());
     public static final String E3D_GROUP = E3D.getString(getProperty());
     public static final String E3D_HIDE = E3D.getString(getProperty());
     public static final String E3D_ICON_SIZE_1 = E3D.getString(getProperty());
@@ -693,6 +694,7 @@ public final class I18n {
     public static final String E3D_SPLIT_VERTICALLY = E3D.getString(getProperty());
     public static final String E3D_STL_FILE = E3D.getString(getProperty());
     public static final String E3D_STOP_SELECTION_AT_EDGES = E3D.getString(getProperty());
+    public static final String E3D_STUD = E3D.getString(getProperty());
     public static final String E3D_SUBDIVIDE_CATMULL_CLARK = E3D.getString(getProperty());
     public static final String E3D_SUBDIVIDE_LOOP = E3D.getString(getProperty());
     public static final String E3D_SUBDIVIDE_NO_SELECTION = E3D.getString(getProperty());

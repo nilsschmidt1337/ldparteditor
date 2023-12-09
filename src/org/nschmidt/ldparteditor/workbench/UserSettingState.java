@@ -64,8 +64,14 @@ public class UserSettingState implements Serializable {
     /** Your colour palette. */
     private List<GColour> userPalette = new ArrayList<>();
 
+    /** Your stud move snap value */
+    private BigDecimal studMoveSnap = BigDecimal.TEN;
+    /** Your stud rotate snap value */
+    private BigDecimal studRotateSnap = new BigDecimal("90"); //$NON-NLS-1$
+    /** Your stud scale snap value */
+    private BigDecimal studScaleSnap = BigDecimal.ONE;
     /** Your coarse move snap value */
-    private BigDecimal coarseMoveSnap = new BigDecimal("1"); //$NON-NLS-1$
+    private BigDecimal coarseMoveSnap = BigDecimal.ONE;
     /** Your coarse rotate snap value */
     private BigDecimal coarseRotateSnap = new BigDecimal("90"); //$NON-NLS-1$
     /** Your coarse scale snap value */
@@ -397,6 +403,30 @@ public class UserSettingState implements Serializable {
      */
     public void setUserPalette(List<GColour> userPalette) {
         this.userPalette = userPalette;
+    }
+
+    public BigDecimal getStudMoveSnap() {
+        return studMoveSnap;
+    }
+
+    public void setStudMoveSnap(BigDecimal studMoveSnap) {
+        this.studMoveSnap = studMoveSnap;
+    }
+
+    public BigDecimal getStudRotateSnap() {
+        return studRotateSnap;
+    }
+
+    public void setStudRotateSnap(BigDecimal studRotateSnap) {
+        this.studRotateSnap = studRotateSnap;
+    }
+
+    public BigDecimal getStudScaleSnap() {
+        return studScaleSnap;
+    }
+
+    public void setStudScaleSnap(BigDecimal studScaleSnap) {
+        this.studScaleSnap = studScaleSnap;
     }
 
     public BigDecimal getCoarseMoveSnap() {
