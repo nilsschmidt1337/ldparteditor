@@ -40,7 +40,7 @@ Peg Hole End; Title "peghole.dat"; Matches ".*Peg.*Hole.*End.*"
 Technic Bush; Title "bush.dat"; Matches ".*Technic.*Bush.*"
 Technic Beam Hole; Title "beamhol2.dat"; Matches ".*Technic.*Beam.*Hole.*"
 
-Studs; Title "stud.dat"; Contains "Stud"; AND NOT Matches ".*Stud.*Group.*"
+Studs; Title "stud.dat"; Contains "Stud"; AND NOT Matches ".*Stud.*Group.*"; AND NOT Contains "Tile"
 Stud Groups; Title "stug-2x2.dat"; Matches ".*Stud.*Group.*"
 
 Znap; Title "znap5.dat"; Matches ".*Znap.*"

@@ -1233,13 +1233,12 @@ public class CompositePrimitive extends Composite {
 
         final String[] standardBricks = (
                 """
-                3001.dat,3002.dat,
-                3005.dat,
-                3024.dat,
-                3070b.dat""").split(",");//$NON-NLS-1$ //$NON-NLS-2$
+                3001,3002,3003,3005,3004,3622,3010,3009,2356,2456,
+                3024,3023b,3623,3710,78329,3666,3022,3021,3020,3795,11212,3031,3032,3958,
+                3070b,3069b,63864,2431,6636,3068b,26603,87079,69729,6934,10202""").split(",");//$NON-NLS-1$ //$NON-NLS-2$
         final File[] result = new File[standardBricks.length];
         for (int i = 0; i < result.length; i++) {
-            result[i] = new File(ldrawPath + File.separator + partsFolder + File.separator + standardBricks[i].trim());
+            result[i] = new File(ldrawPath + File.separator + partsFolder + File.separator + standardBricks[i].trim() + ".dat"); //$NON-NLS-1$
         }
 
         return result;
