@@ -47,5 +47,14 @@ Znap; Title "znap5.dat"; Matches ".*Znap.*"
 
 Torus; Title "t01q1429.dat"
 Torus|Inside; Title "t01i3333.dat"; Contains "Torus_Inside"
+Torus|Inside (mixed); Title "48\tm06i8000.dat"; Contains "Mixed-Mode_Torus_Inner"
 Torus|Outside; Title "t01o4000.dat"; Contains "Torus_Outside"
+Torus|Outside (mixed); Title "48\tm04o4000.dat"; Contains "Mixed-Mode_Torus_Outer"
 Torus|Tube; Title "t01q1429.dat"; Contains "Torus_Tube"
+
+Logo; Title "logo-technic-1.dat"; Matches "Logo.*"
+
+_Standard Bricks; Title "3002.dat"
+_Standard Bricks|_Brick; Title "3005.dat"; Matches "Brick.*"
+_Standard Bricks|_Plate; Title "3024.dat"; Matches "Plate.*"
+_Standard Bricks|_Tile; Title "3070b.dat"; Matches "Tile.*"

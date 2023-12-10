@@ -652,35 +652,6 @@ public class CompositePrimitive extends Composite {
                 setSelectedPrimitive(null);
                 primitives.clear();
 
-                List<String> searchPaths = new ArrayList<>();
-                String ldrawPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
-                if (ldrawPath != null) {
-                    searchPaths.add(ldrawPath + File.separator + "p" + File.separator); //$NON-NLS-1$
-                    searchPaths.add(ldrawPath + File.separator + "P" + File.separator); //$NON-NLS-1$
-                    searchPaths.add(ldrawPath + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    searchPaths.add(ldrawPath + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    searchPaths.add(ldrawPath + File.separator + "p" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    searchPaths.add(ldrawPath + File.separator + "P" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-                String unofficial = WorkbenchManager.getUserSettingState().getUnofficialFolderPath();
-                if (unofficial != null) {
-                    searchPaths.add(unofficial + File.separator + "p" + File.separator); //$NON-NLS-1$
-                    searchPaths.add(unofficial + File.separator + "P" + File.separator); //$NON-NLS-1$
-                    searchPaths.add(unofficial + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    searchPaths.add(unofficial + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    searchPaths.add(unofficial + File.separator + "p" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    searchPaths.add(unofficial + File.separator + "P" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-                String project = Project.getProjectPath();
-                if (project != null) {
-                    searchPaths.add(project + File.separator + "p" + File.separator); //$NON-NLS-1$
-                    searchPaths.add(project + File.separator + "P" + File.separator); //$NON-NLS-1$
-                    searchPaths.add(project + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    searchPaths.add(project + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    searchPaths.add(project + File.separator + "p" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                    searchPaths.add(project + File.separator + "P" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-
                 Map<String, Primitive> titleMap = new HashMap<>();
                 Map<String, String> leavesTitleMap = new HashMap<>();
                 Map<String, Primitive> primitiveMap = new HashMap<>();
@@ -689,6 +660,7 @@ public class CompositePrimitive extends Composite {
                 Map<String, List<PrimitiveRule>> leavesRulesMap = new HashMap<>();
                 final String lowResSuffix = File.separator + "8" + File.separator; //$NON-NLS-1$
                 final String hiResSuffix = File.separator + "48" + File.separator; //$NON-NLS-1$
+
                 try {
 
                     // Creating the categories / Rules
@@ -952,6 +924,37 @@ public class CompositePrimitive extends Composite {
                             NLogger.error(CompositePrimitive.class, e);
                         }
                     }
+                    
+                    List<String> searchPaths = new ArrayList<>();
+                    String ldrawPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
+                    if (ldrawPath != null) {
+                        searchPaths.add(ldrawPath + File.separator + "p" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(ldrawPath + File.separator + "P" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(ldrawPath + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(ldrawPath + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(ldrawPath + File.separator + "p" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(ldrawPath + File.separator + "P" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                    String unofficial = WorkbenchManager.getUserSettingState().getUnofficialFolderPath();
+                    if (unofficial != null) {
+                        searchPaths.add(unofficial + File.separator + "p" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(unofficial + File.separator + "P" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(unofficial + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(unofficial + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(unofficial + File.separator + "p" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(unofficial + File.separator + "P" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                    String project = Project.getProjectPath();
+                    if (project != null) {
+                        searchPaths.add(project + File.separator + "p" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(project + File.separator + "P" + File.separator); //$NON-NLS-1$
+                        searchPaths.add(project + File.separator + "p" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(project + File.separator + "P" + File.separator + "48" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(project + File.separator + "p" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                        searchPaths.add(project + File.separator + "P" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+
+                    searchPaths.add(ldrawPath + File.separator + "parts" + File.separator); //$NON-NLS-1$
 
                     boolean isUppercase = false;
                     boolean isEmpty = true;
@@ -961,7 +964,7 @@ public class CompositePrimitive extends Composite {
                             isUppercase = !isUppercase;
                             continue;
                         }
-                        final File[] files = libFolder.listFiles();
+                        final File[] files = listFiles(ldrawPath, libFolder);
                         if (files == null) {
                             isUppercase = !isUppercase;
                             continue;
@@ -1216,6 +1219,30 @@ public class CompositePrimitive extends Composite {
                 loadingLock.unlock();
             }
         });
+    }
+
+    private File[] listFiles(String ldrawPath, File libFolder) {
+        final String partsFolder;
+        if ("parts".equals(libFolder.getName())) { //$NON-NLS-1$
+            partsFolder = "parts"; //$NON-NLS-1$
+        } else if ("PARTS".equals(libFolder.getName())) { //$NON-NLS-1$
+            partsFolder = "PARTS"; //$NON-NLS-1$
+        } else {
+            return libFolder.listFiles();
+        }
+
+        final String[] standardBricks = (
+                """
+                3001.dat,3002.dat,
+                3005.dat,
+                3024.dat,
+                3070b.dat""").split(",");//$NON-NLS-1$ //$NON-NLS-2$
+        final File[] result = new File[standardBricks.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = new File(ldrawPath + File.separator + partsFolder + File.separator + standardBricks[i].trim());
+        }
+
+        return result;
     }
 
     // What follows now is a very minimalistic DAT file parser (<500LOC)
