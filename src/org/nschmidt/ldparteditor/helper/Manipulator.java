@@ -181,7 +181,10 @@ public class Manipulator {
     }
 
     public static BigDecimal[] getSnap() {
-        return new BigDecimal[] { snapXtranslate, snapXrotate, factorScale };
+        return new BigDecimal[] {
+                snapXtranslate, snapYtranslate, snapZtranslate,
+                snapXrotate, snapYrotate, snapZrotate, snapVrotate,
+                factorScale };
     }
 
     private boolean lock = false;

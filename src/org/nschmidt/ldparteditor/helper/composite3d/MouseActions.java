@@ -382,17 +382,21 @@ public class MouseActions {
             break;
         }
         c3d.getCursor3D().set(perspective.get3DCoordinatesFromScreen(event.x, event.y));
-        final BigDecimal snapPrecise = manipulatorSnap[0];
-        final float snap = snapPrecise.floatValue() * 1000f;
+        final BigDecimal snapPreciseX = manipulatorSnap[0];
+        final BigDecimal snapPreciseY = manipulatorSnap[1];
+        final BigDecimal snapPreciseZ = manipulatorSnap[2];
+        final float snapX = snapPreciseX.floatValue() * 1000f;
+        final float snapY = snapPreciseY.floatValue() * 1000f;
+        final float snapZ = snapPreciseZ.floatValue() * 1000f;
         final float sx = c3d.getCursor3D().x;
         final float sy = c3d.getCursor3D().y;
         final float sz = c3d.getCursor3D().z;
 
-        c3d.getCursorSnapped3Dprecise()[0] = new BigDecimal(sx / 1000f).subtract(new BigDecimal(sx / 1000f).remainder(snapPrecise, Threshold.MC));
-        c3d.getCursorSnapped3Dprecise()[1] = new BigDecimal(sy / 1000f).subtract(new BigDecimal(sy / 1000f).remainder(snapPrecise, Threshold.MC));
-        c3d.getCursorSnapped3Dprecise()[2] = new BigDecimal(sz / 1000f).subtract(new BigDecimal(sz / 1000f).remainder(snapPrecise, Threshold.MC));
+        c3d.getCursorSnapped3Dprecise()[0] = new BigDecimal(sx / 1000f).subtract(new BigDecimal(sx / 1000f).remainder(snapPreciseX, Threshold.MC));
+        c3d.getCursorSnapped3Dprecise()[1] = new BigDecimal(sy / 1000f).subtract(new BigDecimal(sy / 1000f).remainder(snapPreciseY, Threshold.MC));
+        c3d.getCursorSnapped3Dprecise()[2] = new BigDecimal(sz / 1000f).subtract(new BigDecimal(sz / 1000f).remainder(snapPreciseZ, Threshold.MC));
 
-        c3d.getCursorSnapped3D().set(sx - sx % snap, sy - sy % snap, sz - sz % snap, 1f);
+        c3d.getCursorSnapped3D().set(sx - sx % snapX, sy - sy % snapY, sz - sz % snapZ, 1f);
 
         c3d.getScreenXY().set(event.x, event.y);
         GuiStatusManager.updateStatus(c3d);
@@ -699,7 +703,7 @@ public class MouseActions {
     }
 
     private float snap(float value, BigDecimal[] manipulatorSnap) {
-        final float snap = (float) Math.min(manipulatorSnap[1].floatValue(), PI_8TH);
+        final float snap = (float) Math.min(manipulatorSnap[3].floatValue(), PI_8TH);
         return value - value % snap;
     }
 
