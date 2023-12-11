@@ -1,0 +1,18 @@
+0 Testcase Coplanarity Heatmap
+0 Name: heatmap.dat
+0 Author: Nils Schmidt [BlackBrick89]
+0 !LDRAW_ORG Unofficial_Part
+0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt
+
+0 BFC CERTIFY CCW
+
+4 16 10 -50 0 0 -50 0 0 -40 0 10 -40 .05
+4 16 10 -40 0 0 -40 0 0 -30 0 10 -30 .1
+4 16 10 -30 0 0 -30 0 0 -20 0 10 -20 .15
+4 16 10 -20 0 0 -20 0 0 -10 0 10 -10 .2
+4 16 10 -10 0 0 -10 0 0 0 0 10 0 .25
+4 16 10 0 0 0 0 0 0 10 0 10 10 .3
+4 16 10 10 0 0 10 0 0 20 0 10 20 .35
+4 16 10 20 0 0 20 0 0 30 0 10 30 .4
+4 16 10 30 0 0 30 0 0 40 0 10 40 .45
+4 16 10 40 0 0 40 0 0 50 0 10 50 .5

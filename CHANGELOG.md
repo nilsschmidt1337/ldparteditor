@@ -1,3 +1,15 @@
+# 11 Dec 2023
+With the release of 1.8.74 you are able to...
+-  ...use a "stud" grid setting (Plate 1 x 1, Y = 8 LDU, XZ = 10 LDU half-stud).
+-  ...see an optional "x", "y", "z" on the coloured axes of the coordinate system (activate with "Tools..."->"Options..."->"Show Axis Labels", or with the 3D view context menu "View Actions"->"Axis Label").
+-  ...create a new file draft (Ctrl+Click on "New Part File"), without saying where it should be saved. When it is saved for the first time, the program will ask where to save it. Unsaved drafts are lost when the program gets closed.
+-  ...access a set of standard bricks, tiles and plates in the primitives view.
+-  ...benefit from a more precise unit converter (it avoids the division).
+
+The following critical issue is fixed:
+1. Creating/opening a project kept the "Part Review" active, when doing a review.
+
+
 # 01 Nov 2023
 With the release of 1.8.73 you are able to...
 -  ...align and distribute objects (isolated vertices, lines, triangles, quads and subfiles). It behaves differently if "Move Adjacent Data" is ON or OFF. ON keeps the objects connected together. OFF will seperate them.
