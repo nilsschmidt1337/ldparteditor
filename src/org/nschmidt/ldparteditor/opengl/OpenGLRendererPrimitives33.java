@@ -19,10 +19,12 @@ import java.nio.FloatBuffer;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.lwjgl.opengl.swt.GLCanvas;
+import org.lwjgl.system.Callback;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -32,6 +34,7 @@ import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Arrow;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -42,6 +45,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
 
     private GLShader shaderProgram = new GLShader();
     private GLShader shaderProgram2D = new GLShader();
+    private Callback debugCallback = null;
     private final GLMatrixStack stack = new GLMatrixStack();
     private final GL33Helper helper = new GL33Helper();
 
@@ -54,6 +58,9 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
 
         if (shaderProgram.isDefault()) shaderProgram = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgram2D.isDefault()) shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if (NLogger.debugging && debugCallback == null) debugCallback = GLUtil.setupDebugMessageCallback();
+
         stack.setShader(shaderProgram);
         shaderProgram.use();
 
@@ -298,6 +305,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
         // Properly de-allocate all resources once they've outlived their purpose
         shaderProgram.dispose();
         shaderProgram2D.dispose();
+        if (debugCallback != null) debugCallback.free();
     }
 
     private void drawCell(float x, float y, boolean selected, boolean category, boolean focused) {

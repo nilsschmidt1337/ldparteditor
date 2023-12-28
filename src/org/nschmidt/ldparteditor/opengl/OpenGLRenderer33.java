@@ -20,12 +20,14 @@ import java.util.Iterator;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.lwjgl.opengl.swt.GLCanvas;
+import org.lwjgl.system.Callback;
 import org.eclipse.swt.widgets.Menu;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -67,6 +69,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private GLShader shaderProgram2 = new GLShader();
     private GLShader shaderProgram2D = new GLShader();
     private GLShader shaderProgramCondline = new GLShader();
+    private Callback debugCallback = null;
     private final GLMatrixStack stack = new GLMatrixStack();
     private final GL33Helper helper = new GL33Helper();
     private final GL33ModelRenderer modelRenderer = new GL33ModelRenderer(c3d, this);
@@ -95,6 +98,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         if (shaderProgram2.isDefault()) shaderProgram2 = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgram2D.isDefault()) shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgramCondline.isDefault()) shaderProgramCondline = new GLShader("condline.vert", "condline.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if (NLogger.debugging && debugCallback == null) debugCallback = GLUtil.setupDebugMessageCallback();
 
         shaderProgramCondline.use();
 
@@ -1440,6 +1445,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         shaderProgram2.dispose();
         shaderProgram2D.dispose();
         shaderProgramCondline.dispose();
+        if (debugCallback != null) debugCallback.free();
         // Dispose all textures
         for (Iterator<GTexture> it = textureSet.iterator() ; it.hasNext();) {
             GTexture tex = it.next();
