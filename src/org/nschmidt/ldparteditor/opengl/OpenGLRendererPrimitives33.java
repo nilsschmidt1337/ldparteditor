@@ -113,7 +113,6 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
 
         // Draw all visible primitives / highlight selection
 
-        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         final FloatBuffer projectionBuf = BufferUtils.createFloatBuffer(16);
@@ -132,7 +131,6 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
         GL33HelperPrimitives.createVBOprimitiveArea();
         helper.createVBO();
 
-        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         float lastX;
