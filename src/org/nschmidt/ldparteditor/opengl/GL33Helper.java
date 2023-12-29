@@ -30,20 +30,26 @@ public class GL33Helper {
     private static final int RGB_STRIDE = (3 + 3) * 4;
     private static final int RGB_UV_STRIDE = (3 + 3 + 4 + 2) * 4;
 
+    private int vaoGeneral = -1;
     private int vboGeneral = -1;
     private int eboGeneral = -1;
 
     void createVBO() {
+        vaoGeneral = GL30.glGenVertexArrays();
         vboGeneral = GL15.glGenBuffers();
         eboGeneral = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoGeneral);
     }
 
     void destroyVBO() {
+        GL30.glBindVertexArray(0);
+        GL30.glDeleteVertexArrays(vaoGeneral);
         GL15.glDeleteBuffers(vboGeneral);
         GL15.glDeleteBuffers(eboGeneral);
     }
 
     void drawTrianglesIndexedRGBgeneral(float[] vertices, int[] indices) {
+        GL30.glBindVertexArray(vaoGeneral);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGeneral);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
 
@@ -62,6 +68,7 @@ public class GL33Helper {
     }
 
     void drawLinesRGBgeneral(float[] vertices) {
+        GL30.glBindVertexArray(vaoGeneral);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGeneral);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
 
@@ -77,7 +84,9 @@ public class GL33Helper {
     }
 
     public static void drawLinesRGBgeneralSlow(float[] vertices) {
+        int vaoGeneral = GL30.glGenVertexArrays();
         int vboGeneral = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoGeneral);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGeneral);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
 
@@ -90,12 +99,17 @@ public class GL33Helper {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         GL11.glDrawArrays(GL11.GL_LINES, 0, vertices.length);
+        
+        GL30.glBindVertexArray(0);
+        GL30.glDeleteVertexArrays(vaoGeneral);
         GL15.glDeleteBuffers(vboGeneral);
     }
 
     public static void drawTrianglesIndexedRGBgeneralSlow(float[] vertices, int[] indices) {
+        int vaoGeneral = GL30.glGenVertexArrays();
         int vboGeneral = GL15.glGenBuffers();
         int eboGeneral = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoGeneral);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGeneral);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
 
@@ -112,6 +126,8 @@ public class GL33Helper {
 
         GL11.glDrawElements(GL11.GL_TRIANGLES, indices.length, GL11.GL_UNSIGNED_INT, 0);
 
+        GL30.glBindVertexArray(0);
+        GL30.glDeleteVertexArrays(vaoGeneral);
         GL15.glDeleteBuffers(vboGeneral);
         GL15.glDeleteBuffers(eboGeneral);
     }
@@ -150,7 +166,9 @@ public class GL33Helper {
     }
 
     public static void drawTriangleGeneralSlow(float[] vertices) {
+        int vaoGeneral = GL30.glGenVertexArrays();
         int vboGeneral = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoGeneral);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGeneral);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
 
@@ -160,6 +178,9 @@ public class GL33Helper {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+        
+        GL30.glBindVertexArray(0);
+        GL30.glDeleteVertexArrays(vaoGeneral);
         GL15.glDeleteBuffers(vboGeneral);
     }
 
