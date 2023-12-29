@@ -27,6 +27,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
@@ -527,7 +528,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 if (AddToolItem.isAddingVertices()) {
                     // Point for add vertex
                     final Vector4f cursor3D = c3d.getCursorSnapped3D();
+                    final int VAO = GL30.glGenVertexArrays();
                     final int VBO = GL15.glGenBuffers();
+                    GL30.glBindVertexArray(VAO);
                     GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                     GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                             new float[] {
@@ -539,6 +542,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     GL20.glEnableVertexAttribArray(1);
                     GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                     GL11.glDrawArrays(GL11.GL_POINTS, 0, 1);
+                    GL30.glBindVertexArray(0);
+                    GL30.glDeleteVertexArrays(VAO);
                     GL15.glDeleteBuffers(VBO);
                 } else if (AddToolItem.isAddingLines() || AddToolItem.isAddingDistance()) {
                     Vector4f cur = c3d.getCursorSnapped3D();
@@ -546,7 +551,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     Vertex v = dat.getNearestObjVertex1();
                     if (v != null) {
                         GL11.glLineWidth(4f);
+                        final int VAO = GL30.glGenVertexArrays();
                         final int VBO = GL15.glGenBuffers();
+                        GL30.glBindVertexArray(VAO);
                         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                         GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                 new float[] {
@@ -560,6 +567,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         GL20.glEnableVertexAttribArray(1);
                         GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                         GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
+                        GL30.glBindVertexArray(0);
+                        GL30.glDeleteVertexArrays(VAO);
                         GL15.glDeleteBuffers(VBO);
                     }
                 } else if (AddToolItem.isAddingTriangles() || AddToolItem.isAddingProtractor()) {
@@ -570,7 +579,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         Vertex v2 = dat.getNearestObjVertex2();
                         if (v2 != null) {
                             GL11.glLineWidth(4f);
+                            final int VAO = GL30.glGenVertexArrays();
                             final int VBO = GL15.glGenBuffers();
+                            GL30.glBindVertexArray(VAO);
                             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                             GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
@@ -592,10 +603,14 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL20.glEnableVertexAttribArray(1);
                             GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                             GL11.glDrawArrays(GL11.GL_LINES, 0, 6);
+                            GL30.glBindVertexArray(0);
+                            GL30.glDeleteVertexArrays(VAO);
                             GL15.glDeleteBuffers(VBO);
                         } else {
                             GL11.glLineWidth(4f);
+                            final int VAO = GL30.glGenVertexArrays();
                             final int VBO = GL15.glGenBuffers();
+                            GL30.glBindVertexArray(VAO);
                             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                             GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
@@ -609,6 +624,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL20.glEnableVertexAttribArray(1);
                             GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                             GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
+                            GL30.glBindVertexArray(0);
+                            GL30.glDeleteVertexArrays(VAO);
                             GL15.glDeleteBuffers(VBO);
                         }
                     }
@@ -624,7 +641,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 Vertex v4 = dat.getObjVertex4();
                                 if (v4 != null) {
                                     GL11.glLineWidth(4f);
+                                    final int VAO = GL30.glGenVertexArrays();
                                     final int VBO = GL15.glGenBuffers();
+                                    GL30.glBindVertexArray(VAO);
                                     GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                                     GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
@@ -642,12 +661,16 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL20.glEnableVertexAttribArray(1);
                                     GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                                     GL11.glDrawArrays(GL11.GL_LINES, 0, 4);
+                                    GL30.glBindVertexArray(0);
+                                    GL30.glDeleteVertexArrays(VAO);
                                     GL15.glDeleteBuffers(VBO);
                                 } else {
                                     v = dat.getObjVertex1();
                                     v2 = dat.getObjVertex2();
                                     GL11.glLineWidth(4f);
+                                    final int VAO = GL30.glGenVertexArrays();
                                     final int VBO = GL15.glGenBuffers();
+                                    GL30.glBindVertexArray(VAO);
                                     GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                                     GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
@@ -673,11 +696,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL20.glEnableVertexAttribArray(1);
                                     GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                                     GL11.glDrawArrays(GL11.GL_LINES, 0, 8);
+                                    GL30.glBindVertexArray(0);
+                                    GL30.glDeleteVertexArrays(VAO);
                                     GL15.glDeleteBuffers(VBO);
                                 }
                             } else {
                                 GL11.glLineWidth(4f);
+                                final int VAO = GL30.glGenVertexArrays();
                                 final int VBO = GL15.glGenBuffers();
+                                GL30.glBindVertexArray(VAO);
                                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                         new float[] {
@@ -695,11 +722,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 GL20.glEnableVertexAttribArray(1);
                                 GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                                 GL11.glDrawArrays(GL11.GL_LINES, 0, 4);
+                                GL30.glBindVertexArray(0);
+                                GL30.glDeleteVertexArrays(VAO);
                                 GL15.glDeleteBuffers(VBO);
                             }
                         } else {
                             GL11.glLineWidth(4f);
+                            final int VAO = GL30.glGenVertexArrays();
                             final int VBO = GL15.glGenBuffers();
+                            GL30.glBindVertexArray(VAO);
                             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                             GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
@@ -713,6 +744,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL20.glEnableVertexAttribArray(1);
                             GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                             GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
+                            GL30.glBindVertexArray(0);
+                            GL30.glDeleteVertexArrays(VAO);
                             GL15.glDeleteBuffers(VBO);
                         }
                     }
@@ -728,7 +761,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 Vertex v4 = dat.getObjVertex4();
                                 if (v4 != null) {
                                     GL11.glLineWidth(4f);
+                                    final int VAO = GL30.glGenVertexArrays();
                                     final int VBO = GL15.glGenBuffers();
+                                    GL30.glBindVertexArray(VAO);
                                     GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                                     GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
@@ -742,12 +777,16 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL20.glEnableVertexAttribArray(1);
                                     GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                                     GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
+                                    GL30.glBindVertexArray(0);
+                                    GL30.glDeleteVertexArrays(VAO);
                                     GL15.glDeleteBuffers(VBO);
                                 } else {
                                     v = dat.getObjVertex1();
                                     v2 = dat.getObjVertex2();
                                     GL11.glLineWidth(4f);
+                                    final int VAO = GL30.glGenVertexArrays();
                                     final int VBO = GL15.glGenBuffers();
+                                    GL30.glBindVertexArray(VAO);
                                     GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                                     GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
@@ -769,11 +808,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL20.glEnableVertexAttribArray(1);
                                     GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                                     GL11.glDrawArrays(GL11.GL_LINES, 0, 8);
+                                    GL30.glBindVertexArray(0);
+                                    GL30.glDeleteVertexArrays(VAO);
                                     GL15.glDeleteBuffers(VBO);
                                 }
                             } else {
                                 GL11.glLineWidth(4f);
+                                final int VAO = GL30.glGenVertexArrays();
                                 final int VBO = GL15.glGenBuffers();
+                                GL30.glBindVertexArray(VAO);
                                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                         new float[] {
@@ -791,11 +834,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 GL20.glEnableVertexAttribArray(1);
                                 GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                                 GL11.glDrawArrays(GL11.GL_LINES, 0, 4);
+                                GL30.glBindVertexArray(0);
+                                GL30.glDeleteVertexArrays(VAO);
                                 GL15.glDeleteBuffers(VBO);
                             }
                         } else {
                             GL11.glLineWidth(4f);
+                            final int VAO = GL30.glGenVertexArrays();
                             final int VBO = GL15.glGenBuffers();
+                            GL30.glBindVertexArray(VAO);
                             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
                             GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
@@ -809,6 +856,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL20.glEnableVertexAttribArray(1);
                             GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 24, 12);
                             GL11.glDrawArrays(GL11.GL_LINES, 0, 2);
+                            GL30.glBindVertexArray(0);
+                            GL30.glDeleteVertexArrays(VAO);
                             GL15.glDeleteBuffers(VBO);
                         }
                     }
