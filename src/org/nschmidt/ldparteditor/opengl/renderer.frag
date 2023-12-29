@@ -306,9 +306,6 @@ void main()
         
     }
     
-    lightAmbientDiffuse.a = 0f;
-    lightSpecular.a = 0f;
-    
     if (texmapswitch > 0.5f) {
         vec4 texColor = texture2D(ldpePngSampler, tex.xy);
         texColor.r *= factor;
