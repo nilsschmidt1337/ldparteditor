@@ -306,6 +306,10 @@ void main()
         
     }
     
+    // It is not possible to set alpha with lightAmbientDiffuse.a = X or lightSpecular.a = X
+    lightAmbientDiffuse  = vec4(lightAmbientDiffuse.r,lightAmbientDiffuse.g,lightAmbientDiffuse.b,0.0);
+    lightSpecular        = vec4(lightSpecular.r,lightSpecular.g,lightSpecular.b,0.0);
+    
     if (texmapswitch > 0.5f) {
         vec4 texColor = texture2D(ldpePngSampler, tex.xy);
         texColor.r *= factor;
