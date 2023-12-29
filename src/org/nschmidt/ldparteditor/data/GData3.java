@@ -1797,7 +1797,7 @@ public final class GData3 extends GData {
                 break;
             }
             for (PGData3 tri : tris) {
-                tri.drawTextGL33vao(ox + ox2, oy, oz + 100000f, zoom);
+                tri.drawTextGL33(ox + ox2, oy, oz + 100000f, zoom);
             }
             ox2 = ox2 - .01f * zoom;
         }

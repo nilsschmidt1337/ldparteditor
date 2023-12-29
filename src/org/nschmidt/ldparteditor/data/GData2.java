@@ -896,7 +896,7 @@ public final class GData2 extends GData {
                 break;
             }
             for (PGData3 tri : tris) {
-                tri.drawTextGL33vao(ox + ox2, oy, oz + 100000f, zoom);
+                tri.drawTextGL33(ox + ox2, oy, oz + 100000f, zoom);
             }
             ox2 = ox2 - .01f * zoom;
         }
@@ -961,25 +961,25 @@ public final class GData2 extends GData {
         final float oy5 = .09f * zoom;
         final float ox1 = -.045f * zoom;
         for (PGData3 tri : View.S) {
-            tri.drawTextGL33vao(lineOrigin.x, lineOrigin.y, lineOrigin.z + 100000f, zoom);
+            tri.drawTextGL33(lineOrigin.x, lineOrigin.y, lineOrigin.z + 100000f, zoom);
         }
         for (PGData3 tri : View.DA) {
-            tri.drawTextGL33vao(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
+            tri.drawTextGL33(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
         for (PGData3 tri : View.Dmm) {
-            tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy1, textOrigin.z + 100000f, zoom);
+            tri.drawTextGL33(textOrigin.x, textOrigin.y + oy1, textOrigin.z + 100000f, zoom);
         }
         for (PGData3 tri : View.Dst) {
-            tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy2, textOrigin.z + 100000f, zoom);
+            tri.drawTextGL33(textOrigin.x, textOrigin.y + oy2, textOrigin.z + 100000f, zoom);
         }
         for (PGData3 tri : View.DX) {
-            tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
+            tri.drawTextGL33(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
         }
         for (PGData3 tri : View.DY) {
-            tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy4, textOrigin.z + 100000f, zoom);
+            tri.drawTextGL33(textOrigin.x, textOrigin.y + oy4, textOrigin.z + 100000f, zoom);
         }
         for (PGData3 tri : View.DZ) {
-            tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy5, textOrigin.z + 100000f, zoom);
+            tri.drawTextGL33(textOrigin.x, textOrigin.y + oy5, textOrigin.z + 100000f, zoom);
         }
         drawNumberGL33(dAS, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
         drawNumberGL33(dmS, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);

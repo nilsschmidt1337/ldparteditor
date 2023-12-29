@@ -184,25 +184,6 @@ public class GL33Helper {
         GL15.glDeleteBuffers(vboGeneral);
     }
 
-    public static void drawTriangleVAOgeneralSlow(float[] vertices) {
-        int vaoGeneral = GL30.glGenVertexArrays();
-        int vboGeneral = GL15.glGenBuffers();
-        GL30.glBindVertexArray(vaoGeneral);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGeneral);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
-
-        GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
-        GL20.glVertexAttribPointer(POSITION_SHADER_LOCATION, 3, GL11.GL_FLOAT, false, 12, 0);
-
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
-
-        GL30.glBindVertexArray(0);
-        GL30.glDeleteVertexArrays(vaoGeneral);
-        GL15.glDeleteBuffers(vboGeneral);
-    }
-
     public static void colourise7(int offset, int times, float r, float g, float b,
             float a, float[] vertexData, int i) {
         for (int j = 0; j < times; j++) {
