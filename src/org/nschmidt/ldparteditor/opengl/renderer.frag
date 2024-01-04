@@ -211,6 +211,7 @@ void main()
         float saturation2 = max(dot(magic2, normal), 0.0f);
         float saturation = max(max(saturation1, saturation2) * 2.0f, 1.0f);
         float grayscale = (resultColor.r * 0.33f + resultColor.g * 0.33f + resultColor.b * 0.33f) * (1.0f - saturation);
+        
         resultColor.r = resultColor.r * saturation + grayscale;
         
         magic1 = vec3(-1.0f,0.0f,0.0f);
@@ -231,39 +232,7 @@ void main()
         saturation = max(max(saturation1, saturation2) * 2.0f, 1.0f);
         grayscale = (resultColor.r * 0.33f + resultColor.g * 0.33f + resultColor.b * 0.33f) * (1.0f - saturation);
         
-        
         resultColor.b = resultColor.b * saturation + grayscale;
-        
-        
-        lights[0] = light0;
-        lights[1] = light1;
-        lights[2] = light2;
-        lights[3] = light3;
-        
-        vec3   lightDir;
-        float  attenFactor;
-        vec4   lightAmbientDiffuse  = vec4(0.0,0.0,0.0,0.0);
-        vec4   lightSpecular        = vec4(0.0,0.0,0.0,0.0);
-        
-        // iterate all lights
-        for (int i=0; i<4; ++i)
-        {
-            // attenuation and light direction
-            // positional light source
-            float dist  = distance(lights[i].position.xyz, position);
-            attenFactor = 1.0 /( lights[i].constantAttenuation +
-            lights[i].linearAttenuation * dist +
-            lights[i].quadraticAttenuation * dist * dist );
-            lightDir = normalize(lights[i].position.xyz - position);
-            
-            lightAmbientDiffuse += lights[i].diffuse * frontMaterial.diffuse * max(dot(normal3, lightDir), 0.0) * attenFactor;
-            
-            // specular
-            vec3 r = normalize(reflect(-lightDir, normal));
-            
-            lightSpecular += lights[i].specular * frontMaterial.specular * pow(max(dot(r, eyeDir), 0.0), frontMaterial.shininess) * attenFactor;
-            
-        }
         
         resultColor.a = 1.0f;
     }
@@ -306,8 +275,9 @@ void main()
         
     }
     
-    lightAmbientDiffuse.a = 0f;
-    lightSpecular.a = 0f;
+    // It is not possible to set alpha with lightAmbientDiffuse.a = X or lightSpecular.a = X
+    lightAmbientDiffuse  = vec4(lightAmbientDiffuse.r,lightAmbientDiffuse.g,lightAmbientDiffuse.b,0.0);
+    lightSpecular        = vec4(lightSpecular.r,lightSpecular.g,lightSpecular.b,0.0);
     
     if (texmapswitch > 0.5f) {
         vec4 texColor = texture2D(ldpePngSampler, tex.xy);

@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.opengl;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 public enum GL33HelperPrimitives {
     INSTANCE;
@@ -26,12 +27,14 @@ public enum GL33HelperPrimitives {
     private static final int COLOUR_SHADER_LOCATION = 1;
     private static final int RGB_STRIDE = (3 + 3) * 4;
 
+    private static int vao = -1;
     private static int vboTriangle = -1;
     private static int eboTriangle = -1;
     private static int vboQuad = -1;
     private static int eboQuad = -1;
     private static int vboLine = -1;
 
+    private static int vaoBackup = -1;
     private static int vboTriangleBackup = -1;
     private static int eboTriangleBackup = -1;
     private static int vboQuadBackup = -1;
@@ -39,6 +42,7 @@ public enum GL33HelperPrimitives {
     private static int vboLineBackup = -1;
 
     static void backupVBOprimitiveArea() {
+        vaoBackup = vao;
         vboTriangleBackup = vboTriangle;
         eboTriangleBackup = eboTriangle;
         vboQuadBackup = vboQuad;
@@ -47,6 +51,7 @@ public enum GL33HelperPrimitives {
     }
 
     static void restoreVBOprimitiveArea() {
+        vao = vaoBackup;
         vboTriangle = vboTriangleBackup;
         eboTriangle = eboTriangleBackup;
         vboQuad = vboQuadBackup;
@@ -55,11 +60,14 @@ public enum GL33HelperPrimitives {
     }
 
     static void createVBOprimitiveArea() {
+        vao = GL30.glGenVertexArrays();
         vboTriangle = GL15.glGenBuffers();
         eboTriangle = GL15.glGenBuffers();
         vboQuad = GL15.glGenBuffers();
         eboQuad = GL15.glGenBuffers();
         vboLine = GL15.glGenBuffers();
+
+        GL30.glBindVertexArray(vao);
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboQuad);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, new float[48], GL15.GL_DYNAMIC_DRAW);
@@ -102,6 +110,8 @@ public enum GL33HelperPrimitives {
     }
 
     static void destroyVBOprimitiveArea() {
+        GL30.glBindVertexArray(0);
+        GL30.glDeleteVertexArrays(vao);
         GL15.glDeleteBuffers(vboTriangle);
         GL15.glDeleteBuffers(eboTriangle);
         GL15.glDeleteBuffers(vboQuad);

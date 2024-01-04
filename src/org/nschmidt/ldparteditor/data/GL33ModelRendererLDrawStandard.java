@@ -1326,6 +1326,7 @@ public class GL33ModelRendererLDrawStandard {
         if (drawSolidMaterials) {
 
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, ss);
+            mainShader.lightsOff();
 
             if (ls > 0 && drawLines) {
                 GL30.glBindVertexArray(vaoLines);
@@ -1385,6 +1386,7 @@ public class GL33ModelRendererLDrawStandard {
         } else {
 
             GL11.glDrawArrays(GL11.GL_TRIANGLES, to, ts);
+            mainShader.lightsOff();
             mainShader.setFactor(1f);
         }
 
@@ -1427,6 +1429,9 @@ public class GL33ModelRendererLDrawStandard {
             stack.setShader(mainShader);
         }
 
+        if (c3d.isLightOn()) {
+            mainShader.lightsOn();
+        }
         GL30.glBindVertexArray(0);
     }
 

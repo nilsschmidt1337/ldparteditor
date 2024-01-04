@@ -395,8 +395,8 @@ public final class PGData3 extends PGData implements Serializable {
         });
     }
 
-    void drawTextGL33vao(float x, float y, float z, float scale) {
-        GL33Helper.drawTriangleVAOgeneralSlow(new float[] {
+    void drawTextGL33(float x, float y, float z, float scale) {
+        GL33Helper.drawTriangleGeneralSlow(new float[] {
             -x1 * scale + x, y1 * scale + y, z1 * scale + z,
             -x3 * scale + x, y3 * scale + y, z3 * scale + z,
             -x2 * scale + x, y2 * scale + y, z2 * scale + z

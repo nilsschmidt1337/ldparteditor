@@ -573,7 +573,6 @@ public class Manipulator {
             axis = new Vector3f(gen[2].x, gen[2].y, gen[2].z);
             break;
         default:
-            NLogger.debug(Manipulator.class, "No rotation type. Value is " + type); //$NON-NLS-1$
             axis = new Vector3f(1f, 0f, 0f);
             break;
         }
