@@ -1381,7 +1381,7 @@ public class MouseActions {
     }
 
     public void syncManipulator() {
-        if (c3d.isSyncManipulator()) {
+        if (c3d.isSyncManipulator() || !GDataCSG.getSelection(c3d.getLockableDatFileReference()).isEmpty()) {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d2 = renderer.getC3D();
                 if (!c3d2.isDisposed() && c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
