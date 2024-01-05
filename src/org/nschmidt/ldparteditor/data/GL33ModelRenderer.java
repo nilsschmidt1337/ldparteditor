@@ -145,6 +145,7 @@ public class GL33ModelRenderer {
     private volatile int lineSize = 0;
     private volatile int tempLineSize = 0;
     private volatile int vertexSize = 0;
+    private volatile int selectedVerticesSize = 0;
     private volatile int condlineSize = 0;
     private volatile int selectionSize = 0;
 
@@ -368,6 +369,8 @@ public class GL33ModelRenderer {
                 final List<Vertex> vertices = new ArrayList<>(vm.vertexLinkedToPositionInFile.size());
                 vertices.addAll(vm.vertexLinkedToPositionInFile.keySet());
                 maniLock.unlock();
+                // For the selected vertices we copy it without a lock
+                final Set<Vertex> selectedVertices = new TreeSet<>(vm.selectedVertices);
 
                 if (calculateCondlineControlPoints.compareAndSet(true, false)) {
                     CompletableFuture.runAsync( () -> {
@@ -396,7 +399,6 @@ public class GL33ModelRenderer {
 
                 // The links are sufficient
                 final Set<GData> selectedData = vm.selectedData;
-                final Set<Vertex> selectedVertices = vm.selectedVertices;
                 final ThreadsafeHashMap<GData, Set<VertexInfo>> ltv = vm.lineLinkedToVertices;
                 Set<Vertex> tmpSelectedVertices = null;
                 SortedMap<Integer, List<Integer>> smoothVertexAdjacency = null;
@@ -706,6 +708,7 @@ public class GL33ModelRenderer {
                 int localTempLineSize = 0;
                 @SuppressWarnings("unchecked")
                 int localVerticesSize = vertices.size() + (smoothVertices ? ((List<Vertex>) smoothObj[0]).size() : 0);
+                final int localSelectedVerticesSize;
                 int localSelectionLineSize = 0;
 
                 int triangleVertexCount = 0;
@@ -1060,20 +1063,8 @@ public class GL33ModelRenderer {
                     final float b2 = Colour.vertexSelectedColourB;
                     int i = 0;
 
-                    if (isTransforming && moveAdjacentData) {
-                        for(Vertex v : transformedVertices) {
-                            vertexData[i] = v.x;
-                            vertexData[i + 1] = v.y;
-                            vertexData[i + 2] = v.z;
-                            vertexData[i + 3] = r2;
-                            vertexData[i + 4] = g2;
-                            vertexData[i + 5] = b2;
-                            vertexData[i + 6] = 7f;
-                            i += 7;
-                        }
-                    }
                     if (smoothVertices) {
-
+                        localSelectedVerticesSize = 0;
                         for(Vertex v : vertices) {
                             vertexData[i] = v.x;
                             vertexData[i + 1] = v.y;
@@ -1102,30 +1093,52 @@ public class GL33ModelRenderer {
                             i += 7;
                         }
                     } else {
-                        for(Vertex v : vertices) {
-                            vertexData[i] = v.x;
-                            vertexData[i + 1] = v.y;
-                            vertexData[i + 2] = v.z;
+                        localSelectedVerticesSize = selectedVertices.size();
+                        if (!selectedVertices.isEmpty()) {
+                            for(Vertex v : vertices) {
+                                if (selectedVertices.contains(v)) {
+                                    vertexData[i] = v.x;
+                                    vertexData[i + 1] = v.y;
+                                    vertexData[i + 2] = v.z;
+                                    vertexData[i + 3] = r2;
+                                    vertexData[i + 4] = g2;
+                                    vertexData[i + 5] = b2;
+                                    vertexData[i + 6] = 7f;
+                                    i += 7;
+                                }
+                            }
+                        }
 
-                            if (selectedVertices.contains(v)) {
-                                vertexData[i + 3] = r2;
-                                vertexData[i + 4] = g2;
-                                vertexData[i + 5] = b2;
-                                vertexData[i + 6] = 7f;
-                            } else {
+                        for(Vertex v : vertices) {
+                            if (!selectedVertices.contains(v)) {
+                                vertexData[i] = v.x;
+                                vertexData[i + 1] = v.y;
+                                vertexData[i + 2] = v.z;
                                 vertexData[i + 3] = r;
                                 vertexData[i + 4] = g;
                                 vertexData[i + 5] = b;
-
                                 if (c3d.isShowingCondlineControlPoints()) {
                                     vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
                                 } else {
                                     vertexData[i + 6] = hiddenVertices.contains(v) || pureCondlineControlPoints.contains(v) ? 0f : 7f;
                                 }
+
+                                i += 7;
                             }
+                        }
+                    }
+
+                    if (isTransforming && moveAdjacentData) {
+                        for(Vertex v : transformedVertices) {
+                            vertexData[i] = v.x;
+                            vertexData[i + 1] = v.y;
+                            vertexData[i + 2] = v.z;
+                            vertexData[i + 3] = r2;
+                            vertexData[i + 4] = g2;
+                            vertexData[i + 5] = b2;
+                            vertexData[i + 6] = 7f;
                             i += 7;
                         }
-
                     }
                 }
 
@@ -2162,6 +2175,7 @@ public class GL33ModelRenderer {
                 transparentTriangleSize = transparentTriangleVertexCount;
                 transparentTriangleOffset = triangleVertexCount;
                 vertexSize = localVerticesSize;
+                selectedVerticesSize = localSelectedVerticesSize;
                 dataVertices = vertexData;
                 lineSize = lineVertexCount;
                 dataLines = lineData;
@@ -2404,6 +2418,7 @@ public class GL33ModelRenderer {
                 // I can't use glBufferSubData() it creates a memory leak!!!
                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataVertices, GL15.GL_STATIC_DRAW);
                 final int vs = vertexSize;
+                final int svs = selectedVerticesSize;
                 lock.unlock();
 
                 GL20.glEnableVertexAttribArray(0);
@@ -2426,7 +2441,10 @@ public class GL33ModelRenderer {
                 Matrix4f.transform(ivm, tr, tr);
                 stack.glPushMatrix();
                 stack.glTranslatef(tr.x, tr.y, tr.z);
-                GL11.glDrawArrays(GL11.GL_POINTS, 0, vs);
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glDrawArrays(GL11.GL_POINTS, 0, svs);
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+                GL11.glDrawArrays(GL11.GL_POINTS, svs, vs - svs);
                 stack.glPopMatrix();
             }
         }
