@@ -143,7 +143,7 @@ class CompositeTabDesign extends CTabItem {
 
             compositeText.setBackground(TextEditorColour.getTextBackground());
             compositeText.setForeground(TextEditorColour.getTextForeground());
-            compositeText.setFont(Font.MONOSPACE);
+            compositeText.setFont(Font.monospaced());
             compositeText.setLineSpacing(0);
 
             Canvas canvasTextmarks = new Canvas(composite, SWT.NONE);

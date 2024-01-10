@@ -20,6 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.text.FontMetrics;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * This class contains constant fonts and font information
@@ -33,9 +34,45 @@ public enum Font {
     /** The system font with the height of 8 */
     public static final org.eclipse.swt.graphics.Font SMALL = SWTResourceManager.getFont(Display.getDefault().getSystemFont().getFontData()[0].getName(), 8, SWT.NORMAL);
     /** The standard monospaced font for terminals */
-    public static final org.eclipse.swt.graphics.Font MONOSPACE = JFaceResources.getFont(JFaceResources.TEXT_FONT);
+    public static final org.eclipse.swt.graphics.Font MONOSPACE_1 = JFaceResources.getFont(JFaceResources.TEXT_FONT);
     /** The width of the standard monospaced font (in pixels) */
-    public static final int MONOSPACE_WIDTH = FontMetrics.getStringWidth(" ", Font.MONOSPACE); //$NON-NLS-1$
+    private static final int MONOSPACE_1_WIDTH = FontMetrics.getStringWidth(" ", Font.MONOSPACE_1); //$NON-NLS-1$
+    /** The standard monospaced font for terminals */
+    public static final org.eclipse.swt.graphics.Font MONOSPACE_2 = SWTResourceManager.getFont(MONOSPACE_1.getFontData()[0].getName(), (int) (MONOSPACE_1.getFontData()[0].getHeight() * 1.5), SWT.NORMAL);
+    /** The width of the standard monospaced font (in pixels) */
+    private static final int MONOSPACE_2_WIDTH = FontMetrics.getStringWidth(" ", Font.MONOSPACE_2); //$NON-NLS-1$
+    /** The standard monospaced font for terminals */
+    public static final org.eclipse.swt.graphics.Font MONOSPACE_3 = SWTResourceManager.getFont(MONOSPACE_1.getFontData()[0].getName(), MONOSPACE_1.getFontData()[0].getHeight() * 2, SWT.NORMAL);
+    /** The width of the standard monospaced font (in pixels) */
+    private static final int MONOSPACE_3_WIDTH = FontMetrics.getStringWidth(" ", Font.MONOSPACE_3); //$NON-NLS-1$
     /** The em size of the standard font (in pixels) */
     public static final int STANDARD_EM_SIZE = FontMetrics.getStringWidth("M", Font.SYSTEM); //$NON-NLS-1$
+    /** The width of the current monospaced font (in pixels) */
+    public static int width() {
+        final int textSize = WorkbenchManager.getUserSettingState().getTextSize();
+        switch (textSize) {
+        case 0:
+            return Font.MONOSPACE_1_WIDTH;
+        case 1:
+            return Font.MONOSPACE_2_WIDTH;
+        case 2:
+            return Font.MONOSPACE_3_WIDTH;
+        default:
+            return Font.MONOSPACE_1_WIDTH;
+        }
+    }
+    /** The monospaced font for terminals */
+    public static org.eclipse.swt.graphics.Font monospaced() {
+        final int textSize = WorkbenchManager.getUserSettingState().getTextSize();
+        switch (textSize) {
+        case 0:
+            return Font.MONOSPACE_1;
+        case 1:
+            return Font.MONOSPACE_2;
+        case 2:
+            return Font.MONOSPACE_3;
+        default:
+            return Font.MONOSPACE_1;
+        }
+    }
 }

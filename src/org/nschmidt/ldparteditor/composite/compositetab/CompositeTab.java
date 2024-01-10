@@ -113,7 +113,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public class CompositeTab extends CompositeTabDesign {
 
     private final SyntaxFormatter syntaxFormatter = new SyntaxFormatter(compositeTextPtr[0]);
-    private final int caretHeight = compositeTextPtr[0].getCaret().getSize().y;
+    private int caretHeight = compositeTextPtr[0].getCaret().getSize().y;
 
     /** The state of this tab */
     private CompositeTabState tabState = new CompositeTabState();
@@ -710,7 +710,7 @@ public class CompositeTab extends CompositeTabDesign {
                 if (oldLineCount != newLineCount) {
                     oldLineCount = newLineCount;
                     int numberOfDigits = (int) Math.log10(newLineCount);
-                    ((GridData) canvasLineNumberAreaPtr[0].getLayoutData()).widthHint = (numberOfDigits + (NLogger.debugging ? 26 : 2)) * Font.MONOSPACE_WIDTH;
+                    ((GridData) canvasLineNumberAreaPtr[0].getLayoutData()).widthHint = (numberOfDigits + (NLogger.debugging ? 26 : 2)) * Font.width();
                     canvasLineNumberAreaPtr[0].getParent().layout();
                 }
                 if (event.length == 0) {
@@ -1185,6 +1185,26 @@ public class CompositeTab extends CompositeTabDesign {
                         clipboard2.dispose();
                     }
 
+                    break;
+                }
+                case EDITORTEXT_SIZE_INCREASE:
+                {
+                    final int textSize = Math.clamp(WorkbenchManager.getUserSettingState().getTextSize() + 1L, 0, 2);
+                    for (EditorTextWindow win : Project.getOpenTextWindows()) {
+                        for (final CTabItem tab : win.getTabFolder().getItems()) {
+                            ((CompositeTab) tab).updateTextSize(textSize);
+                        }
+                    }
+                    break;
+                }
+                case EDITORTEXT_SIZE_DECREASE:
+                {
+                    final int textSize = Math.clamp(WorkbenchManager.getUserSettingState().getTextSize() - 1L, 0, 2);
+                    for (EditorTextWindow win : Project.getOpenTextWindows()) {
+                        for (final CTabItem tab : win.getTabFolder().getItems()) {
+                            ((CompositeTab) tab).updateTextSize(textSize);
+                        }
+                    }
                     break;
                 }
                 default:
@@ -1795,7 +1815,7 @@ public class CompositeTab extends CompositeTabDesign {
             }
         });
         canvasLineNumberAreaPtr[0].addPaintListener(e -> {
-            e.gc.setFont(Font.MONOSPACE);
+            e.gc.setFont(Font.monospaced());
             int yOffset = -compositeTextPtr[0].getVerticalBar().getSelection() % caretHeight;
             int height = compositeContainerPtr[0].getBounds().height;
             int startLine = compositeTextPtr[0].getVerticalBar().getSelection() / caretHeight + 1;
@@ -1941,6 +1961,36 @@ public class CompositeTab extends CompositeTabDesign {
             st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
             st.forceFocus();
         });
+    }
+
+    private void updateTextSize(int textSize) {
+        NLogger.debug(getClass(), "New text size is {0} ", textSize); //$NON-NLS-1$
+        final org.eclipse.swt.graphics.Font textFont;
+        WorkbenchManager.getUserSettingState().setTextSize(textSize);
+        switch (textSize) {
+        case 0:
+            textFont = Font.MONOSPACE_1;
+            break;
+        case 1:
+            textFont = Font.MONOSPACE_2;
+            break;
+        case 2:
+            textFont = Font.MONOSPACE_3;
+            break;
+        default:
+            textFont = Font.MONOSPACE_1;
+        }
+
+        final int topIndex = compositeTextPtr[0].getTopIndex();
+        compositeTextPtr[0].setFont(textFont);
+        caretHeight = compositeTextPtr[0].getCaret().getSize().y;
+        int lineCount = compositeTextPtr[0].getLineCount();
+        int numberOfDigits = (int) Math.log10(lineCount);
+        ((GridData) canvasLineNumberAreaPtr[0].getLayoutData()).widthHint = (numberOfDigits + (NLogger.debugging ? 26 : 2)) * Font.width();
+        canvasLineNumberAreaPtr[0].getParent().layout();
+        canvasLineNumberAreaPtr[0].redraw();
+        compositeTextPtr[0].setTopIndex(0);
+        compositeTextPtr[0].setTopIndex(topIndex);
     }
 
     private void copySelectedIssuesToClipboard() {

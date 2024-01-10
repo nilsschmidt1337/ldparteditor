@@ -208,7 +208,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
         textCmp[0] = txtCell;
         txtCell.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         txtCell.setText(numberFormat.format(val));
-        txtCell.setFont(Font.MONOSPACE);
+        txtCell.setFont(Font.MONOSPACE_1);
         txtCell.setEditable(false);
     }
 

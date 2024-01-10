@@ -542,6 +542,8 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtmEditorText, I18n.KEYBOARD_INSERT_REFERENCE, TextTask.EDITORTEXT_INSERT_REFERENCE, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_MOVE_LINE_UP, TextTask.EDITORTEXT_LINE_UP, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_MOVE_LINE_DOWN, TextTask.EDITORTEXT_LINE_DOWN, true);
+                registerTask(trtmEditorText, I18n.KEYBOARD_SIZE_DECREASE, TextTask.EDITORTEXT_SIZE_DECREASE, true);
+                registerTask(trtmEditorText, I18n.KEYBOARD_SIZE_INCREASE, TextTask.EDITORTEXT_SIZE_INCREASE, true);
 
                 if (s1.size() != Task.values().length || s2.size() != TextTask.values().length) {
                     throw new AssertionError("Not all shortkey items are covered by this dialog! Please fix it"); //$NON-NLS-1$

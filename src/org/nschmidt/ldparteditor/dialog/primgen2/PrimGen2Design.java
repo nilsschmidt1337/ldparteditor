@@ -306,7 +306,7 @@ class PrimGen2Design extends Dialog {
         txtData.setText(""); //$NON-NLS-1$
         txtData.setBackground(TextEditorColour.getTextBackground());
         txtData.setForeground(TextEditorColour.getTextForeground());
-        txtData.setFont(Font.MONOSPACE);
+        txtData.setFont(Font.monospaced());
         txtData.setLineSpacing(0);
 
         if (NLogger.debugging) {
@@ -315,7 +315,7 @@ class PrimGen2Design extends Dialog {
             txtData2.setText(""); //$NON-NLS-1$
             txtData2.setBackground(TextEditorColour.getTextBackground());
             txtData2.setForeground(TextEditorColour.getTextForeground());
-            txtData2.setFont(Font.MONOSPACE);
+            txtData2.setFont(Font.monospaced());
             txtData2.setLineSpacing(0);
         } else {
             sashForm.setWeights(33, 66);

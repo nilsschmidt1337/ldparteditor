@@ -2979,7 +2979,7 @@ public class MiscToolItem extends ToolItem {
                         float b = 0.1f;
 
                         if (ts.getFontData() == null) {
-                            myFont = new java.awt.Font(org.nschmidt.ldparteditor.enumtype.Font.MONOSPACE.getFontData()[0].getName(), java.awt.Font.PLAIN, 32);
+                            myFont = new java.awt.Font(org.nschmidt.ldparteditor.enumtype.Font.MONOSPACE_1.getFontData()[0].getName(), java.awt.Font.PLAIN, 32);
                         } else {
                             FontData fd = ts.getFontData();
                             RGB fontColour = ts.getRGB();

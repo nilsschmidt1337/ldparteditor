@@ -169,7 +169,9 @@ public enum ResourceManager {
         // Dispose all static fonts
         Font.SMALL.dispose();
         Font.SYSTEM.dispose();
-        Font.MONOSPACE.dispose();
+        Font.MONOSPACE_1.dispose();
+        Font.MONOSPACE_2.dispose();
+        Font.MONOSPACE_3.dispose();
         // Dispose all colors
         TextEditorColour.dispose();
     }

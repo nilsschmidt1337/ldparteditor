@@ -933,6 +933,8 @@ public final class I18n {
     public static final String KEYBOARD_SHOW_AXIS_LABELS = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SHOW_GRID = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SHOW_RULER = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_SIZE_DECREASE = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_SIZE_INCREASE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SPLIT = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SWAP_WINDING = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_TOGGLE_INSERT_AT_CURSOR = KEYBOARD.getString(getProperty());

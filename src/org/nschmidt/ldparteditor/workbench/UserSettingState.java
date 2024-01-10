@@ -257,6 +257,8 @@ public class UserSettingState implements Serializable {
     
     private boolean showingAxisLabels = false;
 
+    private int textSize = 0;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -1474,5 +1476,13 @@ public class UserSettingState implements Serializable {
 
     public boolean isShowingAxisLabels() {
         return showingAxisLabels;
+    }
+
+    public int getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
     }
 }
