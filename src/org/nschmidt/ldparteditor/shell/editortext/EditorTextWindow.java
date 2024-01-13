@@ -589,7 +589,15 @@ public class EditorTextWindow extends EditorTextDesign {
                 final int y = selection.y;
                 if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                     if (df.isVirtual()) {
-                        saveAs(df, new File(df.getNewName()).getName(), null);
+                        final Editor3DWindow win = Editor3DWindow.getWindow();
+                        if (saveAs(df, new File(df.getNewName()).getName(), null)) {
+                            Project.removeUnsavedFile(df);
+                            Project.removeOpenedFile(df);
+                            if (!win.closeDatfile(df)) {
+                                Project.addOpenedFile(df);
+                                win.updateTabs();
+                            }
+                        }
                     } else if (df.save()) {
                         NewOpenSaveProjectToolItem.addRecentFile(df);
                         Editor3DWindow.getWindow().updateTreeUnsavedEntries();
