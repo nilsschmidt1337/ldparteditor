@@ -1216,6 +1216,12 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
                 if (selected != null) {
 
+                    if (new DatFile(selected).equals(dfToSave) && filePath == null) {
+                        dfToSave.save();
+                        Editor3DWindow.getWindow().updateTabs();
+                        return false;
+                    }
+
                     if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
                         MessageBox messageBox = new MessageBox(btnSaveAsPtr[0].getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
                         messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
