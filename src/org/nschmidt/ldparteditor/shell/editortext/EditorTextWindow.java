@@ -1218,6 +1218,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
                     if (new DatFile(selected).equals(dfToSave) && filePath == null) {
                         dfToSave.save();
+                        NewOpenSaveProjectToolItem.addRecentFile(dfToSave);
                         Editor3DWindow.getWindow().updateTabs();
                         return false;
                     }

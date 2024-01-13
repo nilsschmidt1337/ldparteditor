@@ -125,9 +125,10 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                                     Project.removeOpenedFile(df);
                                     if (!win.closeDatfile(df)) {
                                         Project.addOpenedFile(df);
-                                        win.updateTreeUnsavedEntries();
                                     }
                                 }
+
+                                win.updateTreeUnsavedEntries();
                             } else if (df.save()) {
                                 addRecentFile(df);
                                 win.updateTreeUnsavedEntries();
@@ -151,9 +152,10 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                                         Project.removeOpenedFile(df);
                                         if (!win.closeDatfile(df)) {
                                             Project.addOpenedFile(df);
-                                            win.updateTreeUnsavedEntries();
                                         }
                                     }
+
+                                    win.updateTreeUnsavedEntries();
                                 } else if (df.save()) {
                                     addRecentFile(df);
                                     Project.removeUnsavedFile(df);
@@ -216,9 +218,10 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                                 Project.removeOpenedFile(df);
                                 if (!win.closeDatfile(df)) {
                                     Project.addOpenedFile(df);
-                                    win.updateTreeUnsavedEntries();
                                 }
                             }
+
+                            win.updateTreeUnsavedEntries();
                         } else if (df.save()) {
                             addRecentFile(df);
                             Project.removeUnsavedFile(df);
@@ -244,9 +247,10 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                             Project.removeOpenedFile(df);
                             if (!win.closeDatfile(df)) {
                                 Project.addOpenedFile(df);
-                                win.updateTreeUnsavedEntries();
                             }
                         }
+
+                        win.updateTreeUnsavedEntries();
                     } else if (df.save()) {
                         addRecentFile(df);
                         Project.removeUnsavedFile(df);
@@ -268,7 +272,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
 
     private static void addRecentFile(String projectPath) {
         // PrimGen2 uses a temporary "..." projectPath
-        if (!"...".equals(projectPath)) { //$NON-NLS-1$
+        if (!"...".equals(projectPath) && projectPath!= null && !projectPath.endsWith("...")) { //$NON-NLS-1$ //$NON-NLS-2$
             boolean removedAnItem = true;
             while (removedAnItem) {
                 removedAnItem = true;

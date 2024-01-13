@@ -210,9 +210,10 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                         Project.removeOpenedFile(df);
                         if (!win.closeDatfile(df)) {
                             Project.addOpenedFile(df);
-                            win.updateTabs();
                         }
                     }
+
+                    win.updateTabs();
                 } else {
                     NewOpenSaveProjectToolItem.addRecentFile(df);
                     if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
@@ -233,6 +234,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
 
         widgetUtil(btnSaveAsDatPtr[0]).addSelectionListener(e -> {
             saveAs(win, Project.getFileToEdit());
+            win.updateTreeUnsavedEntries();
             win.regainFocus();
         });
     }
@@ -265,6 +267,12 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                 try {
                     String selected = fd.open();
                     if (selected != null) {
+
+                        if (new DatFile(selected).equals(df2)) {
+                            df2.save();
+                            NewOpenSaveProjectToolItem.addRecentFile(df2);
+                            return false;
+                        }
 
                         if (win.isFileNameAllocated(selected, new DatFile(selected), true)) {
                             MessageBox messageBox = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);

@@ -957,9 +957,10 @@ public class CompositeTab extends CompositeTabDesign {
                                 Project.removeOpenedFile(df);
                                 if (!Editor3DWindow.getWindow().closeDatfile(df)) {
                                     Project.addOpenedFile(df);
-                                    Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                                 }
                             }
+
+                            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                         } else if (df.save()) {
                             NewOpenSaveProjectToolItem.addRecentFile(df);
                             Project.removeUnsavedFile(df);
