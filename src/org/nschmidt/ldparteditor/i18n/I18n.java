@@ -454,6 +454,7 @@ public final class I18n {
     public static final String E3D_COPY_TO_UNOFFICIAL_LIBRARY = E3D.getString(getProperty());
     public static final String E3D_CREATE_NEW_DAT = E3D.getString(getProperty());
     public static final String E3D_CREATE_TRANSFORMED_COPY = E3D.getString(getProperty());
+    public static final String E3D_CSG_OPTIMISATION = E3D.getString(getProperty());
     public static final String E3D_DECOLOUR = E3D.getString(getProperty());
     public static final String E3D_DELETE_CONFIG = E3D.getString(getProperty());
     public static final String E3D_DISTRIBUTE_BOTTOM_EDGES = E3D.getString(getProperty());

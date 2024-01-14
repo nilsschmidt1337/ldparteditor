@@ -168,7 +168,9 @@ public enum GuiStatusManager {
             }
 
             if (Math.abs(CSG.timeOfLastOptimization - System.currentTimeMillis()) < 10000) {
-                sb.append(" CSG: "); //$NON-NLS-1$
+                sb.append(" "); //$NON-NLS-1$
+                sb.append(I18n.E3D_CSG_OPTIMISATION);
+                sb.append(" "); //$NON-NLS-1$
                 sb.append(DF2F.format(CSG.globalOptimizationRate));
                 sb.append("%"); //$NON-NLS-1$
             }

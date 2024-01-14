@@ -18,11 +18,14 @@ package org.nschmidt.ldparteditor.dialog.smooth;
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.project.Project;
 
@@ -61,9 +64,17 @@ public class SmoothDialog extends SmoothDesign {
 
         {
             final VertexManager vm = Project.getFileToEdit().getVertexManager();
-            List<Vertex> selectedVerts = new ArrayList<>();
+            final Map<GData, Set<VertexInfo>> lineLinkedToVertices = vm.getLineLinkedToVertices();
+            Set<Vertex> selectedVerts = new TreeSet<>();
             selectedVerts.addAll(vm.getSelectedVertices());
-            Project.getFileToEdit().getVertexManager().clearSelection();
+            for (GData selection : vm.getSelectedData()) {
+                Set<VertexInfo> vis = lineLinkedToVertices.get(selection);
+                if (vis == null) continue;
+                for (VertexInfo vertexInfo : vis) {
+                    selectedVerts.add(vertexInfo.getVertex());
+                }
+            }
+            vm.clearSelection();
             if (selectedVerts.isEmpty()) {
                 selectedVerts.addAll(vm.getVertices());
             }
