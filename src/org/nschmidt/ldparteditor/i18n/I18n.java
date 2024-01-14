@@ -530,6 +530,8 @@ public final class I18n {
     public static final String E3D_LOADING_LIBRARY = E3D.getString(getProperty());
     public static final String E3D_LOADING_PRIMITIVES = E3D.getString(getProperty());
     public static final String E3D_LOCAL = E3D.getString(getProperty());
+    public static final String E3D_LOCK_PROTRACTOR_ANGLES = E3D.getString(getProperty());
+    public static final String E3D_LOCK_PROTRACTOR_TOOLTIP = E3D.getString(getProperty());
     public static final String E3D_LOG_SHOW_DATA = E3D.getString(getProperty());
     public static final String E3D_LOG_SHOW_NO_LOG_FILES = E3D.getString(getProperty());
     public static final String E3D_LOG_SHOW_UNEXPECTED_EXCEPTION = E3D.getString(getProperty());

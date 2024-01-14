@@ -53,11 +53,11 @@ public enum ProtractorHelper {
         return result;
     }
 
-    public static BigDecimal[] changeAngle(double angle, GData3 tri) {
-        return changeAngle(angle, new Vector3d(tri.x1p, tri.y1p, tri.z1p), new Vector3d(tri.x2p, tri.y2p, tri.z2p), new Vector3d(tri.x3p, tri.y3p, tri.z3p), 6, 10);
+    public static BigDecimal[] changeAngle(double angle, GData3 tri, boolean lockAngles) {
+        return changeAngle(angle, new Vector3d(tri.x1p, tri.y1p, tri.z1p), new Vector3d(tri.x2p, tri.y2p, tri.z2p), new Vector3d(tri.x3p, tri.y3p, tri.z3p), 6, 10, lockAngles);
     }
 
-    public static BigDecimal[] changeAngle(double angle, Vector3d a, Vector3d b, Vector3d c, int angleAccuracy, int lenghtAccuracy) {
+    public static BigDecimal[] changeAngle(double angle, Vector3d a, Vector3d b, Vector3d c, int angleAccuracy, int lenghtAccuracy, boolean lockAngles) {
 
         BigDecimal[] result = new BigDecimal[3];
         result[0] = c.x;
@@ -79,6 +79,16 @@ public enum ProtractorHelper {
         aToC.normalise(v);
 
         double targetAngle = angle;
+        double targetAngle2 = 0;
+        Vector3d bToA = u;
+        Vector3d opposite = u;
+
+        if (lockAngles) {
+            bToA = Vector3d.sub(center, new Vector3d(b.x, b.y, b.z));
+            opposite = new Vector3d(b.x, b.y, b.z);
+            Vector3d bToC = Vector3d.sub(new Vector3d(c.x, c.y, c.z), new Vector3d(b.x, b.y, b.z));
+            targetAngle2 = Vector3d.angle(bToA, bToC);
+        }
 
         SortedSet<Vertex> itearatedPositions =  new TreeSet<>();
         int iterations = 0;
@@ -133,38 +143,74 @@ public enum ProtractorHelper {
         u = Vector3d.sub(new Vector3d(pMin), center);
         u.normalise(u);
 
-        iterations = 0;
-        while (iterations < lenghtAccuracy) {
-            itearatedPositions.clear();
-            innerIterations = 0;
-            while (!itearatedPositions.contains(pMin) && innerIterations < 1000) {
-                itearatedPositions.add(pMin);
-                innerIterations++;
-                Vector3d min = new Vector3d(pMin);
-                res.add(eval2(targetDistSq, center, min));
-                res.add(eval2(targetDistSq, center, Vector3d.add(min, u)));
-                res.add(eval2(targetDistSq, center, Vector3d.sub(min, u)));
+        if (lockAngles) {
+            iterations = 0;
+            while (iterations < lenghtAccuracy) {
+                itearatedPositions.clear();
+                innerIterations = 0;
+                while (!itearatedPositions.contains(pMin) && innerIterations < 1000) {
+                    itearatedPositions.add(pMin);
+                    innerIterations++;
+                    Vector3d min = new Vector3d(pMin);
+                    res.add(eval1(targetAngle2, bToA, opposite, min));
+                    res.add(eval1(targetAngle2, bToA, opposite, Vector3d.add(min, u)));
+                    res.add(eval1(targetAngle2, bToA, opposite, Vector3d.sub(min, u)));
 
-                int minI = -1;
-                double minCorr = 1E100;
-                for (int i = 0; i < res.size(); i++) {
-                    Object[] r = res.get(i);
-                    double corr = (double) r[0];
-                    if (corr < minCorr) {
-                        minCorr = corr;
-                        minI = i;
+                    int minI = -1;
+                    double minCorr = 1E100;
+                    for (int i = 0; i < res.size(); i++) {
+                        Object[] r = res.get(i);
+                        double corr = (double) r[0];
+                        if (corr < minCorr) {
+                            minCorr = corr;
+                            minI = i;
+                        }
                     }
-                }
 
-                if (minI == -1) {
-                    break;
-                }
+                    if (minI == -1) {
+                        break;
+                    }
 
-                pMin = new Vertex((Vector3d) res.get(minI)[1]);
-                res.clear();
+                    pMin = new Vertex((Vector3d) res.get(minI)[1]);
+                    res.clear();
+                }
+                u = u.scale(tenth);
+                iterations++;
             }
-            u = u.scale(tenth);
-            iterations++;
+        } else {
+            iterations = 0;
+            while (iterations < lenghtAccuracy) {
+                itearatedPositions.clear();
+                innerIterations = 0;
+                while (!itearatedPositions.contains(pMin) && innerIterations < 1000) {
+                    itearatedPositions.add(pMin);
+                    innerIterations++;
+                    Vector3d min = new Vector3d(pMin);
+                    res.add(eval2(targetDistSq, center, min));
+                    res.add(eval2(targetDistSq, center, Vector3d.add(min, u)));
+                    res.add(eval2(targetDistSq, center, Vector3d.sub(min, u)));
+
+                    int minI = -1;
+                    double minCorr = 1E100;
+                    for (int i = 0; i < res.size(); i++) {
+                        Object[] r = res.get(i);
+                        double corr = (double) r[0];
+                        if (corr < minCorr) {
+                            minCorr = corr;
+                            minI = i;
+                        }
+                    }
+
+                    if (minI == -1) {
+                        break;
+                    }
+
+                    pMin = new Vertex((Vector3d) res.get(minI)[1]);
+                    res.clear();
+                }
+                u = u.scale(tenth);
+                iterations++;
+            }
         }
 
         result[0] = pMin.xp;

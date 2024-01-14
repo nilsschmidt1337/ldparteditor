@@ -126,6 +126,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.TreeData;
 import org.nschmidt.ldparteditor.helper.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helper.compositetext.ProjectActions;
 import org.nschmidt.ldparteditor.helper.compositetext.SubfileCompiler;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -1214,11 +1215,18 @@ public class Editor3DWindow extends Editor3DDesign {
                 return;
             }
 
-            BigDecimal[] c = ProtractorHelper.changeAngle(spn.getValue().doubleValue(), tri);
+            final boolean lockAngles = btnLockAnglePtr[0].getSelection();
+            BigDecimal[] c = ProtractorHelper.changeAngle(spn.getValue().doubleValue(), tri, lockAngles);
             updatingSelectionTab = true;
             spnSelectionX3Ptr[0].setValue(c[0]);
             spnSelectionY3Ptr[0].setValue(c[1]);
             spnSelectionZ3Ptr[0].setValue(c[2]);
+            if (lockAngles) {
+                final Vector3d pA = new Vector3d(spnSelectionX1Ptr[0].getValue(), spnSelectionY1Ptr[0].getValue(), spnSelectionZ1Ptr[0].getValue());
+                final Vector3d pC = new Vector3d(c[0], c[1], c[2]);
+                spnSelectionLengthPtr[0].setValue(Vector3d.sub(pA, pC).length());
+                spnSelectionLengthMMPtr[0].setValue(spnSelectionLengthPtr[0].getValue().multiply(GData2.MILLIMETRE_PER_LDU));
+            }
             updatingSelectionTab = false;
 
             final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(

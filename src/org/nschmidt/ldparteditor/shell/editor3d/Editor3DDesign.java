@@ -209,6 +209,7 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnNextSelectionPtr = new NButton[1];
     final Text[] txtLinePtr = new Text[1];
     final NButton[] btnMoveAdjacentData2Ptr = new NButton[1];
+    final NButton[] btnLockAnglePtr = new NButton[1];
 
     final BigDecimalSpinner[] spnSelectionAnglePtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnSelectionLengthPtr = new BigDecimalSpinner[1];
@@ -881,6 +882,12 @@ class Editor3DDesign extends ApplicationWindow {
                                 this.btnMoveAdjacentData2Ptr[0] = btnMoveAdjacentData2;
                                 btnMoveAdjacentData2.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
                                 btnMoveAdjacentData2.setText(I18n.E3D_MOVE_ADJACENT_DATA);
+
+                                NButton btnLockAngle = new NButton(cmpLineSetup, SWT.TOGGLE);
+                                this.btnLockAnglePtr[0] = btnLockAngle;
+                                btnLockAngle.setImage(ResourceManager.getImage("icon16_lock.png")); //$NON-NLS-1$
+                                btnLockAngle.setText(I18n.E3D_LOCK_PROTRACTOR_ANGLES);
+                                btnLockAngle.setToolTipText(I18n.E3D_LOCK_PROTRACTOR_TOOLTIP);
 
                                 cmpLineSetup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
