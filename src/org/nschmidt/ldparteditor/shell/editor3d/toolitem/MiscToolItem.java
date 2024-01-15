@@ -74,6 +74,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialog.direction.DirectionDialog;
 import org.nschmidt.ldparteditor.dialog.edger2.EdgerDialog;
+import org.nschmidt.ldparteditor.dialog.infographic.InfographicDialog;
 import org.nschmidt.ldparteditor.dialog.intersector.IntersectorDialog;
 import org.nschmidt.ldparteditor.dialog.isecalc.IsecalcDialog;
 import org.nschmidt.ldparteditor.dialog.lines2pattern.Lines2PatternDialog;
@@ -709,6 +710,13 @@ public class MiscToolItem extends ToolItem {
             mnuTools.setVisible(true);
             Editor3DWindow.getWindow().regainFocus();
         });
+
+        final NButton btnInfographic = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
+        btnInfographic.setText(I18n.INFOGRAPHIC_HELP_BUTTON_TITLE);
+        btnInfographic.setToolTipText(I18n.INFOGRAPHIC_HELP_TOOLTIP);
+        widgetUtil(btnInfographic).addSelectionListener(e -> 
+            new InfographicDialog(Editor3DWindow.getWindow().getShell()).open()
+        );
 
         MenuItem mntmPartReview = new MenuItem(mnuTools, SWT.PUSH);
         MiscToolItem.mntmPartReviewPtr[0] = mntmPartReview;

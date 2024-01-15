@@ -99,6 +99,7 @@ public final class I18n {
     private static final ResourceBundle ERRORFIXER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.ErrorFixer", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle SPINNER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Spinner", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle DIRECTION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Direction", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle INFOGRAPHIC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Infographic", MyLanguage.getLocale()); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -823,6 +824,8 @@ public final class I18n {
     public static final String ERRORFIXER_MOVED_TO = ERRORFIXER.getString(getProperty());
     public static final String ERRORFIXER_MOVED_TO_HINT = ERRORFIXER.getString(getProperty());
     public static final String HINTFIXER_TITLE = HINTFIXER.getString(getProperty());
+    public static final String INFOGRAPHIC_HELP_BUTTON_TITLE = INFOGRAPHIC.getString(getProperty());
+    public static final String INFOGRAPHIC_HELP_TOOLTIP = INFOGRAPHIC.getString(getProperty());
     public static final String INTERSECTOR_COLOUR_MODS = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_DESCRIPTION = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_HIDE_OTHER = INTERSECTOR.getString(getProperty());
