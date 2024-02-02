@@ -15,9 +15,14 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.infographic;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.resource.ResourceManager;
 
 public class InfographicDialog extends InfographicDesign {
+
+    public static final String CHEAT_SHEET_PDF = "ldparteditor_cheat_sheet.pdf"; //$NON-NLS-1$
 
     /**
      * Create the dialog.
@@ -31,7 +36,8 @@ public class InfographicDialog extends InfographicDesign {
     @Override
     public int open() {
         super.create();
-        // MARK All final listeners will be configured here..
+        this.getButton(IDialogConstants.OK_ID).setText(I18n.INFOGRAPHIC_HELP_SAVE_AS_PDF);
+        getShell().setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         return super.open();
     }
 }

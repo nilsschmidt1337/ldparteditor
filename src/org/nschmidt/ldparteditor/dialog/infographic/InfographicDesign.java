@@ -16,11 +16,42 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialog.infographic;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.widget.NButton;
 
 class InfographicDesign extends Dialog {
 
+    private static final String CHEAT_SHEET_IMAGE = "ldparteditor_cheat_sheet_100dpi.png"; //$NON-NLS-1$
+
     InfographicDesign(Shell parentShell) {
         super(parentShell);
+        this.setShellStyle(SWT.RESIZE | this.getShellStyle());
+    }
+
+    /**
+     * Create contents of the dialog.
+     *
+     * @param parent
+     */
+    @Override
+    protected Control createDialogArea(Composite parent) {
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
+        gridLayout.verticalSpacing = 10;
+        gridLayout.horizontalSpacing = 10;
+
+        NButton btnCheatSheet = new NButton(cmpContainer, SWT.NONE);
+        btnCheatSheet.setImage(ResourceManager.getImage(CHEAT_SHEET_IMAGE));
+        btnCheatSheet.setEnabled(false);
+        btnCheatSheet.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
+
+        cmpContainer.pack();
+        return cmpContainer;
     }
 }

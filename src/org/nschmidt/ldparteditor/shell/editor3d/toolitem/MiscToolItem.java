@@ -26,7 +26,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -714,9 +716,31 @@ public class MiscToolItem extends ToolItem {
         final NButton btnInfographic = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
         btnInfographic.setText(I18n.INFOGRAPHIC_HELP_BUTTON_TITLE);
         btnInfographic.setToolTipText(I18n.INFOGRAPHIC_HELP_TOOLTIP);
-        widgetUtil(btnInfographic).addSelectionListener(e -> 
-            new InfographicDialog(Editor3DWindow.getWindow().getShell()).open()
-        );
+        widgetUtil(btnInfographic).addSelectionListener(e -> {
+            if (new InfographicDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.OK_ID) {
+                FileDialog fd = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
+                fd.setText(I18n.INFOGRAPHIC_HELP_SAVE_AS_PDF);
+
+                fd.setFilterPath(Project.getLastVisitedPath());
+                fd.setFileName(InfographicDialog.CHEAT_SHEET_PDF);
+
+                String[] filterExt = { "*.pdf", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                fd.setFilterExtensions(filterExt);
+                String[] filterNames = { I18n.INFOGRAPHIC_HELP_PDF_FORMAT, I18n.E3D_ALL_FILES };
+                fd.setFilterNames(filterNames);
+
+                String selected = fd.open();
+                try {
+                    Files.copy(ResourceManager.class.getResourceAsStream(InfographicDialog.CHEAT_SHEET_PDF), Path.of(selected), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException ioe) {
+                    NLogger.error(MiscToolItem.class, ioe);
+                    MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
+                    messageBox.setText(I18n.DIALOG_ERROR);
+                    messageBox.setMessage(I18n.INFOGRAPHIC_HELP_ERROR);
+                    messageBox.open();
+                }
+            }
+        });
 
         MenuItem mntmPartReview = new MenuItem(mnuTools, SWT.PUSH);
         MiscToolItem.mntmPartReviewPtr[0] = mntmPartReview;

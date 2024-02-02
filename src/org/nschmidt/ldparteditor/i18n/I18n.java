@@ -825,6 +825,9 @@ public final class I18n {
     public static final String ERRORFIXER_MOVED_TO_HINT = ERRORFIXER.getString(getProperty());
     public static final String HINTFIXER_TITLE = HINTFIXER.getString(getProperty());
     public static final String INFOGRAPHIC_HELP_BUTTON_TITLE = INFOGRAPHIC.getString(getProperty());
+    public static final String INFOGRAPHIC_HELP_ERROR = INFOGRAPHIC.getString(getProperty());
+    public static final String INFOGRAPHIC_HELP_PDF_FORMAT = INFOGRAPHIC.getString(getProperty());
+    public static final String INFOGRAPHIC_HELP_SAVE_AS_PDF = INFOGRAPHIC.getString(getProperty());
     public static final String INFOGRAPHIC_HELP_TOOLTIP = INFOGRAPHIC.getString(getProperty());
     public static final String INTERSECTOR_COLOUR_MODS = INTERSECTOR.getString(getProperty());
     public static final String INTERSECTOR_DESCRIPTION = INTERSECTOR.getString(getProperty());
