@@ -26,7 +26,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -74,6 +76,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialog.direction.DirectionDialog;
 import org.nschmidt.ldparteditor.dialog.edger2.EdgerDialog;
+import org.nschmidt.ldparteditor.dialog.infographic.InfographicDialog;
 import org.nschmidt.ldparteditor.dialog.intersector.IntersectorDialog;
 import org.nschmidt.ldparteditor.dialog.isecalc.IsecalcDialog;
 import org.nschmidt.ldparteditor.dialog.lines2pattern.Lines2PatternDialog;
@@ -708,6 +711,35 @@ public class MiscToolItem extends ToolItem {
             mnuTools.setLocation(Editor3DWindow.getWindow().getShell().getDisplay().map(btnToolsActions.getParent(), null, mLoc));
             mnuTools.setVisible(true);
             Editor3DWindow.getWindow().regainFocus();
+        });
+
+        final NButton btnInfographic = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
+        btnInfographic.setText(I18n.INFOGRAPHIC_HELP_BUTTON_TITLE);
+        btnInfographic.setToolTipText(I18n.INFOGRAPHIC_HELP_TOOLTIP);
+        widgetUtil(btnInfographic).addSelectionListener(e -> {
+            if (new InfographicDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.OK_ID) {
+                FileDialog fd = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
+                fd.setText(I18n.INFOGRAPHIC_HELP_SAVE_AS_PDF);
+
+                fd.setFilterPath(Project.getLastVisitedPath());
+                fd.setFileName(InfographicDialog.CHEAT_SHEET_PDF);
+
+                String[] filterExt = { "*.pdf", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                fd.setFilterExtensions(filterExt);
+                String[] filterNames = { I18n.INFOGRAPHIC_HELP_PDF_FORMAT, I18n.E3D_ALL_FILES };
+                fd.setFilterNames(filterNames);
+
+                String selected = fd.open();
+                try {
+                    Files.copy(ResourceManager.class.getResourceAsStream(InfographicDialog.CHEAT_SHEET_PDF), Path.of(selected), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException ioe) {
+                    NLogger.error(MiscToolItem.class, ioe);
+                    MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
+                    messageBox.setText(I18n.DIALOG_ERROR);
+                    messageBox.setMessage(I18n.INFOGRAPHIC_HELP_ERROR);
+                    messageBox.open();
+                }
+            }
         });
 
         MenuItem mntmPartReview = new MenuItem(mnuTools, SWT.PUSH);
