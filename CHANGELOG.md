@@ -1,3 +1,17 @@
+# 04 Feb 2024
+With the release of 1.8.75 you are able to...
+-  ...export a reference card (cheat sheet) for LDPE ("?" button).
+-  ...lock the protractor angle between the opposite and adjacent side.
+-  ...use the OpenGL 3.3 renderer on AMD graphic cards.
+-  ...inrease/decrease the font size of the text editor (with Ctrl+ and Ctrl-).
+-  ...benefit from the fact that the manipulator position between 3D views is synchronised now for CSG manipulations.
+
+The following critical issues are fixed:
+1. Drafts can't be saved under their original filename.
+2. [OpenGL 3.3] Selected vertices stay hidden behind surfaces (uncritical)
+3. The "Smooth Vertices" action had swapped labels for "Iterations:" and "Factor:".
+
+
 # 11 Dec 2023
 With the release of 1.8.74 you are able to...
 -  ...use a "stud" grid setting (Plate 1 x 1, Y = 8 LDU, XZ = 10 LDU half-stud).
