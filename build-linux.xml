@@ -305,7 +305,7 @@
             <arg value="--input"/>
             <arg value="${binariesFolder}/${linuxGtk3Folder}" />
             <arg value="--app-version"/>
-            <arg value="1.8.75" />
+            <arg value="1.8.76" />
             <arg value="--runtime-image"/>
             <arg value="${binariesFolder}/jvm-image" />
             <arg value="--temp"/>
