@@ -26,7 +26,7 @@ public class Edger2Settings {
     private boolean extendedRange = false;
     private boolean condlineOnQuads = false;
     private int scope = 0;
-    private int unmatchedMode = 0;
+    private int unmatchedMode = 1;
     public BigDecimal getEqualDistance() {
         return equalDistance;
     }
