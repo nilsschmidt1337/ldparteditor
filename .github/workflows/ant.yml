@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - name: Download Wix
-      uses: i3h/download-release-asset@v1
+      uses: nilsschmidt1337/download-release-asset@v1.3.4
       with:
         owner: wixtoolset
         repo: wix3
