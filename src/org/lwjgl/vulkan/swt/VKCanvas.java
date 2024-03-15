@@ -37,6 +37,9 @@ public class VKCanvas extends Canvas {
     static {
         String platformClassName;
         switch (Platform.get()) {
+        case MACOSX:
+            platformClassName = "org.lwjgl.vulkan.swt.PlatformMacOSXVKCanvas"; //$NON-NLS-1$
+            break;
         case WINDOWS:
             platformClassName = "org.lwjgl.vulkan.swt.PlatformWin32VKCanvas"; //$NON-NLS-1$
             break;
