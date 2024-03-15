@@ -1,3 +1,12 @@
+# 15 Mar 2024
+With the release of 1.8.76 you are able to...
+-  ...be warned about "slashes" in subfile references and you can "Quick Fix" it.
+-  ..."Exclude Unmatched Edges" by default in Edger2.
+
+The following critical issue is fixed, finally:
+1. The 3D manipulator orientation got polluted during rotation.
+
+
 # 04 Feb 2024
 With the release of 1.8.75 you are able to...
 -  ...export a reference card (cheat sheet) for LDPE ("?" button).
