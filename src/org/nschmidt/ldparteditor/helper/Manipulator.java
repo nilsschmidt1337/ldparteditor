@@ -914,7 +914,7 @@ public class Manipulator {
                                 calmDownCounter = -2;
                                 xRotatingForwards = true;
                             }
-                        }else {
+                        } else {
                             if (calmDownCounter < 0) {
                                 calmDownCounter += 1;
                                 break;
@@ -933,7 +933,7 @@ public class Manipulator {
                                 calmDownCounter = -2;
                                 yRotatingForwards = true;
                             }
-                        }else {
+                        } else {
                             if (calmDownCounter < 0) {
                                 calmDownCounter += 1;
                                 break;
@@ -952,7 +952,7 @@ public class Manipulator {
                                 calmDownCounter = -2;
                                 zRotatingForwards = true;
                             }
-                        }else {
+                        } else {
                             if (calmDownCounter < 0) {
                                 calmDownCounter += 1;
                                 break;
@@ -971,7 +971,7 @@ public class Manipulator {
                                 calmDownCounter = -2;
                                 vRotatingForwards = true;
                             }
-                        }else {
+                        } else {
                             if (calmDownCounter < 0) {
                                 calmDownCounter += 1;
                                 break;
@@ -1274,7 +1274,7 @@ public class Manipulator {
             accurateResult = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { accuratePosition[0].negate(), accuratePosition[1].negate(), accuratePosition[2].negate() }), accurateResult);
         }
 
-        if (xRotate && xRotatingForwards || xRotatingBackwards) {
+        if (xRotate && (xRotatingForwards || xRotatingBackwards)) {
             if (xRotatingForwards) {
                 transformation.rotate(snapXrotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
                 accurateTransformation = View.ACCURATE_ID.rotate(snapXrotate, snapXrotateFlag, accurateXaxis);
@@ -1319,7 +1319,7 @@ public class Manipulator {
             modified = true;
         }
 
-        if (yRotate && yRotatingForwards || yRotatingBackwards) {
+        if (yRotate && (yRotatingForwards || yRotatingBackwards)) {
             if (yRotatingForwards) {
                 transformation.rotate(snapYrotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
                 accurateTransformation = View.ACCURATE_ID.rotate(snapYrotate, snapYrotateFlag, accurateYaxis);
@@ -1364,7 +1364,7 @@ public class Manipulator {
             modified = true;
         }
 
-        if (zRotate && zRotatingForwards || zRotatingBackwards) {
+        if (zRotate && (zRotatingForwards || zRotatingBackwards)) {
             if (zRotatingForwards) {
                 transformation.rotate(snapZrotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
                 accurateTransformation = View.ACCURATE_ID.rotate(snapZrotate, snapZrotateFlag, accurateZaxis);
@@ -1409,7 +1409,7 @@ public class Manipulator {
             modified = true;
         }
 
-        if (vRotate && vRotatingForwards || vRotatingBackwards) {
+        if (vRotate && (vRotatingForwards || vRotatingBackwards)) {
             Vector4f[] gen = c3d.getGenerator();
             if (vRotatingForwards) {
                 transformation.rotate(snapVrotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
