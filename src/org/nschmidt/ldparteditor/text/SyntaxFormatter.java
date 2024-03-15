@@ -665,6 +665,7 @@ public class SyntaxFormatter {
             sb.append(dataSegments[dataSegments.length - 1]);
             String shortFilename = sb.toString();
             boolean isLowercase = shortFilename.equals(shortFilename.toLowerCase(Locale.ENGLISH));
+            boolean containsSlash = shortFilename.chars().anyMatch(c -> c == '/');
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
             shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             String shortFilename2 = shortFilename.startsWith("S" + File.separator) ? "s" + shortFilename.substring(1) : shortFilename; //$NON-NLS-1$ //$NON-NLS-2$
@@ -718,7 +719,7 @@ public class SyntaxFormatter {
                 }
             }
             // [WARNING] Check spaces in dat file name
-            if (!fileExists || dataSegments.length > 15 || !isLowercase) {
+            if (!fileExists || dataSegments.length > 15 || !isLowercase || containsSlash) {
                 for (int s = 15; s < styles.size(); s++) {
                     setWarningStyle(styles.get(s));
                 }

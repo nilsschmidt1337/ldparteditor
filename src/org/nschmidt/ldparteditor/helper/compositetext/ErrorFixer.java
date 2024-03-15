@@ -51,6 +51,11 @@ enum ErrorFixer {
         case 1: // Duplicated line
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             break;
+        case 5: // Contains slash
+        {
+            text = QuickFixer.setLine(lineNumber + 1,line.replace('/', '\\'), text);
+        }
+        break;
         case 10, 11, 12: // INVERTNEXT (Flat subfile)
         {
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$

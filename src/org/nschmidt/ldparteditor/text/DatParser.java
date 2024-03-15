@@ -644,6 +644,10 @@ public enum DatParser {
             sb.append(dataSegments[dataSegments.length - 1]);
             String shortFilename = sb.toString();
             boolean isLowercase = shortFilename.equals(shortFilename.toLowerCase(Locale.ENGLISH));
+            boolean containsSlash = shortFilename.chars().anyMatch(c -> c == '/');
+            if (containsSlash) {
+                result.add(new ParsingResult(I18n.DATPARSER_SLASH, "[E05] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
+            }
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
             shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             if (alreadyParsed.contains(shortFilename)) {
