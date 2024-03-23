@@ -118,6 +118,7 @@ class VM04Rectifier extends VM03Adjacency {
 
                                     int bestIndex = -1;
                                     BigDecimal bestRatio = null;
+                                    BigDecimal bestRatioSelection = null;
                                     for(int i = 0; i < 3; i++) {
                                         if (cf[i].size() == 2 && cf[i].get(0).type() == 3 && cf[i].get(1).type() == 3) {
                                             GData3 tri1 = (GData3) cf[i].get(0);
@@ -249,7 +250,11 @@ class VM04Rectifier extends VM03Adjacency {
                                                         BigDecimal m1 = Vector3d.distSquare(new Vector3d(first), new Vector3d(third)).add(BigDecimal.ONE);
                                                         BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);
                                                         BigDecimal ratio = m1.compareTo(m2) > 0 ? m1.divide(m2, Threshold.MC) : m2.divide(m1, Threshold.MC);
-                                                        if (bestIndex == -1 || ratio.compareTo(bestRatio) < 0) {
+                                                        // When both surfaces were selected, then prefer the selection over possible better unselected alternatives.
+                                                        if (rs.getScope() == 1 && (bestRatioSelection == null || ratio.compareTo(bestRatioSelection) < 0) && surfsToParse.contains(tri1) && surfsToParse.contains(tri2)) {
+                                                            bestRatioSelection = ratio;
+                                                            bestIndex = i;
+                                                        } else if (bestRatioSelection == null && (bestIndex == -1 || ratio.compareTo(bestRatio) < 0)) {
                                                             bestRatio = ratio;
                                                             bestIndex = i;
                                                         }
@@ -607,6 +612,7 @@ class VM04Rectifier extends VM03Adjacency {
 
                     int bestIndex = -1;
                     BigDecimal bestRatio = null;
+                    BigDecimal bestRatioSelection = null;
                     for(int i = 0; i < 3; i++) {
                         if (cf[i].size() == 2 && cf[i].get(0).type() == 3 && cf[i].get(1).type() == 3) {
                             GData3 tri1 = (GData3) cf[i].get(0);
@@ -738,7 +744,11 @@ class VM04Rectifier extends VM03Adjacency {
                                         BigDecimal m1 = Vector3d.distSquare(new Vector3d(first), new Vector3d(third)).add(BigDecimal.ONE);
                                         BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);
                                         BigDecimal ratio = m1.compareTo(m2) > 0 ? m1.divide(m2, Threshold.MC) : m2.divide(m1, Threshold.MC);
-                                        if (bestIndex == -1 || ratio.compareTo(bestRatio) < 0) {
+                                        // When both surfaces were selected, then prefer the selection over possible better unselected alternatives.
+                                        if (rs.getScope() == 1 && (bestRatioSelection == null || ratio.compareTo(bestRatioSelection) < 0) && surfsToParse.contains(tri1) && surfsToParse.contains(tri2)) {
+                                            bestRatioSelection = ratio;
+                                            bestIndex = i;
+                                        } else if (bestRatioSelection == null && (bestIndex == -1 || ratio.compareTo(bestRatio) < 0)) {
                                             bestRatio = ratio;
                                             bestIndex = i;
                                         }
