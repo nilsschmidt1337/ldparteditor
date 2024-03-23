@@ -56,6 +56,7 @@ class VM04Rectifier extends VM03Adjacency {
 
         final double targetAngle = rs.getMaximumAngle().doubleValue();
         final boolean colourise = rs.isColourise();
+        final int scope = rs.getScope();
 
         final BigDecimal two = new BigDecimal(2);
 
@@ -67,7 +68,7 @@ class VM04Rectifier extends VM03Adjacency {
 
         final Set<GData> surfsToParse = new HashSet<>();
 
-        if (rs.getScope() == 0) {
+        if (scope == 0) {
             surfsToParse.addAll(triangles.keySet());
             surfsToParse.addAll(quads.keySet());
         } else {
@@ -251,7 +252,7 @@ class VM04Rectifier extends VM03Adjacency {
                                                         BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);
                                                         BigDecimal ratio = m1.compareTo(m2) > 0 ? m1.divide(m2, Threshold.MC) : m2.divide(m1, Threshold.MC);
                                                         // When both surfaces were selected, then prefer the selection over possible better unselected alternatives.
-                                                        if (rs.getScope() == 1 && (bestRatioSelection == null || ratio.compareTo(bestRatioSelection) < 0) && surfsToParse.contains(tri1) && surfsToParse.contains(tri2)) {
+                                                        if (scope == 1 && (bestRatioSelection == null || ratio.compareTo(bestRatioSelection) < 0) && surfsToParse.contains(tri1) && surfsToParse.contains(tri2)) {
                                                             bestRatioSelection = ratio;
                                                             bestIndex = i;
                                                         } else if (bestRatioSelection == null && (bestIndex == -1 || ratio.compareTo(bestRatio) < 0)) {
@@ -745,7 +746,7 @@ class VM04Rectifier extends VM03Adjacency {
                                         BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);
                                         BigDecimal ratio = m1.compareTo(m2) > 0 ? m1.divide(m2, Threshold.MC) : m2.divide(m1, Threshold.MC);
                                         // When both surfaces were selected, then prefer the selection over possible better unselected alternatives.
-                                        if (rs.getScope() == 1 && (bestRatioSelection == null || ratio.compareTo(bestRatioSelection) < 0) && surfsToParse.contains(tri1) && surfsToParse.contains(tri2)) {
+                                        if (scope == 1 && (bestRatioSelection == null || ratio.compareTo(bestRatioSelection) < 0) && surfsToParse.contains(tri1) && surfsToParse.contains(tri2)) {
                                             bestRatioSelection = ratio;
                                             bestIndex = i;
                                         } else if (bestRatioSelection == null && (bestIndex == -1 || ratio.compareTo(bestRatio) < 0)) {
