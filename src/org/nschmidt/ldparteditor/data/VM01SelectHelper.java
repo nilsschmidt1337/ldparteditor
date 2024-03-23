@@ -1812,7 +1812,7 @@ class VM01SelectHelper extends VM01Select {
                 .toList();
     }
 
-    public Vector4f getSelectionCenter() {
+    public Vector3d getSelectionCenter() {
 
         final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
         objectVertices.addAll(selectedVertices);
@@ -1856,18 +1856,24 @@ class VM01SelectHelper extends VM01Select {
             }
         }
         if (!objectVertices.isEmpty()) {
-            float x = 0f;
-            float y = 0f;
-            float z = 0f;
-            for (Vertex vertex : objectVertices) {
-                x = x + vertex.x;
-                y = y + vertex.y;
-                z = z + vertex.z;
+            final int count = objectVertices.size();
+            if (count == 1) {
+                final Vertex v = objectVertices.iterator().next();
+                return new Vector3d(v);
+            } else {
+                BigDecimal c = BigDecimal.valueOf(count);
+                BigDecimal sumX = BigDecimal.ZERO;
+                BigDecimal sumY = BigDecimal.ZERO;
+                BigDecimal sumZ = BigDecimal.ZERO;
+                for (Vertex vertex : objectVertices) {
+                    sumX = sumX.add(vertex.xp);
+                    sumY = sumY.add(vertex.yp);
+                    sumZ = sumZ.add(vertex.zp);
+                }
+                return new Vector3d(sumX.divide(c, Threshold.MC), sumY.divide(c, Threshold.MC), sumZ.divide(c, Threshold.MC));
             }
-            float count = objectVertices.size();
-            return new Vector4f(x / count, y / count, z / count, 1f);
         } else {
-            return new Vector4f(0f, 0f, 0f, 1f);
+            return new Vector3d();
         }
     }
 

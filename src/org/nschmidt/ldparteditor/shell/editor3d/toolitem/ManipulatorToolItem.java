@@ -25,6 +25,7 @@ import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.math.MatrixOperations;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
@@ -470,12 +471,12 @@ public class ManipulatorToolItem extends ToolItem {
     @SuppressWarnings("java:S2111")
     public static void mntmManipulatorToAverage() {
         if (Project.getFileToEdit() != null) {
-            Vector4f avg = Project.getFileToEdit().getVertexManager().getSelectionCenter();
+            Vector3d avg = Project.getFileToEdit().getVertexManager().getSelectionCenter();
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                    c3d.getManipulator().getPosition().set(avg.x, avg.y, avg.z, 1f);
-                    c3d.getManipulator().setAccuratePosition(new BigDecimal(avg.x / 1000f), new BigDecimal(avg.y / 1000f), new BigDecimal(avg.z / 1000f));
+                    c3d.getManipulator().getPosition().set(avg.x.floatValue() * 1000f, avg.y.floatValue() * 1000f, avg.z.floatValue() * 1000f, 1f);
+                    c3d.getManipulator().setAccuratePosition(avg.x, avg.y, avg.z);
                 }
             }
         }
