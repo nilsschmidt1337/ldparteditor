@@ -1108,6 +1108,7 @@ public class Manipulator {
         xRotate = false;
         yRotate = false;
         zRotate = false;
+        vRotate = false;
         xScale = false;
         yScale = false;
         zScale = false;
@@ -1118,6 +1119,8 @@ public class Manipulator {
         yRotatingBackwards = false;
         zRotatingForwards = false;
         zRotatingBackwards = false;
+        vRotatingBackwards = false;
+        vRotatingForwards = false;
         modified = false;
     }
 
