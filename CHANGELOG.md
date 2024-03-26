@@ -1,3 +1,12 @@
+# 26 Mar 2024
+With the release of 1.8.77 you are able to...
+-  ...benefit from improved accuracy of "Move the Manipulator to the Average Point of the Selection".
+
+The following critical issues are fixed:
+1. Sometimes, the 3D manipulator rotated the object instead of moving it.
+2. Sometimes, the triangle to quad conversion tool didn't use the selected triangles, but another nearby one.
+
+
 # 15 Mar 2024
 With the release of 1.8.76 you are able to...
 -  ...be warned about "slashes" in subfile references and you can "Quick Fix" it.
