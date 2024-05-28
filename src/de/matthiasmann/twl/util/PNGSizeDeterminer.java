@@ -525,7 +525,8 @@ public class PNGSizeDeterminer {
                 throw new EOFException();
             }
             amount -= skipped;
-            size += skipped;
+            // this downcast should(tm) work
+            size += (int) skipped;
         }
     }
 

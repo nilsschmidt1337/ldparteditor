@@ -89,21 +89,21 @@ public enum Teapot {
                         q[j][k][l] = cpdata[patchdata[i][j * 4 + 3 - k]][l];
 
                         if (l == 1)
-                            q[j][k][l] *= -1.0;
+                            q[j][k][l] *= -1.0f;
 
                         if (i < 6) {
                             r[j][k][l] = cpdata[patchdata[i][j * 4 + 3 - k]][l];
 
                             if (l == 0)
-                                r[j][k][l] *= -1.0;
+                                r[j][k][l] *= -1.0f;
 
                             s[j][k][l] = cpdata[patchdata[i][j * 4 + k]][l];
 
                             if (l == 0)
-                                s[j][k][l] *= -1.0;
+                                s[j][k][l] *= -1.0f;
 
                             if (l == 1)
-                                s[j][k][l] *= -1.0;
+                                s[j][k][l] *= -1.0f;
                         }
                     }
                 }

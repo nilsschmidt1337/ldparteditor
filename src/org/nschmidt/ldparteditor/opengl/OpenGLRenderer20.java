@@ -801,11 +801,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                 // attenuation and light direction
                                                                 // ambient + diffuse
                                                                 light = 0.09f; // Ambient
-                                                                light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
-                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
-                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
-                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-                                                                lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
+                                                                light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0f);
+                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0f);
+                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0f);
+                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0f);
+                                                                lightSpecular += (float) Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128.0);
                                                             }
                                                             float colourR = ze[12];
                                                             float colourG = ze[13];
@@ -1030,11 +1030,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                         // attenuation and light direction
                                                                         // ambient + diffuse
                                                                         float light = 0.09f; // Ambient
-                                                                        light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
-                                                                        light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
-                                                                        light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
-                                                                        light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-                                                                        lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
+                                                                        light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0f);
+                                                                        light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0f);
+                                                                        light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0f);
+                                                                        light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0f);
+                                                                        lightSpecular += (float) Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128.0);
                                                                         // compute final color
                                                                         colourR = colourR + light;
                                                                         colourG = colourG + light;
@@ -1048,7 +1048,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                 } else {
                                                                     float lightSpecular = 0f;
                                                                     Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                    lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
+                                                                    lightSpecular += (float) Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128.0);
                                                                     point[0] = (rT + lightSpecular) * colourA + point[0] * oneMinusAlpha;
                                                                     point[1] = (gT + lightSpecular) * colourA + point[1] * oneMinusAlpha;
                                                                     point[2] = (bT + lightSpecular) * colourA + point[2] * oneMinusAlpha;
@@ -1072,11 +1072,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                     // attenuation and light direction
                                                                     // ambient + diffuse
                                                                     light = 0.09f; // Ambient
-                                                                    light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
-                                                                    light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
-                                                                    light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
-                                                                    light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-                                                                    lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
+                                                                    light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0f);
+                                                                    light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0f);
+                                                                    light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0f);
+                                                                    light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0f);
+                                                                    lightSpecular += (float) Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128.0);
                                                                 }
                                                                 switch (ct.type()) {
                                                                 case PEARL:
