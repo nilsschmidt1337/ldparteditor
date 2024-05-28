@@ -87,6 +87,7 @@ class OptionsDesign extends ApplicationWindow {
     NButton[] btnTranslateViewByCursorPtr = new NButton[1];
     NButton[] btnDisableMAD3DPtr = new NButton[1];
     NButton[] btnDisableMADtextPtr = new NButton[1];
+    NButton[] btnIncludeUnmatchedEdgesPtr = new NButton[1];
     NButton[] btnInvertInvertWheelZoomDirectionPtr = new NButton[1];
     NButton[] btnShowAxisLabelsPtr = new NButton[1];
     NButton[] btnOkPtr = new NButton[1];
@@ -209,7 +210,12 @@ class OptionsDesign extends ApplicationWindow {
                 this.btnDisableMADtextPtr[0] = btnDisableMADtext;
                 btnDisableMADtext.setText(I18n.OPTIONS_MAD_2);
                 btnDisableMADtext.setSelection(userSettings.isDisableMADtext());
-                
+
+                NButton btnIncludeUnmatchedEdges = new NButton(cmpContainer, SWT.CHECK);
+                this.btnIncludeUnmatchedEdgesPtr[0] = btnIncludeUnmatchedEdges;
+                btnIncludeUnmatchedEdges.setText(I18n.OPTIONS_INCLUDE_UNMATCHED_ED);
+                btnIncludeUnmatchedEdges.setSelection(userSettings.isIncludeUnmatchedEdgesByDefault());
+
                 NButton btnShowAxisLabels = new NButton(cmpContainer, SWT.CHECK);
                 this.btnShowAxisLabelsPtr[0] = btnShowAxisLabels;
                 btnShowAxisLabels.setText(I18n.KEYBOARD_SHOW_AXIS_LABELS);

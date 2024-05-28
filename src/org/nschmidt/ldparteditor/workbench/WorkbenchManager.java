@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.security.SerialKiller;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
 
@@ -139,6 +140,10 @@ public enum WorkbenchManager {
         }
 
         WorkbenchManager.userSettingState.setDataFileSizeLimit(Math.clamp(WorkbenchManager.userSettingState.getDataFileSizeLimit(), 45, 1024_000));
+
+        if (WorkbenchManager.userSettingState.isIncludeUnmatchedEdgesByDefault()) {
+            MiscToolItem.includeUnmatchedEdgesByDefaultInEdger2();
+        }
 
         Threshold.coplanarityAngleWarning = WorkbenchManager.userSettingState.getCoplanarityAngleWarning();
         Threshold.coplanarityAngleError = WorkbenchManager.userSettingState.getCoplanarityAngleError();

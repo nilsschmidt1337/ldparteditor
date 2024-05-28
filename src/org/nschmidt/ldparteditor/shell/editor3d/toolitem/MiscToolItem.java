@@ -3539,7 +3539,11 @@ public class MiscToolItem extends ToolItem {
         Editor3DWindow.getWindow().regainFocus();
     }
 
-    public static SelectorSettings loadSelectorSettings()  {
+    public static void includeUnmatchedEdgesByDefaultInEdger2() {
+        es.setUnmatchedMode(0);
+    }
+
+    public static SelectorSettings loadSelectorSettings() {
         sels.setColour(mntmWithSameColourPtr[0].getSelection());
         sels.setType(mntmWithSameTypePtr[0].getSelection());
         sels.setEdgeAdjacency(mntmWithAdjacencyPtr[0].getSelection());

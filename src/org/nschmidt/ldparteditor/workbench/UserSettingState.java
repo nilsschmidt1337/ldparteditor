@@ -236,9 +236,9 @@ public class UserSettingState implements Serializable {
     private int mouseButtonLayout = 0;
 
     private boolean invertingWheelZoomDirection = false;
-    
+
     private float lineScaleFactor = 1f;
-    
+
     private boolean verbosePartReview = false;
     private boolean verboseEdger2 = false;
     private boolean verboseTxt2Dat = false;
@@ -252,12 +252,14 @@ public class UserSettingState implements Serializable {
     private boolean verboseYTruder = false;
     private boolean verboseSymSplitter = false;
     private boolean verboseUnificator = false;
-    
+
     private int dataFileSizeLimit = 45;
-    
+
     private boolean showingAxisLabels = false;
 
     private int textSize = 0;
+
+    private boolean includeUnmatchedEdgesByDefault = false;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -1484,5 +1486,13 @@ public class UserSettingState implements Serializable {
 
     public void setTextSize(int textSize) {
         this.textSize = textSize;
+    }
+
+    public boolean isIncludeUnmatchedEdgesByDefault() {
+        return includeUnmatchedEdgesByDefault;
+    }
+
+    public void setIncludeUnmatchedEdgesByDefault(boolean includeUnmatchedEdgesByDefault) {
+        this.includeUnmatchedEdgesByDefault = includeUnmatchedEdgesByDefault;
     }
 }
