@@ -47,6 +47,11 @@ public enum Rounder {
         if (datFile.isReadOnly())
             return;
 
+        // first, detect on which line the caret is (lineStart or lineEnd)
+        final int currentCaretLine = st.getLineAtOffset(st.getCaretOffset());
+        // then detect the character delta to restore it later
+        final int characterDelta = st.getCaretOffset() - st.getOffsetAtLine(currentCaretLine);
+        
         // Check here if single vertex replacing (ALT+SHIFT+R) is active
         // If so, round only this vertex!
 
@@ -91,6 +96,9 @@ public enum Rounder {
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    // We need to update the text now, otherwise the caret selection can't be restored.
+                    st.setText(datFile.getText());
+                    st.setSelection(st.getOffsetAtLine(currentCaretLine) + Math.min(st.getLine(currentCaretLine).length(), characterDelta));
                     ((CompositeTab) t).parseForErrorAndHints();
                     ((CompositeTab) t).getTextComposite().redraw();
                     break;
