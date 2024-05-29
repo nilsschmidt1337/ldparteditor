@@ -5,6 +5,7 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 import java.math.BigDecimal;
 import java.util.Set;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -16,10 +17,12 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.composite.ToolItem;
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.dialog.selectgdata.SelectionDialog;
 import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.Manipulator;
@@ -510,31 +513,46 @@ public class ManipulatorToolItem extends ToolItem {
     }
 
     public static void mntmManipulatorSubfileTo(boolean resetScale) {
-        if (Project.getFileToEdit() != null) {
-            VertexManager vm = Project.getFileToEdit().getVertexManager();
+        final DatFile df = Project.getFileToEdit();
+        if (df != null) {
+            final VertexManager vm = df.getVertexManager();
             Set<GData1> subfiles = vm.getSelectedSubfiles();
             if (!subfiles.isEmpty()) {
+                final SelectionDialog<GData1> dialog = new SelectionDialog<>(Editor3DWindow.getWindow().getShell(), I18n.E3D_SELECT_REFERENCE_OBJECT_SUBFILE);
+                dialog.addData(subfiles.stream().filter(s -> vm.getLineLinkedToVertices().containsKey(s)).sorted(
+                        (a,b) -> Integer.compare(df.getDrawPerLineNoClone().getKey(a), df.getDrawPerLineNoClone().getKey(b))
+                ).toList());
                 GData1 subfile = null;
-                for (GData1 g1 : subfiles) {
-                    if (vm.getLineLinkedToVertices().containsKey(g1)) {
-                        subfile = g1;
-                        break;
+                if (subfiles.size() > 1) {
+                    if (dialog.open() == IDialogConstants.OK_ID) {
+                        subfile = dialog.getSelection();
+                    } else {
+                        return;
+                    }
+                } else {
+                    for (GData1 g1 : subfiles) {
+                        if (vm.getLineLinkedToVertices().containsKey(g1)) {
+                            subfile = g1;
+                            break;
+                        }
                     }
                 }
+
                 if (subfile == null) {
                     return;
                 }
+
                 for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         vm.addSnapshot();
                         vm.backupHideShowState();
-                        Manipulator ma = c3d.getManipulator();
+                        Matrix ma = c3d.getManipulator().getAccurateMatrix();
                         if (resetScale) {
-                            vm.transformSubfile(subfile, ma.getAccurateMatrix(), true, true);
+                            vm.transformSubfile(subfile, ma, true, true);
                         } else {
                             vm.transformSubfile(subfile, Matrix.mul(
-                                    ma.getAccurateMatrix(),
+                                    ma,
                                     MatrixOperations.removeRotationAndTranslation(subfile.getAccurateProductMatrix())), true, true);
                         }
                         break;

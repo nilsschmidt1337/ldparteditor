@@ -459,6 +459,7 @@ public final class I18n {
     public static final String E3D_CSG_OPTIMISATION = E3D.getString(getProperty());
     public static final String E3D_DECOLOUR = E3D.getString(getProperty());
     public static final String E3D_DELETE_CONFIG = E3D.getString(getProperty());
+    public static final String E3D_DESCRIPTION = E3D.getString(getProperty());
     public static final String E3D_DISTRIBUTE_BOTTOM_EDGES = E3D.getString(getProperty());
     public static final String E3D_DISTRIBUTE_HORIZONTALLY = E3D.getString(getProperty());
     public static final String E3D_DISTRIBUTE_HORIZONTAL_CENTERS = E3D.getString(getProperty());
@@ -679,6 +680,8 @@ public final class I18n {
     public static final String E3D_SELECT = E3D.getString(getProperty());
     public static final String E3D_SELECTION = E3D.getString(getProperty());
     public static final String E3D_SELECT_LDCONFIG = E3D.getString(getProperty());
+    public static final String E3D_SELECT_REFERENCE_OBJECT_LINE = E3D.getString(getProperty());
+    public static final String E3D_SELECT_REFERENCE_OBJECT_SUBFILE = E3D.getString(getProperty());
     public static final String E3D_SELECT_VERTEX = E3D.getString(getProperty());
     public static final String E3D_SET_ACCURACY = E3D.getString(getProperty());
     public static final String E3D_SET_ICON_SIZE = E3D.getString(getProperty());
