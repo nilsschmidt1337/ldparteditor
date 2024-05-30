@@ -197,7 +197,7 @@ public final class Matrix {
 
     }
 
-    Matrix transpose() {
+    public Matrix transpose() {
         final BigDecimal[][] mn = new BigDecimal[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -591,6 +591,10 @@ public final class Matrix {
         BigDecimal tm32 = m32.add(m02.multiply(vec[0]).add(m12.multiply(vec[1])).add(m22.multiply(vec[2])));
 
         return new Matrix(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, tm30, tm31, tm32, BigDecimal.ONE);
+    }
+
+    public Matrix translateGlobally(BigDecimal x, BigDecimal y, BigDecimal z) {
+        return new Matrix(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23,  m30.add(x),  m31.add(y),  m32.add(z), BigDecimal.ONE);
     }
 
     Matrix reduceAccuracy() {

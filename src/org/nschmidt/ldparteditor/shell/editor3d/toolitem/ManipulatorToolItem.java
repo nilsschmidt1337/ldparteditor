@@ -552,35 +552,48 @@ public class ManipulatorToolItem extends ToolItem {
                     ||  ((lastSelectedComposite == null || lastSelectedComposite.isDisposed()) && df.equals(c3d.getLockableDatFileReference()))) {
                         vm.addSnapshot();
                         vm.backupHideShowState();
-                        final Matrix ma = c3d.getManipulator().getAccurateMatrix();
-                        final Matrix mainMatrix = mainSubfile.getAccurateProductMatrix();
+                        final Matrix ma = c3d.getManipulator().getAccurateRotation();
+                        final BigDecimal[] pos = c3d.getManipulator().getAccuratePosition();
+                        final Matrix mainMatrixWithTranslation = mainSubfile.getAccurateProductMatrix();
+                        final Matrix mainMatrix = mainSubfile.getAccurateProductMatrix().translateGlobally(mainMatrixWithTranslation.m30.negate(), mainMatrixWithTranslation.m31.negate(), mainMatrixWithTranslation.m32.negate());
+                        final Vector3d mainX = new Vector3d();
+                        final Vector3d mainY = new Vector3d();
+                        final Vector3d mainZ = new Vector3d();
+                        new Vector3d(mainMatrix.m00, mainMatrix.m01, mainMatrix.m02).normalise(mainX);
+                        new Vector3d(mainMatrix.m10, mainMatrix.m11, mainMatrix.m12).normalise(mainY);
+                        new Vector3d(mainMatrix.m20, mainMatrix.m21, mainMatrix.m22).normalise(mainZ);
+                        final Matrix mainBaseMatrix = new Matrix(
+                                mainX.x, mainX.y, mainX.z, BigDecimal.ZERO,
+                                mainY.x, mainY.y, mainY.z, BigDecimal.ZERO,
+                                mainZ.x, mainZ.y, mainZ.z, BigDecimal.ZERO,
+                                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+                        final Matrix mainBaseMatrixInverse = mainBaseMatrix.invert();
                         final Matrix mainInverse = mainMatrix.invert();
-                        final Matrix newMainMatrix;
+                        final Matrix inverse;
                         if (resetScale) {
-                            newMainMatrix = ma;
+                            inverse = mainInverse;
                         } else {
-                            newMainMatrix = Matrix.mul(
-                                    ma,
-                                    MatrixOperations.removeRotationAndTranslation(mainMatrix));
+                            inverse = mainBaseMatrixInverse;
                         }
+
+                        final Matrix mainM = Matrix.mul(inverse, mainMatrixWithTranslation);
+                        final BigDecimal dX = mainM.m30.negate();
+                        final BigDecimal dY = mainM.m31.negate();
+                        final BigDecimal dZ = mainM.m32.negate();
 
                         // Transform every selected subfile relatively to the main subfile
                         for (GData1 subfile : new HashSet<>(subfiles)) {
                             if (subfile != mainSubfile && vm.getLineLinkedToVertices().containsKey(subfile)) {
-                                Matrix subfileMatrix = subfile.getAccurateProductMatrix();
-                                // Translate the transformation relatively to the main subfile transformation
-                                // subfileMatrix * mainInverse * newMainMatrix = subfileMatrix
-                                NLogger.debug(ManipulatorToolItem.class, "subfileMatrix:\n{0}", subfileMatrix); //$NON-NLS-1$
-                                NLogger.debug(ManipulatorToolItem.class, "mainInverse:\n{0}", mainInverse); //$NON-NLS-1$
-                                NLogger.debug(ManipulatorToolItem.class, "newMainMatrix:\n{0}", newMainMatrix); //$NON-NLS-1$
-                                subfileMatrix =  Matrix.mul(Matrix.mul(mainInverse, subfileMatrix), newMainMatrix);
-                                NLogger.debug(ManipulatorToolItem.class, "subfileMatrix * mainInverse * newMainMatrix:\n{0}", subfileMatrix); //$NON-NLS-1$
-                                vm.transformSubfile(subfile, subfileMatrix, true, false);
+                                final Matrix subfileMatrixWithTranslation = subfile.getAccurateProductMatrix();
+                                final Matrix subM = Matrix.mul(inverse, subfileMatrixWithTranslation).translateGlobally(dX, dY, dZ);
+                                final Matrix subMprojected = Matrix.mul(ma.transpose(), subM).translateGlobally(pos[0], pos[1], pos[2]);
+                                vm.transformSubfile(subfile, subMprojected, true, false);
                             }
                         }
 
                         // Finally, transform the chosen subfile
-                        vm.transformSubfile(mainSubfile, newMainMatrix, true, true);
+                        final Matrix mainMprojected = Matrix.mul(ma.transpose(), mainM.translateGlobally(dX, dY, dZ)).translateGlobally(pos[0], pos[1], pos[2]);
+                        vm.transformSubfile(mainSubfile, mainMprojected, true, true);
                         break;
                     }
                 }
