@@ -55,8 +55,16 @@ public enum RotatorAndTranslator {
     public static void moveOrRotate(StyledText st, int lineStart, int lineEnd, DatFile datFile, TransformationMode mode, boolean invert, Axis axis) {
         Text2SelectionConverter.convert(st, lineStart, lineEnd, datFile);
         final VertexManager vm = datFile.getVertexManager();
+        vm.reSelectSubFiles();
         vm.backupHideShowState();
         vm.skipSyncTimer();
+
+        // first, detect on which line the caret is (lineStart or lineEnd)
+        final int currentCaretStartLine = st.getLineAtOffset(st.getSelection().x);
+        final int currentCaretEndLine = st.getLineAtOffset(st.getSelection().y);
+        // then detect the character delta to restore it later
+        final int characterStartDelta = st.getSelection().x - st.getOffsetAtLine(currentCaretStartLine);
+        final int characterEndDelta = st.getSelection().y - st.getOffsetAtLine(currentCaretEndLine);
 
         Matrix m = View.ACCURATE_ID;
 
@@ -95,6 +103,13 @@ public enum RotatorAndTranslator {
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                    // We need to update the text now, otherwise the caret selection can't be restored.
+                    vm.backupSelection();
+                    st.setText(datFile.getText());
+                    vm.restoreSelection();
+                    st.setSelection(
+                            st.getOffsetAtLine(currentCaretStartLine) + Math.min(st.getLine(currentCaretStartLine).length(), characterStartDelta),
+                            st.getOffsetAtLine(currentCaretEndLine) + Math.min(st.getLine(currentCaretEndLine).length(), characterEndDelta));
                     ((CompositeTab) t).parseForErrorAndHints();
                     ((CompositeTab) t).getTextComposite().redraw();
                     break;

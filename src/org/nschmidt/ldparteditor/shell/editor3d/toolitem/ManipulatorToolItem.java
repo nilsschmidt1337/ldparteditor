@@ -551,6 +551,7 @@ public class ManipulatorToolItem extends ToolItem {
                     ||  ((lastSelectedComposite == null || lastSelectedComposite.isDisposed()) && df.equals(c3d.getLockableDatFileReference()))) {
                         vm.addSnapshot();
                         vm.backupHideShowState();
+                        final Set<GData1> newSubfiles = new HashSet<>();
                         final Matrix ma = c3d.getManipulator().getAccurateRotation();
                         final BigDecimal[] pos = c3d.getManipulator().getAccuratePosition();
                         final Matrix mainMatrixWithTranslation = mainSubfile.getAccurateProductMatrix();
@@ -587,12 +588,18 @@ public class ManipulatorToolItem extends ToolItem {
                                 final Matrix subM = Matrix.mul(inverse, subfileMatrixWithTranslation).translateGlobally(dX, dY, dZ);
                                 final Matrix subMprojected = Matrix.mul(ma.transpose(), subM).translateGlobally(pos[0], pos[1], pos[2]);
                                 vm.transformSubfile(subfile, subMprojected, true, false);
+                                newSubfiles.addAll(vm.getSelectedSubfiles());
                             }
                         }
 
                         // Finally, transform the chosen subfile
                         final Matrix mainMprojected = Matrix.mul(ma.transpose(), mainM.translateGlobally(dX, dY, dZ)).translateGlobally(pos[0], pos[1], pos[2]);
                         vm.transformSubfile(mainSubfile, mainMprojected, true, true);
+                        newSubfiles.addAll(vm.getSelectedSubfiles());
+                        vm.getSelectedSubfiles().addAll(newSubfiles);
+                        vm.getSelectedData().addAll(newSubfiles);
+                        vm.reSelectSubFiles();
+                        df.addHistory();
                         break;
                     }
                 }
