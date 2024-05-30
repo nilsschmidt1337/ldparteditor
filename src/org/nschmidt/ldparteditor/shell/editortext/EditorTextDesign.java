@@ -110,6 +110,18 @@ class EditorTextDesign extends ApplicationWindow {
     final NButton[] btnRoundSelectionPtr = new NButton[1];
     final NButton[] btnTexmapPtr = new NButton[1];
     final NButton[] btnAnnotatePtr = new NButton[1];
+    final NButton[] btnMoveMinusXPtr = new NButton[1];
+    final NButton[] btnMovePlusXPtr = new NButton[1];
+    final NButton[] btnMoveMinusYPtr = new NButton[1];
+    final NButton[] btnMovePlusYPtr = new NButton[1];
+    final NButton[] btnMoveMinusZPtr = new NButton[1];
+    final NButton[] btnMovePlusZPtr = new NButton[1];
+    final NButton[] btnRotateMinusXPtr = new NButton[1];
+    final NButton[] btnRotatePlusXPtr = new NButton[1];
+    final NButton[] btnRotateMinusYPtr = new NButton[1];
+    final NButton[] btnRotatePlusYPtr = new NButton[1];
+    final NButton[] btnRotateMinusZPtr = new NButton[1];
+    final NButton[] btnRotatePlusZPtr = new NButton[1];
 
     private ToolItem toolItemColourBar;
     /**
@@ -539,6 +551,96 @@ class EditorTextDesign extends ApplicationWindow {
             this.btnAnnotatePtr[0] = btnAnnotate;
             btnAnnotate.setToolTipText(I18n.EDITORTEXT_COMMENT);
             btnAnnotate.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
+        }
+
+        ToolItem toolItemMoveAndRotate = new ToolItem(toolBar, Cocoa.getStyle(), true);
+
+        {
+            NButton btnMoveMinusX = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnMoveMinusXPtr[0] = btnMoveMinusX;
+            btnMoveMinusX.setText("-X"); //$NON-NLS-1$
+            btnMoveMinusX.setToolTipText(I18n.E3D_MOVE + " -X"); //$NON-NLS-1$
+            btnMoveMinusX.setImage(ResourceManager.getImage("icon16_move_left.png")); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnMovePlusX = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnMovePlusXPtr[0] = btnMovePlusX;
+            btnMovePlusX.setText("+X"); //$NON-NLS-1$
+            btnMovePlusX.setToolTipText(I18n.E3D_MOVE + " +X"); //$NON-NLS-1$
+            btnMovePlusX.setImage(ResourceManager.getImage("icon16_move_right.png")); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnMoveMinusY = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnMoveMinusYPtr[0] = btnMoveMinusY;
+            btnMoveMinusY.setToolTipText(I18n.E3D_MOVE + " -Y"); //$NON-NLS-1$
+            btnMoveMinusY.setText("-Y"); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnMovePlusY = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnMovePlusYPtr[0] = btnMovePlusY;
+            btnMovePlusY.setToolTipText(I18n.E3D_MOVE + " +Y"); //$NON-NLS-1$
+            btnMovePlusY.setText("+Y"); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnMoveMinusZ = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnMoveMinusZPtr[0] = btnMoveMinusZ;
+            btnMoveMinusZ.setToolTipText(I18n.E3D_MOVE + " -Z"); //$NON-NLS-1$
+            btnMoveMinusZ.setText("-Z"); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnMovePlusZ = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnMovePlusZPtr[0] = btnMovePlusZ;
+            btnMovePlusZ.setToolTipText(I18n.E3D_MOVE + " +Z"); //$NON-NLS-1$
+            btnMovePlusZ.setText("+Z"); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnRotateMinusX = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnRotateMinusXPtr[0] = btnRotateMinusX;
+            btnRotateMinusX.setText("-X"); //$NON-NLS-1$
+            btnRotateMinusX.setToolTipText(I18n.E3D_ROTATE + " -X"); //$NON-NLS-1$
+            btnRotateMinusX.setImage(ResourceManager.getImage("icon16_rotate_cw.png")); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnRotatePlusX = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnRotatePlusXPtr[0] = btnRotatePlusX;
+            btnRotatePlusX.setText("+X"); //$NON-NLS-1$
+            btnRotatePlusX.setToolTipText(I18n.E3D_ROTATE + " +X"); //$NON-NLS-1$
+            btnRotatePlusX.setImage(ResourceManager.getImage("icon16_rotate_ccw.png")); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnRotateMinusY = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnRotateMinusYPtr[0] = btnRotateMinusY;
+            btnRotateMinusY.setToolTipText(I18n.E3D_ROTATE + " -Y"); //$NON-NLS-1$
+            btnRotateMinusY.setText("-Y"); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnRotatePlusY = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnRotatePlusYPtr[0] = btnRotatePlusY;
+            btnRotatePlusY.setToolTipText(I18n.E3D_ROTATE + " +Y"); //$NON-NLS-1$
+            btnRotatePlusY.setText("+Y"); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnRotateMinusZ = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnRotateMinusZPtr[0] = btnRotateMinusZ;
+            btnRotateMinusZ.setToolTipText(I18n.E3D_ROTATE + " -Z"); //$NON-NLS-1$
+            btnRotateMinusZ.setText("-Z"); //$NON-NLS-1$
+        }
+
+        {
+            NButton btnRotatePlusZ = new NButton(toolItemMoveAndRotate, Cocoa.getStyle());
+            this.btnRotatePlusZPtr[0] = btnRotatePlusZ;
+            btnRotatePlusZ.setToolTipText(I18n.E3D_ROTATE + " +Z"); //$NON-NLS-1$
+            btnRotatePlusZ.setText("+Z"); //$NON-NLS-1$
         }
 
         {

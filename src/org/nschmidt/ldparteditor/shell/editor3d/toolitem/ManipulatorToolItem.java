@@ -31,7 +31,6 @@ import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.math.MatrixOperations;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;

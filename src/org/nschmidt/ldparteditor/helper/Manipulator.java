@@ -187,6 +187,10 @@ public class Manipulator {
                 factorScale };
     }
 
+    public static RotationSnap[] getRotationSnap() {
+        return new RotationSnap[] {snapXrotateFlag, snapYrotateFlag, snapZrotateFlag, snapVrotateFlag};
+    }
+
     private boolean lock = false;
 
     private boolean xTranslate;

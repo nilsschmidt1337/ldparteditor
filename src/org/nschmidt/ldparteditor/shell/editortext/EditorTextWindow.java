@@ -63,8 +63,10 @@ import org.nschmidt.ldparteditor.dialog.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialog.sort.SortDialog;
 import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropTransfer;
 import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropType;
+import org.nschmidt.ldparteditor.enumtype.Axis;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
+import org.nschmidt.ldparteditor.enumtype.TransformationMode;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.ShellHelper;
@@ -73,6 +75,7 @@ import org.nschmidt.ldparteditor.helper.compositetext.Annotator;
 import org.nschmidt.ldparteditor.helper.compositetext.AnnotatorTexmap;
 import org.nschmidt.ldparteditor.helper.compositetext.BFCswapper;
 import org.nschmidt.ldparteditor.helper.compositetext.Inliner;
+import org.nschmidt.ldparteditor.helper.compositetext.RotatorAndTranslator;
 import org.nschmidt.ldparteditor.helper.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helper.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.helper.compositetext.VertexMarker;
@@ -947,7 +950,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                     return;
                 }
-                NLogger.debug(getClass(), "Inlining.."); //$NON-NLS-1$
+                NLogger.debug(getClass(), "Swap BFC winding.."); //$NON-NLS-1$
                 final StyledText st = selection.getTextComposite();
                 int s1 = st.getSelectionRange().x;
                 int s2 = s1 + st.getSelectionRange().y;
@@ -1181,6 +1184,44 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
+
+        widgetUtil(btnMovePlusXPtr[0]).addSelectionListener(e ->    moveOrRotate(TransformationMode.TRANSLATE, false, Axis.X));
+        widgetUtil(btnMoveMinusXPtr[0]).addSelectionListener(e ->   moveOrRotate(TransformationMode.TRANSLATE, true, Axis.X));
+        widgetUtil(btnMovePlusYPtr[0]).addSelectionListener(e ->    moveOrRotate(TransformationMode.TRANSLATE, false, Axis.Y));
+        widgetUtil(btnMoveMinusYPtr[0]).addSelectionListener(e ->   moveOrRotate(TransformationMode.TRANSLATE, true, Axis.Y));
+        widgetUtil(btnMovePlusZPtr[0]).addSelectionListener(e ->    moveOrRotate(TransformationMode.TRANSLATE, false, Axis.Z));
+        widgetUtil(btnMoveMinusZPtr[0]).addSelectionListener(e ->   moveOrRotate(TransformationMode.TRANSLATE, true, Axis.Z));
+        widgetUtil(btnRotatePlusXPtr[0]).addSelectionListener(e ->  moveOrRotate(TransformationMode.ROTATE, false, Axis.X));
+        widgetUtil(btnRotateMinusXPtr[0]).addSelectionListener(e -> moveOrRotate(TransformationMode.ROTATE, true, Axis.X));
+        widgetUtil(btnRotatePlusYPtr[0]).addSelectionListener(e ->  moveOrRotate(TransformationMode.ROTATE, false, Axis.Y));
+        widgetUtil(btnRotateMinusYPtr[0]).addSelectionListener(e -> moveOrRotate(TransformationMode.ROTATE, true, Axis.Y));
+        widgetUtil(btnRotatePlusZPtr[0]).addSelectionListener(e ->  moveOrRotate(TransformationMode.ROTATE, false, Axis.Z));
+        widgetUtil(btnRotateMinusZPtr[0]).addSelectionListener(e -> moveOrRotate(TransformationMode.ROTATE, true, Axis.Z));
+    }
+
+    private void moveOrRotate(TransformationMode mode, boolean invert, Axis axis) {
+        final CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
+        if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+            final DatFile df = selection.getState().getFileNameObj();
+            final VertexManager vm = df.getVertexManager();
+            if (!vm.isUpdated()){
+                return;
+            }
+
+            NLogger.debug(getClass(), "Move or rotate.."); //$NON-NLS-1$
+            vm.addSnapshot();
+            final StyledText st = selection.getTextComposite();
+            int s1 = st.getSelectionRange().x;
+            int s2 = s1 + st.getSelectionRange().y;
+            int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+            int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+            fromLine++;
+            toLine++;
+            NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+            NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
+            RotatorAndTranslator.moveOrRotate(st, fromLine, toLine, df, mode, invert, axis);
+            st.forceFocus();
+        }
     }
 
     public boolean saveAs(DatFile dfToSave, String name, String filePath) {
