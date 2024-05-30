@@ -35,8 +35,8 @@ public class SelectionDialog<T> extends SelectionDesign<T> {
      *
      * @param parentShell
      */
-    public SelectionDialog(Shell parentShell, String title) {
-        super(parentShell, title);
+    public SelectionDialog(Shell parentShell, String title, String icon) {
+        super(parentShell, title, icon);
     }
 
     @SuppressWarnings("unchecked")

@@ -42,14 +42,16 @@ import org.nschmidt.ldparteditor.widget.TreeItem;
 class SelectionDesign<T> extends Dialog {
 
     final String title;
+    final String icon;
     final List<T> selectionData = new ArrayList<>();
     final Tree[] treePtr = new Tree[1];
 
     // Use final only for subclass/listener references!
 
-    SelectionDesign(Shell parentShell, String title) {
+    SelectionDesign(Shell parentShell, String title, String icon) {
         super(parentShell);
         this.title = title;
+        this.icon = icon;
     }
 
     /**
@@ -83,7 +85,7 @@ class SelectionDesign<T> extends Dialog {
 
         for (T item : selectionData) {
             TreeItem trtmEditor3D = new TreeItem(tree);
-            trtmEditor3D.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
+            trtmEditor3D.setImage(ResourceManager.getImage(icon));
             trtmEditor3D.setText(new String[] { item.toString() });
             trtmEditor3D.setVisible(true);
             trtmEditor3D.setData(item);

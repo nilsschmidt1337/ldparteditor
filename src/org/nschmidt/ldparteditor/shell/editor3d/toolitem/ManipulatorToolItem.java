@@ -3,6 +3,7 @@ package org.nschmidt.ldparteditor.shell.editor3d.toolitem;
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -30,6 +31,7 @@ import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.math.MatrixOperations;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
@@ -518,43 +520,67 @@ public class ManipulatorToolItem extends ToolItem {
             final VertexManager vm = df.getVertexManager();
             Set<GData1> subfiles = vm.getSelectedSubfiles();
             if (!subfiles.isEmpty()) {
-                final SelectionDialog<GData1> dialog = new SelectionDialog<>(Editor3DWindow.getWindow().getShell(), I18n.E3D_SELECT_REFERENCE_OBJECT_SUBFILE);
+                final SelectionDialog<GData1> dialog = new SelectionDialog<>(Editor3DWindow.getWindow().getShell(), I18n.E3D_SELECT_REFERENCE_OBJECT_SUBFILE, "icon16_primitives.png"); //$NON-NLS-1$
                 dialog.addData(subfiles.stream().filter(s -> vm.getLineLinkedToVertices().containsKey(s)).sorted(
                         (a,b) -> Integer.compare(df.getDrawPerLineNoClone().getKey(a), df.getDrawPerLineNoClone().getKey(b))
                 ).toList());
-                GData1 subfile = null;
-                if (subfiles.size() > 1) {
+                GData1 mainSubfile = null;
+                final boolean moreThanOneSubfileSelected = subfiles.size() > 1;
+                if (moreThanOneSubfileSelected) {
                     if (dialog.open() == IDialogConstants.OK_ID) {
-                        subfile = dialog.getSelection();
+                        mainSubfile = dialog.getSelection();
                     } else {
                         return;
                     }
                 } else {
                     for (GData1 g1 : subfiles) {
                         if (vm.getLineLinkedToVertices().containsKey(g1)) {
-                            subfile = g1;
+                            mainSubfile = g1;
                             break;
                         }
                     }
                 }
 
-                if (subfile == null) {
+                if (mainSubfile == null) {
                     return;
                 }
 
+                final Composite3D lastSelectedComposite = df.getLastSelectedComposite();
                 for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                     Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                    if ((lastSelectedComposite != null && !lastSelectedComposite.isDisposed() && c3d.equals(lastSelectedComposite))
+                    ||  ((lastSelectedComposite == null || lastSelectedComposite.isDisposed()) && df.equals(c3d.getLockableDatFileReference()))) {
                         vm.addSnapshot();
                         vm.backupHideShowState();
-                        Matrix ma = c3d.getManipulator().getAccurateMatrix();
+                        final Matrix ma = c3d.getManipulator().getAccurateMatrix();
+                        final Matrix mainMatrix = mainSubfile.getAccurateProductMatrix();
+                        final Matrix mainInverse = mainMatrix.invert();
+                        final Matrix newMainMatrix;
                         if (resetScale) {
-                            vm.transformSubfile(subfile, ma, true, true);
+                            newMainMatrix = ma;
                         } else {
-                            vm.transformSubfile(subfile, Matrix.mul(
+                            newMainMatrix = Matrix.mul(
                                     ma,
-                                    MatrixOperations.removeRotationAndTranslation(subfile.getAccurateProductMatrix())), true, true);
+                                    MatrixOperations.removeRotationAndTranslation(mainMatrix));
                         }
+
+                        // Transform every selected subfile relatively to the main subfile
+                        for (GData1 subfile : new HashSet<>(subfiles)) {
+                            if (subfile != mainSubfile && vm.getLineLinkedToVertices().containsKey(subfile)) {
+                                Matrix subfileMatrix = subfile.getAccurateProductMatrix();
+                                // Translate the transformation relatively to the main subfile transformation
+                                // subfileMatrix * mainInverse * newMainMatrix = subfileMatrix
+                                NLogger.debug(ManipulatorToolItem.class, "subfileMatrix:\n{0}", subfileMatrix); //$NON-NLS-1$
+                                NLogger.debug(ManipulatorToolItem.class, "mainInverse:\n{0}", mainInverse); //$NON-NLS-1$
+                                NLogger.debug(ManipulatorToolItem.class, "newMainMatrix:\n{0}", newMainMatrix); //$NON-NLS-1$
+                                subfileMatrix =  Matrix.mul(Matrix.mul(mainInverse, subfileMatrix), newMainMatrix);
+                                NLogger.debug(ManipulatorToolItem.class, "subfileMatrix * mainInverse * newMainMatrix:\n{0}", subfileMatrix); //$NON-NLS-1$
+                                vm.transformSubfile(subfile, subfileMatrix, true, false);
+                            }
+                        }
+
+                        // Finally, transform the chosen subfile
+                        vm.transformSubfile(mainSubfile, newMainMatrix, true, true);
                         break;
                     }
                 }
