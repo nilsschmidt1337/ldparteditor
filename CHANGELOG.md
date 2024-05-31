@@ -1,3 +1,14 @@
+# 31 May 2024
+With the release of 1.8.78 you are able to...
+-  ...move a set of subfiles to the manipulator, using "Move a selected Subfile to the Manipulator" (only one subfile was supported before).
+-  ...customise Edger2 in the options ("Tools..."->"Options...") to include or not include unmatched edges by default.
+-  ...use buttons for (global) 3D transformations (rotate + translate) in the text editor.
+-  ...choose on which line the point gets projected when you calculate the nearest point between two skew lines.
+
+The following critical issue is fixed:
+1. Rounding in the text editor did not update the vertex meta commands.
+
+
 # 26 Mar 2024
 With the release of 1.8.77 you are able to...
 -  ...benefit from improved accuracy of "Move the Manipulator to the Average Point of the Selection".
