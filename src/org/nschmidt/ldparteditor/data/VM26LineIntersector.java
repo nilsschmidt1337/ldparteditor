@@ -17,18 +17,18 @@ package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
+import org.nschmidt.ldparteditor.dialog.selectgdata.SelectionDialog;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.helper.math.Vector3dd;
@@ -44,7 +44,7 @@ class VM26LineIntersector extends VM25Smooth {
 
     public void intersectionVerticesBetweenLines3D(boolean showPopup) {
 
-        final Set<GData2> linesToIntersect = new HashSet<>();
+        final List<GData2> linesToIntersect = new ArrayList<>();
 
         if (selectedLines.isEmpty()) {
             if (showPopup) {
@@ -59,6 +59,21 @@ class VM26LineIntersector extends VM25Smooth {
             linesToIntersect.addAll(lines.keySet());
         } else {
             linesToIntersect.addAll(selectedLines);
+        }
+
+        if (linesToIntersect.size() == 2) {
+            final SelectionDialog<GData2> dialog = new SelectionDialog<>(Editor3DWindow.getWindow().getShell(), I18n.E3D_SELECT_REFERENCE_OBJECT_LINE, "icon16_lines.png"); //$NON-NLS-1$
+            dialog.addData(linesToIntersect);
+            if (dialog.open() == IDialogConstants.OK_ID) {
+                final GData2 referenceLine = dialog.getSelection();
+                if (referenceLine == null) return;
+                if (linesToIntersect.get(0).equals(referenceLine)) {
+                    linesToIntersect.set(0, linesToIntersect.get(1));
+                    linesToIntersect.set(1, referenceLine);
+                }
+            } else {
+                return;
+            }
         }
 
         clearSelection();
