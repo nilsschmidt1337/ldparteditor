@@ -391,7 +391,7 @@ public enum RingsAndCones {
             } else {
 
                 String anglePrefix = rs.getAngles().get(angle);
-                anglePrefix = anglePrefix.substring(0, anglePrefix.indexOf(" ")); //$NON-NLS-1$
+                anglePrefix = anglePrefix.substring(0, anglePrefix.indexOf(' '));
 
                 if (rs.isUsingHiRes()) {
                     anglePrefix = "48\\" + anglePrefix; //$NON-NLS-1$
@@ -445,7 +445,7 @@ public enum RingsAndCones {
             }
         } else {
             String anglePrefix = rs.getAngles().get(rs.getAngle());
-            anglePrefix = anglePrefix.substring(0, anglePrefix.indexOf(" ")); //$NON-NLS-1$
+            anglePrefix = anglePrefix.substring(0, anglePrefix.indexOf(' '));
             if (rs.isUsingHiRes()) {
                 anglePrefix = "48\\" + anglePrefix; //$NON-NLS-1$
             }

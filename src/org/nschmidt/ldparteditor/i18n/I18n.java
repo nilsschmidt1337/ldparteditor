@@ -1484,9 +1484,9 @@ public final class I18n {
         }
         StackTraceElement[] stackTraceElements = new Throwable().getStackTrace();
         String stack = stackTraceElements[1].toString();
-        int lineNumber  = Integer.parseInt(stack.substring(stack.lastIndexOf(":") + 1, stack.lastIndexOf(")"))); //$NON-NLS-1$ //$NON-NLS-2$
+        int lineNumber  = Integer.parseInt(stack.substring(stack.lastIndexOf(':') + 1, stack.lastIndexOf(')')));
         String methodName = fields[lineNumber - lineOffset].getName();
-        return methodName.substring(methodName.indexOf("_") + 1); //$NON-NLS-1$
+        return methodName.substring(methodName.indexOf('_') + 1);
     }
 
     static { // Make a test if the current locale use RTL layout
