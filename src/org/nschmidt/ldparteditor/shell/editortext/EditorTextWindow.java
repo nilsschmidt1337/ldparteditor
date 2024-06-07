@@ -708,6 +708,9 @@ public class EditorTextWindow extends EditorTextDesign {
                 int s2 = s1 + st.getSelectionRange().y;
                 int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
                 int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                if (fromLine != toLine && s2 == st.getOffsetAtLine(toLine)) {
+                    toLine -= 1;
+                }
                 fromLine++;
                 toLine++;
                 Inliner.withSubfileReference = false;
@@ -732,6 +735,9 @@ public class EditorTextWindow extends EditorTextDesign {
                 int s2 = s1 + st.getSelectionRange().y;
                 int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
                 int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                if (fromLine != toLine && s2 == st.getOffsetAtLine(toLine)) {
+                    toLine -= 1;
+                }
                 fromLine++;
                 toLine++;
                 Inliner.withSubfileReference = false;
@@ -932,6 +938,9 @@ public class EditorTextWindow extends EditorTextDesign {
                 int s2 = s1 + st.getSelectionRange().y;
                 int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
                 int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                if (fromLine != toLine && s2 == st.getOffsetAtLine(toLine)) {
+                    toLine -= 1;
+                }
                 fromLine++;
                 toLine++;
                 Inliner.withSubfileReference = true;

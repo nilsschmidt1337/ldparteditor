@@ -909,6 +909,9 @@ public class CompositeTab extends CompositeTabDesign {
                     int s21 = s11 + st1.getSelectionRange().y;
                     int fromLine1 = s11 > -1 ? st1.getLineAtOffset(s11) : s11 * -1;
                     int toLine1 = s21 > -1 ? st1.getLineAtOffset(s21) : s21 * -1;
+                    if (fromLine1 != toLine1 && s21 == st1.getOffsetAtLine(toLine1)) {
+                        toLine1 -= 1;
+                    }
                     fromLine1++;
                     toLine1++;
                     Inliner.withSubfileReference = false;
