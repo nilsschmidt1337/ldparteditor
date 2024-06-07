@@ -36,7 +36,7 @@ public enum Stl2Dat {
         
         try (UTF8BufferedReader reader = new UTF8BufferedReader(path)) {
             String firstLine = reader.readLine();
-            if (firstLine.startsWith("solid ")) { //$NON-NLS-1$
+            if (firstLine != null && firstLine.startsWith("solid ")) { //$NON-NLS-1$
                 readAsciiStlFile(result, reader);
             } else {
                 readBinaryStl = true;
