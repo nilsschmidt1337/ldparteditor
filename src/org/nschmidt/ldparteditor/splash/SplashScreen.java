@@ -73,6 +73,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class SplashScreen extends ApplicationWindow {
 
+    private static final Pattern SEMICOLON_PATTERN = Pattern.compile(";"); //$NON-NLS-1$
+
     /** The progress bar shows the loading progress */
     private ProgressBar bar;
     /** The label shows the loading progress info text */
@@ -273,7 +275,7 @@ public class SplashScreen extends ApplicationWindow {
                         if (line == null) {
                             break;
                         }
-                        final String[] dataSegments = Pattern.compile(";").split(line.trim()); //$NON-NLS-1$
+                        final String[] dataSegments = SEMICOLON_PATTERN.split(line.trim());
                         if (dataSegments.length > 3) {
                             for (int i = 0; i < 4; i++) {
                                 dataSegments[i] = dataSegments[i].trim();
