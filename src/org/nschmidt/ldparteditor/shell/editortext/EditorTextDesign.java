@@ -506,7 +506,7 @@ class EditorTextDesign extends ApplicationWindow {
             NButton btnInline = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnInlinePtr[0] = btnInline;
             btnInline.setImage(ResourceManager.getImage("icon16_inline.png")); //$NON-NLS-1$
-            KeyStateManager.addTooltipText(btnInline, I18n.EDITORTEXT_INLINE_1, TextTask.EDITORTEXT_INLINE);
+            KeyStateManager.addTooltipText(btnInline, Cocoa.replaceCtrlByCmd(I18n.EDITORTEXT_INLINE_1), TextTask.EDITORTEXT_INLINE);
         }
         {
             NButton btnInlineDeep = new NButton(toolItemDebug, Cocoa.getStyle());

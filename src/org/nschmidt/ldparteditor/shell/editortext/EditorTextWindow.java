@@ -715,7 +715,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 toLine++;
                 Inliner.withSubfileReference = false;
                 Inliner.recursively = false;
-                Inliner.noComment = false;
+                Inliner.noComment = Cocoa.checkCtrlOrCmdPressed(e.stateMask);
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                 Inliner.inline(st, fromLine, toLine, selection.getState().getFileNameObj());

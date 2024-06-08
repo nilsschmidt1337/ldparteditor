@@ -1757,7 +1757,7 @@ public final class GData1 extends GData {
         if (Inliner.withSubfileReference) {
             sb.append("0 !LPE INLINE " + getNiceString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
-            if (!(Inliner.recursively && !this.equals(this.firstRef)) && !Inliner.noComment) {
+            if (!(Inliner.recursively && !this.equals(this.firstRef)) && !Inliner.noComment || (!Inliner.recursively && Inliner.noComment)) {
 
                 Object[] messageArguments = {getNiceString()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
@@ -1811,7 +1811,7 @@ public final class GData1 extends GData {
                     } else {
                         sb.append(((GData0) gs).text + "<br>"); //$NON-NLS-1$
                     }
-                } else if (!Inliner.recursively) {
+                } else if (!Inliner.recursively && !Inliner.noComment) {
                     sb.append(((GData0) gs).text + "<br>"); //$NON-NLS-1$
                 }
                 break;
@@ -1823,7 +1823,7 @@ public final class GData1 extends GData {
                     if (g6.type == BFC.INVERTNEXT) {
                         if (lastBFC == BFC.NOCLIP) {
                             // Ignore invertnext on NOCLIP
-                            if (!Inliner.recursively) sb.append("0 // " + g6.toString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
+                            if (!Inliner.recursively && !Inliner.noComment) sb.append("0 // " + g6.toString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
                         } else {
                             if (Inliner.recursively) {
                                 if (bfc == BFC.CCW_CLIP) {
@@ -1840,19 +1840,19 @@ public final class GData1 extends GData {
                         lastBFC = g6.type;
                         if (lastBFC == BFC.NOCERTIFY) {
                             // Ignore bfc statements on NOCERTIFY
-                            if (!Inliner.recursively) sb.append("0 // " + g6.toString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
+                            if (!Inliner.recursively && !Inliner.noComment) sb.append("0 // " + g6.toString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
                         } else if (lastBFC == BFC.CCW_CLIP && bfc == BFC.CW_CLIP) {
                             flipSurfaces = true;
-                            if (!Inliner.recursively) sb.append("0 // " + g6.toString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
+                            if (!Inliner.recursively && !Inliner.noComment) sb.append("0 // " + g6.toString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
                         } else if (lastBFC == BFC.CW_CLIP && bfc == BFC.CCW_CLIP) {
                             flipSurfaces = true;
-                            if (!Inliner.recursively) sb.append("0 // " + g6.toString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
+                            if (!Inliner.recursively && !Inliner.noComment) sb.append("0 // " + g6.toString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
                         } else if (lastBFC != BFC.CCW_CLIP && g6.type != BFC.CW_CLIP) {
                             if (!Inliner.recursively) sb.append(g6.toString() + "<br>"); //$NON-NLS-1$
                         } else if (lastBFC == BFC.NOCLIP) {
                             sb.append(g6.toString() + "<br>"); //$NON-NLS-1$
                         } else {
-                            if (!Inliner.recursively) sb.append("0 // " + g6.toString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
+                            if (!Inliner.recursively && !Inliner.noComment) sb.append("0 // " + g6.toString() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                     }
                 }
@@ -2206,7 +2206,7 @@ public final class GData1 extends GData {
         if (Inliner.withSubfileReference) {
             sb.append("0 !LPE INLINE_END<br>"); //$NON-NLS-1$
         } else {
-            if (!(Inliner.recursively && !this.equals(this.firstRef)) && !Inliner.noComment) {
+            if (!(Inliner.recursively && !this.equals(this.firstRef)) && !Inliner.noComment || (!Inliner.recursively && Inliner.noComment)) {
 
                 Object[] messageArguments = {shortName};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$

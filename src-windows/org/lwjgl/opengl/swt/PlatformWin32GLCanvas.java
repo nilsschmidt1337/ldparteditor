@@ -29,8 +29,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBMultisample;
 import org.lwjgl.opengl.ARBRobustness;
@@ -151,16 +149,11 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
         }
         final long finalContext = context;
         dummycanvas.dispose();
-        Listener listener = new Listener() {
-            public void handleEvent(Event event) {
-                switch (event.type) {
-                case SWT.Dispose:
-                    deleteContext(canvas, finalContext);
-                    break;
-                }
+        canvas.addListener(SWT.Dispose, event -> {
+            if (event.type == SWT.Dispose) {
+                deleteContext(canvas, finalContext);
             }
-        };
-        canvas.addListener(SWT.Dispose, listener);
+        });
         return context;
     }
 
