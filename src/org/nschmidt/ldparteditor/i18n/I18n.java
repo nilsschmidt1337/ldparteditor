@@ -886,6 +886,7 @@ public final class I18n {
     public static final String KEYBOARD_INSERT_HISTORY = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_INSERT_KEYWORD = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_INSERT_REFERENCE = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_INSERT_REFERENCE_MIRRORED_ON_X = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_INVERT_WHEEL_ZOOM_DIRECTION = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_LINE_TO_CONDLINE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_LMB = KEYBOARD.getString(getProperty());

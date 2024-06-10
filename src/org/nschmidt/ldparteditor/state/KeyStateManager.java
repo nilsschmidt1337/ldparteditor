@@ -255,6 +255,7 @@ public class KeyStateManager {
             addTask(TextTask.EDITORTEXT_INSERT_HISTORY, SWT.COMMAND, 'l');
             addTask(TextTask.EDITORTEXT_INSERT_KEYWORD, SWT.COMMAND, 'k');
             addTask(TextTask.EDITORTEXT_INSERT_REFERENCE, SWT.COMMAND, 'r');
+            addTask(TextTask.EDITORTEXT_INSERT_REFERENCE_MIRRORED_ON_X, SWT.COMMAND | SWT.ALT, 'r');
 
             addTask(TextTask.EDITORTEXT_LINE_UP, SWT.ALT, SWT.ARROW_UP);
             addTask(TextTask.EDITORTEXT_LINE_DOWN, SWT.ALT, SWT.ARROW_DOWN);
@@ -391,6 +392,7 @@ public class KeyStateManager {
             addTask(TextTask.EDITORTEXT_INSERT_HISTORY, SWT.CTRL, 'h');
             addTask(TextTask.EDITORTEXT_INSERT_KEYWORD, SWT.CTRL, 'k');
             addTask(TextTask.EDITORTEXT_INSERT_REFERENCE, SWT.CTRL, 'r');
+            addTask(TextTask.EDITORTEXT_INSERT_REFERENCE_MIRRORED_ON_X, SWT.CTRL | SWT.SHIFT, 'r');
 
             addTask(TextTask.EDITORTEXT_LINE_UP, SWT.ALT, SWT.ARROW_UP);
             addTask(TextTask.EDITORTEXT_LINE_DOWN, SWT.ALT, SWT.ARROW_DOWN);

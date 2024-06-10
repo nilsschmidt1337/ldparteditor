@@ -1066,7 +1066,7 @@ public class CompositeTab extends CompositeTabDesign {
                     compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getCaretOffset() + keywordLine.length() - delta2);
                     break;
                 }
-                case EDITORTEXT_INSERT_REFERENCE:
+                case EDITORTEXT_INSERT_REFERENCE_MIRRORED_ON_X, EDITORTEXT_INSERT_REFERENCE:
                 {
                     if (!vm.isUpdated() || df.isReadOnly()) return;
                     NLogger.debug(getClass(), "Insert TYPE 1 reference line.."); //$NON-NLS-1$
@@ -1084,7 +1084,8 @@ public class CompositeTab extends CompositeTabDesign {
 
                     final boolean needNewLine3 = StringHelper.isNotBlank(currentLine3);
 
-                    final String referenceLine = (needNewLine3 ? StringHelper.getLineDelimiter() : "") + "1 16 0 0 0 1 0 0 0 1 0 0 0 1 "; //$NON-NLS-1$ //$NON-NLS-2$
+                    final String xScale = task == TextTask.EDITORTEXT_INSERT_REFERENCE_MIRRORED_ON_X ? "-1" : "1"; //$NON-NLS-1$ //$NON-NLS-2$
+                    final String referenceLine = (needNewLine3 ? StringHelper.getLineDelimiter() : "") + "1 16 0 0 0 " + xScale + " 0 0 0 1 0 0 0 1 "; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                     int delta3 = 0;
                     s15 = compositeTextPtr[0].getOffsetAtLine(toLine5);

@@ -565,6 +565,7 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtmEditorText, I18n.KEYBOARD_INSERT_HISTORY, TextTask.EDITORTEXT_INSERT_HISTORY, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_INSERT_KEYWORD, TextTask.EDITORTEXT_INSERT_KEYWORD, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_INSERT_REFERENCE, TextTask.EDITORTEXT_INSERT_REFERENCE, true);
+                registerTask(trtmEditorText, I18n.KEYBOARD_INSERT_REFERENCE_MIRRORED_ON_X, TextTask.EDITORTEXT_INSERT_REFERENCE_MIRRORED_ON_X, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_MOVE_LINE_UP, TextTask.EDITORTEXT_LINE_UP, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_MOVE_LINE_DOWN, TextTask.EDITORTEXT_LINE_DOWN, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_SIZE_DECREASE, TextTask.EDITORTEXT_SIZE_DECREASE, true);
