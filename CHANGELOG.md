@@ -1,5 +1,5 @@
 # 10 Jun 2024
-With the release of 1.8.78 you are able to...
+With the release of 1.8.79 you are able to...
 -  ...inline a selection without any comments (ctrl+click on inline button).
 -  ...decide if the right mouse click cancels the action to add a line/triangle/quad or not. Cancel is not the default anymore! ("Tools..."->"Options...").
 -  ...have a shortcut which adds an empty subfile reference line, mirrored on X (Ctrl-Shift-R).

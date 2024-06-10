@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="junit"
+    name="Create Runnable LDPartEditor JAR and .pkg (Mac OS X, only 64-bit, ARM)">
+    <!--ANT 1.7 is required -->
+    <property name="dependenciesFolder"
+            value="dependencies" />
+    <property name="sourceFolder"
+            value="src" />
+    <property name="binariesFolder"
+            value="bin" />
+    <property name="targetFolder"
+            value="target" />
+    <property name="testFolder"
+         value="test" />
+    <property name="reportFolder"
+            value="report" />
+    
+    <macrodef name="get-and-checksum">
+        <attribute name="file" />
+        <attribute name="destdir" />
+        <attribute name="checksum" />
+        <attribute name="dir" />
+        <sequential>
+            <get
+                src="https://downloads.sourceforge.net/project/partcreator/@{dir}/@{file}?r=&#038;use_mirror=netcologne"
+                dest="@{destdir}/@{file}" skipexisting="true"
+                verbose="on" />
+            <local name="checksum.matches" />
+            <local name="checksum.matches.fail" />
+            <checksum file="@{destdir}/@{file}" algorithm="sha"
+                property="@{checksum}" verifyproperty="checksum.matches" />
+            <condition property="checksum.matches.fail">
+                <equals arg1="${checksum.matches}" arg2="false" />
+            </condition>
+            <fail if="checksum.matches.fail">Checksum-error</fail>
+        </sequential>
+    </macrodef>
+    
+    <target name="create_run_jar">
+    
+       <property name="libsFolder"
+            value="libs" />
+       <property name="scriptsFolder"
+            value="scripts" />
+       <property name="macosxSourceFolder"
+            value="src-macos" />
+       <property name="macosxFolder"
+            value="macosx" />
+            
+        <mkdir dir="${dependenciesFolder}" />
+        <mkdir dir="${dependenciesFolder}/${macosxFolder}" />
+        <mkdir dir="${targetFolder}" />
+        <mkdir dir="${binariesFolder}" />
+        <mkdir dir="${binariesFolder}/${macosxFolder}" />
+        
+        <!-- JARs from org.eclipse and com.ibm -->
+        <get-and-checksum
+            file="swt-4.22-cocoa-macosx-x86_64.zip"
+            destdir="${dependenciesFolder}"
+            checksum="d5d9c4df4323ff59b9649359c3c6dd37b9ad620c"
+            dir="buildfiles-v2/swt-lib" />
+        <get-and-checksum
+            file="org.eclipse.core.commands_3.10.100.v20210722-1426.jar"
+            destdir="${dependenciesFolder}"
+            checksum="e6ab3335ea6918b4d73ee1b78a302248eaed4670"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="org.eclipse.core.databinding_1.10.100.v20200926-1123.jar"
+            destdir="${dependenciesFolder}"
+            checksum="e396f092881fbc787254fcad8ff5cd9774dd8314"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="org.eclipse.core.databinding.beans_1.8.0.v20210619-1111.jar"
+            destdir="${dependenciesFolder}"
+            checksum="e5bde29a74df6ca3e9a00700cd997698e149f597"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="org.eclipse.core.databinding.observable_1.11.0.v20210722-1426.jar"
+            destdir="${dependenciesFolder}"
+            checksum="37d2d6b39387844b53e5d92f7912ca7f710b221b"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="org.eclipse.core.databinding.property_1.9.0.v20210619-1129.jar"
+            destdir="${dependenciesFolder}"
+            checksum="831e5c27a79a2ed2e263298dabf4e885677c1ce4"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="org.eclipse.equinox.common_3.15.100.v20211021-1418.jar"
+            destdir="${dependenciesFolder}"
+            checksum="498abfe26a551e844909c745c2936f6578ad81e5"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="org.eclipse.jface_3.24.0.v20211110-1517.jar"
+            destdir="${dependenciesFolder}"
+            checksum="ec64256ebee9db8906a98a6d1fb4761436211883"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="org.eclipse.jface.databinding_1.13.0.v20210619-1146.jar"
+            destdir="${dependenciesFolder}"
+            checksum="e36d9c4ce8b4aa34af799b4e974a90ef4d9c348e"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="org.eclipse.osgi_3.17.100.v20211104-1730.jar"
+            destdir="${dependenciesFolder}"
+            checksum="61963893c02d326b40fb16ccf506eb6da13a5514"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="org.eclipse.ui.workbench_3.124.0.v20211116-0651.jar"
+            destdir="${dependenciesFolder}"
+            checksum="77eabb05cb825f650b86928aed885e7b08a5bb74"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="com.ibm.icu_67.1.0.v20200706-1749.jar"
+            destdir="${dependenciesFolder}"
+            checksum="7f079687290b9bfa98a65723fe1b81386df60d79"
+            dir="buildfiles-v2" />
+            
+        <!-- JARs from LWJGL -->
+        <get-and-checksum
+            file="lwjgl3.3.3.zip"
+            destdir="${dependenciesFolder}"
+            checksum="bdbda4fa9e5e3f3de57c1556705620a59bf65b78"
+            dir="buildfiles-v2" />
+        <get-and-checksum
+            file="lwjgl_util.jar"
+            destdir="${dependenciesFolder}"
+            checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149"
+            dir="buildfiles-v2" />
+            
+        <!-- Get tools.jar -->
+        <get-and-checksum
+            file="tools.jar"
+            destdir="${dependenciesFolder}"
+            checksum="25f5280e2b946d3a25fcf2a764306c1966858f18"
+            dir="buildfiles-v2" />
+            
+        <!-- Unzip SWT libraries -->
+        <pathconvert property="swt.macosx.zipfile">
+            <fileset dir="${dependenciesFolder}"
+                includes="swt-*macosx*.zip" />
+        </pathconvert>
+        
+        <unzip src="${swt.macosx.zipfile}" dest="${dependenciesFolder}/${macosxFolder}"/>
+        <unzip src="${dependenciesFolder}/${macosxFolder}/swt.jar" dest="${dependenciesFolder}/${macosxFolder}"/>
+        <unzip src="${dependenciesFolder}/lwjgl3.3.3.zip" dest="${libsFolder}"/>
+        
+        <copy todir="${sourceFolder}" >
+            <fileset dir="${macosxSourceFolder}" includes="**"/>
+        </copy>
+        
+        <!-- Auto-detect other paths -->
+        <pathconvert property="core.commands">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.core.commands_*.jar" />
+        </pathconvert>
+        <pathconvert property="core.databinding">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.core.databinding_*.jar" />
+        </pathconvert>
+        <pathconvert property="core.databinding.beans">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.core.databinding.beans_*.jar" />
+        </pathconvert>
+        <pathconvert property="core.databinding.observable">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.core.databinding.observable_*.jar" />
+        </pathconvert>
+        <pathconvert property="core.databinding.property">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.core.databinding.property_*.jar" />
+        </pathconvert>
+        <pathconvert property="equinox.common">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.equinox.common_*.jar" />
+        </pathconvert>
+        <pathconvert property="jface">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.jface_*.jar" />
+        </pathconvert>
+        <pathconvert property="jface.databinding">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.jface.databinding_*.jar" />
+        </pathconvert>
+        <pathconvert property="osgi">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.osgi_*.jar" />
+        </pathconvert>
+        <pathconvert property="ui.workbench">
+            <fileset dir="${dependenciesFolder}"
+                includes="org.eclipse.ui.workbench_*.jar" />
+        </pathconvert>
+        <pathconvert property="icu">
+            <fileset dir="${dependenciesFolder}"
+                includes="com.ibm.icu_*.jar" />
+        </pathconvert>
+        
+        <!-- Do some echo for the important paths -->
+        <echo message="${core.commands}" />
+        <echo message="${core.databinding}" />
+        <echo message="${core.databinding.beans}" />
+        <echo message="${core.databinding.observable}" />
+        <echo message="${core.databinding.property}" />
+        <echo message="${equinox.common}" />
+        <echo message="${jface}" />
+        <echo message="${jface.databinding}" />
+        <echo message="${osgi}" />
+        <echo message="${ui.workbench}" />
+        <echo message="${icu}" />
+        
+        <path id="master-classpath">
+           <fileset dir="${dependenciesFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+           <fileset dir="${libsFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+         </path>
+         
+         <!-- Compile -->
+         <javac
+            srcdir="${sourceFolder}"
+            destdir="${targetFolder}"
+            includeantruntime="false"
+            encoding="utf8"
+            debug="on" source="21" target="21" >
+            <classpath refid="master-classpath"/>
+         </javac>
+        
+        <!-- Copy non-java files -->
+        <copy todir="${targetFolder}" overwrite="true">
+          <fileset dir="${sourceFolder}">
+            <exclude name="**/*.java"/>
+          </fileset>
+        </copy>
+        
+        <!-- Create JAR file for Mac OS X (64-bit) -->
+        <jar destfile="${binariesFolder}/${macosxFolder}/LDPartEditor.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
+                <!-- Modified Classpath -->
+                <attribute name="Class-Path" value=". plugin/"/>
+            </manifest>
+            <fileset dir="${targetFolder}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${macosxFolder}/swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-vulkan.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengl-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-vulkan-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.observable}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.property}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${equinox.common}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
+        </jar>
+        
+         <!-- Copy dylib and jnilib files for Mac OS X (64-bit, ARM) -->
+        <copy todir="${binariesFolder}/${macosxFolder}" overwrite="true">
+          <fileset dir="${dependenciesFolder}/${macosxFolder}">
+            <include name="**/*.jnilib"/>
+          </fileset>
+        </copy>
+        
+        <!-- Copy resource files for Mac OS X (64-bit, ARM) -->
+        <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+		<copy file="NOTICE.md" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        
+        <delete dir="${binariesFolder}/jvm-image" />
+        <delete dir="${binariesFolder}/installer-work" />
+        
+        <exec executable="jlink" failonerror="true">
+            <arg value="--add-modules"/>
+            <arg value="java.base,java.compiler,java.desktop,java.logging,java.management,java.prefs,java.rmi,java.scripting,java.xml,jdk.unsupported,jdk.jshell,jdk.compiler,jdk.internal.ed,jdk.internal.le,jdk.internal.opt,jdk.crypto.ec"/>
+            <arg value="--no-header-files" />
+            <arg value="--strip-debug"/>
+            <arg value="--no-man-pages"/>
+            <arg value="--compress=2"/>
+            <arg value="--output"/>
+            <arg value="${binariesFolder}/jvm-image"/>
+        </exec>
+        
+        <exec executable="jpackage" failonerror="true">
+            <arg value="--name"/>
+            <arg value="LDPartEditor" />
+            <arg value="--icon"/>
+            <arg value="icons/icon.icns" />
+            <arg value="--dest"/>
+            <arg value="${binariesFolder}/${macosxFolder}/setup" />
+            <arg value="--main-jar"/>
+            <arg value="LDPartEditor.jar" />
+            <arg value="--main-class"/>
+            <arg value="org.nschmidt.ldparteditor.main.LDPartEditor" />
+            <arg value="--input"/>
+            <arg value="${binariesFolder}/${macosxFolder}" />
+            <arg value="--app-version"/>
+            <arg value="1.8.80" />
+            <arg value="--java-options"/>
+            <arg value="-XstartOnFirstThread"/>
+            <arg value="--runtime-image"/>
+            <arg value="${binariesFolder}/jvm-image" />
+            <arg value="--temp"/>
+            <arg value="${binariesFolder}/installer-work" />
+            <arg value="--description"/>
+            <arg value="The LDraw™ Part Editor. Create and edit LDraw™ Parts quick and easy." />
+            <arg value="--copyright"/>
+            <arg value="Copyright (c) 2012 - this year, Nils Schmidt" />
+        </exec>
+        
+        <copy file="${scriptsFolder}/${macosxFolder}/ldparteditor.sh" overwrite="true" todir="${binariesFolder}/${macosxFolder}/setup"/>
+        <delete file="${sourceFolder}/org/lwjgl/opengl/swt/PlatformMacOSXGLCanvas.java" />
+    </target>
+    
+    <target name="clean">
+        <delete dir="${binariesFolder}" />
+        <delete dir="${targetFolder}" />
+        <delete dir="${dependenciesFolder}" />
+        <delete file="${sourceFolder}/org/lwjgl/opengl/swt/PlatformMacOSXGLCanvas.java" />
+    </target>
+    
+        <target name="junit" depends="create_run_jar">
+        <mkdir dir="${reportFolder}" />
+        <property name="libsFolder"
+             value="libs" />
+        <property name="macosxFolder"
+             value="macosx" />
+        <path id="master-classpath">
+           <fileset dir="${dependenciesFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+           <fileset dir="${libsFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+           <fileset dir="${binariesFolder}/${macosxFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+        </path>
+        
+        <!-- Copy files required for testing -->
+        <copy file="${testFolder}/stl2dat_ascii.stl" overwrite="true" todir="${targetFolder}"/>
+        <copy file="${testFolder}/stl2dat_binary.stl" overwrite="true" todir="${targetFolder}"/>
+        
+        <!-- Compile tests -->
+        <javac
+           srcdir="${testFolder}"
+           destdir="${targetFolder}"
+           includeantruntime="false"
+           encoding="utf8"
+           debug="on" source="21" target="21" >
+           <classpath refid="master-classpath"/>
+           <classpath path="${targetFolder}" />
+        </javac>
+        
+        <junit printsummary="yes" haltonfailure="no">
+            
+            <classpath location="${libsFolder}/junit-4.13.2.jar" />
+            <classpath location="${libsFolder}/hamcrest-core-1.3.jar" />
+            <classpath refid="master-classpath"/>
+            <classpath path="${targetFolder}" />
+            
+            <formatter type="xml" />
+            <formatter type="plain" />
+            
+            <batchtest fork="yes" todir="${reportFolder}">
+                <fileset dir="${testFolder}">
+                    <include name="**/*Test*.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+</project>
