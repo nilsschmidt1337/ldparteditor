@@ -1,3 +1,15 @@
+# 10 Jun 2024
+With the release of 1.8.78 you are able to...
+-  ...inline a selection without any comments (ctrl+click on inline button).
+-  ...decide if the right mouse click cancels the action to add a line/triangle/quad or not. Cancel is not the default anymore! ("Tools..."->"Options...").
+-  ...have a shortcut which adds an empty subfile reference line, mirrored on X (Ctrl-Shift-R).
+
+The following critical issues are fixed:
+1. Join Selection (Text Editor) had problems when INVERTNEXT was on top of the selection.
+2. Text line selection in the text editor (by clicking on the line numbers) resulted in wrong inlining when the next line was a reference (type 1).
+3. It was not possible to import empty STL files without an error ("File not found" was displayed).
+
+
 # 31 May 2024
 With the release of 1.8.78 you are able to...
 -  ...move a set of subfiles to the manipulator, using "Move a selected Subfile to the Manipulator" (only one subfile was supported before).
