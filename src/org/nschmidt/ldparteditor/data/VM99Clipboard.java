@@ -682,6 +682,9 @@ class VM99Clipboard extends VM29LineSurfaceIntersector {
             clearSelection();
             final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();
             int linecount = dpl.size();
+            if (g2 instanceof GDataBFC maybeInvNext && maybeInvNext.type == BFC.INVERTNEXT) {
+                g2 = g2.before;
+            }
             final GData oldNext = g2.next;
             GData before = g2;
             for (GData g : CLIPBOARD) {
