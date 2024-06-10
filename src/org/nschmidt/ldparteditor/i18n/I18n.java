@@ -1063,7 +1063,9 @@ public final class I18n {
     public static final String OPTIONS_ALLOW_INVALID_SHAPES = OPTIONS.getString(getProperty());
     public static final String OPTIONS_AUTHORING_FOLDER = OPTIONS.getString(getProperty());
     public static final String OPTIONS_AUTHORING_WHERE = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_AUTHOR_DATA = OPTIONS.getString(getProperty());
     public static final String OPTIONS_BROWSE = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_CANCEL_VIA_MOUSE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_CHOOSE_LOCALE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_COLOUR_NUMBER_INPUT = OPTIONS.getString(getProperty());
     public static final String OPTIONS_COPLANARITY_ERROR = OPTIONS.getString(getProperty());
@@ -1080,6 +1082,7 @@ public final class I18n {
     public static final String OPTIONS_MISC_OPTIONS = OPTIONS.getString(getProperty());
     public static final String OPTIONS_REAL_NAME = OPTIONS.getString(getProperty());
     public static final String OPTIONS_SCALE_FACTOR = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_SHOW_AXIS_LABELS = OPTIONS.getString(getProperty());
     public static final String OPTIONS_TEXT_WINDOW_ARR = OPTIONS.getString(getProperty());
     public static final String OPTIONS_TEXT_WINDOW_LEFT = OPTIONS.getString(getProperty());
     public static final String OPTIONS_TEXT_WINDOW_RIGHT = OPTIONS.getString(getProperty());

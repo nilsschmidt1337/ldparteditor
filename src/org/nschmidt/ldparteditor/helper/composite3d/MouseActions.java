@@ -1307,7 +1307,7 @@ public class MouseActions {
         case MouseButton.RIGHT:
             vm.setSkipSyncWithTextEditor(false);
             KeyStateManager keyboard = c3d.getKeys();
-            if (!keyboard.isCtrlPressed()) {
+            if (!keyboard.isCtrlPressed() && WorkbenchManager.getUserSettingState().isCancelAddViaMouse()) {
                 datfile.setObjVertex1(null);
                 datfile.setObjVertex2(null);
                 datfile.setObjVertex3(null);

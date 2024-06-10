@@ -261,6 +261,8 @@ public class UserSettingState implements Serializable {
 
     private boolean includeUnmatchedEdgesByDefault = false;
 
+    private boolean cancelAddViaMouse = false;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -1494,5 +1496,13 @@ public class UserSettingState implements Serializable {
 
     public void setIncludeUnmatchedEdgesByDefault(boolean includeUnmatchedEdgesByDefault) {
         this.includeUnmatchedEdgesByDefault = includeUnmatchedEdgesByDefault;
+    }
+
+    public boolean isCancelAddViaMouse() {
+        return cancelAddViaMouse;
+    }
+
+    public void setCancelAddViaMouse(boolean cancelAddViaMouse) {
+        this.cancelAddViaMouse = cancelAddViaMouse;
     }
 }

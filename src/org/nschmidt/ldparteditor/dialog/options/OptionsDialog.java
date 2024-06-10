@@ -60,6 +60,7 @@ public class OptionsDialog extends OptionsDesign {
         widgetUtil(btnDisableMAD3DPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btnDisableMAD3DPtr[0].getSelection()));
         widgetUtil(btnDisableMADtextPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMADtext(btnDisableMADtextPtr[0].getSelection()));
         widgetUtil(btnIncludeUnmatchedEdgesPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setIncludeUnmatchedEdgesByDefault(btnIncludeUnmatchedEdgesPtr[0].getSelection()));
+        widgetUtil(btnCancelViaMousePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setCancelAddViaMouse(btnCancelViaMousePtr[0].getSelection()));
         widgetUtil(btnInvertInvertWheelZoomDirectionPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btnInvertInvertWheelZoomDirectionPtr[0].getSelection()));
         widgetUtil(btnShowAxisLabelsPtr[0]).addSelectionListener(e -> {
             WorkbenchManager.getUserSettingState().setShowingAxisLabels(btnShowAxisLabelsPtr[0].getSelection());

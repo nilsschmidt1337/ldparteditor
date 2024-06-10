@@ -88,6 +88,7 @@ class OptionsDesign extends ApplicationWindow {
     NButton[] btnDisableMAD3DPtr = new NButton[1];
     NButton[] btnDisableMADtextPtr = new NButton[1];
     NButton[] btnIncludeUnmatchedEdgesPtr = new NButton[1];
+    NButton[] btnCancelViaMousePtr = new NButton[1];
     NButton[] btnInvertInvertWheelZoomDirectionPtr = new NButton[1];
     NButton[] btnShowAxisLabelsPtr = new NButton[1];
     NButton[] btnOkPtr = new NButton[1];
@@ -216,9 +217,14 @@ class OptionsDesign extends ApplicationWindow {
                 btnIncludeUnmatchedEdges.setText(I18n.OPTIONS_INCLUDE_UNMATCHED_ED);
                 btnIncludeUnmatchedEdges.setSelection(userSettings.isIncludeUnmatchedEdgesByDefault());
 
+                NButton btnCancelViaMouse = new NButton(cmpContainer, SWT.CHECK);
+                this.btnCancelViaMousePtr[0] = btnCancelViaMouse;
+                btnCancelViaMouse.setText(I18n.OPTIONS_CANCEL_VIA_MOUSE);
+                btnCancelViaMouse.setSelection(userSettings.isCancelAddViaMouse());
+
                 NButton btnShowAxisLabels = new NButton(cmpContainer, SWT.CHECK);
                 this.btnShowAxisLabelsPtr[0] = btnShowAxisLabels;
-                btnShowAxisLabels.setText(I18n.KEYBOARD_SHOW_AXIS_LABELS);
+                btnShowAxisLabels.setText(I18n.OPTIONS_SHOW_AXIS_LABELS);
                 btnShowAxisLabels.setSelection(userSettings.isShowingAxisLabels());
 
                 {
@@ -294,10 +300,23 @@ class OptionsDesign extends ApplicationWindow {
                 spnViewportScale.setValue(new BigDecimal(userSettings.getViewportScaleFactor()));
                 spnViewportScale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-                {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
-                    lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                }
+                cmpContainerX.setMinSize(cmpContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+            }
+
+            CTabItem tItem00 = new CTabItem(tabFolderSettings, SWT.NONE);
+            tItem00.setText(I18n.OPTIONS_AUTHOR_DATA);
+
+            {
+
+                final ScrolledComposite cmpContainerX = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
+                Composite cmpContainer = new Composite(cmpContainerX, Cocoa.getStyle());
+                tItem00.setControl(cmpContainerX);
+                cmpContainerX.setContent(cmpContainer);
+                cmpContainerX.setExpandHorizontal(true);
+                cmpContainerX.setExpandVertical(true);
+
+                cmpContainer.setLayout(new GridLayout());
+                cmpContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
                 Label lblLocale = new Label(cmpContainer, SWT.NONE);
                 lblLocale.setText(I18n.OPTIONS_CHOOSE_LOCALE);
