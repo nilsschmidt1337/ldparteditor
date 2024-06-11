@@ -28,19 +28,40 @@ import jdk.jshell.SnippetEvent;
  */
 public enum Evaluator {
     INSTANCE;
-    
+
     private static final String NOT_A_NUMBER = "NaN"; //$NON-NLS-1$
     private static final int MAX_SNIPPET_COUNT = 10000;
     private static JShell js = JShell.create();
+    private static JShell jsQuick = JShell.create();
     private static final StringBuilder sb = new StringBuilder();
     private static final Pattern dotLetter = Pattern.compile("\\.\\D", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 
     private static int snippetCount = 0;
-    
+    private static int quickCount = 0;
     static void reset() {
         snippetCount = 0;
     }
-    
+
+    public static String evalQuick(String rawExpr) {
+        if (quickCount == 0 || quickCount > MAX_SNIPPET_COUNT) {
+            quickCount = 0;
+            jsQuick.close();
+            jsQuick = JShell.create();
+            staticImportMathFunctions("PI", "toDegrees", "toRadians", "sin", "cos", "tan", "round", "abs", "signum", "asin", "acos", "atan", "atan2", "log", "log", "sqrt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$)
+        }
+
+        final JShell backup = js;
+        final int count = snippetCount;
+        js = jsQuick;
+        // Fake it for faster evaluation
+        snippetCount = 1;
+        final String result = eval("-", rawExpr); //$NON-NLS-1$
+        snippetCount = count;
+        js = backup;
+        quickCount++;
+        return result;
+    }
+
     static String eval(String name, String rawExpr) {
         if (snippetCount == 0 || snippetCount > MAX_SNIPPET_COUNT) {
             if (js == null) return rawExpr;

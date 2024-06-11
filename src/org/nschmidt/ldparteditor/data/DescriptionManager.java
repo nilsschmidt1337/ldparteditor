@@ -48,7 +48,7 @@ enum DescriptionManager {
                 final TreeItem newEntry = workQueue.poll();
                 if (newEntry != null) {
                     DatFile df = (DatFile) newEntry.getData();
-                    NLogger.debug(DescriptionManager.class, "Register description for {0}", df.getOldName()); //$NON-NLS-1$
+                    // NLogger.debug(DescriptionManager.class, "Register description for {0}", df.getOldName()); //$NON-NLS-1$
                     final StringBuilder titleSb = new StringBuilder();
                     try (UTF8BufferedReader reader = new UTF8BufferedReader(df.getOldName())) {
                         String title = reader.readLine();

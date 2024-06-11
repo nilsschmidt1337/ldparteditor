@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.ApplicationWindow;
@@ -54,6 +55,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
@@ -97,6 +99,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolI
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
+import org.nschmidt.ldparteditor.text.Evaluator;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.SyntaxFormatter;
 import org.nschmidt.ldparteditor.widget.TreeItem;
@@ -272,6 +275,51 @@ public class CompositeTab extends CompositeTabDesign {
                 tabState.setDoingPaste(event.text.length() > 1 && compositeTextPtr[0].isFocusControl() && tabState.getFileNameObj().getVertexManager().isUpdated());
                 final DatFile dat = tabState.getFileNameObj();
                 final VertexManager vm = dat.getVertexManager();
+                final String text = event.text;
+                if (text.length() <= 2 &&("\r\n".equals(text) || "\n".equals(text) || "\r".equals(text) || "\n\r".equals(text))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    tabState.currentCaretPositionLine = compositeTextPtr[0].getLineAtOffset(event.start);
+                    final GData dataToEvaluate = dat.getDrawPerLineNoClone().getValue(tabState.currentCaretPositionLine + 1);
+                    if (dataToEvaluate.type() == 0) {
+                        String lineToEvaluate = compositeTextPtr[0].getLine(tabState.currentCaretPositionLine).trim();
+                        if (!lineToEvaluate.startsWith("0") && lineToEvaluate.length() > 2) { //$NON-NLS-1$
+                            NLogger.debug(getClass(), "Line to evaluate {0}", lineToEvaluate); //$NON-NLS-1$
+                            String[] dataSegments = lineToEvaluate.split("\\s+"); //$NON-NLS-1$
+                            String[] evaluatedData = new String[dataSegments.length];
+                            for (int i = 0; i < dataSegments.length; i++) {
+                                try {
+                                    NLogger.debug(getClass(), "Number {0}", new BigDecimal(dataSegments[i])); //$NON-NLS-1$
+                                    evaluatedData[i] = dataSegments[i];
+                                } catch(NumberFormatException nfe) {
+                                    if (i > 1) {
+                                        evaluatedData[i] = Evaluator.evalQuick(dataSegments[i]);
+                                        if (evaluatedData[i].contains("~")) { //$NON-NLS-1$
+                                            evaluatedData[i] = dataSegments[i];
+                                        }
+                                    } else {
+                                        evaluatedData[i] = dataSegments[i];
+                                    }
+                                }
+                            }
+
+                            String evaluatedLine = Arrays.stream(evaluatedData).collect(Collectors.joining(" ")); //$NON-NLS-1$
+                            NLogger.debug(getClass(), "Result           {0}", evaluatedLine); //$NON-NLS-1$
+
+                            if (!evaluatedLine.equals(lineToEvaluate)) {
+                                event.doit = false;
+                                int start = compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine);
+                                Point oldSelection = compositeTextPtr[0].getSelection();
+                                compositeTextPtr[0].setSelection(start, start + lineToEvaluate.length());
+                                compositeTextPtr[0].insert(evaluatedLine);
+                                try {
+                                    compositeTextPtr[0].setSelection(oldSelection);
+                                } catch (IllegalArgumentException iae) {
+                                    NLogger.debug(getClass(), iae);
+                                }
+                                return;
+                            }
+                        }
+                    }
+                }
                 if (vm.getVertexToReplace() != null && !vm.isModified() && tabState.isReplacingVertex()) {
                     // Replaced vertex manipulation check
                     NLogger.debug(getClass(), "Vertex Manipulation is ACTIVE"); //$NON-NLS-1$
