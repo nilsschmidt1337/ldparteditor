@@ -23,6 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -36,6 +38,7 @@ import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.text.Evaluator;
 
 public class BigDecimalSpinner extends Composite {
 
@@ -163,6 +166,23 @@ public class BigDecimalSpinner extends Composite {
         });
 
         final BigDecimal[] oldValue = new BigDecimal[] { BigDecimal.ZERO };
+        txt.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.keyCode == '\r') {
+                    try {
+                        BigDecimal val = new BigDecimal(txtVal[0].getText());
+                        NLogger.debug(getClass(), "parsed {0}", val); //$NON-NLS-1$
+                    } catch (NumberFormatException ex) {
+                        final String evaluatedResult = Evaluator.evalQuick(txtVal[0].getText());
+                        NLogger.debug(getClass(), "evaluated {0}", evaluatedResult); //$NON-NLS-1$
+                        if (!txtVal[0].getText().equals(evaluatedResult)) {
+                            txtVal[0].setText(evaluatedResult);
+                        }
+                    }
+                }
+            }
+        });
         txt.addModifyListener(e -> {
 
             if (invalidInput) {
