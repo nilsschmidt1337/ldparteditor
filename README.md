@@ -16,6 +16,9 @@ Install a recent version of [Apache Ant](https://ant.apache.org/) and at least a
 ### Mac OS X:
 > ant -noinput -buildfile build-macos.xml
 
+### Mac OS X (ARM):
+> ant -noinput -buildfile build-macos-arm.xml
+
 ## What is this?
 
 ![1](https://user-images.githubusercontent.com/11047164/154556480-3c25947c-9f05-4ed3-b379-83e826945f4f.png)
