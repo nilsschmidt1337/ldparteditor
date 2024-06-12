@@ -142,7 +142,7 @@
         
         <unzip src="${swt.macosx.zipfile}" dest="${dependenciesFolder}/${macosxFolder}"/>
         <unzip src="${dependenciesFolder}/${macosxFolder}/swt.jar" dest="${dependenciesFolder}/${macosxFolder}"/>
-        <unzip src="${dependenciesFolder}/lwjgl3.3.3.zip" dest="${libsFolder}"/>
+        <unzip src="${dependenciesFolder}/lwjgl3.3.3-macosx-arm.zip" dest="${libsFolder}"/>
         
         <copy todir="${sourceFolder}" >
             <fileset dir="${macosxSourceFolder}" includes="**"/>
