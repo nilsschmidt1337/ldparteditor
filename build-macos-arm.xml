@@ -249,9 +249,9 @@
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-opengl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl-vulkan.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-natives-macos.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengl-natives-macos.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-vulkan-natives-macos.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-natives-macos-arm64.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-opengl-natives-macos-arm64.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3-macos/lwjgl-vulkan-natives-macos-arm64.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
