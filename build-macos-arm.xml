@@ -117,9 +117,9 @@
             
         <!-- JARs from LWJGL -->
         <get-and-checksum
-            file="lwjgl3.3.3.zip"
+            file="lwjgl3.3.3-macosx-arm.zip"
             destdir="${dependenciesFolder}"
-            checksum="bdbda4fa9e5e3f3de57c1556705620a59bf65b78"
+            checksum="9c070688dbf553cdb2b4dead6fd0ab1620587637"
             dir="buildfiles-v2" />
         <get-and-checksum
             file="lwjgl_util.jar"
