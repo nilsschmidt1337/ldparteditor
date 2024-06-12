@@ -279,10 +279,12 @@ public class CompositeTab extends CompositeTabDesign {
                 if (text.length() <= 2 &&("\r\n".equals(text) || "\n".equals(text) || "\r".equals(text) || "\n\r".equals(text))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     tabState.currentCaretPositionLine = compositeTextPtr[0].getLineAtOffset(event.start);
                     final GData dataToEvaluate = dat.getDrawPerLineNoClone().getValue(tabState.currentCaretPositionLine + 1);
-                    if (dataToEvaluate.type() == 0) {
+                    if (dataToEvaluate.type() == 0 || dataToEvaluate.type() == 8) {
                         String lineToEvaluate = compositeTextPtr[0].getLine(tabState.currentCaretPositionLine).trim();
-                        if (!lineToEvaluate.startsWith("0") && lineToEvaluate.length() > 2) { //$NON-NLS-1$
-                            NLogger.debug(getClass(), "Line to evaluate {0}", lineToEvaluate); //$NON-NLS-1$
+                        if (!lineToEvaluate.startsWith("0") && lineToEvaluate.length() > 2 //$NON-NLS-1$
+                           || lineToEvaluate.startsWith("0 !LPE CSG") || lineToEvaluate.startsWith("0 !LPE VERTEX ") //$NON-NLS-1$ //$NON-NLS-2$
+                           || lineToEvaluate.startsWith("0 !LPE PROTRACTOR") || lineToEvaluate.startsWith("0 !LPE DISTANCE ")) {  //$NON-NLS-1$ //$NON-NLS-2$
+                           NLogger.debug(getClass(), "Line to evaluate {0}", lineToEvaluate); //$NON-NLS-1$
                             String[] dataSegments = lineToEvaluate.split("\\s+"); //$NON-NLS-1$
                             String[] evaluatedData = new String[dataSegments.length];
                             for (int i = 0; i < dataSegments.length; i++) {
