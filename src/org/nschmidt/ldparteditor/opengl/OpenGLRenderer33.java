@@ -959,7 +959,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             stack.glLoadIdentity();
             Vector3f[] viewportOriginAxis = c3d.getViewportOriginAxis();
             float zOffset = 0;
-            if (c3d.isGridShown()) {
+            if (c3d.isGridShown() && !c3d.isGridShown3D()) {
                 // Grid-1 and 10
                 float gR;
                 float gG;

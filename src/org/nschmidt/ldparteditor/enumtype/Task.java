@@ -55,6 +55,7 @@ public enum Task {
 
     RESET_VIEW,
     SHOW_GRID,
+    SHOW_GRID_3D,
     SHOW_RULER,
 
     OBJ_VERTEX,

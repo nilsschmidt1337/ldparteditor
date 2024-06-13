@@ -191,6 +191,8 @@ public class Composite3D extends ScalableComposite {
     private boolean anaglyph3d;
     /** {@code true} if the grid is shown. */
     private boolean gridShown;
+    /** {@code true} if the 3D grid is shown. */
+    private boolean gridShown3D;
     /** The perspective value */
     private Perspective viewportPerspective;
     /** The rotation matrix of the view */
@@ -299,6 +301,7 @@ public class Composite3D extends ScalableComposite {
     private final MenuItem[] mntmBackPtr = new MenuItem[1];
     private final MenuItem[] mntmFrontPtr = new MenuItem[1];
     private final MenuItem[] mntmShowGridPtr = new MenuItem[1];
+    private final MenuItem[] mntmShowGrid3DPtr = new MenuItem[1];
     private final MenuItem[] mntmShowScalePtr = new MenuItem[1];
     private final MenuItem[] mntmLabelPtr = new MenuItem[1];
     private final MenuItem[] mntmRealPreviewPtr = new MenuItem[1];
@@ -871,6 +874,12 @@ public class Composite3D extends ScalableComposite {
             widgetUtil(mntmShowGrid).addSelectionListener(e -> c3dModifier.showGrid(mntmShowGrid.getSelection()));
             KeyStateManager.addKeyText(mntmShowGrid, I18n.E3D_GRID, Task.SHOW_GRID);
             mntmShowGrid.setSelection(true);
+
+            final MenuItem mntmShowGrid3D = new MenuItem(mnuViewActions, SWT.CHECK);
+            this.mntmShowGrid3DPtr[0] = mntmShowGrid3D;
+            widgetUtil(mntmShowGrid3D).addSelectionListener(e -> c3dModifier.showGrid3D(mntmShowGrid3D.getSelection()));
+            KeyStateManager.addKeyText(mntmShowGrid3D, I18n.E3D_GRID_3D, Task.SHOW_GRID_3D);
+            mntmShowGrid3D.setSelection(false);
 
             final MenuItem mntmShowScale = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmShowScalePtr[0] = mntmShowScale;
@@ -1978,6 +1987,10 @@ public class Composite3D extends ScalableComposite {
         return mntmShowGridPtr[0];
     }
 
+    public MenuItem getMntmShowGrid3D() {
+        return mntmShowGrid3DPtr[0];
+    }
+
     public MenuItem getMntmShowScale() {
         return mntmShowScalePtr[0];
     }
@@ -2518,5 +2531,13 @@ public class Composite3D extends ScalableComposite {
         final Set<GData> result = new HashSet<>();
         result.addAll(tmpRaytraceSkipSet);
         tmpRaytraceSkipSetResult = result;
+    }
+
+    public boolean isGridShown3D() {
+        return gridShown3D;
+    }
+
+    public void setGridShown3D(boolean gridShown3D) {
+        this.gridShown3D = gridShown3D;
     }
 }

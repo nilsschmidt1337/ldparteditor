@@ -30,6 +30,7 @@ public class Composite3DState implements Serializable {
     private boolean showAxis = false;
     private boolean showOrigin = false;
     private boolean showGrid = false;
+    private boolean showGrid3D = false;
     private float gridScale = 1f;
     private boolean lights = false;
     private boolean meshlines = false;
@@ -274,6 +275,14 @@ public class Composite3DState implements Serializable {
 
     public void setSmooth(boolean smooth) {
         this.smooth = smooth;
+    }
+
+    public boolean isShowGrid3D() {
+        return showGrid3D;
+    }
+
+    public void setShowGrid3D(boolean showGrid3D) {
+        this.showGrid3D = showGrid3D;
     }
 
 }

@@ -487,6 +487,7 @@ public final class I18n {
     public static final String E3D_FOCUS = E3D.getString(getProperty());
     public static final String E3D_GLOBAL = E3D.getString(getProperty());
     public static final String E3D_GRID = E3D.getString(getProperty());
+    public static final String E3D_GRID_3D = E3D.getString(getProperty());
     public static final String E3D_GRID_COARSE_DEFAULT = E3D.getString(getProperty());
     public static final String E3D_GRID_FINE_DEFAULT = E3D.getString(getProperty());
     public static final String E3D_GRID_MEDIUM_DEFAULT = E3D.getString(getProperty());
@@ -946,6 +947,7 @@ public final class I18n {
     public static final String KEYBOARD_SHORTKEY = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SHOW_AXIS_LABELS = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SHOW_GRID = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_SHOW_GRID_3D = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SHOW_RULER = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SIZE_DECREASE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SIZE_INCREASE = KEYBOARD.getString(getProperty());

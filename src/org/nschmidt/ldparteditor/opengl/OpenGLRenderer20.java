@@ -1739,12 +1739,58 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 c3d.getSelectionHeight().set(0.0001f, 0.0001f, 0.0001f);
             }
 
+            // A 3D grid is located around the origin and moves accordingly
+            if (c3d.isGridShown3D()) {
+                GL11.glLineWidth(1f);
+                GL11.glBegin(GL11.GL_LINES);
+                final float gridSize = c3d.getGridScale() * 1000f;
+                final float gridSize10 = gridSize * 10f;
+                float y = -gridSize10;
+                for (int i = 0; i < 20; i++) {
+                    float x = -gridSize10;
+                    for (int j = 0; j < 20; j++) {
+                        GL11.glColor3f(Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourG);
+                        GL11.glVertex3f(0f, x, y);
+                        GL11.glVertex3f(0f, x, y + gridSize);
+                        GL11.glVertex3f(0f, x, y + gridSize);
+                        GL11.glVertex3f(0f, x + gridSize, y + gridSize);
+                        GL11.glVertex3f(0f, x + gridSize, y + gridSize);
+                        GL11.glVertex3f(0f, x + gridSize, y);
+                        GL11.glVertex3f(0f, x + gridSize, y);
+                        GL11.glVertex3f(0f, x, y);
+
+                        GL11.glColor3f(Colour.manipulatorYAxisColourR, Colour.manipulatorYAxisColourG, Colour.manipulatorYAxisColourG);
+                        GL11.glVertex3f(x, 0f, y);
+                        GL11.glVertex3f(x, 0f, y + gridSize);
+                        GL11.glVertex3f(x, 0f, y + gridSize);
+                        GL11.glVertex3f(x + gridSize, 0f, y + gridSize);
+                        GL11.glVertex3f(x + gridSize, 0f, y + gridSize);
+                        GL11.glVertex3f(x + gridSize, 0f, y);
+                        GL11.glVertex3f(x + gridSize, 0f, y);
+                        GL11.glVertex3f(x, 0f, y);
+
+                        GL11.glColor3f(Colour.manipulatorZAxisColourR, Colour.manipulatorZAxisColourG, Colour.manipulatorZAxisColourG);
+                        GL11.glVertex3f(x, y, 0f);
+                        GL11.glVertex3f(x, y + gridSize, 0f);
+                        GL11.glVertex3f(x, y + gridSize, 0f);
+                        GL11.glVertex3f(x + gridSize, y + gridSize, 0f);
+                        GL11.glVertex3f(x + gridSize, y + gridSize, 0f);
+                        GL11.glVertex3f(x + gridSize, y, 0f);
+                        GL11.glVertex3f(x + gridSize, y, 0f);
+                        GL11.glVertex3f(x, y, 0f);
+                        x = x + gridSize;
+                    }
+                    y = y + gridSize;
+                }
+                GL11.glEnd();
+            }
+
             // To make it easier to draw and calculate the grid and the origin,
             // reset the transformation matrix ;)
             GL11.glLoadIdentity();
             Vector3f[] viewportOriginAxis = c3d.getViewportOriginAxis();
             float zOffset = 0;
-            if (c3d.isGridShown()) {
+            if (c3d.isGridShown() && !c3d.isGridShown3D()) {
                 // Grid-1 and 10
                 for (int r = 0; r < 5; r += 4) {
                     if (r == 4) {

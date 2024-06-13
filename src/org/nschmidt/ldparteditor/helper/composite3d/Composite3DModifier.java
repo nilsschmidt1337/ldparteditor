@@ -82,10 +82,21 @@ public class Composite3DModifier {
      * Displays the grid within {@linkplain Composite3D}.
      *
      * @param shown
-     *            True if the origin should be shown
+     *            True if the grid should be shown
      */
     public void showGrid(boolean shown) {
         NLogger.debug(Composite3DModifier.class, "[Show grid]"); //$NON-NLS-1$
+        c3d.setGridShown(shown);
+    }
+
+    /**
+     * Displays the 3D-grid within {@linkplain Composite3D}.
+     *
+     * @param shown
+     *            True if the grid should be shown
+     */
+    public void showGrid3D(boolean shown) {
+        NLogger.debug(Composite3DModifier.class, "[Show grid (3D)]"); //$NON-NLS-1$
         c3d.setGridShown(shown);
     }
 

@@ -203,6 +203,7 @@ public class KeyStateManager {
             addTask(Task.ZOOM_OUT, '-');
             addTask(Task.RESET_VIEW, SWT.COMMAND, 'r');
             addTask(Task.SHOW_GRID, SWT.COMMAND, 'g');
+            addTask(Task.SHOW_GRID_3D, SWT.COMMAND | SWT.SHIFT, 'g');
             addTask(Task.SHOW_RULER, SWT.COMMAND, 'l');
 
             addTask(Task.UNDO, SWT.COMMAND, 'z');
@@ -340,6 +341,7 @@ public class KeyStateManager {
             addTask(Task.ZOOM_OUT, '-');
             addTask(Task.RESET_VIEW, SWT.CTRL, 'r');
             addTask(Task.SHOW_GRID, SWT.CTRL, 'g');
+            addTask(Task.SHOW_GRID_3D, SWT.CTRL | SWT.SHIFT, 'g');
             addTask(Task.SHOW_RULER, SWT.CTRL, 'l');
 
             addTask(Task.UNDO, SWT.CTRL, 'z');
@@ -769,6 +771,13 @@ public class KeyStateManager {
                         }
                         c3d.setGridShown(!c3d.isGridShown());
                         c3d.getMntmShowGrid().setSelection(c3d.isGridShown());
+                        break;
+                    case SHOW_GRID_3D:
+                        if (c3d.getMenu().isDisposed()) {
+                            break;
+                        }
+                        c3d.setGridShown3D(!c3d.isGridShown3D());
+                        c3d.getMntmShowGrid3D().setSelection(c3d.isGridShown3D());
                         break;
                     case SHOW_RULER:
                     {

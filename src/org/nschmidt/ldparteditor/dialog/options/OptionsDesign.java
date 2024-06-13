@@ -530,6 +530,7 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SELECT_OPTION_WITH_SAME_COLOURS, Task.SELECT_OPTION_WITH_SAME_COLOURS, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SELECT_TOUCHING, Task.SELECT_TOUCHING, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SHOW_GRID, Task.SHOW_GRID, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_SHOW_GRID_3D, Task.SHOW_GRID_3D, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SHOW_RULER, Task.SHOW_RULER, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_UNDO, Task.UNDO, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_REDO, Task.REDO, true);
