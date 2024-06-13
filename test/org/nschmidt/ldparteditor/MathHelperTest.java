@@ -42,6 +42,7 @@ public class MathHelperTest {
         String result = MathHelper.roundNumericString("0.0003"); //$NON-NLS-1$
         assertEquals("0", result); //$NON-NLS-1$
     }
+
     @Test
     public void testRoundingUpScientific() {
         String result = MathHelper.roundNumericString("1263276279.999E-1"); //$NON-NLS-1$
@@ -85,6 +86,12 @@ public class MathHelperTest {
     }
 
     @Test
+    public void testRoundingNegative() {
+        String result = MathHelper.roundNumericString("-11.250002"); //$NON-NLS-1$
+        assertEquals("-11.25", result); //$NON-NLS-1$
+    }
+
+    @Test
     public void testRoundingNullString() {
         String result = MathHelper.roundNumericString("null"); //$NON-NLS-1$
         assertEquals("null", result); //$NON-NLS-1$
@@ -92,6 +99,7 @@ public class MathHelperTest {
 
     @Test(expected = NullPointerException.class)
     public void testRoundingNull() {
-        MathHelper.roundNumericString(null);
+        String nullStr = null;
+        MathHelper.roundNumericString(nullStr);
     }
 }

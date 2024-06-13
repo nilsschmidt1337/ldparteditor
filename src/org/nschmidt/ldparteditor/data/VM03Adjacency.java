@@ -33,6 +33,7 @@ import org.nschmidt.csg.CSGType;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.math.HashBiMap;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.text.DatParser;
 
@@ -825,8 +826,10 @@ class VM03Adjacency extends VM02Add {
                 setModifiedNoSync();
             }
             for (Vertex vOld : singleVertices) {
-                Vertex vNew = new Vertex(onX ? vOld.xp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.xp, onY ? vOld.yp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.yp, onZ ? vOld.zp.setScale(coordsDecimalPlaces,
-                        RoundingMode.HALF_UP) : vOld.zp);
+                Vertex vNew = new Vertex(
+                        onX ? MathHelper.roundNumericString(vOld.xp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : vOld.xp,
+                        onY ? MathHelper.roundNumericString(vOld.yp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : vOld.yp,
+                        onZ ? MathHelper.roundNumericString(vOld.zp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : vOld.zp);
                 changeVertexDirectFast(vOld, vNew, moveAdjacentData);
             }
 

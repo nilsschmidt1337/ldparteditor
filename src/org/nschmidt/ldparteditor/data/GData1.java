@@ -1711,29 +1711,29 @@ public final class GData1 extends GData {
             lineBuilder.append(colourNumber);
         }
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(onX ? accurateLocalMatrix.m30.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : accurateLocalMatrix.m30));
+        lineBuilder.append(bigDecimalToString(onX ? MathHelper.roundNumericString(accurateLocalMatrix.m30.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : accurateLocalMatrix.m30));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(onY ? accurateLocalMatrix.m31.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : accurateLocalMatrix.m31));
+        lineBuilder.append(bigDecimalToString(onY ? MathHelper.roundNumericString(accurateLocalMatrix.m31.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : accurateLocalMatrix.m31));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(onZ ? accurateLocalMatrix.m32.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : accurateLocalMatrix.m32));
+        lineBuilder.append(bigDecimalToString(onZ ? MathHelper.roundNumericString(accurateLocalMatrix.m32.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : accurateLocalMatrix.m32));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m00.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m00.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m10.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m10.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m20.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m20.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m01.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m01.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m11.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m11.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m21.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m21.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m02.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m02.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m12.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m12.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m22.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m22.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
         return lineBuilder.toString();

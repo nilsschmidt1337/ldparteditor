@@ -528,29 +528,29 @@ public enum MathHelper {
     @SuppressWarnings("java:S2111")
     public static String matrixToString(Matrix4f matrix, int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(bigDecimalToString(onX ? new BigDecimal(matrix.m30 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : new BigDecimal(matrix.m30 / 1000f)));
+        lineBuilder.append(bigDecimalToString(onX ? MathHelper.roundNumericString(new BigDecimal(matrix.m30 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : new BigDecimal(matrix.m30 / 1000f)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(onY ? new BigDecimal(matrix.m31 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : new BigDecimal(matrix.m31 / 1000f)));
+        lineBuilder.append(bigDecimalToString(onY ? MathHelper.roundNumericString(new BigDecimal(matrix.m31 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : new BigDecimal(matrix.m31 / 1000f)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(onZ ? new BigDecimal(matrix.m32 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : new BigDecimal(matrix.m32 / 1000f)));
+        lineBuilder.append(bigDecimalToString(onZ ? MathHelper.roundNumericString(new BigDecimal(matrix.m32 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : new BigDecimal(matrix.m32 / 1000f)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m00).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m00).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m10).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m10).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m20).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m20).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m01).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m01).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m11).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m11).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m21).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m21).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m02).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m02).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m12).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m12).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(new BigDecimal(matrix.m22).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m22).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         return lineBuilder.toString();
     }
 
@@ -1250,24 +1250,25 @@ public enum MathHelper {
         return result;
     }
 
-    public static String roundNumericString(String number) {
-        BigDecimal decimal;
-        try {
-            decimal = new BigDecimal(number);
-        } catch (NumberFormatException nfe) {
-            return number;
-        }
-
-        number = bigDecimalToString(decimal);
+    public static BigDecimal roundNumericString(BigDecimal decimal) {
+        String number = bigDecimalToString(decimal);
         int pointPosition = number.indexOf('.');
-        if (pointPosition == -1) return number;
+        if (pointPosition == -1) return decimal;
 
         if (number.endsWith("9999") || number.endsWith("9998") || number.endsWith("9997") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
          || number.endsWith("0001") || number.endsWith("0002") || number.endsWith("0003")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             decimal = decimal.setScale(decimal.scale() - 1, RoundingMode.HALF_UP);
         }
 
-        number = bigDecimalToString(decimal);
+        return decimal;
+    }
+
+    public static String roundNumericString(String number) {
+        try {
+            number = bigDecimalToString(roundNumericString(new BigDecimal(number)));
+        } catch (NumberFormatException nfe) {
+            return number;
+        }
         return number;
     }
 }
