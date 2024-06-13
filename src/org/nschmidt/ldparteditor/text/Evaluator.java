@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.text;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
 import jdk.jshell.JShell;
@@ -84,13 +85,13 @@ public enum Evaluator {
             if (js == null) return expr;
 
             // Don't allow multiple lines of code (e.g. "int i = 0; i++;")
-            final String result = js.eval(js.sourceCodeAnalysis().analyzeCompletion(expr).source())
+            final String result = MathHelper.roundNumericString(js.eval(js.sourceCodeAnalysis().analyzeCompletion(expr).source())
                     .stream()
                     .map(SnippetEvent::value)
                     .filter(Objects::nonNull)
                     .map(s -> s.replace("\"", "")) //$NON-NLS-1$ //$NON-NLS-2$
                     .findFirst()
-                    .orElse(expr);
+                    .orElse(expr));
             NLogger.debug(Evaluator.class, expr);
             NLogger.debug(Evaluator.class, result);
             addVariable(name, result);

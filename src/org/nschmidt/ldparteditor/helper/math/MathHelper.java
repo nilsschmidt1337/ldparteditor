@@ -1249,4 +1249,25 @@ public enum MathHelper {
 
         return result;
     }
+
+    public static String roundNumericString(String number) {
+        BigDecimal decimal;
+        try {
+            decimal = new BigDecimal(number);
+        } catch (NumberFormatException nfe) {
+            return number;
+        }
+
+        number = bigDecimalToString(decimal);
+        int pointPosition = number.indexOf('.');
+        if (pointPosition == -1) return number;
+
+        if (number.endsWith("9999") || number.endsWith("9998") || number.endsWith("9997") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+         || number.endsWith("0001") || number.endsWith("0002") || number.endsWith("0003")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            decimal = decimal.setScale(decimal.scale() - 1, RoundingMode.HALF_UP);
+        }
+
+        number = bigDecimalToString(decimal);
+        return number;
+    }
 }
