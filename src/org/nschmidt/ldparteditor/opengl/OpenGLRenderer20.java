@@ -1745,39 +1745,50 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 GL11.glBegin(GL11.GL_LINES);
                 final float gridSize = c3d.getGridScale() * 1000f;
                 final float gridSize10 = gridSize * 10f;
+                
+                float offsetXX = -gridSize10;
+                float offsetXY = 0f;
+                float offsetXZ = 0f;
+                float offsetYX = 0f;
+                float offsetYY = gridSize10;
+                float offsetYZ = 0f;
+                float offsetZX = 0f;
+                float offsetZY = 0f;
+                float offsetZZ = gridSize10;
+                
                 float y = -gridSize10;
                 for (int i = 0; i < 20; i++) {
                     float x = -gridSize10;
                     for (int j = 0; j < 20; j++) {
                         GL11.glColor3f(Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourG);
-                        GL11.glVertex3f(0f, x, y);
-                        GL11.glVertex3f(0f, x, y + gridSize);
-                        GL11.glVertex3f(0f, x, y + gridSize);
-                        GL11.glVertex3f(0f, x + gridSize, y + gridSize);
-                        GL11.glVertex3f(0f, x + gridSize, y + gridSize);
-                        GL11.glVertex3f(0f, x + gridSize, y);
-                        GL11.glVertex3f(0f, x + gridSize, y);
-                        GL11.glVertex3f(0f, x, y);
+                        GL11.glVertex3f(offsetXX, offsetXY + x, offsetXZ + y);
+                        GL11.glVertex3f(offsetXX, offsetXY + x, offsetXZ + y + gridSize);
+                        GL11.glVertex3f(offsetXX, offsetXY + x, offsetXZ + y + gridSize);
+                        GL11.glVertex3f(offsetXX, offsetXY + x + gridSize, offsetXZ + y + gridSize);
+                        GL11.glVertex3f(offsetXX, offsetXY + x + gridSize, offsetXZ + y + gridSize);
+                        GL11.glVertex3f(offsetXX, offsetXY + x + gridSize, offsetXZ + y);
+                        GL11.glVertex3f(offsetXX, offsetXY + x + gridSize, offsetXZ + y);
+                        GL11.glVertex3f(offsetXX, offsetXY + x, offsetXZ + y);
 
                         GL11.glColor3f(Colour.manipulatorYAxisColourR, Colour.manipulatorYAxisColourG, Colour.manipulatorYAxisColourG);
-                        GL11.glVertex3f(x, 0f, y);
-                        GL11.glVertex3f(x, 0f, y + gridSize);
-                        GL11.glVertex3f(x, 0f, y + gridSize);
-                        GL11.glVertex3f(x + gridSize, 0f, y + gridSize);
-                        GL11.glVertex3f(x + gridSize, 0f, y + gridSize);
-                        GL11.glVertex3f(x + gridSize, 0f, y);
-                        GL11.glVertex3f(x + gridSize, 0f, y);
-                        GL11.glVertex3f(x, 0f, y);
+                        GL11.glVertex3f(offsetYX + x, offsetYY, offsetYZ + y);
+                        GL11.glVertex3f(offsetYX + x, offsetYY, offsetYZ + y + gridSize);
+                        GL11.glVertex3f(offsetYX + x, offsetYY, offsetYZ + y + gridSize);
+                        GL11.glVertex3f(offsetYX + x + gridSize, offsetYY, offsetYZ + y + gridSize);
+                        GL11.glVertex3f(offsetYX + x + gridSize, offsetYY, offsetYZ + y + gridSize);
+                        GL11.glVertex3f(offsetYX + x + gridSize, offsetYY, offsetYZ + y);
+                        GL11.glVertex3f(offsetYX + x + gridSize, offsetYY, offsetYZ + y);
+                        GL11.glVertex3f(offsetYX + x, offsetYY, offsetYZ + y);
 
                         GL11.glColor3f(Colour.manipulatorZAxisColourR, Colour.manipulatorZAxisColourG, Colour.manipulatorZAxisColourG);
-                        GL11.glVertex3f(x, y, 0f);
-                        GL11.glVertex3f(x, y + gridSize, 0f);
-                        GL11.glVertex3f(x, y + gridSize, 0f);
-                        GL11.glVertex3f(x + gridSize, y + gridSize, 0f);
-                        GL11.glVertex3f(x + gridSize, y + gridSize, 0f);
-                        GL11.glVertex3f(x + gridSize, y, 0f);
-                        GL11.glVertex3f(x + gridSize, y, 0f);
-                        GL11.glVertex3f(x, y, 0f);
+                        GL11.glVertex3f(offsetZX + x, offsetZY + y, offsetZZ);
+                        GL11.glVertex3f(offsetZX + x, offsetZY + y + gridSize, offsetZZ);
+                        GL11.glVertex3f(offsetZX + x, offsetZY + y + gridSize, offsetZZ);
+                        GL11.glVertex3f(offsetZX + x + gridSize, offsetZY + y + gridSize, offsetZZ);
+                        GL11.glVertex3f(offsetZX + x + gridSize, offsetZY + y + gridSize, offsetZZ);
+                        GL11.glVertex3f(offsetZX + x + gridSize, offsetZY + y, offsetZZ);
+                        GL11.glVertex3f(offsetZX + x + gridSize, offsetZY + y, offsetZZ);
+                        GL11.glVertex3f(offsetZX + x, offsetZY + y, offsetZZ);
                         x = x + gridSize;
                     }
                     y = y + gridSize;

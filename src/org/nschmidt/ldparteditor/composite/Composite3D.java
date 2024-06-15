@@ -355,6 +355,7 @@ public class Composite3D extends ScalableComposite {
         this.setClassicPerspective(true);
         this.setOriginShown(true);
         this.setGridShown(true);
+        this.setGridShown3D(false);
         setShowingAxis(true);
         setShowingLabels(true);
         this.setLightOn(true);
@@ -2426,6 +2427,7 @@ public class Composite3D extends ScalableComposite {
         setShowingLabels(state.isShowLabel());
         setSmoothShading(state.isSmooth());
         setGridShown(state.isShowGrid());
+        setGridShown3D(state.isShowGrid3D());
         setLightOn(state.isLights());
         setMeshLines(state.isMeshlines());
         setSubMeshLines(state.isSubfileMeshlines());
@@ -2452,6 +2454,7 @@ public class Composite3D extends ScalableComposite {
         getMntmShowOrigin().setSelection(state.isShowOrigin());
         getMntmLabel().setSelection(state.isShowLabel());
         getMntmShowGrid().setSelection(state.isShowGrid());
+        getMntmShowGrid3D().setSelection(state.isShowGrid3D());
         getMntmShowScale().setSelection(state.hasScales());
         getMntmSwitchLights().setSelection(state.isLights());
         getMntmMeshLines().setSelection(state.isMeshlines());

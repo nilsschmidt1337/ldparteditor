@@ -97,7 +97,7 @@ public class Composite3DModifier {
      */
     public void showGrid3D(boolean shown) {
         NLogger.debug(Composite3DModifier.class, "[Show grid (3D)]"); //$NON-NLS-1$
-        c3d.setGridShown(shown);
+        c3d.setGridShown3D(shown);
     }
 
     /**
