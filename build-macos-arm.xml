@@ -127,13 +127,6 @@
             checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149"
             dir="buildfiles-v2" />
             
-        <!-- Get tools.jar -->
-        <get-and-checksum
-            file="tools.jar"
-            destdir="${dependenciesFolder}"
-            checksum="25f5280e2b946d3a25fcf2a764306c1966858f18"
-            dir="buildfiles-v2" />
-            
         <!-- Unzip SWT libraries -->
         <pathconvert property="swt.macosx.zipfile">
             <fileset dir="${dependenciesFolder}"
@@ -243,7 +236,6 @@
             <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${macosxFolder}/swt.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/lwjgl3/lwjgl.jar"/>
