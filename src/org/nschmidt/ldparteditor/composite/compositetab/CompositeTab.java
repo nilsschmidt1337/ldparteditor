@@ -2252,4 +2252,16 @@ public class CompositeTab extends CompositeTabDesign {
         st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
         st.forceFocus();
     }
+
+    public  void updateLineNumberArea() {
+        // This is actually a hack to force an update on the line number layout, by adjusting the width-hint.
+        final int newLineCount = compositeTextPtr[0].getLineCount();
+        final int numberOfDigits = (int) Math.log10(newLineCount);
+        ((GridData) canvasLineNumberAreaPtr[0].getLayoutData()).widthHint = (numberOfDigits + (NLogger.debugging ? 26 : 2)) * Font.width() - 1;
+        canvasLineNumberAreaPtr[0].getParent().layout();
+        canvasLineNumberAreaPtr[0].redraw();
+        ((GridData) canvasLineNumberAreaPtr[0].getLayoutData()).widthHint = (numberOfDigits + (NLogger.debugging ? 26 : 2)) * Font.width();
+        canvasLineNumberAreaPtr[0].getParent().layout();
+        canvasLineNumberAreaPtr[0].redraw();
+    }
 }
