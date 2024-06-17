@@ -454,7 +454,6 @@ class HistoryManager {
                         ((CompositeTab) t).getTextComposite().update();
                         ((CompositeTab) t).getControl().update();
                         ((CompositeTab) t).getState().setSync(false);
-                        ((CompositeTab) t).updateLineNumberArea();
                         hasTextEditor = true;
                         break;
                     }
