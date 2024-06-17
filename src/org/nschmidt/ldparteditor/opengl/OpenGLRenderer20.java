@@ -1755,6 +1755,18 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 float offsetZX = 0f;
                 float offsetZY = 0f;
                 float offsetZZ = gridSize10;
+                float ox = viewportTranslation.m30;
+                float oy = viewportTranslation.m31;
+                float oz = viewportTranslation.m32;
+                offsetXX -= ox - ox % gridSize;
+                offsetXY -= oy - oy % gridSize;
+                offsetXZ -= oz - oz % gridSize;
+                offsetYX -= ox - ox % gridSize;
+                offsetYY -= oy - oy % gridSize;
+                offsetYZ -= oz - oz % gridSize;
+                offsetZX -= ox - ox % gridSize;
+                offsetZY -= oy - oy % gridSize;
+                offsetZZ -= oz - oz % gridSize;
                 
                 float y = -gridSize10;
                 for (int i = 0; i < 20; i++) {
