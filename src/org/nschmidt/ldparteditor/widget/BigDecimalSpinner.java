@@ -178,6 +178,7 @@ public class BigDecimalSpinner extends Composite {
                         NLogger.debug(getClass(), "evaluated {0}", evaluatedResult); //$NON-NLS-1$
                         if (!txtVal[0].getText().equals(evaluatedResult)) {
                             txtVal[0].setText(evaluatedResult);
+                            txtVal[0].setSelection(evaluatedResult.length());
                         }
                     }
                 }
