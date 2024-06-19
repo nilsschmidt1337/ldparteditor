@@ -1741,10 +1741,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
             // A 3D grid is located around the origin and moves accordingly
             if (c3d.isGridShown3D()) {
-                GL11.glLineWidth(1f);
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glBegin(GL11.GL_LINES);
                 final float gridSize = c3d.getGridScale() * 1000f;
                 final float gridSize10 = gridSize * 10f;
+                final float gridSizeHalf = gridSize / 2f;
                 
                 float offsetXX = -gridSize10;
                 float offsetXY = 0f;
@@ -1768,6 +1769,30 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 offsetZY -= oy - oy % gridSize;
                 offsetZZ -= oz - oz % gridSize;
                 
+                
+                // Draw crosses where the manipulator is
+                GL11.glLineWidth(2f);
+                GL11.glColor3f(Colour.originColourR, Colour.originColourG, Colour.originColourB);
+                final float maniX = manipulator.getPosition().x;
+                final float maniY = manipulator.getPosition().y;
+                final float maniZ = manipulator.getPosition().z;
+
+                GL11.glVertex3f(offsetXX, maniY + gridSizeHalf, maniZ + gridSizeHalf);
+                GL11.glVertex3f(offsetXX, maniY - gridSizeHalf, maniZ - gridSizeHalf);
+                GL11.glVertex3f(offsetXX, maniY + gridSizeHalf, maniZ - gridSizeHalf);
+                GL11.glVertex3f(offsetXX, maniY - gridSizeHalf, maniZ + gridSizeHalf);
+
+                GL11.glVertex3f(maniX + gridSizeHalf, offsetYY, maniZ + gridSizeHalf);
+                GL11.glVertex3f(maniX - gridSizeHalf, offsetYY, maniZ - gridSizeHalf);
+                GL11.glVertex3f(maniX + gridSizeHalf, offsetYY, maniZ - gridSizeHalf);
+                GL11.glVertex3f(maniX - gridSizeHalf, offsetYY, maniZ + gridSizeHalf);
+
+                GL11.glVertex3f(maniX + gridSizeHalf, maniY + gridSizeHalf, offsetZZ);
+                GL11.glVertex3f(maniX - gridSizeHalf, maniY - gridSizeHalf, offsetZZ);
+                GL11.glVertex3f(maniX + gridSizeHalf, maniY - gridSizeHalf, offsetZZ);
+                GL11.glVertex3f(maniX - gridSizeHalf, maniY + gridSizeHalf, offsetZZ);
+
+                GL11.glLineWidth(1f);
                 float y = -gridSize10;
                 for (int i = 0; i < 20; i++) {
                     float x = -gridSize10;
@@ -1806,6 +1831,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     y = y + gridSize;
                 }
                 GL11.glEnd();
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
             }
 
             // To make it easier to draw and calculate the grid and the origin,
