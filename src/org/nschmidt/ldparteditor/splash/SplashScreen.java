@@ -60,6 +60,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.text.Evaluator;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
@@ -147,7 +148,8 @@ public class SplashScreen extends ApplicationWindow {
         sh.setBounds(0, 0, 390, 240);
         ShellHelper.centerShellOnPrimaryScreen(sh);
         this.open();
-
+        // Warm up script evaluation
+        Evaluator.evalQuick("1+1"); //$NON-NLS-1$
         String openGLerrorRootCause = "---???---"; //$NON-NLS-1$
 
         // Check OpenGL version
