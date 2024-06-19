@@ -1290,6 +1290,7 @@ public class CompositeTab extends CompositeTabDesign {
                         vm.setUpdated(true);
                     }
                 }
+                compositeTextPtr[0].setTopIndex(compositeTextPtr[0].getTopIndex());
                 SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
                 if (sw != null) {
                     sw.setTextComposite(tabState.getTab());
@@ -1871,10 +1872,12 @@ public class CompositeTab extends CompositeTabDesign {
         });
         canvasLineNumberAreaPtr[0].addPaintListener(e -> {
             e.gc.setFont(Font.monospaced());
-            int yOffset = -compositeTextPtr[0].getVerticalBar().getSelection() % caretHeight;
+            final int topIndex = compositeTextPtr[0].getTopIndex();
+            int yOffset = 0;
             int height = compositeContainerPtr[0].getBounds().height;
-            int startLine = compositeTextPtr[0].getVerticalBar().getSelection() / caretHeight + 1;
+            int startLine =  topIndex + 1;
             int endLine = compositeTextPtr[0].getLineCount() - 1;
+            compositeTextPtr[0].setTopIndex(topIndex);
 
             for (int y = yOffset; y < height; y += caretHeight) {
 
