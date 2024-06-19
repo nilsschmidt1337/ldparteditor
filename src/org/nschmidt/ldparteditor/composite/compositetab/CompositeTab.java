@@ -280,7 +280,8 @@ public class CompositeTab extends CompositeTabDesign {
                     tabState.currentCaretPositionLine = compositeTextPtr[0].getLineAtOffset(event.start);
                     final GData dataToEvaluate = dat.getDrawPerLineNoClone().getValue(tabState.currentCaretPositionLine + 1);
                     if (dataToEvaluate.type() == 0 || dataToEvaluate.type() == 8) {
-                        String lineToEvaluate = compositeTextPtr[0].getLine(tabState.currentCaretPositionLine).trim();
+                        String lineToEvaluateUntrimmed = compositeTextPtr[0].getLine(tabState.currentCaretPositionLine);
+                        String lineToEvaluate = lineToEvaluateUntrimmed.trim();
                         if (!lineToEvaluate.startsWith("0") && lineToEvaluate.length() > 2 //$NON-NLS-1$
                            || lineToEvaluate.startsWith("0 !LPE CSG") || lineToEvaluate.startsWith("0 !LPE VERTEX ") //$NON-NLS-1$ //$NON-NLS-2$
                            || lineToEvaluate.startsWith("0 !LPE PROTRACTOR") || lineToEvaluate.startsWith("0 !LPE DISTANCE ")) {  //$NON-NLS-1$ //$NON-NLS-2$
@@ -310,7 +311,55 @@ public class CompositeTab extends CompositeTabDesign {
                                 event.doit = false;
                                 int start = compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine);
                                 Point oldSelection = compositeTextPtr[0].getSelection();
-                                compositeTextPtr[0].setSelection(start, start + lineToEvaluate.length());
+
+                                // Now I need to find the index of the current segment group and move the cursor to the end of this group.
+
+                                // 0 1  2 3 4 5    6 7
+                                // ---------------------
+                                // 2 24 0 0 0 1+|1 0 2+3
+                                // 2 24 0 0 0 2|   0 5
+                                
+                                if (oldSelection.x >= start) {
+                                    int offset = oldSelection.x - start;
+                                    boolean foundWord = false;
+                                    int wordCount = 0;
+                                    int charPos = 0;
+                                    for (int codePoint : lineToEvaluateUntrimmed.codePoints().boxed().toList()) {
+                                        if (!Character.isWhitespace(codePoint)) {
+                                            if (!foundWord) {
+                                                foundWord = true;
+                                                wordCount++;
+                                            }
+                                        } else {
+                                            foundWord = false;
+                                        }
+                                        charPos++;
+                                        if (charPos >= (offset+1)) break;
+                                    }
+                                    foundWord = false;
+                                    charPos = 0;
+                                    boolean readWholeWord = false;
+                                    if (wordCount > 0) {
+                                        for (int codePoint : evaluatedLine.codePoints().boxed().toList()) {
+                                            if (!Character.isWhitespace(codePoint)) {
+                                                if (!foundWord) {
+                                                    foundWord = true;
+                                                    wordCount--;
+                                                    if (wordCount == 0) readWholeWord = true;
+                                                }
+                                            } else {
+                                                if (readWholeWord) break;
+                                                foundWord = false;
+                                            }
+                                            charPos++;
+                                        }
+                                    }
+
+                                    oldSelection.x = start + charPos;
+                                    oldSelection.y = start + charPos;
+                                }
+
+                                compositeTextPtr[0].setSelection(start, start + lineToEvaluateUntrimmed.length());
                                 compositeTextPtr[0].insert(evaluatedLine);
                                 try {
                                     compositeTextPtr[0].setSelection(oldSelection);
