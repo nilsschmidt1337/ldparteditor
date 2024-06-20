@@ -1743,8 +1743,33 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             if (c3d.isGridShown3D()) {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glBegin(GL11.GL_LINES);
-                final float gridSize = c3d.getGridScale() * 1000f;
-                final float gridSize10 = gridSize * 10f;
+                float gridSize = 1000f;
+                int z = (int) Math.log10(zoom);
+                switch (z) {
+                    case -6:
+                        gridSize *= 1E1f;
+                        break;
+                    case -5:
+                        gridSize *= 1E1f;
+                        break;
+                    case -4:
+                        gridSize *= 1E0f;
+                        break;
+                    case -3:
+                        gridSize *= 1E-1f;
+                        break;
+                    case -2:
+                        gridSize *= 1E-2f;
+                        break;
+                    case -1:
+                        gridSize *= 1E-3f;
+                        break;
+                    case 0:
+                        gridSize *= 1E-4f;
+                        break;
+                    default:
+                }
+                final float gridSize10 = gridSize * 20f;
                 final float gridSizeHalf = gridSize / 2f;
 
                 float offsetXX = gridSize10;
@@ -1804,9 +1829,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
                 GL11.glLineWidth(1f);
                 float y = -gridSize10;
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < 40; i++) {
                     float x = -gridSize10;
-                    for (int j = 0; j < 20; j++) {
+                    for (int j = 0; j < 40; j++) {
                         GL11.glColor3f(Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourG);
                         GL11.glVertex3f(offsetXX, offsetXY + x, offsetXZ + y);
                         GL11.glVertex3f(offsetXX, offsetXY + x, offsetXZ + y + gridSize);
