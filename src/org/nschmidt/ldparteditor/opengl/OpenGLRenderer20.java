@@ -1746,8 +1746,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 final float gridSize = c3d.getGridScale() * 1000f;
                 final float gridSize10 = gridSize * 10f;
                 final float gridSizeHalf = gridSize / 2f;
-                
-                float offsetXX = -gridSize10;
+
+                float offsetXX = gridSize10;
                 float offsetXY = 0f;
                 float offsetXZ = 0f;
                 float offsetYX = 0f;
@@ -1756,6 +1756,16 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 float offsetZX = 0f;
                 float offsetZY = 0f;
                 float offsetZZ = gridSize10;
+                Vector4f transformedXAxis = Matrix4f.transform(viewportRotation, new Vector4f(1f, 0f, 0f, 1f), null);
+                Vector4f transformedYAxis = Matrix4f.transform(viewportRotation, new Vector4f(0f, 1f, 0f, 1f), null);
+                Vector4f transformedZAxis = Matrix4f.transform(viewportRotation, new Vector4f(0f, 0f, 1f, 1f), null);
+                Vector4f screenZ = new Vector4f(0f, 0f, 1f, 0f);
+                float inX = Vector4f.dot(screenZ, transformedXAxis);
+                float inY = Vector4f.dot(screenZ, transformedYAxis);
+                float inZ = Vector4f.dot(screenZ, transformedZAxis);
+                if (inX > 0f) offsetXX = -offsetXX;
+                if (inY > 0f) offsetYY = -offsetYY;
+                if (inZ > 0f) offsetZZ = -offsetZZ;
                 float ox = viewportTranslation.m30;
                 float oy = viewportTranslation.m31;
                 float oz = viewportTranslation.m32;
@@ -1768,8 +1778,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 offsetZX -= ox - ox % gridSize;
                 offsetZY -= oy - oy % gridSize;
                 offsetZZ -= oz - oz % gridSize;
-                
-                
+
+
                 // Draw crosses where the manipulator is
                 GL11.glLineWidth(2f);
                 GL11.glColor3f(Colour.originColourR, Colour.originColourG, Colour.originColourB);
