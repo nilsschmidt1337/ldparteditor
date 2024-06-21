@@ -1742,7 +1742,6 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             // A 3D grid is located around the origin and moves accordingly
             if (c3d.isGridShown3D()) {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                GL11.glBegin(GL11.GL_LINES);
                 float gridSize = 1000f;
                 int z = (int) Math.log10(zoom);
                 switch (z) {
@@ -1769,18 +1768,20 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         break;
                     default:
                 }
-                final float gridSize10 = gridSize * 20f;
+
+                final float gridSize20 = gridSize * 20f;
+                final float gridSize10 = gridSize * 10f;
                 final float gridSizeHalf = gridSize / 2f;
 
-                float offsetXX = gridSize10;
+                float offsetXX = gridSize20;
                 float offsetXY = 0f;
                 float offsetXZ = 0f;
                 float offsetYX = 0f;
-                float offsetYY = gridSize10;
+                float offsetYY = gridSize20;
                 float offsetYZ = 0f;
                 float offsetZX = 0f;
                 float offsetZY = 0f;
-                float offsetZZ = gridSize10;
+                float offsetZZ = gridSize20;
                 Vector4f transformedXAxis = Matrix4f.transform(viewportRotation, new Vector4f(1f, 0f, 0f, 1f), null);
                 Vector4f transformedYAxis = Matrix4f.transform(viewportRotation, new Vector4f(0f, 1f, 0f, 1f), null);
                 Vector4f transformedZAxis = Matrix4f.transform(viewportRotation, new Vector4f(0f, 0f, 1f, 1f), null);
@@ -1804,9 +1805,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 offsetZY -= oy - oy % gridSize;
                 offsetZZ -= oz - oz % gridSize;
 
-
                 // Draw crosses where the manipulator is
-                GL11.glLineWidth(2f);
+                GL11.glLineWidth(3f);
+                GL11.glBegin(GL11.GL_LINES);
                 GL11.glColor3f(Colour.originColourR, Colour.originColourG, Colour.originColourB);
                 final float maniX = manipulator.getPosition().x;
                 final float maniY = manipulator.getPosition().y;
@@ -1826,46 +1827,19 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 GL11.glVertex3f(maniX - gridSizeHalf, maniY - gridSizeHalf, offsetZZ);
                 GL11.glVertex3f(maniX + gridSizeHalf, maniY - gridSizeHalf, offsetZZ);
                 GL11.glVertex3f(maniX - gridSizeHalf, maniY + gridSizeHalf, offsetZZ);
-
-                GL11.glLineWidth(1f);
-                float y = -gridSize10;
-                for (int i = 0; i < 40; i++) {
-                    float x = -gridSize10;
-                    for (int j = 0; j < 40; j++) {
-                        GL11.glColor3f(Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourG);
-                        GL11.glVertex3f(offsetXX, offsetXY + x, offsetXZ + y);
-                        GL11.glVertex3f(offsetXX, offsetXY + x, offsetXZ + y + gridSize);
-                        GL11.glVertex3f(offsetXX, offsetXY + x, offsetXZ + y + gridSize);
-                        GL11.glVertex3f(offsetXX, offsetXY + x + gridSize, offsetXZ + y + gridSize);
-                        GL11.glVertex3f(offsetXX, offsetXY + x + gridSize, offsetXZ + y + gridSize);
-                        GL11.glVertex3f(offsetXX, offsetXY + x + gridSize, offsetXZ + y);
-                        GL11.glVertex3f(offsetXX, offsetXY + x + gridSize, offsetXZ + y);
-                        GL11.glVertex3f(offsetXX, offsetXY + x, offsetXZ + y);
-
-                        GL11.glColor3f(Colour.manipulatorYAxisColourR, Colour.manipulatorYAxisColourG, Colour.manipulatorYAxisColourG);
-                        GL11.glVertex3f(offsetYX + x, offsetYY, offsetYZ + y);
-                        GL11.glVertex3f(offsetYX + x, offsetYY, offsetYZ + y + gridSize);
-                        GL11.glVertex3f(offsetYX + x, offsetYY, offsetYZ + y + gridSize);
-                        GL11.glVertex3f(offsetYX + x + gridSize, offsetYY, offsetYZ + y + gridSize);
-                        GL11.glVertex3f(offsetYX + x + gridSize, offsetYY, offsetYZ + y + gridSize);
-                        GL11.glVertex3f(offsetYX + x + gridSize, offsetYY, offsetYZ + y);
-                        GL11.glVertex3f(offsetYX + x + gridSize, offsetYY, offsetYZ + y);
-                        GL11.glVertex3f(offsetYX + x, offsetYY, offsetYZ + y);
-
-                        GL11.glColor3f(Colour.manipulatorZAxisColourR, Colour.manipulatorZAxisColourG, Colour.manipulatorZAxisColourG);
-                        GL11.glVertex3f(offsetZX + x, offsetZY + y, offsetZZ);
-                        GL11.glVertex3f(offsetZX + x, offsetZY + y + gridSize, offsetZZ);
-                        GL11.glVertex3f(offsetZX + x, offsetZY + y + gridSize, offsetZZ);
-                        GL11.glVertex3f(offsetZX + x + gridSize, offsetZY + y + gridSize, offsetZZ);
-                        GL11.glVertex3f(offsetZX + x + gridSize, offsetZY + y + gridSize, offsetZZ);
-                        GL11.glVertex3f(offsetZX + x + gridSize, offsetZY + y, offsetZZ);
-                        GL11.glVertex3f(offsetZX + x + gridSize, offsetZY + y, offsetZZ);
-                        GL11.glVertex3f(offsetZX + x, offsetZY + y, offsetZZ);
-                        x = x + gridSize;
-                    }
-                    y = y + gridSize;
-                }
                 GL11.glEnd();
+                
+                GL11.glLineWidth(1f);
+                drawGrid3D(gridSize, gridSize10, gridSize20, 
+                        offsetXX, offsetXY, offsetXZ, 
+                        offsetYX, offsetYY, offsetYZ,
+                        offsetZX, offsetZY, offsetZZ, false);
+                GL11.glLineWidth(2f);
+                drawGrid3D(gridSize, gridSize10, gridSize20, 
+                        offsetXX, offsetXY, offsetXZ, 
+                        offsetYX, offsetYY, offsetYZ,
+                        offsetZX, offsetZY, offsetZZ, true);
+
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
             }
 
@@ -2247,6 +2221,73 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         canvas.swapBuffers();
 
         // NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
+    }
+
+    private void drawGrid3D(float gridSize, final float gridSize10, final float gridSize20, float offsetXX,
+            float offsetXY, float offsetXZ, float offsetYX, float offsetYY, float offsetYZ, float offsetZX,
+            float offsetZY, float offsetZZ, boolean drawn10th) {
+        // Draw the grid and filter out 10th steps 
+        GL11.glBegin(GL11.GL_LINES);
+        // X
+        float step = -gridSize20;
+        GL11.glColor3f(Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourB);
+        for (int i = 0; i < 41; i++) {
+            if ((offsetXY + step) % gridSize10 != 0 ^ drawn10th) {
+                GL11.glVertex3f(offsetXX, offsetXY + step, offsetXZ + gridSize20);
+                GL11.glVertex3f(offsetXX, offsetXY + step, offsetXZ - gridSize20);
+            }
+            step = step + gridSize;
+        }
+
+        step = -gridSize20;
+        for (int i = 0; i < 41; i++) {
+            if ((offsetXZ + step) % gridSize10 != 0 ^ drawn10th) {
+                GL11.glVertex3f(offsetXX, offsetXY + gridSize20, offsetXZ + step);
+                GL11.glVertex3f(offsetXX, offsetXY - gridSize20, offsetXZ + step);
+            }
+            step = step + gridSize;
+        }
+
+        // Y
+        step = -gridSize20;
+        GL11.glColor3f(Colour.manipulatorYAxisColourR, Colour.manipulatorYAxisColourG, Colour.manipulatorYAxisColourB);
+        for (int i = 0; i < 41; i++) {
+            if ((offsetYX + step) % gridSize10 != 0 ^ drawn10th) {
+                GL11.glVertex3f(offsetYX + step, offsetYY, offsetYZ + gridSize20);
+                GL11.glVertex3f(offsetYX + step, offsetYY, offsetYZ - gridSize20);
+            }
+            step = step + gridSize;
+        }
+
+        step = -gridSize20;
+        for (int i = 0; i < 41; i++) {
+            if ((offsetYZ + step) % gridSize10 != 0 ^ drawn10th) {
+                GL11.glVertex3f(offsetYX + gridSize20, offsetYY, offsetYZ + step);
+                GL11.glVertex3f(offsetYX - gridSize20, offsetYY, offsetYZ + step);
+            }
+            step = step + gridSize;
+        }
+
+        // Z
+        step = -gridSize20;
+        GL11.glColor3f(Colour.manipulatorZAxisColourR, Colour.manipulatorZAxisColourG, Colour.manipulatorZAxisColourB);
+        for (int i = 0; i < 41; i++) {
+            if ((offsetZX + step) % gridSize10 != 0 ^ drawn10th) {
+                GL11.glVertex3f(offsetZX + step, offsetZY + gridSize20, offsetZZ);
+                GL11.glVertex3f(offsetZX + step, offsetZY - gridSize20, offsetZZ);
+            }
+            step = step + gridSize;
+        }
+
+        step = -gridSize20;
+        for (int i = 0; i < 41; i++) {
+            if ((offsetZY + step) % gridSize10 != 0 ^ drawn10th) {
+                GL11.glVertex3f(offsetZX + gridSize20, offsetZY + step, offsetZZ);
+                GL11.glVertex3f(offsetZX - gridSize20, offsetZY + step, offsetZZ);
+            }
+            step = step + gridSize;
+        }
+        GL11.glEnd();
     }
 
     @Override
