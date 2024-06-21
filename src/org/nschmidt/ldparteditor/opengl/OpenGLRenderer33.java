@@ -954,6 +954,170 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 c3d.getSelectionHeight().set(0.0001f, 0.0001f, 0.0001f);
             }
 
+            // A 3D grid is located around the origin and moves accordingly
+            if (c3d.isGridShown3D()) {
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                float gridSize = 1000f;
+                int z = (int) Math.log10(zoom);
+                switch (z) {
+                    case -6:
+                        gridSize *= 1E1f;
+                        break;
+                    case -5:
+                        gridSize *= 1E1f;
+                        break;
+                    case -4:
+                        gridSize *= 1E0f;
+                        break;
+                    case -3:
+                        gridSize *= 1E-1f;
+                        break;
+                    case -2:
+                        gridSize *= 1E-2f;
+                        break;
+                    case -1:
+                        gridSize *= 1E-3f;
+                        break;
+                    case 0:
+                        gridSize = 1f;
+                        break;
+                    default:
+                }
+
+                final float gridSize20 = gridSize * 20f;
+                final float gridSize10 = gridSize * 10f;
+                final float gridSizeHalf = gridSize / 2f;
+
+                float offsetXX = gridSize20;
+                float offsetXY = 0f;
+                float offsetXZ = 0f;
+                float offsetYX = 0f;
+                float offsetYY = gridSize20;
+                float offsetYZ = 0f;
+                float offsetZX = 0f;
+                float offsetZY = 0f;
+                float offsetZZ = gridSize20;
+                Vector4f transformedXAxis = Matrix4f.transform(viewportRotation, new Vector4f(1f, 0f, 0f, 1f), null);
+                Vector4f transformedYAxis = Matrix4f.transform(viewportRotation, new Vector4f(0f, 1f, 0f, 1f), null);
+                Vector4f transformedZAxis = Matrix4f.transform(viewportRotation, new Vector4f(0f, 0f, 1f, 1f), null);
+                Vector4f screenZ = new Vector4f(0f, 0f, 1f, 0f);
+                float inX = Vector4f.dot(screenZ, transformedXAxis);
+                float inY = Vector4f.dot(screenZ, transformedYAxis);
+                float inZ = Vector4f.dot(screenZ, transformedZAxis);
+                if (inX > 0f) offsetXX = -offsetXX;
+                if (inY > 0f) offsetYY = -offsetYY;
+                if (inZ > 0f) offsetZZ = -offsetZZ;
+                float ox = viewportTranslation.m30;
+                float oy = viewportTranslation.m31;
+                float oz = viewportTranslation.m32;
+                offsetXX -= ox - ox % gridSize;
+                offsetXY -= oy - oy % gridSize;
+                offsetXZ -= oz - oz % gridSize;
+                offsetYX -= ox - ox % gridSize;
+                offsetYY -= oy - oy % gridSize;
+                offsetYZ -= oz - oz % gridSize;
+                offsetZX -= ox - ox % gridSize;
+                offsetZY -= oy - oy % gridSize;
+                offsetZZ -= oz - oz % gridSize;
+
+                // Draw crosses where the manipulator is
+                final float maniX = manipulator.getPosition().x;
+                final float maniY = manipulator.getPosition().y;
+                final float maniZ = manipulator.getPosition().z;
+
+                int j = 0;
+                final float[] crosses = new float[72];
+                crosses[j] = offsetXX; j++;
+                crosses[j] = maniY + gridSizeHalf; j++;
+                crosses[j] = maniZ + gridSizeHalf; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+                crosses[j] = offsetXX; j++;
+                crosses[j] = maniY - gridSizeHalf; j++;
+                crosses[j] = maniZ - gridSizeHalf; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+                crosses[j] = offsetXX; j++;
+                crosses[j] = maniY + gridSizeHalf; j++;
+                crosses[j] = maniZ - gridSizeHalf; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+                crosses[j] = offsetXX; j++;
+                crosses[j] = maniY - gridSizeHalf; j++;
+                crosses[j] = maniZ + gridSizeHalf; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+
+                crosses[j] = maniX + gridSizeHalf; j++;
+                crosses[j] = offsetYY; j++;
+                crosses[j] = maniZ + gridSizeHalf; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+                crosses[j] = maniX - gridSizeHalf; j++;
+                crosses[j] = offsetYY; j++;
+                crosses[j] = maniZ - gridSizeHalf; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+                crosses[j] = maniX + gridSizeHalf; j++;
+                crosses[j] = offsetYY; j++;
+                crosses[j] = maniZ - gridSizeHalf; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+                crosses[j] = maniX - gridSizeHalf; j++;
+                crosses[j] = offsetYY; j++;
+                crosses[j] = maniZ + gridSizeHalf; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+
+                crosses[j] = maniX + gridSizeHalf; j++;
+                crosses[j] = maniY + gridSizeHalf; j++;
+                crosses[j] = offsetZZ; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+                crosses[j] = maniX - gridSizeHalf; j++;
+                crosses[j] = maniY - gridSizeHalf; j++;
+                crosses[j] = offsetZZ; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+                crosses[j] = maniX + gridSizeHalf; j++;
+                crosses[j] = maniY - gridSizeHalf; j++;
+                crosses[j] = offsetZZ; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB; j++;
+                crosses[j] = maniX - gridSizeHalf; j++;
+                crosses[j] = maniY + gridSizeHalf; j++;
+                crosses[j] = offsetZZ; j++;
+                crosses[j] = Colour.originColourR; j++;
+                crosses[j] = Colour.originColourG; j++;
+                crosses[j] = Colour.originColourB;
+
+                GL11.glLineWidth(3f);
+                helper.drawLinesRGBgeneral(crosses);
+
+                drawGrid3D(gridSize, gridSize10, gridSize20,
+                        offsetXX, offsetXY, offsetXZ,
+                        offsetYX, offsetYY, offsetYZ,
+                        offsetZX, offsetZY, offsetZZ, false);
+
+                drawGrid3D(gridSize, gridSize10, gridSize20,
+                        offsetXX, offsetXY, offsetXZ,
+                        offsetYX, offsetYY, offsetYZ,
+                        offsetZX, offsetZY, offsetZZ, true);
+
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+            }
+
             // To make it easier to draw and calculate the grid and the origin,
             // reset the transformation matrix ;)
             stack.glLoadIdentity();
@@ -1482,6 +1646,131 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         canvas.swapBuffers();
 
         // NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
+    }
+
+    private void drawGrid3D(float gridSize, final float gridSize10, final float gridSize20, float offsetXX,
+            float offsetXY, float offsetXZ, float offsetYX, float offsetYY, float offsetYZ, float offsetZX,
+            float offsetZY, float offsetZZ, boolean drawn10th) {
+        int j = 0;
+        final float[] grid = new float[3000];
+     // X
+        float step = -gridSize20;
+        for (int i = 0; i < 41; i++) {
+            if ((offsetXY + step) % gridSize10 != 0 ^ drawn10th) {
+                grid[j] = offsetXX; j++;
+                grid[j] = offsetXY + step; j++;
+                grid[j] = offsetXZ + gridSize20; j++;
+                grid[j] = Colour.manipulatorXAxisColourR; j++;
+                grid[j] = Colour.manipulatorXAxisColourG; j++;
+                grid[j] = Colour.manipulatorXAxisColourB; j++;
+                grid[j] = offsetXX; j++;
+                grid[j] = offsetXY + step; j++;
+                grid[j] = offsetXZ - gridSize20; j++;
+                grid[j] = Colour.manipulatorXAxisColourR; j++;
+                grid[j] = Colour.manipulatorXAxisColourG; j++;
+                grid[j] = Colour.manipulatorXAxisColourB; j++;
+            }
+            step = step + gridSize;
+        }
+
+        step = -gridSize20;
+        for (int i = 0; i < 41; i++) {
+            if ((offsetXZ + step) % gridSize10 != 0 ^ drawn10th) {
+                grid[j] = offsetXX; j++;
+                grid[j] = offsetXY + gridSize20; j++;
+                grid[j] = offsetXZ + step; j++;
+                grid[j] = Colour.manipulatorXAxisColourR; j++;
+                grid[j] = Colour.manipulatorXAxisColourG; j++;
+                grid[j] = Colour.manipulatorXAxisColourB; j++;
+                grid[j] = offsetXX; j++;
+                grid[j] = offsetXY - gridSize20; j++;
+                grid[j] = offsetXZ + step; j++;
+                grid[j] = Colour.manipulatorXAxisColourR; j++;
+                grid[j] = Colour.manipulatorXAxisColourG; j++;
+                grid[j] = Colour.manipulatorXAxisColourB; j++;
+            }
+            step = step + gridSize;
+        }
+
+        // Y
+        step = -gridSize20;
+        for (int i = 0; i < 41; i++) {
+            if ((offsetYX + step) % gridSize10 != 0 ^ drawn10th) {
+                grid[j] = offsetYX + step; j++;
+                grid[j] = offsetYY; j++;
+                grid[j] = offsetYZ + gridSize20; j++;
+                grid[j] = Colour.manipulatorYAxisColourR; j++;
+                grid[j] = Colour.manipulatorYAxisColourG; j++;
+                grid[j] = Colour.manipulatorYAxisColourB; j++;
+                grid[j] = offsetYX + step; j++;
+                grid[j] = offsetYY; j++;
+                grid[j] = offsetYZ - gridSize20; j++;
+                grid[j] = Colour.manipulatorYAxisColourR; j++;
+                grid[j] = Colour.manipulatorYAxisColourG; j++;
+                grid[j] = Colour.manipulatorYAxisColourB; j++;
+            }
+            step = step + gridSize;
+        }
+
+        step = -gridSize20;
+        for (int i = 0; i < 41; i++) {
+            if ((offsetYZ + step) % gridSize10 != 0 ^ drawn10th) {
+                grid[j] = offsetYX + gridSize20; j++;
+                grid[j] = offsetYY; j++;
+                grid[j] = offsetYZ + step; j++;
+                grid[j] = Colour.manipulatorYAxisColourR; j++;
+                grid[j] = Colour.manipulatorYAxisColourG; j++;
+                grid[j] = Colour.originColourB; j++;
+                grid[j] = offsetYX - gridSize20; j++;
+                grid[j] = offsetYY; j++;
+                grid[j] = offsetYZ + step; j++;
+                grid[j] = Colour.manipulatorYAxisColourR; j++;
+                grid[j] = Colour.manipulatorYAxisColourG; j++;
+                grid[j] = Colour.manipulatorYAxisColourB; j++;
+            }
+            step = step + gridSize;
+        }
+
+        // Z
+        step = -gridSize20;
+        for (int i = 0; i < 41; i++) {
+            if ((offsetZX + step) % gridSize10 != 0 ^ drawn10th) {
+                grid[j] = offsetZX + step; j++;
+                grid[j] = offsetZY + gridSize20; j++;
+                grid[j] = offsetZZ; j++;
+                grid[j] = Colour.manipulatorZAxisColourR; j++;
+                grid[j] = Colour.manipulatorZAxisColourG; j++;
+                grid[j] = Colour.manipulatorZAxisColourB; j++;
+                grid[j] = offsetZX + step; j++;
+                grid[j] = offsetZY - gridSize20; j++;
+                grid[j] = offsetZZ; j++;
+                grid[j] = Colour.manipulatorZAxisColourR; j++;
+                grid[j] = Colour.manipulatorZAxisColourG; j++;
+                grid[j] = Colour.manipulatorZAxisColourB; j++;
+            }
+            step = step + gridSize;
+        }
+
+        step = -gridSize20;
+        for (int i = 0; i < 41; i++) {
+            if ((offsetZY + step) % gridSize10 != 0 ^ drawn10th) {
+                grid[j] = offsetZX + gridSize20; j++;
+                grid[j] = offsetZY + step; j++;
+                grid[j] = offsetZZ; j++;
+                grid[j] = Colour.manipulatorZAxisColourR; j++;
+                grid[j] = Colour.manipulatorZAxisColourG; j++;
+                grid[j] = Colour.manipulatorZAxisColourB; j++;
+                grid[j] = offsetZX - gridSize20; j++;
+                grid[j] = offsetZY + step; j++;
+                grid[j] = offsetZZ; j++;
+                grid[j] = Colour.manipulatorZAxisColourR; j++;
+                grid[j] = Colour.manipulatorZAxisColourG; j++;
+                grid[j] = Colour.manipulatorZAxisColourB; j++;
+            }
+            step = step + gridSize;
+        }
+        GL11.glLineWidth(drawn10th ? 2f : 1f);
+        helper.drawLinesRGBgeneral(grid);
     }
 
     @Override

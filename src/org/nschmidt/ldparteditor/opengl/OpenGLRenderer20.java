@@ -1764,7 +1764,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         gridSize *= 1E-3f;
                         break;
                     case 0:
-                        gridSize *= 1E-4f;
+                        gridSize = 1f;
                         break;
                     default:
                 }
@@ -1830,13 +1830,13 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 GL11.glEnd();
                 
                 GL11.glLineWidth(1f);
-                drawGrid3D(gridSize, gridSize10, gridSize20, 
-                        offsetXX, offsetXY, offsetXZ, 
+                drawGrid3D(gridSize, gridSize10, gridSize20,
+                        offsetXX, offsetXY, offsetXZ,
                         offsetYX, offsetYY, offsetYZ,
                         offsetZX, offsetZY, offsetZZ, false);
                 GL11.glLineWidth(2f);
-                drawGrid3D(gridSize, gridSize10, gridSize20, 
-                        offsetXX, offsetXY, offsetXZ, 
+                drawGrid3D(gridSize, gridSize10, gridSize20,
+                        offsetXX, offsetXY, offsetXZ,
                         offsetYX, offsetYY, offsetYZ,
                         offsetZX, offsetZY, offsetZZ, true);
 
