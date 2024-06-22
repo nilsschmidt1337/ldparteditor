@@ -1,3 +1,16 @@
+# 22 Jun 2024
+With the release of 1.8.80 you are able to...
+-  ...do simple math in the text editor (e.g. (-3+5)*2 and hit enter).
+-  ...do simple math in floating point number input fields.
+-  ...benefit from auto-rounding for the results of scripted expressions (e.g. 1.99999998 becomes 2).
+-  ...benefit from better rounding in general (e.g. for PathTruder results).
+-  ...try a new 3D grid (Ctrl+Shift+G).
+-  ...try LDPartEditor on ARM Macs.
+
+The following critical issue is fixed:
+1. Undoing at the end of the file led to wrong line number.
+
+
 # 10 Jun 2024
 With the release of 1.8.79 you are able to...
 -  ...inline a selection without any comments (ctrl+click on inline button).

@@ -28,10 +28,10 @@ public enum DatKeyword {
 
     static {
         keywords.add("!:"); //$NON-NLS-1$
-        keywords.add("!AVATAR");//$NON-NLS-1$
-        keywords.add("CATEGORY");//$NON-NLS-1$
-        keywords.add("DESCRIPTION");//$NON-NLS-1$
-        keywords.add("PART");//$NON-NLS-1$
+        keywords.add("!AVATAR"); //$NON-NLS-1$
+        keywords.add("CATEGORY"); //$NON-NLS-1$
+        keywords.add("DESCRIPTION"); //$NON-NLS-1$
+        keywords.add("PART"); //$NON-NLS-1$
         keywords.add("!CATEGORY"); //$NON-NLS-1$
         keywords.add("!CMDLINE"); //$NON-NLS-1$
         keywords.add("!COLOUR"); //$NON-NLS-1$
