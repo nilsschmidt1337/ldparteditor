@@ -1254,6 +1254,18 @@ public enum MathHelper {
         String number = bigDecimalToString(decimal);
         int pointPosition = number.indexOf('.');
         if (pointPosition == -1) return decimal;
+        final int fourNinesPostition = number.indexOf("9999", pointPosition); //$NON-NLS-1$
+        final int fourZerosPostition = number.indexOf("0000", pointPosition); //$NON-NLS-1$
+
+        if (fourNinesPostition > pointPosition && (fourZerosPostition == -1 || fourZerosPostition > fourNinesPostition)) {
+            decimal = decimal.setScale(fourNinesPostition - pointPosition, RoundingMode.HALF_UP);
+            return decimal;
+        }
+
+        if (fourZerosPostition > pointPosition) {
+            decimal = decimal.setScale(fourZerosPostition - pointPosition, RoundingMode.HALF_UP);
+            return decimal;
+        }
 
         if (number.endsWith("9999") || number.endsWith("9998") || number.endsWith("9997") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
          || number.endsWith("0001") || number.endsWith("0002") || number.endsWith("0003")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

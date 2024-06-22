@@ -102,4 +102,28 @@ public class MathHelperTest {
         String nullStr = null;
         MathHelper.roundNumericString(nullStr);
     }
+
+    @Test
+    public void testRemovingFourZeros() {
+        String result = MathHelper.roundNumericString("0.123000077236237"); //$NON-NLS-1$
+        assertEquals(".123", result); //$NON-NLS-1$
+    }
+
+    @Test
+    public void testRemovingFourNines() {
+        String result = MathHelper.roundNumericString("0.464348999942479"); //$NON-NLS-1$
+        assertEquals(".464349", result); //$NON-NLS-1$
+    }
+
+    @Test
+    public void testRemovingFourNinesAndFourZeros() {
+        String result = MathHelper.roundNumericString("0.865999900001"); //$NON-NLS-1$
+        assertEquals(".866", result); //$NON-NLS-1$
+    }
+
+    @Test
+    public void testRemovingFourZerosAndFourNines() {
+        String result = MathHelper.roundNumericString("0.12000099994711"); //$NON-NLS-1$
+        assertEquals(".12", result); //$NON-NLS-1$
+    }
 }
