@@ -2849,6 +2849,7 @@ public class Editor3DWindow extends Editor3DDesign {
             openFiles.remove(df2);
             CTabItem tItem = new CTabItem(tabFolderOpenDatFilesPtr[0], SWT.NONE);
             tItem.setText(df2.getShortName() + (Project.getUnsavedFiles().contains(df2) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
+            tItem.setToolTipText(df2.getNewName());
             tItem.setData(df2);
             if (df2.equals(Project.getFileToEdit())) {
                 tabFolderOpenDatFilesPtr[0].setSelection(tItem);
@@ -2859,6 +2860,7 @@ public class Editor3DWindow extends Editor3DDesign {
         for (DatFile df2 : openFiles) {
             CTabItem tItem = new CTabItem(tabFolderOpenDatFilesPtr[0], SWT.NONE);
             tItem.setText(df2.getShortName() + (Project.getUnsavedFiles().contains(df2) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
+            tItem.setToolTipText(df2.getNewName());
             tItem.setData(df2);
             if (df2.equals(Project.getFileToEdit())) {
                 tabFolderOpenDatFilesPtr[0].setSelection(tItem);

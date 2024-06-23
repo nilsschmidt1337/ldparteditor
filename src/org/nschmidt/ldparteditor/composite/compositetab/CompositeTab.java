@@ -169,16 +169,7 @@ public class CompositeTab extends CompositeTabDesign {
                                     final File fileToOpen = new File(f);
                                     if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
                                     if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
-                                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
-                                        if (df != null) {
-                                            NewOpenSaveProjectToolItem.addRecentFile(df);
-                                            final File f2 = new File(df.getNewName());
-                                            if (f2.getParentFile() != null) {
-                                                Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
-                                            }
-                                            
-                                            Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabState.window[0]);
-                                        }
+                                        openInTextAnd3D(f, true);
                                     } else {
                                         DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, f, true);
                                         if (df != null) {
@@ -257,7 +248,7 @@ public class CompositeTab extends CompositeTabDesign {
             isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
             syntaxFormatter.format(e,
                     tabState.getToReplaceX(), tabState.getToReplaceY(), tabState.getToReplaceZ(),
-                    tabState.getReplaceEpsilon(), tabState.isReplacingVertex(), isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(),  df);
+                    tabState.getReplaceEpsilon(), tabState.isReplacingVertex(), isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(), tabState.isShowingLinks(),  df);
         });
         final boolean[] isDelPressed = new boolean[] { false };
         compositeTextPtr[0].addVerifyKeyListener(event -> {
@@ -318,7 +309,7 @@ public class CompositeTab extends CompositeTabDesign {
                                 // ---------------------
                                 // 2 24 0 0 0 1+|1 0 2+3
                                 // 2 24 0 0 0 2|   0 5
-                                
+
                                 if (oldSelection.x >= start) {
                                     int offset = oldSelection.x - start;
                                     boolean foundWord = false;
@@ -540,7 +531,7 @@ public class CompositeTab extends CompositeTabDesign {
                                 }
                             }
                         }
-                        
+
                         break;
                     default:
                         break;
@@ -632,7 +623,7 @@ public class CompositeTab extends CompositeTabDesign {
                                         foundValidVertex = true;
                                     }
                                 }
-                                
+
                                 break;
                             default:
                                 break;
@@ -667,7 +658,7 @@ public class CompositeTab extends CompositeTabDesign {
                                             foundVertexMetacommand = true;
                                             NLogger.debug(getClass(), "Vertex III"); //$NON-NLS-1$
                                         }
-                                        
+
                                         break;
                                     case 2, 3, 4, 5:
                                         int index2;
@@ -695,7 +686,7 @@ public class CompositeTab extends CompositeTabDesign {
                                                 foundValidVertex = true;
                                             }
                                         }
-                                        
+
                                         break;
                                     default:
                                         break;
@@ -757,7 +748,7 @@ public class CompositeTab extends CompositeTabDesign {
                                                         foundValidVertex = true;
                                                     }
                                                 }
-                                                
+
                                                 break;
                                             default:
                                                 break;
@@ -909,6 +900,9 @@ public class CompositeTab extends CompositeTabDesign {
             }
         });
         final CompositeTab me = this;
+        compositeTextPtr[0].addListener(SWT.KeyUp, event -> {
+            disableLinks();
+        });
         compositeTextPtr[0].addListener(SWT.KeyDown, event -> {
 
             final DatFile df = tabState.getFileNameObj();
@@ -928,6 +922,11 @@ public class CompositeTab extends CompositeTabDesign {
             sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
             sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
             TextTask task = KeyStateManager.getTextTaskmap().get(sb.toString());
+
+            if (keyCode == SWT.CTRL) {
+                tabState.setShowingLinks(true);
+                compositeTextPtr[0].redraw();
+            }
 
             if (task != null) {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
@@ -1320,7 +1319,7 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void focusLost(FocusEvent e) {
-                // Implementation is not required.
+                disableLinks();
             }
 
             @Override
@@ -1410,6 +1409,13 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             }
             canvasLineNumberAreaPtr[0].redraw();
+            if (tabState.isShowingLinks()) {
+                DatFile df = tabState.getFileNameObj();
+                GData data = df.getDrawPerLineNoClone().getValue(tabState.currentLineIndex + 1);
+                if (data instanceof org.nschmidt.ldparteditor.data.GData1 reference) {
+                    openInTextAnd3D(reference.getName(), false);
+                }
+            }
         });
 
         compositeTextPtr[0].addWordMovementListener(new MovementListener() {
@@ -1858,12 +1864,12 @@ public class CompositeTab extends CompositeTabDesign {
                 NLogger.debug(getClass(), "height " + height); //$NON-NLS-1$
                 NLogger.debug(getClass(), "start_line " + startLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "end_line " + endLine); //$NON-NLS-1$
-                
+
                 NLogger.debug(getClass(), "e.y " + e.y); //$NON-NLS-1$
 
 
                 int line = (e.y - yOffset) / caretHeight + startLine;
-                
+
                 boolean removeLineDelimiter = compositeTextPtr[0].getSelectionText().endsWith(StringHelper.getLineDelimiter());
 
                 NLogger.debug(getClass(), "Line " + line); //$NON-NLS-1$
@@ -1878,9 +1884,9 @@ public class CompositeTab extends CompositeTabDesign {
                 } catch (IllegalArgumentException consumed) {
                     NLogger.debug(CompositeTab.class, consumed);
                 }
-                
+
                 NLogger.debug(getClass(), "removeLineDelimiter " + removeLineDelimiter); //$NON-NLS-1$
-                
+
                 if ((e.stateMask & SWT.CTRL) != 0) {
                     try {
                         int newstart = compositeTextPtr[0].getOffsetAtLine(line + 1);
@@ -1978,12 +1984,12 @@ public class CompositeTab extends CompositeTabDesign {
         widgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> tabState.folder[0].copy());
         widgetUtil(mntmCutPtr[0]).addSelectionListener(e -> tabState.folder[0].cut());
         widgetUtil(mntmPastePtr[0]).addSelectionListener(e -> tabState.folder[0].paste());
-        
+
         widgetUtil(mntmImportPngDataPtr[0]).addSelectionListener(e -> {
             if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
-            
+
             final DatFile df = tabState.getFileNameObj();
             final VertexManager vm = df.getVertexManager();
             vm.addSnapshot();
@@ -2068,6 +2074,13 @@ public class CompositeTab extends CompositeTabDesign {
             st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
             st.forceFocus();
         });
+    }
+
+    private void disableLinks() {
+        if (tabState.isShowingLinks()) {
+            tabState.setShowingLinks(false);
+            compositeTextPtr[0].redraw();
+        }
     }
 
     private void updateTextSize(int textSize) {
@@ -2303,5 +2316,18 @@ public class CompositeTab extends CompositeTabDesign {
         df.addHistory();
         st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
         st.forceFocus();
+    }
+
+    private void openInTextAnd3D(String file, boolean canRevert) {
+        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, file, canRevert);
+        if (df != null) {
+            NewOpenSaveProjectToolItem.addRecentFile(df);
+            final File f2 = new File(df.getNewName());
+            if (f2.getParentFile() != null) {
+                Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
+            }
+
+            Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabState.window[0]);
+        }
     }
 }

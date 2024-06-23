@@ -255,7 +255,7 @@ class Editor3DDesign extends ApplicationWindow {
     final SashForm[] leftSash = new SashForm[1];
     final SashForm[] splitSash = new SashForm[1];
 
-    
+
     /**
      * Create the application window.
      */
@@ -508,6 +508,7 @@ class Editor3DDesign extends ApplicationWindow {
                 }
                 {
                     CTabItem tItem = new CTabItem(tabFolderOpenDatFiles, Cocoa.getStyle());
+                    tItem.setToolTipText(Project.getFileToEdit().getNewName());
                     tItem.setText("new.dat*"); //$NON-NLS-1$
                 }
 
@@ -713,7 +714,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                             cmpScroll.setMinSize(cmpSnappingArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
                         }
-                        
+
                         CTabItem tItem21 = new CTabItem(tabFolderSettings, Cocoa.getStyle());
                         tItem21.setText("(2)"); //$NON-NLS-1$
                         tItem21.setToolTipText(I18n.E3D_CONVERTER);
@@ -740,7 +741,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 btnShowUpper.setToolTipText(I18n.E3D_SASH_UPPER);
                                 btnShowUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1));
                             }
-                            
+
                             Label lblSpacer1 = new Label(cmpConverterArea, Cocoa.getStyle());
                             lblSpacer1.setText(" "); //$NON-NLS-1$
                             lblSpacer1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -1876,7 +1877,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
     }
-    
+
     public void refreshLockedPerspectiveButton(Composite3D lastSelectedComposite) {
         PerspectiveToolItem.refreshPerspectiveLockButton(lastSelectedComposite);
     }

@@ -167,7 +167,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
             syntaxFormatter.format(e,
                     BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-                    0f, false, isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(), df);
+                    0f, false, isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(), false, df);
         });
 
         txtDataPtr[0].addExtendedModifyListener(event -> {
@@ -245,13 +245,13 @@ public class PrimGen2Dialog extends PrimGen2Design {
         btnOkPtr[0].removeListener(SWT.Selection, btnOkPtr[0].getListeners(SWT.Selection)[0]);
         btnCancelPtr[0].removeListener(SWT.Selection, btnCancelPtr[0].getListeners(SWT.Selection)[0]);
 
-        widgetUtil(btnOkPtr[0]).addSelectionListener(e -> 
+        widgetUtil(btnOkPtr[0]).addSelectionListener(e ->
             savePrimitive(Project.getProjectPath() + File.separator + "p" + File.separator + resPrefix + name) //$NON-NLS-1$
         );
 
         widgetUtil(btnCancelPtr[0]).addSelectionListener(e -> getShell().close());
 
-        widgetUtil(btnSaveAsPtr[0]).addSelectionListener(e -> 
+        widgetUtil(btnSaveAsPtr[0]).addSelectionListener(e ->
             savePrimitive(null)
         );
 
@@ -346,7 +346,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         spnSegmentsPtr[0].addValueChangeListener(vca);
         spnSizePtr[0].addValueChangeListener(vcad);
         spnEdgesPerCrossSectionsPtr[0].addValueChangeListener(vca);
-        
+
         widgetUtil(cmbDivisionsPtr[0]).addSelectionListener(sa);
         widgetUtil(cmbSegmentsPtr[0]).addSelectionListener(sa);
         widgetUtil(cmbTorusTypePtr[0]).addSelectionListener(sa);
@@ -1241,17 +1241,17 @@ public class PrimGen2Dialog extends PrimGen2Design {
         double objdatLinePoint4X;
         double objdatLinePoint4Y;
         double objdatLinePoint4Z;
-        
+
         double ratio = 1d;
         if (edgesPerCrossSections != divisions) {
             ratio = divisions / (double) edgesPerCrossSections;
         }
-        
+
         for (num2 = 0; num2 <= num8; num2++)
         {
             int num9 = num - 1;
             num3 = num5;
-            
+
             if (type != TUBE) {
                 num3 -= 1;
                 // Add one virtual quad to the segment start
@@ -1274,7 +1274,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 points.add(new Double[] {objdatLinePoint4X, objdatLinePoint4Y, objdatLinePoint4Z});
                 num3 += 1;
             }
-            
+
             while (num3 <= num9)
             {
                 objdatLinePoint1X = round4f(Math.cos(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
@@ -1294,7 +1294,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 points.add(new Double[] {objdatLinePoint2X, objdatLinePoint2Y, objdatLinePoint2Z});
                 points.add(new Double[] {objdatLinePoint3X, objdatLinePoint3Y, objdatLinePoint3Z});
                 points.add(new Double[] {objdatLinePoint4X, objdatLinePoint4Y, objdatLinePoint4Z});
-                
+
                 sb2.append("4 16 "); //$NON-NLS-1$
                 if (ccw) {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
@@ -1333,7 +1333,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
                 num3++;
             }
-            
+
             if (type != TUBE) {
                 // Add one virtual quad to the segment end
                 objdatLinePoint1X = round4f(Math.cos(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(ratio * num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
@@ -1355,7 +1355,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 points.add(new Double[] {objdatLinePoint4X, objdatLinePoint4Y, objdatLinePoint4Z});
             }
         }
-        
+
         sb2.append("0 // conditional lines\n"); //$NON-NLS-1$
         if (type == OUTER) {
             addCondlinesForTorusOutside(points, num, num5, num8, sb2, segments == divisions);
@@ -1364,7 +1364,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         } else {
             addCondlinesForTorusTube(points, num, num5, num8, sb2, segments == divisions);
         }
-        
+
         return sb2.toString();
     }
 
@@ -1385,7 +1385,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             double objdatLinePoint4Y = points.get(pointIndex + 6)[1];
             double objdatLinePoint4Z = points.get(pointIndex + 6)[2];
             pointIndex += 4;
-            
+
             sb2.append("5 24 "); //$NON-NLS-1$
             sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
             sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1403,7 +1403,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
             sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
             sb2.append("\n"); //$NON-NLS-1$
-            
+
             int num9 = num - 1;
             int num3 = num5;
             while (num3 <= num9)
@@ -1421,7 +1421,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get(pointIndex + 6)[0];
                     objdatLinePoint4Y = points.get(pointIndex + 6)[1];
                     objdatLinePoint4Z = points.get(pointIndex + 6)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1440,8 +1440,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
-                
+
+
                 if (num2 == 0 && !closed) {
                     objdatLinePoint1X = points.get(pointIndex)[0];
                     objdatLinePoint1Y = points.get(pointIndex)[1];
@@ -1455,7 +1455,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get(pointIndex + 1)[0];
                     objdatLinePoint4Y = points.get(pointIndex + 1)[1];
                     objdatLinePoint4Z = points.get(pointIndex + 1)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1474,7 +1474,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 if (num2 < num8) {
                     objdatLinePoint1X = points.get(pointIndex + 1)[0];
                     objdatLinePoint1Y = points.get(pointIndex + 1)[1];
@@ -1488,7 +1488,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[0];
                     objdatLinePoint4Y = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[1];
                     objdatLinePoint4Z = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1507,7 +1507,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 if (num2 == num8 && !closed) {
                     objdatLinePoint1X = points.get(pointIndex + 1)[0];
                     objdatLinePoint1Y = points.get(pointIndex + 1)[1];
@@ -1525,7 +1525,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = p4.x.doubleValue();
                     objdatLinePoint4Y = p4.y.doubleValue();
                     objdatLinePoint4Z = p4.z.doubleValue();
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1544,7 +1544,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 if (num2 == num8 && closed) {
                     objdatLinePoint1X = points.get(pointIndex + 1)[0];
                     objdatLinePoint1Y = points.get(pointIndex + 1)[1];
@@ -1558,7 +1558,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get((num3 - num5) * 4 + 2)[0];
                     objdatLinePoint4Y = points.get((num3 - num5) * 4 + 2)[1];
                     objdatLinePoint4Z = points.get((num3 - num5) * 4 + 2)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1577,11 +1577,11 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 num3++;
                 pointIndex += 4;
             }
-            
+
             objdatLinePoint1X = points.get(pointIndex + 1)[0];
             objdatLinePoint1Y = points.get(pointIndex + 1)[1];
             objdatLinePoint1Z = points.get(pointIndex + 1)[2];
@@ -1594,7 +1594,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             objdatLinePoint4X = points.get(pointIndex + 2)[0];
             objdatLinePoint4Y = points.get(pointIndex + 1)[1];
             objdatLinePoint4Z = points.get(pointIndex + 2)[2];
-            
+
             sb2.append("5 24 "); //$NON-NLS-1$
             sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
             sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1632,7 +1632,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             double objdatLinePoint4X;
             double objdatLinePoint4Y;
             double objdatLinePoint4Z;
-            
+
             int num9 = num - 1;
             int num3 = num5;
             int ringSize = (num9 - num5 + 1) * 4;
@@ -1651,7 +1651,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 objdatLinePoint4X = points.get(ringStart + (pointIndex + 6) % ringSize)[0];
                 objdatLinePoint4Y = points.get(ringStart + (pointIndex + 6) % ringSize)[1];
                 objdatLinePoint4Z = points.get(ringStart + (pointIndex + 6) % ringSize)[2];
-                
+
                 sb2.append("5 24 "); //$NON-NLS-1$
                 sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                 sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1669,7 +1669,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                 sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                 sb2.append("\n"); //$NON-NLS-1$
-                
+
                 if (num2 == 0 && !closed) {
                     objdatLinePoint1X = points.get(pointIndex)[0];
                     objdatLinePoint1Y = points.get(pointIndex)[1];
@@ -1683,7 +1683,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get(pointIndex + 1)[0];
                     objdatLinePoint4Y = points.get(pointIndex + 1)[1];
                     objdatLinePoint4Z = points.get(pointIndex + 1)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1702,7 +1702,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 if (num2 < num8) {
                     objdatLinePoint1X = points.get(pointIndex + 1)[0];
                     objdatLinePoint1Y = points.get(pointIndex + 1)[1];
@@ -1716,7 +1716,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get(ringStart + ringSize + (pointIndex + 1) % ringSize)[0];
                     objdatLinePoint4Y = points.get(ringStart + ringSize + (pointIndex + 1) % ringSize)[1];
                     objdatLinePoint4Z = points.get(ringStart + ringSize + (pointIndex + 1) % ringSize)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1735,7 +1735,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 if (num2 == num8 && !closed) {
                     objdatLinePoint1X = points.get(pointIndex + 1)[0];
                     objdatLinePoint1Y = points.get(pointIndex + 1)[1];
@@ -1753,7 +1753,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = p4.x.doubleValue();
                     objdatLinePoint4Y = p4.y.doubleValue();
                     objdatLinePoint4Z = p4.z.doubleValue();
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1772,7 +1772,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 if (num2 == num8 && closed) {
                     objdatLinePoint1X = points.get(pointIndex + 1)[0];
                     objdatLinePoint1Y = points.get(pointIndex + 1)[1];
@@ -1786,7 +1786,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get((num3 - num5) * 4 + 1)[0];
                     objdatLinePoint4Y = points.get((num3 - num5) * 4 + 1)[1];
                     objdatLinePoint4Z = points.get((num3 - num5) * 4 + 1)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1805,7 +1805,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 num3++;
                 pointIndex += 4;
             }
@@ -1829,7 +1829,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             double objdatLinePoint4Y = points.get(pointIndex + 3)[1];
             double objdatLinePoint4Z = points.get(pointIndex + 1)[2];
             pointIndex += 4;
-            
+
             sb2.append("5 24 "); //$NON-NLS-1$
             sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
             sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1847,7 +1847,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
             sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
             sb2.append("\n"); //$NON-NLS-1$
-            
+
             int num9 = num - 1;
             int num3 = num5;
             while (num3 <= num9)
@@ -1865,7 +1865,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get(pointIndex + 6)[0];
                     objdatLinePoint4Y = points.get(pointIndex + 6)[1];
                     objdatLinePoint4Z = points.get(pointIndex + 6)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1884,8 +1884,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
-                
+
+
                 if (num2 == 0 && !closed) {
                     objdatLinePoint1X = points.get(pointIndex)[0];
                     objdatLinePoint1Y = points.get(pointIndex)[1];
@@ -1899,7 +1899,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get(pointIndex + 1)[0];
                     objdatLinePoint4Y = points.get(pointIndex + 1)[1];
                     objdatLinePoint4Z = points.get(pointIndex + 1)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1918,7 +1918,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 if (num2 < num8) {
                     objdatLinePoint1X = points.get(pointIndex + 1)[0];
                     objdatLinePoint1Y = points.get(pointIndex + 1)[1];
@@ -1932,7 +1932,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[0];
                     objdatLinePoint4Y = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[1];
                     objdatLinePoint4Z = points.get(pointIndex + (num9 - num5 + 2) * 4 + 2)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1951,7 +1951,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 if (num2 == num8 && !closed) {
                     objdatLinePoint1X = points.get(pointIndex + 1)[0];
                     objdatLinePoint1Y = points.get(pointIndex + 1)[1];
@@ -1969,7 +1969,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = p4.x.doubleValue();
                     objdatLinePoint4Y = p4.y.doubleValue();
                     objdatLinePoint4Z = p4.z.doubleValue();
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1988,7 +1988,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 if (num2 == num8 && closed) {
                     objdatLinePoint1X = points.get(pointIndex + 1)[0];
                     objdatLinePoint1Y = points.get(pointIndex + 1)[1];
@@ -2002,7 +2002,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     objdatLinePoint4X = points.get((num3 - num5) * 4 + 2)[0];
                     objdatLinePoint4Y = points.get((num3 - num5) * 4 + 2)[1];
                     objdatLinePoint4Z = points.get((num3 - num5) * 4 + 2)[2];
-                    
+
                     sb2.append("5 24 "); //$NON-NLS-1$
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                     sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2021,11 +2021,11 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
                     sb2.append("\n"); //$NON-NLS-1$
                 }
-                
+
                 num3++;
                 pointIndex += 4;
             }
-            
+
             objdatLinePoint1X = points.get(pointIndex + 1)[0];
             objdatLinePoint1Y = points.get(pointIndex + 1)[1];
             objdatLinePoint1Z = points.get(pointIndex + 1)[2];
@@ -2038,7 +2038,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             objdatLinePoint4X = points.get(pointIndex + 1)[0];
             objdatLinePoint4Y = points.get(pointIndex + 2)[1];
             objdatLinePoint4Z = points.get(pointIndex + 1)[2];
-            
+
             sb2.append("5 24 "); //$NON-NLS-1$
             sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
             sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$

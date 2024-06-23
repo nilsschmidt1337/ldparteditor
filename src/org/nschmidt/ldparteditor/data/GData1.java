@@ -411,6 +411,10 @@ public final class GData1 extends GData {
         return accurateProductMatrix;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getShortName() {
         return shortName;
     }

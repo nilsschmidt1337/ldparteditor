@@ -41,6 +41,8 @@ public class CompositeTabState {
     private DatFile datFileObj = View.DUMMY_DATFILE;
     /** The filename of the file, which is displayed by this tab */
     String filename = I18n.EDITORTEXT_NEW_FILE;
+    /** The filepath of the file, which is displayed by this tabs tooltip */
+    String filepath = I18n.EDITORTEXT_NEW_FILE;
     /**
      * The filename of the file, which is displayed by this tab when the content
      * is modified
@@ -57,6 +59,7 @@ public class CompositeTabState {
 
     private boolean sync = false;
     private boolean replacingVertex = false;
+    private boolean showingLinks = false;
     private float replaceEpsilon = 0.0001f;
     private BigDecimal toReplaceX = BigDecimal.ONE;
     private BigDecimal toReplaceY = new BigDecimal(2);
@@ -71,6 +74,8 @@ public class CompositeTabState {
 
     public void setFileNameObj(DatFile fileNameObj) {
         filename = new File(fileNameObj.getNewName()).getName();
+        filepath = fileNameObj.getNewName();
+        getTab().setToolTipText(filepath);
         setFilenameWithStar(filename + "*"); //$NON-NLS-1$
         if (fileNameObj.isReadOnly()) {
             filename = filename + " " + I18n.EDITORTEXT_READ_ONLY; //$NON-NLS-1$
@@ -220,5 +225,14 @@ public class CompositeTabState {
 
     public void setDoingPaste(boolean doingPaste) {
         this.doingPaste = doingPaste;
+    }
+
+    public boolean isShowingLinks() {
+        return showingLinks;
+    }
+
+    public void setShowingLinks(boolean showingLinks) {
+        NLogger.debug(getClass(), "" + showingLinks); //$NON-NLS-1$
+        this.showingLinks = showingLinks;
     }
 }

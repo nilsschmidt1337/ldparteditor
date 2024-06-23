@@ -81,7 +81,7 @@ public class SyntaxFormatter {
      */
     public void format(LineStyleEvent e,
             BigDecimal vxPrecise, BigDecimal vyPrecise, BigDecimal vzPrecise,
-            float replaceEpsilon, boolean replaceVertex, boolean isSelected, boolean isDuplicate, boolean isVisible,
+            float replaceEpsilon, boolean replaceVertex, boolean isSelected, boolean isDuplicate, boolean isVisible, boolean showLinks,
             DatFile df) {
 
         List<StyleRange> styles = new ArrayList<>();
@@ -130,7 +130,7 @@ public class SyntaxFormatter {
             formatComment(styles, e, textSegments, vx, vy, vz, replaceVertex, replaceEpsilon);
             break;
         case 1:
-            formatReference(styles, e, textSegments, df);
+            formatReference(styles, e, textSegments, df, showLinks);
             break;
         case 2:
             formatLine(styles, e, textSegments, vx, vy, vz, replaceVertex, replaceEpsilon);
@@ -177,7 +177,7 @@ public class SyntaxFormatter {
         }
         e.styles = styles.toArray(new StyleRange[0]);
     }
-    
+
     /**
      * Extends the style range of the text with a hint-underline-style.
      *
@@ -504,7 +504,7 @@ public class SyntaxFormatter {
      * @param e
      *            the {@linkplain LineStyleEvent}
      */
-    private void formatReference(List<StyleRange> styles, LineStyleEvent e, String[] textSegments, DatFile datFile) {
+    private void formatReference(List<StyleRange> styles, LineStyleEvent e, String[] textSegments, DatFile datFile, boolean showLinks) {
         int offset = e.lineOffset;
 
         StyleRange lineStyleRange = new StyleRange();
@@ -722,6 +722,15 @@ public class SyntaxFormatter {
             if (!fileExists || dataSegments.length > 15 || !isLowercase || containsSlash) {
                 for (int s = 15; s < styles.size(); s++) {
                     setWarningStyle(styles.get(s));
+                }
+            }
+
+            if (showLinks && fileExists) {
+                for (int s = 15; s < styles.size(); s++) {
+                    StyleRange style = styles.get(s);
+                    style.underline = true;
+                    style.underlineColor = TextEditorColour.getTextForeground();
+                    style.underlineStyle = SWT.UNDERLINE_LINK;
                 }
             }
         }
