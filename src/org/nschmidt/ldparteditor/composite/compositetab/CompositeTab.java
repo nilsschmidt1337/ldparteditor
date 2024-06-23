@@ -2223,6 +2223,7 @@ public class CompositeTab extends CompositeTabDesign {
         }
         final CompositeTab ct = new CompositeTab(folder, SWT.CLOSE, index);
         ct.setText(this.tabState.getTab().getText());
+        ct.setToolTipText(this.tabState.getTab().getToolTipText());
         ct.getControl().dispose();
         ct.canvasLineNumberAreaPtr[0] = this.canvasLineNumberAreaPtr[0];
         ct.compositeTextPtr[0] = this.compositeTextPtr[0];
