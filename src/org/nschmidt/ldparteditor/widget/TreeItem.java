@@ -225,7 +225,8 @@ public class TreeItem {
         parent.getMapInv().put(this, t);
         t.setImage(image);
         StringBuilder offset = new StringBuilder();
-        if (visible && !items.isEmpty()) {
+        final boolean emptyItems = items.isEmpty();
+        if (visible && !emptyItems) {
             switch (step) {
             case 0:
                 offset.append("⇣ "); //$NON-NLS-1$
@@ -248,6 +249,7 @@ public class TreeItem {
                 if (ti.isShown()) ti.build(step + 1);
             }
         } else {
+            visible = emptyItems;
             switch (step) {
             case 0:
                 offset.append("⇢ "); //$NON-NLS-1$
