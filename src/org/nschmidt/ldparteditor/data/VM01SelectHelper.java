@@ -1484,7 +1484,7 @@ class VM01SelectHelper extends VM01Select {
      * @param event
      * @param selectionHeight
      * @param selectionWidth
-     * @param subsToAdd 
+     * @param subsToAdd
      */
     private synchronized void selectFaces2(Composite3D c3d, Event event, Vector4f selectionWidth, Vector4f selectionHeight, Set<GData1> subsToAdd) {
         Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
@@ -1804,7 +1804,7 @@ class VM01SelectHelper extends VM01Select {
         }
     }
 
-    private List<GData1> subfilesWithOneVertex() {
+    public List<GData1> subfilesWithOneVertex() {
         return vertexCountInSubfile.entrySet().stream()
                 .filter(e -> e.getKey().depth == 1)
                 .filter(e -> e.getValue() == -1)

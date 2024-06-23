@@ -172,10 +172,10 @@ public class Composite3D extends ScalableComposite {
     private final Vector4f screenXY = new Vector4f(0, 0, 0, 1);
 
     private final Set<Vertex> tmpHiddenVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
-    
+
     private final Set<GData> tmpRaytraceSkipSet = new HashSet<>();
     private Set<GData> tmpRaytraceSkipSetResult = new HashSet<>();
-    
+
     public Vector4f getScreenXY() {
         return screenXY;
     }
@@ -193,6 +193,8 @@ public class Composite3D extends ScalableComposite {
     private boolean gridShown;
     /** {@code true} if the 3D grid is shown. */
     private boolean gridShown3D;
+    /** {@code true} if empty subfiles are shown. */
+    private boolean showingEmptySubfiles = true;
     /** The perspective value */
     private Perspective viewportPerspective;
     /** The rotation matrix of the view */
@@ -215,9 +217,9 @@ public class Composite3D extends ScalableComposite {
      * y-direction, cell count)
      */
     private final Vector4f[] gridData = new Vector4f[] { new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f() };
-    
+
     private float gridSize = 0f;
-    
+
     /** the {@linkplain GLCanvas} */
     private final GLCanvas canvas;
     private final GLCapabilities capabilities;
@@ -285,6 +287,7 @@ public class Composite3D extends ScalableComposite {
     private final MenuItem[] mntmStdLinesPtr = new MenuItem[1];
     private final MenuItem[] mntmShowAllPtr = new MenuItem[1];
     private final MenuItem[] mntmStudLogoPtr = new MenuItem[1];
+    private final MenuItem[] mntmHiddenSubfilesPtr = new MenuItem[1];
     private final MenuItem[] mntmSmoothShadingPtr = new MenuItem[1];
     private final MenuItem[] mntmControlPointVerticesPtr = new MenuItem[1];
     private final MenuItem[] mntmHiddenVerticesPtr = new MenuItem[1];
@@ -567,7 +570,7 @@ public class Composite3D extends ScalableComposite {
                     ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
                     return;
                 }
-                
+
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.FRONT));
             });
@@ -582,7 +585,7 @@ public class Composite3D extends ScalableComposite {
                     ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
                     return;
                 }
-                
+
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.BACK));
             });
@@ -596,7 +599,7 @@ public class Composite3D extends ScalableComposite {
                     ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
                     return;
                 }
-                
+
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.LEFT));
             });
@@ -610,7 +613,7 @@ public class Composite3D extends ScalableComposite {
                     ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
                     return;
                 }
-                
+
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.RIGHT));
             });
@@ -624,7 +627,7 @@ public class Composite3D extends ScalableComposite {
                     ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
                     return;
                 }
-                
+
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.TOP));
             });
@@ -638,7 +641,7 @@ public class Composite3D extends ScalableComposite {
                     ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
                     return;
                 }
-                
+
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(perspective.setPerspective(Perspective.BOTTOM));
             });
@@ -654,7 +657,7 @@ public class Composite3D extends ScalableComposite {
                     ((MenuItem) e.widget).setSelection(!((MenuItem) e.widget).getSelection());
                     return;
                 }
-                
+
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 perspective.setPerspective(Perspective.TWO_THIRDS);
             });
@@ -870,6 +873,12 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmLDrawLines = new MenuItem(mnuViewActions, SWT.CASCADE);
             mntmLDrawLines.setText(I18n.C3D_LDRAW_LINES);
 
+            final MenuItem mntmHiddenSubfiles = new MenuItem(mnuViewActions, SWT.CHECK);
+            this.mntmHiddenSubfilesPtr[0] = mntmHiddenSubfiles;
+            widgetUtil(mntmHiddenSubfiles).addSelectionListener(e -> c3dModifier.showEmptySubfiles(mntmHiddenSubfiles.getSelection()));
+            mntmHiddenSubfiles.setText(I18n.C3D_EMPTY_SUBFILES);
+            mntmHiddenSubfiles.setSelection(true);
+
             final MenuItem mntmShowGrid = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmShowGridPtr[0] = mntmShowGrid;
             widgetUtil(mntmShowGrid).addSelectionListener(e -> c3dModifier.showGrid(mntmShowGrid.getSelection()));
@@ -895,7 +904,7 @@ public class Composite3D extends ScalableComposite {
             widgetUtil(mntmAxis).addSelectionListener(e -> c3dModifier.switchAxis(mntmAxis.getSelection()));
             mntmAxis.setText(I18n.C3D_XYZ_AXIS);
             mntmAxis.setSelection(true);
-            
+
             final MenuItem mntmAxisLabel = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmAxisLabelPtr[0] = mntmAxisLabel;
             widgetUtil(mntmAxisLabel).addSelectionListener(e -> {
@@ -906,7 +915,7 @@ public class Composite3D extends ScalableComposite {
                 } else {
                     Colour.textColourR = Colour.textColourDefaultR; Colour.textColourG = Colour.textColourDefaultG; Colour.textColourB = Colour.textColourDefaultB;
                 }
-                
+
                 for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                     renderer.getC3D().getMntmAxisLabel().setSelection(userSettings.isShowingAxisLabels());
                 }
@@ -1287,7 +1296,7 @@ public class Composite3D extends ScalableComposite {
                                             Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
                                         }
                                     }
-                                    
+
                                     Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                                     break;
                                 }
@@ -1606,11 +1615,11 @@ public class Composite3D extends ScalableComposite {
     public Vector4f[] getGrid() {
         return gridData;
     }
-    
+
     public void setGridSize(float gridSize) {
         this.gridSize = gridSize;
     }
-    
+
     /**
      * @return the grid size in LDU.
      */
@@ -1899,7 +1908,7 @@ public class Composite3D extends ScalableComposite {
     public MenuItem getMntmAxis() {
         return mntmAxisPtr[0];
     }
-    
+
     public MenuItem getMntmAxisLabel() {
         return mntmAxisLabelPtr[0];
     }
@@ -2141,7 +2150,7 @@ public class Composite3D extends ScalableComposite {
                         Display.getDefault().asyncExec(() -> {
                             final VertexManager vm = df.getVertexManager();
                             final int selectedVertexCount = vm.getSelectedVertices().size();
-                            
+
                             if (!vm.getSelectedData().isEmpty() || !vm.getSelectedVertices().isEmpty()) {
 
                                 final int oldIndex = ((CompositeTab) t).getTextComposite().getTopIndex() + 1;
@@ -2149,7 +2158,7 @@ public class Composite3D extends ScalableComposite {
                                 final List<Integer> indices = new ArrayList<>();
                                 final Set<GData> selection = new HashSet<>();
                                 Integer index;
-                                
+
                                 if (selectedVertexCount == 1) {
                                     selection.addAll(vm.getLinkedSurfacesSubfilesAndLines(vm.getSelectedVertices().iterator().next()));
                                 }
@@ -2240,7 +2249,7 @@ public class Composite3D extends ScalableComposite {
                     selectedIndicies.add(i);
                 }
             }
-            
+
             if (selectedVertices.size() == 1) {
                 final Vertex singleVertex = vm.getSelectedVertices().iterator().next();
                 for (GData gd : vm.getLinkedSurfacesSubfilesAndLines(singleVertex)) {
@@ -2249,7 +2258,7 @@ public class Composite3D extends ScalableComposite {
                         selectedIndicies.add(i);
                     }
                 }
-                
+
                 for (GData gd : vm.getLinkedVertexMetaCommands(singleVertex)) {
                     final Integer i = df.getDrawPerLineNoClone().getKey(gd);
                     if (i != null && gd.type() == 0) {
@@ -2428,6 +2437,7 @@ public class Composite3D extends ScalableComposite {
         setSmoothShading(state.isSmooth());
         setGridShown(state.isShowGrid());
         setGridShown3D(state.isShowGrid3D());
+        setShowingEmptySubfiles(state.isShowEmptySubfiles());
         setLightOn(state.isLights());
         setMeshLines(state.isMeshlines());
         setSubMeshLines(state.isSubfileMeshlines());
@@ -2479,7 +2489,7 @@ public class Composite3D extends ScalableComposite {
 
     public void setHasMouse(boolean hasMouse) {
         this.hasMouse = hasMouse;
-        
+
         if (hasMouse) {
             Event mouseEvent = new Event();
             mouseEvent.type = SWT.MouseUp;
@@ -2521,7 +2531,7 @@ public class Composite3D extends ScalableComposite {
     public void clearRaytraceSkipSet() {
         tmpRaytraceSkipSet.clear();
     }
-    
+
     public void addToRaytraceSkipSet(GData gd) {
         tmpRaytraceSkipSet.add(gd);
     }
@@ -2542,5 +2552,13 @@ public class Composite3D extends ScalableComposite {
 
     public void setGridShown3D(boolean gridShown3D) {
         this.gridShown3D = gridShown3D;
+    }
+
+    public boolean isShowingEmptySubfiles() {
+        return showingEmptySubfiles;
+    }
+
+    public void setShowingEmptySubfiles(boolean showingEmptySubfiles) {
+        this.showingEmptySubfiles = showingEmptySubfiles;
     }
 }

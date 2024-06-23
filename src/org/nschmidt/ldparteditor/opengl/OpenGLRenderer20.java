@@ -1739,6 +1739,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 c3d.getSelectionHeight().set(0.0001f, 0.0001f, 0.0001f);
             }
 
+            // Display empty subfiles as boxes
+            if (c3d.isShowingEmptySubfiles()) {
+                EmptySubfileRenderer.drawEmptySubfileBoxes20(c3d.getLockableDatFileReference(), manipulator);
+            }
+
             // A 3D grid is located around the origin and moves accordingly
             if (c3d.isGridShown3D()) {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -1828,7 +1833,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 GL11.glVertex3f(maniX + gridSizeHalf, maniY - gridSizeHalf, offsetZZ);
                 GL11.glVertex3f(maniX - gridSizeHalf, maniY + gridSizeHalf, offsetZZ);
                 GL11.glEnd();
-                
+
                 GL11.glLineWidth(1f);
                 drawGrid3D(gridSize, gridSize10, gridSize20,
                         offsetXX, offsetXY, offsetXZ,
@@ -1939,14 +1944,14 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         line_width = 2f;
                     }
                     GL11.glPushMatrix();
-                    
+
                     GL11.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
                     GL11.glMultMatrixf(rotation);
                     new Arrow(Colour.xAxisColourR, Colour.xAxisColourG, Colour.xAxisColourB, l,  0f, 0f, cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
                     new Arrow(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, 0f, l,  0f, cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
                     new Arrow(Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB, 0f, 0f, l,  cone_height, cone_width, line_width).drawGL20(0f, 0f, 0f, .01f);
                     GL11.glPopMatrix();
-                    
+
                     if (userSettings.isShowingAxisLabels()) {
                         GL11.glDisable(GL11.GL_DEPTH_TEST);
                         GL11.glDisable(GL11.GL_CULL_FACE);
@@ -1966,11 +1971,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             final Vector4f manipulatorPos = new Vector4f(mx * zoom, my * zoom, mz * zoom, 1f);
                             Vector4f.add(manipulatorPos, new Vector4f(translation.m30 * zoom, translation.m31 * zoom, translation.m32 * zoom, 0f), manipulatorPos);
                             Matrix4f.transform(rotation2, manipulatorPos, manipulatorPos);
-                            
+
                             final Vector4f manipulatorXAxis = new Vector4f(length, 0f, 0f, 1f);
                             final Vector4f manipulatorYAxis = new Vector4f(0f, length, 0f, 1f);
                             final Vector4f manipulatorZAxis = new Vector4f(0f, 0f, length, 1f);
-                            
+
                             final Matrix4f rot = Matrix4f.invert(manipulator.getAccurateRotation().getMatrix4f(), new Matrix4f());
                             Matrix4f.transform(rot, manipulatorXAxis, manipulatorXAxis);
                             Matrix4f.transform(rot, manipulatorYAxis, manipulatorYAxis);
@@ -1978,7 +1983,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             Matrix4f.transform(rotation2, manipulatorXAxis, manipulatorXAxis);
                             Matrix4f.transform(rotation2, manipulatorYAxis, manipulatorYAxis);
                             Matrix4f.transform(rotation2, manipulatorZAxis, manipulatorZAxis);
-                            
+
                             GL11.glPushMatrix();
                             GL11.glLoadIdentity();
                             GL11.glTranslatef(manipulatorPos.x, manipulatorPos.y, 0f);
@@ -1986,29 +1991,29 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             for (PGData3 tri : View.X) {
                                 tri.drawText(manipulatorXAxis.x, manipulatorXAxis.y, manipulatorXAxis.z);
                             }
-                            
+
                             for (PGData3 tri : View.Y) {
                                 tri.drawText(manipulatorYAxis.x, manipulatorYAxis.y, manipulatorYAxis.z);
                             }
-                            
+
                             for (PGData3 tri : View.Z) {
                                 tri.drawText(manipulatorZAxis.x, manipulatorZAxis.y, manipulatorZAxis.z);
                             }
                             PGData3.endDrawText();
                             GL11.glPopMatrix();
                         }
-                            
+
                         GL11.glPushMatrix();
                         GL11.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
                         PGData3.beginDrawText();
                         for (PGData3 tri : View.X) {
                             tri.drawText(xAxis.x, xAxis.y, xAxis.z);
                         }
-                        
+
                         for (PGData3 tri : View.Y) {
                             tri.drawText(yAxis.x, yAxis.y, yAxis.z);
                         }
-                        
+
                         for (PGData3 tri : View.Z) {
                             tri.drawText(zAxis.x, zAxis.y, zAxis.z);
                         }
@@ -2226,7 +2231,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     private void drawGrid3D(float gridSize, final float gridSize10, final float gridSize20, float offsetXX,
             float offsetXY, float offsetXZ, float offsetYX, float offsetYY, float offsetYZ, float offsetZX,
             float offsetZY, float offsetZZ, boolean drawn10th) {
-        // Draw the grid and filter out 10th steps 
+        // Draw the grid and filter out 10th steps
         GL11.glBegin(GL11.GL_LINES);
         // X
         float step = -gridSize20;
@@ -2444,7 +2449,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     public int getCubeMapMetalLoc() {
         return cubeMapMetalLoc;
     }
-    
+
     public int getCubeMapPearlLoc() {
         return cubeMapPearlLoc;
     }

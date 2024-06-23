@@ -31,6 +31,7 @@ public class Composite3DState implements Serializable {
     private boolean showOrigin = false;
     private boolean showGrid = false;
     private boolean showGrid3D = false;
+    private boolean showEmptySubfiles = false;
     private float gridScale = 1f;
     private boolean lights = false;
     private boolean meshlines = false;
@@ -285,4 +286,11 @@ public class Composite3DState implements Serializable {
         this.showGrid3D = showGrid3D;
     }
 
+    public boolean isShowEmptySubfiles() {
+        return showEmptySubfiles;
+    }
+
+    public void setShowEmptySubfiles(boolean showEmptySubfiles) {
+        this.showEmptySubfiles = showEmptySubfiles;
+    }
 }

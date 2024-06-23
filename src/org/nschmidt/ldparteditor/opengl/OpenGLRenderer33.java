@@ -954,6 +954,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 c3d.getSelectionHeight().set(0.0001f, 0.0001f, 0.0001f);
             }
 
+            // Display empty subfiles as boxes
+            if (c3d.isShowingEmptySubfiles()) {
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glLineWidth(2f);
+                float[] emptySubfileBoxes = EmptySubfileRenderer.calculateEmptySubfileBoxes(c3d.getLockableDatFileReference(), manipulator);
+                helper.drawLinesRGBgeneral(emptySubfileBoxes);
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+            }
+
             // A 3D grid is located around the origin and moves accordingly
             if (c3d.isGridShown3D()) {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -1284,35 +1293,35 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     new Arrow(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, 0f, l,  0f, cone_height, cone_width, line_width).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
                     new Arrow(Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB, 0f, 0f, l,  cone_height, cone_width, line_width).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
                     stack.glPopMatrix();
-                    
+
                     if (userSettings.isShowingAxisLabels()) {
                         GL11.glDisable(GL11.GL_CULL_FACE);
                         GL11.glDisable(GL11.GL_DEPTH_TEST);
                         PGData3.beginDrawTextGL33(shaderProgram2D);
                         stack.setShader(shaderProgram2D);
                         final float length20th = l / 20f;
-                        
+
                         final Vector4f xAxis = new Vector4f(length20th, 0f, 0f, 1f);
                         final Vector4f yAxis = new Vector4f(0f, length20th, 0f, 1f);
                         final Vector4f zAxis = new Vector4f(0f, 0f, length20th, 1f);
-                        
+
                         final Matrix4f rotation = c3d.getRotation();
-                        
+
                         Matrix4f.transform(rotation, xAxis, xAxis);
                         Matrix4f.transform(rotation, yAxis, yAxis);
                         Matrix4f.transform(rotation, zAxis, zAxis);
-                        
+
                         if (!ldrawStandardMode && TransformationModeToolItem.getWorkingAction() != WorkingMode.SELECT && TransformationModeToolItem.getWorkingAction() != WorkingMode.ROTATE) {
                             final float length = l / 10f;
                             final Matrix4f translation = c3d.getTranslation();
                             final Vector4f manipulatorPos = new Vector4f(mx * zoom, my * zoom, mz * zoom, 1f);
                             Vector4f.add(manipulatorPos, new Vector4f(translation.m30 * zoom, translation.m31 * zoom, translation.m32 * zoom, 0f), manipulatorPos);
                             Matrix4f.transform(rotation, manipulatorPos, manipulatorPos);
-                            
+
                             final Vector4f manipulatorXAxis = new Vector4f(length, 0f, 0f, 1f);
                             final Vector4f manipulatorYAxis = new Vector4f(0f, length, 0f, 1f);
                             final Vector4f manipulatorZAxis = new Vector4f(0f, 0f, length, 1f);
-                            
+
                             final Matrix4f rot = Matrix4f.invert(manipulator.getAccurateRotation().getMatrix4f(), new Matrix4f());
                             Matrix4f.transform(rot, manipulatorXAxis, manipulatorXAxis);
                             Matrix4f.transform(rot, manipulatorYAxis, manipulatorYAxis);
@@ -1320,33 +1329,33 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             Matrix4f.transform(rotation, manipulatorXAxis, manipulatorXAxis);
                             Matrix4f.transform(rotation, manipulatorYAxis, manipulatorYAxis);
                             Matrix4f.transform(rotation, manipulatorZAxis, manipulatorZAxis);
-                            
-                            
+
+
                             stack.glLoadIdentity();
                             stack.glTranslatef(manipulatorPos.x, manipulatorPos.y, 0f);
                             for (PGData3 tri : View.X) {
                                 tri.drawTextGL33(manipulatorXAxis.x, manipulatorXAxis.y, viewportOriginAxis[0].z);
                             }
-                            
+
                             for (PGData3 tri : View.Y) {
                                 tri.drawTextGL33(manipulatorYAxis.x, manipulatorYAxis.y, viewportOriginAxis[0].z);
                             }
-                            
+
                             for (PGData3 tri : View.Z) {
                                 tri.drawTextGL33(manipulatorZAxis.x, manipulatorZAxis.y, viewportOriginAxis[0].z);
                             }
                         }
-                        
+
                         stack.glLoadIdentity();
                         stack.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
                         for (PGData3 tri : View.X) {
                             tri.drawTextGL33(xAxis.x, xAxis.y, viewportOriginAxis[0].z);
                         }
-                        
+
                         for (PGData3 tri : View.Y) {
                             tri.drawTextGL33(yAxis.x, yAxis.y, viewportOriginAxis[0].z);
                         }
-                        
+
                         for (PGData3 tri : View.Z) {
                             tri.drawTextGL33(zAxis.x, zAxis.y, viewportOriginAxis[0].z);
                         }

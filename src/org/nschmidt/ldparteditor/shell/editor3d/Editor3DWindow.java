@@ -172,7 +172,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public static int sashWeight1 = 50;
     public static int sashWeight2 = 50;
-    
+
     public static final int TEXT_3D_SEPARATE = 0;
     public static final int TEXT_LEFT_3D_RIGHT = 1;
     public static final int TEXT_RIGHT_3D_LEFT = 2;
@@ -949,7 +949,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 lblSelectionAnglePtr[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_ANGLE : "") + " {" + spnSelectionAnglePtr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                 lblSelectionLengthPtr[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_LENGTH : "") + " {" + spnSelectionLengthPtr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                 lblSelectionLengthMMPtr[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_LENGTH_MM : "") + " {" + spnSelectionLengthMMPtr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                
+
                                 lblSelectionX1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X1 : "") + " {" + spnSelectionX1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                 lblSelectionY1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y1 : "") + " {" + spnSelectionY1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                 lblSelectionZ1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z1 : "") + " {" + spnSelectionZ1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -1132,7 +1132,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 lblSelectionAnglePtr[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_ANGLE : "") + " {" + spnSelectionAnglePtr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                 lblSelectionLengthPtr[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_LENGTH : "") + " {" + spnSelectionLengthPtr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                 lblSelectionLengthMMPtr[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_LENGTH_MM : "") + " {" + spnSelectionLengthMMPtr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                
+
                                 lblSelectionX1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X1 : "X  :") + " {" + spnSelectionX1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                 lblSelectionY1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y1 : "Y  :") + " {" + spnSelectionY1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                 lblSelectionZ1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z1 : "Z  :") + " {" + spnSelectionZ1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -1242,8 +1242,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 txtLinePtr[0].setText(newLine.toString());
             }
         });
-        
-        spnSelectionLengthMMPtr[0].addValueChangeListener(spn -> 
+
+        spnSelectionLengthMMPtr[0].addValueChangeListener(spn ->
             spnSelectionLengthPtr[0].setValue(spnSelectionLengthMMPtr[0].getValue().divide(GData2.MILLIMETRE_PER_LDU))
         );
 
@@ -2136,7 +2136,7 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         widgetUtil(btnSyncTabsPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setSyncingTabs(btnSyncTabsPtr[0].getSelection()));
-        
+
         int operations = DND.DROP_MOVE;
         final int[] sourceIndex = new int[] {0};
         final DragSource source = new DragSource(tabFolderOpenDatFilesPtr[0], operations);
@@ -2396,6 +2396,7 @@ public class Editor3DWindow extends Editor3DDesign {
         st.setShowAxis(c3d.isShowingAxis());
         st.setShowGrid(c3d.isGridShown());
         st.setShowGrid3D(c3d.isGridShown3D());
+        st.setShowEmptySubfiles(c3d.isShowingEmptySubfiles());
         st.setShowOrigin(c3d.isOriginShown());
         st.setLights(c3d.isLightOn());
         st.setSmooth(c3d.isSmoothShading());
@@ -2804,7 +2805,7 @@ public class Editor3DWindow extends Editor3DDesign {
         this.treeParts[0].redraw();
         updateTabs();
     }
-    
+
     public synchronized void updateTabs() {
         updateTabs(tabFolderOpenDatFilesPtr[0].getItems());
     }
@@ -2814,8 +2815,8 @@ public class Editor3DWindow extends Editor3DDesign {
         for (CTabItem cti : items) {
             oldOpenFiles.add((DatFile) cti.getData());
         }
-        
-        
+
+
         boolean isSelected = false;
         if (tabFolderOpenDatFilesPtr[0].getData() != null) {
             return;
@@ -2841,7 +2842,7 @@ public class Editor3DWindow extends Editor3DDesign {
         // Copy list of opened files
         List<DatFile> openFiles = new ArrayList<>();
         openFiles.addAll(Project.getOpenedFiles());
-        
+
         // Iterate in the old order, just to keep it
         for (DatFile df2 : oldOpenFiles) {
             if (!openFiles.contains(df2)) continue;
@@ -2854,7 +2855,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 isSelected = true;
             }
         }
-        
+
         for (DatFile df2 : openFiles) {
             CTabItem tItem = new CTabItem(tabFolderOpenDatFilesPtr[0], SWT.NONE);
             tItem.setText(df2.getShortName() + (Project.getUnsavedFiles().contains(df2) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2952,13 +2953,13 @@ public class Editor3DWindow extends Editor3DDesign {
     public boolean isReviewingAPart() {
         return reviewingAPart;
     }
-    
+
     public boolean endReviewingAPart() {
         if (isReviewingAPart()) {
            setReviewingAPart(false, null);
            return true;
         }
-        
+
         return false;
     }
 
@@ -3246,7 +3247,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public DatFile createNewDatFile(Shell sh, OpenInWhat where, boolean isDraft) {
 
         int draftCount = 1;
-        
+
         FileDialog fd = new FileDialog(sh, SWT.SAVE);
         fd.setText(I18n.E3D_CREATE_NEW_DAT);
 
@@ -3285,9 +3286,9 @@ public class Editor3DWindow extends Editor3DDesign {
                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
                         messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
                         messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
-    
+
                         int result = messageBox.open();
-    
+
                         if (result == SWT.CANCEL) {
                             break;
                         }
@@ -3463,7 +3464,7 @@ public class Editor3DWindow extends Editor3DDesign {
             revert(df);
             return true;
         }
-        
+
         return false;
     }
 
@@ -3474,7 +3475,7 @@ public class Editor3DWindow extends Editor3DDesign {
             openDatFile(df, where, null);
             return true;
         }
-        
+
         return false;
     }
 
@@ -3639,7 +3640,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (w.isSeperateWindow()) {
                             w.open();
                         }
-                        
+
                         // File is already open in a text editor!
                         return;
                     }
@@ -3650,7 +3651,7 @@ public class Editor3DWindow extends Editor3DDesign {
             // Project.getParsedFiles().add(df); IS NECESSARY HERE
             Project.getParsedFiles().add(df);
             Project.addOpenedFile(df);
-            
+
             if (tWin == null) {
                 if (!Project.getOpenTextWindows().isEmpty() && !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow() || (w != null && WorkbenchManager.getUserSettingState().hasSingleTextWindow())) {
                     w.openNewDatFileTab(df, true);
@@ -3894,20 +3895,20 @@ public class Editor3DWindow extends Editor3DDesign {
             SubfileCompiler.compile(df, false, forceParsing);
         }
     }
-    
+
     public void updateLineThickness() {
         Set<DatFile> dfs = new HashSet<>();
         for (OpenGLRenderer renderer : renders) {
             dfs.add(renderer.getC3D().getLockableDatFileReference());
         }
-        
+
         for (DatFile df : dfs) {
             df.getVertexManager().addSnapshot();
             Set<GData2> lines = df.getVertexManager().getLines().keySet();
             for (GData2 line : lines) {
                 line.updateLine();
             }
-            
+
             Set<GData5> condlines = df.getVertexManager().getCondlines().keySet();
             for (GData5 condline : condlines) {
                 condline.updateLine();
@@ -3972,7 +3973,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         Project.removeUnsavedFile(df);
                         Project.removeOpenedFile(df);
                     }
-                    
+
                     result2 = true;
                 } else if (df.save()) {
                     NewOpenSaveProjectToolItem.addRecentFile(df);
@@ -4096,7 +4097,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
     }
-    
+
     public void closeAllTabs() {
         for (CTabItem ti : tabFolderOpenDatFilesPtr[0].getItems()) {
             ti.dispose();
@@ -4166,7 +4167,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             df.parseForData(true);
             df.getVertexManager().setModified(true, true);
-            
+
             Project.setFileToEdit(df);
 
             if (tmpW != null) {
@@ -4177,14 +4178,14 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 ((CompositeTab) tmpT).getTextComposite().forceFocus();
             }
-            
+
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (!c3d.isDatFileLockedOnDisplay() || df.equals(c3d.getLockableDatFileReference())) {
                     c3d.setLockableDatFileReference(df);
                 }
             }
-            
+
             updateTabs();
         }
         return true;

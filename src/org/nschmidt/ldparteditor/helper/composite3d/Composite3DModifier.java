@@ -101,6 +101,17 @@ public class Composite3DModifier {
     }
 
     /**
+     * Displays empty subfiles within {@linkplain Composite3D}.
+     *
+     * @param shown
+     *            True if empty subfiles should be shown
+     */
+    public void showEmptySubfiles(boolean shown) {
+        NLogger.debug(Composite3DModifier.class, "[Show empty subfiles]"); //$NON-NLS-1$
+        c3d.setShowingEmptySubfiles(shown);
+    }
+
+    /**
      * Switches light within {@linkplain Composite3D}.
      *
      * @param lightIsOn
@@ -434,7 +445,7 @@ public class Composite3DModifier {
                                             Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
                                         }
                                     }
-                                    
+
                                     Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                                     break;
                                 }

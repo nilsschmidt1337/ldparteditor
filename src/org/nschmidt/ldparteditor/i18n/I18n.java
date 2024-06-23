@@ -118,6 +118,7 @@ public final class I18n {
     public static final String C3D_CONDLINE_VERTICES = C3D.getString(getProperty());
     public static final String C3D_COPLANARITY_MODE = C3D.getString(getProperty());
     public static final String C3D_DELTA = C3D.getString(getProperty());
+    public static final String C3D_EMPTY_SUBFILES = C3D.getString(getProperty());
     public static final String C3D_GREEN_RED = C3D.getString(getProperty());
     public static final String C3D_GRID_SIZE = C3D.getString(getProperty());
     public static final String C3D_HIDDEN_VERTICES = C3D.getString(getProperty());
