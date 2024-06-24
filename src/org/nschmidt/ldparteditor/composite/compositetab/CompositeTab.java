@@ -923,7 +923,7 @@ public class CompositeTab extends CompositeTabDesign {
             sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
             TextTask task = KeyStateManager.getTextTaskmap().get(sb.toString());
 
-            if (keyCode == SWT.CTRL) {
+            if (keyCode == SWT.CTRL && !Cocoa.IS_COCOA || keyCode == SWT.COMMAND && Cocoa.IS_COCOA) {
                 tabState.setShowingLinks(true);
                 compositeTextPtr[0].redraw();
             }
