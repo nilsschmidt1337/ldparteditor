@@ -116,6 +116,7 @@ import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.Perspective;
 import org.nschmidt.ldparteditor.enumtype.SnapSize;
 import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.enumtype.WorkingMode;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.helper.ShellHelper;
@@ -132,8 +133,12 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveDatfileToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -188,6 +193,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     private boolean updatingPngPictureTab;
     private int pngPictureUpdateCounter = 0;
+    private boolean calibratePngPicture;
 
     private boolean updatingSelectionTab = true;
 
@@ -1571,6 +1577,24 @@ public class Editor3DWindow extends Editor3DDesign {
 
             vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
             regainFocus();
+        });
+        widgetUtil(btnCalibratePtr[0]).addSelectionListener(e -> {
+           calibratePngPicture = btnCalibratePtr[0].getSelection();
+           if (calibratePngPicture) {
+               final DatFile df = Project.getFileToEdit();
+               if (!df.isReadOnly()) {
+                   AddToolItem.disableAddAction();
+                   MiscToolItem.activateAllTypes();
+                   df.setObjVertex1(null);
+                   df.setObjVertex2(null);
+                   df.setObjVertex3(null);
+                   df.setObjVertex4(null);
+                   df.setNearestObjVertex1(null);
+                   df.setNearestObjVertex2(null);
+                   TransformationModeToolItem.setWorkingAction(WorkingMode.SELECT);
+                   WorkingTypeToolItem.setObjMode(2);
+               }
+           }
         });
         widgetUtil(btnPngImagePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
@@ -3192,6 +3216,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     txtPngPathPtr[0].setEnabled(false);
                     btnPngFocusPtr[0].setEnabled(false);
+                    btnCalibratePtr[0].setEnabled(false);
+                    btnCalibratePtr[0].setSelection(false);
+                    setCalibratePngPicture(false);
                     btnPngImagePtr[0].setEnabled(false);
                     spnPngXPtr[0].setEnabled(false);
                     spnPngYPtr[0].setEnabled(false);
@@ -3212,6 +3239,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 updatingPngPictureTab = true;
 
                 txtPngPathPtr[0].setEnabled(true);
+                btnCalibratePtr[0].setEnabled(true);
                 btnPngFocusPtr[0].setEnabled(true);
                 btnPngImagePtr[0].setEnabled(true);
                 spnPngXPtr[0].setEnabled(true);
@@ -4756,5 +4784,13 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public SashForm getEditorSashForm() {
         return editorSashForm[0];
+    }
+
+    public boolean isCalibratePngPicture() {
+        return calibratePngPicture;
+    }
+
+    public void setCalibratePngPicture(boolean calibratePngPicture) {
+        this.calibratePngPicture = calibratePngPicture;
     }
 }

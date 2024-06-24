@@ -100,6 +100,7 @@ public final class I18n {
     private static final ResourceBundle SPINNER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Spinner", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle DIRECTION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Direction", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle INFOGRAPHIC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Infographic", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle CALIBRATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Calibrate", MyLanguage.getLocale()); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -126,6 +127,7 @@ public final class I18n {
     public static final String C3D_JOIN_SELECTION = C3D.getString(getProperty());
     public static final String C3D_LDRAW_LINES = C3D.getString(getProperty());
     public static final String C3D_LDRAW_STANDARD = C3D.getString(getProperty());
+    public static final String C3D_LENGTH = C3D.getString(getProperty());
     public static final String C3D_LIGHTS = C3D.getString(getProperty());
     public static final String C3D_LOCK_FILE = C3D.getString(getProperty());
     public static final String C3D_MESH_LINES = C3D.getString(getProperty());
@@ -165,6 +167,8 @@ public final class I18n {
     public static final String C3D_VERTICES = C3D.getString(getProperty());
     public static final String C3D_WIREFRAME = C3D.getString(getProperty());
     public static final String C3D_XYZ_AXIS = C3D.getString(getProperty());
+    public static final String CALIBRATE_BG_IMAGE = CALIBRATE.getString(getProperty());
+    public static final String CALIBRATE_DRAW_LINE = CALIBRATE.getString(getProperty());
     public static final String COLOURDIALOG_CHOOSE_DIRECT_COLOUR = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_COLOUR = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_COLOUR_TITLE = COLOURDIALOG.getString(getProperty());

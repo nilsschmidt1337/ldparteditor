@@ -44,6 +44,7 @@ class VM01Select extends VM00Snapshot {
     }
 
     public void setSelectedBgPicture(GDataPNG pic) {
+        if (pic == null && Editor3DWindow.getWindow().isCalibratePngPicture()) return;
         selectedBgPicture = pic;
     }
 
@@ -816,7 +817,7 @@ class VM01Select extends VM00Snapshot {
             }
         }
     }
-    
+
     /**
      * Adds a group of lines to the selection.
      * It will ignore subfile content
@@ -832,7 +833,7 @@ class VM01Select extends VM00Snapshot {
                 addTextLineToSelection(line);
             }
         }
-        
+
         return lines;
     }
 }

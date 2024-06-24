@@ -195,6 +195,7 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btnPngFocusPtr = new NButton[1];
     final NButton[] btnPngNextPtr = new NButton[1];
     final NButton[] btnPngImagePtr = new NButton[1];
+    final NButton[] btnCalibratePtr = new NButton[1];
     final Text[] txtPngPathPtr = new Text[1];
     final BigDecimalSpinner[] spnPngXPtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnPngYPtr = new BigDecimalSpinner[1];
@@ -1163,6 +1164,17 @@ class Editor3DDesign extends ApplicationWindow {
                                 btnBrowsePngPath.setText(I18n.DIALOG_BROWSE);
 
                                 cmpPathChooser1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+                            }
+                            {
+                                Composite cmpCalibrate = new Composite(cmpBgArea, Cocoa.getStyle());
+                                cmpCalibrate.setLayout(new GridLayout(1, false));
+
+                                NButton btnCalibrate = new NButton(cmpCalibrate, Cocoa.getStyle() | SWT.TOGGLE);
+                                this.btnCalibratePtr[0] = btnCalibrate;
+                                btnCalibrate.setText(I18n.CALIBRATE_BG_IMAGE);
+                                btnCalibrate.setToolTipText(I18n.CALIBRATE_BG_IMAGE);
+                                btnCalibrate.setImage(ResourceManager.getImage("icon16_calibrate.png")); //$NON-NLS-1$
+                                cmpCalibrate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
                                 Label lblLabel = new Label(cmpBgArea, Cocoa.getStyle());

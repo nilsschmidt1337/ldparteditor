@@ -26,6 +26,7 @@ import java.util.TreeSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -40,6 +41,7 @@ import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.WorkingTypeToolItem;
@@ -165,6 +167,30 @@ public enum GuiStatusManager {
                 } else if (sels.isCondlines() && !sels.isLines()) {
                     sb.append(I18n.E3D_ONLY_CONDLINES);
                 }
+            }
+
+            if (AddToolItem.isAddingDistance()|| AddToolItem.isAddingLines()) {
+                Vector4f cur = c3d.getCursorSnapped3D();
+                Vertex v = c3d.getLockableDatFileReference().getNearestObjVertex1();
+                if (v != null) {
+                    float distLDU = Vector4f.sub(v.toVector4f(), cur, null).length() / 1000f;
+                    float distMM = distLDU * 0.4f;
+                    sb.append(" "); //$NON-NLS-1$
+                    sb.append(I18n.C3D_LENGTH);
+                    sb.append(" "); //$NON-NLS-1$
+                    sb.append(DF4F.format(distLDU));
+                    sb.append(" "); //$NON-NLS-1$
+                    sb.append(I18n.UNITS_LDU);
+                    sb.append(" | "); //$NON-NLS-1$
+                    sb.append(DF2F.format(distMM));
+                    sb.append(" "); //$NON-NLS-1$
+                    sb.append(I18n.UNITS_SECONDARY);
+                }
+            }
+
+            if (Editor3DWindow.getWindow().isCalibratePngPicture()) {
+                sb.append(" "); //$NON-NLS-1$
+                sb.append(I18n.CALIBRATE_DRAW_LINE);
             }
 
             if (Math.abs(CSG.timeOfLastOptimization - System.currentTimeMillis()) < 10000) {
@@ -298,13 +324,13 @@ public enum GuiStatusManager {
             needsComma = appendSelectionInfo(sb, I18n.C3D_SELECTED_CONDLINE, I18n.C3D_SELECTED_CONDLINES, selectedCondlineCount, needsComma);
             appendSelectionInfo(sb, I18n.C3D_SELECTED_SUBFILE, I18n.C3D_SELECTED_SUBFILES, selectedSubfileCount, needsComma);
             sb.append(") "); //$NON-NLS-1$
-            
+
             if (selectedSubfileCount == 1) {
                 updateSubfileSelection(sb, vm);
             }
         }
     }
-    
+
     private static void updateSubfileSelection(StringBuilder sb, VertexManager vm) {
         try {
             Iterator<GData1> si = vm.getSelectedSubfiles().iterator();
