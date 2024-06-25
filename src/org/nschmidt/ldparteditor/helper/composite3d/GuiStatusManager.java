@@ -18,7 +18,10 @@ package org.nschmidt.ldparteditor.helper.composite3d;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
@@ -30,10 +33,15 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
+import org.nschmidt.ldparteditor.data.GData2;
+import org.nschmidt.ldparteditor.data.GData5;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.dialog.value.ValueDialog;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.ObjectMode;
 import org.nschmidt.ldparteditor.enumtype.View;
@@ -188,10 +196,7 @@ public enum GuiStatusManager {
                 }
             }
 
-            if (Editor3DWindow.getWindow().isCalibratePngPicture()) {
-                sb.append(" "); //$NON-NLS-1$
-                sb.append(I18n.CALIBRATE_DRAW_LINE);
-            }
+            showAndCheckImageCalibrationHint(sb, vm);
 
             if (Math.abs(CSG.timeOfLastOptimization - System.currentTimeMillis()) < 10000) {
                 sb.append(" "); //$NON-NLS-1$
@@ -209,6 +214,72 @@ public enum GuiStatusManager {
         } catch (SWTException swtex) {
             NLogger.debug(GuiStatusManager.class, "Uncritical SWTExecption. Widget is disposed."); //$NON-NLS-1$
             NLogger.debug(GuiStatusManager.class, swtex);
+        }
+    }
+
+    private static void showAndCheckImageCalibrationHint(final StringBuilder sb, final VertexManager vm) {
+        // TODO Move this into a new dialog
+        if (Editor3DWindow.getWindow().isCalibratePngPicture()) {
+            sb.append(" "); //$NON-NLS-1$
+            sb.append(I18n.CALIBRATE_DRAW_LINE);
+
+            // This is not the cleanest way, since a value dialog will be triggered, when the status should be displayed,
+            // but anyhow. BG Image Calibration is not the daily task of a part author, done every second.
+            final int selectedLineCount = vm.getSelectedLines().size();
+            final int selectedCondlineCount = vm.getSelectedCondlines().size();
+            if (selectedCondlineCount + selectedLineCount == 1) {
+                GData selectedLine = null;
+                if (selectedLineCount == 1) {
+                    try {
+                        GData2 line = vm.getSelectedLines().iterator().next();
+                        selectedLine = line;
+                    } catch (NoSuchElementException consumed) {
+                        NLogger.debug(GuiStatusManager.class, consumed);
+                    }
+                }
+
+                if (selectedCondlineCount == 1) {
+                    try {
+                        GData5 condline = vm.getSelectedCondlines().iterator().next();
+                        selectedLine = condline;
+                    } catch (NoSuchElementException consumed) {
+                        NLogger.debug(GuiStatusManager.class, consumed);
+                    }
+                }
+
+                if (selectedLine != null) {
+                    Set<VertexInfo> vis = vm.getLineLinkedToVertices().get(selectedLine);
+                    if (vis != null && vis.size() > 1) {
+                        List<VertexInfo> visList = new ArrayList<>(vis);
+                        Vector4f v1 = visList.get(0).getVertex().toVector4f();
+                        Vector4f v2 = visList.get(1).getVertex().toVector4f();
+                        float distLDU = Vector4f.sub(v1, v2, null).length() / 1000f;
+                        float distMM = distLDU * 0.4f;
+                        Object[] messageArguments = {DF4F.format(distLDU), DF2F.format(distMM)};
+                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                        formatter.setLocale(MyLanguage.getLocale());
+                        formatter.applyPattern(I18n.CALIBRATE_LENGTH);
+                        // TODO Use a real dialog here, with inputs for LDU, MM and Inch
+                        new ValueDialog(Editor3DWindow.getWindow().getShell(), formatter.format(messageArguments), "LDU") { //$NON-NLS-1$
+
+                            @Override
+                            public void initializeSpinner() {
+                                this.spnValuePtr[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
+                                this.spnValuePtr[0].setMaximum(new BigDecimal("10000")); //$NON-NLS-1$
+                                
+                            }
+
+                            @Override
+                            public void applyValue() {
+                                // TODO Auto-generated method stub
+                            }
+                        }.open();
+
+                        Editor3DWindow.getWindow().setCalibratePngPicture(false);
+                        vm.clearSelection();
+                    }
+                }
+            }
         }
     }
 

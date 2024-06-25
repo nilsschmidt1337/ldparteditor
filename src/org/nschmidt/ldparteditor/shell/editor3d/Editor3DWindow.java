@@ -3217,7 +3217,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     txtPngPathPtr[0].setEnabled(false);
                     btnPngFocusPtr[0].setEnabled(false);
                     btnCalibratePtr[0].setEnabled(false);
-                    btnCalibratePtr[0].setSelection(false);
                     setCalibratePngPicture(false);
                     btnPngImagePtr[0].setEnabled(false);
                     spnPngXPtr[0].setEnabled(false);
@@ -4791,6 +4790,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void setCalibratePngPicture(boolean calibratePngPicture) {
+        btnCalibratePtr[0].setSelection(calibratePngPicture);
         this.calibratePngPicture = calibratePngPicture;
     }
 }

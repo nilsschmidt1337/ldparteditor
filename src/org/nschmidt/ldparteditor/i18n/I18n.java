@@ -169,6 +169,7 @@ public final class I18n {
     public static final String C3D_XYZ_AXIS = C3D.getString(getProperty());
     public static final String CALIBRATE_BG_IMAGE = CALIBRATE.getString(getProperty());
     public static final String CALIBRATE_DRAW_LINE = CALIBRATE.getString(getProperty());
+    public static final String CALIBRATE_LENGTH = CALIBRATE.getString(getProperty());
     public static final String COLOURDIALOG_CHOOSE_DIRECT_COLOUR = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_COLOUR = COLOURDIALOG.getString(getProperty());
     public static final String COLOURDIALOG_COLOUR_TITLE = COLOURDIALOG.getString(getProperty());
