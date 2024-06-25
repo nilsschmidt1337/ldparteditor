@@ -18,15 +18,13 @@ package org.nschmidt.ldparteditor.helper.composite3d;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.lwjgl.util.vector.Vector4f;
@@ -41,7 +39,7 @@ import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
-import org.nschmidt.ldparteditor.dialog.value.ValueDialog;
+import org.nschmidt.ldparteditor.dialog.calibrate.CalibrateDialog;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.ObjectMode;
 import org.nschmidt.ldparteditor.enumtype.View;
@@ -218,7 +216,6 @@ public enum GuiStatusManager {
     }
 
     private static void showAndCheckImageCalibrationHint(final StringBuilder sb, final VertexManager vm) {
-        // TODO Move this into a new dialog
         if (Editor3DWindow.getWindow().isCalibratePngPicture()) {
             sb.append(" "); //$NON-NLS-1$
             sb.append(I18n.CALIBRATE_DRAW_LINE);
@@ -250,30 +247,10 @@ public enum GuiStatusManager {
                 if (selectedLine != null) {
                     Set<VertexInfo> vis = vm.getLineLinkedToVertices().get(selectedLine);
                     if (vis != null && vis.size() > 1) {
-                        List<VertexInfo> visList = new ArrayList<>(vis);
-                        Vector4f v1 = visList.get(0).getVertex().toVector4f();
-                        Vector4f v2 = visList.get(1).getVertex().toVector4f();
-                        float distLDU = Vector4f.sub(v1, v2, null).length() / 1000f;
-                        float distMM = distLDU * 0.4f;
-                        Object[] messageArguments = {DF4F.format(distLDU), DF2F.format(distMM)};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.getLocale());
-                        formatter.applyPattern(I18n.CALIBRATE_LENGTH);
-                        // TODO Use a real dialog here, with inputs for LDU, MM and Inch
-                        new ValueDialog(Editor3DWindow.getWindow().getShell(), formatter.format(messageArguments), "LDU") { //$NON-NLS-1$
-
-                            @Override
-                            public void initializeSpinner() {
-                                this.spnValuePtr[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
-                                this.spnValuePtr[0].setMaximum(new BigDecimal("10000")); //$NON-NLS-1$
-                                
-                            }
-
-                            @Override
-                            public void applyValue() {
-                                // TODO Auto-generated method stub
-                            }
-                        }.open();
+                        CalibrateDialog dialog = new CalibrateDialog(Editor3DWindow.getWindow().getShell(), vm, vis);
+                        if (dialog.open() == IDialogConstants.OK_ID) {
+                            dialog.performCalibration();
+                        }
 
                         Editor3DWindow.getWindow().setCalibratePngPicture(false);
                         vm.clearSelection();
