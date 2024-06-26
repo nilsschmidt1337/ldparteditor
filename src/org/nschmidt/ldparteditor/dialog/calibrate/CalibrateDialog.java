@@ -22,10 +22,20 @@ import java.math.RoundingMode;
 import java.util.Set;
 
 import org.eclipse.swt.widgets.Shell;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GDataPNG;
+import org.nschmidt.ldparteditor.data.Matrix;
+import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
+import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  *
@@ -42,14 +52,15 @@ public class CalibrateDialog extends CalibrateDesign {
     private boolean stud = false;
 
     private boolean update = false;
-    private final VertexManager vm;
+    private final DatFile df;
+    private BigDecimal newDistLDU = BigDecimal.ZERO;
 
     /**
      * Create the dialog.
      */
-    public CalibrateDialog(Shell parentShell, VertexManager vm, Set<VertexInfo> vis) {
+    public CalibrateDialog(Shell parentShell, DatFile df, Set<VertexInfo> vis) {
         super(parentShell, vis);
-        this.vm = vm;
+        this.df = df;
         ldu = false;
         mm = false;
         inch = false;
@@ -85,6 +96,7 @@ public class CalibrateDialog extends CalibrateDesign {
             btnStudPtr[0].setSelection(true);
         });
         spnLDUPtr[0].addValueChangeListener(spn -> {
+            newDistLDU = spn.getValue();
             if (update) return;
             uncheckAllUnits();
             update = true;
@@ -149,7 +161,75 @@ public class CalibrateDialog extends CalibrateDesign {
     }
 
     public void performCalibration() {
-        // TODO Auto-generated method stub
+        final VertexManager vm = df.getVertexManager();
+        vm.addSnapshot();
+        if (BigDecimal.ZERO.compareTo(newDistLDU) == 0 || BigDecimal.ZERO.compareTo(oldDistLDU) == 0) {
+            return;
+        }
 
+        final GDataPNG png = vm.getSelectedBgPicture();
+        if (png == null || png.parent != View.DUMMY_REFERENCE) return;
+        final Matrix4f mf = png.getMatrix().scale(new Vector3f(1E-3f, 1E-3f, 1E-3f));
+        mf.invert();
+        final Vector3d movedStart = Vector3d.sub(start, new Vector3d(png.offset));
+        final Matrix m =  new Matrix(mf).translateGlobally(
+            BigDecimal.valueOf(-mf.m30),
+            BigDecimal.valueOf(-mf.m31),
+            BigDecimal.valueOf(-mf.m32));
+        final Vector3d projection = m.transform(movedStart);
+
+        // projection is correct, relative to (0|0) origin of the image
+
+        final BigDecimal factor = newDistLDU.divide(oldDistLDU, Threshold.MC);
+
+        // Delta needs to be scaled by the original X, Y scale, since the scale was lost with the inverse
+        // Something wrong here...
+        final Vector3d delta = Vector3d.sub(projection.scale(factor), projection);
+        final Vector3d deltaScaled = new Vector3d(delta.x.multiply(png.scale.xp), delta.y.multiply(png.scale.yp), BigDecimal.ZERO);
+
+        final Vector3d rawOffset = Vector3d.sub(new Vector3d(png.offset), deltaScaled);
+        final Vertex offset = new Vertex(
+            MathHelper.roundNumericString(rawOffset.x),
+            MathHelper.roundNumericString(rawOffset.y),
+            MathHelper.roundNumericString(rawOffset.z));
+
+        // Scale adjustment is correct.
+        final Vector3d rawScale = new Vector3d(png.scale).scale(factor);
+        final Vertex scale = new Vertex(
+            MathHelper.roundNumericString(rawScale.x),
+            MathHelper.roundNumericString(rawScale.y),
+            MathHelper.roundNumericString(rawScale.z));
+
+        final StringBuilder sb = new StringBuilder();
+        sb.append("0 !LPE PNG "); //$NON-NLS-1$
+        sb.append(' ');
+        sb.append(MathHelper.bigDecimalToString(offset.xp));
+        sb.append(' ');
+        sb.append(MathHelper.bigDecimalToString(offset.yp));
+        sb.append(' ');
+        sb.append(MathHelper.bigDecimalToString(offset.zp));
+        sb.append(' ');
+        sb.append(MathHelper.bigDecimalToString(png.angleA));
+        sb.append(' ');
+        sb.append(MathHelper.bigDecimalToString(png.angleB));
+        sb.append(' ');
+        sb.append(MathHelper.bigDecimalToString(png.angleC));
+        sb.append(' ');
+        sb.append(MathHelper.bigDecimalToString(scale.xp));
+        sb.append(' ');
+        sb.append(MathHelper.bigDecimalToString(scale.yp));
+        sb.append(' ');
+        sb.append(png.texturePath);
+        final GDataPNG newPng = new GDataPNG(sb.toString(), offset, png.angleA, png.angleB, png.angleC, scale, png.texturePath, View.DUMMY_REFERENCE);
+        final int oldLine = df.getDrawPerLineNoClone().getKey(png);
+        png.getBefore().setNext(newPng);
+        newPng.setNext(png.getNext());
+        vm.remove(png);
+        df.getDrawPerLineNoClone().put(oldLine, newPng);
+
+        NLogger.debug(getClass(), png.toString());
+        NLogger.debug(getClass(), newPng.toString());
+        vm.validateState();
+        vm.setModified(true, true);
     }
 }

@@ -67,6 +67,8 @@ class CalibrateDesign extends Dialog {
     // Use final only for subclass/listener references!
 
     private final Set<VertexInfo> vis;
+    protected BigDecimal oldDistLDU = BigDecimal.ZERO;
+    protected Vector3d start = new Vector3d();
 
     CalibrateDesign(Shell parentShell, Set<VertexInfo> vis) {
         super(parentShell);
@@ -82,10 +84,15 @@ class CalibrateDesign extends Dialog {
     protected Control createDialogArea(Composite parent) {
 
         List<VertexInfo> visList = new ArrayList<>(vis);
+        for (VertexInfo vi : visList) {
+            if (vi.getPosition() == 0) start = new Vector3d(vi.getVertex());
+        }
+
         Vector3d v1 = new Vector3d(visList.get(0).getVertex());
         Vector3d v2 = new Vector3d(visList.get(1).getVertex());
         BigDecimal distLDU = MathHelper.roundNumericString(Vector3d.sub(v1, v2, null).length());
         BigDecimal distMM = distLDU.multiply(new BigDecimal("0.4")); //$NON-NLS-1$
+        oldDistLDU = distLDU;
         Object[] messageArguments = {DF4F.format(distLDU), DF2F.format(distMM)};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.getLocale());

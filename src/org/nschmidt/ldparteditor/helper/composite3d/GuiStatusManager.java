@@ -116,8 +116,9 @@ public enum GuiStatusManager {
                 }
             }
 
+            final DatFile df = c3d.getLockableDatFileReference();
             sb.append(" "); //$NON-NLS-1$
-            sb.append(c3d.getLockableDatFileReference().getShortName());
+            sb.append(df.getShortName());
             sb.append(", "); //$NON-NLS-1$
             sb.append(I18n.PERSPECTIVE_ZOOM);
             sb.append(": "); //$NON-NLS-1$
@@ -194,7 +195,7 @@ public enum GuiStatusManager {
                 }
             }
 
-            showAndCheckImageCalibrationHint(sb, vm);
+            showAndCheckImageCalibrationHint(sb, df);
 
             if (Math.abs(CSG.timeOfLastOptimization - System.currentTimeMillis()) < 10000) {
                 sb.append(" "); //$NON-NLS-1$
@@ -215,8 +216,9 @@ public enum GuiStatusManager {
         }
     }
 
-    private static void showAndCheckImageCalibrationHint(final StringBuilder sb, final VertexManager vm) {
+    private static void showAndCheckImageCalibrationHint(final StringBuilder sb, final DatFile df) {
         if (Editor3DWindow.getWindow().isCalibratePngPicture()) {
+            final VertexManager vm = df.getVertexManager();
             sb.append(" "); //$NON-NLS-1$
             sb.append(I18n.CALIBRATE_DRAW_LINE);
 
@@ -247,7 +249,7 @@ public enum GuiStatusManager {
                 if (selectedLine != null) {
                     Set<VertexInfo> vis = vm.getLineLinkedToVertices().get(selectedLine);
                     if (vis != null && vis.size() > 1) {
-                        CalibrateDialog dialog = new CalibrateDialog(Editor3DWindow.getWindow().getShell(), vm, vis);
+                        CalibrateDialog dialog = new CalibrateDialog(Editor3DWindow.getWindow().getShell(), df, vis);
                         if (dialog.open() == IDialogConstants.OK_ID) {
                             dialog.performCalibration();
                         }

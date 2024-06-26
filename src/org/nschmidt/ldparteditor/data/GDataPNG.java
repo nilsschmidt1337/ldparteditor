@@ -507,4 +507,8 @@ public final class GDataPNG extends GData {
     public void setGoingToBeReplaced(boolean goingToBeReplaced) {
         this.goingToBeReplaced = goingToBeReplaced;
     }
+
+    public Matrix4f getMatrix() {
+        return new Matrix4f(tMatrix);
+    }
 }
