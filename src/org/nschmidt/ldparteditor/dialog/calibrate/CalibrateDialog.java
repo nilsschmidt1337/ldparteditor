@@ -24,9 +24,9 @@ import java.util.Set;
 import org.eclipse.swt.widgets.Shell;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GDataPNG;
-import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
@@ -148,29 +148,17 @@ public class CalibrateDialog extends CalibrateDesign {
 
         final GDataPNG png = vm.getSelectedBgPicture();
         if (png == null || png.parent != View.DUMMY_REFERENCE) return;
-        final Matrix4f mf = png.getMatrix().scale(new Vector3f(1E-3f, 1E-3f, 1E-3f));
-        mf.invert();
-        final Vector3d movedStart = Vector3d.sub(start, new Vector3d(png.offset));
-        final Matrix m =  new Matrix(mf).translateGlobally(
-            BigDecimal.valueOf(-mf.m30),
-            BigDecimal.valueOf(-mf.m31),
-            BigDecimal.valueOf(-mf.m32));
-        final Vector3d projection = m.transform(movedStart);
-
-        // projection is correct, relative to (0|0) origin of the image
+        final Matrix4f mf = png.getMatrix();
 
         final BigDecimal factor = newDistLDU.divide(oldDistLDU, Threshold.MC);
 
-        // Delta needs to be scaled by the original X, Y scale, since the scale was lost with the inverse
-        // Something wrong here...
-        final Vector3d delta = Vector3d.sub(projection.scale(factor), projection);
-        final Vector3d deltaScaled = new Vector3d(delta.x.multiply(png.scale.xp), delta.y.multiply(png.scale.yp), BigDecimal.ZERO);
-
-        final Vector3d rawOffset = Vector3d.sub(new Vector3d(png.offset), deltaScaled);
+        final Vector4f rawOffset = calibrateOffset(mf, new Vector4f(png.offset.xp.floatValue(), png.offset.yp.floatValue(), png.offset.zp.floatValue(), 1f),
+                png.angleA.floatValue(), png.angleB.floatValue(), png.angleC.floatValue(),
+                new Vector4f(start.getXf(), start.getYf(), start.getZf(), 1f), factor.floatValue());
         final Vertex offset = new Vertex(
-            MathHelper.roundNumericString(rawOffset.x),
-            MathHelper.roundNumericString(rawOffset.y),
-            MathHelper.roundNumericString(rawOffset.z));
+            MathHelper.roundNumericString(BigDecimal.valueOf(rawOffset.x)),
+            MathHelper.roundNumericString(BigDecimal.valueOf(rawOffset.y)),
+            MathHelper.roundNumericString(BigDecimal.valueOf(rawOffset.z)));
 
         // Scale adjustment is correct.
         final Vector3d rawScale = new Vector3d(png.scale).scale(factor);
@@ -210,5 +198,24 @@ public class CalibrateDialog extends CalibrateDesign {
         NLogger.debug(getClass(), newPng.toString());
         vm.validateState();
         vm.setModified(true, true);
+    }
+
+    public static Vector4f calibrateOffset(Matrix4f imageMatrix, final Vector4f imageOffset,
+            float angleA, float angleB, float angleC,
+            final Vector4f pivot, float scale) {
+
+        Matrix4f imageBasis = Matrix4f.setIdentity(new Matrix4f());
+        Matrix4f.rotate((float) (angleC / 180.0 * Math.PI), new Vector3f(0f, 0f, 1f), imageBasis, imageBasis);
+        Matrix4f.rotate((float) (angleB / 180.0 * Math.PI), new Vector3f(1f, 0f, 0f), imageBasis, imageBasis);
+        Matrix4f.rotate((float) (angleA / 180.0 * Math.PI), new Vector3f(0f, 1f, 0f), imageBasis, imageBasis);
+
+        imageBasis = Matrix4f.invert(imageBasis, null);
+
+        final Vector4f realImageOffset = (Vector4f) new Vector4f(imageMatrix.m30, imageMatrix.m31, imageMatrix.m32, 1000f).scale(.001f);
+        final Vector4f pivotToImageCenter = Vector4f.sub(pivot, realImageOffset, null);
+        final Vector4f pivotToImageCenterScaled = (Vector4f) pivotToImageCenter.scale(scale).scale(.5f);
+        final Vector4f offsetDelta = (Vector4f) Matrix4f.transform(imageBasis, pivotToImageCenterScaled, null).negate();
+
+        return Vector4f.add(imageOffset, offsetDelta, null);
     }
 }
