@@ -46,11 +46,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  */
 public class CalibrateDialog extends CalibrateDesign {
 
-    private boolean ldu = true;
-    private boolean mm = false;
-    private boolean inch = false;
-    private boolean stud = false;
-
     private boolean update = false;
     private final DatFile df;
     private BigDecimal newDistLDU = BigDecimal.ZERO;
@@ -61,9 +56,6 @@ public class CalibrateDialog extends CalibrateDesign {
     public CalibrateDialog(Shell parentShell, DatFile df, Set<VertexInfo> vis) {
         super(parentShell, vis);
         this.df = df;
-        ldu = false;
-        mm = false;
-        inch = false;
     }
 
     @Override
@@ -74,26 +66,21 @@ public class CalibrateDialog extends CalibrateDesign {
         widgetUtil(btnLDUPtr[0]).addSelectionListener(e -> {
             if (update) return;
             uncheckAllUnits();
-            ldu = true;
             btnLDUPtr[0].setSelection(true);
         });
         widgetUtil(btnMMPtr[0]).addSelectionListener(e -> {
             if (update) return;
             uncheckAllUnits();
-            mm = true;
             btnMMPtr[0].setSelection(true);
         });
         widgetUtil(btnInchPtr[0]).addSelectionListener(e -> {
             if (update) return;
             uncheckAllUnits();
-            inch = true;
             btnInchPtr[0].setSelection(true);
         });
         widgetUtil(btnStudPtr[0]).addSelectionListener(e -> {
             if (update) return;
             uncheckAllUnits();
-            stud = true;
-            btnStudPtr[0].setSelection(true);
         });
         spnLDUPtr[0].addValueChangeListener(spn -> {
             newDistLDU = spn.getValue();
@@ -105,7 +92,6 @@ public class CalibrateDialog extends CalibrateDesign {
             spnStudPtr[0].setValue(spnLDUPtr[0].getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_STUD), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
             update = false;
             btnLDUPtr[0].setSelection(true);
-            ldu = true;
         });
         spnMMPtr[0].addValueChangeListener(spn -> {
             if (update) return;
@@ -116,7 +102,6 @@ public class CalibrateDialog extends CalibrateDesign {
             spnStudPtr[0].setValue(spnLDUPtr[0].getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_STUD), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
             update = false;
             btnMMPtr[0].setSelection(true);
-            mm = true;
         });
         spnInchPtr[0].addValueChangeListener(spn -> {
             if (update) return;
@@ -127,7 +112,6 @@ public class CalibrateDialog extends CalibrateDesign {
             spnStudPtr[0].setValue(spnLDUPtr[0].getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_STUD), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
             update = false;
             btnInchPtr[0].setSelection(true);
-            inch = true;
         });
         spnStudPtr[0].addValueChangeListener(spn -> {
             if (update) return;
@@ -138,7 +122,6 @@ public class CalibrateDialog extends CalibrateDesign {
             spnMMPtr[0].setValue(spnLDUPtr[0].getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_LDU_TO_MM), Threshold.MC));
             update = false;
             btnStudPtr[0].setSelection(true);
-            stud = true;
         });
 
         final BigDecimal initialValue = spnLDUPtr[0].getValue();
@@ -153,10 +136,6 @@ public class CalibrateDialog extends CalibrateDesign {
         btnMMPtr[0].setSelection(false);
         btnInchPtr[0].setSelection(false);
         btnStudPtr[0].setSelection(false);
-        ldu = false;
-        mm = false;
-        inch = false;
-        stud = false;
         update = false;
     }
 
