@@ -63,6 +63,14 @@ public class Manipulator {
     public static final int Z_ROTATE_ARROW = 15;
     public static final int V_ROTATE_ARROW = 17;
 
+    public static final int XY_TRANSLATE = 18;
+    public static final int YZ_TRANSLATE = 19;
+    public static final int ZX_TRANSLATE = 20;
+
+    public static final int XY_SCALE = 21;
+    public static final int YZ_SCALE = 22;
+    public static final int ZX_SCALE = 23;
+
     private final Matrix4f result = new Matrix4f();
     private final Matrix4f resultinv = new Matrix4f();
     private final Matrix4f scale = new Matrix4f();
@@ -696,7 +704,7 @@ public class Manipulator {
             // Take the correct size
             float size = 0f;
             switch (type) {
-            case X_SCALE:
+            case X_SCALE, XY_SCALE, ZX_SCALE:
                 if (lock) {
                     if (xScale) {
                         return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
@@ -706,7 +714,7 @@ public class Manipulator {
                 }
                 if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
                     xScale = false;
-            case Y_SCALE:
+            case Y_SCALE, YZ_SCALE:
                 if (lock) {
                     if (yScale) {
                         return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
@@ -728,7 +736,7 @@ public class Manipulator {
                     zScale = false;
                 size = scaleSize;
                 break;
-            case X_TRANSLATE:
+            case X_TRANSLATE, XY_TRANSLATE, ZX_TRANSLATE:
                 if (lock) {
                     if (xTranslate) {
                         return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
@@ -738,7 +746,7 @@ public class Manipulator {
                 }
                 if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
                     xTranslate = false;
-            case Y_TRANSLATE:
+            case Y_TRANSLATE, YZ_TRANSLATE:
                 if (lock) {
                     if (yTranslate) {
                         return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
@@ -777,13 +785,13 @@ public class Manipulator {
             }
             // Take the axis
             switch (type) {
-            case X_TRANSLATE, X_SCALE:
+            case X_TRANSLATE, X_SCALE, XY_TRANSLATE, XY_SCALE:
                 vector = new Vector4f(xAxis);
                 break;
-            case Y_TRANSLATE, Y_SCALE:
+            case Y_TRANSLATE, Y_SCALE, YZ_TRANSLATE, YZ_SCALE:
                 vector = new Vector4f(yAxis);
                 break;
-            case Z_TRANSLATE, Z_SCALE:
+            case Z_TRANSLATE, Z_SCALE, ZX_TRANSLATE, ZX_SCALE:
                 vector = new Vector4f(zAxis);
                 break;
             case X_ROTATE_ARROW:
@@ -830,13 +838,13 @@ public class Manipulator {
                 rotate = false;
                 xRotatingBackwards = false;
                 xRotatingForwards = false;
-                
+
                 yRotatingBackwards = false;
                 yRotatingForwards = false;
-                
+
                 zRotatingBackwards = false;
                 zRotatingForwards = false;
-                
+
                 vRotatingBackwards = false;
                 vRotatingForwards = false;
             }
