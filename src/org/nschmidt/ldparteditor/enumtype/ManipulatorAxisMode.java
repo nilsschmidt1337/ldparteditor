@@ -16,5 +16,5 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.enumtype;
 
 public enum ManipulatorAxisMode {
-    X, Y, Z, XY, XZ, YZ, XYZ, NONE, TEMP_X, TEMP_Y, TEMP_Z
+    X, Y, Z, XY, XZ, YZ, XYZ, NONE, TEMP_X, TEMP_Y, TEMP_Z, TEMP_XY, TEMP_XZ, TEMP_YZ
 }

@@ -512,7 +512,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 scaleSizeReduced * manipulator.getYaxis().y,
                                 scaleSizeReduced * manipulator.getYaxis().z,
                                 cone_height).drawGL33rgb(stack, mx, my, mz, zoom);
-                        c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.ZX_SCALE, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.XZ_SCALE, c3d, zoom);
                         new Square(c.getR(), c.getG(), c.getB(),
                                 scaleSizeReduced * manipulator.getXaxis().x,
                                 scaleSizeReduced * manipulator.getXaxis().y,
@@ -550,7 +550,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 scaleSizeReduced * manipulator.getYaxis().y,
                                 scaleSizeReduced * manipulator.getYaxis().z,
                                 cone_height).drawGL33rgb(stack, mx, my, mz, zoom);
-                        c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.ZX_TRANSLATE, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.XZ_TRANSLATE, c3d, zoom);
                         new Square(c.getR(), c.getG(), c.getB(),
                                 scaleSizeReduced * manipulator.getXaxis().x,
                                 scaleSizeReduced * manipulator.getXaxis().y,
@@ -582,30 +582,30 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     if (singleMode) {
                         c = manipulator.checkManipulatorStatus(Colour.xAxisColourR, Colour.xAxisColourG, Colour.xAxisColourB, Manipulator.YZ_TRANSLATE, c3d, zoom);
                         new Square(c.getR(), c.getG(), c.getB(),
-                                scaleSizeReduced * manipulator.getZaxis().x,
-                                scaleSizeReduced * manipulator.getZaxis().y,
-                                scaleSizeReduced * manipulator.getZaxis().z,
-                                scaleSizeReduced * manipulator.getYaxis().x,
-                                scaleSizeReduced * manipulator.getYaxis().y,
-                                scaleSizeReduced * manipulator.getYaxis().z,
+                                0f,
+                                0f,
+                                scaleSizeReduced,
+                                0f,
+                                scaleSizeReduced,
+                                0f,
                                 cone_height).drawGL33rgb(stack, mx, my, mz, zoom);
-                        c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.ZX_TRANSLATE, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.XZ_TRANSLATE, c3d, zoom);
                         new Square(c.getR(), c.getG(), c.getB(),
-                                scaleSizeReduced * manipulator.getXaxis().x,
-                                scaleSizeReduced * manipulator.getXaxis().y,
-                                scaleSizeReduced * manipulator.getXaxis().z,
-                                scaleSizeReduced * manipulator.getZaxis().x,
-                                scaleSizeReduced * manipulator.getZaxis().y,
-                                scaleSizeReduced * manipulator.getZaxis().z,
+                                scaleSizeReduced,
+                                0f,
+                                0f,
+                                0f,
+                                0f,
+                                scaleSizeReduced,
                                 cone_height).drawGL33rgb(stack, mx, my, mz, zoom);
                         c = manipulator.checkManipulatorStatus(Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB, Manipulator.XY_TRANSLATE, c3d, zoom);
                         new Square(c.getR(), c.getG(), c.getB(),
-                                scaleSizeReduced * manipulator.getXaxis().x,
-                                scaleSizeReduced * manipulator.getXaxis().y,
-                                scaleSizeReduced * manipulator.getXaxis().z,
-                                scaleSizeReduced * manipulator.getYaxis().x,
-                                scaleSizeReduced * manipulator.getYaxis().y,
-                                scaleSizeReduced * manipulator.getYaxis().z,
+                                scaleSizeReduced,
+                                0f,
+                                0f,
+                                0f,
+                                scaleSizeReduced,
+                                0f,
                                 cone_height).drawGL33rgb(stack, mx, my, mz, zoom);
                     }
                     break;

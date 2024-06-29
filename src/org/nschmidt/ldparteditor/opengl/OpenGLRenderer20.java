@@ -1492,7 +1492,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 scaleSizeReduced * manipulator.getYaxis().y,
                                 scaleSizeReduced * manipulator.getYaxis().z,
                                 cone_height).draw(mx, my, mz, zoom);
-                        c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.ZX_SCALE, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.XZ_SCALE, c3d, zoom);
                         new Square(c.getR(), c.getG(), c.getB(),
                                 scaleSizeReduced * manipulator.getXaxis().x,
                                 scaleSizeReduced * manipulator.getXaxis().y,
@@ -1530,7 +1530,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 scaleSizeReduced * manipulator.getYaxis().x,
                                 scaleSizeReduced * manipulator.getYaxis().y,
                                 scaleSizeReduced * manipulator.getYaxis().z,
-                                cone_height).draw(mx, my, mz, zoom);c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.ZX_TRANSLATE, c3d, zoom);
+                                cone_height).draw(mx, my, mz, zoom);c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.XZ_TRANSLATE, c3d, zoom);
                         new Square(c.getR(), c.getG(), c.getB(),
                                 scaleSizeReduced * manipulator.getXaxis().x,
                                 scaleSizeReduced * manipulator.getXaxis().y,
@@ -1568,7 +1568,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 scaleSizeReduced,
                                 0f,
                                 cone_height).draw(mx, my, mz, zoom);
-                        c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.ZX_TRANSLATE, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB, Manipulator.XZ_TRANSLATE, c3d, zoom);
                         new Square(c.getR(), c.getG(), c.getB(),
                                 scaleSizeReduced,
                                 0f,
