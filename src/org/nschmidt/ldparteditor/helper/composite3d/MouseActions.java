@@ -278,6 +278,10 @@ public class MouseActions {
             NLogger.debug(getClass(),"zRotate: " + m.isZrotate()); //$NON-NLS-1$
             NLogger.debug(getClass(),"vRotate: " + m.isVrotate()); //$NON-NLS-1$
 
+            NLogger.debug(getClass(),"xScale: " + m.isXscale()); //$NON-NLS-1$
+            NLogger.debug(getClass(),"yScale: " + m.isYscale()); //$NON-NLS-1$
+            NLogger.debug(getClass(),"zScale: " + m.isZscale()); //$NON-NLS-1$
+
             NLogger.debug(getClass(),"position: " + m.getPosition()); //$NON-NLS-1$
             NLogger.debug(getClass(),"---END MANIPULATOR STATUS---"); //$NON-NLS-1$
         }

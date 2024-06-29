@@ -1112,6 +1112,7 @@ public class Manipulator {
             if (!xRotate) return new GColour(-1, r, g, b, 1f);
             break;
         case X_SCALE:
+            if (!xScale) return new GColour(-1, r, g, b, 1f);
             break;
         case Y_TRANSLATE:
             if (!yTranslate) return new GColour(-1, r, g, b, 1f);
@@ -1120,6 +1121,7 @@ public class Manipulator {
             if (!yRotate) return new GColour(-1, r, g, b, 1f);
             break;
         case Y_SCALE:
+            if (!yScale) return new GColour(-1, r, g, b, 1f);
             break;
         case Z_TRANSLATE:
             if (!zTranslate) return new GColour(-1, r, g, b, 1f);
@@ -1128,6 +1130,7 @@ public class Manipulator {
             if (!zRotate) return new GColour(-1, r, g, b, 1f);
             break;
         case Z_SCALE:
+            if (!zScale) return new GColour(-1, r, g, b, 1f);
             break;
         case XY_TRANSLATE:
             if (!xTranslate || !yTranslate) return new GColour(-1, r, g, b, 1f);

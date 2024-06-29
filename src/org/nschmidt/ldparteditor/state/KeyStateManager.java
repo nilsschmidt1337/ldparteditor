@@ -1007,8 +1007,22 @@ public class KeyStateManager {
                         break;
                     }
                     case QUICK_SCALE:
-                        // TODO Needs implementation!
+                    {
+                        // This is the same as a switch to scale mode
+                        final Manipulator m = modeScale(df, vm);
+                        // Now start quick translation
+                        m.resetTranslation();
+                        c3d.setQuicklyTransforming(true);
+                        win.setWorkingLayer(ManipulatorAxisMode.XYZ);
+                        Vector2f pos = c3d.getOldMousePosition();
+                        Vector4f cursorCoordinates = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen((int) pos.x, (int) pos.y);
+                        c3d.getSelectionStart().set(cursorCoordinates);
+                        m.startTranslation(c3d);
+                        m.setXscale(true);
+                        m.setYscale(true);
+                        m.setZscale(true);
                         break;
+                    }
                     case QUICK_LOCK_XY:
                     {
                         if (!c3d.isQuicklyTransforming()) break;
@@ -1021,7 +1035,13 @@ public class KeyStateManager {
                             m.setZtranslate(false);
                         }
 
-                        // TODO Needs implementation!
+                        if (m.isXscale() || m.isYscale() || m.isZscale()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.XY);
+                            m.setXscale(true);
+                            m.setYscale(true);
+                            m.setZscale(false);
+                        }
 
                         break;
                     }
@@ -1037,7 +1057,13 @@ public class KeyStateManager {
                             m.setZtranslate(true);
                         }
 
-                        // TODO Needs implementation!
+                        if (m.isXscale() || m.isYscale() || m.isZscale()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.XZ);
+                            m.setXscale(true);
+                            m.setYscale(false);
+                            m.setZscale(true);
+                        }
 
                         break;
                     }
@@ -1053,7 +1079,13 @@ public class KeyStateManager {
                             m.setZtranslate(true);
                         }
 
-                        // TODO Needs implementation!
+                        if (m.isXscale() || m.isYscale() || m.isZscale()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.YZ);
+                            m.setXscale(false);
+                            m.setYscale(true);
+                            m.setZscale(true);
+                        }
 
                         break;
                     }
@@ -1078,7 +1110,13 @@ public class KeyStateManager {
                             m.setVrotate(false);
                         }
 
-                        // TODO Needs implementation!
+                        if (m.isXscale() || m.isYscale() || m.isZscale()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.X);
+                            m.setXscale(true);
+                            m.setYscale(false);
+                            m.setZscale(false);
+                        }
 
                         break;
                     }
@@ -1104,7 +1142,13 @@ public class KeyStateManager {
                             m.setVrotate(false);
                         }
 
-                        // TODO Needs implementation!
+                        if (m.isXscale() || m.isYscale() || m.isZscale()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.Y);
+                            m.setXscale(false);
+                            m.setYscale(true);
+                            m.setZscale(false);
+                        }
 
                         break;
                     }
@@ -1129,7 +1173,13 @@ public class KeyStateManager {
                             m.setVrotate(false);
                         }
 
-                        // TODO Needs implementation!
+                        if (m.isXscale() || m.isYscale() || m.isZscale()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.Z);
+                            m.setXscale(false);
+                            m.setYscale(false);
+                            m.setZscale(true);
+                        }
 
                         break;
                     }
