@@ -265,6 +265,16 @@ public class MouseActions {
 
     @SuppressWarnings("java:S2111")
     public void mouseMove(Event event) {
+        if (NLogger.debugging && c3d.isQuicklyTransforming()) {
+            // Debug info for quick transform
+            Manipulator m = c3d.getManipulator();
+            NLogger.debug(getClass(),"---START MANIPULATOR STATUS---"); //$NON-NLS-1$
+            NLogger.debug(getClass(),"xTranslate: " + m.isXtranslate()); //$NON-NLS-1$
+
+            NLogger.debug(getClass(),"position: " + m.getPosition()); //$NON-NLS-1$
+            NLogger.debug(getClass(),"---END MANIPULATOR STATUS---"); //$NON-NLS-1$
+        }
+
         DatFile.setLastHoveredComposite(c3d);
         if (!c3d.getLockableDatFileReference().isDrawSelection()) return;
 
@@ -291,6 +301,26 @@ public class MouseActions {
         Matrix4f viewportRotation = c3d.getRotation();
         float viewportPixelPerLDU = c3d.getViewportPixelPerLDU();
         final BigDecimal[] manipulatorSnap = Manipulator.getSnap();
+        if (c3d.isQuicklyTransforming() && mouseButtonPressed != MouseButton.LEFT && !AddToolItem.isAddingSomething()) {
+            // Since quick transform was triggered via keyboard, we need an additional step where the old mouse position is the current one (zero delta).
+            if (!c3d.isQuicklyTransformingWarmup()) {
+                oldMousePosition.set(event.x, event.y);
+                c3d.setQuicklyTransformingWarmup(true);
+            }
+
+            Vector4f temp;
+            if (translateAtSelect) {
+                temp = c3d.getManipulator().transformAtSelect(oldMousePosition, event.x, event.y, c3d);
+            } else {
+                temp = c3d.getManipulator().transform(oldMousePosition, event.x, event.y, c3d);
+            }
+            if (ManipulatorScopeToolItem.getTransformationScope() == ManipulatorScope.GLOBAL) {
+                c3d.getManipulator().getPosition().set(temp);
+                c3d.getManipulator().setAccuratePosition(new BigDecimal(temp.x / 1000f), new BigDecimal(temp.y / 1000f), new BigDecimal(temp.z / 1000f));
+            }
+
+            c3d.getVertexManager().getResetTimer().set(true);
+        }
         switch (mouseButtonPressed) {
         case MouseButton.LEFT:
             Vector4f temp;
@@ -318,7 +348,7 @@ public class MouseActions {
             }
             float rx = 0;
             float ry = 0;
-            
+
             final boolean snapXaxis = keyboard.isAltPressed();
             final boolean snapYaxis = keyboard.isShiftPressed();
             final boolean snapZaxis = keyboard.isCtrlPressed();
@@ -351,7 +381,7 @@ public class MouseActions {
                 Matrix4f.transform(ovrInverse, yAxis4fRotation, yAxis4fRotation);
                 Vector3f xAxis3fRotation = new Vector3f(xAxis4fRotation.x, xAxis4fRotation.y, xAxis4fRotation.z);
                 Vector3f yAxis3fRotation = new Vector3f(yAxis4fRotation.x, yAxis4fRotation.y, yAxis4fRotation.z);
-                
+
                 if (snapXaxis) {
                     Matrix4f.rotate(snap(rx, manipulatorSnap), yAxis3fRotation, oldViewportRotation, viewportRotation);
                 } else if (snapYaxis) {
@@ -1344,7 +1374,7 @@ public class MouseActions {
             break;
         }
 
-        c3d.getManipulator().resetTranslation();
+        if (!c3d.isQuicklyTransforming())  c3d.getManipulator().resetTranslation();
         syncManipulator();
 
     }

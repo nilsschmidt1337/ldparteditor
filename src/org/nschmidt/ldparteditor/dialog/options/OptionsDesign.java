@@ -272,18 +272,18 @@ class OptionsDesign extends ApplicationWindow {
                     Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
-                
+
                 Label lblDataFileSizeLimit = new Label(cmpContainer, SWT.NONE);
                 lblDataFileSizeLimit.setText(I18n.OPTIONS_DATA_FILE_SIZE_LIMIT);
                 lblDataFileSizeLimit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                
+
                 IntegerSpinner spnDataFileSizeLimit = new IntegerSpinner(cmpContainer, Cocoa.getStyle());
                 this.spnDataFileSizeLimitPtr[0] = spnDataFileSizeLimit;
                 spnDataFileSizeLimit.setMaximum(1024_000);
                 spnDataFileSizeLimit.setMinimum(45);
                 spnDataFileSizeLimit.setValue(userSettings.getDataFileSizeLimit());
                 spnDataFileSizeLimit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                
+
                 {
                     Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -443,7 +443,7 @@ class OptionsDesign extends ApplicationWindow {
                 btnInvertInvertWheelZoomDirection.setText(I18n.KEYBOARD_INVERT_WHEEL_ZOOM_DIRECTION);
                 btnInvertInvertWheelZoomDirection.setSelection(userSettings.isInvertingWheelZoomDirection());
 
-                
+
                 {
                     Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -552,6 +552,15 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtmEditor3D, I18n.KEYBOARD_PERSPECTIVE_TOP, Task.PERSPECTIVE_TOP, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_PERSPECTIVE_BOTTOM, Task.PERSPECTIVE_BOTTOM, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_PERSPECTIVE_TWO_THIRDS, Task.PERSPECTIVE_TWO_THIRDS, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_QUICK_MOVE, Task.QUICK_MOVE, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_QUICK_ROTATE, Task.QUICK_ROTATE, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_QUICK_SCALE, Task.QUICK_SCALE, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_QUICK_LOCK_X, Task.QUICK_LOCK_X, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_QUICK_LOCK_Y, Task.QUICK_LOCK_Y, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_QUICK_LOCK_Z, Task.QUICK_LOCK_Z, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_QUICK_LOCK_YZ, Task.QUICK_LOCK_YZ, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_QUICK_LOCK_XZ, Task.QUICK_LOCK_XZ, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_QUICK_LOCK_XY, Task.QUICK_LOCK_XY, true);
 
                 registerTask(trtmEditorText, I18n.KEYBOARD_ESC_2, TextTask.EDITORTEXT_ESC, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_INLINE, TextTask.EDITORTEXT_INLINE, true);
@@ -625,7 +634,7 @@ class OptionsDesign extends ApplicationWindow {
 
                 final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, 67);
                 treeColours = tree;
-                
+
                 tree.setLinesVisible(true);
                 tree.setHeaderVisible(true);
                 tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));

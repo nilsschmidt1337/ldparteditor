@@ -927,6 +927,15 @@ public final class I18n {
     public static final String KEYBOARD_PERSPECTIVE_TWO_THIRDS = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_PRESS_A_KEY = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_QUICK_FIX = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_QUICK_LOCK_X = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_QUICK_LOCK_XY = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_QUICK_LOCK_XZ = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_QUICK_LOCK_Y = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_QUICK_LOCK_YZ = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_QUICK_LOCK_Z = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_QUICK_MOVE = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_QUICK_ROTATE = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_QUICK_SCALE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_REDO = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RENDERMODE_CONDLINE_MODE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RENDERMODE_COPLANARITY_HEATMAP = KEYBOARD.getString(getProperty());

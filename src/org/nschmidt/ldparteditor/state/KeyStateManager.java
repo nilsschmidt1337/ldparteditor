@@ -48,6 +48,7 @@ import org.nschmidt.ldparteditor.enumtype.TextTask;
 import org.nschmidt.ldparteditor.enumtype.WorkingMode;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.KeyBoardHelper;
+import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helper.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.helper.composite3d.PerspectiveCalculator;
@@ -77,6 +78,10 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  *
  */
 public class KeyStateManager {
+
+    private static final String CMD_STRING = "+Cmd"; //$NON-NLS-1$
+
+    private static final String CTRL_STRING = "+Ctrl"; //$NON-NLS-1$
 
     /** The 3D Composite */
     private final Composite3D c3d;
@@ -153,15 +158,15 @@ public class KeyStateManager {
 
         if (Cocoa.IS_COCOA) {
 
-            reservedKeyCodes.add(SWT.ARROW_UP + "+Cmd"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Cmd"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_DOWN + "+Cmd"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_LEFT + "+Cmd"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_UP + CMD_STRING);
+            reservedKeyCodes.add(SWT.ARROW_RIGHT + CMD_STRING);
+            reservedKeyCodes.add(SWT.ARROW_DOWN + CMD_STRING);
+            reservedKeyCodes.add(SWT.ARROW_LEFT + CMD_STRING);
 
-            reservedKeyCodes.add(SWT.BS + "+Cmd"); //$NON-NLS-1$
-            reservedKeyCodes.add((int) 'x' + "+Cmd"); //$NON-NLS-1$
-            reservedKeyCodes.add((int) 'c' + "+Cmd"); //$NON-NLS-1$
-            reservedKeyCodes.add((int) 'v' + "+Cmd"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.BS + CMD_STRING);
+            reservedKeyCodes.add((int) 'x' + CMD_STRING);
+            reservedKeyCodes.add((int) 'c' + CMD_STRING);
+            reservedKeyCodes.add((int) 'v' + CMD_STRING);
 
             addTask(Task.TRANSFORM_UP_COPY, SWT.COMMAND, SWT.ARROW_UP);
             addTask(Task.TRANSFORM_RIGHT_COPY, SWT.COMMAND, SWT.ARROW_RIGHT);
@@ -285,21 +290,33 @@ public class KeyStateManager {
             addTask(Task.RENDERMODE_COPLANARITY_HEATMAP, SWT.ALT, SWT.KEYPAD_8);
             addTask(Task.RENDERMODE_WIREFRAME, SWT.ALT, SWT.KEYPAD_9);
 
-            addTask(Task.RESET_MANIPULATOR, 'r');
-            
+            addTask(Task.RESET_MANIPULATOR, SWT.SHIFT | 'r');
+
             addTask(Task.CONDLINE_TO_LINE, SWT.SHIFT, 'l');
             addTask(Task.LINE_TO_CONDLINE, SWT.SHIFT, 'c');
+
+            addTask(Task.QUICK_MOVE, 'g');
+            addTask(Task.QUICK_SCALE, 's');
+            addTask(Task.QUICK_ROTATE, 'r');
+
+            addTask(Task.QUICK_LOCK_X, 'x');
+            addTask(Task.QUICK_LOCK_Y, 'y');
+            addTask(Task.QUICK_LOCK_Z, 'z');
+
+            addTask(Task.QUICK_LOCK_YZ, SWT.CTRL | SWT.SHIFT, 'x');
+            addTask(Task.QUICK_LOCK_XZ, SWT.CTRL | SWT.SHIFT, 'y');
+            addTask(Task.QUICK_LOCK_XY, SWT.CTRL | SWT.SHIFT, 'z');
         } else {
 
-            reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Ctrl"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_DOWN + "+Ctrl"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_LEFT + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_UP + CTRL_STRING);
+            reservedKeyCodes.add(SWT.ARROW_RIGHT + CTRL_STRING);
+            reservedKeyCodes.add(SWT.ARROW_DOWN + CTRL_STRING);
+            reservedKeyCodes.add(SWT.ARROW_LEFT + CTRL_STRING);
 
             reservedKeyCodes.add(SWT.DEL + ""); //$NON-NLS-1$
-            reservedKeyCodes.add((int) 'x' + "+Ctrl"); //$NON-NLS-1$
-            reservedKeyCodes.add((int) 'c' + "+Ctrl"); //$NON-NLS-1$
-            reservedKeyCodes.add((int) 'v' + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add((int) 'x' + CTRL_STRING);
+            reservedKeyCodes.add((int) 'c' + CTRL_STRING);
+            reservedKeyCodes.add((int) 'v' + CTRL_STRING);
 
             addTask(Task.TRANSFORM_UP_COPY, SWT.CTRL, SWT.ARROW_UP);
             addTask(Task.TRANSFORM_RIGHT_COPY, SWT.CTRL, SWT.ARROW_RIGHT);
@@ -423,10 +440,22 @@ public class KeyStateManager {
             addTask(Task.RENDERMODE_COPLANARITY_HEATMAP, SWT.ALT, SWT.KEYPAD_8);
             addTask(Task.RENDERMODE_WIREFRAME, SWT.ALT, SWT.KEYPAD_9);
 
-            addTask(Task.RESET_MANIPULATOR, 'r');
-            
+            addTask(Task.RESET_MANIPULATOR, SWT.SHIFT | 'r');
+
             addTask(Task.CONDLINE_TO_LINE, SWT.SHIFT, 'l');
             addTask(Task.LINE_TO_CONDLINE, SWT.SHIFT, 'c');
+
+            addTask(Task.QUICK_MOVE, 'g');
+            addTask(Task.QUICK_SCALE, 's');
+            addTask(Task.QUICK_ROTATE, 'r');
+
+            addTask(Task.QUICK_LOCK_X, 'x');
+            addTask(Task.QUICK_LOCK_Y, 'y');
+            addTask(Task.QUICK_LOCK_Z, 'z');
+
+            addTask(Task.QUICK_LOCK_YZ, SWT.CTRL | SWT.SHIFT, 'x');
+            addTask(Task.QUICK_LOCK_XZ, SWT.CTRL | SWT.SHIFT, 'y');
+            addTask(Task.QUICK_LOCK_XY, SWT.CTRL | SWT.SHIFT, 'z');
         }
     }
 
@@ -499,10 +528,10 @@ public class KeyStateManager {
                 final boolean tmpCmdPressed = (event.stateMask & SWT.COMMAND) != 0;
                 final StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
-                sb.append(tmpCtrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCtrlPressed ? CTRL_STRING : ""); //$NON-NLS-1$
                 sb.append(tmpAltPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(tmpShiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(tmpCmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCmdPressed ? CMD_STRING : ""); //$NON-NLS-1$
                 final String key = sb.toString();
                 final Task t = taskMap.get(key);
                 if (t != null) {
@@ -535,6 +564,7 @@ public class KeyStateManager {
                         win.updateInitialScale(BigDecimal.ZERO, BigDecimal.ONE, true);
                         vm.clearSelection();
                         vm.resetSlantingMatrixProjector();
+                        c3d.setQuicklyTransforming(false);
                         break;
                     case COPY:
                         vm.copy();
@@ -959,6 +989,125 @@ public class KeyStateManager {
                     case LINE_TO_CONDLINE:
                         vm.lineToCondline();
                         break;
+                    case QUICK_MOVE:
+                    {
+                        // This is the same as a switch to move mode
+                        final Manipulator m = c3d.getManipulator();
+                        m.applyTranslation(c3d);
+                        MouseActions.checkSyncEditMode(vm, df);
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
+                        AddToolItem.disableAddAction();
+                        // Now start quick translation
+                        m.resetTranslation();
+                        c3d.setQuicklyTransforming(true);
+                        win.setWorkingLayer(ManipulatorAxisMode.XYZ);
+                        Vector2f pos = c3d.getOldMousePosition();
+                        Vector4f cursorCoordinates = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen((int) pos.x, (int) pos.y);
+                        c3d.getSelectionStart().set(cursorCoordinates);
+                        m.startTranslation(c3d);
+                        m.setXtranslate(true);
+                        m.setYtranslate(true);
+                        m.setZtranslate(true);
+                        break;
+                    }
+                    case QUICK_ROTATE:
+                    {
+                        // TODO Needs implementation!
+                        break;
+                    }
+                    case QUICK_SCALE:
+                        // TODO Needs implementation!
+                        break;
+                    case QUICK_LOCK_XY:
+                    {
+                        final Manipulator m = c3d.getManipulator();
+                        if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.XY);
+                            m.setXtranslate(true);
+                            m.setYtranslate(true);
+                            m.setZtranslate(false);
+                        }
+
+                        // TODO Needs implementation!
+
+                        break;
+                    }
+                    case QUICK_LOCK_XZ:
+                    {
+                        final Manipulator m = c3d.getManipulator();
+                        if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.XZ);
+                            m.setXtranslate(true);
+                            m.setYtranslate(false);
+                            m.setZtranslate(true);
+                        }
+
+                        // TODO Needs implementation!
+
+                        break;
+                    }
+                    case QUICK_LOCK_YZ:
+                    {
+                        final Manipulator m = c3d.getManipulator();
+                        if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.YZ);
+                            m.setXtranslate(false);
+                            m.setYtranslate(true);
+                            m.setZtranslate(true);
+                        }
+
+                        // TODO Needs implementation!
+
+                        break;
+                    }
+                    case QUICK_LOCK_X:
+                    {
+                        final Manipulator m = c3d.getManipulator();
+                        if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.X);
+                            m.setXtranslate(true);
+                            m.setYtranslate(false);
+                            m.setZtranslate(false);
+                        }
+
+                        // TODO Needs implementation!
+
+                        break;
+                    }
+                    case QUICK_LOCK_Y:
+                    {
+                        final Manipulator m = c3d.getManipulator();
+                        if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.Y);
+                            m.setXtranslate(false);
+                            m.setYtranslate(true);
+                            m.setZtranslate(false);
+                        }
+
+                        // TODO Needs implementation!
+
+                        break;
+                    }
+                    case QUICK_LOCK_Z:
+                    {
+                        final Manipulator m = c3d.getManipulator();
+                        if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.Z);
+                            m.setXtranslate(false);
+                            m.setYtranslate(false);
+                            m.setZtranslate(true);
+                        }
+
+                        // TODO Needs implementation!
+
+                        break;
+                    }
                     }
                 }
             } else if (keyEventType == SWT.KeyUp) {
@@ -970,7 +1119,7 @@ public class KeyStateManager {
                 final boolean tmpShiftPressed = (event.stateMask & SWT.SHIFT) != 0;
                 final StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
-                sb.append(tmpCtrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCtrlPressed ? CTRL_STRING : ""); //$NON-NLS-1$
                 sb.append(tmpAltPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(tmpShiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 final String key = sb.toString();
@@ -1045,10 +1194,10 @@ public class KeyStateManager {
                 final boolean tmpCmdPressed = (event.stateMask & SWT.COMMAND) != 0;
                 final StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
-                sb.append(tmpCtrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCtrlPressed ? CTRL_STRING : ""); //$NON-NLS-1$
                 sb.append(tmpAltPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(tmpShiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(tmpCmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCmdPressed ? CMD_STRING : ""); //$NON-NLS-1$
                 final String key = sb.toString();
                 final Task t = taskMap.get(key);
                 if (t != null) {
@@ -1112,7 +1261,7 @@ public class KeyStateManager {
                 final boolean tmpShiftPressed = (event.stateMask & SWT.SHIFT) != 0;
                 final StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
-                sb.append(tmpCtrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCtrlPressed ? CTRL_STRING : ""); //$NON-NLS-1$
                 sb.append(tmpAltPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(tmpShiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 final String key = sb.toString();
@@ -1247,10 +1396,10 @@ public class KeyStateManager {
         String[] s = new String[2];
         final StringBuilder sb = new StringBuilder();
         sb.append(keyCode);
-        sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+        sb.append(ctrlPressed ? CTRL_STRING : ""); //$NON-NLS-1$
         sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
         sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
-        sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
+        sb.append(cmdPressed ? CMD_STRING : ""); //$NON-NLS-1$
         s[0] = sb.toString();
         Event event = new Event();
         event.keyCode = keyCode;

@@ -267,6 +267,9 @@ public class Composite3D extends ScalableComposite {
 
     private boolean drawingSolidMaterials;
 
+    private boolean quicklyTransforming;
+    private boolean quicklyTransformingWarmup;
+
     /** The grid size */
     private float gridScale = 1f;
 
@@ -2560,5 +2563,22 @@ public class Composite3D extends ScalableComposite {
 
     public void setShowingEmptySubfiles(boolean showingEmptySubfiles) {
         this.showingEmptySubfiles = showingEmptySubfiles;
+    }
+
+    public boolean isQuicklyTransforming() {
+        return quicklyTransforming;
+    }
+
+    public void setQuicklyTransforming(boolean quicklyTransforming) {
+        setQuicklyTransformingWarmup(false);
+        this.quicklyTransforming = quicklyTransforming;
+    }
+
+    public boolean isQuicklyTransformingWarmup() {
+        return quicklyTransformingWarmup;
+    }
+
+    public void setQuicklyTransformingWarmup(boolean quicklyTransformingWarmup) {
+        this.quicklyTransformingWarmup = quicklyTransformingWarmup;
     }
 }

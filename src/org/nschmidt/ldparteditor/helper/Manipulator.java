@@ -578,6 +578,9 @@ public class Manipulator {
     }
 
     private GColour manipulatorStatusHelper(float r, float g, float b, int type, Composite3D c3d, float zoom) {
+        if (c3d.isQuicklyTransforming()) {
+            return statusForQuickTransform(r, g, b, type, c3d);
+        }
         Vector4f[] gen = c3d.getGenerator();
         Vector3f axis = null;
         // Check if its rotation
@@ -1060,7 +1063,7 @@ public class Manipulator {
                         zScale = true;
                         break;
                     case XY_TRANSLATE:
-                        if (zScale) return new GColour(-1, r, g, b, 1f);
+                        if (zTranslate) return new GColour(-1, r, g, b, 1f);
                         xTranslate = true;
                         yTranslate = true;
                         break;
@@ -1070,7 +1073,7 @@ public class Manipulator {
                         yScale = true;
                         break;
                     case XZ_TRANSLATE:
-                        if (yScale) return new GColour(-1, r, g, b, 1f);
+                        if (yTranslate) return new GColour(-1, r, g, b, 1f);
                         xTranslate = true;
                         zTranslate = true;
                         break;
@@ -1080,7 +1083,7 @@ public class Manipulator {
                         zScale = true;
                         break;
                     case YZ_TRANSLATE:
-                        if (xScale) return new GColour(-1, r, g, b, 1f);
+                        if (xTranslate) return new GColour(-1, r, g, b, 1f);
                         yTranslate = true;
                         zTranslate = true;
                         break;
@@ -1098,6 +1101,48 @@ public class Manipulator {
                 }
             }
         }
+    }
+
+    private GColour statusForQuickTransform(float r, float g, float b, int type, Composite3D c3d) {
+        switch (type) {
+        case X_TRANSLATE:
+            if (!xTranslate) return new GColour(-1, r, g, b, 1f);
+            break;
+        case X_SCALE:
+            break;
+        case Y_TRANSLATE:
+            if (!yTranslate) return new GColour(-1, r, g, b, 1f);
+            break;
+        case Y_SCALE:
+            break;
+        case Z_TRANSLATE:
+            if (!zTranslate) return new GColour(-1, r, g, b, 1f);
+            break;
+        case Z_SCALE:
+            break;
+        case XY_TRANSLATE:
+            if (!xTranslate || !yTranslate) return new GColour(-1, r, g, b, 1f);
+            break;
+        case XY_SCALE:
+            if (zScale) return new GColour(-1, r, g, b, 1f);
+            break;
+        case XZ_TRANSLATE:
+            if (!xTranslate || !zTranslate) return new GColour(-1, r, g, b, 1f);
+            break;
+        case XZ_SCALE:
+            if (yScale) return new GColour(-1, r, g, b, 1f);
+            break;
+        case YZ_TRANSLATE:
+            if (!yTranslate || !zTranslate) return new GColour(-1, r, g, b, 1f);
+            break;
+        case YZ_SCALE:
+            if (xScale) return new GColour(-1, r, g, b, 1f);
+            break;
+        default:
+            break;
+        }
+
+        return new GColour(-1, Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB, 1f);
     }
 
     public void lock() {
