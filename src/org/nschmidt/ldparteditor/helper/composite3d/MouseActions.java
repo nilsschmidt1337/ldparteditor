@@ -48,6 +48,7 @@ import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.MouseButton;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
@@ -147,6 +148,7 @@ public class MouseActions {
         oldMousePosition.set(event.x, event.y);
         switch (mouseButtonPressed) {
         case MouseButton.LEFT:
+            if (c3d.isQuicklyTransforming()) break;
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if ((event.stateMask & SWT.SHIFT) == SWT.SHIFT && !AddToolItem.isAddingSomething()) {
                 Manipulator m = c3d.getManipulator();
@@ -1342,6 +1344,11 @@ public class MouseActions {
                 vm.syncWithTextEditors(true);
             } else if (!AddToolItem.isAddingSomething()) {
                 c3d.getManipulator().applyTranslation(c3d);
+                if (c3d.isQuicklyTransforming()) {
+                    Editor3DWindow.getWindow().setWorkingLayer(ManipulatorAxisMode.NONE);
+                    c3d.setQuicklyTransforming(false);
+                }
+
                 checkSyncEditMode(vm, datfile);
             }
             break;
@@ -1385,9 +1392,11 @@ public class MouseActions {
             break;
         }
 
-        if (!c3d.isQuicklyTransforming())  c3d.getManipulator().resetTranslation();
-        syncManipulator();
+        if (!c3d.isQuicklyTransforming()) {
+            c3d.getManipulator().resetTranslation();
+        }
 
+        syncManipulator();
     }
 
     public static void checkSyncEditMode(VertexManager vm, DatFile datfile) {
