@@ -270,6 +270,13 @@ public class MouseActions {
             Manipulator m = c3d.getManipulator();
             NLogger.debug(getClass(),"---START MANIPULATOR STATUS---"); //$NON-NLS-1$
             NLogger.debug(getClass(),"xTranslate: " + m.isXtranslate()); //$NON-NLS-1$
+            NLogger.debug(getClass(),"yTranslate: " + m.isYtranslate()); //$NON-NLS-1$
+            NLogger.debug(getClass(),"zTranslate: " + m.isZtranslate()); //$NON-NLS-1$
+
+            NLogger.debug(getClass(),"xRotate: " + m.isXrotate()); //$NON-NLS-1$
+            NLogger.debug(getClass(),"yRotate: " + m.isYrotate()); //$NON-NLS-1$
+            NLogger.debug(getClass(),"zRotate: " + m.isZrotate()); //$NON-NLS-1$
+            NLogger.debug(getClass(),"vRotate: " + m.isVrotate()); //$NON-NLS-1$
 
             NLogger.debug(getClass(),"position: " + m.getPosition()); //$NON-NLS-1$
             NLogger.debug(getClass(),"---END MANIPULATOR STATUS---"); //$NON-NLS-1$

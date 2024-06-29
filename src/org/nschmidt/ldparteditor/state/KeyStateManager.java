@@ -581,34 +581,19 @@ public class KeyStateManager {
                         }
                         break;
                     case MODE_COMBINED:
-                        c3d.getManipulator().applyTranslation(c3d);
-                        MouseActions.checkSyncEditMode(vm, df);
-                        TransformationModeToolItem.setWorkingAction(WorkingMode.COMBINED);
-                        AddToolItem.disableAddAction();
+                        modeCombined(df, vm);
                         break;
                     case MODE_MOVE:
-                        c3d.getManipulator().applyTranslation(c3d);
-                        MouseActions.checkSyncEditMode(vm, df);
-                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
-                        AddToolItem.disableAddAction();
+                        modeMove(df, vm);
                         break;
                     case MODE_ROTATE:
-                        c3d.getManipulator().applyTranslation(c3d);
-                        MouseActions.checkSyncEditMode(vm, df);
-                        TransformationModeToolItem.setWorkingAction(WorkingMode.ROTATE);
-                        AddToolItem.disableAddAction();
+                        modeRotate(df, vm);
                         break;
                     case MODE_SCALE:
-                        c3d.getManipulator().applyTranslation(c3d);
-                        MouseActions.checkSyncEditMode(vm, df);
-                        TransformationModeToolItem.setWorkingAction(WorkingMode.SCALE);
-                        AddToolItem.disableAddAction();
+                        modeScale(df, vm);
                         break;
                     case MODE_SELECT:
-                        c3d.getManipulator().applyTranslation(c3d);
-                        MouseActions.checkSyncEditMode(vm, df);
-                        TransformationModeToolItem.setWorkingAction(WorkingMode.SELECT);
-                        AddToolItem.disableAddAction();
+                        modeSelect(df, vm);
                         break;
                     case MOVE_TO_AVG:
                         ManipulatorToolItem.mntmManipulatorToAverage();
@@ -992,11 +977,7 @@ public class KeyStateManager {
                     case QUICK_MOVE:
                     {
                         // This is the same as a switch to move mode
-                        final Manipulator m = c3d.getManipulator();
-                        m.applyTranslation(c3d);
-                        MouseActions.checkSyncEditMode(vm, df);
-                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
-                        AddToolItem.disableAddAction();
+                        final Manipulator m = modeMove(df, vm);
                         // Now start quick translation
                         m.resetTranslation();
                         c3d.setQuicklyTransforming(true);
@@ -1012,7 +993,17 @@ public class KeyStateManager {
                     }
                     case QUICK_ROTATE:
                     {
-                        // TODO Needs implementation!
+                        // This is the same as a switch to rotate mode
+                        final Manipulator m = modeRotate(df, vm);
+                        // Now start quick translation
+                        m.resetTranslation();
+                        c3d.setQuicklyTransforming(true);
+                        win.setWorkingLayer(ManipulatorAxisMode.NONE);
+                        Vector2f pos = c3d.getOldMousePosition();
+                        Vector4f cursorCoordinates = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen((int) pos.x, (int) pos.y);
+                        c3d.getSelectionStart().set(cursorCoordinates);
+                        m.startTranslation(c3d);
+                        m.setVrotate(true);
                         break;
                     }
                     case QUICK_SCALE:
@@ -1020,6 +1011,7 @@ public class KeyStateManager {
                         break;
                     case QUICK_LOCK_XY:
                     {
+                        if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
                             m.resetTranslation();
@@ -1035,6 +1027,7 @@ public class KeyStateManager {
                     }
                     case QUICK_LOCK_XZ:
                     {
+                        if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
                             m.resetTranslation();
@@ -1050,6 +1043,7 @@ public class KeyStateManager {
                     }
                     case QUICK_LOCK_YZ:
                     {
+                        if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
                             m.resetTranslation();
@@ -1065,6 +1059,7 @@ public class KeyStateManager {
                     }
                     case QUICK_LOCK_X:
                     {
+                        if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
                             m.resetTranslation();
@@ -1074,12 +1069,22 @@ public class KeyStateManager {
                             m.setZtranslate(false);
                         }
 
+                        if (m.isXrotate() || m.isYrotate() || m.isZrotate() || m.isVrotate()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.X);
+                            m.setXrotate(true);
+                            m.setYrotate(false);
+                            m.setZrotate(false);
+                            m.setVrotate(false);
+                        }
+
                         // TODO Needs implementation!
 
                         break;
                     }
                     case QUICK_LOCK_Y:
                     {
+                        if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
                             m.resetTranslation();
@@ -1087,6 +1092,16 @@ public class KeyStateManager {
                             m.setXtranslate(false);
                             m.setYtranslate(true);
                             m.setZtranslate(false);
+                            m.setVrotate(false);
+                        }
+
+                        if (m.isXrotate() || m.isYrotate() || m.isZrotate() || m.isVrotate()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.Y);
+                            m.setXrotate(false);
+                            m.setYrotate(true);
+                            m.setZrotate(false);
+                            m.setVrotate(false);
                         }
 
                         // TODO Needs implementation!
@@ -1095,6 +1110,7 @@ public class KeyStateManager {
                     }
                     case QUICK_LOCK_Z:
                     {
+                        if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
                             m.resetTranslation();
@@ -1102,6 +1118,15 @@ public class KeyStateManager {
                             m.setXtranslate(false);
                             m.setYtranslate(false);
                             m.setZtranslate(true);
+                        }
+
+                        if (m.isXrotate() || m.isYrotate() || m.isZrotate() || m.isVrotate()) {
+                            m.resetTranslation();
+                            win.setWorkingLayer(ManipulatorAxisMode.Z);
+                            m.setXrotate(false);
+                            m.setYrotate(false);
+                            m.setZrotate(true);
+                            m.setVrotate(false);
                         }
 
                         // TODO Needs implementation!
@@ -1312,6 +1337,35 @@ public class KeyStateManager {
                 }
             }
         }
+    }
+
+    private Manipulator modeSelect(final DatFile df, final VertexManager vm) {
+        return modeSwitch(df, vm, WorkingMode.SELECT);
+    }
+
+    private Manipulator modeMove(final DatFile df, final VertexManager vm) {
+        return modeSwitch(df, vm, WorkingMode.MOVE);
+    }
+
+    private Manipulator modeRotate(final DatFile df, final VertexManager vm) {
+        return modeSwitch(df, vm, WorkingMode.ROTATE);
+    }
+
+    private Manipulator modeScale(final DatFile df, final VertexManager vm) {
+        return modeSwitch(df, vm, WorkingMode.SCALE);
+    }
+
+    private Manipulator modeCombined(final DatFile df, final VertexManager vm) {
+        return modeSwitch(df, vm, WorkingMode.COMBINED);
+    }
+
+    private Manipulator modeSwitch(final DatFile df, final VertexManager vm, final WorkingMode wm) {
+        final Manipulator m = c3d.getManipulator();
+        m.applyTranslation(c3d);
+        MouseActions.checkSyncEditMode(vm, df);
+        TransformationModeToolItem.setWorkingAction(wm);
+        AddToolItem.disableAddAction();
+        return m;
     }
 
     /**

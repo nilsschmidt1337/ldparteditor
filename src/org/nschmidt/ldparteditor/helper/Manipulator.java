@@ -578,7 +578,7 @@ public class Manipulator {
     }
 
     private GColour manipulatorStatusHelper(float r, float g, float b, int type, Composite3D c3d, float zoom) {
-        if (c3d.isQuicklyTransforming()) {
+        if (c3d.isQuicklyTransforming() && !(type == X_ROTATE_ARROW || type == Y_ROTATE_ARROW || type == Z_ROTATE_ARROW || type == V_ROTATE_ARROW)) {
             return statusForQuickTransform(r, g, b, type, c3d);
         }
         Vector4f[] gen = c3d.getGenerator();
@@ -1108,15 +1108,24 @@ public class Manipulator {
         case X_TRANSLATE:
             if (!xTranslate) return new GColour(-1, r, g, b, 1f);
             break;
+        case X_ROTATE:
+            if (!xRotate) return new GColour(-1, r, g, b, 1f);
+            break;
         case X_SCALE:
             break;
         case Y_TRANSLATE:
             if (!yTranslate) return new GColour(-1, r, g, b, 1f);
             break;
+        case Y_ROTATE:
+            if (!yRotate) return new GColour(-1, r, g, b, 1f);
+            break;
         case Y_SCALE:
             break;
         case Z_TRANSLATE:
             if (!zTranslate) return new GColour(-1, r, g, b, 1f);
+            break;
+        case Z_ROTATE:
+            if (!zRotate) return new GColour(-1, r, g, b, 1f);
             break;
         case Z_SCALE:
             break;
@@ -1137,6 +1146,9 @@ public class Manipulator {
             break;
         case YZ_SCALE:
             if (xScale) return new GColour(-1, r, g, b, 1f);
+            break;
+        case V_ROTATE:
+            if (!vRotate) return new GColour(-1, r, g, b, 1f);
             break;
         default:
             break;
