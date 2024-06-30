@@ -563,7 +563,9 @@ public class KeyStateManager {
                         df.setNearestObjVertex2(null);
                         win.setWorkingLayer(ManipulatorAxisMode.NONE);
                         win.updateInitialScale(BigDecimal.ZERO, BigDecimal.ONE, true);
-                        vm.clearSelection();
+                        if (!c3d.isQuicklyTransforming()) {
+                            vm.clearSelection();
+                        }
                         vm.resetSlantingMatrixProjector();
                         c3d.setQuicklyTransforming(false);
                         c3d.getManipulator().restoreBackup();
