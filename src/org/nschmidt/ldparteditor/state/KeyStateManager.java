@@ -40,6 +40,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
+import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.MergeTo;
 import org.nschmidt.ldparteditor.enumtype.MouseButton;
 import org.nschmidt.ldparteditor.enumtype.Perspective;
@@ -978,6 +979,8 @@ public class KeyStateManager {
                     {
                         // This is the same as a switch to move mode
                         final Manipulator m = modeMove(df, vm);
+                        // Adjust to world or keep local coordinates
+                        adjustManipulatorToWorld();
                         // Now start quick translation
                         m.resetTranslation();
                         c3d.setQuicklyTransforming(true);
@@ -995,6 +998,8 @@ public class KeyStateManager {
                     {
                         // This is the same as a switch to rotate mode
                         final Manipulator m = modeRotate(df, vm);
+                        // Adjust to world or keep local coordinates
+                        adjustManipulatorToWorld();
                         // Now start quick translation
                         m.resetTranslation();
                         c3d.setQuicklyTransforming(true);
@@ -1010,6 +1015,8 @@ public class KeyStateManager {
                     {
                         // This is the same as a switch to scale mode
                         final Manipulator m = modeScale(df, vm);
+                        // Adjust to world or keep local coordinates
+                        adjustManipulatorToWorld();
                         // Now start quick translation
                         m.resetTranslation();
                         c3d.setQuicklyTransforming(true);
@@ -1371,6 +1378,16 @@ public class KeyStateManager {
                     }
                 }
             }
+        }
+    }
+
+    private void adjustManipulatorToWorld() {
+        if (ManipulatorScopeToolItem.getTransformationScope() == ManipulatorScope.GLOBAL) {
+            Vector4f t = new Vector4f(c3d.getManipulator().getPosition());
+            BigDecimal[] tP = c3d.getManipulator().getAccuratePosition();
+            c3d.getManipulator().reset();
+            c3d.getManipulator().getPosition().set(t);
+            c3d.getManipulator().setAccuratePosition(tP[0], tP[1], tP[2]);
         }
     }
 
