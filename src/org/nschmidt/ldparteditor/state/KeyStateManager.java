@@ -1005,6 +1005,7 @@ public class KeyStateManager {
                         adjustManipulatorToWorld();
                         // Now start quick translation
                         m.resetTranslation();
+                        m.initRotateArrows();
                         c3d.setQuicklyTransforming(true);
                         win.setWorkingLayer(ManipulatorAxisMode.NONE);
                         Vector2f pos = c3d.getOldMousePosition();

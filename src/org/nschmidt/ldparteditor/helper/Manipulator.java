@@ -2666,4 +2666,15 @@ public class Manipulator {
         zAxis.setW(1f);
     }
 
+    public void initRotateArrows() {
+        xRotateArrow.set(yAxis);
+        xRotateArrow.setW(1f);
+        yRotateArrow.set(zAxis);
+        yRotateArrow.setW(1f);
+        zRotateArrow.set(xAxis);
+        zRotateArrow.setW(1f);
+        xRotateStart.set(xRotateArrow);
+        yRotateStart.set(yRotateArrow);
+        zRotateStart.set(zRotateArrow);
+    }
 }
