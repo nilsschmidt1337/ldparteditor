@@ -566,6 +566,7 @@ public class KeyStateManager {
                         vm.clearSelection();
                         vm.resetSlantingMatrixProjector();
                         c3d.setQuicklyTransforming(false);
+                        c3d.getManipulator().restoreBackup();
                         break;
                     case COPY:
                         vm.copy();

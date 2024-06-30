@@ -131,6 +131,8 @@ public class Manipulator {
         initialScaleNew = length;
     }
 
+    private Manipulator backup = null;
+
     public static void setSnap(BigDecimal transY, BigDecimal transXZ, BigDecimal rot, BigDecimal scale) {
 
         try {
@@ -1170,6 +1172,9 @@ public class Manipulator {
     }
 
     public void startTranslation(Composite3D c3d) {
+        final Manipulator startState = new Manipulator();
+        startState.copyState(this);
+        backup = startState;
         initialScaleOld = initialScaleNew;
         c3d.getLockableDatFileReference().getVertexManager().backupHideShowState();
         modified = false;
@@ -2072,6 +2077,14 @@ public class Manipulator {
         yAxis = new Vector4f(0f, 1f, 0f, 1f);
         zAxis = new Vector4f(0f, 0f, 1f, 1f);
         position = new Vector4f(0f, 0f, 0f, 1f);
+    }
+
+    public void restoreBackup() {
+        final Manipulator startState = backup;
+        if (startState != null) {
+            this.copyState(startState);
+            backup = null;
+        }
     }
 
     public void positionToOrigin() {
