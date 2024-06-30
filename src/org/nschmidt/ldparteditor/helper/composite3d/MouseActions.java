@@ -1364,7 +1364,7 @@ public class MouseActions {
                 datfile.setNearestObjVertex2(null);
                 if (AddToolItem.isAddingSomething()) vm.clearSelection();
             }
-            if (c3d.isDoingSelection())
+            if (c3d.isDoingSelection() || c3d.isQuicklyTransforming())
                 break;
             float dx = event.x - oldMousePosition.x;
             float dy = oldMousePosition.y - event.y;

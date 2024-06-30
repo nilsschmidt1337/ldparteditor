@@ -45,6 +45,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.GL33Primitives;
 import org.nschmidt.ldparteditor.enumtype.IconSize;
+import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.enumtype.WorkingMode;
 import org.nschmidt.ldparteditor.helper.Arc;
@@ -612,6 +613,59 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 default:
                     break;
                 }
+            }
+
+            if (c3d.isQuicklyTransforming() && (TransformationModeToolItem.getWorkingAction() == WorkingMode.MOVE || TransformationModeToolItem.getWorkingAction() == WorkingMode.SCALE)) {
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+                final ManipulatorAxisMode axis = window.getWorkingLayer();
+
+                GL11.glLineWidth(2f);
+                final float size = 1_000_000f;
+
+                final float maniX = manipulator.getPosition().x;
+                final float maniY = manipulator.getPosition().y;
+                final float maniZ = manipulator.getPosition().z;
+
+                final float xAxisX = manipulator.getXaxis().x;
+                final float xAxisY = manipulator.getXaxis().y;
+                final float xAxisZ = manipulator.getXaxis().z;
+
+                if (axis == ManipulatorAxisMode.X || axis == ManipulatorAxisMode.XY || axis == ManipulatorAxisMode.XZ || axis == ManipulatorAxisMode.XYZ) {
+                    helper.drawLinesRGBgeneral(new float[]{
+                            maniX + xAxisX * size, maniY + xAxisY * size, maniZ + xAxisZ * size,
+                            Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourB,
+                            maniX - xAxisX * size, maniY - xAxisY * size, maniZ - xAxisZ * size,
+                            Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourB
+                    });
+                }
+
+                final float yAxisX = manipulator.getYaxis().x;
+                final float yAxisY = manipulator.getYaxis().y;
+                final float yAxisZ = manipulator.getYaxis().z;
+
+                if (axis == ManipulatorAxisMode.Y || axis == ManipulatorAxisMode.XY || axis == ManipulatorAxisMode.YZ || axis == ManipulatorAxisMode.XYZ) {
+                    helper.drawLinesRGBgeneral(new float[]{
+                            maniX + yAxisX * size, maniY + yAxisY * size, maniZ + yAxisZ * size,
+                            Colour.manipulatorYAxisColourR, Colour.manipulatorYAxisColourG, Colour.manipulatorYAxisColourB,
+                            maniX - yAxisX * size, maniY - yAxisY * size, maniZ - yAxisZ * size,
+                            Colour.manipulatorYAxisColourR, Colour.manipulatorYAxisColourG, Colour.manipulatorYAxisColourB
+                    });
+                }
+
+                final float zAxisX = manipulator.getZaxis().x;
+                final float zAxisY = manipulator.getZaxis().y;
+                final float zAxisZ = manipulator.getZaxis().z;
+
+                if (axis == ManipulatorAxisMode.Z || axis == ManipulatorAxisMode.XZ || axis == ManipulatorAxisMode.YZ || axis == ManipulatorAxisMode.XYZ) {
+                    helper.drawLinesRGBgeneral(new float[]{
+                            maniX + zAxisX * size, maniY + zAxisY * size, maniZ + zAxisZ * size,
+                            Colour.manipulatorZAxisColourR, Colour.manipulatorZAxisColourG, Colour.manipulatorZAxisColourB,
+                            maniX - zAxisX * size, maniY - zAxisY * size, maniZ - zAxisZ * size,
+                            Colour.manipulatorZAxisColourR, Colour.manipulatorZAxisColourG, Colour.manipulatorZAxisColourB
+                    });
+                }
+
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
             }
 
             // MARK Draw temporary objects for all "Add..." functions here

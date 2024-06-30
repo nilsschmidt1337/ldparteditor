@@ -1028,7 +1028,6 @@ public class KeyStateManager {
                         if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.XY);
                             m.setXtranslate(true);
                             m.setYtranslate(true);
@@ -1036,7 +1035,6 @@ public class KeyStateManager {
                         }
 
                         if (m.isXscale() || m.isYscale() || m.isZscale()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.XY);
                             m.setXscale(true);
                             m.setYscale(true);
@@ -1050,7 +1048,6 @@ public class KeyStateManager {
                         if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.XZ);
                             m.setXtranslate(true);
                             m.setYtranslate(false);
@@ -1058,7 +1055,6 @@ public class KeyStateManager {
                         }
 
                         if (m.isXscale() || m.isYscale() || m.isZscale()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.XZ);
                             m.setXscale(true);
                             m.setYscale(false);
@@ -1072,7 +1068,6 @@ public class KeyStateManager {
                         if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.YZ);
                             m.setXtranslate(false);
                             m.setYtranslate(true);
@@ -1080,7 +1075,6 @@ public class KeyStateManager {
                         }
 
                         if (m.isXscale() || m.isYscale() || m.isZscale()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.YZ);
                             m.setXscale(false);
                             m.setYscale(true);
@@ -1094,7 +1088,6 @@ public class KeyStateManager {
                         if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.X);
                             m.setXtranslate(true);
                             m.setYtranslate(false);
@@ -1102,7 +1095,6 @@ public class KeyStateManager {
                         }
 
                         if (m.isXrotate() || m.isYrotate() || m.isZrotate() || m.isVrotate()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.X);
                             m.setXrotate(true);
                             m.setYrotate(false);
@@ -1111,7 +1103,6 @@ public class KeyStateManager {
                         }
 
                         if (m.isXscale() || m.isYscale() || m.isZscale()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.X);
                             m.setXscale(true);
                             m.setYscale(false);
@@ -1125,7 +1116,6 @@ public class KeyStateManager {
                         if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.Y);
                             m.setXtranslate(false);
                             m.setYtranslate(true);
@@ -1134,7 +1124,6 @@ public class KeyStateManager {
                         }
 
                         if (m.isXrotate() || m.isYrotate() || m.isZrotate() || m.isVrotate()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.Y);
                             m.setXrotate(false);
                             m.setYrotate(true);
@@ -1143,7 +1132,6 @@ public class KeyStateManager {
                         }
 
                         if (m.isXscale() || m.isYscale() || m.isZscale()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.Y);
                             m.setXscale(false);
                             m.setYscale(true);
@@ -1157,7 +1145,6 @@ public class KeyStateManager {
                         if (!c3d.isQuicklyTransforming()) break;
                         final Manipulator m = c3d.getManipulator();
                         if (m.isXtranslate() || m.isYtranslate() || m.isZtranslate()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.Z);
                             m.setXtranslate(false);
                             m.setYtranslate(false);
@@ -1165,7 +1152,6 @@ public class KeyStateManager {
                         }
 
                         if (m.isXrotate() || m.isYrotate() || m.isZrotate() || m.isVrotate()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.Z);
                             m.setXrotate(false);
                             m.setYrotate(false);
@@ -1174,7 +1160,6 @@ public class KeyStateManager {
                         }
 
                         if (m.isXscale() || m.isYscale() || m.isZscale()) {
-                            m.resetTranslation();
                             win.setWorkingLayer(ManipulatorAxisMode.Z);
                             m.setXscale(false);
                             m.setYscale(false);
