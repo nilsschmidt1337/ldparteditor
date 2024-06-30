@@ -1388,6 +1388,8 @@ public class KeyStateManager {
             c3d.getManipulator().reset();
             c3d.getManipulator().getPosition().set(t);
             c3d.getManipulator().setAccuratePosition(tP[0], tP[1], tP[2]);
+
+            ManipulatorScopeToolItem.setTransformationScope(ManipulatorScope.LOCAL);
         }
     }
 

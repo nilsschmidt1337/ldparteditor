@@ -69,4 +69,18 @@ public class ManipulatorScopeToolItem extends ToolItem {
             Editor3DWindow.getWindow().regainFocus();
         });
     }
+
+    public static void setTransformationScope(ManipulatorScope scope) {
+        transformationScope = scope;
+        switch (scope) {
+        case GLOBAL:
+            clickRadioBtn(btnGlobalPtr[0]);
+            break;
+        case LOCAL:
+            clickRadioBtn(btnLocalPtr[0]);
+            break;
+        default:
+            break;
+        }
+    }
 }
