@@ -100,6 +100,11 @@ public class KeyStateManager {
     private static final Map<String, TextTask> textTaskMap = new HashMap<>();
     private static final Map<TextTask, String> textTaskKeyMap = new EnumMap<>(TextTask.class);
 
+    private static final Map<Task, String> backupTaskKeyMap = new EnumMap<>(Task.class);
+    private static final Map<TextTask, String> backupTextTaskKeyMap = new EnumMap<>(TextTask.class);
+    private static final Map<String, Task> backupTaskMap = new HashMap<>();
+    private static final Map<String, TextTask> backupTextTaskMap = new HashMap<>();
+
     private int multi = 100;
     private int colourNumber = 0;
 
@@ -458,6 +463,11 @@ public class KeyStateManager {
             addTask(Task.QUICK_LOCK_XZ, SWT.CTRL | SWT.SHIFT, 'y');
             addTask(Task.QUICK_LOCK_XY, SWT.CTRL | SWT.SHIFT, 'z');
         }
+
+        backupTaskMap.putAll(taskMap);
+        backupTaskKeyMap.putAll(taskKeyMap);
+        backupTextTaskMap.putAll(textTaskMap);
+        backupTextTaskKeyMap.putAll(textTaskKeyMap);
     }
 
     /** Indicates that SHIFT is pressed */
@@ -1650,6 +1660,77 @@ public class KeyStateManager {
                     ((ScalableComposite) c3d2.getParent()).redrawScales();
                     c3d2.getPerspectiveCalculator().initializeViewportPerspective();
                 }
+            }
+        }
+    }
+
+    public static void cleanupDuplicatedKeys() {
+        final int maxTries = 10_000;
+        final Set<String> usedKeyCodes = new HashSet<>();
+        boolean foundDuplicate = true;
+
+        int tryCount = 0;
+
+        {
+            List<Task> taskEntries = taskKeyMap.keySet().stream().toList();
+            final int tasksSize = taskKeyMap.size();
+            while (foundDuplicate && tryCount < maxTries) {
+                foundDuplicate = false;
+                tryCount++;
+                usedKeyCodes.clear();
+                for (int i = 0; i < tasksSize; i++) {
+                    final Task task = taskEntries.get(i);
+                    final String keyCode = taskMap.entrySet().stream().filter(e -> e.getValue() == task).map(Entry::getKey).findFirst().orElse(null);;
+                    if (usedKeyCodes.contains(keyCode) || keyCode == null) {
+                        final String originalKey = backupTaskKeyMap.get(task);
+                        final String originalKeyCode = backupTaskMap.entrySet().stream().filter(e -> e.getValue() == task).map(Entry::getKey).findFirst().orElse(null);
+                        if (originalKeyCode != null) {
+                            foundDuplicate = true;
+                            KeyStateManager.changeKey(originalKeyCode, originalKey, task);
+                            taskEntries = taskEntries.reversed();
+                            break;
+                        }
+                    }
+
+                    usedKeyCodes.add(keyCode);
+                }
+            }
+
+            if (tryCount == maxTries) {
+                NLogger.error(KeyStateManager.class, "Duplicate removal failed! (taskKeyMap)"); //$NON-NLS-1$
+            }
+        }
+
+        tryCount = 0;
+        foundDuplicate = true;
+
+        {
+            List<TextTask> textTaskEntries = textTaskKeyMap.keySet().stream().toList();
+            final int textTasksSize = textTaskKeyMap.size();
+            while (foundDuplicate && tryCount < maxTries) {
+                foundDuplicate = false;
+                tryCount++;
+                usedKeyCodes.clear();
+                for (int i = 0; i < textTasksSize; i++) {
+                    final TextTask task = textTaskEntries.get(i);
+                    final String keyCode = textTaskMap.entrySet().stream().filter(e -> e.getValue() == task).map(Entry::getKey).findFirst().orElse(null);;
+                    if (usedKeyCodes.contains(keyCode) || keyCode == null) {
+                        final String originalKey = backupTextTaskKeyMap.get(task);
+                        final String originalKeyCode = backupTextTaskMap.entrySet().stream().filter(e -> e.getValue() == task).map(Entry::getKey).findFirst().orElse(null);
+                        if (originalKeyCode != null) {
+                            foundDuplicate = true;
+                            KeyStateManager.changeKey(originalKeyCode, originalKey, task);
+                            textTaskEntries = textTaskEntries.reversed();
+                            break;
+                        }
+                    }
+
+                    usedKeyCodes.add(keyCode);
+                }
+            }
+
+            if (tryCount == maxTries) {
+                NLogger.error(KeyStateManager.class, "Duplicate removal failed! (textTaskKeyMap)"); //$NON-NLS-1$
             }
         }
     }

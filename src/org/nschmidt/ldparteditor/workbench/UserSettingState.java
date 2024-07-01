@@ -581,7 +581,7 @@ public class UserSettingState implements Serializable {
                 NLogger.error(getClass(), se.getMessage());
             }
         }
-            
+
         return recentItems;
     }
 
@@ -627,6 +627,8 @@ public class UserSettingState implements Serializable {
                 KeyStateManager.changeKey(keyTextKeys[i], keyTextStrings[i], keyTextTasks[i]);
             }
         }
+
+        KeyStateManager.cleanupDuplicatedKeys();
     }
 
     void saveShortkeys() {
@@ -992,7 +994,7 @@ public class UserSettingState implements Serializable {
             Colour.textColourG = textColour[1];
             Colour.textColourB = textColour[2];
         }
-        
+
         if (textColourAlt != null) {
             Colour.textColourAltR = textColourAlt[0];
             Colour.textColourAltG = textColourAlt[1];
@@ -1002,7 +1004,7 @@ public class UserSettingState implements Serializable {
             Colour.textColourAltG = 0.5019608f;
             Colour.textColourAltB = 0.0f;
         }
-        
+
         if (textColourDefault != null) {
             Colour.textColourDefaultR = textColourDefault[0];
             Colour.textColourDefaultG = textColourDefault[1];
@@ -1012,7 +1014,7 @@ public class UserSettingState implements Serializable {
             Colour.textColourDefaultG = Colour.textColourG;
             Colour.textColourDefaultB = Colour.textColourB;
         }
-        
+
         if (isShowingAxisLabels()) {
             Colour.textColourR = Colour.textColourAltR;
             Colour.textColourG = Colour.textColourAltG;
@@ -1022,7 +1024,7 @@ public class UserSettingState implements Serializable {
             Colour.textColourR = Colour.textColourDefaultG;
             Colour.textColourR = Colour.textColourDefaultB;
         }
-        
+
         if (xAxisColour != null) {
             Colour.xAxisColourR = xAxisColour[0];
             Colour.xAxisColourG = xAxisColour[1];
@@ -1207,15 +1209,15 @@ public class UserSettingState implements Serializable {
     public int getTextWinArr() {
         return textWinArr;
     }
-    
+
     public boolean hasSeparateTextWindow() {
         return textWinArr == Editor3DWindow.TEXT_3D_SEPARATE || textWinArr == Editor3DWindow.TEXT_NEW_INSTANCE;
     }
-    
+
     public boolean hasSingleTextWindow() {
         return textWinArr != Editor3DWindow.TEXT_NEW_INSTANCE;
     }
-    
+
     public void setTextWinArr(int textWinArr) {
         this.textWinArr = textWinArr;
     }
@@ -1353,7 +1355,7 @@ public class UserSettingState implements Serializable {
     public void setInvertingWheelZoomDirection(boolean invertingWheelZoomDirection) {
         this.invertingWheelZoomDirection = invertingWheelZoomDirection;
     }
-    
+
     public float getLineScaleFactor() {
         return lineScaleFactor;
     }
@@ -1473,7 +1475,7 @@ public class UserSettingState implements Serializable {
     public void setDataFileSizeLimit(int dataFileSizeLimit) {
         this.dataFileSizeLimit = dataFileSizeLimit;
     }
-    
+
     public void setShowingAxisLabels(boolean showingAxisLabels) {
         this.showingAxisLabels = showingAxisLabels;
     }
