@@ -43,8 +43,9 @@ public class KeyStateManagerTest {
     public void testCleanupDuplicatedTextTask() {
         // This is the original setting
         KeyStateManager.changeKey("27", "Esc", TextTask.EDITORTEXT_ESC); //$NON-NLS-1$ //$NON-NLS-2$
-        // Modify the setting to cause a duplicate (with EDITORTEXT_INSERT_HISTORY)
-        KeyStateManager.changeKey("104+Ctrl", "Ctrl+H", TextTask.EDITORTEXT_ESC); //$NON-NLS-1$ //$NON-NLS-2$
+        // Modify the setting to cause a duplicate (with EDITORTEXT_LINE_UP)
+        KeyStateManager.changeKey("16777217+Alt", "Alt+ARROW_UP", TextTask.EDITORTEXT_ESC); //$NON-NLS-1$ //$NON-NLS-2$
+
         KeyStateManager.cleanupDuplicatedKeys();
 
         String restoredKeyCode = KeyStateManager.getMapKey(TextTask.EDITORTEXT_ESC);
