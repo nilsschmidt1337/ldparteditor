@@ -663,6 +663,7 @@ public final class I18n {
     public static final String E3D_ROTATE_VIEW_HINT_MIDDLE_MOUSE = E3D.getString(getProperty());
     public static final String E3D_ROTATE_VIEW_HINT_RIGHT_MOUSE = E3D.getString(getProperty());
     public static final String E3D_ROUND = E3D.getString(getProperty());
+    public static final String E3D_ROUND_SNAP_TOO_SMALL = E3D.getString(getProperty());
     public static final String E3D_RULER = E3D.getString(getProperty());
     public static final String E3D_SASH_LEFT = E3D.getString(getProperty());
     public static final String E3D_SASH_LOWER = E3D.getString(getProperty());

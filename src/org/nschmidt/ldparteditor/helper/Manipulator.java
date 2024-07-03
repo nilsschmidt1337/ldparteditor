@@ -110,6 +110,7 @@ public class Manipulator {
     private static final float SNAP_X_SCALE = 400f;
     private static final float SNAP_Y_SCALE = 400f;
     private static final float SNAP_Z_SCALE = 400f;
+    private static final BigDecimal SNAP_PRECISE = new BigDecimal("0.001"); //$NON-NLS-1$
 
     private static BigDecimal factorScale = new BigDecimal("1.1"); //$NON-NLS-1$
 
@@ -177,6 +178,8 @@ public class Manipulator {
         }
 
         rot = rot.divide(new BigDecimal(180), Threshold.MC).multiply(BigDecimal.valueOf(Math.PI));
+        MathHelper.setPreciseSnap(snapXtranslate.compareTo(SNAP_PRECISE) < 0);
+
         snapXtranslate = transXZ;
         snapYtranslate = transY;
         snapZtranslate = transXZ;

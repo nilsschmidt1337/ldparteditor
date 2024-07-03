@@ -697,23 +697,23 @@ public final class GDataCSG extends GData {
                                     Vector4f g3V2 = new Vector4f(g3.x2, g3.y2, g3.z2, 1f);
                                     Vector4f g3V3 = new Vector4f(g3.x3, g3.y3, g3.z3, 1f);
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(MathHelper.roundNumericString(floatToString(g3V1.x / 1000f)));
+                                    lineBuilder3.append(MathHelper.roundDecimalString(floatToString(g3V1.x / 1000f)));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(MathHelper.roundNumericString(floatToString(g3V1.y / 1000f)));
+                                    lineBuilder3.append(MathHelper.roundDecimalString(floatToString(g3V1.y / 1000f)));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(MathHelper.roundNumericString(floatToString(g3V1.z / 1000f)));
+                                    lineBuilder3.append(MathHelper.roundDecimalString(floatToString(g3V1.z / 1000f)));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(MathHelper.roundNumericString(floatToString(g3V2.x / 1000f)));
+                                    lineBuilder3.append(MathHelper.roundDecimalString(floatToString(g3V2.x / 1000f)));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(MathHelper.roundNumericString(floatToString(g3V2.y / 1000f)));
+                                    lineBuilder3.append(MathHelper.roundDecimalString(floatToString(g3V2.y / 1000f)));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(MathHelper.roundNumericString(floatToString(g3V2.z / 1000f)));
+                                    lineBuilder3.append(MathHelper.roundDecimalString(floatToString(g3V2.z / 1000f)));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(MathHelper.roundNumericString(floatToString(g3V3.x / 1000f)));
+                                    lineBuilder3.append(MathHelper.roundDecimalString(floatToString(g3V3.x / 1000f)));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(MathHelper.roundNumericString(floatToString(g3V3.y / 1000f)));
+                                    lineBuilder3.append(MathHelper.roundDecimalString(floatToString(g3V3.y / 1000f)));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(MathHelper.roundNumericString(floatToString(g3V3.z / 1000f)));
+                                    lineBuilder3.append(MathHelper.roundDecimalString(floatToString(g3V3.z / 1000f)));
                                     sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
                                 }
 

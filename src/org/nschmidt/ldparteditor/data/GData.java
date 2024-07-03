@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composite.Composite3D;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 
@@ -174,14 +175,11 @@ public abstract class GData implements Comparable<GData> {
     }
 
     protected String bigDecimalToString(BigDecimal bd) {
-        String result;
-        if (bd.compareTo(BigDecimal.ZERO) == 0)
-            return "0"; //$NON-NLS-1$
-        BigDecimal bd2 = bd.stripTrailingZeros();
-        result = bd2.toPlainString();
-        if (result.startsWith("-0."))return "-" + result.substring(2); //$NON-NLS-1$ //$NON-NLS-2$
-        if (result.startsWith("0."))return result.substring(1); //$NON-NLS-1$
-        return result;
+        return MathHelper.roundBigDecimalToString(bd);
+    }
+
+    protected String bigDecimalToStringRoundAlways(BigDecimal bd) {
+        return MathHelper.roundBigDecimalToStringAlways(bd);
     }
 
     public boolean isVisible() {

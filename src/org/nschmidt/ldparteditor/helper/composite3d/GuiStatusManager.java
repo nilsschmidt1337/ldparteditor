@@ -44,6 +44,7 @@ import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.ObjectMode;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Manipulator;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
@@ -203,6 +204,11 @@ public enum GuiStatusManager {
                 sb.append(" "); //$NON-NLS-1$
                 sb.append(DF2F.format(CSG.globalOptimizationRate));
                 sb.append("%"); //$NON-NLS-1$
+            }
+
+            if (MathHelper.getPreciseSnap()) {
+                sb.append(", "); //$NON-NLS-1$
+                sb.append(I18n.E3D_ROUND_SNAP_TOO_SMALL);
             }
 
             Editor3DWindow.getStatusLabel().setText(sb.toString());

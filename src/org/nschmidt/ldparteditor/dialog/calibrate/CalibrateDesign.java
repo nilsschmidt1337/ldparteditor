@@ -90,7 +90,7 @@ class CalibrateDesign extends Dialog {
 
         Vector3d v1 = new Vector3d(visList.get(0).getVertex());
         Vector3d v2 = new Vector3d(visList.get(1).getVertex());
-        BigDecimal distLDU = MathHelper.roundNumericString(Vector3d.sub(v1, v2, null).length());
+        BigDecimal distLDU = MathHelper.roundBigDecimalAlways(Vector3d.sub(v1, v2, null).length());
         BigDecimal distMM = distLDU.multiply(new BigDecimal("0.4")); //$NON-NLS-1$
         oldDistLDU = distLDU;
         Object[] messageArguments = {DF4F.format(distLDU), DF2F.format(distMM)};

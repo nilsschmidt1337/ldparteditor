@@ -76,7 +76,7 @@ public class VM20Manipulator extends VM19ColourChanger {
         // Calculate the new vertex position
         if (newVertex == null) {
             for (Vertex v : allVertices) {
-                BigDecimal[] temp = transformation.transform(v.xp, v.yp, v.zp);
+                BigDecimal[] temp = transformation.transform(MathHelper.roundBigDecimal(v.xp), MathHelper.roundBigDecimal(v.yp), MathHelper.roundBigDecimal(v.zp));
                 oldToNewVertex.put(v, new Vertex(temp[0], temp[1], temp[2]));
             }
         } else {
@@ -312,7 +312,7 @@ public class VM20Manipulator extends VM19ColourChanger {
             }
         }
     }
-    
+
     /**
     *
     * @param transformation

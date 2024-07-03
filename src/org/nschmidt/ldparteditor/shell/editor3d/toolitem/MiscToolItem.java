@@ -139,6 +139,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.Txt2DatSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.YTruderSettings;
 import org.nschmidt.ldparteditor.helper.compositetext.SubfileCompiler;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.ldraworg.CategoriesUtils;
@@ -230,7 +231,7 @@ public class MiscToolItem extends ToolItem {
     private static final MenuItem[] mntmDistributeRightEdgesPtr = new MenuItem[1];
     private static final MenuItem[] mntmDistributeVerticallyPtr = new MenuItem[1];
     private static final MenuItem[] mntmDistributeHorizontallyPtr = new MenuItem[1];
-    
+
     private static final MenuItem[] mntmFlipPtr = new MenuItem[1];
     private static final MenuItem[] mntmSmoothPtr = new MenuItem[1];
     private static final MenuItem[] mntmSubdivideCatmullClarkPtr = new MenuItem[1];
@@ -604,7 +605,7 @@ public class MiscToolItem extends ToolItem {
         MenuItem mntmAlignAndDistribute = new MenuItem(mnuMerge, SWT.CASCADE);
         MiscToolItem.mntmAlignAndDistributePtr[0] = mntmAlignAndDistribute;
         mntmAlignAndDistribute.setText(I18n.E3D_ALIGN_AND_DISTRIBUTE);
-        
+
         final Menu mnuAlignAndDistribute = new Menu(mntmAlignAndDistribute);
         mntmAlignAndDistribute.setMenu(mnuAlignAndDistribute);
 
@@ -612,75 +613,75 @@ public class MiscToolItem extends ToolItem {
         MiscToolItem.mntmAlignLeftEdgesPtr[0] = mntmAlignLeftEdges;
         mntmAlignLeftEdges.setImage(ResourceManager.getImage("icon16_align_left.png")); //$NON-NLS-1$
         mntmAlignLeftEdges.setText(I18n.E3D_ALIGN_LEFT_EDGES);
-        
+
         MenuItem mntmAlignHorizontalCenters = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmAlignHorizontalCentersPtr[0] = mntmAlignHorizontalCenters;
         mntmAlignHorizontalCenters.setImage(ResourceManager.getImage("icon16_align_horizontal.png")); //$NON-NLS-1$
         mntmAlignHorizontalCenters.setText(I18n.E3D_ALIGN_HORIZONTAL_CENTERS);
-        
+
         MenuItem mntmAlignRightEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmAlignRightEdgesPtr[0] = mntmAlignRightEdges;
         mntmAlignRightEdges.setImage(ResourceManager.getImage("icon16_align_right.png")); //$NON-NLS-1$
         mntmAlignRightEdges.setText(I18n.E3D_ALIGN_RIGHT_EDGES);
-        
+
         new MenuItem(mnuAlignAndDistribute, SWT.SEPARATOR);
-        
+
         MenuItem mntmAlignTopEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmAlignTopEdgesPtr[0] = mntmAlignTopEdges;
         mntmAlignTopEdges.setImage(ResourceManager.getImage("icon16_align_top.png")); //$NON-NLS-1$
         mntmAlignTopEdges.setText(I18n.E3D_ALIGN_TOP_EDGES);
-        
+
         MenuItem mntmAlignVerticalCenters = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmAlignVerticalCentersPtr[0] = mntmAlignVerticalCenters;
         mntmAlignVerticalCenters.setImage(ResourceManager.getImage("icon16_align_vertical.png")); //$NON-NLS-1$
         mntmAlignVerticalCenters.setText(I18n.E3D_ALIGN_VERTICAL_CENTERS);
-        
+
         MenuItem mntmAlignBottomEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmAlignBottomEdgesPtr[0] = mntmAlignBottomEdges;
         mntmAlignBottomEdges.setImage(ResourceManager.getImage("icon16_align_bottom.png")); //$NON-NLS-1$
         mntmAlignBottomEdges.setText(I18n.E3D_ALIGN_BOTTOM_EDGES);
-        
+
         new MenuItem(mnuAlignAndDistribute, SWT.SEPARATOR);
-        
+
         MenuItem mntmDistributeTopEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmDistributeTopEdgesPtr[0] = mntmDistributeTopEdges;
         mntmDistributeTopEdges.setImage(ResourceManager.getImage("icon16_distribute_top.png")); //$NON-NLS-1$
         mntmDistributeTopEdges.setText(I18n.E3D_DISTRIBUTE_TOP_EDGES);
-        
+
         MenuItem mntmDistributeVerticalCenters = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmDistributeVerticalCentersPtr[0] = mntmDistributeVerticalCenters;
         mntmDistributeVerticalCenters.setImage(ResourceManager.getImage("icon16_distribute_vertical.png")); //$NON-NLS-1$
         mntmDistributeVerticalCenters.setText(I18n.E3D_DISTRIBUTE_VERTICAL_CENTERS);
-        
+
         MenuItem mntmDistributeBottomEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmDistributeBottomEdgesPtr[0] = mntmDistributeBottomEdges;
         mntmDistributeBottomEdges.setImage(ResourceManager.getImage("icon16_distribute_bottom.png")); //$NON-NLS-1$
         mntmDistributeBottomEdges.setText(I18n.E3D_DISTRIBUTE_BOTTOM_EDGES);
-        
+
         new MenuItem(mnuAlignAndDistribute, SWT.SEPARATOR);
-        
+
         MenuItem mntmDistributeLeftEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmDistributeLeftEdgesPtr[0] = mntmDistributeLeftEdges;
         mntmDistributeLeftEdges.setImage(ResourceManager.getImage("icon16_distribute_left.png")); //$NON-NLS-1$
         mntmDistributeLeftEdges.setText(I18n.E3D_DISTRIBUTE_LEFT_EDGES);
-        
+
         MenuItem mntmDistributeHorizontalCenters = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmDistributeHorizontalCentersPtr[0] = mntmDistributeHorizontalCenters;
         mntmDistributeHorizontalCenters.setImage(ResourceManager.getImage("icon16_distribute_horizontal.png")); //$NON-NLS-1$
         mntmDistributeHorizontalCenters.setText(I18n.E3D_DISTRIBUTE_HORIZONTAL_CENTERS);
-        
+
         MenuItem mntmDistributeRightEdges = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmDistributeRightEdgesPtr[0] = mntmDistributeRightEdges;
         mntmDistributeRightEdges.setImage(ResourceManager.getImage("icon16_distribute_right.png")); //$NON-NLS-1$
         mntmDistributeRightEdges.setText(I18n.E3D_DISTRIBUTE_RIGHT_EDGES);
-        
+
         new MenuItem(mnuAlignAndDistribute, SWT.SEPARATOR);
-        
+
         MenuItem mntmDistributeVertically = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmDistributeVerticallyPtr[0] = mntmDistributeVertically;
         mntmDistributeVertically.setImage(ResourceManager.getImage("icon16_spacing_vertical.png")); //$NON-NLS-1$
         mntmDistributeVertically.setText(I18n.E3D_DISTRIBUTE_VERTICALLY);
-        
+
         MenuItem mntmDistributeHorizontally = new MenuItem(mnuAlignAndDistribute, SWT.PUSH);
         MiscToolItem.mntmDistributeHorizontallyPtr[0] = mntmDistributeHorizontally;
         mntmDistributeHorizontally.setImage(ResourceManager.getImage("icon16_spacing_horizontal.png")); //$NON-NLS-1$
@@ -1437,7 +1438,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        
+
         widgetUtil(mntmAlignLeftEdgesPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1459,10 +1460,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-        
+
         widgetUtil(mntmAlignHorizontalCentersPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1478,10 +1479,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-        
+
         widgetUtil(mntmAlignRightEdgesPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1503,10 +1504,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-        
+
         widgetUtil(mntmAlignTopEdgesPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1525,10 +1526,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-        
+
         widgetUtil(mntmAlignVerticalCentersPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1544,10 +1545,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-        
+
         widgetUtil(mntmAlignBottomEdgesPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1566,10 +1567,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-        
+
         widgetUtil(mntmDistributeLeftEdgesPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1591,10 +1592,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-        
+
         widgetUtil(mntmDistributeHorizontalCentersPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1610,10 +1611,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-        
+
         widgetUtil(mntmDistributeRightEdgesPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1635,10 +1636,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-        
+
         widgetUtil(mntmDistributeTopEdgesPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1657,10 +1658,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-         
+
         widgetUtil(mntmDistributeVerticalCentersPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1676,10 +1677,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-         
+
         widgetUtil(mntmDistributeBottomEdgesPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1698,10 +1699,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-         
+
         widgetUtil(mntmDistributeVerticallyPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1717,10 +1718,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-         
+
         widgetUtil(mntmDistributeHorizontallyPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1736,10 +1737,10 @@ public class MiscToolItem extends ToolItem {
                     break;
                 }
             }
-            
+
             regainFocus();
         });
-         
+
         widgetUtil(mntmSnapToGridPtr[0]).addSelectionListener(e -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
@@ -1768,49 +1769,49 @@ public class MiscToolItem extends ToolItem {
                     regainFocus();
                     return;
                 }
-                
+
                 NLogger.debug(MiscToolItem.class, "Perspective :" + perspective); //$NON-NLS-1$
                 NLogger.debug(MiscToolItem.class, "Snap on X   :" + snapOnX); //$NON-NLS-1$
                 NLogger.debug(MiscToolItem.class, "Snap on Y   :" + snapOnY); //$NON-NLS-1$
                 NLogger.debug(MiscToolItem.class, "Snap on Z   :" + snapOnZ); //$NON-NLS-1$
-                
+
                 final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                 vm.addSnapshot();
                 vm.skipSyncTimer();
-                
+
                 // Make sure to snap the vertices of selected objects
                 vm.selectObjectVertices();
-                
+
                 final float gridSize = c3d.getGridSize();
                 final Set<Vertex> selectedVertices = new TreeSet<>(vm.getSelectedVertices());
                 final Set<GData1> selectedSubfiles = new TreeSet<>(vm.getSelectedSubfiles());
-                
+
                 NLogger.debug(MiscToolItem.class, "Grid size   :" + gridSize + " LDU"); //$NON-NLS-1$ //$NON-NLS-2$
                 NLogger.debug(MiscToolItem.class, "Vertex count:" + selectedVertices.size()); //$NON-NLS-1$
-                
+
                 final BigDecimal gridSizePrecise = BigDecimal.valueOf(gridSize);
-                
+
                 boolean modified = false;
                 for (Vertex v : selectedVertices) {
                     // Don't snap the vertex if it is a subfile vertex.
                     final Set<GData> linkedData = vm.getLinkedSurfacesSubfilesAndLines(v);
                     if (linkedData.stream().anyMatch(g -> g.type() == 1)) continue;
-                    
+
                     final BigDecimal newX = snapOnX ? snapToNearest(gridSize, gridSizePrecise, v.xp.abs()).multiply(new BigDecimal(v.xp.signum())) : v.xp;
                     final BigDecimal newY = snapOnY ? snapToNearest(gridSize, gridSizePrecise, v.yp.abs()).multiply(new BigDecimal(v.yp.signum())) : v.yp;
                     final BigDecimal newZ = snapOnZ ? snapToNearest(gridSize, gridSizePrecise, v.zp.abs()).multiply(new BigDecimal(v.zp.signum())) : v.zp;
-                    
+
                     modified = vm.changeVertexDirectFast(v, new Vertex(new BigDecimal[]{newX, newY, newZ}), true) || modified;
                 }
-                
+
                 for (GData1 g : selectedSubfiles) {
                     final Matrix subM = g.getAccurateProductMatrix();
                     final BigDecimal newX = snapOnX ? snapToNearest(gridSize, gridSizePrecise, subM.m30.abs()).multiply(new BigDecimal(subM.m30.signum())).subtract(subM.m30) : BigDecimal.ZERO;
                     final BigDecimal newY = snapOnY ? snapToNearest(gridSize, gridSizePrecise, subM.m31.abs()).multiply(new BigDecimal(subM.m31.signum())).subtract(subM.m31) : BigDecimal.ZERO;
                     final BigDecimal newZ = snapOnZ ? snapToNearest(gridSize, gridSizePrecise, subM.m32.abs()).multiply(new BigDecimal(subM.m32.signum())).subtract(subM.m32) : BigDecimal.ZERO;
-                    
+
                     final Matrix m = View.ACCURATE_ID.translate(new BigDecimal[]{newX, newY, newZ});
-                    
+
                     vm.backupSelection();
                     vm.clearSelection2();
                     vm.getSelectedSubfiles().add(g);
@@ -1821,21 +1822,21 @@ public class MiscToolItem extends ToolItem {
                     if (sub != null) {
                         vm.getSelectedSubfiles().add(sub);
                     }
-                    
+
                     modified = true;
                 }
-                
+
                 if (!selectedSubfiles.isEmpty()) {
                     vm.reSelectSubFiles();
                 }
-                
+
                 if (modified && (!selectedVertices.isEmpty() || !selectedSubfiles.isEmpty())) {
                     NLogger.debug(MiscToolItem.class, "Snapping done"); //$NON-NLS-1$
                     vm.validateState();
                     vm.setModified(true, true);
                 }
             }
-            
+
             regainFocus();
         });
 
@@ -2009,6 +2010,7 @@ public class MiscToolItem extends ToolItem {
                     } else {
                         TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                     }
+                    final boolean preciseSnap = MathHelper.getPreciseSnap();
                     if (new TranslateDialog(Editor3DWindow.getWindow().getShell(), new Vertex(c3d.getManipulator().getAccuratePosition()), ManipulatorScopeToolItem.getTransformationScope()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                         final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
@@ -2025,6 +2027,7 @@ public class MiscToolItem extends ToolItem {
                             MiscToggleToolItem.setMovingAdjacentData(moveAdjacentData);
                         }
                     }
+                    MathHelper.setPreciseSnap(preciseSnap);
                     TransformationModeToolItem.setWorkingAction(action);
                     regainFocus();
                     return;
@@ -2205,7 +2208,7 @@ public class MiscToolItem extends ToolItem {
                                 Set<String> files = new HashSet<>();
                                 files.add(fileName);
                                 List<String> list = buildFileList(source, new ArrayList<>(), files, monitor);
-                                
+
                                 if (WorkbenchManager.getUserSettingState().isVerbosePartReview()) {
                                     String mainFileName = fileName;
                                     Object[] messageArguments = { fileName,
@@ -2709,7 +2712,7 @@ public class MiscToolItem extends ToolItem {
                             final int deletedTriangleCount = result[4];
                             final int deletedQuadCount = result[5];
                             final int deletedCondlineCount = result[6];
-                            Object[] messageArguments = { createdLinesCount, createdTriangleCount, createdCondlineCount, 
+                            Object[] messageArguments = { createdLinesCount, createdTriangleCount, createdCondlineCount,
                                     deletedLineCount, deletedTriangleCount, deletedQuadCount, deletedCondlineCount };
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                             formatter.setLocale(MyLanguage.getLocale());
@@ -2752,7 +2755,7 @@ public class MiscToolItem extends ToolItem {
                                 } else {
                                     selectionString += c3d.getLockableDatFileReference().getShortName();
                                 }
-                                
+
                                 Object[] messageArguments = { matrix, selectionString, mps.isResettingSubfileTransformation(), mps.isMovingOriginToAxisCenter() };
                                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                                 formatter.setLocale(MyLanguage.getLocale());
@@ -2874,15 +2877,15 @@ public class MiscToolItem extends ToolItem {
                         final int oldCondlineCount = vm.getCondlines().size();
                         final int[] result = vm.symSplitter(sims);
                         if (WorkbenchManager.getUserSettingState().isVerboseSymSplitter()) {
-                            Object[] messageArguments = { result[0], result[1], result[2], 
-                                    Math.max(0, oldVertexCount - vm.getVertices().size()), 
-                                    Math.max(0, oldLineCount - vm.getLines().size()), 
-                                    Math.max(0, oldTriangleCount - vm.getTriangles().size()), 
-                                    Math.max(0, oldQuadCount - vm.getQuads().size()), 
+                            Object[] messageArguments = { result[0], result[1], result[2],
+                                    Math.max(0, oldVertexCount - vm.getVertices().size()),
+                                    Math.max(0, oldLineCount - vm.getLines().size()),
+                                    Math.max(0, oldTriangleCount - vm.getTriangles().size()),
+                                    Math.max(0, oldQuadCount - vm.getQuads().size()),
                                     Math.max(0, oldCondlineCount - vm.getCondlines().size()),
-                                    Math.max(0, vm.getLines().size() - oldLineCount), 
-                                    Math.max(0, vm.getTriangles().size() - oldTriangleCount), 
-                                    Math.max(0, vm.getQuads().size() - oldQuadCount), 
+                                    Math.max(0, vm.getLines().size() - oldLineCount),
+                                    Math.max(0, vm.getTriangles().size() - oldTriangleCount),
+                                    Math.max(0, vm.getQuads().size() - oldQuadCount),
                                     Math.max(0, vm.getCondlines().size() - oldCondlineCount) };
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                             formatter.setLocale(MyLanguage.getLocale());
@@ -2995,14 +2998,14 @@ public class MiscToolItem extends ToolItem {
                     }
                     VertexManager vm = df.getVertexManager();
                     vm.addSnapshot();
-                    
-                    
+
+
                     int dialogResult;
                     do {
                         ts.setReload(false);
                         dialogResult = new Txt2DatDialog(Editor3DWindow.getWindow().getShell(), ts).open();
                     } while (ts.isReload());
-                    
+
                     if (dialogResult == IDialogConstants.OK_ID && !ts.getText().trim().isEmpty()) {
                         vm.skipSyncTimer();
                         java.awt.Font myFont;
@@ -3054,7 +3057,7 @@ public class MiscToolItem extends ToolItem {
                             messageBox.setMessage(formatter.format(messageArguments));
                             messageBox.open();
                         }
-                        
+
                         for (GData gda3 : triangleSet) {
                             lineNumber++;
                             df.getDrawPerLineNoClone().put(lineNumber, gda3);
@@ -3522,12 +3525,12 @@ public class MiscToolItem extends ToolItem {
         });
 
     }
-    
+
     private static BigDecimal snapToNearest(final float gridSize, final BigDecimal gridSizePrecise, BigDecimal v) {
         float value = v.floatValue();
         float distA = value % gridSize;
         float distB = gridSize - value % gridSize;
-        
+
         if (distA <= distB) {
             return v.subtract(v.remainder(gridSizePrecise, Threshold.MC));
         } else {

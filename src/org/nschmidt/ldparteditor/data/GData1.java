@@ -1442,23 +1442,23 @@ public final class GData1 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m32));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m00));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m00));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m10));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m10));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m20));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m20));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m01));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m01));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m11));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m11));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m21));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m21));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m02));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m02));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m12));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m12));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m22));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m22));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
         text = lineBuilder.toString();
@@ -1558,23 +1558,23 @@ public final class GData1 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m32));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m00));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpAccurateLocalMatrix.m00));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m10));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpAccurateLocalMatrix.m10));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m20));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpAccurateLocalMatrix.m20));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m01));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpAccurateLocalMatrix.m01));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m11));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpAccurateLocalMatrix.m11));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m21));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpAccurateLocalMatrix.m21));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m02));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpAccurateLocalMatrix.m02));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m12));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpAccurateLocalMatrix.m12));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m22));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpAccurateLocalMatrix.m22));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
 
@@ -1681,23 +1681,23 @@ public final class GData1 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m32));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m00));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m00));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m10));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m10));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m20));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m20));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m01));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m01));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m11));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m11));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m21));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m21));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m02));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m02));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m12));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m12));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m22));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m22));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
         return lineBuilder.toString();
@@ -1715,29 +1715,29 @@ public final class GData1 extends GData {
             lineBuilder.append(colourNumber);
         }
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(onX ? MathHelper.roundNumericString(accurateLocalMatrix.m30.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : accurateLocalMatrix.m30));
+        lineBuilder.append(bigDecimalToString(onX ? MathHelper.roundBigDecimal(accurateLocalMatrix.m30.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : accurateLocalMatrix.m30));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(onY ? MathHelper.roundNumericString(accurateLocalMatrix.m31.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : accurateLocalMatrix.m31));
+        lineBuilder.append(bigDecimalToString(onY ? MathHelper.roundBigDecimal(accurateLocalMatrix.m31.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : accurateLocalMatrix.m31));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(onZ ? MathHelper.roundNumericString(accurateLocalMatrix.m32.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : accurateLocalMatrix.m32));
+        lineBuilder.append(bigDecimalToString(onZ ? MathHelper.roundBigDecimal(accurateLocalMatrix.m32.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : accurateLocalMatrix.m32));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m00.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m00.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m10.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m10.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m20.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m20.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m01.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m01.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m11.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m11.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m21.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m21.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m02.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m02.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m12.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m12.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(accurateLocalMatrix.m22.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m22.setScale(matrixDecimalPlaces, RoundingMode.HALF_UP)));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
         return lineBuilder.toString();
@@ -1909,23 +1909,23 @@ public final class GData1 extends GData {
                     lineBuilder1.append(" "); //$NON-NLS-1$
                     lineBuilder1.append(bigDecimalToString(newMatrix.m32));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m00));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m00));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m10));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m10));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m20));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m20));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m01));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m01));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m11));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m11));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m21));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m21));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m02));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m02));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m12));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m12));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m22));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m22));
                     lineBuilder1.append(" "); //$NON-NLS-1$
                     lineBuilder1.append(g1.shortName);
                     sb.append(lineBuilder1.toString() + "<br>"); //$NON-NLS-1$
@@ -2257,23 +2257,23 @@ public final class GData1 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m32));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m00));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpLocalMatrix.m00));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m10));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpLocalMatrix.m10));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m20));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpLocalMatrix.m20));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m01));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpLocalMatrix.m01));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m11));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpLocalMatrix.m11));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m21));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpLocalMatrix.m21));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m02));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpLocalMatrix.m02));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m12));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpLocalMatrix.m12));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m22));
+        lineBuilder.append(bigDecimalToStringRoundAlways(tmpLocalMatrix.m22));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
         return lineBuilder.toString();
@@ -2883,23 +2883,23 @@ public final class GData1 extends GData {
                     lineBuilder1.append(" "); //$NON-NLS-1$
                     lineBuilder1.append(bigDecimalToString(newMatrix.m32));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m00));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m00));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m10));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m10));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m20));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m20));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m01));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m01));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m11));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m11));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m21));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m21));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m02));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m02));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m12));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m12));
                     lineBuilder1.append(" "); //$NON-NLS-1$
-                    lineBuilder1.append(bigDecimalToString(newMatrix.m22));
+                    lineBuilder1.append(bigDecimalToStringRoundAlways(newMatrix.m22));
                     lineBuilder1.append(" "); //$NON-NLS-1$
                     lineBuilder1.append(this.shortName);
                     return lineBuilder1.toString();
@@ -2924,23 +2924,23 @@ public final class GData1 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m32));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m00));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m00));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m10));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m10));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m20));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m20));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m01));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m01));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m11));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m11));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m21));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m21));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m02));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m02));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m12));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m12));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m22));
+        lineBuilder.append(bigDecimalToStringRoundAlways(accurateLocalMatrix.m22));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
         return lineBuilder.toString();

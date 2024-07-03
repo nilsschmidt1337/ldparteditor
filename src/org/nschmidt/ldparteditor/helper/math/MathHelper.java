@@ -50,6 +50,8 @@ public enum MathHelper {
 
     private static Random randomizer = new Random(183630263548l);
 
+    private static boolean preciseSnap = false;
+
     public static final BigDecimal R1 = new BigDecimal(".432"); //$NON-NLS-1$
     public static final BigDecimal R2 = new BigDecimal(".256"); //$NON-NLS-1$
     public static final BigDecimal R3 = new BigDecimal(".312"); //$NON-NLS-1$
@@ -528,29 +530,29 @@ public enum MathHelper {
     @SuppressWarnings("java:S2111")
     public static String matrixToString(Matrix4f matrix, int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(bigDecimalToString(onX ? MathHelper.roundNumericString(new BigDecimal(matrix.m30 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : new BigDecimal(matrix.m30 / 1000f)));
+        lineBuilder.append(bigDecimalToString(onX ? MathHelper.roundBigDecimal(new BigDecimal(matrix.m30 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : new BigDecimal(matrix.m30 / 1000f)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(onY ? MathHelper.roundNumericString(new BigDecimal(matrix.m31 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : new BigDecimal(matrix.m31 / 1000f)));
+        lineBuilder.append(bigDecimalToString(onY ? MathHelper.roundBigDecimal(new BigDecimal(matrix.m31 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : new BigDecimal(matrix.m31 / 1000f)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(onZ ? MathHelper.roundNumericString(new BigDecimal(matrix.m32 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : new BigDecimal(matrix.m32 / 1000f)));
+        lineBuilder.append(bigDecimalToString(onZ ? MathHelper.roundBigDecimal(new BigDecimal(matrix.m32 / 1000f).setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : new BigDecimal(matrix.m32 / 1000f)));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m00).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundBigDecimalAlways(new BigDecimal(matrix.m00).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m10).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundBigDecimalAlways(new BigDecimal(matrix.m10).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m20).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundBigDecimalAlways(new BigDecimal(matrix.m20).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m01).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundBigDecimalAlways(new BigDecimal(matrix.m01).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m11).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundBigDecimalAlways(new BigDecimal(matrix.m11).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m21).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundBigDecimalAlways(new BigDecimal(matrix.m21).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m02).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundBigDecimalAlways(new BigDecimal(matrix.m02).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m12).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundBigDecimalAlways(new BigDecimal(matrix.m12).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(MathHelper.roundNumericString(new BigDecimal(matrix.m22).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
+        lineBuilder.append(bigDecimalToString(MathHelper.roundBigDecimalAlways(new BigDecimal(matrix.m22).setScale(matrixDecimalPlaces, RoundingMode.HALF_UP))));
         return lineBuilder.toString();
     }
 
@@ -1250,12 +1252,36 @@ public enum MathHelper {
         return result;
     }
 
-    public static BigDecimal roundNumericString(BigDecimal decimal) {
+    public static String roundBigDecimalToStringAlways(BigDecimal decimal) {
+        return roundBigDecimalToString(decimal, false);
+    }
+
+    public static String roundBigDecimalToString(BigDecimal decimal) {
+        return roundBigDecimalToString(decimal, preciseSnap);
+    }
+
+    public static BigDecimal roundBigDecimalAlways(BigDecimal decimal) {
+        return roundNumericString(decimal, false);
+    }
+
+    public static BigDecimal roundBigDecimal(BigDecimal decimal) {
+        return roundNumericString(decimal, preciseSnap);
+    }
+
+    public static String roundDecimalStringAlways(String number) {
+        return roundNumericString(number, false);
+    }
+
+    public static String roundDecimalString(String number) {
+        return roundNumericString(number, preciseSnap);
+    }
+
+    private static BigDecimal roundNumericString(BigDecimal decimal, boolean preciseSnap) {
         String number = bigDecimalToString(decimal);
         int pointPosition = number.indexOf('.');
         if (pointPosition == -1) return decimal;
-        final int fourNinesPostition = number.indexOf("9999", pointPosition); //$NON-NLS-1$
-        final int fourZerosPostition = number.indexOf("0000", pointPosition); //$NON-NLS-1$
+        final int fourNinesPostition = number.indexOf("9999", pointPosition + (preciseSnap ? 2 : 0)); //$NON-NLS-1$
+        final int fourZerosPostition = number.indexOf("0000", pointPosition + (preciseSnap ? 2 : 0)); //$NON-NLS-1$
 
         if (fourNinesPostition > pointPosition && (fourZerosPostition == -1 || fourZerosPostition > fourNinesPostition)) {
             decimal = decimal.setScale(fourNinesPostition - pointPosition, RoundingMode.HALF_UP);
@@ -1267,6 +1293,7 @@ public enum MathHelper {
             return decimal;
         }
 
+        if (preciseSnap) return decimal;
         if (number.endsWith("9999") || number.endsWith("9998") || number.endsWith("9997") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
          || number.endsWith("0001") || number.endsWith("0002") || number.endsWith("0003")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             decimal = decimal.setScale(decimal.scale() - 1, RoundingMode.HALF_UP);
@@ -1275,12 +1302,24 @@ public enum MathHelper {
         return decimal;
     }
 
-    public static String roundNumericString(String number) {
+    private static String roundNumericString(String number, boolean preciseSnap) {
         try {
-            number = bigDecimalToString(roundNumericString(new BigDecimal(number)));
+            number = bigDecimalToString(roundNumericString(new BigDecimal(number), preciseSnap));
         } catch (NumberFormatException nfe) {
             return number;
         }
         return number;
+    }
+
+    private static String roundBigDecimalToString(BigDecimal number, boolean preciseSnap) {
+        return bigDecimalToString(roundNumericString(number, preciseSnap));
+    }
+
+    public static boolean getPreciseSnap() {
+        return preciseSnap;
+    }
+
+    public static void setPreciseSnap(boolean preciseSnap) {
+        MathHelper.preciseSnap = preciseSnap;
     }
 }

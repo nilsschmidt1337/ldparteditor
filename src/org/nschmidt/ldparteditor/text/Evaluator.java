@@ -25,7 +25,7 @@ import jdk.jshell.JShell;
 import jdk.jshell.SnippetEvent;
 
 /**
- * Evaluates simple expressions 
+ * Evaluates simple expressions
  */
 public enum Evaluator {
     INSTANCE;
@@ -73,19 +73,19 @@ public enum Evaluator {
             js = JShell.create();
             staticImportMathFunctions();
         }
-        
+
         // Don't allow other method calls
         rawExpr = dotLetter.matcher(rawExpr).replaceAll("~$0"); //$NON-NLS-1$
         rawExpr = rawExpr.replace("deg(", "toDegrees("); //$NON-NLS-1$ //$NON-NLS-2$
         rawExpr = rawExpr.replace("rad(", "toRadians("); //$NON-NLS-1$ //$NON-NLS-2$
         rawExpr = replaceInvalidCharSequences(rawExpr, "{", "}", "while(", "for("); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         final String expr = rawExpr;
-        
+
         try {
             if (js == null) return expr;
 
             // Don't allow multiple lines of code (e.g. "int i = 0; i++;")
-            final String result = MathHelper.roundNumericString(js.eval(js.sourceCodeAnalysis().analyzeCompletion(expr).source())
+            final String result = MathHelper.roundDecimalStringAlways(js.eval(js.sourceCodeAnalysis().analyzeCompletion(expr).source())
                     .stream()
                     .map(SnippetEvent::value)
                     .filter(Objects::nonNull)
@@ -113,7 +113,7 @@ public enum Evaluator {
             js.eval("import static java.lang.Math."+ op + ";"); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
-    
+
     static String replaceInvalidCharSequences(String rawExpr, String... invalid) {
         for (String str : invalid) {
             rawExpr = rawExpr.replace(str, ""); //$NON-NLS-1$
@@ -123,7 +123,7 @@ public enum Evaluator {
 
     private static void addVariable(final String name, final String value) {
         if (name.charAt(0) == '-') return;
-        
+
         sb.setLength(0);
         try {
             double d = Double.parseDouble(value);
@@ -146,9 +146,9 @@ public enum Evaluator {
             sb.append(value);
             sb.append("\""); //$NON-NLS-1$
         }
-        
+
         sb.append(";"); //$NON-NLS-1$
-        
+
         js.eval(js.sourceCodeAnalysis().analyzeCompletion(sb.toString()).source());
         snippetCount++;
     }

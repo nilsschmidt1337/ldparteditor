@@ -117,7 +117,7 @@ class VM03Adjacency extends VM02Add {
         }
         return rval;
     }
-    
+
     public Set<GData> getLinkedSurfacesSubfilesAndLines(Vertex vertex) {
         Set<GData> rval = new HashSet<>();
         Set<VertexManifestation> vm = vertexLinkedToPositionInFile.get(vertex);
@@ -827,9 +827,9 @@ class VM03Adjacency extends VM02Add {
             }
             for (Vertex vOld : singleVertices) {
                 Vertex vNew = new Vertex(
-                        onX ? MathHelper.roundNumericString(vOld.xp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : vOld.xp,
-                        onY ? MathHelper.roundNumericString(vOld.yp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : vOld.yp,
-                        onZ ? MathHelper.roundNumericString(vOld.zp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : vOld.zp);
+                        onX ? MathHelper.roundBigDecimalAlways(vOld.xp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : vOld.xp,
+                        onY ? MathHelper.roundBigDecimalAlways(vOld.yp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : vOld.yp,
+                        onZ ? MathHelper.roundBigDecimalAlways(vOld.zp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP)) : vOld.zp);
                 changeVertexDirectFast(vOld, vNew, moveAdjacentData);
             }
 

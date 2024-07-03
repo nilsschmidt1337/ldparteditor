@@ -43,6 +43,7 @@ import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.composite3d.RingsAndConesSettings;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -407,7 +408,7 @@ public enum RingsAndCones {
                 }
                 for(int i = 1; i <= solutionAmount[0]; i++) {
                     BigDecimal sf = new BigDecimal(solution[i]).divide(factor, Threshold.MC);
-                    String sfs = bigDecimalToString(sf);
+                    String sfs = MathHelper.roundBigDecimalToStringAlways(sf);
                     String radiusSuffix = "" + solutionR[i]; //$NON-NLS-1$
 
                     String middle;
@@ -429,7 +430,7 @@ public enum RingsAndCones {
                     }
 
 
-                    String line = "1 16 0 " + bigDecimalToString(height) + " 0 " + sfs + " 0 0 0 " + step.negate() + " 0 0 0 " + sfs + " " + anglePrefix + middle + radiusSuffix + ".dat";     //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+                    String line = "1 16 0 " + MathHelper.roundBigDecimalToStringAlways(height) + " 0 " + sfs + " 0 0 0 " + step.negate() + " 0 0 0 " + sfs + " " + anglePrefix + middle + radiusSuffix + ".dat";     //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
                     GData gd = DatParser
                             .parseLine(line
                                     , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
@@ -449,10 +450,10 @@ public enum RingsAndCones {
             if (rs.isUsingHiRes()) {
                 anglePrefix = "48\\" + anglePrefix; //$NON-NLS-1$
             }
-            String sfs = bigDecimalToString(rs.getRadius1().compareTo(rs.getRadius2()) < 0 ? rs.getRadius2() : rs.getRadius1());
+            String sfs = MathHelper.roundBigDecimalToStringAlways(rs.getRadius1().compareTo(rs.getRadius2()) < 0 ? rs.getRadius2() : rs.getRadius1());
             final String line;
             if (rs.isUsingCones()) {
-                line = "1 16 0 " + bigDecimalToString(rs.getHeight()) + " 0 " + sfs + " 0 0 0 " + bigDecimalToString(rs.getHeight().negate()) + " 0 0 0 " + sfs + " " + anglePrefix + "con0.dat";     //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+                line = "1 16 0 " + MathHelper.roundBigDecimalToStringAlways(rs.getHeight()) + " 0 " + sfs + " 0 0 0 " + MathHelper.roundBigDecimalToStringAlways(rs.getHeight().negate()) + " 0 0 0 " + sfs + " " + anglePrefix + "con0.dat";     //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
             } else {
                 line = "1 16 0 0 0 " + sfs + " 0 0 0 1 0 0 0 " + sfs + " " + anglePrefix + "disc.dat";     //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
             }
@@ -654,16 +655,5 @@ public enum RingsAndCones {
             return lst[angle];
         }
         return false;
-    }
-
-    private static String bigDecimalToString(BigDecimal bd) {
-        String result;
-        if (bd.compareTo(BigDecimal.ZERO) == 0)
-            return "0"; //$NON-NLS-1$
-        BigDecimal bd2 = bd.stripTrailingZeros();
-        result = bd2.toPlainString();
-        if (result.startsWith("-0."))return "-" + result.substring(2); //$NON-NLS-1$ //$NON-NLS-2$
-        if (result.startsWith("0."))return result.substring(1); //$NON-NLS-1$
-        return result;
     }
 }

@@ -156,16 +156,16 @@ public class CalibrateDialog extends CalibrateDesign {
                 png.angleA.floatValue(), png.angleB.floatValue(), png.angleC.floatValue(),
                 new Vector4f(start.getXf(), start.getYf(), start.getZf(), 1f), factor.floatValue());
         final Vertex offset = new Vertex(
-            MathHelper.roundNumericString(BigDecimal.valueOf(rawOffset.x)),
-            MathHelper.roundNumericString(BigDecimal.valueOf(rawOffset.y)),
-            MathHelper.roundNumericString(BigDecimal.valueOf(rawOffset.z)));
+            MathHelper.roundBigDecimalAlways(BigDecimal.valueOf(rawOffset.x)),
+            MathHelper.roundBigDecimalAlways(BigDecimal.valueOf(rawOffset.y)),
+            MathHelper.roundBigDecimalAlways(BigDecimal.valueOf(rawOffset.z)));
 
         // Scale adjustment is correct.
         final Vector3d rawScale = new Vector3d(png.scale).scale(factor);
         final Vertex scale = new Vertex(
-            MathHelper.roundNumericString(rawScale.x),
-            MathHelper.roundNumericString(rawScale.y),
-            MathHelper.roundNumericString(rawScale.z));
+            MathHelper.roundBigDecimalAlways(rawScale.x),
+            MathHelper.roundBigDecimalAlways(rawScale.y),
+            MathHelper.roundBigDecimalAlways(rawScale.z));
 
         final StringBuilder sb = new StringBuilder();
         sb.append("0 !LPE PNG "); //$NON-NLS-1$

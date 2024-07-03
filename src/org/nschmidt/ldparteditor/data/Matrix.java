@@ -300,30 +300,19 @@ public final class Matrix {
     public String toLDrawString() {
         StringBuilder result = new StringBuilder();
         result.append(" "); //$NON-NLS-1$
-        result.append(bigDecimalToString(this.m30));
+        result.append(MathHelper.roundBigDecimalToString(this.m30));
         result.append(" "); //$NON-NLS-1$
-        result.append(bigDecimalToString(this.m31));
+        result.append(MathHelper.roundBigDecimalToString(this.m31));
         result.append(" "); //$NON-NLS-1$
-        result.append(bigDecimalToString(this.m32));
+        result.append(MathHelper.roundBigDecimalToString(this.m32));
         result.append(" "); //$NON-NLS-1$
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                result.append(bigDecimalToString(this.m[j][i]));
+                result.append(MathHelper.roundBigDecimalToStringAlways(this.m[j][i]));
                 result.append(" "); //$NON-NLS-1$
             }
         }
         return result.toString();
-    }
-
-    private String bigDecimalToString(BigDecimal bd) {
-        String result;
-        if (bd.compareTo(BigDecimal.ZERO) == 0)
-            return "0"; //$NON-NLS-1$
-        BigDecimal bd2 = bd.stripTrailingZeros();
-        result = bd2.toPlainString();
-        if (result.startsWith("-0."))return "-" + result.substring(2); //$NON-NLS-1$ //$NON-NLS-2$
-        if (result.startsWith("0."))return result.substring(1); //$NON-NLS-1$
-        return result;
     }
 
     public Matrix4f getMatrix4f() {
