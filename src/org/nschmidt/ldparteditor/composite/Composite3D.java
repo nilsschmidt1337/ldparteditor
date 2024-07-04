@@ -1936,6 +1936,10 @@ public class Composite3D extends ScalableComposite {
         return mntmStudLogoPtr[0];
     }
 
+    public MenuItem getMntmHiddenSubfiles() {
+        return mntmHiddenSubfilesPtr[0];
+    }
+
     public MenuItem getMntmSmoothShading() {
         return mntmSmoothShadingPtr[0];
     }
@@ -2472,6 +2476,7 @@ public class Composite3D extends ScalableComposite {
         getMntmSwitchLights().setSelection(state.isLights());
         getMntmMeshLines().setSelection(state.isMeshlines());
         getMntmSubMeshLines().setSelection(state.isSubfileMeshlines());
+        getMntmHiddenSubfiles().setSelection(state.isShowEmptySubfiles());
         getMntmVertices().setSelection(state.isVertices());
         getMntmHiddenVertices().setSelection(state.isHiddenVertices());
         getMntmControlPointVertices().setSelection(state.isCondlineControlPoints());
