@@ -1,3 +1,19 @@
+# 04 July 2024
+With the release of 1.8.81 you are able to...
+-  ...ctrl-click a subpart or prim in the text editor to open it in the 3D editor and jump straight to it (cmd-click on Mac).
+-  ...use a faster way to move (G), rotate (R) and scale (S) (press G, S or R on the 3D view, press X, Y or Z to lock to an axis. Or ctrl-shift-x and so on to lock to a plane.).
+-  ...calibrate a background image with a measurement (click on the new "Calibrate Background Image" button, select a line (type 2 or 5 on the image plane) and enter the new distance)
+-  ...better see "empty" primitives.
+-  ...get even better automatic rounding of 9999s and 0000s (e.g. for PathTruder results).
+-  ...use an upgraded gizmo/manipulator (to move and scale in XY, XZ, YZ planes).
+-  ...benefit from cleaned up inlined results from CSG_COMPILE.
+-  ...benefit from the fact that empty tree items for hints / warnings / errors / duplicates in the text editor will be expanded when they get items to display.
+
+The following critical issues are fixed:
+1. The ldraw.org link to download the contents of categories.txt was outdated.
+2. It was possible to assign a key twice (with a newly introduced shortcut).
+
+
 # 22 Jun 2024
 With the release of 1.8.80 you are able to...
 -  ...do simple math in the text editor (e.g. (-3+5)*2 and hit enter).
