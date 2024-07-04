@@ -20,7 +20,9 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 import java.math.BigDecimal;
 
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.composite.ToolItem;
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.WorkingMode;
@@ -39,6 +41,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolI
 public class TranslateDialog extends TranslateDesign {
 
     private static final BigDecimal OFFSET_PRECISE = new BigDecimal("0.001"); //$NON-NLS-1$
+    private static final BigDecimal OFFSET_ULTRA_PRECISE = new BigDecimal("0.0001"); //$NON-NLS-1$
 
     private static Vertex manipulator = new Vertex(0f, 0f, 0f);
     private static Vertex offset = new Vertex(0f, 0f, 0f);
@@ -145,7 +148,15 @@ public class TranslateDialog extends TranslateDesign {
              || offset.yp.abs().compareTo(BigDecimal.ZERO) > 0 && offset.yp.abs().compareTo(OFFSET_PRECISE) < 0
              || offset.zp.abs().compareTo(BigDecimal.ZERO) > 0 && offset.zp.abs().compareTo(OFFSET_PRECISE) < 0
                 );
-        GuiStatusManager.updateStatus();
+        MathHelper.setUltraPreciseSnap(
+            offset.xp.abs().compareTo(BigDecimal.ZERO) > 0 && offset.xp.abs().compareTo(OFFSET_ULTRA_PRECISE) < 0
+         || offset.yp.abs().compareTo(BigDecimal.ZERO) > 0 && offset.yp.abs().compareTo(OFFSET_ULTRA_PRECISE) < 0
+         || offset.zp.abs().compareTo(BigDecimal.ZERO) > 0 && offset.zp.abs().compareTo(OFFSET_ULTRA_PRECISE) < 0
+            );
+        final Composite3D lastC3d = DatFile.getLastHoveredComposite();
+        if (lastC3d != null) {
+            GuiStatusManager.updateStatus(lastC3d);
+        }
     }
 
     public static ManipulatorScope getTransformationMode() {

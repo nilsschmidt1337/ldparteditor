@@ -157,4 +157,12 @@ public class MathHelperTest {
         MathHelper.setPreciseSnap(false);
         assertEquals("1", result); //$NON-NLS-1$
     }
+
+    @Test
+    public void testNoRoundingUpWithUltraPreciseSnap() {
+        MathHelper.setUltraPreciseSnap(true);
+        String result = MathHelper.roundDecimalString("0.000000001"); //$NON-NLS-1$
+        MathHelper.setUltraPreciseSnap(false);
+        assertEquals(".000000001", result); //$NON-NLS-1$
+    }
 }

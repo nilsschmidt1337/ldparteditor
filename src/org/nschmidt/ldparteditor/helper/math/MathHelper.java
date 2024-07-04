@@ -51,6 +51,7 @@ public enum MathHelper {
     private static Random randomizer = new Random(183630263548l);
 
     private static boolean preciseSnap = false;
+    private static boolean ultraPreciseSnap = false;
 
     public static final BigDecimal R1 = new BigDecimal(".432"); //$NON-NLS-1$
     public static final BigDecimal R2 = new BigDecimal(".256"); //$NON-NLS-1$
@@ -1277,6 +1278,7 @@ public enum MathHelper {
     }
 
     private static BigDecimal roundNumericString(BigDecimal decimal, boolean preciseSnap) {
+        if (ultraPreciseSnap) return decimal;
         String number = bigDecimalToString(decimal);
         int pointPosition = number.indexOf('.');
         if (pointPosition == -1) return decimal;
@@ -1321,5 +1323,13 @@ public enum MathHelper {
 
     public static void setPreciseSnap(boolean preciseSnap) {
         MathHelper.preciseSnap = preciseSnap;
+    }
+
+    public static boolean getUltraPreciseSnap() {
+        return ultraPreciseSnap;
+    }
+
+    public static void setUltraPreciseSnap(boolean ultraPreciseSnap) {
+        MathHelper.ultraPreciseSnap = ultraPreciseSnap;
     }
 }

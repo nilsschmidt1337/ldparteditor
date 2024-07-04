@@ -2011,6 +2011,7 @@ public class MiscToolItem extends ToolItem {
                         TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
                     }
                     final boolean preciseSnap = MathHelper.getPreciseSnap();
+                    final boolean ultraPreciseSnap = MathHelper.getUltraPreciseSnap();
                     if (new TranslateDialog(Editor3DWindow.getWindow().getShell(), new Vertex(c3d.getManipulator().getAccuratePosition()), ManipulatorScopeToolItem.getTransformationScope()).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                         final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
@@ -2028,6 +2029,7 @@ public class MiscToolItem extends ToolItem {
                         }
                     }
                     MathHelper.setPreciseSnap(preciseSnap);
+                    MathHelper.setUltraPreciseSnap(ultraPreciseSnap);
                     TransformationModeToolItem.setWorkingAction(action);
                     regainFocus();
                     return;
