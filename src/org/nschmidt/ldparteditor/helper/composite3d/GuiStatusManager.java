@@ -255,6 +255,8 @@ public enum GuiStatusManager {
                 if (selectedLine != null) {
                     Set<VertexInfo> vis = vm.getLineLinkedToVertices().get(selectedLine);
                     if (vis != null && vis.size() > 1) {
+                        vm.getSelectedCondlines().clear();
+                        vm.getSelectedLines().clear();
                         CalibrateDialog dialog = new CalibrateDialog(Editor3DWindow.getWindow().getShell(), df, vis);
                         if (dialog.open() == IDialogConstants.OK_ID) {
                             dialog.performCalibration();
