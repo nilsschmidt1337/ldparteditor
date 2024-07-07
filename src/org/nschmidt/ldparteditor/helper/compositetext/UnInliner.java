@@ -92,6 +92,10 @@ public enum UnInliner {
 
         int foundLpeInline = 0;
 
+        if (lineStart == lineEnd) {
+            lineEnd += 1;
+        }
+
         for (int line = lineStart; line < lineEnd; line++) {
             final GData data = dpl.getValue(line);
             if (data == null) break;
@@ -111,7 +115,7 @@ public enum UnInliner {
             }
 
             // Expand the selection if the last LPE INLINE_END is not part of the selection
-            if (foundLpeInline > 0 && lineEnd == line + 1) {
+            if (foundLpeInline > 0 && lineEnd <= line + 1) {
                 lineEnd += 1;
             }
         }
