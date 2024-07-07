@@ -275,6 +275,8 @@ public class KeyStateManager {
             addTask(TextTask.EDITORTEXT_SIZE_DECREASE, SWT.COMMAND, '-');
             addTask(TextTask.EDITORTEXT_SIZE_INCREASE, SWT.COMMAND, '+');
 
+            addTask(TextTask.EDITORTEXT_FOLLOW_LINK, SWT.COMMAND, SWT.SHIFT);
+
             addTask(Task.CLOSE_VIEW, 'q');
 
             addTask(Task.PERSPECTIVE_TOP, SWT.COMMAND, SWT.KEYPAD_5);
@@ -424,6 +426,8 @@ public class KeyStateManager {
 
             addTask(TextTask.EDITORTEXT_SIZE_DECREASE, SWT.CTRL, '-');
             addTask(TextTask.EDITORTEXT_SIZE_INCREASE, SWT.CTRL, '+');
+
+            addTask(TextTask.EDITORTEXT_FOLLOW_LINK, SWT.CTRL, SWT.SHIFT);
 
             addTask(Task.CLOSE_VIEW, 'q');
 

@@ -922,16 +922,14 @@ public class CompositeTab extends CompositeTabDesign {
             sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
             sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
             TextTask task = KeyStateManager.getTextTaskmap().get(sb.toString());
-
-            if (keyCode == SWT.CTRL && !Cocoa.IS_COCOA || keyCode == SWT.COMMAND && Cocoa.IS_COCOA) {
-                tabState.setShowingLinks(true);
-                compositeTextPtr[0].redraw();
-            }
-
             if (task != null) {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
 
                 switch (task) {
+                case EDITORTEXT_FOLLOW_LINK:
+                    tabState.setShowingLinks(true);
+                    compositeTextPtr[0].redraw();
+                    break;
                 case EDITORTEXT_REPLACE_VERTEX:
                     if (compositeTextPtr[0].getEditable()) {
                         if (!vm.isUpdated()) return;

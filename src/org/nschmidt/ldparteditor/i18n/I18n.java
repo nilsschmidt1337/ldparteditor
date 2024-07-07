@@ -890,6 +890,7 @@ public final class I18n {
     public static final String KEYBOARD_ESC_2 = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_FIND_REPLACE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_FLIP_ROTATE = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_FOLLOW_SUBFILE_LINKS = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_INLINE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_INSERT_HISTORY = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_INSERT_KEYWORD = KEYBOARD.getString(getProperty());
