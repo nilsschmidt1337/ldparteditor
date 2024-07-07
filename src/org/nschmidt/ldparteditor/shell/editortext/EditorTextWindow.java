@@ -78,6 +78,7 @@ import org.nschmidt.ldparteditor.helper.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helper.compositetext.RotatorAndTranslator;
 import org.nschmidt.ldparteditor.helper.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helper.compositetext.Text2SelectionConverter;
+import org.nschmidt.ldparteditor.helper.compositetext.UnInliner;
 import org.nschmidt.ldparteditor.helper.compositetext.VertexMarker;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -111,7 +112,7 @@ public class EditorTextWindow extends EditorTextDesign {
     public static void createTemporaryWindow(final DatFile df) {
         new EditorTextWindow().run(df, true);
     }
-    
+
     public static EditorTextWindow createNewWindowIfRequired(final DatFile df) {
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             final CompositeTabFolder cTabFolder = w.getTabFolder();
@@ -119,18 +120,18 @@ public class EditorTextWindow extends EditorTextDesign {
                 if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                     cTabFolder.setSelection(t);
                     ((CompositeTab) t).getControl().getShell().forceActive();
-                    
+
                     // Don't create a tab for already opened files
                     return w;
                 }
             }
         }
-        
+
         final EditorTextWindow result = new EditorTextWindow();
         result.run(df, false);
         return result;
     }
-    
+
     /**
      * Create the application window.
      */
@@ -370,9 +371,9 @@ public class EditorTextWindow extends EditorTextDesign {
         if (isSeperateWindow()) {
             Project.getOpenTextWindows().remove(this);
         }
-        
+
         Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-        
+
         // Save the workbench
         EditorTextWindowState stateText = WorkbenchManager.getEditorTextWindowState();
         stateText.getWindowState().setCentered(false);
@@ -442,20 +443,20 @@ public class EditorTextWindow extends EditorTextDesign {
         if (f.getParentFile() != null && updateLastVisited) {
             Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
         }
-        
+
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             final CompositeTabFolder cTabFolder = w.getTabFolder();
             for (CTabItem t : cTabFolder.getItems()) {
                 if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                     cTabFolder.setSelection(t);
                     ((CompositeTab) t).getControl().getShell().forceActive();
-                    
+
                     // Don't create a tab for already opened files
                     return;
                 }
             }
         }
-        
+
         CompositeTab tbtmnewItem = new CompositeTab(tabFolderPtr[0], SWT.CLOSE);
         tbtmnewItem.setFolderAndWindow(tabFolderPtr[0], editorTextWindow);
         tbtmnewItem.getState().setFileNameObj(df);
@@ -579,7 +580,7 @@ public class EditorTextWindow extends EditorTextDesign {
             if (sh == null) {
                 sh = Editor3DWindow.getWindow().getShell();
             }
-            
+
             NewOpenSaveDatfileToolItem.open(sh, this);
         });
         widgetUtil(btnSavePtr[0]).addSelectionListener(e -> {
@@ -927,12 +928,17 @@ public class EditorTextWindow extends EditorTextDesign {
         initPaletteEvent();
 
         widgetUtil(btnInlineLinkedPtr[0]).addSelectionListener(e -> {
+            final boolean inlining = !Cocoa.checkCtrlOrCmdPressed(e.stateMask);
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                     return;
                 }
-                NLogger.debug(getClass(), "Inlining.."); //$NON-NLS-1$
+                if (inlining) {
+                    NLogger.debug(getClass(), "Inlining.."); //$NON-NLS-1$
+                } else {
+                    NLogger.debug(getClass(), "Un-Inlining.."); //$NON-NLS-1$
+                }
                 final StyledText st = selection.getTextComposite();
                 int s1 = st.getSelectionRange().x;
                 int s2 = s1 + st.getSelectionRange().y;
@@ -948,7 +954,11 @@ public class EditorTextWindow extends EditorTextDesign {
                 Inliner.noComment = false;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                Inliner.inline(st, fromLine, toLine, selection.getState().getFileNameObj());
+                if (inlining) {
+                    Inliner.inline(st, fromLine, toLine, selection.getState().getFileNameObj());
+                } else {
+                    UnInliner.unInline(st, fromLine, toLine, selection.getState().getFileNameObj());
+                }
                 st.forceFocus();
             }
         });

@@ -518,7 +518,7 @@ class EditorTextDesign extends ApplicationWindow {
             NButton btnInlineLinked = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnInlineLinkedPtr[0] = btnInlineLinked;
             btnInlineLinked.setImage(ResourceManager.getImage("icon16_inlinelinked.png")); //$NON-NLS-1$
-            btnInlineLinked.setToolTipText(I18n.EDITORTEXT_INLINE_3);
+            btnInlineLinked.setToolTipText(Cocoa.replaceCtrlByCmd(I18n.EDITORTEXT_INLINE_3));
         }
         {
             NButton btnBFCswap = new NButton(toolItemDebug, Cocoa.getStyle());
@@ -679,7 +679,7 @@ class EditorTextDesign extends ApplicationWindow {
     public boolean isSeperateWindow() {
         return this == editorTextWindow;
     }
-    
+
     protected void initPaletteEvent() {
         widgetUtil(btnPalettePtr[0]).addSelectionListener(e -> {
             final GColour[] gColour2 = new GColour[1];
