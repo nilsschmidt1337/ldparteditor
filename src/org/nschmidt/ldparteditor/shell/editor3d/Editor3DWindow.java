@@ -2870,12 +2870,23 @@ public class Editor3DWindow extends Editor3DDesign {
         // Iterate in the old order, just to keep it
         for (DatFile df2 : oldOpenFiles) {
             if (!openFiles.contains(df2)) continue;
-            openFiles.remove(df2);
+            DatFile df3 = null;
+            // because of subfile re-compilation, the tabs may contain a completely out-dated DatFile
+            for (DatFile df : openFiles) {
+                if (df.equals(df2)) {
+                    // refresh the old opened file with the new one
+                    df3 = df;
+                    break;
+                }
+            }
+
+            if (df3 == null) continue;
+            openFiles.remove(df3);
             CTabItem tItem = new CTabItem(tabFolderOpenDatFilesPtr[0], SWT.NONE);
-            tItem.setText(df2.getShortName() + (Project.getUnsavedFiles().contains(df2) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
-            tItem.setToolTipText(df2.getNewName());
-            tItem.setData(df2);
-            if (df2.equals(Project.getFileToEdit())) {
+            tItem.setText(df3.getShortName() + (Project.getUnsavedFiles().contains(df3) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
+            tItem.setToolTipText(df3.getNewName());
+            tItem.setData(df3);
+            if (df3.equals(Project.getFileToEdit())) {
                 tabFolderOpenDatFilesPtr[0].setSelection(tItem);
                 isSelected = true;
             }
