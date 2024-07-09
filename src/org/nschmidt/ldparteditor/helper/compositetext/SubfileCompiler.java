@@ -225,7 +225,7 @@ public enum SubfileCompiler {
 
         if (skipCompile && type != 0)
             return;
-        
+
         DatParser.clearConstants();
 
         if (gd.getNext() == null && type != 0 && !toFolderStack.isEmpty() && !skipCompile) {
@@ -288,7 +288,8 @@ public enum SubfileCompiler {
                                 String col = dataSegments[4];
                                 if (col.equals(colour))
                                     col = "16"; //$NON-NLS-1$
-                                builder.append("1 " + col + " " + MathHelper.matrixToStringPrecise(original) + " " + realFilename); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+                                 // Replace slashes with a backslash
+                                builder.append("1 " + col + " " + MathHelper.matrixToStringPrecise(original) + " " + realFilename.replace('/', '\\')); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
                                 builder.append(StringHelper.getLineDelimiter());
                             }
                             colour = dataSegments[4];
@@ -345,7 +346,7 @@ public enum SubfileCompiler {
                 if (!datFile.isProjectFile()) {
                     df.setProjectFile(false);
                 }
-                
+
                 df.setText(builder.toString());
                 TreeItem treeToSearch;
                 if (name.startsWith("s" + File.separator) || name.startsWith("S" + File.separator)) { //$NON-NLS-1$ //$NON-NLS-2$
