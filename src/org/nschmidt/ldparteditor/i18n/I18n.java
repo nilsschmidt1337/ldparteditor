@@ -771,6 +771,9 @@ public final class I18n {
     public static final String E3D_WITH_SAME_TYPE = E3D.getString(getProperty());
     public static final String E3D_WITH_WHOLE_SUBFILE_SELECTION = E3D.getString(getProperty());
     public static final String E3D_YTRUDER = E3D.getString(getProperty());
+    public static final String E3D_ZIP_CREATED = E3D.getString(getProperty());
+    public static final String E3D_ZIP_ERROR = E3D.getString(getProperty());
+    public static final String E3D_ZIP_FILE = E3D.getString(getProperty());
     public static final String EDGER_0_TO_180 = EDGER.getString(getProperty());
     public static final String EDGER_0_TO_90 = EDGER.getString(getProperty());
     public static final String EDGER_CONDITION_1 = EDGER.getString(getProperty());

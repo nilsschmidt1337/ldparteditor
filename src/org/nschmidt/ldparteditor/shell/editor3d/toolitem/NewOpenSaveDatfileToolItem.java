@@ -38,6 +38,7 @@ import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.export.ZipFileExporter;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.compositetext.ProjectActions;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -162,7 +163,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                                 win.getSearchText().setText(" "); //$NON-NLS-1$
                                 win.getSearchText().setText(""); //$NON-NLS-1$
                             }
-                            
+
                             if (Project.isKeepingItOpen()) {
                                 Project.setKeepingItOpen(false);
                             } else {
@@ -238,7 +239,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
             win.regainFocus();
         });
     }
-    
+
     public static boolean saveAs(Editor3DWindow win, DatFile fileToEdit) {
         if (fileToEdit != null && !fileToEdit.equals(View.DUMMY_DATFILE)) {
             final DatFile df2 = fileToEdit;
@@ -254,11 +255,11 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                 fd.setFilterPath(Project.getLastVisitedPath());
             }
 
-            String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+            String[] filterExt = { "*.dat", "*.zip", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             fd.setFilterExtensions(filterExt);
-            String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
+            String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ZIP_FILE, I18n.E3D_ALL_FILES};
             fd.setFilterNames(filterNames);
-            
+
             if (df2.isVirtual()) {
                 fd.setFileName(new File(df2.getNewName()).getName());
             }
@@ -267,6 +268,11 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                 try {
                     String selected = fd.open();
                     if (selected != null) {
+
+                        if (selected.endsWith(".zip")) { //$NON-NLS-1$
+                            ZipFileExporter.export(selected, df2);
+                            return false;
+                        }
 
                         if (new DatFile(selected).equals(df2)) {
                             df2.save();
@@ -298,7 +304,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                                 Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
                             }
                         }
-                        
+
                         return true;
                     }
                 } catch (Exception ex) {
@@ -307,7 +313,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                 break;
             }
         }
-            
+
         return false;
     }
 
@@ -347,7 +353,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
             } else {
                 absoluteFilePath = new File(fd.getFilterPath() + File.separator + fileName).getAbsolutePath();
             }
-            
+
             DatFile dat = win.openDatFile(OpenInWhat.EDITOR_3D, absoluteFilePath, true);
             if (dat != null) {
                 NewOpenSaveProjectToolItem.addRecentFile(dat);
@@ -371,7 +377,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                     if (twin == null) {
                         twin = Project.getOpenTextWindows().iterator().next();
                     }
-                    
+
                     twin.openNewDatFileTab(dat, true);
                 }
                 Project.setFileToEdit(dat);

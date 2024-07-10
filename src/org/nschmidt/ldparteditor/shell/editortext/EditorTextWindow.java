@@ -68,6 +68,7 @@ import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.TransformationMode;
 import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.export.ZipFileExporter;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.ShellHelper;
 import org.nschmidt.ldparteditor.helper.Version;
@@ -1261,9 +1262,9 @@ public class EditorTextWindow extends EditorTextDesign {
             fd.setFileName(name);
         }
 
-        String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        String[] filterExt = { "*.dat", "*.zip", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         fd.setFilterExtensions(filterExt);
-        String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
+        String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ZIP_FILE, I18n.E3D_ALL_FILES};
         fd.setFilterNames(filterNames);
 
         while (true) {
@@ -1275,6 +1276,11 @@ public class EditorTextWindow extends EditorTextDesign {
                     selected = filePath;
                 }
                 if (selected != null) {
+
+                    if (selected.endsWith(".zip")) { //$NON-NLS-1$
+                        ZipFileExporter.export(selected, dfToSave);
+                        return false;
+                    }
 
                     if (new DatFile(selected).equals(dfToSave) && filePath == null) {
                         dfToSave.save();
