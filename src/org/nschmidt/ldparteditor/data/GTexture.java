@@ -972,4 +972,8 @@ public class GTexture {
     public int getCubeMapIndex() {
         return cubeMapIndex;
     }
+
+    public String getTexture() {
+        return texture;
+    }
 }

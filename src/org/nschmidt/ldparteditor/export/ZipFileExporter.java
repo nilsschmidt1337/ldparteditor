@@ -23,11 +23,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GData1;
+import org.nschmidt.ldparteditor.data.GDataTEX;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
@@ -45,6 +52,9 @@ public enum ZipFileExporter {
 
         // This can't happen, but its more secure to check if the path really points to a zip-file.
         if (!path.endsWith(".zip")) return; //$NON-NLS-1$
+
+        Set<TexmapImage> images = findImages(df);
+
 
         try (FileSystem zipfs = FileSystems.newFileSystem(Paths.get(path), Map.of("create", "true"))) { //$NON-NLS-1$ //$NON-NLS-2$
             final Path primitivePath = zipfs.getPath(File.separator + P);
@@ -78,5 +88,30 @@ public enum ZipFileExporter {
         messageBox.setText(I18n.DIALOG_INFO);
         messageBox.setMessage(I18n.E3D_ZIP_CREATED);
         messageBox.open();
+    }
+
+    private static Set<TexmapImage> findImages(DatFile df) {
+        final Set<TexmapImage> result = new HashSet<>();
+        final List<String> images = GData1.getUsedTexMapImages(df.getDrawChainStart());
+        // TODO: Load the image file bytes  here (only from the file system)
+        return result;
+    }
+
+    private static class TexmapImage {
+        private final String fileName = ""; //$NON-NLS-1$
+        private final byte[] data = null;
+        @Override
+        public int hashCode() {
+            return Objects.hash(fileName);
+        }
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (!(obj instanceof TexmapImage))
+                return false;
+            TexmapImage other = (TexmapImage) obj;
+            return Objects.equals(fileName, other.fileName);
+        }
     }
 }
