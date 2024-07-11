@@ -15,8 +15,15 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.export;
 
+import java.io.File;
 import java.io.IOException;
-
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Map;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -27,13 +34,37 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 public enum ZipFileExporter {
     INSTANCE;
 
-    public static void export(String path, DatFile df) {
-        // FIXME take all files needed by the current file (recursive) and make a zip file with the correct folder structure.
-        // Only if the files are not referenced from official or unofficial library.
-        // TEXMAP png images should be considered, too.
+    private static final String TEXTURES = "textures"; //$NON-NLS-1$
+    private static final String P = "p"; //$NON-NLS-1$
+    private static final String PARTS = "parts"; //$NON-NLS-1$
 
-        try {
-            if (true) throw new IOException();
+    public static void export(String path, DatFile df) {
+        // FIXME take all files needed by the current file (recursive) and make a zip-file with the correct folder structure.
+        // Only if the files are not referenced from official or unofficial library.
+        // TEXMAP PNG images should be considered, too.
+
+        // This can't happen, but its more secure to check if the path really points to a zip-file.
+        if (!path.endsWith(".zip")) return; //$NON-NLS-1$
+
+        try (FileSystem zipfs = FileSystems.newFileSystem(Paths.get(path), Map.of("create", "true"))) { //$NON-NLS-1$ //$NON-NLS-2$
+            final Path primitivePath = zipfs.getPath(File.separator + P);
+            final Path primitiveLowResPath = zipfs.getPath(File.separator + P + File.separator + "8"); //$NON-NLS-1$
+            final Path primitiveHiResPath = zipfs.getPath(File.separator + P + File.separator + "48"); //$NON-NLS-1$
+            final Path partsPath = zipfs.getPath(File.separator + PARTS);
+            final Path subfilesPath = zipfs.getPath(File.separator + PARTS + File.separator + "s"); //$NON-NLS-1$
+            final Path texturesPath = zipfs.getPath(File.separator + PARTS + File.separator + TEXTURES);
+            Files.createDirectories(primitivePath);
+            Files.createDirectories(primitiveLowResPath);
+            Files.createDirectories(primitiveHiResPath);
+            Files.createDirectories(partsPath);
+            Files.createDirectories(subfilesPath);
+            Files.createDirectories(texturesPath);
+
+            Path pathInZipfile = zipfs.getPath(File.separator + PARTS + File.separator + "someDatFile.dat"); //$NON-NLS-1$
+            Files.writeString(pathInZipfile, "0 Title\n0 Name: Test\n", StandardOpenOption.CREATE, StandardOpenOption.WRITE); //$NON-NLS-1$
+
+            Path pngPathInZipfile = zipfs.getPath(File.separator + PARTS + File.separator + TEXTURES + File.separator + "somePngFile.png"); //$NON-NLS-1$
+            Files.write(pngPathInZipfile, new byte[0], StandardOpenOption.CREATE, StandardOpenOption.WRITE);
         } catch (IOException ioe) {
             NLogger.error(ZipFileExporter.class, ioe);
             MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
