@@ -69,13 +69,13 @@ public enum ReferenceParser {
 
 
      */
-    public static List<List<DatFile>> checkForReferences(DatFile df, References refMode, TreeItem origin) {
+    public static List<List<DatFile>> checkForReferences(DatFile df, References refMode, TreeItem origin, boolean skipOverwrite) {
         List<List<DatFile>> result = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             result.add(new ArrayList<>());
         }
 
-        skipOverwriteQuestion = false;
+        skipOverwriteQuestion = skipOverwrite;
         cancelled = false;
 
         final Editor3DWindow win = Editor3DWindow.getWindow();

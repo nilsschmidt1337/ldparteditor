@@ -4633,17 +4633,17 @@ public class Editor3DWindow extends Editor3DDesign {
                     case IDialogConstants.NO_ID:
                         // Copy File and required and related
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemProjectPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemProjectPtr[0], false);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemOfficialPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemOfficialPtr[0], false);
                         }
                         break;
                     case IDialogConstants.YES_ID:
                         // Copy File and required
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemProjectPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemProjectPtr[0], false);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemOfficialPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemOfficialPtr[0], false);
                         }
                         break;
                     default:
@@ -4676,17 +4676,17 @@ public class Editor3DWindow extends Editor3DDesign {
                     case IDialogConstants.NO_ID:
                         // Copy File and required and related
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemProjectPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemProjectPtr[0], false);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemOfficialPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemOfficialPtr[0], false);
                         }
                         break;
                     case IDialogConstants.YES_ID:
                         // Copy File and required
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemProjectPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemProjectPtr[0], false);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemOfficialPtr[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemOfficialPtr[0], false);
                         }
                         break;
                     default:

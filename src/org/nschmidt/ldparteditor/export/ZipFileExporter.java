@@ -35,11 +35,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GTexture;
+import org.nschmidt.ldparteditor.data.ReferenceParser;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.FileHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.text.References;
 
 public enum ZipFileExporter {
     INSTANCE;
@@ -258,6 +260,18 @@ public enum ZipFileExporter {
     private static Set<LDrawFile> findFiles(DatFile df) throws IOException {
         final Set<LDrawFile> result = new HashSet<>();
         // TODO Needs implementation!
+
+        // It is important to use the ReferenceParser here, because it will display a warning if one
+        // of the referenced files is missing!
+        List<List<DatFile>> refs = ReferenceParser.checkForReferences(df, References.REQUIRED, null, true);
+
+        System.out.println("List references:"); //$NON-NLS-1$
+        for (List<DatFile> list : refs) {
+            for (DatFile d : list) {
+                System.out.println(d.getNewName() + " " + d.getType() + "\n" + d.getText()); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        }
+
         return result;
     }
 
