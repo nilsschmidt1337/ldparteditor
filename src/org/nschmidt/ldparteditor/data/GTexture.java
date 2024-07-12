@@ -973,7 +973,37 @@ public class GTexture {
         return cubeMapIndex;
     }
 
-    public String getTexture() {
-        return texture;
+    public static List<String> getUsedTexMapImages(GData data) {
+        final List<String> result = new ArrayList<>();
+        while ((data = data.next) != null) {
+            if (data instanceof GDataTEX tex && (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT) && tex.linkedTexture != null) {
+                result.add(tex.linkedTexture.texture);
+            } else if (data instanceof GData1 ref) {
+                result.addAll(getUsedTexMapImagesOfSubfile(ref));
+            }
+        }
+
+        return result;
+    }
+
+    private static List<String> getUsedTexMapImagesOfSubfile(GData1 ref) {
+        return getUsedTexMapImages(ref.myGData);
+    }
+
+    public static List<String> getUsedLpePngImages(GData data) {
+        final List<String> result = new ArrayList<>();
+        while ((data = data.next) != null) {
+            if (data instanceof GDataPNG png) {
+                result.add(png.texturePath);
+            } else if (data instanceof GData1 ref) {
+                result.addAll(getUsedLpePngImagesOfSubfile(ref));
+            }
+        }
+
+        return result;
+    }
+
+    private static List<String> getUsedLpePngImagesOfSubfile(GData1 ref) {
+        return getUsedLpePngImages(ref.myGData);
     }
 }

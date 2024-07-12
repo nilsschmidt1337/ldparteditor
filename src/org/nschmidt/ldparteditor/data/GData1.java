@@ -2945,21 +2945,4 @@ public final class GData1 extends GData {
         lineBuilder.append(shortName);
         return lineBuilder.toString();
     }
-
-    public static List<String> getUsedTexMapImages(GData data) {
-        final List<String> result = new ArrayList<>();
-        while ((data = data.next) != null) {
-            if (data instanceof GDataTEX tex && (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT) && tex.linkedTexture != null) {
-                result.add(tex.linkedTexture.getTexture());
-            } else if (data instanceof GData1 ref) {
-                result.addAll(ref.getUsedTexMapImages());
-            }
-        }
-
-        return result;
-    }
-
-    private List<String> getUsedTexMapImages() {
-        return getUsedTexMapImages(myGData);
-    }
 }
