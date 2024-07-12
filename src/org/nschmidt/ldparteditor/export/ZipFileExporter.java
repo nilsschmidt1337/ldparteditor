@@ -23,24 +23,33 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.data.BFC;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
+import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.data.ReferenceParser;
+import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.FileHelper;
+import org.nschmidt.ldparteditor.helper.compositetext.Inliner;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.References;
 
 public enum ZipFileExporter {
@@ -257,20 +266,38 @@ public enum ZipFileExporter {
         return result;
     }
 
-    private static Set<LDrawFile> findFiles(DatFile df) throws IOException {
+    private static Set<LDrawFile> findFiles(DatFile df) {
         final Set<LDrawFile> result = new HashSet<>();
-        // TODO Needs implementation!
+        final GColour col16 = LDConfig.getColour16();
+        final VertexManager vm = df.getVertexManager();
+        Inliner.withSubfileReference = true;
+        Inliner.recursively = false;
+        Inliner.noComment = false;
 
         // It is important to use the ReferenceParser here, because it will display a warning if one
         // of the referenced files is missing!
-        List<List<DatFile>> refs = ReferenceParser.checkForReferences(df, References.REQUIRED, null, true);
+        final List<List<DatFile>> refs = ReferenceParser.checkForReferences(df, References.REQUIRED, null, true);
+        refs.get(0).add(df);
 
-        System.out.println("List references:"); //$NON-NLS-1$
+        NLogger.debug(ZipFileExporter.class, "List references:"); //$NON-NLS-1$
         for (List<DatFile> list : refs) {
             for (DatFile d : list) {
-                System.out.println(d.getNewName() + " " + d.getType() + "\n" + d.getText()); //$NON-NLS-1$ //$NON-NLS-2$
+                NLogger.debug(ZipFileExporter.class, d.getShortName() + " " + d.getType() + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+                final GData1 untransformedFile = (GData1) DatParser
+                        .parseLine("1 16 0 0 0 1 0 0 0 1 0 0 0 1 " + d.getShortName(), 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false, //$NON-NLS-1$
+                                new HashSet<>()).get(0).getGraphicalData();
+                final String[] lines = untransformedFile.inlinedString(BFC.NOCERTIFY, col16).split("<br>"); //$NON-NLS-1$
+                final String fileSource = Arrays.stream(lines)
+                                            .skip(1)
+                                            .limit(Math.max(lines.length - 2L, 0L))
+                                            .collect(Collectors.joining("\r\n")); //$NON-NLS-1$
+                NLogger.debug(ZipFileExporter.class, fileSource);
+                result.add(new LDrawFile(new File(d.getNewName()).getName(), d.getType(), fileSource));
+                vm.remove(untransformedFile);
             }
         }
+
+        vm.validateState();
 
         return result;
     }
@@ -298,9 +325,14 @@ public enum ZipFileExporter {
     }
 
     private static class LDrawFile {
-        private final String fileName = ""; //$NON-NLS-1$
-        private final DatType type = DatType.PART;
-        private final String content = null;
+        private final String fileName;
+        private final DatType type;
+        private final String content;
+        public LDrawFile(String fileName, DatType type, String content) {
+            this.fileName = fileName;
+            this.type = type;
+            this.content = content;
+        }
         @Override
         public int hashCode() {
             return Objects.hash(fileName, type);

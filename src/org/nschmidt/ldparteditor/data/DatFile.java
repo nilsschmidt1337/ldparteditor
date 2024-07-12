@@ -246,11 +246,11 @@ public final class DatFile {
             new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL20BFCtextured(c3d.getComposite3D());
             CUBEMAP_METAL.drawGL20BFCtextured(c3d);
             new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL20BFCtextured(c3d.getComposite3D());
-            
+
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 data2draw.drawGL20BFCtextured(c3d);
             }
-            
+
             c3d.provideRaytraceSkipSet();
 
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
@@ -410,7 +410,7 @@ public final class DatFile {
      */
     public List<String> getSource() {
         List<String> result = new ArrayList<>();
-        if (originalText.isEmpty() && new File(this.getOldName()).exists()) {
+        if (originalText.isEmpty() && new File(this.getOldName()).exists() && !Project.getUnsavedFiles().contains(this)) {
             try (UTF8BufferedReader reader = new UTF8BufferedReader(this.getOldName())) {
                 while (true) {
                     String line2 = reader.readLine();
@@ -663,7 +663,7 @@ public final class DatFile {
                     }
                     g = g.next;
                 }
-                
+
                 if (g != null && g.type() == 0 && g.toString().trim().startsWith("1 ")) { //$NON-NLS-1$
                     // It's okay, if it is formally an invalid reference line (which falls back to a comment (type = 0))
                 } else if (validState) {
@@ -854,7 +854,7 @@ public final class DatFile {
                     }
                     g = g.next;
                 }
-                
+
                 if (g != null && g.type() == 0 && g.toString().trim().startsWith("1 ")) { //$NON-NLS-1$
                     // It's okay, if it is formally an invalid reference line (which falls back to a comment (type = 0))
                 } else if (validState) {
