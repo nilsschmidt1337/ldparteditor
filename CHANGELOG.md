@@ -1,3 +1,15 @@
+# 13 July 2024
+With the release of 1.8.82 you are able to...
+-  ..."un-inline" linked subfiles in the main part (with ctrl+click on the "Inline selection (Linked)" button).
+-  ...customise a key shortcut to activate links in the text editor (it was Ctrl/Cmd before, now it is Ctrl+Cmd+Shift).
+-  ...use key shortcuts for merge triangles to quads / split quads to triangles (shift+q and shift+t).
+-  ...use "Save As..." to export a file with its references into a single zip file.
+
+The following critical issues are fixed:
+1. "Empty Subfiles" was not properly checked in the context menu of the 3D view.
+2. The path "parts/textures" was not used as a search path for PNG textures.
+
+
 # 04 July 2024
 With the release of 1.8.81 you are able to...
 -  ...ctrl-click a subpart or prim in the text editor to open it in the 3D editor and jump straight to it (cmd-click on Mac).
