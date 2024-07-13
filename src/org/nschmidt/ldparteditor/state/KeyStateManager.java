@@ -53,6 +53,7 @@ import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helper.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.helper.composite3d.PerspectiveCalculator;
+import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -314,6 +315,9 @@ public class KeyStateManager {
             addTask(Task.QUICK_LOCK_YZ, SWT.CTRL | SWT.SHIFT, 'x');
             addTask(Task.QUICK_LOCK_XZ, SWT.CTRL | SWT.SHIFT, 'y');
             addTask(Task.QUICK_LOCK_XY, SWT.CTRL | SWT.SHIFT, 'z');
+
+            addTask(Task.TRIANGLE_TO_QUAD, SWT.SHIFT, 'q');
+            addTask(Task.QUAD_TO_TRIANGLE, SWT.SHIFT, 't');
         } else {
 
             reservedKeyCodes.add(SWT.ARROW_UP + CTRL_STRING);
@@ -466,6 +470,9 @@ public class KeyStateManager {
             addTask(Task.QUICK_LOCK_YZ, SWT.CTRL | SWT.SHIFT, 'x');
             addTask(Task.QUICK_LOCK_XZ, SWT.CTRL | SWT.SHIFT, 'y');
             addTask(Task.QUICK_LOCK_XY, SWT.CTRL | SWT.SHIFT, 'z');
+
+            addTask(Task.TRIANGLE_TO_QUAD, SWT.SHIFT, 'q');
+            addTask(Task.QUAD_TO_TRIANGLE, SWT.SHIFT, 't');
         }
 
         backupTaskMap.putAll(taskMap);
@@ -1193,6 +1200,15 @@ public class KeyStateManager {
 
                         break;
                     }
+                    case TRIANGLE_TO_QUAD:
+                        RectifierSettings rectifierSettings = new RectifierSettings();
+                        rectifierSettings.setScope(1);
+                        rectifierSettings.setNoBorderedQuadToRectConversation(true);
+                        vm.rectify(rectifierSettings, true, true);
+                        break;
+                    case QUAD_TO_TRIANGLE:
+                        vm.splitQuads(true);
+                        break;
                     }
                 }
             } else if (keyEventType == SWT.KeyUp) {

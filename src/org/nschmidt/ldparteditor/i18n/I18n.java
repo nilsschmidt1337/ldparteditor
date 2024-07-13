@@ -931,6 +931,7 @@ public final class I18n {
     public static final String KEYBOARD_PERSPECTIVE_TOP = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_PERSPECTIVE_TWO_THIRDS = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_PRESS_A_KEY = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_QUAD_TO_TRIANGLE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_QUICK_FIX = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_QUICK_LOCK_X = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_QUICK_LOCK_XY = KEYBOARD.getString(getProperty());
@@ -974,6 +975,7 @@ public final class I18n {
     public static final String KEYBOARD_SPLIT = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SWAP_WINDING = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_TOGGLE_INSERT_AT_CURSOR = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_TRIANGLE_TO_QUAD = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_UNDO = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ZOOM_IN = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ZOOM_OUT = KEYBOARD.getString(getProperty());
