@@ -53,6 +53,11 @@ import de.matthiasmann.twl.util.PNGDecoder.Format;
 
 public class GTexture {
 
+    private static final String TEXTURES = "textures"; //$NON-NLS-1$
+    private static final String TEXTURES_UPPERCASE = "TEXTURES"; //$NON-NLS-1$
+    private static final String PARTS = "parts"; //$NON-NLS-1$
+    private static final String PARTS_UPPERCASE = "PARTS"; //$NON-NLS-1$
+
     static final GTexture NO_TEXTURE = new GTexture();
 
     private long accessTime = System.currentTimeMillis();
@@ -698,60 +703,58 @@ public class GTexture {
             buf.flip();
         } else {
             // Check folders
-            File fileToOpen;
-            String oTex = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + filename;
-            String oTexU = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
-            String oTexL = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
-            String uTex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
-            String uTexU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
-            String uTexL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
-            String pTex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
-            String pTexU = Project.getProjectPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
-            String pTexL = Project.getProjectPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
-            String fTex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
-            String fTexU = Project.getProjectPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
-            String fTexL = Project.getProjectPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
+            final List<String> searchPaths = new ArrayList<>();
+            searchPaths.add(filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + TEXTURES + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + PARTS_UPPERCASE + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + PARTS_UPPERCASE + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + PARTS_UPPERCASE + File.separator + TEXTURES + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + PARTS + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + PARTS + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + PARTS + File.separator + TEXTURES + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + TEXTURES + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + PARTS_UPPERCASE + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + PARTS_UPPERCASE + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + PARTS_UPPERCASE + File.separator + TEXTURES + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + PARTS + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + PARTS + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + PARTS + File.separator + TEXTURES + File.separator + filename);
+            searchPaths.add(WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename);
+            searchPaths.add(Project.getProjectPath() + File.separator + PARTS_UPPERCASE + File.separator + filename);
+            searchPaths.add(Project.getProjectPath() + File.separator + PARTS_UPPERCASE + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            searchPaths.add(Project.getProjectPath() + File.separator + PARTS_UPPERCASE + File.separator + TEXTURES + File.separator + filename);
+            searchPaths.add(Project.getProjectPath() + File.separator + PARTS + File.separator + filename);
+            searchPaths.add(Project.getProjectPath() + File.separator + PARTS + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            searchPaths.add(Project.getProjectPath() + File.separator + PARTS + File.separator + TEXTURES + File.separator + filename);
+            searchPaths.add(Project.getProjectPath() + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            searchPaths.add(Project.getProjectPath() + File.separator + TEXTURES + File.separator + filename);
+            searchPaths.add(Project.getProjectPath() + File.separator + filename);
+
             if (datFile != null && !datFile.isProjectFile() && !View.DUMMY_DATFILE.equals(datFile)) {
                 File dff = new File(datFile.getOldName()).getParentFile();
                 if (dff != null && dff.exists() && dff.isDirectory()) {
                     String ap = dff.getAbsolutePath();
-                    fTex = ap + File.separator + filename;
-                    fTexU = ap + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
-                    fTexL = ap + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
+                    searchPaths.add(ap + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+                    searchPaths.add(ap + File.separator + TEXTURES + File.separator + filename);
+                    searchPaths.add(ap + File.separator + filename);
+                } else {
+                    searchPaths.add(Project.getProjectPath() + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+                    searchPaths.add(Project.getProjectPath() + File.separator + TEXTURES + File.separator + filename);
+                    searchPaths.add(Project.getProjectPath() + File.separator + filename);
                 }
             }
 
-            String tex = filename;
-
-            File officialTexture = new File(oTex);
-            File officialTextureU = new File(oTexU);
-            File officialTextureL = new File(oTexL);
-            File unofficialTexture = new File(uTex);
-            File unofficialTextureU = new File(uTexU);
-            File unofficialTextureL = new File(uTexL);
-            File projectTexture = new File(pTex);
-            File projectTextureU = new File(pTexU);
-            File projectTextureL = new File(pTexL);
-            File localTexture = new File(fTex);
-            File localTextureU = new File(fTexU);
-            File localTextureL = new File(fTexL);
-            File textureFile = new File(tex);
-
-            boolean fileExists = (
-                    (fileToOpen = FileHelper.exist(localTexture)) != null
-                    || (fileToOpen = FileHelper.exist(localTextureU)) != null
-                    || (fileToOpen = FileHelper.exist(localTextureL)) != null
-                    || (fileToOpen = FileHelper.exist(projectTexture)) != null
-                    || (fileToOpen = FileHelper.exist(projectTextureU)) != null
-                    || (fileToOpen = FileHelper.exist(projectTextureL)) != null
-                    || (fileToOpen = FileHelper.exist(unofficialTexture)) != null
-                    || (fileToOpen = FileHelper.exist(unofficialTextureU)) != null
-                    || (fileToOpen = FileHelper.exist(unofficialTextureL)) != null
-                    || (fileToOpen = FileHelper.exist(officialTexture)) != null
-                    || (fileToOpen = FileHelper.exist(officialTextureU)) != null
-                    || (fileToOpen = FileHelper.exist(officialTextureL)) != null
-                    || (fileToOpen = FileHelper.exist(textureFile)) != null)
-                    && fileToOpen.isFile();
+            final File fileToOpen = searchPaths.reversed().stream()
+                .map(File::new)
+                .map(f -> {NLogger.debug(GTexture.class, "Search file: " + f.getAbsolutePath()); return f;}) //$NON-NLS-1$
+                .filter(f -> FileHelper.exist(f) != null)
+                .filter(File::isFile)
+                .map(f -> {NLogger.debug(GTexture.class, "Found file: " + f.getAbsolutePath()); return f;}) //$NON-NLS-1$
+                .findFirst().orElse(null);
+            boolean fileExists = fileToOpen != null;
 
             InputStream in = null;
             try {
