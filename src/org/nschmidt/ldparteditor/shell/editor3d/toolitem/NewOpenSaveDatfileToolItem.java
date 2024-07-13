@@ -270,7 +270,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                     if (selected != null) {
 
                         if (selected.endsWith(".zip")) { //$NON-NLS-1$
-                            ZipFileExporter.export(selected, df2);
+                            ZipFileExporter.export(selected, df2, win.getShell());
                             return false;
                         }
 

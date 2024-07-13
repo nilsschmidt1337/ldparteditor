@@ -86,8 +86,8 @@ public enum ReferenceParser {
         alreadyParsed.add(df.getShortName());
         alreadyParsed2.add(df);
 
-        if (refMode == References.REQUIRED || refMode == References.REQUIRED_AND_RELATED) {
-            List<String> dfSource = df.getSource();
+        if (refMode == References.REQUIRED_UNSAVED || refMode == References.REQUIRED || refMode == References.REQUIRED_AND_RELATED) {
+            List<String> dfSource = df.getSource(refMode == References.REQUIRED_UNSAVED);
             for (String line : dfSource) {
                 dfToParse = df;
                 DatFile ref = parseLine(line, alreadyParsed, true);
@@ -155,7 +155,7 @@ public enum ReferenceParser {
 
                     NLogger.debug(ReferenceParser.class, "Checking references in {0}", ref.getShortName()); //$NON-NLS-1$
 
-                    recursiveParseREQUIRED(win, ref, result, alreadyParsed, alreadyParsed2);
+                    recursiveParseREQUIRED(win, ref, result, alreadyParsed, alreadyParsed2, refMode);
                     if (cancelled) return result;
                 }
 
@@ -180,7 +180,7 @@ public enum ReferenceParser {
                 for (DatFile df2 : entries) {
                     // 2. Parse every DatFile
                     if (df2.equals(df)) continue;
-                    List<String> source = df2.getSource();
+                    List<String> source = df2.getSource(false);
                     for (String line : source) {
                         DatFile ref = parseLine(line, alreadyParsed, false);
                         if (ref != null && ref.getShortName().equals(df.getShortName()) && !alreadyParsed2.contains(df2)) {
@@ -252,8 +252,8 @@ public enum ReferenceParser {
         return result;
     }
 
-    private static void recursiveParseREQUIRED(Editor3DWindow win, DatFile df, List<List<DatFile>> result, Set<String> alreadyParsed, Set<DatFile> alreadyParsed2) {
-        List<String> dfSource = df.getSource();
+    private static void recursiveParseREQUIRED(Editor3DWindow win, DatFile df, List<List<DatFile>> result, Set<String> alreadyParsed, Set<DatFile> alreadyParsed2, References refMode) {
+        List<String> dfSource = df.getSource(refMode == References.REQUIRED_UNSAVED);
         for (String line : dfSource) {
             dfToParse = df;
             DatFile ref = parseLine(line, alreadyParsed, true);
@@ -323,7 +323,7 @@ public enum ReferenceParser {
 
                 NLogger.debug(ReferenceParser.class, "Checking references in {0}", ref.getShortName()); //$NON-NLS-1$
 
-                recursiveParseREQUIRED(win, ref, result, alreadyParsed, alreadyParsed2);
+                recursiveParseREQUIRED(win, ref, result, alreadyParsed, alreadyParsed2, refMode);
                 if (cancelled) return;
             }
         }

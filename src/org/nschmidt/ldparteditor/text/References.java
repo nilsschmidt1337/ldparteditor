@@ -17,5 +17,6 @@ package org.nschmidt.ldparteditor.text;
 
 public enum References {
     REQUIRED,
-    REQUIRED_AND_RELATED
+    REQUIRED_AND_RELATED,
+    REQUIRED_UNSAVED
 }

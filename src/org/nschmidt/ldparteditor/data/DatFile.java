@@ -404,13 +404,14 @@ public final class DatFile {
     }
 
     /**
-     * @return a list of codelines from this DAT file.
-     * <br> This functions reads the contents from the harddrive if the file was not loaded before.
+     * This function reads the contents from the hard-drive if the file was not loaded before.
      * <br> The list will be empty if the file can't be read or can't be found
+     * @param unsaved indicates if it should also return unsaved content
+     * @return a list of codelines from this DAT file.
      */
-    public List<String> getSource() {
+    public List<String> getSource(boolean unsaved) {
         List<String> result = new ArrayList<>();
-        if (originalText.isEmpty() && new File(this.getOldName()).exists() && !Project.getUnsavedFiles().contains(this)) {
+        if (originalText.isEmpty() && new File(this.getOldName()).exists() && (!unsaved || !Project.getUnsavedFiles().contains(this))) {
             try (UTF8BufferedReader reader = new UTF8BufferedReader(this.getOldName())) {
                 while (true) {
                     String line2 = reader.readLine();

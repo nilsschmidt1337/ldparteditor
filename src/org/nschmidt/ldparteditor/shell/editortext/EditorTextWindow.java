@@ -1278,7 +1278,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 if (selected != null) {
 
                     if (selected.endsWith(".zip")) { //$NON-NLS-1$
-                        ZipFileExporter.export(selected, dfToSave);
+                        ZipFileExporter.export(selected, dfToSave, btnSaveAsPtr[0].getShell());
                         return false;
                     }
 

@@ -51,6 +51,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.References;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public enum ZipFileExporter {
     INSTANCE;
@@ -61,9 +62,9 @@ public enum ZipFileExporter {
     private static final String PARTS = "parts"; //$NON-NLS-1$
     private static final String PARTS_UPPERCASE = "PARTS"; //$NON-NLS-1$
 
-    public static void export(String pathString, DatFile df) {
+    public static void export(String pathString, DatFile df, Shell shell) {
         final Path path = Paths.get(pathString);
-        // FIXME take all files needed by the current file (recursive) and make a zip-file with the correct folder structure.
+        // Take all files needed by the current file (recursive) and make a zip-file with the correct folder structure.
         // Only if the files are not referenced from official or unofficial library.
         // TEXMAP PNG / LPE PNG images should be considered, too.
 
@@ -82,7 +83,7 @@ public enum ZipFileExporter {
             // Delete the original file
             Files.deleteIfExists(path);
         } catch (IOException ioe) {
-            logExceptionAndShowDialog(ioe);
+            logExceptionAndShowDialog(ioe, shell);
             return;
         }
 
@@ -137,19 +138,19 @@ public enum ZipFileExporter {
                 Files.write(pngPathInZipfile, pngImage.data, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
             }
         } catch (IOException ioe) {
-            logExceptionAndShowDialog(ioe);
+            logExceptionAndShowDialog(ioe, shell);
             return;
         }
 
-        MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_INFORMATION);
+        MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION);
         messageBox.setText(I18n.DIALOG_INFO);
         messageBox.setMessage(I18n.E3D_ZIP_CREATED);
         messageBox.open();
     }
 
-    private static void logExceptionAndShowDialog(IOException ioe) {
+    private static void logExceptionAndShowDialog(IOException ioe, Shell shell) {
         NLogger.error(ZipFileExporter.class, ioe);
-        MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
+        MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
         messageBox.setText(I18n.DIALOG_ERROR);
         messageBox.setMessage(I18n.E3D_ZIP_ERROR);
         messageBox.open();
@@ -162,15 +163,6 @@ public enum ZipFileExporter {
         for (String filename : images) {
             // Check folders
             File fileToOpen;
-            String pPartsLTex = Project.getProjectPath() + File.separator + PARTS + File.separator + filename;
-            String pPartsLTexU = Project.getProjectPath() + File.separator + PARTS  + File.separator + TEXTURES_UPPERCASE + File.separator + filename;
-            String pPartsLTexL = Project.getProjectPath() + File.separator + PARTS  + File.separator + TEXTURES + File.separator + filename;
-            String pPartsUTex = Project.getProjectPath() + File.separator + PARTS_UPPERCASE + File.separator + filename;
-            String pPartsUTexU = Project.getProjectPath() + File.separator + PARTS_UPPERCASE  + File.separator + TEXTURES_UPPERCASE + File.separator + filename;
-            String pPartsUTexL = Project.getProjectPath() + File.separator + PARTS_UPPERCASE  + File.separator + TEXTURES + File.separator + filename;
-            String pTex = Project.getProjectPath() + File.separator + filename;
-            String pTexU = Project.getProjectPath() + File.separator + TEXTURES_UPPERCASE + File.separator + filename;
-            String pTexL = Project.getProjectPath() + File.separator + TEXTURES + File.separator + filename;
             String fTex = Project.getProjectPath() + File.separator + filename;
             String fTexU = Project.getProjectPath() + File.separator + TEXTURES_UPPERCASE + File.separator + filename;
             String fTexL = Project.getProjectPath() + File.separator + TEXTURES + File.separator + filename;
@@ -197,15 +189,15 @@ public enum ZipFileExporter {
                 }
             }
 
-            File projectTexture = new File(pTex);
-            File projectTextureU = new File(pTexU);
-            File projectTextureL = new File(pTexL);
-            File projectTexturePartsL = new File(pPartsLTex);
-            File projectTextureUPartsL = new File(pPartsLTexU);
-            File projectTextureLPartsL = new File(pPartsLTexL);
-            File projectTexturePartsU = new File(pPartsUTex);
-            File projectTextureUPartsU = new File(pPartsUTexU);
-            File projectTextureLPartsU = new File(pPartsUTexL);
+            File projectTexture = new File(Project.getProjectPath() + File.separator + filename);
+            File projectTextureU = new File(Project.getProjectPath() + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            File projectTextureL = new File(Project.getProjectPath() + File.separator + TEXTURES + File.separator + filename);
+            File projectTexturePartsL = new File(Project.getProjectPath() + File.separator + PARTS + File.separator + filename);
+            File projectTextureUPartsL = new File(Project.getProjectPath() + File.separator + PARTS  + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            File projectTextureLPartsL = new File(Project.getProjectPath() + File.separator + PARTS  + File.separator + TEXTURES + File.separator + filename);
+            File projectTexturePartsU = new File(Project.getProjectPath() + File.separator + PARTS_UPPERCASE + File.separator + filename);
+            File projectTextureUPartsU = new File(Project.getProjectPath() + File.separator + PARTS_UPPERCASE  + File.separator + TEXTURES_UPPERCASE + File.separator + filename);
+            File projectTextureLPartsU = new File(Project.getProjectPath() + File.separator + PARTS_UPPERCASE  + File.separator + TEXTURES + File.separator + filename);
             File localTexture = new File(fTex);
             File localTextureU = new File(fTexU);
             File localTextureL = new File(fTexL);
@@ -276,13 +268,12 @@ public enum ZipFileExporter {
 
         // It is important to use the ReferenceParser here, because it will display a warning if one
         // of the referenced files is missing!
-        final List<List<DatFile>> refs = ReferenceParser.checkForReferences(df, References.REQUIRED, null, true);
+        final List<List<DatFile>> refs = ReferenceParser.checkForReferences(df, References.REQUIRED_UNSAVED, null, true);
         refs.get(0).add(df);
 
         NLogger.debug(ZipFileExporter.class, "List references:"); //$NON-NLS-1$
         for (List<DatFile> list : refs) {
             for (DatFile d : list) {
-                NLogger.debug(ZipFileExporter.class, d.getShortName() + " " + d.getType() + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
                 final GData1 untransformedFile = (GData1) DatParser
                         .parseLine("1 16 0 0 0 1 0 0 0 1 0 0 0 1 " + d.getShortName(), 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false, //$NON-NLS-1$
                                 new HashSet<>()).get(0).getGraphicalData();
@@ -291,8 +282,14 @@ public enum ZipFileExporter {
                                             .skip(1)
                                             .limit(Math.max(lines.length - 2L, 0L))
                                             .collect(Collectors.joining("\r\n")); //$NON-NLS-1$
-                NLogger.debug(ZipFileExporter.class, fileSource);
-                result.add(new LDrawFile(new File(d.getNewName()).getName(), d.getType(), fileSource));
+                final String filePath = untransformedFile.getName();
+                NLogger.debug(ZipFileExporter.class, d.getShortName() + ' ' + d.getType() + '\n' + filePath);
+                if (!filePath.startsWith(WorkbenchManager.getUserSettingState().getUnofficialFolderPath())
+                   && !filePath.startsWith(WorkbenchManager.getUserSettingState().getLdrawFolderPath())) {
+                    NLogger.debug(ZipFileExporter.class, fileSource);
+                    result.add(new LDrawFile(new File(d.getNewName()).getName(), d.getType(), fileSource));
+                }
+
                 vm.remove(untransformedFile);
             }
         }
