@@ -265,6 +265,7 @@ public final class I18n {
     public static final String COMPOSITETAB_WARNINGS = COMPOSITETAB.getString(getProperty());
     public static final String COORDINATESDIALOG_CLIPBOARD = COORDINATESDIALOG.getString(getProperty());
     public static final String COORDINATESDIALOG_MANIPULATOR = COORDINATESDIALOG.getString(getProperty());
+    public static final String COORDINATESDIALOG_SET_MANIPULATOR = COORDINATESDIALOG.getString(getProperty());
     public static final String COORDINATESDIALOG_SET_XYZ = COORDINATESDIALOG.getString(getProperty());
     public static final String COORDINATESDIALOG_X = COORDINATESDIALOG.getString(getProperty());
     public static final String COORDINATESDIALOG_Y = COORDINATESDIALOG.getString(getProperty());

@@ -131,6 +131,12 @@ public class CoordinatesDialog extends CoordinatesDesign {
             }
             updateXYZ();
         });
+        widgetUtil(btnSetManipulatorPtr[0]).addSelectionListener(e -> {
+            mani.getPosition().set(vertex.x, vertex.y, vertex.z, 1f);
+            mani.setAccuratePosition(vertex.xp, vertex.yp, vertex.zp);
+            setReturnCode(CANCEL);
+            close();
+        });
         widgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
             creatingCopy = true;
             setReturnCode(OK);

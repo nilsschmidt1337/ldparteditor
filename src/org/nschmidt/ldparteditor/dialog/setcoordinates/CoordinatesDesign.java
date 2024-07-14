@@ -62,6 +62,7 @@ class CoordinatesDesign extends Dialog {
     final BigDecimalSpinner[] spnZPtr = new BigDecimalSpinner[1];
     final NButton[] btnClipboardPtr = new NButton[1];
     final NButton[] btnManipulatorPtr = new NButton[1];
+    final NButton[] btnSetManipulatorPtr = new NButton[1];
 
     Vertex m = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
@@ -85,7 +86,7 @@ class CoordinatesDesign extends Dialog {
             } else {
                 c = new Vertex(clipboardVertex.xp, clipboardVertex.yp, clipboardVertex.zp);
             }
-           
+
         }
     }
 
@@ -204,6 +205,17 @@ class CoordinatesDesign extends Dialog {
             spnZ.setMaximum(new BigDecimal(1000000));
             spnZ.setMinimum(new BigDecimal(-1000000));
             spnZ.setValue(v.zp);
+        }
+
+        {
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(1, true));
+            NButton btnSetManipulator = new NButton(cmpTxt, SWT.NONE);
+            this.btnSetManipulatorPtr[0] = btnSetManipulator;
+            btnSetManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btnSetManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnSetManipulator.setText(I18n.COORDINATESDIALOG_SET_MANIPULATOR);
         }
 
         cmpContainer.pack();
