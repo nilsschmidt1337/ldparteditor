@@ -31,7 +31,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composite.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
-import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
@@ -46,8 +45,6 @@ import org.nschmidt.ldparteditor.widget.NButton;
  * business logic.
  */
 class CoordinatesDesign extends Dialog {
-
-    private static ManipulatorScope transformationMode = ManipulatorScope.GLOBAL;
 
     final NButton[] btnLocalPtr = new NButton[1];
     final NButton[] btnGlobalPtr = new NButton[1];
@@ -121,14 +118,13 @@ class CoordinatesDesign extends Dialog {
             NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
             this.btnLocalPtr[0] = btnLocal;
             btnLocal.setToolTipText(I18n.E3D_LOCAL);
-            if (transformationMode == ManipulatorScope.LOCAL) btnLocal.setSelection(true);
             btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
             NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
             this.btnGlobalPtr[0] = btnGlobal;
             btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
-            if (transformationMode == ManipulatorScope.GLOBAL) btnGlobal.setSelection(true);
+            btnGlobal.setSelection(true);
             btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
         }
 

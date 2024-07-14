@@ -96,6 +96,7 @@ import org.nschmidt.ldparteditor.dialog.setcoordinates.CoordinatesDialog;
 import org.nschmidt.ldparteditor.dialog.slantingmatrixprojector.SlantingMatrixProjectorDialog;
 import org.nschmidt.ldparteditor.dialog.slicerpro.SlicerProDialog;
 import org.nschmidt.ldparteditor.dialog.smooth.SmoothDialog;
+import org.nschmidt.ldparteditor.dialog.swapcoordinates.SwapCoordinatesDialog;
 import org.nschmidt.ldparteditor.dialog.symsplitter.SymSplitterDialog;
 import org.nschmidt.ldparteditor.dialog.tjunction.TJunctionDialog;
 import org.nschmidt.ldparteditor.dialog.translate.TranslateDialog;
@@ -107,6 +108,7 @@ import org.nschmidt.ldparteditor.dialog.ytruder.YTruderDialog;
 import org.nschmidt.ldparteditor.enumtype.AlignAndDistribute;
 import org.nschmidt.ldparteditor.enumtype.IconSize;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
+import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.MergeTo;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
@@ -120,6 +122,7 @@ import org.nschmidt.ldparteditor.enumtype.WorkingMode;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.FileHelper;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
+import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.helper.Version;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
@@ -214,6 +217,7 @@ public class MiscToolItem extends ToolItem {
     private static final MenuItem[] mntmTranslatePtr = new MenuItem[1];
     private static final MenuItem[] mntmRotatePtr = new MenuItem[1];
     private static final MenuItem[] mntmScalePtr = new MenuItem[1];
+    private static final MenuItem[] mntmSwapXYZPtr = new MenuItem[1];
 
     private static final MenuItem[] mntmSnapToGridPtr = new MenuItem[1];
     private static final MenuItem[] mntmAlignAndDistributePtr = new MenuItem[1];
@@ -599,6 +603,10 @@ public class MiscToolItem extends ToolItem {
         MenuItem mntmScale = new MenuItem(mnuMerge, SWT.PUSH);
         MiscToolItem.mntmScalePtr[0] = mntmScale;
         mntmScale.setText(I18n.E3D_SCALE_SELECTION);
+
+        MenuItem mntmSwapXYZ = new MenuItem(mnuMerge, SWT.PUSH);
+        MiscToolItem.mntmSwapXYZPtr[0] = mntmSwapXYZ;
+        mntmSwapXYZ.setText(I18n.E3D_SWAP_COORDINATES);
 
         new MenuItem(mnuMerge, SWT.SEPARATOR);
 
@@ -1995,6 +2003,83 @@ public class MiscToolItem extends ToolItem {
                     return;
                 }
             }
+            regainFocus();
+        });
+
+        widgetUtil(mntmSwapXYZPtr[0]).addSelectionListener(e -> {
+            for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                Composite3D c3d = renderer.getC3D();
+                if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                    final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                    final WorkingMode action = TransformationModeToolItem.getWorkingAction();
+                    if (SwapCoordinatesDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                    } else {
+                        TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
+                    }
+
+                    if (new SwapCoordinatesDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.OK_ID) {
+                        vm.addSnapshot();
+                        vm.selectObjectVertices();
+                        final ManipulatorAxisMode axis = SwapCoordinatesDialog.getAxisMode();
+                        Matrix m = View.ACCURATE_ID;
+                        switch (axis) {
+                        case XY: {
+                            m = new Matrix(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                                           BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                                           BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
+                                           BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+                            break;
+                        }
+                        case XZ: {
+                            m = new Matrix(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
+                                           BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                                           BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                                           BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+                            break;
+                        }
+                        case YZ: {
+                            m = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                                           BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
+                                           BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                                           BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+                            break;
+                        }
+                        default:
+                            NLogger.debug(MiscToolItem.class, "Unknown swap action: " + axis); //$NON-NLS-1$
+                        }
+
+                        if (SwapCoordinatesDialog.getTransformationMode() == ManipulatorScope.LOCAL) {
+                            final Manipulator mani = c3d.getManipulator();
+                            final Matrix rotMatrixInverseT = mani.getAccurateRotation().invert().transpose();
+                            final Matrix swapMatrix = new Matrix(m);
+                            final BigDecimal[] accuratePosition = mani.getAccuratePosition();
+
+                            m = View.ACCURATE_ID.translate(new BigDecimal[] { accuratePosition[0].negate(), accuratePosition[1].negate(), accuratePosition[2].negate() });
+                            m = Matrix.mul(rotMatrixInverseT, m);
+                            m = Matrix.mul(swapMatrix, m);
+                            m = Matrix.mul(mani.getAccurateRotation().transpose(), m);
+                            m = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { accuratePosition[0], accuratePosition[1], accuratePosition[2] }), m);
+                        }
+
+                        final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
+                        if (SwapCoordinatesDialog.isCreatingCopy()) {
+                            vm.copy();
+                            vm.paste(null);
+                            MiscToggleToolItem.setMovingAdjacentData(false);
+                            vm.transformSelection(m, null, false, true);
+                            MiscToggleToolItem.setMovingAdjacentData(moveAdjacentData);
+                        } else {
+                            vm.transformSelection(m, null, moveAdjacentData, true);
+                        }
+                    }
+
+                    TransformationModeToolItem.setWorkingAction(action);
+                    regainFocus();
+                    return;
+                }
+            }
+
             regainFocus();
         });
 

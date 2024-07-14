@@ -101,6 +101,7 @@ public final class I18n {
     private static final ResourceBundle DIRECTION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Direction", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle INFOGRAPHIC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Infographic", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle CALIBRATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Calibrate", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle SWAPCOORDINATES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.SwapCoordinatesDialog", MyLanguage.getLocale()); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -721,6 +722,7 @@ public final class I18n {
     public static final String E3D_SUBFILE_FROM_SELECTION_QUESTION = E3D.getString(getProperty());
     public static final String E3D_SUBFILE_FROM_SELECTION_QUESTION_CUT = E3D.getString(getProperty());
     public static final String E3D_SUBFILE_TO_MANIPULATOR = E3D.getString(getProperty());
+    public static final String E3D_SWAP_COORDINATES = E3D.getString(getProperty());
     public static final String E3D_SWAP_WINDING = E3D.getString(getProperty());
     public static final String E3D_SWAP_XY = E3D.getString(getProperty());
     public static final String E3D_SWAP_XZ = E3D.getString(getProperty());
@@ -1369,6 +1371,13 @@ public final class I18n {
     public static final String SPLASH_NO_READ = SPLASH.getString(getProperty());
     public static final String SPLASH_NO_WRITE = SPLASH.getString(getProperty());
     public static final String SPLASH_TITLE = SPLASH.getString(getProperty());
+    public static final String SWAPCOORDINATES_SWAP_ON_XY = SWAPCOORDINATES.getString(getProperty());
+    public static final String SWAPCOORDINATES_SWAP_ON_XZ = SWAPCOORDINATES.getString(getProperty());
+    public static final String SWAPCOORDINATES_SWAP_ON_YZ = SWAPCOORDINATES.getString(getProperty());
+    public static final String SWAPCOORDINATES_SWAP_XYZ = SWAPCOORDINATES.getString(getProperty());
+    public static final String SWAPCOORDINATES_X = SWAPCOORDINATES.getString(getProperty());
+    public static final String SWAPCOORDINATES_Y = SWAPCOORDINATES.getString(getProperty());
+    public static final String SWAPCOORDINATES_Z = SWAPCOORDINATES.getString(getProperty());
     public static final String SYMSPLITTER_COLOURISE = SYMSPLITTER.getString(getProperty());
     public static final String SYMSPLITTER_CUT = SYMSPLITTER.getString(getProperty());
     public static final String SYMSPLITTER_DO_NOT_CUT = SYMSPLITTER.getString(getProperty());

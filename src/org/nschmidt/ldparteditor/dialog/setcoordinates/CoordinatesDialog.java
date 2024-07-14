@@ -62,15 +62,13 @@ public class CoordinatesDialog extends CoordinatesDesign {
         y = false;
         z = false;
         creatingCopy = false;
+        transformationMode = ManipulatorScope.GLOBAL;
         if (v == null) {
             vertex = new Vertex(0f, 0f, 0f);
         } else {
             vertex = new Vertex(v.xp, v.yp, v.zp);
         }
         this.mani = mani;
-        if (transformationMode == ManipulatorScope.LOCAL) {
-            vertex = globalToLocal(vertex);
-        }
     }
 
     @Override
