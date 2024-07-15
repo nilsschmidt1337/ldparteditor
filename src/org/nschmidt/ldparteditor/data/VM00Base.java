@@ -131,8 +131,9 @@ class VM00Base {
 
     private Vertex vertexToReplace = null;
 
-    private boolean modified = false;
-    private boolean updated = true;
+    // "updated" needs to be volatile, because another thread will change its value, once the update is complete!!
+    private volatile boolean updated = true;
+    private volatile boolean modified = false;
 
     private final AtomicBoolean skipSyncWithTextEditor = new AtomicBoolean(false);
 
