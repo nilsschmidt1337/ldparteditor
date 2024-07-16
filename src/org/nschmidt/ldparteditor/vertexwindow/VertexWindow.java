@@ -52,6 +52,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * A window for manipulating the coordinates of a single vertex
@@ -222,7 +223,7 @@ public class VertexWindow extends ApplicationWindow {
 
     @Override
     protected Control createContents(Composite parent) {
-        final Composite vertexWindow = new Composite(parent, SWT.NONE);
+        final Composite vertexWindow = Theming.composite(parent, SWT.NONE);
         final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
 
         GridLayout gridLayout = new GridLayout();
@@ -232,11 +233,11 @@ public class VertexWindow extends ApplicationWindow {
 
         {
             {
-                Composite cmpTxt = new Composite(vertexWindow, SWT.NONE);
+                Composite cmpTxt = Theming.composite(vertexWindow, SWT.NONE);
                 cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmpTxt.setLayout(new GridLayout(5, true));
 
-                Label lblVertexData = new Label(cmpTxt, SWT.NONE);
+                Label lblVertexData = Theming.label(cmpTxt, SWT.NONE);
                 lblVertexData.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                 lblVertexData.setText(I18n.E3D_VERTEX_DATA);
 
@@ -257,7 +258,7 @@ public class VertexWindow extends ApplicationWindow {
             }
 
             {
-                Composite cmpTxt = new Composite(vertexWindow, SWT.NONE);
+                Composite cmpTxt = Theming.composite(vertexWindow, SWT.NONE);
                 cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmpTxt.setLayout(new GridLayout(1, true));
 
@@ -270,7 +271,7 @@ public class VertexWindow extends ApplicationWindow {
             }
 
             {
-                Composite cmpTxt = new Composite(vertexWindow, SWT.NONE);
+                Composite cmpTxt = Theming.composite(vertexWindow, SWT.NONE);
                 cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmpTxt.setLayout(new GridLayout(1, true));
 
@@ -283,7 +284,7 @@ public class VertexWindow extends ApplicationWindow {
             }
 
             {
-                Composite cmpTxt = new Composite(vertexWindow, SWT.NONE);
+                Composite cmpTxt = Theming.composite(vertexWindow, SWT.NONE);
                 cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmpTxt.setLayout(new GridLayout(1, true));
 
@@ -296,7 +297,7 @@ public class VertexWindow extends ApplicationWindow {
             }
 
             {
-                Composite cmpTxt = new Composite(vertexWindow, SWT.NONE);
+                Composite cmpTxt = Theming.composite(vertexWindow, SWT.NONE);
                 cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmpTxt.setLayout(new GridLayout(1, true));
 

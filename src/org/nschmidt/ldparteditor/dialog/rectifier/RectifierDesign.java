@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -68,17 +69,18 @@ class RectifierDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.RECTIFIER_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblAngle = new Label(cmpContainer, SWT.NONE);
+        Label lblAngle = Theming.label(cmpContainer, SWT.NONE);
         lblAngle.setText(I18n.RECTIFIER_MAX_ANGLE);
 
         BigDecimalSpinner spnAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);

@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 class ValueDesign extends Dialog {
 
@@ -52,6 +53,7 @@ class ValueDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
@@ -64,7 +66,7 @@ class ValueDesign extends Dialog {
         spnValue.setLayoutData(gd);
 
 
-        Label lblUnit = new Label(cmpContainer, SWT.NONE);
+        Label lblUnit = Theming.label(cmpContainer, SWT.NONE);
         this.lblUnitPtr[0] = lblUnit;
         lblUnit.setText(unitText);
 

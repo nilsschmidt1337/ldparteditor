@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.widget.Tree;
 import org.nschmidt.ldparteditor.widget.TreeColumn;
 import org.nschmidt.ldparteditor.widget.TreeItem;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The data selection dialog
@@ -62,14 +63,15 @@ class SelectionDesign<T> extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(title);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, selectionData.size());

@@ -37,6 +37,7 @@ import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The coordinates dialog
@@ -95,18 +96,19 @@ class CoordinatesDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.COORDINATESDIALOG_SET_XYZ);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         if (MiscToggleToolItem.isMovingAdjacentData()) {
-            Label lblAdjacencyWarning = new Label(cmpContainer, SWT.NONE);
+            Label lblAdjacencyWarning = Theming.label(cmpContainer, SWT.NONE);
             lblAdjacencyWarning.setText(I18n.E3D_ADJACENT_WARNING_STATUS);
             lblAdjacencyWarning.setToolTipText(I18n.E3D_ADJACENT_WARNING_DIALOG);
             lblAdjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
@@ -129,7 +131,7 @@ class CoordinatesDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnManipulator = new NButton(cmpTxt, SWT.NONE);
@@ -139,7 +141,7 @@ class CoordinatesDesign extends Dialog {
             btnManipulator.setText(I18n.COORDINATESDIALOG_MANIPULATOR);
         }
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
@@ -150,7 +152,7 @@ class CoordinatesDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -168,7 +170,7 @@ class CoordinatesDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -186,7 +188,7 @@ class CoordinatesDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -204,7 +206,7 @@ class CoordinatesDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnSetManipulator = new NButton(cmpTxt, SWT.NONE);

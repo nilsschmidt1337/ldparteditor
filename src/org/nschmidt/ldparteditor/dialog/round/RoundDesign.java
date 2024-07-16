@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -58,18 +59,19 @@ class RoundDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.ROUND_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
-            Composite cmpCoords = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpCoords = Theming.composite(cmpContainer, SWT.NONE);
             cmpCoords.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpCoords.setLayout(new GridLayout(3, true));
 
@@ -89,7 +91,7 @@ class RoundDesign extends Dialog {
             cbZaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundZ());
         }
 
-        Label lblCoordsPrec = new Label(cmpContainer, SWT.NONE);
+        Label lblCoordsPrec = Theming.label(cmpContainer, SWT.NONE);
         lblCoordsPrec.setText(I18n.ROUND_COORD_PRECISION);
 
         IntegerSpinner spnCoords = new IntegerSpinner(cmpContainer, SWT.NONE);
@@ -99,7 +101,7 @@ class RoundDesign extends Dialog {
         spnCoords.setMinimum(0);
         spnCoords.setValue(WorkbenchManager.getUserSettingState().getCoordsPrecision());
 
-        Label lblMatrixPrec = new Label(cmpContainer, SWT.NONE);
+        Label lblMatrixPrec = Theming.label(cmpContainer, SWT.NONE);
         lblMatrixPrec.setText(I18n.ROUND_MATRIX_PRECISION);
 
         IntegerSpinner spnMatrix = new IntegerSpinner(cmpContainer, SWT.NONE);
@@ -109,7 +111,7 @@ class RoundDesign extends Dialog {
         spnMatrix.setMinimum(0);
         spnMatrix.setValue(WorkbenchManager.getUserSettingState().getTransMatrixPrecision());
 
-        Label lblUnit = new Label(cmpContainer, SWT.NONE);
+        Label lblUnit = Theming.label(cmpContainer, SWT.NONE);
         lblUnit.setText(I18n.ROUND_IN_DEC_PLACES);
 
         cmpContainer.pack();

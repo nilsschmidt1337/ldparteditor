@@ -31,6 +31,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The scale dialog
@@ -63,21 +64,22 @@ class SmoothDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.SMOOTH_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblPreview = new Label(cmpContainer, SWT.NONE);
+        Label lblPreview = Theming.label(cmpContainer, SWT.NONE);
         lblPreview.setText(I18n.SMOOTH_REALTIME_PREVIEW);
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(3, true));
 
@@ -97,11 +99,11 @@ class SmoothDesign extends Dialog {
             cbZaxis.setSelection(true);
         }
 
-        Label lblIter = new Label(cmpContainer, SWT.NONE);
+        Label lblIter = Theming.label(cmpContainer, SWT.NONE);
         lblIter.setText(I18n.SMOOTH_ITERATIONS);
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
 
@@ -113,11 +115,11 @@ class SmoothDesign extends Dialog {
             spnPX.setValue(1);
         }
 
-        Label lblFactor = new Label(cmpContainer, SWT.NONE);
+        Label lblFactor = Theming.label(cmpContainer, SWT.NONE);
         lblFactor.setText(I18n.SMOOTH_FACTOR);
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
 

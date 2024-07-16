@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolI
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The translate dialog
@@ -84,18 +85,19 @@ class TranslateDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.TRANSLATE_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         if (MiscToggleToolItem.isMovingAdjacentData()) {
-            Label lblAdjacencyWarning = new Label(cmpContainer, SWT.NONE);
+            Label lblAdjacencyWarning = Theming.label(cmpContainer, SWT.NONE);
             lblAdjacencyWarning.setText(I18n.E3D_ADJACENT_WARNING_STATUS);
             lblAdjacencyWarning.setToolTipText(I18n.E3D_ADJACENT_WARNING_DIALOG);
             lblAdjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
@@ -125,7 +127,7 @@ class TranslateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -143,7 +145,7 @@ class TranslateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -161,7 +163,7 @@ class TranslateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -192,11 +194,11 @@ class TranslateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
 
-            Label lblIterations = new Label(cmpTxt, SWT.NONE);
+            Label lblIterations = Theming.label(cmpTxt, SWT.NONE);
             lblIterations.setText(I18n.E3D_ITERATIONS);
 
             IntegerSpinner spnIterations = new IntegerSpinner(cmpTxt, SWT.NONE);

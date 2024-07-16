@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -49,7 +50,7 @@ class UnificatorDesign extends Dialog {
 
     final Combo[] cmbWhatToUnifyPtr = new Combo[1];
     final Combo[] cmbScopePtr = new Combo[1];
-    
+
     final NButton[] btnVerbosePtr = new NButton[1];
 
     // Use final only for subclass/listener references!
@@ -67,17 +68,18 @@ class UnificatorDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.UNIFICATOR_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblHint = new Label(cmpContainer, SWT.NONE);
+        Label lblHint = Theming.label(cmpContainer, SWT.NONE);
         lblHint.setText(I18n.UNIFICATOR_VERTEX_UNIFIATION);
 
         BigDecimalSpinner spnVertexThreshold = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -87,7 +89,7 @@ class UnificatorDesign extends Dialog {
         spnVertexThreshold.setMinimum(new BigDecimal(0));
         spnVertexThreshold.setValue(us.getVertexThreshold());
 
-        Label lblPrecision = new Label(cmpContainer, SWT.NONE);
+        Label lblPrecision = Theming.label(cmpContainer, SWT.NONE);
         lblPrecision.setText(I18n.UNIFICATOR_VERTEX_SNAP);
 
         BigDecimalSpinner spnSubfileThreshold = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -97,7 +99,7 @@ class UnificatorDesign extends Dialog {
         spnSubfileThreshold.setMinimum(new BigDecimal(0));
         spnSubfileThreshold.setValue(us.getSubvertexThreshold());
 
-        Label lblSplitPlane = new Label(cmpContainer, SWT.NONE);
+        Label lblSplitPlane = Theming.label(cmpContainer, SWT.NONE);
         lblSplitPlane.setText(I18n.UNIFICATOR_SNAP_ON);
 
         {
@@ -115,7 +117,7 @@ class UnificatorDesign extends Dialog {
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(us.getScope()));
         cmbScope.select(us.getScope());
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

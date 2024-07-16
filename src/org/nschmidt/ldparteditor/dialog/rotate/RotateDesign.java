@@ -41,6 +41,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolI
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The rotate dialog
@@ -116,18 +117,19 @@ class RotateDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.ROTATE_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         if (MiscToggleToolItem.isMovingAdjacentData()) {
-            Label lblAdjacencyWarning = new Label(cmpContainer, SWT.NONE);
+            Label lblAdjacencyWarning = Theming.label(cmpContainer, SWT.NONE);
             lblAdjacencyWarning.setText(I18n.E3D_ADJACENT_WARNING_STATUS);
             lblAdjacencyWarning.setToolTipText(I18n.E3D_ADJACENT_WARNING_DIALOG);
             lblAdjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
@@ -157,7 +159,7 @@ class RotateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -196,11 +198,11 @@ class RotateDesign extends Dialog {
             spnZ.setValue(v.zp);
         }
 
-        Label lblPivot = new Label(cmpContainer, SWT.NONE);
+        Label lblPivot = Theming.label(cmpContainer, SWT.NONE);
         lblPivot.setText(I18n.ROTATE_PIVOT);
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnPivotManipulator = new NButton(cmpTxt, SWT.NONE);
@@ -210,7 +212,7 @@ class RotateDesign extends Dialog {
             btnPivotManipulator.setText(I18n.ROTATE_PIVOT_MANIPULATOR);
         }
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnPivotClipboard = new NButton(cmpTxt, SWT.NONE);
@@ -219,22 +221,22 @@ class RotateDesign extends Dialog {
             btnPivotClipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
             btnPivotClipboard.setText(I18n.ROTATE_PIVOT_CLIPBOARD);
         }
-        
+
         if (!isLoadingClipboardVertex) {
-            Label lblClipboardVertex = new Label(cmpContainer, SWT.NONE);
+            Label lblClipboardVertex = Theming.label(cmpContainer, SWT.NONE);
             lblClipboardVertex.setText(I18n.ROTATE_PIVOT_INITIAL_A);
         } else {
-            Label lblClipboardVertex = new Label(cmpContainer, SWT.NONE);
+            Label lblClipboardVertex = Theming.label(cmpContainer, SWT.NONE);
             lblClipboardVertex.setText(I18n.ROTATE_PIVOT_INITIAL_B);
         }
-        
+
         if (isLoadingManipulatorPosition) {
-            Label lblManipulatorPosition = new Label(cmpContainer, SWT.NONE);
+            Label lblManipulatorPosition = Theming.label(cmpContainer, SWT.NONE);
             lblManipulatorPosition.setText(I18n.ROTATE_PIVOT_INITIAL_C);
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
 
@@ -248,7 +250,7 @@ class RotateDesign extends Dialog {
 
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
 
@@ -261,7 +263,7 @@ class RotateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
 
@@ -274,11 +276,11 @@ class RotateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
 
-            Label lblIterations = new Label(cmpTxt, SWT.NONE);
+            Label lblIterations = Theming.label(cmpTxt, SWT.NONE);
             lblIterations.setText(I18n.E3D_ITERATIONS);
 
             IntegerSpinner spnIterations = new IntegerSpinner(cmpTxt, SWT.NONE);

@@ -42,6 +42,7 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -201,11 +202,11 @@ class EditorMetaDesign extends ApplicationWindow {
     protected Control createContents(Composite parent) {
         final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
         setStatus(I18n.E3D_READY_STATUS);
-        Composite container = new Composite(parent, SWT.BORDER);
+        Composite container = Theming.composite(parent, SWT.BORDER);
         GridLayout gridLayout = new GridLayout(1, true);
         container.setLayout(gridLayout);
         {
-            CTabFolder tabFolderSettings = new CTabFolder(container, SWT.BORDER);
+            CTabFolder tabFolderSettings = Theming.cTabFolder(container, SWT.BORDER);
             tabFolderSettings.setMRUVisible(true);
             tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
             GridData gridData = new GridData();
@@ -227,7 +228,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.H_SCROLL | SWT.V_SCROLL);
                 tItem.setControl(cmpScroll);
 
-                Composite cmpMetaArea = new Composite(cmpScroll, SWT.NONE);
+                Composite cmpMetaArea = Theming.composite(cmpScroll, SWT.NONE);
                 cmpScroll.setContent(cmpMetaArea);
                 cmpScroll.setExpandHorizontal(true);
                 cmpScroll.setExpandVertical(true);
@@ -246,10 +247,10 @@ class EditorMetaDesign extends ApplicationWindow {
                     grpMeta.setLayout(new GridLayout(1, false));
 
                     {
-                        Composite cmpDescription = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpDescription = Theming.composite(grpMeta, SWT.NONE);
                         cmpDescription.setLayout(new GridLayout(3, false));
 
-                        Label lblDescription = new Label(cmpDescription, SWT.NONE);
+                        Label lblDescription = Theming.label(cmpDescription, SWT.NONE);
                         lblDescription.setText("Description:"); //$NON-NLS-1$
 
                         Text txtDescription = new Text(cmpDescription, SWT.SEARCH);
@@ -262,10 +263,10 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpName = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpName = Theming.composite(grpMeta, SWT.NONE);
                         cmpName.setLayout(new GridLayout(2, false));
 
-                        Label lblName = new Label(cmpName, SWT.NONE);
+                        Label lblName = Theming.label(cmpName, SWT.NONE);
                         lblName.setText("0 Name: "); //$NON-NLS-1$
 
                         Text txtName = new Text(cmpName, SWT.SEARCH);
@@ -274,10 +275,10 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpAuthor = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpAuthor = Theming.composite(grpMeta, SWT.NONE);
                         cmpAuthor.setLayout(new GridLayout(5, false));
 
-                        Label lblAuthor = new Label(cmpAuthor, SWT.NONE);
+                        Label lblAuthor = Theming.label(cmpAuthor, SWT.NONE);
                         lblAuthor.setText("0 Author: "); //$NON-NLS-1$
 
                         Text txtRealName = new Text(cmpAuthor, SWT.SEARCH);
@@ -287,7 +288,7 @@ class EditorMetaDesign extends ApplicationWindow {
                             txtRealName.setText(userSettings.getRealUserName());
                         }
 
-                        Label lblAuthor2 = new Label(cmpAuthor, SWT.NONE);
+                        Label lblAuthor2 = Theming.label(cmpAuthor, SWT.NONE);
                         lblAuthor2.setText("["); //$NON-NLS-1$
 
                         Text txtUserName = new Text(cmpAuthor, SWT.SEARCH);
@@ -298,15 +299,15 @@ class EditorMetaDesign extends ApplicationWindow {
                             txtUserName.setText(userSettings.getLdrawUserName());
                         }
 
-                        Label lblAuthor3 = new Label(cmpAuthor, SWT.NONE);
+                        Label lblAuthor3 = Theming.label(cmpAuthor, SWT.NONE);
                         lblAuthor3.setText("]"); //$NON-NLS-1$
                     }
 
                     {
-                        Composite cmpType = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpType = Theming.composite(grpMeta, SWT.NONE);
                         cmpType.setLayout(new GridLayout(5, false));
 
-                        Label lblType = new Label(cmpType, SWT.NONE);
+                        Label lblType = Theming.label(cmpType, SWT.NONE);
                         lblType.setText("0 !LDRAW_ORG "); //$NON-NLS-1$
 
                         NButton btnUnofficial = new NButton(cmpType, SWT.TOGGLE);
@@ -331,10 +332,10 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpLicense = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLicense = Theming.composite(grpMeta, SWT.NONE);
                         cmpLicense.setLayout(new GridLayout(2, false));
 
-                        Label lblLicense = new Label(cmpLicense, SWT.NONE);
+                        Label lblLicense = Theming.label(cmpLicense, SWT.NONE);
                         lblLicense.setText("0 !LICENSE "); //$NON-NLS-1$
 
                         Combo cmbLicense = new Combo(cmpLicense, SWT.NONE);
@@ -346,10 +347,10 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpHelp = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpHelp = Theming.composite(grpMeta, SWT.NONE);
                         cmpHelp.setLayout(new GridLayout(2, false));
 
-                        Label lblHelp = new Label(cmpHelp, SWT.NONE);
+                        Label lblHelp = Theming.label(cmpHelp, SWT.NONE);
                         lblHelp.setText("0 !HELP "); //$NON-NLS-1$
 
                         Text txtHelp = new Text(cmpHelp, SWT.SEARCH);
@@ -358,10 +359,10 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpBfc = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpBfc = Theming.composite(grpMeta, SWT.NONE);
                         cmpBfc.setLayout(new GridLayout(2, false));
 
-                        Label lblBfc = new Label(cmpBfc, SWT.NONE);
+                        Label lblBfc = Theming.label(cmpBfc, SWT.NONE);
                         lblBfc.setText("0 BFC "); //$NON-NLS-1$
 
                         Combo cmbBfc = new Combo(cmpBfc, SWT.NONE);
@@ -373,10 +374,10 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpCategory = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpCategory = Theming.composite(grpMeta, SWT.NONE);
                         cmpCategory.setLayout(new GridLayout(2, false));
 
-                        Label lblCategory = new Label(cmpCategory, SWT.NONE);
+                        Label lblCategory = Theming.label(cmpCategory, SWT.NONE);
                         lblCategory.setText("0 !CATEGORY "); //$NON-NLS-1$
 
                         Combo cmbCategory = new Combo(cmpCategory, SWT.NONE);
@@ -411,25 +412,25 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpKeywords = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpKeywords = Theming.composite(grpMeta, SWT.NONE);
                         cmpKeywords.setLayout(new GridLayout(3, false));
 
-                        Label lblKeywords = new Label(cmpKeywords, SWT.NONE);
+                        Label lblKeywords = Theming.label(cmpKeywords, SWT.NONE);
                         lblKeywords.setText("0 !KEYWORDS "); //$NON-NLS-1$
 
                         Text txtKeywords = new Text(cmpKeywords, SWT.SEARCH);
                         txtKeywords.setMessage(I18n.META_KEYWORDS_1);
                         evKeywordsTxtPtr[0] = txtKeywords;
 
-                        Label lblKeywords2 = new Label(cmpKeywords, SWT.NONE);
+                        Label lblKeywords2 = Theming.label(cmpKeywords, SWT.NONE);
                         lblKeywords2.setText(I18n.META_KEYWORDS_2);
                     }
 
                     {
-                        Composite cmpCmdline = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpCmdline = Theming.composite(grpMeta, SWT.NONE);
                         cmpCmdline.setLayout(new GridLayout(3, false));
 
-                        Label lblCmdline = new Label(cmpCmdline, SWT.NONE);
+                        Label lblCmdline = Theming.label(cmpCmdline, SWT.NONE);
                         lblCmdline.setText("0 !CMDLINE "); //$NON-NLS-1$
 
                         Text txtCmdline = new Text(cmpCmdline, SWT.SEARCH);
@@ -438,24 +439,24 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpHistory1 = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpHistory1 = Theming.composite(grpMeta, SWT.NONE);
                         cmpHistory1.setLayout(new GridLayout(6, false));
 
-                        Label lblHistory11 = new Label(cmpHistory1, SWT.NONE);
+                        Label lblHistory11 = Theming.label(cmpHistory1, SWT.NONE);
                         lblHistory11.setText("0 !HISTORY "); //$NON-NLS-1$
 
                         Text txtHistory11 = new Text(cmpHistory1, SWT.SEARCH);
                         txtHistory11.setMessage(I18n.META_HISTORY_1);
                         evHistory11TxtPtr[0] = txtHistory11;
 
-                        Label lblHistory12 = new Label(cmpHistory1, SWT.NONE);
+                        Label lblHistory12 = Theming.label(cmpHistory1, SWT.NONE);
                         lblHistory12.setText(" ["); //$NON-NLS-1$
 
                         Text txtHistory12 = new Text(cmpHistory1, SWT.SEARCH);
                         txtHistory12.setMessage(I18n.META_HISTORY_2);
                         evHistory12TxtPtr[0] = txtHistory12;
 
-                        Label lblHistory13 = new Label(cmpHistory1, SWT.NONE);
+                        Label lblHistory13 = Theming.label(cmpHistory1, SWT.NONE);
                         lblHistory13.setText("] "); //$NON-NLS-1$
 
                         Text txtHistory13 = new Text(cmpHistory1, SWT.SEARCH);
@@ -464,24 +465,24 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpHistory2 = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpHistory2 = Theming.composite(grpMeta, SWT.NONE);
                         cmpHistory2.setLayout(new GridLayout(6, false));
 
-                        Label lblHistory21 = new Label(cmpHistory2, SWT.NONE);
+                        Label lblHistory21 = Theming.label(cmpHistory2, SWT.NONE);
                         lblHistory21.setText("or 0 !HISTORY "); //$NON-NLS-1$
 
                         Text txtHistory21 = new Text(cmpHistory2, SWT.SEARCH);
                         txtHistory21.setMessage(I18n.META_HISTORY_1);
                         evHistory21TxtPtr[0] = txtHistory21;
 
-                        Label lblHistory22 = new Label(cmpHistory2, SWT.NONE);
+                        Label lblHistory22 = Theming.label(cmpHistory2, SWT.NONE);
                         lblHistory22.setText(" {"); //$NON-NLS-1$
 
                         Text txtHistory22 = new Text(cmpHistory2, SWT.SEARCH);
                         txtHistory22.setMessage(I18n.META_HISTORY_3);
                         evHistory22TxtPtr[0] = txtHistory22;
 
-                        Label lblHistory23 = new Label(cmpHistory2, SWT.NONE);
+                        Label lblHistory23 = Theming.label(cmpHistory2, SWT.NONE);
                         lblHistory23.setText("} "); //$NON-NLS-1$
 
                         Text txtHistory23 = new Text(cmpHistory2, SWT.SEARCH);
@@ -490,10 +491,10 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpComment = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpComment = Theming.composite(grpMeta, SWT.NONE);
                         cmpComment.setLayout(new GridLayout(5, false));
 
-                        Label lblType = new Label(cmpComment, SWT.NONE);
+                        Label lblType = Theming.label(cmpComment, SWT.NONE);
                         lblType.setText("0 // "); //$NON-NLS-1$
 
                         NButton btnNeedsWork2 = new NButton(cmpComment, SWT.TOGGLE);
@@ -514,7 +515,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.H_SCROLL | SWT.V_SCROLL);
                 tItem2.setControl(cmpScroll);
 
-                Composite cmpMetaArea = new Composite(cmpScroll, SWT.NONE);
+                Composite cmpMetaArea = Theming.composite(cmpScroll, SWT.NONE);
                 cmpScroll.setContent(cmpMetaArea);
                 cmpScroll.setExpandHorizontal(true);
                 cmpScroll.setExpandVertical(true);
@@ -531,10 +532,10 @@ class EditorMetaDesign extends ApplicationWindow {
                     grpMeta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                     grpMeta.setLayout(new GridLayout(1, false));
 
-                    Composite cmpBfc = new Composite(grpMeta, SWT.NONE);
+                    Composite cmpBfc = Theming.composite(grpMeta, SWT.NONE);
                     cmpBfc.setLayout(new GridLayout(2, false));
 
-                    Label lblBfc = new Label(cmpBfc, SWT.NONE);
+                    Label lblBfc = Theming.label(cmpBfc, SWT.NONE);
                     lblBfc.setText("0 BFC "); //$NON-NLS-1$
 
                     Combo cmbBfc = new Combo(cmpBfc, SWT.NONE);
@@ -553,7 +554,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.H_SCROLL | SWT.V_SCROLL);
                 tItem3.setControl(cmpScroll);
 
-                Composite cmpMetaArea = new Composite(cmpScroll, SWT.NONE);
+                Composite cmpMetaArea = Theming.composite(cmpScroll, SWT.NONE);
                 cmpScroll.setContent(cmpMetaArea);
                 cmpScroll.setExpandHorizontal(true);
                 cmpScroll.setExpandVertical(true);
@@ -570,10 +571,10 @@ class EditorMetaDesign extends ApplicationWindow {
                     grpMeta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                     grpMeta.setLayout(new GridLayout(1, false));
                     {
-                        Composite cmpTexmap = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpTexmap = Theming.composite(grpMeta, SWT.NONE);
                         cmpTexmap.setLayout(new GridLayout(14, false));
 
-                        Label lblTexmap = new Label(cmpTexmap, SWT.NONE);
+                        Label lblTexmap = Theming.label(cmpTexmap, SWT.NONE);
                         lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
                         Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
@@ -583,7 +584,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         cmbTexmap.select(0);
                         evTexmapPlanarCmbPtr[0] = cmbTexmap;
 
-                        Label lblPlanar = new Label(cmpTexmap, SWT.NONE);
+                        Label lblPlanar = Theming.label(cmpTexmap, SWT.NONE);
                         lblPlanar.setText(" PLANAR "); //$NON-NLS-1$
                         {
                             Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
@@ -642,10 +643,10 @@ class EditorMetaDesign extends ApplicationWindow {
                         }
                     }
                     {
-                        Composite cmpTexmap = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpTexmap = Theming.composite(grpMeta, SWT.NONE);
                         cmpTexmap.setLayout(new GridLayout(15, false));
 
-                        Label lblTexmap = new Label(cmpTexmap, SWT.NONE);
+                        Label lblTexmap = Theming.label(cmpTexmap, SWT.NONE);
                         lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
                         Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
@@ -655,7 +656,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         cmbTexmap.select(0);
                         evTexmapCyliCmbPtr[0] = cmbTexmap;
 
-                        Label lblCylindrical = new Label(cmpTexmap, SWT.NONE);
+                        Label lblCylindrical = Theming.label(cmpTexmap, SWT.NONE);
                         lblCylindrical.setText(" CYLINDRICAL "); //$NON-NLS-1$
                         {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
@@ -728,10 +729,10 @@ class EditorMetaDesign extends ApplicationWindow {
                         }
                     }
                     {
-                        Composite cmpTexmap = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpTexmap = Theming.composite(grpMeta, SWT.NONE);
                         cmpTexmap.setLayout(new GridLayout(16, false));
 
-                        Label lblTexmap = new Label(cmpTexmap, SWT.NONE);
+                        Label lblTexmap = Theming.label(cmpTexmap, SWT.NONE);
                         lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
                         Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
@@ -741,7 +742,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         cmbTexmap.select(0);
                         evTexmapSphereCmbPtr[0] = cmbTexmap;
 
-                        Label lblSpherical = new Label(cmpTexmap, SWT.NONE);
+                        Label lblSpherical = Theming.label(cmpTexmap, SWT.NONE);
                         lblSpherical.setText(" SPHERICAL "); //$NON-NLS-1$
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
@@ -824,9 +825,9 @@ class EditorMetaDesign extends ApplicationWindow {
                         evTexmapFallbackBtnPtr[0] = btnTexmap;
                     }
                     {
-                        Composite cmpTexmap = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpTexmap = Theming.composite(grpMeta, SWT.NONE);
                         cmpTexmap.setLayout(new GridLayout(2, false));
-                        Label lblTexmap = new Label(cmpTexmap, SWT.NONE);
+                        Label lblTexmap = Theming.label(cmpTexmap, SWT.NONE);
                         lblTexmap.setText("0 !: "); //$NON-NLS-1$
                         {
                             Text txtMeta = new Text(cmpTexmap, SWT.SEARCH);
@@ -850,7 +851,7 @@ class EditorMetaDesign extends ApplicationWindow {
                 final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.H_SCROLL | SWT.V_SCROLL);
                 tItem4.setControl(cmpScroll);
 
-                Composite cmpMetaArea = new Composite(cmpScroll, SWT.NONE);
+                Composite cmpMetaArea = Theming.composite(cmpScroll, SWT.NONE);
                 cmpScroll.setContent(cmpMetaArea);
                 cmpScroll.setExpandHorizontal(true);
                 cmpScroll.setExpandVertical(true);
@@ -868,9 +869,9 @@ class EditorMetaDesign extends ApplicationWindow {
                     grpMeta.setLayout(new GridLayout(1, false));
 
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(2, false));
-                        Label lblTodo = new Label(cmpLpe, SWT.NONE);
+                        Label lblTodo = Theming.label(cmpLpe, SWT.NONE);
                         lblTodo.setText("0 !LPE TODO "); //$NON-NLS-1$
                         {
                             Text txtTodo = new Text(cmpLpe, SWT.SEARCH);
@@ -880,9 +881,9 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(4, false));
-                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE VERTEX "); //$NON-NLS-1$
                         {
                             Text txtX = new Text(cmpLpe, SWT.SEARCH);
@@ -903,11 +904,11 @@ class EditorMetaDesign extends ApplicationWindow {
                             evVertex3TxtPtr[0] = txtZ;
                         }
                     }
-                    
+
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(4, false));
-                        Label lblConst = new Label(cmpLpe, SWT.NONE);
+                        Label lblConst = Theming.label(cmpLpe, SWT.NONE);
                         lblConst.setText("0 !LPE CONST"); //$NON-NLS-1$
                         {
                             Text txtConst1 = new Text(cmpLpe, SWT.SEARCH);
@@ -915,7 +916,7 @@ class EditorMetaDesign extends ApplicationWindow {
                             txtConst1.setToolTipText(I18n.META_CONST_HINT);
                             evConst1TxtPtr[0] = txtConst1;
                         }
-                        Label lblEqual = new Label(cmpLpe, SWT.NONE);
+                        Label lblEqual = Theming.label(cmpLpe, SWT.NONE);
                         lblEqual.setText(" = "); //$NON-NLS-1$
                         {
                             Text txtConst2 = new Text(cmpLpe, SWT.SEARCH);
@@ -926,9 +927,9 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(5, false));
-                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
                         {
                             Combo cmbCsg = new Combo(cmpLpe, SWT.NONE);
@@ -955,9 +956,9 @@ class EditorMetaDesign extends ApplicationWindow {
                         }
                     }
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(16, false));
-                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
                         {
                             Combo cmbCsg = new Combo(cmpLpe, SWT.NONE);
@@ -1057,9 +1058,9 @@ class EditorMetaDesign extends ApplicationWindow {
                         }
                     }
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(16, false));
-                        Label lblCsgTransform = new Label(cmpLpe, SWT.NONE);
+                        Label lblCsgTransform = Theming.label(cmpLpe, SWT.NONE);
                         lblCsgTransform.setText("0 !LPE CSG_TRANSFORM "); //$NON-NLS-1$
                         {
                             Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
@@ -1158,9 +1159,9 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(16, false));
-                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE CSG_EXT_CFG "); //$NON-NLS-1$
                         {
                             Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
@@ -1210,9 +1211,9 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(2, false));
-                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE CSG_COMPILE"); //$NON-NLS-1$
                         {
                             Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
@@ -1223,9 +1224,9 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(2, false));
-                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE CSG_QUALITY"); //$NON-NLS-1$
                         {
                             Text txtCsgQuality = new Text(cmpLpe, SWT.SEARCH);
@@ -1235,9 +1236,9 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(2, false));
-                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE CSG_EPSILON"); //$NON-NLS-1$
                         {
                             Text txtCsgEpsilon = new Text(cmpLpe, SWT.SEARCH);
@@ -1248,9 +1249,9 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(2, false));
-                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE CSG_TJUNCTION_EPSILON"); //$NON-NLS-1$
                         {
                             Text txtCsgTJunctionEpsilon = new Text(cmpLpe, SWT.SEARCH);
@@ -1261,9 +1262,9 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(2, false));
-                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE CSG_EDGE_COLLAPSE_EPSILON"); //$NON-NLS-1$
                         {
                             Text txtCsgEdgeCollapseEpsilon = new Text(cmpLpe, SWT.SEARCH);
@@ -1280,9 +1281,9 @@ class EditorMetaDesign extends ApplicationWindow {
                     }
 
                     {
-                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
                         cmpLpe.setLayout(new GridLayout(11, false));
-                        Label lblPng = new Label(cmpLpe, SWT.NONE);
+                        Label lblPng = Theming.label(cmpLpe, SWT.NONE);
                         lblPng.setText("0 !LPE PNG "); //$NON-NLS-1$
                         {
                             Text txtX = new Text(cmpLpe, SWT.SEARCH);
@@ -1350,10 +1351,10 @@ class EditorMetaDesign extends ApplicationWindow {
 
         }
 
-        Label lblOnlyFor3D = new Label(container, SWT.NONE);
+        Label lblOnlyFor3D = Theming.label(container, SWT.NONE);
         lblOnlyFor3D.setText(I18n.META_NEW_LINE_NOTE);
 
-        Label lblPreview = new Label(container, SWT.BORDER);
+        Label lblPreview = Theming.label(container, SWT.BORDER);
         lblPreview.setText("0 BFC CERTIFY CCW"); //$NON-NLS-1$
         lblLineToInsertPtr[0] = lblPreview;
         GridData gdl = new GridData();

@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 class SearchDesign extends ApplicationWindow {
 
@@ -67,7 +68,7 @@ class SearchDesign extends ApplicationWindow {
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblFind = new Label(cmpContainer, SWT.NONE);
+        Label lblFind = Theming.label(cmpContainer, SWT.NONE);
         lblFind.setText(I18n.SEARCH_FIND);
 
         Text txtFind = new Text(cmpContainer, SWT.NONE);
@@ -75,7 +76,7 @@ class SearchDesign extends ApplicationWindow {
         txtFind.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 
-        Label lblReplace = new Label(cmpContainer, SWT.NONE);
+        Label lblReplace = Theming.label(cmpContainer, SWT.NONE);
         lblReplace.setText(I18n.SEARCH_REPLACE_WITH);
 
         Text txtReplace = new Text(cmpContainer, SWT.NONE);
@@ -129,7 +130,7 @@ class SearchDesign extends ApplicationWindow {
 
         grpLocation.layout();
 
-        Composite cmpBtnGrid = new Composite(cmpContainer, SWT.NONE);
+        Composite cmpBtnGrid = Theming.composite(cmpContainer, SWT.NONE);
         cmpBtnGrid.setLayoutData(new GridData(SWT.FILL, SWT.LEFT, false, false, 1, 1));
         cmpBtnGrid.setLayout(new GridLayout(2, true));
         {

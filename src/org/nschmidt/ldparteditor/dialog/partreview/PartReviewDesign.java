@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 class PartReviewDesign extends Dialog {
@@ -54,15 +55,16 @@ class PartReviewDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
         if (alreadyReviewing) {
-            Label lblInfo = new Label(cmpContainer, SWT.NONE);
+            Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
             lblInfo.setText(I18n.PARTREVIEW_ALREADY);
         } else {
-            Label lblPartName = new Label(cmpContainer, SWT.NONE);
+            Label lblPartName = Theming.label(cmpContainer, SWT.NONE);
             lblPartName.setText(I18n.PARTREVIEW_ENTER_PART_NAME);
 
             Text txtFile2 = new Text(cmpContainer, SWT.NONE);
@@ -72,9 +74,9 @@ class PartReviewDesign extends Dialog {
             gd.horizontalAlignment = SWT.FILL;
             txtFile2.setLayoutData(gd);
 
-            Label lblInfo = new Label(cmpContainer, SWT.NONE);
+            Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
             lblInfo.setText(I18n.PARTREVIEW_INFO);
-            
+
             NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
             this.btnVerbosePtr[0] = btnVerbose;
             btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

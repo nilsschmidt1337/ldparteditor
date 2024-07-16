@@ -52,6 +52,7 @@ import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * Provides functions to perform view actions for the {@linkplain Composite3D}
@@ -395,7 +396,7 @@ public class Composite3DModifier {
 
             oldParentSashForm.getChildren()[1].dispose();
 
-            Composite nc = new Composite(oldParentSashForm, SWT.NONE);
+            Composite nc = Theming.composite(oldParentSashForm, SWT.NONE);
             nc.setData("%EMPTY%"); //$NON-NLS-1$
             nc.setLayout(new GridLayout());
             {

@@ -37,6 +37,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enumtype.Font;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 public class NButton extends Canvas {
 
@@ -64,6 +65,8 @@ public class NButton extends Canvas {
 
     public NButton(Composite parent, int style) {
         super(parent, style);
+        this.setBackground(Theming.getBgColor());
+        this.setForeground(Theming.getFgColor());
 
         isRadio = (style & SWT.RADIO) == SWT.RADIO;
         canToggle = (style & SWT.TOGGLE) == SWT.TOGGLE;

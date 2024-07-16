@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The coordinates dialog
@@ -59,18 +60,19 @@ class VertexDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.E3D_SELECT_VERTEX);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -83,7 +85,7 @@ class VertexDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -96,7 +98,7 @@ class VertexDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 

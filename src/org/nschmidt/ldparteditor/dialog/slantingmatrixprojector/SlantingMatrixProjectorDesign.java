@@ -42,6 +42,7 @@ import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.composite3d.SlantingMatrixProjectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -89,19 +90,20 @@ class SlantingMatrixProjectorDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         cmpContainer.setLayout(new GridLayout(4, true));
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblTitle = new Label(cmpContainer, SWT.NONE);
+        Label lblTitle = Theming.label(cmpContainer, SWT.NONE);
         lblTitle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
         lblTitle.setText(I18n.SLANT_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
 
-        Label lblInfo = new Label(cmpContainer, SWT.NONE);
+        Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
         lblInfo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
 
         switch (vm.getSlantingMatrixStatus()) {
@@ -153,7 +155,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
             lblInfo.setText(I18n.SLANT_HOW_TO);
             break;
         }
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

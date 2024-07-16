@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 public class IntegerSpinner extends Composite {
 
@@ -223,7 +224,7 @@ public class IntegerSpinner extends Composite {
             }
         });
 
-        Label placeholder = new Label(this, SWT.NONE);
+        Label placeholder = Theming.label(this, SWT.NONE);
         placeholder.setText("  "); //$NON-NLS-1$
 
         this.layout();

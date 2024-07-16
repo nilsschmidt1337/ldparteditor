@@ -77,6 +77,7 @@ import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.widget.Tree;
 import org.nschmidt.ldparteditor.widget.TreeColumn;
 import org.nschmidt.ldparteditor.widget.TreeItem;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -157,11 +158,11 @@ class OptionsDesign extends ApplicationWindow {
         final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
         final Tree treeColours;
         setStatus(I18n.E3D_READY_STATUS);
-        Composite container = new Composite(parent, SWT.BORDER);
+        Composite container = Theming.composite(parent, SWT.BORDER);
         GridLayout gridLayout = new GridLayout(1, true);
         container.setLayout(gridLayout);
         {
-            CTabFolder tabFolderSettings = new CTabFolder(container, SWT.BORDER);
+            CTabFolder tabFolderSettings = Theming.cTabFolder(container, SWT.BORDER);
             tabFolderSettings.setMRUVisible(true);
             tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
             GridData gridData = new GridData();
@@ -183,7 +184,7 @@ class OptionsDesign extends ApplicationWindow {
             {
 
                 final ScrolledComposite cmpContainerX = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
-                Composite cmpContainer = new Composite(cmpContainerX, Cocoa.getStyle());
+                Composite cmpContainer = Theming.composite(cmpContainerX, Cocoa.getStyle());
                 tItem0.setControl(cmpContainerX);
                 cmpContainerX.setContent(cmpContainer);
                 cmpContainerX.setExpandHorizontal(true);
@@ -228,11 +229,11 @@ class OptionsDesign extends ApplicationWindow {
                 btnShowAxisLabels.setSelection(userSettings.isShowingAxisLabels());
 
                 {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lblTextWinArr = new Label(cmpContainer, SWT.NONE);
+                Label lblTextWinArr = Theming.label(cmpContainer, SWT.NONE);
                 lblTextWinArr.setText(I18n.OPTIONS_TEXT_WINDOW_ARR);
 
                 Combo cmbTextWinArr = new Combo(cmpContainer, SWT.READ_ONLY);
@@ -242,11 +243,11 @@ class OptionsDesign extends ApplicationWindow {
                 cmbTextWinArr.select(userSettings.getTextWinArr());
 
                 {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lblCoplanarityWarning = new Label(cmpContainer, SWT.NONE);
+                Label lblCoplanarityWarning = Theming.label(cmpContainer, SWT.NONE);
                 lblCoplanarityWarning.setText(I18n.OPTIONS_COPLANARITY_WARNING);
                 lblCoplanarityWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -257,7 +258,7 @@ class OptionsDesign extends ApplicationWindow {
                 spnCoplanarityWarning.setValue(new BigDecimal(Threshold.coplanarityAngleWarning));
                 spnCoplanarityWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-                Label lblCoplanarityError = new Label(cmpContainer, SWT.NONE);
+                Label lblCoplanarityError = Theming.label(cmpContainer, SWT.NONE);
                 lblCoplanarityError.setText(I18n.OPTIONS_COPLANARITY_ERROR);
                 lblCoplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -269,11 +270,11 @@ class OptionsDesign extends ApplicationWindow {
                 spnCoplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lblDataFileSizeLimit = new Label(cmpContainer, SWT.NONE);
+                Label lblDataFileSizeLimit = Theming.label(cmpContainer, SWT.NONE);
                 lblDataFileSizeLimit.setText(I18n.OPTIONS_DATA_FILE_SIZE_LIMIT);
                 lblDataFileSizeLimit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -285,11 +286,11 @@ class OptionsDesign extends ApplicationWindow {
                 spnDataFileSizeLimit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lblViewportScale = new Label(cmpContainer, SWT.NONE);
+                Label lblViewportScale = Theming.label(cmpContainer, SWT.NONE);
                 lblViewportScale.setText(I18n.OPTIONS_SCALE_FACTOR);
                 lblViewportScale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -309,7 +310,7 @@ class OptionsDesign extends ApplicationWindow {
             {
 
                 final ScrolledComposite cmpContainerX = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
-                Composite cmpContainer = new Composite(cmpContainerX, Cocoa.getStyle());
+                Composite cmpContainer = Theming.composite(cmpContainerX, Cocoa.getStyle());
                 tItem00.setControl(cmpContainerX);
                 cmpContainerX.setContent(cmpContainer);
                 cmpContainerX.setExpandHorizontal(true);
@@ -318,7 +319,7 @@ class OptionsDesign extends ApplicationWindow {
                 cmpContainer.setLayout(new GridLayout());
                 cmpContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                Label lblLocale = new Label(cmpContainer, SWT.NONE);
+                Label lblLocale = Theming.label(cmpContainer, SWT.NONE);
                 lblLocale.setText(I18n.OPTIONS_CHOOSE_LOCALE);
 
                 Combo cmbLocale = new Combo(cmpContainer, SWT.READ_ONLY);
@@ -344,10 +345,10 @@ class OptionsDesign extends ApplicationWindow {
                 cmbLocale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbLocale.select(englishIndex);
 
-                Label lblLdrawFolderQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblLdrawFolderQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblLdrawFolderQuestion.setText(I18n.OPTIONS_LDRAW_FOLDER);
 
-                Composite cmpPathChooser1 = new Composite(cmpContainer, SWT.NONE);
+                Composite cmpPathChooser1 = Theming.composite(cmpContainer, SWT.NONE);
                 cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
                 Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
@@ -360,7 +361,7 @@ class OptionsDesign extends ApplicationWindow {
                 this.btnBrowseLdrawPathPtr[0] = btnBrowseLdrawPath;
                 btnBrowseLdrawPath.setText(I18n.OPTIONS_BROWSE);
 
-                Label lblLdrawUserQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblLdrawUserQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblLdrawUserQuestion.setText(I18n.OPTIONS_LDRAW_NAME);
 
                 Text txtLdrawUserName = new Text(cmpContainer, SWT.BORDER);
@@ -368,7 +369,7 @@ class OptionsDesign extends ApplicationWindow {
                 txtLdrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 txtLdrawUserName.setText(userSettings.getLdrawUserName());
 
-                Label lblRealNameQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblRealNameQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblRealNameQuestion.setText(I18n.OPTIONS_REAL_NAME);
 
                 Text txtRealName = new Text(cmpContainer, SWT.BORDER);
@@ -376,7 +377,7 @@ class OptionsDesign extends ApplicationWindow {
                 txtRealName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 txtRealName.setText(userSettings.getRealUserName());
 
-                Label lblLicenseQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblLicenseQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblLicenseQuestion.setText(I18n.OPTIONS_LICENSE);
 
                 Combo cmbLicense = new Combo(cmpContainer, SWT.NONE);
@@ -385,10 +386,10 @@ class OptionsDesign extends ApplicationWindow {
                 cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbLicense.setText(userSettings.getLicense());
 
-                Label lblAuthoringFolderQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblAuthoringFolderQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblAuthoringFolderQuestion.setText(I18n.OPTIONS_AUTHORING_FOLDER);
 
-                Composite cmpPathChooser2 = new Composite(cmpContainer, SWT.NONE);
+                Composite cmpPathChooser2 = Theming.composite(cmpContainer, SWT.NONE);
                 cmpPathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
 
                 Text txtPartAuthoringPath = new Text(cmpPathChooser2, SWT.BORDER);
@@ -401,10 +402,10 @@ class OptionsDesign extends ApplicationWindow {
                 this.btnBrowseAuthoringPathPtr[0] = btnBrowseAuthoringPath;
                 btnBrowseAuthoringPath.setText(I18n.OPTIONS_BROWSE);
 
-                Label lblUnofficialPathQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblUnofficialPathQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblUnofficialPathQuestion.setText(I18n.OPTIONS_UNOFFICIAL_FOLDER);
 
-                Composite cmpPathChooser3 = new Composite(cmpContainer, SWT.NONE);
+                Composite cmpPathChooser3 = Theming.composite(cmpContainer, SWT.NONE);
                 cmpPathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
 
                 Text txtUnofficialPath = new Text(cmpPathChooser3, SWT.BORDER);
@@ -423,13 +424,13 @@ class OptionsDesign extends ApplicationWindow {
             final CTabItem tItem1 = new CTabItem(tabFolderSettings, SWT.NONE);
             tItem1.setText(I18n.KEYBOARD_CUSTOMISE_SHORTKEYS);
             {
-                final Composite cmpContainer = new Composite(tabFolderSettings, SWT.NONE);
+                final Composite cmpContainer = Theming.composite(tabFolderSettings, SWT.NONE);
                 tItem1.setControl(cmpContainer);
 
                 cmpContainer.setLayout(new GridLayout());
                 cmpContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                Label lblMouseButtonLayout = new Label(cmpContainer, SWT.NONE);
+                Label lblMouseButtonLayout = Theming.label(cmpContainer, SWT.NONE);
                 lblMouseButtonLayout.setText(I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_TITLE);
 
                 Combo cmbMouseButtonLayout = new Combo(cmpContainer, SWT.READ_ONLY);
@@ -445,11 +446,11 @@ class OptionsDesign extends ApplicationWindow {
 
 
                 {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lblDoubleClick = new Label(cmpContainer, I18n.rightToLeftStyle());
+                Label lblDoubleClick = Theming.label(cmpContainer, I18n.rightToLeftStyle());
                 lblDoubleClick.setText(I18n.KEYBOARD_DOUBLE_CLICK);
 
                 final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, Task.values().length + TextTask.values().length - 24);
@@ -626,13 +627,13 @@ class OptionsDesign extends ApplicationWindow {
             tItem2.setText(I18n.COLOUR_CUSTOMISE_COLOURS);
 
             {
-                final Composite cmpContainer = new Composite(tabFolderSettings, SWT.NONE);
+                final Composite cmpContainer = Theming.composite(tabFolderSettings, SWT.NONE);
                 tItem2.setControl(cmpContainer);
 
                 cmpContainer.setLayout(new GridLayout());
                 cmpContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                Label lblDoubleClick = new Label(cmpContainer, I18n.rightToLeftStyle());
+                Label lblDoubleClick = Theming.label(cmpContainer, I18n.rightToLeftStyle());
                 lblDoubleClick.setText(I18n.COLOUR_DOUBLE_CLICK);
 
                 final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, 67);
@@ -791,7 +792,7 @@ class OptionsDesign extends ApplicationWindow {
         }
 
 
-        Composite cmpButtons = new Composite(container, SWT.NONE);
+        Composite cmpButtons = Theming.composite(container, SWT.NONE);
 
         GridData gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
@@ -804,7 +805,7 @@ class OptionsDesign extends ApplicationWindow {
         GridLayout gl = new GridLayout(2, true);
         cmpButtons.setLayout(gl);
 
-        Composite spacer = new Composite(cmpButtons, SWT.NONE);
+        Composite spacer = Theming.composite(cmpButtons, SWT.NONE);
 
         GridData gridData2 = new GridData();
         gridData2.horizontalAlignment = SWT.FILL;

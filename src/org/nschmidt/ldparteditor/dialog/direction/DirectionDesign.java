@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The coordinates dialog
@@ -81,14 +82,15 @@ class DirectionDesign extends Dialog {
     @SuppressWarnings("java:S2111")
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.DIRECTION_DIRECTION_VECTOR);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         ToolItem toolItemTransformationModes = new ToolItem(cmpContainer, SWT.NONE, true);
@@ -111,15 +113,15 @@ class DirectionDesign extends Dialog {
             btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
         }
 
-        Label lblCartesianCoords = new Label(cmpContainer, I18n.rightToLeftStyle());
+        Label lblCartesianCoords = Theming.label(cmpContainer, I18n.rightToLeftStyle());
         lblCartesianCoords.setText(I18n.DIRECTION_CARTESIAN_COORDS);
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
-            Label lblXaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            Label lblXaxis = Theming.label(cmpTxt, I18n.rightToLeftStyle());
             lblXaxis.setText(I18n.DIRECTION_X);
 
             BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
@@ -131,11 +133,11 @@ class DirectionDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
-            Label lblYaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            Label lblYaxis = Theming.label(cmpTxt, I18n.rightToLeftStyle());
             lblYaxis.setText(I18n.DIRECTION_Y);
 
             BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
@@ -147,11 +149,11 @@ class DirectionDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
-            Label lblZaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            Label lblZaxis = Theming.label(cmpTxt, I18n.rightToLeftStyle());
             lblZaxis.setText(I18n.DIRECTION_Z);
 
             BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
@@ -162,15 +164,15 @@ class DirectionDesign extends Dialog {
             spnZ.setValue(new BigDecimal(cart[2]));
         }
 
-        Label lblSphericalCoords = new Label(cmpContainer, I18n.rightToLeftStyle());
+        Label lblSphericalCoords = Theming.label(cmpContainer, I18n.rightToLeftStyle());
         lblSphericalCoords.setText(I18n.DIRECTION_SPHERICAL_COORDS);
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
-            Label lblXaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            Label lblXaxis = Theming.label(cmpTxt, I18n.rightToLeftStyle());
             lblXaxis.setText(I18n.DIRECTION_ANG_RHO);
 
             BigDecimalSpinner spnRho = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
@@ -182,11 +184,11 @@ class DirectionDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
-            Label lblYaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            Label lblYaxis = Theming.label(cmpTxt, I18n.rightToLeftStyle());
             lblYaxis.setText(I18n.DIRECTION_ANG_THETA);
 
             BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
@@ -198,11 +200,11 @@ class DirectionDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
-            Label lblZaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            Label lblZaxis = Theming.label(cmpTxt, I18n.rightToLeftStyle());
             lblZaxis.setText(I18n.DIRECTION_ANG_PHI);
 
             BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
@@ -214,7 +216,7 @@ class DirectionDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
@@ -225,7 +227,7 @@ class DirectionDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
@@ -236,7 +238,7 @@ class DirectionDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);

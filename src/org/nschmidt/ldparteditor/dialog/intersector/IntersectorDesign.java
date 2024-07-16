@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helper.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -61,17 +62,18 @@ class IntersectorDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.INTERSECTOR_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblDescription = new Label(cmpContainer, SWT.NONE);
+        Label lblDescription = Theming.label(cmpContainer, SWT.NONE);
         lblDescription.setText(I18n.INTERSECTOR_DESCRIPTION);
 
         NButton btnHideOther = new NButton(cmpContainer, SWT.CHECK);
@@ -95,7 +97,7 @@ class IntersectorDesign extends Dialog {
             cmbColourise.setText(cmbColourise.getItem(ins.isColourise() ? 1 : 0));
             cmbColourise.select(ins.isColourise() ? 1 : 0);
         }
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -70,17 +71,18 @@ class SymSplitterDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.SYMSPLITTER_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblHint = new Label(cmpContainer, SWT.NONE);
+        Label lblHint = Theming.label(cmpContainer, SWT.NONE);
         lblHint.setText(I18n.SYMSPLITTER_HINT);
 
         BigDecimalSpinner spnOffset = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -90,7 +92,7 @@ class SymSplitterDesign extends Dialog {
         spnOffset.setMinimum(new BigDecimal(-100000000));
         spnOffset.setValue(ss.getOffset());
 
-        Label lblPrecision = new Label(cmpContainer, SWT.NONE);
+        Label lblPrecision = Theming.label(cmpContainer, SWT.NONE);
         lblPrecision.setText(I18n.SYMSPLITTER_VERTEX_THRESHOLD);
 
         BigDecimalSpinner spnPrecision = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -100,7 +102,7 @@ class SymSplitterDesign extends Dialog {
         spnPrecision.setMinimum(new BigDecimal(0));
         spnPrecision.setValue(ss.getPrecision());
 
-        Label lblSplitPlane = new Label(cmpContainer, SWT.NONE);
+        Label lblSplitPlane = Theming.label(cmpContainer, SWT.NONE);
         lblSplitPlane.setText(I18n.SYMSPLITTER_SPLITTING_PLANE);
 
         {
@@ -112,7 +114,7 @@ class SymSplitterDesign extends Dialog {
             cmbSplitPlane.select(ss.getSplitPlane());
         }
 
-        Label lblHide = new Label(cmpContainer, SWT.NONE);
+        Label lblHide = Theming.label(cmpContainer, SWT.NONE);
         lblHide.setText(I18n.SYMSPLITTER_SELECT_WHAT);
         {
             Combo cmbHide = new Combo(cmpContainer, SWT.READ_ONLY);
@@ -123,7 +125,7 @@ class SymSplitterDesign extends Dialog {
             cmbHide.select(ss.getHideLevel());
         }
 
-        Label lblDummy = new Label(cmpContainer, SWT.NONE);
+        Label lblDummy = Theming.label(cmpContainer, SWT.NONE);
         lblDummy.setText(""); //$NON-NLS-1$
 
         {
@@ -157,7 +159,7 @@ class SymSplitterDesign extends Dialog {
         cmbScope.setText(cmbScope.getItem(0));
         cmbScope.select(0);
         cmbScope.setEnabled(false);
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

@@ -34,6 +34,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -57,7 +58,7 @@ class PathTruderDesign extends Dialog {
     final Combo[] cmbShapeCompensationPtr = new Combo[1];
     final Combo[] cmbBfcInvertPtr = new Combo[1];
     final NButton[] btnVerbosePtr = new NButton[1];
-    
+
     PathTruderDesign(Shell parentShell, PathTruderSettings ps) {
         super(parentShell);
         this.ps = ps;
@@ -71,20 +72,21 @@ class PathTruderDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.PATHTRUDER_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblColourCodes = new Label(cmpContainer, SWT.NONE);
+        Label lblColourCodes = Theming.label(cmpContainer, SWT.NONE);
         lblColourCodes.setText(I18n.PATHTRUDER_COLOUR_CODES);
 
-        Label lblUse180deg = new Label(cmpContainer, SWT.NONE);
+        Label lblUse180deg = Theming.label(cmpContainer, SWT.NONE);
         lblUse180deg.setText(I18n.PATHTRUDER_MAX_PATH_LENGTH);
 
         BigDecimalSpinner spnMaxPathSegmentLength = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -94,7 +96,7 @@ class PathTruderDesign extends Dialog {
         spnMaxPathSegmentLength.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
         spnMaxPathSegmentLength.setValue(ps.getMaxPathSegmentLength());
 
-        Label lblTransitions = new Label(cmpContainer, SWT.NONE);
+        Label lblTransitions = Theming.label(cmpContainer, SWT.NONE);
         lblTransitions.setText(I18n.PATHTRUDER_NUM_TRANSITIONS);
 
         IntegerSpinner spnTransitions = new IntegerSpinner(cmpContainer, SWT.NONE);
@@ -104,7 +106,7 @@ class PathTruderDesign extends Dialog {
         spnTransitions.setMinimum(1);
         spnTransitions.setValue(ps.getTransitionCount());
 
-        Label lblTransCurve = new Label(cmpContainer, SWT.NONE);
+        Label lblTransCurve = Theming.label(cmpContainer, SWT.NONE);
         lblTransCurve.setText(I18n.PATHTRUDER_CONTROL_CURVE);
 
         BigDecimalSpinner spnTransCurve = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -114,7 +116,7 @@ class PathTruderDesign extends Dialog {
         spnTransCurve.setMinimum(BigDecimal.ONE);
         spnTransCurve.setValue(ps.getTransitionCurveControl());
 
-        Label lblCenterCurve = new Label(cmpContainer, SWT.NONE);
+        Label lblCenterCurve = Theming.label(cmpContainer, SWT.NONE);
         lblCenterCurve.setText(I18n.PATHTRUDER_CONTROL_CURVE_CENTER);
 
         BigDecimalSpinner spnCenterCurve = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -124,7 +126,7 @@ class PathTruderDesign extends Dialog {
         spnCenterCurve.setMinimum(new BigDecimal(0));
         spnCenterCurve.setValue(ps.getTransitionCurveCenter());
 
-        Label lblLineThreshold = new Label(cmpContainer, SWT.NONE);
+        Label lblLineThreshold = Theming.label(cmpContainer, SWT.NONE);
         lblLineThreshold.setText(I18n.PATHTRUDER_LINE_THRESH);
 
         BigDecimalSpinner spnLineThreshold = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -134,7 +136,7 @@ class PathTruderDesign extends Dialog {
         spnLineThreshold.setMinimum(new BigDecimal(-1));
         spnLineThreshold.setValue(ps.getPathAngleForLine());
 
-        Label lblRotationAngle = new Label(cmpContainer, SWT.NONE);
+        Label lblRotationAngle = Theming.label(cmpContainer, SWT.NONE);
         lblRotationAngle.setText(I18n.PATHTRUDER_ROT_ANGLE);
 
         BigDecimalSpinner spnRotationAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -144,7 +146,7 @@ class PathTruderDesign extends Dialog {
         spnRotationAngle.setMinimum(new BigDecimal(0));
         spnRotationAngle.setValue(ps.getRotation());
 
-        Label lblAf = new Label(cmpContainer, SWT.NONE);
+        Label lblAf = Theming.label(cmpContainer, SWT.NONE);
         lblAf.setText(I18n.PATHTRUDER_SHAPE_COMP);
 
         Combo cmbShapeCompensation = new Combo(cmpContainer, SWT.READ_ONLY);
@@ -154,7 +156,7 @@ class PathTruderDesign extends Dialog {
         cmbShapeCompensation.setText(ps.isCompensation() ? cmbShapeCompensation.getItem(1) : cmbShapeCompensation.getItem(0));
         cmbShapeCompensation.select(ps.isCompensation() ? 1 : 0);
 
-        Label lblBfcinvert = new Label(cmpContainer, SWT.NONE);
+        Label lblBfcinvert = Theming.label(cmpContainer, SWT.NONE);
         lblBfcinvert.setText(I18n.PATHTRUDER_INVERT_SHAPE);
 
         Combo cmbBfcInvert = new Combo(cmpContainer, SWT.READ_ONLY);
@@ -163,7 +165,7 @@ class PathTruderDesign extends Dialog {
         cmbBfcInvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbBfcInvert.setText(ps.isInverted() ? cmbBfcInvert.getItem(1) : cmbBfcInvert.getItem(0));
         cmbBfcInvert.select(ps.isInverted() ? 1 : 0);
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

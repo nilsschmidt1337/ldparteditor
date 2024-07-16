@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.YTruderSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -70,17 +71,18 @@ class YTruderDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblTitle = new Label(cmpContainer, SWT.NONE);
+        Label lblTitle = Theming.label(cmpContainer, SWT.NONE);
         lblTitle.setText(I18n.YTRUDER_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblDescription = new Label(cmpContainer, SWT.NONE);
+        Label lblDescription = Theming.label(cmpContainer, SWT.NONE);
         lblDescription.setText(I18n.YTRUDER_DESCRIPTION);
 
         {
@@ -112,7 +114,7 @@ class YTruderDesign extends Dialog {
             btnExtrudeRadially.setSelection(ys.getMode() == 4);
         }
 
-        Label lblLineThreshold = new Label(cmpContainer, SWT.NONE);
+        Label lblLineThreshold = Theming.label(cmpContainer, SWT.NONE);
         lblLineThreshold.setText(I18n.YTRUDER_VALUE);
 
         BigDecimalSpinner spnValue = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -122,7 +124,7 @@ class YTruderDesign extends Dialog {
         spnValue.setMinimum(new BigDecimal(-999999));
         spnValue.setValue(new BigDecimal(ys.getDistance()));
 
-        Label lblRotationAngle = new Label(cmpContainer, SWT.NONE);
+        Label lblRotationAngle = Theming.label(cmpContainer, SWT.NONE);
         lblRotationAngle.setText(I18n.YTRUDER_CONDLINE_ANGLE);
 
         BigDecimalSpinner spnRotationAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -132,7 +134,7 @@ class YTruderDesign extends Dialog {
         spnRotationAngle.setMinimum(new BigDecimal(0));
         spnRotationAngle.setValue(new BigDecimal(ys.getCondlineAngleThreshold()));
 
-        Label lblAf = new Label(cmpContainer, SWT.NONE);
+        Label lblAf = Theming.label(cmpContainer, SWT.NONE);
         lblAf.setText(I18n.YTRUDER_AXIS);
 
         Combo cmbAxis = new Combo(cmpContainer, SWT.READ_ONLY);
@@ -140,7 +142,7 @@ class YTruderDesign extends Dialog {
         widgetUtil(cmbAxis).setItems(I18n.YTRUDER_X, I18n.YTRUDER_Y, I18n.YTRUDER_Z);
         cmbAxis.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbAxis.select(ys.getAxis());
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

@@ -54,6 +54,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourToolItem;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -334,9 +335,9 @@ class EditorTextDesign extends ApplicationWindow {
 
     public Control build() {
         editorTextWindow.setStatus(I18n.E3D_READY_STATUS);
-        Composite container = new Composite(parent, Cocoa.getStyle());
+        Composite container = Theming.composite(parent, Cocoa.getStyle());
         container.setLayout(new BorderLayout(0, 0));
-        final Composite toolBar = new Composite(container, Cocoa.getStyle());
+        final Composite toolBar = Theming.composite(container, Cocoa.getStyle());
         toolBar.setLayoutData(BorderLayout.NORTH);
         RowLayout rlToolBar = new RowLayout(SWT.HORIZONTAL);
         rlToolBar.center = true;
@@ -662,7 +663,7 @@ class EditorTextDesign extends ApplicationWindow {
         }
 
         {
-            Composite cmpTextEditor = new Composite(container, SWT.BORDER);
+            Composite cmpTextEditor = Theming.composite(container, SWT.BORDER);
             cmpTextEditor.setLayoutData(BorderLayout.CENTER);
             cmpTextEditor.setLayout(new FillLayout(SWT.HORIZONTAL));
             {

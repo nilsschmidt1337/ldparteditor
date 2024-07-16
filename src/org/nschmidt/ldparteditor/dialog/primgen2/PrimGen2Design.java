@@ -48,6 +48,7 @@ import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The PrimGen2 dialog
@@ -112,44 +113,45 @@ class PrimGen2Design extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         cmpContainer.setLayout(new GridLayout(9, true));
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.PRIMGEN_TITLE);
         lblSpecify.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
 
-        Label lblType = new Label(cmpContainer, SWT.NONE);
+        Label lblType = Theming.label(cmpContainer, SWT.NONE);
         lblType.setText(I18n.PRIMGEN_TYPE);
         lblType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
-        Label lblDivisions = new Label(cmpContainer, SWT.NONE);
+        Label lblDivisions = Theming.label(cmpContainer, SWT.NONE);
         lblDivisions.setText(I18n.PRIMGEN_DIVISIONS);
         lblDivisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblSegments = new Label(cmpContainer, SWT.NONE);
+        Label lblSegments = Theming.label(cmpContainer, SWT.NONE);
         lblSegments.setText(I18n.PRIMGEN_SEGMENTS);
         lblSegments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblTorusType = new Label(cmpContainer, SWT.NONE);
+        Label lblTorusType = Theming.label(cmpContainer, SWT.NONE);
         this.lblTorusTypePtr[0] = lblTorusType;
         lblTorusType.setText(I18n.PRIMGEN_TORUS_TYPE);
         lblTorusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         lblTorusType.setEnabled(false);
-        
-        Label lblEdgesPerCrossSection = new Label(cmpContainer, SWT.NONE);
+
+        Label lblEdgesPerCrossSection = Theming.label(cmpContainer, SWT.NONE);
         this.lblEdgesPerCrossSectionPtr[0] = lblEdgesPerCrossSection;
         lblEdgesPerCrossSection.setText(I18n.PRIMGEN_EDGES_PER_CRO);
         lblEdgesPerCrossSection.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         lblEdgesPerCrossSection.setEnabled(false);
 
         {
-            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            Label lblDummy = Theming.label(cmpContainer, SWT.NONE);
             lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
         }
 
@@ -177,7 +179,7 @@ class PrimGen2Design extends Dialog {
         cmbTorusType.setText(I18n.PRIMGEN_OUTSIDE);
         cmbTorusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbTorusType.setEnabled(false);
-        
+
         IntegerSpinner spnEdgesPerCrossSections = new IntegerSpinner(cmpContainer, SWT.NONE);
         this.spnEdgesPerCrossSectionsPtr[0] = spnEdgesPerCrossSections;
         spnEdgesPerCrossSections.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -187,11 +189,11 @@ class PrimGen2Design extends Dialog {
         spnEdgesPerCrossSections.setEnabled(false);
 
         {
-            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            Label lblDummy = Theming.label(cmpContainer, SWT.NONE);
             lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
         }
 
-        Label lblSize = new Label(cmpContainer, SWT.NONE);
+        Label lblSize = Theming.label(cmpContainer, SWT.NONE);
         this.lblSizePtr[0] = lblSize;
         lblSize.setText(I18n.PRIMGEN_SIZE);
         lblSize.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
@@ -211,20 +213,20 @@ class PrimGen2Design extends Dialog {
         spnSegments.setMinimum(1);
         spnSegments.setValue(4);
 
-        Label lblMajor = new Label(cmpContainer, SWT.NONE);
+        Label lblMajor = Theming.label(cmpContainer, SWT.NONE);
         this.lblMajorPtr[0] = lblMajor;
         lblMajor.setText(I18n.PRIMGEN_MAJOR);
         lblMajor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         lblMajor.setEnabled(false);
 
-        Label lblMinor = new Label(cmpContainer, SWT.NONE);
+        Label lblMinor = Theming.label(cmpContainer, SWT.NONE);
         this.lblMinorPtr[0] = lblMinor;
         lblMinor.setText(I18n.PRIMGEN_MINOR);
         lblMinor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         lblMinor.setEnabled(false);
 
         {
-            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            Label lblDummy = Theming.label(cmpContainer, SWT.NONE);
             lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
         }
 
@@ -238,7 +240,7 @@ class PrimGen2Design extends Dialog {
         spnSize.setSmallIncrement(BigDecimal.ONE);
         spnSize.setLargeIncrement(BigDecimal.ONE);
 
-        Label lblWinding = new Label(cmpContainer, SWT.NONE);
+        Label lblWinding = Theming.label(cmpContainer, SWT.NONE);
         lblWinding.setText(I18n.PRIMGEN_WINDING);
         lblWinding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -267,7 +269,7 @@ class PrimGen2Design extends Dialog {
         spnMinor.setLargeIncrement(BigDecimal.ONE);
 
         {
-            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            Label lblDummy = Theming.label(cmpContainer, SWT.NONE);
             lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
         }
 
@@ -278,7 +280,7 @@ class PrimGen2Design extends Dialog {
         btnTop.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
-            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            Label lblDummy = Theming.label(cmpContainer, SWT.NONE);
             lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 6, 1));
         }
 
@@ -288,7 +290,7 @@ class PrimGen2Design extends Dialog {
         btnSaveAs.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
         {
-            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            Label lblDummy = Theming.label(cmpContainer, SWT.NONE);
             lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
@@ -321,7 +323,7 @@ class PrimGen2Design extends Dialog {
             sashForm.setWeights(33, 66);
         }
 
-        Label lblStandard = new Label(cmpContainer, SWT.NONE);
+        Label lblStandard = Theming.label(cmpContainer, SWT.NONE);
         this.lblStandardPtr[0] = lblStandard;
         lblStandard.setText(I18n.PRIMGEN_NON_STANDARD);
         lblStandard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
