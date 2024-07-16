@@ -39,7 +39,6 @@ import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
-import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 class HistoryManager {
 
@@ -370,7 +369,7 @@ class HistoryManager {
 
     @SuppressWarnings("unchecked")
     private void action(final int action_mode, final boolean focusTextEditor) {
-        if (action.get() != 0 || df.isReadOnly() || !df.getVertexManager().isUpdated() && WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) return;
+        if (action.get() != 0 || df.isReadOnly() || !df.getVertexManager().isUpdated()) return;
 
         action.set(action_mode);
 

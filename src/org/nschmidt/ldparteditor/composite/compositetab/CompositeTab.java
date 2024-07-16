@@ -231,7 +231,7 @@ public class CompositeTab extends CompositeTabDesign {
             final DatFile df = tabState.getFileNameObj();
             final VertexManager vm = df.getVertexManager();
             final GData data = df.getDrawPerLineNoClone().getValue(compositeTextPtr[0].getLineAtOffset(e.lineOffset) + 1);
-            boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
+            boolean isSelected = vm.getSelectedData().contains(data);
 
             if (data != null && data.type() == 0) {
                 Set<VertexInfo> vis = vm.getLineLinkedToVertices().get(data);
@@ -245,7 +245,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             }
 
-            isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
+            isSelected = isSelected || GDataCSG.getSelection(df).contains(data);
             syntaxFormatter.format(e,
                     tabState.getToReplaceX(), tabState.getToReplaceY(), tabState.getToReplaceZ(),
                     tabState.getReplaceEpsilon(), tabState.isReplacingVertex(), isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(), tabState.isShowingLinks(),  df);
@@ -1322,20 +1322,6 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void focusGained(FocusEvent e) {
-                final VertexManager vm = tabState.getFileNameObj().getVertexManager();
-                if (!vm.isSyncWithTextEditor()) {
-                    if (vm.isModified() && !vm.isUpdated()) {
-                        NLogger.debug(getClass(), "Text focused, reload"); //$NON-NLS-1$
-                        try {
-                            compositeTextPtr[0].setText(tabState.getFileNameObj().getText());
-                        } catch (IllegalArgumentException iae) {
-                            // Ignored on termination
-                        }
-                        vm.setUpdated(true);
-                    } else if (!vm.isModified() && !vm.isUpdated()) {
-                        vm.setUpdated(true);
-                    }
-                }
                 compositeTextPtr[0].setTopIndex(compositeTextPtr[0].getTopIndex());
                 SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
                 if (sw != null) {

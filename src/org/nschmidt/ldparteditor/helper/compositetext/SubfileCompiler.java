@@ -94,7 +94,7 @@ public enum SubfileCompiler {
      */
     public static void compile(final DatFile datFile, boolean preserveSelection, boolean forceParsing) {
         final VertexManager vm = datFile.getVertexManager();
-        if (!vm.isUpdated() && vm.isSyncWithTextEditor()) {
+        if (!vm.isUpdated()) {
             final boolean[] doNotWait = new boolean[]{false};
             try
             {

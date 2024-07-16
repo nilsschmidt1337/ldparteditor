@@ -219,7 +219,7 @@ class VM00Base {
         lock.lock();
         try {
 
-            if (isSkipSyncWithTextEditor() || !isSyncWithTextEditor())  {
+            if (isSkipSyncWithTextEditor())  {
                 // lock.unlock() call on finally!
                 return;
             }
@@ -248,7 +248,7 @@ class VM00Base {
                 } while (resetTimer.get());
                 skipTimer.set(false);
                 openThreads.decrementAndGet();
-                if (tid2.get() != tid.get() || isSkipSyncWithTextEditor() || !isSyncWithTextEditor()) return;
+                if (tid2.get() != tid.get() || isSkipSyncWithTextEditor()) return;
                 boolean notFound = true;
                 boolean tryToUnlockLock2 = false;
                 final Lock lock2 = linkedDatFile.getHistory().getLock();
@@ -351,14 +351,6 @@ class VM00Base {
 
     public final boolean isSyncWithLpeInline() {
         return WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get();
-    }
-
-    public final boolean isSyncWithTextEditor() {
-        return WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get();
-    }
-
-    public final void setSyncWithTextEditor(boolean syncWithTextEditor) {
-        WorkbenchManager.getUserSettingState().getSyncWithTextEditor().set(syncWithTextEditor);
     }
 
     public final boolean isSkipSyncWithTextEditor() {

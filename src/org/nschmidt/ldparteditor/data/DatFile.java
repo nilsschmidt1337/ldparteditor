@@ -70,7 +70,6 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.widget.TreeItem;
-import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The DAT file class
@@ -1336,11 +1335,6 @@ public final class DatFile {
     }
 
     public void insertAfterCursor(GData gdata) {
-        // The feature is only available when the 3D view and the text editor view are synchronized!
-        if (!WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) {
-            addToTail(gdata);
-            return;
-        }
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 CompositeTabState state = ((CompositeTab) t).getState();

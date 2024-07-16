@@ -163,8 +163,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
             // the CompositeText.
             final VertexManager vm = df.getVertexManager();
             final GData data = df.getDrawPerLineNoClone().getValue(txtDataPtr[0].getLineAtOffset(e.lineOffset) + 1);
-            boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
-            isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
+            boolean isSelected = vm.getSelectedData().contains(data);
+            isSelected = isSelected || GDataCSG.getSelection(df).contains(data);
             syntaxFormatter.format(e,
                     BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                     0f, false, isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(), false, df);
