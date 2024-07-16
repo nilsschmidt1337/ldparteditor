@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -367,9 +368,9 @@ class VM06Edger2 extends VM05Distance {
             GColour tmpCol = ColourToolItem.getLastUsedColour();
             ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             if (es.getUnmatchedMode() < 2) {
-                Set<AccurateEdge> ee = edges.keySet();
-                for (AccurateEdge e : ee) {
-                    if (edges.get(e) > 1) {
+                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
+                    if (entry.getValue() > 1) {
+                        AccurateEdge e = entry.getKey();
                         addLineEdger2(e.v1, e.v2, snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
                     }
                 }
@@ -377,9 +378,9 @@ class VM06Edger2 extends VM05Distance {
 
             ColourToolItem.setLastUsedColour(LDConfig.getColour(4));
             if (es.getUnmatchedMode() != 1) {
-                Set<AccurateEdge> ee = edges.keySet();
-                for (AccurateEdge e : ee) {
-                    if (edges.get(e) == 1) {
+                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
+                    if (entry.getValue() == 1) {
+                        AccurateEdge e = entry.getKey();
                         addEdgeEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2));
                     }
                 }
@@ -502,9 +503,9 @@ class VM06Edger2 extends VM05Distance {
             GColour tmpCol = ColourToolItem.getLastUsedColour();
             ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             if (es.getUnmatchedMode() < 2) {
-                Set<AccurateEdge> ee = edges.keySet();
-                for (AccurateEdge e : ee) {
-                    if (edges.get(e) > 1) {
+                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
+                    if (entry.getValue() > 1) {
+                        AccurateEdge e = entry.getKey();
                         addLineEdger2(e.v1, e.v2, snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
                     }
                 }
@@ -512,9 +513,9 @@ class VM06Edger2 extends VM05Distance {
 
             ColourToolItem.setLastUsedColour(LDConfig.getColour(4));
             if (es.getUnmatchedMode() != 1) {
-                Set<AccurateEdge> ee = edges.keySet();
-                for (AccurateEdge e : ee) {
-                    if (edges.get(e) == 1) {
+                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
+                    if (entry.getValue() == 1) {
+                        AccurateEdge e = entry.getKey();
                         addEdgeEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2));
                     }
                 }
@@ -699,9 +700,9 @@ class VM06Edger2 extends VM05Distance {
             GColour tmpCol = ColourToolItem.getLastUsedColour();
             ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             if (es.getUnmatchedMode() < 2) {
-                Set<AccurateEdge> ee = edges.keySet();
-                for (AccurateEdge e : ee) {
-                    if (edges.get(e) > 1) {
+                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
+                    if (entry.getValue() > 1) {
+                        AccurateEdge e = entry.getKey();
                         addLineEdger2(e.v1, e.v2, snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
                     }
                 }
@@ -709,9 +710,9 @@ class VM06Edger2 extends VM05Distance {
 
             ColourToolItem.setLastUsedColour(LDConfig.getColour(4));
             if (es.getUnmatchedMode() != 1) {
-                Set<AccurateEdge> ee = edges.keySet();
-                for (AccurateEdge e : ee) {
-                    if (edges.get(e) == 1) {
+                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
+                    if (entry.getValue() == 1) {
+                        AccurateEdge e = entry.getKey();
                         addEdgeEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2));
                     }
                 }
