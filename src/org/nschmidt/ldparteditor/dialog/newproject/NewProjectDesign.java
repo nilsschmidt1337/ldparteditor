@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.dialog.newproject;
 
 import java.io.File;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -30,13 +29,14 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-class NewProjectDesign extends Dialog {
+class NewProjectDesign extends ThemedDialog {
 
     Text[] txtProjectPathPtr = new Text[1];
     Text[] txtProjectNamePtr = new Text[1];
@@ -57,7 +57,6 @@ class NewProjectDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
-        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
@@ -120,21 +119,5 @@ class NewProjectDesign extends Dialog {
         btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         btnOkPtr[0].setEnabled(false);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
-    }
-
-    @Override
-    protected Control createButtonBar(Composite parent) {
-        final Control btnBar = super.createButtonBar(parent);
-        parent.setBackground(Theming.getBgColor());
-        btnBar.setBackground(Theming.getBgColor());
-        return btnBar;
-    }
-
-    @Override
-    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
-        final Button btn = super.createButton(parent, id, label, defaultButton);
-        btn.setBackground(Theming.getBgColor());
-        btn.setForeground(Theming.getFgColor());
-        return btn;
     }
 }

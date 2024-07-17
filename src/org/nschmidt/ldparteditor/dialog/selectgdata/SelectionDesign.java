@@ -18,16 +18,15 @@ package org.nschmidt.ldparteditor.dialog.selectgdata;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.widget.Tree;
@@ -41,7 +40,7 @@ import org.nschmidt.ldparteditor.workbench.Theming;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class SelectionDesign<T> extends Dialog {
+class SelectionDesign<T> extends ThemedDialog {
 
     final String title;
     final String icon;
@@ -64,7 +63,6 @@ class SelectionDesign<T> extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
-        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
@@ -108,21 +106,5 @@ class SelectionDesign<T> extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, false);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
-    }
-
-    @Override
-    protected Control createButtonBar(Composite parent) {
-        final Control btnBar = super.createButtonBar(parent);
-        parent.setBackground(Theming.getBgColor());
-        btnBar.setBackground(Theming.getBgColor());
-        return btnBar;
-    }
-
-    @Override
-    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
-        final Button btn = super.createButton(parent, id, label, defaultButton);
-        btn.setBackground(Theming.getBgColor());
-        btn.setForeground(Theming.getFgColor());
-        return btn;
     }
 }

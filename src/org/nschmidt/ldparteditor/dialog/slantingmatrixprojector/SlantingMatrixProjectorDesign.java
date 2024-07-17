@@ -20,7 +20,6 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -28,7 +27,6 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -37,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.enumtype.Font;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
@@ -52,7 +51,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class SlantingMatrixProjectorDesign extends Dialog {
+class SlantingMatrixProjectorDesign extends ThemedDialog {
 
     private final Text[] m00Ptr = new Text[1];
     private final Text[] m01Ptr = new Text[1];
@@ -91,7 +90,6 @@ class SlantingMatrixProjectorDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
-        cmpContainer.setBackground(Theming.getBgColor());
         cmpContainer.setLayout(new GridLayout(4, true));
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
@@ -248,21 +246,5 @@ class SlantingMatrixProjectorDesign extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
-    }
-
-    @Override
-    protected Control createButtonBar(Composite parent) {
-        final Control btnBar = super.createButtonBar(parent);
-        parent.setBackground(Theming.getBgColor());
-        btnBar.setBackground(Theming.getBgColor());
-        return btnBar;
-    }
-
-    @Override
-    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
-        final Button btn = super.createButton(parent, id, label, defaultButton);
-        btn.setBackground(Theming.getBgColor());
-        btn.setForeground(Theming.getFgColor());
-        return btn;
     }
 }

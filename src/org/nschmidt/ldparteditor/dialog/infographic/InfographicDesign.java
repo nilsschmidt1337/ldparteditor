@@ -15,19 +15,17 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.infographic;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.widget.NButton;
-import org.nschmidt.ldparteditor.workbench.Theming;
 
-class InfographicDesign extends Dialog {
+class InfographicDesign extends ThemedDialog {
 
     private static final String CHEAT_SHEET_IMAGE = "ldparteditor_cheat_sheet_100dpi.png"; //$NON-NLS-1$
 
@@ -44,7 +42,6 @@ class InfographicDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
-        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
@@ -56,21 +53,5 @@ class InfographicDesign extends Dialog {
 
         cmpContainer.pack();
         return cmpContainer;
-    }
-
-    @Override
-    protected Control createButtonBar(Composite parent) {
-        final Control btnBar = super.createButtonBar(parent);
-        parent.setBackground(Theming.getBgColor());
-        btnBar.setBackground(Theming.getBgColor());
-        return btnBar;
-    }
-
-    @Override
-    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
-        final Button btn = super.createButton(parent, id, label, defaultButton);
-        btn.setBackground(Theming.getBgColor());
-        btn.setForeground(Theming.getFgColor());
-        return btn;
     }
 }
