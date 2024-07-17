@@ -288,81 +288,18 @@ class VM06Edger2 extends VM05Distance {
                     continue;
                 }
                 Vertex[] verts = triangles.get(g3);
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[1]), snap.get(verts[2]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[2]), snap.get(verts[0]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[0]), snap.get(verts[1])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[1]), snap.get(verts[2])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[2]), snap.get(verts[0])));
             }
             Set<GData4> qs = quads.keySet();
             for (GData4 g4 : qs) {
                 if (es.isCondlineOnQuads()) addLineQuadEdger2(g4, presentEdges, es, snap);
                 Vertex[] verts = quads.get(g4);
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[1]), snap.get(verts[2]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[2]), snap.get(verts[3]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[3]), snap.get(verts[0]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[0]), snap.get(verts[1])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[1]), snap.get(verts[2])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[2]), snap.get(verts[3])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[3]), snap.get(verts[0])));
             }
 
             GColour tmpCol = ColourToolItem.getLastUsedColour();
@@ -422,82 +359,19 @@ class VM06Edger2 extends VM05Distance {
             for (GData3 g3 : tris) {
                 if (!lineLinkedToVertices.containsKey(g3) || !g3.isTriangle) continue;
                 Vertex[] verts = triangles.get(g3);
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[1]), snap.get(verts[2]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[2]), snap.get(verts[0]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[0]), snap.get(verts[1])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[1]), snap.get(verts[2])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[2]), snap.get(verts[0])));
             }
             Set<GData4> qs = quads.keySet();
             for (GData4 g4 : qs) {
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
                 addLineQuadEdger2(g4, presentEdges, es, snap);
                 Vertex[] verts = quads.get(g4);
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[1]), snap.get(verts[2]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[2]), snap.get(verts[3]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[3]), snap.get(verts[0]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[0]), snap.get(verts[1])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[1]), snap.get(verts[2])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[2]), snap.get(verts[3])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[3]), snap.get(verts[0])));
             }
 
             GColour tmpCol = ColourToolItem.getLastUsedColour();
@@ -557,81 +431,18 @@ class VM06Edger2 extends VM05Distance {
             for (GData3 g3 : tris) {
                 if (!lineLinkedToVertices.containsKey(g3) || !g3.isTriangle) continue;
                 Vertex[] verts = triangles.get(g3);
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[1]), snap.get(verts[2]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[2]), snap.get(verts[0]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[0]), snap.get(verts[1])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[1]), snap.get(verts[2])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[2]), snap.get(verts[0])));
             }
             Set<GData4> qs = quads.keySet();
             for (GData4 g4 : qs) {
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
                 Vertex[] verts = quads.get(g4);
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[1]), snap.get(verts[2]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[2]), snap.get(verts[3]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
-                {
-                    AccurateEdge e = new AccurateEdge(snap.get(verts[3]), snap.get(verts[0]));
-                    if (!presentEdges.contains(e)) {
-                        if (edges.containsKey(e)) {
-                            edges.put(e, edges.get(e) + 1);
-                        } else {
-                            edges.put(e, 1);
-                        }
-                    }
-                }
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[0]), snap.get(verts[1])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[1]), snap.get(verts[2])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[2]), snap.get(verts[3])));
+                addEdge(edges, presentEdges, new AccurateEdge(snap.get(verts[3]), snap.get(verts[0])));
             }
 
 
@@ -641,52 +452,17 @@ class VM06Edger2 extends VM05Distance {
                 for (GData3 g3 : selectedTriangles) {
                     if (!g3.isTriangle) continue;
                     Vertex[] verts = triangles.get(g3);
-                    {
-                        AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
-                        if (!presentEdges.contains(e)) {
-                            selectedEdges.add(e);
-                        }
-                    }
-                    {
-                        AccurateEdge e = new AccurateEdge(snap.get(verts[1]), snap.get(verts[2]));
-                        if (!presentEdges.contains(e)) {
-                            selectedEdges.add(e);
-                        }
-                    }
-                    {
-                        AccurateEdge e = new AccurateEdge(snap.get(verts[2]), snap.get(verts[0]));
-                        if (!presentEdges.contains(e)) {
-                            selectedEdges.add(e);
-                        }
-                    }
+                    selectEdge(presentEdges, selectedEdges, new AccurateEdge(snap.get(verts[0]), snap.get(verts[1])));
+                    selectEdge(presentEdges, selectedEdges, new AccurateEdge(snap.get(verts[1]), snap.get(verts[2])));
+                    selectEdge(presentEdges, selectedEdges, new AccurateEdge(snap.get(verts[2]), snap.get(verts[0])));
                 }
                 for (GData4 g4 : selectedQuads) {
                     addLineQuadEdger2(g4, presentEdges, es, snap);
                     Vertex[] verts = quads.get(g4);
-                    {
-                        AccurateEdge e = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
-                        if (!presentEdges.contains(e)) {
-                            selectedEdges.add(e);
-                        }
-                    }
-                    {
-                        AccurateEdge e = new AccurateEdge(snap.get(verts[1]), snap.get(verts[2]));
-                        if (!presentEdges.contains(e)) {
-                            selectedEdges.add(e);
-                        }
-                    }
-                    {
-                        AccurateEdge e = new AccurateEdge(snap.get(verts[2]), snap.get(verts[3]));
-                        if (!presentEdges.contains(e)) {
-                            selectedEdges.add(e);
-                        }
-                    }
-                    {
-                        AccurateEdge e = new AccurateEdge(snap.get(verts[3]), snap.get(verts[0]));
-                        if (!presentEdges.contains(e)) {
-                            selectedEdges.add(e);
-                        }
-                    }
+                    selectEdge(presentEdges, selectedEdges, new AccurateEdge(snap.get(verts[0]), snap.get(verts[1])));
+                    selectEdge(presentEdges, selectedEdges, new AccurateEdge(snap.get(verts[1]), snap.get(verts[2])));
+                    selectEdge(presentEdges, selectedEdges, new AccurateEdge(snap.get(verts[2]), snap.get(verts[3])));
+                    selectEdge(presentEdges, selectedEdges, new AccurateEdge(snap.get(verts[3]), snap.get(verts[0])));
                 }
 
                 Set<AccurateEdge> keySet = edges.keySet();
@@ -732,6 +508,21 @@ class VM06Edger2 extends VM05Distance {
         }
         validateState();
 
+    }
+
+    private void selectEdge(Set<AccurateEdge> presentEdges, Set<AccurateEdge> selectedEdges, AccurateEdge e) {
+        if (presentEdges.parallelStream().noneMatch(e::equals)) { // !presentEdges.contains is not efficient here!
+            selectedEdges.add(e);
+        }
+    }
+
+    private void addEdge(Map<AccurateEdge, Integer> edges, Set<AccurateEdge> presentEdges, AccurateEdge e) {
+        if (presentEdges.parallelStream().noneMatch(e::equals)) { // !presentEdges.contains is not efficient here!
+            edges.entrySet().parallelStream()
+                .filter(entry -> entry.getKey().equals(e)).findAny()
+                .ifPresentOrElse(entry -> edges.put(e, entry.getValue() + 1),
+                                    () -> edges.put(e, 1));
+        }
     }
 
     private Vertex vertexWithinDist(double edsquare, Vertex ov) {
