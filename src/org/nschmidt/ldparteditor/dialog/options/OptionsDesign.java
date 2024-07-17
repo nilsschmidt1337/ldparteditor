@@ -351,7 +351,7 @@ class OptionsDesign extends ApplicationWindow {
                 Composite cmpPathChooser1 = Theming.composite(cmpContainer, SWT.NONE);
                 cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-                Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
+                Text txtLdrawPath = Theming.text(cmpPathChooser1, SWT.BORDER);
                 this.txtLdrawPathPtr[0] = txtLdrawPath;
                 txtLdrawPath.setEditable(false);
                 txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -364,7 +364,7 @@ class OptionsDesign extends ApplicationWindow {
                 Label lblLdrawUserQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblLdrawUserQuestion.setText(I18n.OPTIONS_LDRAW_NAME);
 
-                Text txtLdrawUserName = new Text(cmpContainer, SWT.BORDER);
+                Text txtLdrawUserName = Theming.text(cmpContainer, SWT.BORDER);
                 this.txtLdrawUserNamePtr[0] = txtLdrawUserName;
                 txtLdrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 txtLdrawUserName.setText(userSettings.getLdrawUserName());
@@ -372,7 +372,7 @@ class OptionsDesign extends ApplicationWindow {
                 Label lblRealNameQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblRealNameQuestion.setText(I18n.OPTIONS_REAL_NAME);
 
-                Text txtRealName = new Text(cmpContainer, SWT.BORDER);
+                Text txtRealName = Theming.text(cmpContainer, SWT.BORDER);
                 this.txtRealNamePtr[0] = txtRealName;
                 txtRealName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 txtRealName.setText(userSettings.getRealUserName());
@@ -392,7 +392,7 @@ class OptionsDesign extends ApplicationWindow {
                 Composite cmpPathChooser2 = Theming.composite(cmpContainer, SWT.NONE);
                 cmpPathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-                Text txtPartAuthoringPath = new Text(cmpPathChooser2, SWT.BORDER);
+                Text txtPartAuthoringPath = Theming.text(cmpPathChooser2, SWT.BORDER);
                 this.txtPartAuthoringPathPtr[0] = txtPartAuthoringPath;
                 txtPartAuthoringPath.setEditable(false);
                 txtPartAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -408,7 +408,7 @@ class OptionsDesign extends ApplicationWindow {
                 Composite cmpPathChooser3 = Theming.composite(cmpContainer, SWT.NONE);
                 cmpPathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-                Text txtUnofficialPath = new Text(cmpPathChooser3, SWT.BORDER);
+                Text txtUnofficialPath = Theming.text(cmpPathChooser3, SWT.BORDER);
                 this.txtUnofficialPathPtr[0] = txtUnofficialPath;
                 txtUnofficialPath.setEditable(false);
                 txtUnofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));

@@ -19,11 +19,12 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -42,7 +43,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class EdgerDesign extends TrayDialog {
+class EdgerDesign extends Dialog {
 
     final Edger2Settings es;
 
@@ -181,5 +182,21 @@ class EdgerDesign extends TrayDialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
+    }
+
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        final Control btnBar = super.createButtonBar(parent);
+        parent.setBackground(Theming.getBgColor());
+        btnBar.setBackground(Theming.getBgColor());
+        return btnBar;
+    }
+
+    @Override
+    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+        final Button btn = super.createButton(parent, id, label, defaultButton);
+        btn.setBackground(Theming.getBgColor());
+        btn.setForeground(Theming.getFgColor());
+        return btn;
     }
 }

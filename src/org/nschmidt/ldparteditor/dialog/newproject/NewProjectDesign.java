@@ -78,7 +78,7 @@ class NewProjectDesign extends Dialog {
         Composite cmpPathChooser1 = Theming.composite(cmpContainer, SWT.NONE);
         cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
+        Text txtLdrawPath = Theming.text(cmpPathChooser1, SWT.BORDER);
         this.txtProjectPathPtr[0] = txtLdrawPath;
         txtLdrawPath.setEditable(false);
         txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -99,7 +99,7 @@ class NewProjectDesign extends Dialog {
         Composite cmpProjectName = Theming.composite(cmpContainer, SWT.NONE);
         cmpProjectName.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txtProjectName = new Text(cmpProjectName, SWT.BORDER);
+        Text txtProjectName = Theming.text(cmpProjectName, SWT.BORDER);
         this.txtProjectNamePtr[0] = txtProjectName;
         txtProjectName.setLayoutData(new RowData(294, SWT.DEFAULT));
 
@@ -120,5 +120,21 @@ class NewProjectDesign extends Dialog {
         btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         btnOkPtr[0].setEnabled(false);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
+    }
+
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        final Control btnBar = super.createButtonBar(parent);
+        parent.setBackground(Theming.getBgColor());
+        btnBar.setBackground(Theming.getBgColor());
+        return btnBar;
+    }
+
+    @Override
+    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+        final Button btn = super.createButton(parent, id, label, defaultButton);
+        btn.setBackground(Theming.getBgColor());
+        btn.setForeground(Theming.getFgColor());
+        return btn;
     }
 }

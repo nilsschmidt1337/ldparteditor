@@ -17,10 +17,14 @@ package org.nschmidt.ldparteditor.workbench;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public enum Theming {
@@ -52,6 +56,34 @@ public enum Theming {
     public static CTabFolder cTabFolder(Composite parent, int style) {
         final CTabFolder result = new CTabFolder(parent, style);
         result.setSelectionForeground(getFgColor());
+        setBgColor(result);
+        setFgColor(result);
+        return result;
+    }
+
+    public static Group group(Composite parent, int style) {
+        final Group result = new Group(parent, style);
+        setBgColor(result);
+        setFgColor(result);
+        return result;
+    }
+
+    public static SashForm shashForm(Composite parent, int style) {
+        final SashForm result = new SashForm(parent, style);
+        setBgColor(result);
+        setFgColor(result);
+        return result;
+    }
+
+    public static Text text(Composite parent, int style) {
+        final Text result = new Text(parent, style);
+        setBgColor(result);
+        setFgColor(result);
+        return result;
+    }
+
+    public static Tree tree(Composite parent, int columnCount) {
+        final Tree result = new Tree(parent, columnCount);
         setBgColor(result);
         setFgColor(result);
         return result;

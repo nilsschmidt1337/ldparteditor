@@ -109,7 +109,7 @@ class CompositeTabDesign extends CTabItem {
             cmpTextArea.setLayout(new FillLayout(SWT.HORIZONTAL));
             this.setControl(cmpTextArea);
 
-            SashForm sashForm = new SashForm(cmpTextArea, SWT.VERTICAL);
+            SashForm sashForm = Theming.shashForm(cmpTextArea, SWT.VERTICAL);
             this.sashFormPtr[0] = sashForm;
 
             Composite composite = Theming.composite(sashForm, SWT.NONE);

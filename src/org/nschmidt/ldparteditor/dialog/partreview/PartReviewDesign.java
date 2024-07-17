@@ -67,7 +67,7 @@ class PartReviewDesign extends Dialog {
             Label lblPartName = Theming.label(cmpContainer, SWT.NONE);
             lblPartName.setText(I18n.PARTREVIEW_ENTER_PART_NAME);
 
-            Text txtFile2 = new Text(cmpContainer, SWT.NONE);
+            Text txtFile2 = Theming.text(cmpContainer, SWT.NONE);
             this.txtFilePtr[0] = txtFile2;
             GridData gd = new GridData();
             gd.grabExcessHorizontalSpace = true;
@@ -102,5 +102,21 @@ class PartReviewDesign extends Dialog {
             btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
             btnCancelPtr[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
         }
+    }
+
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        final Control btnBar = super.createButtonBar(parent);
+        parent.setBackground(Theming.getBgColor());
+        btnBar.setBackground(Theming.getBgColor());
+        return btnBar;
+    }
+
+    @Override
+    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+        final Button btn = super.createButton(parent, id, label, defaultButton);
+        btn.setBackground(Theming.getBgColor());
+        btn.setForeground(Theming.getFgColor());
+        return btn;
     }
 }

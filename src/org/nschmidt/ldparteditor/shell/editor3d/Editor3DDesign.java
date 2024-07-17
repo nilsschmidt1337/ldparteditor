@@ -285,7 +285,7 @@ class Editor3DDesign extends ApplicationWindow {
         containerTop.setLayout(new BorderLayout(0, 0));
 
         if (!userSettings.hasSeparateTextWindow()) {
-            containerTop = new SashForm(containerTop, SWT.BORDER);
+            containerTop = Theming.shashForm(containerTop, SWT.BORDER);
             splitSash[0] = (SashForm) containerTop;
             if (userSettings.getTextWinArr() == Editor3DWindow.TEXT_LEFT_3D_RIGHT) {
                 Composite containerTextEditor = Theming.composite(containerTop, Cocoa.getStyle());
@@ -516,7 +516,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                 tabFolderOpenDatFiles.setSelection(1);
 
-                SashForm sashFormCmpMain = new SashForm(cmpMainEditor, Cocoa.getStyle());
+                SashForm sashFormCmpMain = Theming.shashForm(cmpMainEditor, Cocoa.getStyle());
 
                 {
                     GridData gridDataX = new GridData();
@@ -537,7 +537,7 @@ class Editor3DDesign extends ApplicationWindow {
                 Editor3DDesign.setSashForm(sashFormCmpMain);
                 sashFormCmpMain.setToolTipText(I18n.E3D_DRAG_HINT);
                 {
-                    SashForm sashForm2 = new SashForm(sashFormCmpMain, SWT.VERTICAL);
+                    SashForm sashForm2 = Theming.shashForm(sashFormCmpMain, SWT.VERTICAL);
                     this.leftSash[0] = sashForm2;
                     Composite cmpContainer1 = Theming.composite(sashForm2, SWT.BORDER);
                     GridLayout gridLayout = new GridLayout(1, true);
@@ -875,7 +875,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 Composite cmpLineSetup = Theming.composite(cmpSelArea, Cocoa.getStyle());
                                 cmpLineSetup.setLayout(new GridLayout(1, false));
 
-                                Text txtLine = new Text(cmpLineSetup, SWT.BORDER);
+                                Text txtLine = Theming.text(cmpLineSetup, SWT.BORDER);
                                 this.txtLinePtr[0] = txtLine;
                                 txtLine.setEnabled(false);
                                 txtLine.setEditable(false);
@@ -1155,7 +1155,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 Composite cmpPathChooser1 = Theming.composite(cmpBgArea, Cocoa.getStyle());
                                 cmpPathChooser1.setLayout(new GridLayout(2, false));
 
-                                Text txtPngPath = new Text(cmpPathChooser1, SWT.BORDER);
+                                Text txtPngPath = Theming.text(cmpPathChooser1, SWT.BORDER);
                                 this.txtPngPathPtr[0] = txtPngPath;
                                 txtPngPath.setEditable(false);
                                 txtPngPath.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -1451,7 +1451,7 @@ class Editor3DDesign extends ApplicationWindow {
                         cmpSearch.setLayoutData(gridData);
                         GridLayout gridLayout2 = new GridLayout(4, false);
                         cmpSearch.setLayout(gridLayout2);
-                        Text txtSearch = new Text(cmpSearch, SWT.BORDER);
+                        Text txtSearch = Theming.text(cmpSearch, SWT.BORDER);
                         this.txtSearchPtr[0] = txtSearch;
                         txtSearch.setMessage(I18n.E3D_SEARCH);
                         GridData gridData2 = new GridData();
@@ -1504,7 +1504,7 @@ class Editor3DDesign extends ApplicationWindow {
                         cmpSearch.setLayoutData(gridData);
                         GridLayout gridLayout2 = new GridLayout(5, false);
                         cmpSearch.setLayout(gridLayout2);
-                        Text txtSearch = new Text(cmpSearch, SWT.BORDER);
+                        Text txtSearch = Theming.text(cmpSearch, SWT.BORDER);
                         this.txtPrimitiveSearchPtr[0] = txtSearch;
                         txtSearch.setMessage(I18n.E3D_SEARCH_PRIMITIVES);
                         GridData gridData2 = new GridData();

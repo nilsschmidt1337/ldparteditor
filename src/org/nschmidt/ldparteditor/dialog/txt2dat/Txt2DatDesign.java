@@ -24,6 +24,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -93,7 +94,7 @@ class Txt2DatDesign extends Dialog {
         Label lblText = Theming.label(cmpContainer, SWT.NONE);
         lblText.setText(I18n.TXT2DAT_TEXT);
 
-        Text txtText = new Text(cmpContainer, SWT.NONE);
+        Text txtText = Theming.text(cmpContainer, SWT.NONE);
         this.txtTextPtr[0] = txtText;
         if (ts.getFontData() != null) txtText.setFont(SWTResourceManager.getFont(ts.getFontData().getName(), ts.getFontData().getHeight(), ts.getFontData().getStyle()));
         txtText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 4));
@@ -158,5 +159,21 @@ class Txt2DatDesign extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
+    }
+
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        final Control btnBar = super.createButtonBar(parent);
+        parent.setBackground(Theming.getBgColor());
+        btnBar.setBackground(Theming.getBgColor());
+        return btnBar;
+    }
+
+    @Override
+    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+        final Button btn = super.createButton(parent, id, label, defaultButton);
+        btn.setBackground(Theming.getBgColor());
+        btn.setForeground(Theming.getFgColor());
+        return btn;
     }
 }

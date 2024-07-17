@@ -97,7 +97,7 @@ public class IntegerSpinner extends Composite {
             }
         });
 
-        Text txt = new Text(this, SWT.BORDER);
+        Text txt = Theming.text(this, SWT.BORDER);
         this.txtValPtr[0] = txt;
         txt.setLayoutData(gd1);
         txt.setText("0"); //$NON-NLS-1$

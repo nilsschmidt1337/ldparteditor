@@ -84,6 +84,7 @@ class StartupDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
@@ -128,7 +129,7 @@ class StartupDesign extends Dialog {
         Composite cmpPathChooser1 = Theming.composite(cmpContainer, SWT.NONE);
         cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
+        Text txtLdrawPath = Theming.text(cmpPathChooser1, SWT.BORDER);
         this.txtLdrawPathPtr[0] = txtLdrawPath;
         txtLdrawPath.setEditable(false);
         txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -145,14 +146,14 @@ class StartupDesign extends Dialog {
         Label lblLdrawUserQuestion = Theming.label(cmpContainer, SWT.NONE);
         lblLdrawUserQuestion.setText("What is your LDraw™ user name?"); //$NON-NLS-1$ NO_I18N!!
 
-        Text txtLdrawUserName = new Text(cmpContainer, SWT.BORDER);
+        Text txtLdrawUserName = Theming.text(cmpContainer, SWT.BORDER);
         this.txtLdrawUserNamePtr[0] = txtLdrawUserName;
         txtLdrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lblRealNameQuestion = Theming.label(cmpContainer, SWT.NONE);
         lblRealNameQuestion.setText("What is your real name?"); //$NON-NLS-1$ NO_I18N!!
 
-        Text txtRealName = new Text(cmpContainer, SWT.BORDER);
+        Text txtRealName = Theming.text(cmpContainer, SWT.BORDER);
         this.txtRealNamePtr[0] = txtRealName;
         txtRealName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -172,7 +173,7 @@ class StartupDesign extends Dialog {
         Composite cmpPathChooser2 = Theming.composite(cmpContainer, SWT.NONE);
         cmpPathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txtPartAuthoringPath = new Text(cmpPathChooser2, SWT.BORDER);
+        Text txtPartAuthoringPath = Theming.text(cmpPathChooser2, SWT.BORDER);
         this.txtPartAuthoringPathPtr[0] = txtPartAuthoringPath;
         txtPartAuthoringPath.setEditable(false);
         txtPartAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -187,7 +188,7 @@ class StartupDesign extends Dialog {
         Composite cmpPathChooser3 = Theming.composite(cmpContainer, SWT.NONE);
         cmpPathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txtUnofficialPath = new Text(cmpPathChooser3, SWT.BORDER);
+        Text txtUnofficialPath = Theming.text(cmpPathChooser3, SWT.BORDER);
         this.txtUnofficialPathPtr[0] = txtUnofficialPath;
         txtUnofficialPath.setEditable(false);
         txtUnofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -226,5 +227,21 @@ class StartupDesign extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, "OK", true); //$NON-NLS-1$ NO_I18N!!
         createButton(parent, IDialogConstants.CANCEL_ID, "Cancel", false); //$NON-NLS-1$ NO_I18N!!
+    }
+
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        final Control btnBar = super.createButtonBar(parent);
+        parent.setBackground(Theming.getBgColor());
+        btnBar.setBackground(Theming.getBgColor());
+        return btnBar;
+    }
+
+    @Override
+    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+        final Button btn = super.createButton(parent, id, label, defaultButton);
+        btn.setBackground(Theming.getBgColor());
+        btn.setForeground(Theming.getFgColor());
+        return btn;
     }
 }

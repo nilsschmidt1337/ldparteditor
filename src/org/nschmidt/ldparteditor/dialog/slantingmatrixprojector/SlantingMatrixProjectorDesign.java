@@ -28,6 +28,7 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -206,7 +207,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
     }
 
     private void insertMatrixCell(Composite cmpContainer, BigDecimal val, Text[] textCmp) {
-        Text txtCell = new Text(cmpContainer, SWT.NONE);
+        Text txtCell = Theming.text(cmpContainer, SWT.NONE);
         textCmp[0] = txtCell;
         txtCell.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         txtCell.setText(numberFormat.format(val));
@@ -247,5 +248,21 @@ class SlantingMatrixProjectorDesign extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
+    }
+
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        final Control btnBar = super.createButtonBar(parent);
+        parent.setBackground(Theming.getBgColor());
+        btnBar.setBackground(Theming.getBgColor());
+        return btnBar;
+    }
+
+    @Override
+    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+        final Button btn = super.createButton(parent, id, label, defaultButton);
+        btn.setBackground(Theming.getBgColor());
+        btn.setForeground(Theming.getFgColor());
+        return btn;
     }
 }

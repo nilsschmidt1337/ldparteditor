@@ -240,7 +240,7 @@ public class Composite3DModifier {
             isUpperComposite = false;
         }
 
-        final SashForm newParentSashForm = new SashForm(c3d.getSashForm(), SWT.VERTICAL);
+        final SashForm newParentSashForm = Theming.shashForm(c3d.getSashForm(), SWT.VERTICAL);
         c3d.getCompositeContainer().setParent(newParentSashForm);
 
         CompositeContainer southComposite = new CompositeContainer(newParentSashForm, false, c3d.isSyncManipulator(), c3d.isSyncTranslation(), c3d.isSyncZoom());
@@ -281,7 +281,7 @@ public class Composite3DModifier {
             isUpperComposite = false;
         }
 
-        final SashForm newParentSashForm = new SashForm(c3d.getSashForm(), SWT.HORIZONTAL);
+        final SashForm newParentSashForm = Theming.shashForm(c3d.getSashForm(), SWT.HORIZONTAL);
         c3d.getCompositeContainer().setParent(newParentSashForm);
 
         CompositeContainer southComposite = new CompositeContainer(newParentSashForm, false, c3d.isSyncManipulator(), c3d.isSyncTranslation(), c3d.isSyncZoom());

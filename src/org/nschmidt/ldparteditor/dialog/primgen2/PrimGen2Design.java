@@ -294,7 +294,7 @@ class PrimGen2Design extends Dialog {
             lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
-        SashForm sashForm = new SashForm(cmpContainer, SWT.NONE);
+        SashForm sashForm = Theming.shashForm(cmpContainer, SWT.NONE);
         sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 10, 30));
 
         df = new DatFile("...", "Temporary Primitive", true, DatType.PRIMITIVE); //$NON-NLS-1$ //$NON-NLS-2$
@@ -362,5 +362,21 @@ class PrimGen2Design extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         this.btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         this.btnCancelPtr[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
+    }
+
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        final Control btnBar = super.createButtonBar(parent);
+        parent.setBackground(Theming.getBgColor());
+        btnBar.setBackground(Theming.getBgColor());
+        return btnBar;
+    }
+
+    @Override
+    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+        final Button btn = super.createButton(parent, id, label, defaultButton);
+        btn.setBackground(Theming.getBgColor());
+        btn.setForeground(Theming.getFgColor());
+        return btn;
     }
 }
