@@ -23,17 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.VertexInfo;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
@@ -49,7 +48,7 @@ import org.nschmidt.ldparteditor.workbench.Theming;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class CalibrateDesign extends Dialog {
+class CalibrateDesign extends ThemedDialog {
 
     private static final DecimalFormat DF2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.getLocale()));
     private static final DecimalFormat DF4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
@@ -101,7 +100,6 @@ class CalibrateDesign extends Dialog {
         formatter.applyPattern(I18n.CALIBRATE_LENGTH);
 
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
-        cmpContainer.setBackground(Theming.getBgColor());
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
@@ -194,21 +192,5 @@ class CalibrateDesign extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, false);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
-    }
-
-    @Override
-    protected Control createButtonBar(Composite parent) {
-        final Control btnBar = super.createButtonBar(parent);
-        parent.setBackground(Theming.getBgColor());
-        btnBar.setBackground(Theming.getBgColor());
-        return btnBar;
-    }
-
-    @Override
-    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
-        final Button btn = super.createButton(parent, id, label, defaultButton);
-        btn.setBackground(Theming.getBgColor());
-        btn.setForeground(Theming.getFgColor());
-        return btn;
     }
 }
