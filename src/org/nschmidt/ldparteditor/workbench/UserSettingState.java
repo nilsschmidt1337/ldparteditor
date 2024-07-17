@@ -260,6 +260,8 @@ public class UserSettingState implements Serializable {
 
     private boolean cancelAddViaMouse = false;
 
+    private Theming theming = Theming.DEFAULT;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -787,8 +789,18 @@ public class UserSettingState implements Serializable {
         cursor2ColourColour = new float[] {Colour.cursor2ColourR,Colour.cursor2ColourG,Colour.cursor2ColourB};
     }
 
-    @SuppressWarnings("java:S2696")
     public void loadColours() {
+        if (theming != Theming.DEFAULT && theming != null && WorkbenchManager.getThemeSettingState() != null) {
+            // FIXME Do this override later in the options dialog!
+            theming.overrideColours();
+            WorkbenchManager.getThemeSettingState().loadColourSettings();
+        } else {
+            loadColourSettings();
+        }
+    }
+
+    @SuppressWarnings("java:S2696")
+    public void loadColourSettings() {
 
         if (color16OverrideColour != null) {
             LDConfig.colour16overrideR = color16OverrideColour[0];
@@ -1493,5 +1505,13 @@ public class UserSettingState implements Serializable {
 
     public void setCancelAddViaMouse(boolean cancelAddViaMouse) {
         this.cancelAddViaMouse = cancelAddViaMouse;
+    }
+
+    public Theming getTheming() {
+        return theming;
+    }
+
+    public void setTheming(Theming theming) {
+        this.theming = theming;
     }
 }

@@ -27,75 +27,169 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
-public enum Theming {
-    INSTANCE;
+public enum Theming implements ThemeColours {
+    DEFAULT {
+        @Override
+        public void overrideColours() {
+            super.overrideColours();
+            NLogger.debug(Theming.class, "Restoring default theme."); //$NON-NLS-1$
+
+            // TODO Needs implementation!
+        }
+    },
+
+    DRACULA {
+        @Override
+        public void overrideColours() {
+            super.overrideColours();
+            NLogger.debug(Theming.class, "Loading Dracula theme."); //$NON-NLS-1$
+            WorkbenchManager.getUserSettingState().loadColourSettings();
+
+            TextEditorColour.loadTextBackground(getBgColor());
+            TextEditorColour.loadTextForeground(getFgColor());
+            // TODO Needs implementation!
+
+            WorkbenchManager.getThemeSettingState().saveColours();
+        }
+    },
+
+    DARK {
+        @Override
+        public void overrideColours() {
+            super.overrideColours();
+
+            // TODO Needs implementation!
+        }
+    },
+
+    LIGHT {
+        @Override
+        public void overrideColours() {
+            super.overrideColours();
+
+            // TODO Needs implementation!
+        }
+    };
+
+    private static Theming currentTheme = DEFAULT;
+
+    public static Theming getCurrentTheme() {
+        return currentTheme;
+    }
+
+    public static void setCurrentTheme(Theming currentTheme) {
+        Theming.currentTheme = currentTheme;
+    }
 
     public static Color getBgColor() {
-        // return SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND);
-        return SWTResourceManager.getColor(SWT.COLOR_BLACK);
+        if (currentTheme == DRACULA) {
+            return SWTResourceManager.getColor(40, 42, 54);
+        }
+
+        return SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND);
     }
 
     public static Color getFgColor() {
-        // return SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND);
-        return SWTResourceManager.getColor(SWT.COLOR_WHITE);
+        if (currentTheme == DRACULA) {
+            return SWTResourceManager.getColor(248, 248, 242);
+        }
+
+        return SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND);
     }
 
     public static Composite composite(Composite parent, int style) {
         final Composite result = new Composite(parent, style);
-        setBgColor(result);
+        if (currentTheme != DEFAULT) {
+            setBgColor(result);
+        }
+
         return result;
     }
 
     public static Label label(Composite parent, int style) {
         final Label result = new Label(parent, style);
-        setBgColor(result);
-        setFgColor(result);
+        if (currentTheme != DEFAULT) {
+            setBgColor(result);
+            setFgColor(result);
+        }
+
         return result;
     }
 
     public static CTabFolder cTabFolder(Composite parent, int style) {
         final CTabFolder result = new CTabFolder(parent, style);
-        result.setSelectionForeground(getFgColor());
-        setBgColor(result);
-        setFgColor(result);
+        if (currentTheme != DEFAULT) {
+            if (currentTheme == DRACULA) {
+                result.setSelectionForeground(SWTResourceManager.getColor(68, 71, 90));
+            } else {
+                result.setSelectionForeground(getFgColor());
+            }
+
+            setBgColor(result);
+            setFgColor(result);
+        }
+
         return result;
     }
 
     public static Group group(Composite parent, int style) {
         final Group result = new Group(parent, style);
-        setBgColor(result);
-        setFgColor(result);
+        if (currentTheme != DEFAULT) {
+            setBgColor(result);
+            setFgColor(result);
+        }
+
         return result;
     }
 
     public static SashForm shashForm(Composite parent, int style) {
         final SashForm result = new SashForm(parent, style);
-        setBgColor(result);
-        setFgColor(result);
+        if (currentTheme != DEFAULT) {
+            setBgColor(result);
+            setFgColor(result);
+        }
+
         return result;
     }
 
     public static Text text(Composite parent, int style) {
         final Text result = new Text(parent, style);
-        setBgColor(result);
-        setFgColor(result);
+        if (currentTheme != DEFAULT) {
+            setBgColor(result);
+            setFgColor(result);
+        }
+
         return result;
     }
 
     public static Tree tree(Composite parent, int columnCount) {
         final Tree result = new Tree(parent, columnCount);
-        setBgColor(result);
-        setFgColor(result);
-        result.setHeaderBackground(getBgColor());
-        result.setHeaderForeground(getFgColor());
+        if (currentTheme != DEFAULT) {
+            setBgColor(result);
+            setFgColor(result);
+
+            if (currentTheme == DRACULA) {
+                result.setHeaderBackground(SWTResourceManager.getColor(68, 71, 90));
+            } else {
+                result.setHeaderBackground(getBgColor());
+            }
+
+            result.setHeaderForeground(getFgColor());
+        }
+
         return result;
     }
 
     public static Combo combo(Composite parent, int style) {
         final Combo result = new Combo(parent, style);
-        setBgColor(result);
-        setFgColor(result);
+        if (currentTheme != DEFAULT) {
+            setBgColor(result);
+            setFgColor(result);
+        }
+
         return result;
     }
 
@@ -105,5 +199,10 @@ public enum Theming {
 
     private static void setFgColor(Control ctrl) {
         ctrl.setForeground(getFgColor());
+    }
+
+    @Override
+    public void overrideColours() {
+        // Do nothing.
     }
 }
