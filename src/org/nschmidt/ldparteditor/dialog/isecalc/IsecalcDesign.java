@@ -73,7 +73,7 @@ class IsecalcDesign extends ThemedDialog {
         Label lblHint = Theming.label(cmpContainer, SWT.NONE);
         lblHint.setText(I18n.ISECALC_HINT);
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.ISECALC_SCOPE_FILE, I18n.ISECALC_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

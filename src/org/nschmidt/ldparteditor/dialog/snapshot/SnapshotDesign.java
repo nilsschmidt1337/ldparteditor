@@ -69,7 +69,7 @@ class SnapshotDesign extends ThemedDialog {
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
-            Combo cmbSnapshot = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbSnapshot = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbSnapshotPtr[0] = cmbSnapshot;
 
             String[] items = new String[snapshots.size()];

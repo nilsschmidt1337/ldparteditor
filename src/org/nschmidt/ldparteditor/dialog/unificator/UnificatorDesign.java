@@ -102,7 +102,7 @@ class UnificatorDesign extends ThemedDialog {
         lblSplitPlane.setText(I18n.UNIFICATOR_SNAP_ON);
 
         {
-            Combo cmbSplitPlane = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbSplitPlane = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbWhatToUnifyPtr[0] = cmbSplitPlane;
             widgetUtil(cmbSplitPlane).setItems(I18n.UNIFICATOR_VERTICES, I18n.UNIFICATOR_SUBPART_VERTICES, I18n.UNIFICATOR_VERTICES_SUBPART_VERTICES);
             cmbSplitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -110,7 +110,7 @@ class UnificatorDesign extends ThemedDialog {
             cmbSplitPlane.select(us.getSnapOn());
         }
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.UNIFICATOR_SCOPE_FILE, I18n.UNIFICATOR_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

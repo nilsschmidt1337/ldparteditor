@@ -19,6 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -84,6 +85,15 @@ public enum Theming {
 
     public static Tree tree(Composite parent, int columnCount) {
         final Tree result = new Tree(parent, columnCount);
+        setBgColor(result);
+        setFgColor(result);
+        result.setHeaderBackground(getBgColor());
+        result.setHeaderForeground(getFgColor());
+        return result;
+    }
+
+    public static Combo combo(Composite parent, int style) {
+        final Combo result = new Combo(parent, style);
         setBgColor(result);
         setFgColor(result);
         return result;

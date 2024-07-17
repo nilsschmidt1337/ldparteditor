@@ -136,7 +136,7 @@ class YTruderDesign extends ThemedDialog {
         Label lblAf = Theming.label(cmpContainer, SWT.NONE);
         lblAf.setText(I18n.YTRUDER_AXIS);
 
-        Combo cmbAxis = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbAxis = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbAxisPtr[0] = cmbAxis;
         widgetUtil(cmbAxis).setItems(I18n.YTRUDER_X, I18n.YTRUDER_Y, I18n.YTRUDER_Z);
         cmbAxis.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

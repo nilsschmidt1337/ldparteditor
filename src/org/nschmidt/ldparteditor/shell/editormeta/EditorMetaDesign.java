@@ -314,7 +314,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         btnUnofficial.setText("Unofficial"); //$NON-NLS-1$
                         evTypeUnofficialBtnPtr[0] = btnUnofficial;
 
-                        Combo cmbType = new Combo(cmpType, SWT.NONE);
+                        Combo cmbType = Theming.combo(cmpType, SWT.NONE);
                         widgetUtil(cmbType).setItems("Part", "Subpart", "Primitive", "8_Primitive", "48_Primitive", "Shortcut", "Part Alias", "Part Physical_Colour",  "Part Physical_Colour Alias", "Part Flexible_Section", "Shortcut Alias", "Shortcut Physical_Colour",  "Shortcut Physical_Colour Alias"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
                         cmbType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbType.setText("Part"); //$NON-NLS-1$
@@ -338,7 +338,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Label lblLicense = Theming.label(cmpLicense, SWT.NONE);
                         lblLicense.setText("0 !LICENSE "); //$NON-NLS-1$
 
-                        Combo cmbLicense = new Combo(cmpLicense, SWT.NONE);
+                        Combo cmbLicense = Theming.combo(cmpLicense, SWT.NONE);
                         widgetUtil(cmbLicense).setItems("Licensed under CC BY 4.0 : see CAreadme.txt", "Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt", "Redistributable under CCAL version 2.0 : see CAreadme.txt", "Not redistributable : see NonCAreadme.txt" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                         cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbLicense.setText(userSettings.getLicense() != null ? userSettings.getLicense() : "Licensed under CC BY 4.0 : see CAreadme.txt"); //$NON-NLS-1$
@@ -365,7 +365,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Label lblBfc = Theming.label(cmpBfc, SWT.NONE);
                         lblBfc.setText("0 BFC "); //$NON-NLS-1$
 
-                        Combo cmbBfc = new Combo(cmpBfc, SWT.NONE);
+                        Combo cmbBfc = Theming.combo(cmpBfc, SWT.NONE);
                         widgetUtil(cmbBfc).setItems("NOCERTIFY", "CERTIFY CW", "CERTIFY CCW"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         cmbBfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbBfc.setText("NOCERTIFY"); //$NON-NLS-1$
@@ -380,7 +380,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Label lblCategory = Theming.label(cmpCategory, SWT.NONE);
                         lblCategory.setText("0 !CATEGORY "); //$NON-NLS-1$
 
-                        Combo cmbCategory = new Combo(cmpCategory, SWT.NONE);
+                        Combo cmbCategory = Theming.combo(cmpCategory, SWT.NONE);
                         evCategoryCmbPtr[0] = cmbCategory;
                         File categoryFile = new File(AppData.getPath() + "categories.txt"); //$NON-NLS-1$
                         if (!categoryFile.exists() || !categoryFile.isFile()) {
@@ -538,7 +538,7 @@ class EditorMetaDesign extends ApplicationWindow {
                     Label lblBfc = Theming.label(cmpBfc, SWT.NONE);
                     lblBfc.setText("0 BFC "); //$NON-NLS-1$
 
-                    Combo cmbBfc = new Combo(cmpBfc, SWT.NONE);
+                    Combo cmbBfc = Theming.combo(cmpBfc, SWT.NONE);
                     widgetUtil(cmbBfc).setItems("INVERTNEXT", "NOCLIP", "CW", "CCW", "CLIP", "CLIP CW", "CLIP CCW"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
                     cmbBfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                     cmbBfc.setText("INVERTNEXT"); //$NON-NLS-1$
@@ -577,7 +577,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Label lblTexmap = Theming.label(cmpTexmap, SWT.NONE);
                         lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
-                        Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
+                        Combo cmbTexmap = Theming.combo(cmpTexmap, SWT.NONE);
                         widgetUtil(cmbTexmap).setItems("START", "NEXT"); //$NON-NLS-1$ //$NON-NLS-2$
                         cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbTexmap.setText("START"); //$NON-NLS-1$
@@ -649,7 +649,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Label lblTexmap = Theming.label(cmpTexmap, SWT.NONE);
                         lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
-                        Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
+                        Combo cmbTexmap = Theming.combo(cmpTexmap, SWT.NONE);
                         widgetUtil(cmbTexmap).setItems("START", "NEXT"); //$NON-NLS-1$ //$NON-NLS-2$
                         cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbTexmap.setText("START"); //$NON-NLS-1$
@@ -735,7 +735,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Label lblTexmap = Theming.label(cmpTexmap, SWT.NONE);
                         lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
-                        Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
+                        Combo cmbTexmap = Theming.combo(cmpTexmap, SWT.NONE);
                         widgetUtil(cmbTexmap).setItems("START", "NEXT"); //$NON-NLS-1$ //$NON-NLS-2$
                         cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbTexmap.setText("START"); //$NON-NLS-1$
@@ -932,7 +932,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
                         {
-                            Combo cmbCsg = new Combo(cmpLpe, SWT.NONE);
+                            Combo cmbCsg = Theming.combo(cmpLpe, SWT.NONE);
                             widgetUtil(cmbCsg).setItems("UNION ", "DIFFERENCE ", "INTERSECTION "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             cmbCsg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                             cmbCsg.setText("UNION "); //$NON-NLS-1$
@@ -961,7 +961,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
                         lblVertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
                         {
-                            Combo cmbCsg = new Combo(cmpLpe, SWT.NONE);
+                            Combo cmbCsg = Theming.combo(cmpLpe, SWT.NONE);
                             widgetUtil(cmbCsg).setItems("CUBOID ", "ELLIPSOID ", "QUAD ", "CYLINDER ", "CONE ", "CIRCLE ", "MESH ", "EXTRUDE "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
                             cmbCsg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                             cmbCsg.setText("CUBOID "); //$NON-NLS-1$

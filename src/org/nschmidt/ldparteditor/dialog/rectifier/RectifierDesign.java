@@ -90,7 +90,7 @@ class RectifierDesign extends ThemedDialog {
         spnAngle.setValue(rs.getMaximumAngle());
 
         {
-            Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbColourise = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbColourisePtr[0] = cmbColourise;
             widgetUtil(cmbColourise).setItems(I18n.RECTIFIER_COLOUR_1, I18n.RECTIFIER_COLOUR_2);
             cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -98,7 +98,7 @@ class RectifierDesign extends ThemedDialog {
             cmbColourise.select(rs.isColourise() ? 1 : 0);
         }
         {
-            Combo cmbNoQuadConversation = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbNoQuadConversation = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbNoQuadConversationPtr[0] = cmbNoQuadConversation;
             widgetUtil(cmbNoQuadConversation).setItems(I18n.RECTIFIER_TRI_QUADS_1, I18n.RECTIFIER_TRI_QUADS_2);
             cmbNoQuadConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -106,7 +106,7 @@ class RectifierDesign extends ThemedDialog {
             cmbNoQuadConversation.select(rs.isNoQuadConversation() ? 1 : 0);
         }
         {
-            Combo cmbNoBorderedQuadToRectConversation = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbNoBorderedQuadToRectConversation = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbNoBorderedQuadToRectConversationPtr[0] = cmbNoBorderedQuadToRectConversation;
             widgetUtil(cmbNoBorderedQuadToRectConversation).setItems(I18n.RECTIFIER_RECT_1, I18n.RECTIFIER_RECT_2);
             cmbNoBorderedQuadToRectConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -114,14 +114,14 @@ class RectifierDesign extends ThemedDialog {
             cmbNoBorderedQuadToRectConversation.select(rs.isNoBorderedQuadToRectConversation() ? 1 : 0);
         }
         {
-            Combo cmbNoRectConversationOnAdjacentCondlines = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbNoRectConversationOnAdjacentCondlines = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbNoRectConversationOnAdjacentCondlinesPtr[0] = cmbNoRectConversationOnAdjacentCondlines;
             widgetUtil(cmbNoRectConversationOnAdjacentCondlines).setItems(I18n.RECTIFIER_RECT_3, I18n.RECTIFIER_RECT_4);
             cmbNoRectConversationOnAdjacentCondlines.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbNoRectConversationOnAdjacentCondlines.setText(cmbNoRectConversationOnAdjacentCondlines.getItem(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0));
             cmbNoRectConversationOnAdjacentCondlines.select(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0);
         }
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.RECTIFIER_SCOPE_FILE, I18n.RECTIFIER_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

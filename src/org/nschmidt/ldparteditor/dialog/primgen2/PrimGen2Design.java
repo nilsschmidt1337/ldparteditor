@@ -154,25 +154,25 @@ class PrimGen2Design extends ThemedDialog {
             lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
         }
 
-        Combo cmbType = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbType = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbTypePtr[0] = cmbType;
         widgetUtil(cmbType).setItems(I18n.PRIMGEN_CIRCLE, I18n.PRIMGEN_RING, I18n.PRIMGEN_CONE, I18n.PRIMGEN_TORUS, I18n.PRIMGEN_CYLINDER, I18n.PRIMGEN_DISC, I18n.PRIMGEN_DISC_NEGATIVE, I18n.PRIMGEN_CHORD);
         cmbType.setText(I18n.PRIMGEN_CIRCLE);
         cmbType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
-        Combo cmbDivisions = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbDivisions = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbDivisionsPtr[0] = cmbDivisions;
         widgetUtil(cmbDivisions).setItems(I18n.PRIMGEN_EIGHT, I18n.PRIMGEN_SIXTEEN, I18n.PRIMGEN_FOURTYEIGHT, I18n.PRIMGEN_CUSTOM);
         cmbDivisions.setText(I18n.PRIMGEN_SIXTEEN);
         cmbDivisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Combo cmbSegments = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbSegments = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbSegmentsPtr[0] = cmbSegments;
         widgetUtil(cmbSegments).setItems(I18n.PRIMGEN_QUARTER, I18n.PRIMGEN_HALF, I18n.PRIMGEN_THREE_QUARTER, I18n.PRIMGEN_WHOLE, I18n.PRIMGEN_CUSTOM);
         cmbSegments.setText(I18n.PRIMGEN_QUARTER);
         cmbSegments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Combo cmbTorusType = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbTorusType = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbTorusTypePtr[0] = cmbTorusType;
         widgetUtil(cmbTorusType).setItems(I18n.PRIMGEN_INSIDE, I18n.PRIMGEN_OUTSIDE, I18n.PRIMGEN_TUBE);
         cmbTorusType.setText(I18n.PRIMGEN_OUTSIDE);
@@ -243,7 +243,7 @@ class PrimGen2Design extends ThemedDialog {
         lblWinding.setText(I18n.PRIMGEN_WINDING);
         lblWinding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Combo cmbWinding = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbWinding = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbWindingPtr[0] = cmbWinding;
         widgetUtil(cmbWinding).setItems(I18n.PRIMGEN_CCW, I18n.PRIMGEN_CW);
         cmbWinding.setText(I18n.PRIMGEN_CCW);

@@ -80,7 +80,7 @@ class IntersectorDesign extends ThemedDialog {
         btnHideOther.setText(I18n.INTERSECTOR_HIDE_OTHER);
         btnHideOther.setSelection(ins.isHidingOther());
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.INTERSECTOR_SCOPE_FILE, I18n.INTERSECTOR_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -89,7 +89,7 @@ class IntersectorDesign extends ThemedDialog {
         cmbScope.setEnabled(false);
 
         {
-            Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbColourise = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbColourisePtr[0] = cmbColourise;
             widgetUtil(cmbColourise).setItems(I18n.INTERSECTOR_NO_MODS, I18n.INTERSECTOR_COLOUR_MODS);
             cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

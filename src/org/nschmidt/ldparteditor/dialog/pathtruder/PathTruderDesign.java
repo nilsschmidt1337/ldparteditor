@@ -148,7 +148,7 @@ class PathTruderDesign extends ThemedDialog {
         Label lblAf = Theming.label(cmpContainer, SWT.NONE);
         lblAf.setText(I18n.PATHTRUDER_SHAPE_COMP);
 
-        Combo cmbShapeCompensation = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbShapeCompensation = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbShapeCompensationPtr[0] = cmbShapeCompensation;
         widgetUtil(cmbShapeCompensation).setItems(I18n.PATHTRUDER_SHAPE_COMP_1, I18n.PATHTRUDER_SHAPE_COMP_2);
         cmbShapeCompensation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -158,7 +158,7 @@ class PathTruderDesign extends ThemedDialog {
         Label lblBfcinvert = Theming.label(cmpContainer, SWT.NONE);
         lblBfcinvert.setText(I18n.PATHTRUDER_INVERT_SHAPE);
 
-        Combo cmbBfcInvert = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbBfcInvert = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbBfcInvertPtr[0] = cmbBfcInvert;
         widgetUtil(cmbBfcInvert).setItems(I18n.PATHTRUDER_INVERT_SHAPE_1, I18n.PATHTRUDER_INVERT_SHAPE_2);
         cmbBfcInvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

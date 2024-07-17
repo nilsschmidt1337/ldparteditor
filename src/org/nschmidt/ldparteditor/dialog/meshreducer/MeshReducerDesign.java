@@ -70,7 +70,7 @@ class MeshReducerDesign extends ThemedDialog {
         Label lblCoordsPrec = Theming.label(cmpContainer, SWT.NONE);
         lblCoordsPrec.setText(I18n.MESHREDUCE_MODE);
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.MESHREDUCE_DESTROY_COLOURS, I18n.MESHREDUCE_KEEP_COLOURS);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

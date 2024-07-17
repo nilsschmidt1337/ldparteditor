@@ -85,7 +85,7 @@ class SortDesign extends ThemedDialog {
         Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.SORT_SCOPE_FILE, I18n.SORT_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -97,7 +97,7 @@ class SortDesign extends ThemedDialog {
             scope = 1;
         }
 
-        Combo cmbSortCriteria = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbSortCriteria = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbSortCriteriaPtr[0] = cmbSortCriteria;
         widgetUtil(cmbSortCriteria).setItems(I18n.SORT_BY_COLOUR_ASC, I18n.SORT_BY_COLOUR_DESC, I18n.SORT_BY_TYPE_ASC, I18n.SORT_BY_TYPE_DESC, I18n.SORT_BY_TYPE_COLOUR_ASC, I18n.SORT_BY_TYPE_COLOUR_DESC);
         cmbSortCriteria.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

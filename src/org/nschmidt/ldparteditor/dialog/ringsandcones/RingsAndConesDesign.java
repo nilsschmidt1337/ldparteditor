@@ -92,7 +92,7 @@ class RingsAndConesDesign extends ThemedDialog {
             lbl.setText(I18n.RCONES_SHAPE);
         }
         {
-            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmb = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbShapePtr[0] = cmb;
             widgetUtil(cmb).setItems(I18n.RCONES_RING, I18n.RCONES_CONE, I18n.RCONES_RING_48, I18n.RCONES_CONE_48);
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -141,7 +141,7 @@ class RingsAndConesDesign extends ThemedDialog {
             lbl.setText(I18n.RCONES_ANGLE);
         }
         {
-            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmb = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbAnglePtr[0] = cmb;
             widgetUtil(cmb).setItems(
                     I18n.RCONES_ANGLE_01,
@@ -205,14 +205,14 @@ class RingsAndConesDesign extends ThemedDialog {
             cmb.select(rs.getAngle());
         }
         {
-            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmb = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbExistingOnlyPtr[0] = cmb;
             widgetUtil(cmb).setItems(I18n.RCONES_PRIMS_1, I18n.RCONES_PRIMS_2);
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isUsingExistingPrimitives() ? 0 : 1);
         }
         {
-            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmb = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbCreateWhatPtr[0] = cmb;
             widgetUtil(cmb).setItems(I18n.RCONES_CREATE_1, I18n.RCONES_CREATE_2);
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

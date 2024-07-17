@@ -236,7 +236,7 @@ class OptionsDesign extends ApplicationWindow {
                 Label lblTextWinArr = Theming.label(cmpContainer, SWT.NONE);
                 lblTextWinArr.setText(I18n.OPTIONS_TEXT_WINDOW_ARR);
 
-                Combo cmbTextWinArr = new Combo(cmpContainer, SWT.READ_ONLY);
+                Combo cmbTextWinArr = Theming.combo(cmpContainer, SWT.READ_ONLY);
                 this.cmbTextWinArrPtr[0] = cmbTextWinArr;
                 widgetUtil(cmbTextWinArr).setItems(I18n.OPTIONS_TEXT_WINDOW_SEPARATE, I18n.OPTIONS_TEXT_WINDOW_LEFT, I18n.OPTIONS_TEXT_WINDOW_RIGHT, I18n.OPTIONS_TEXT_WINDOW_SINGLE);
                 cmbTextWinArr.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -322,7 +322,7 @@ class OptionsDesign extends ApplicationWindow {
                 Label lblLocale = Theming.label(cmpContainer, SWT.NONE);
                 lblLocale.setText(I18n.OPTIONS_CHOOSE_LOCALE);
 
-                Combo cmbLocale = new Combo(cmpContainer, SWT.READ_ONLY);
+                Combo cmbLocale = Theming.combo(cmpContainer, SWT.READ_ONLY);
                 this.cmbLocalePtr[0] = cmbLocale;
 
                 String[] locales = new String[DateFormat.getAvailableLocales().length];
@@ -380,7 +380,7 @@ class OptionsDesign extends ApplicationWindow {
                 Label lblLicenseQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblLicenseQuestion.setText(I18n.OPTIONS_LICENSE);
 
-                Combo cmbLicense = new Combo(cmpContainer, SWT.NONE);
+                Combo cmbLicense = Theming.combo(cmpContainer, SWT.NONE);
                 this.cmbLicensePtr[0] = cmbLicense;
                 widgetUtil(cmbLicense).setItems("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt", "0 !LICENSE Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt", "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -433,7 +433,7 @@ class OptionsDesign extends ApplicationWindow {
                 Label lblMouseButtonLayout = Theming.label(cmpContainer, SWT.NONE);
                 lblMouseButtonLayout.setText(I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_TITLE);
 
-                Combo cmbMouseButtonLayout = new Combo(cmpContainer, SWT.READ_ONLY);
+                Combo cmbMouseButtonLayout = Theming.combo(cmpContainer, SWT.READ_ONLY);
                 this.cmbMouseButtonLayoutPtr[0] = cmbMouseButtonLayout;
                 widgetUtil(cmbMouseButtonLayout).setItems(I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_A, I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_B);
                 cmbMouseButtonLayout.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

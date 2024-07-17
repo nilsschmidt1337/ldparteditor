@@ -105,7 +105,7 @@ class SymSplitterDesign extends ThemedDialog {
         lblSplitPlane.setText(I18n.SYMSPLITTER_SPLITTING_PLANE);
 
         {
-            Combo cmbSplitPlane = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbSplitPlane = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbSplitPlanePtr[0] = cmbSplitPlane;
             widgetUtil(cmbSplitPlane).setItems(I18n.SYMSPLITTER_ZP, I18n.SYMSPLITTER_YP, I18n.SYMSPLITTER_XP, I18n.SYMSPLITTER_ZM, I18n.SYMSPLITTER_YM, I18n.SYMSPLITTER_XM);
             cmbSplitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -116,7 +116,7 @@ class SymSplitterDesign extends ThemedDialog {
         Label lblHide = Theming.label(cmpContainer, SWT.NONE);
         lblHide.setText(I18n.SYMSPLITTER_SELECT_WHAT);
         {
-            Combo cmbHide = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbHide = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbHidePtr[0] = cmbHide;
             widgetUtil(cmbHide).setItems(I18n.SYMSPLITTER_SHOW_ALL, I18n.SYMSPLITTER_SHOW_MIDDLE, I18n.SYMSPLITTER_SHOW_FRONT, I18n.SYMSPLITTER_SHOW_BEHIND);
             cmbHide.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -128,7 +128,7 @@ class SymSplitterDesign extends ThemedDialog {
         lblDummy.setText(""); //$NON-NLS-1$
 
         {
-            Combo cmbValidate = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbValidate = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbValidatePtr[0] = cmbValidate;
             widgetUtil(cmbValidate).setItems(I18n.SYMSPLITTER_NO_VALIDATION, I18n.SYMSPLITTER_VALIDATION);
             cmbValidate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -136,7 +136,7 @@ class SymSplitterDesign extends ThemedDialog {
             cmbValidate.select(ss.isValidate() ? 1 : 0);
         }
         {
-            Combo cmbCutAcross = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbCutAcross = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbCutAcrossPtr[0] = cmbCutAcross;
             widgetUtil(cmbCutAcross).setItems(I18n.SYMSPLITTER_DO_NOT_CUT, I18n.SYMSPLITTER_CUT);
             cmbCutAcross.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -144,14 +144,14 @@ class SymSplitterDesign extends ThemedDialog {
             cmbCutAcross.select(ss.isCutAcross() ? 1 : 0);
         }
         {
-            Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbColourise = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbColourisePtr[0] = cmbColourise;
             widgetUtil(cmbColourise).setItems(I18n.SYMSPLITTER_NOT_COLOURISE, I18n.SYMSPLITTER_COLOURISE);
             cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbColourise.setText(cmbColourise.getItem(ss.isColourise() ? 1 : 0));
             cmbColourise.select(ss.isColourise() ? 1 : 0);
         }
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.SYMSPLITTER_SCOPE_FILE, I18n.SYMSPLITTER_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

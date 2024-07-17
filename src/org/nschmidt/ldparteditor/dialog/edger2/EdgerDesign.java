@@ -94,14 +94,14 @@ class EdgerDesign extends ThemedDialog {
         Label lblUse180deg = Theming.label(cmpContainer, SWT.NONE);
         lblUse180deg.setText(I18n.EDGER_RANGE);
 
-        Combo cmbB = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbB = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbBPtr[0] = cmbB;
         widgetUtil(cmbB).setItems(I18n.EDGER_0_TO_90, I18n.EDGER_0_TO_180);
         cmbB.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbB.setText(es.isExtendedRange() ? cmbB.getItem(1) : cmbB.getItem(0));
         cmbB.select(es.isExtendedRange() ? 1 : 0);
 
-        Combo cmbC = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbC = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbCPtr[0] = cmbC;
         widgetUtil(cmbC).setItems(I18n.EDGER_CONDLINE_ON_QUAD_OFF, I18n.EDGER_CONDLINE_ON_QUAD_ON);
         cmbC.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -138,14 +138,14 @@ class EdgerDesign extends ThemedDialog {
         spnAe.setMinimum(new BigDecimal(0));
         spnAe.setValue(es.getAe());
 
-        Combo cmbU = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbU = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbUPtr[0] = cmbU;
         widgetUtil(cmbU).setItems(I18n.EDGER_INCLUDE_UNMATCHED, I18n.EDGER_EXCLUDE_UNMATCHED, I18n.EDGER_UNMATCHED_ONLY);
         cmbU.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbU.setText(cmbU.getItem(es.getUnmatchedMode()));
         cmbU.select(es.getUnmatchedMode());
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.EDGER_SCOPE_FILE_SUBFILES, I18n.EDGER_SCOPE_FILE, I18n.EDGER_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

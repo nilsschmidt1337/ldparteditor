@@ -61,6 +61,7 @@ public class IntegerSpinner extends Composite {
      */
     public IntegerSpinner(final Composite parent, int style) {
         super(parent, style);
+        this.setBackground(Theming.getBgColor());
         me = this;
         GridLayout gl = new GridLayout(4, false);
 

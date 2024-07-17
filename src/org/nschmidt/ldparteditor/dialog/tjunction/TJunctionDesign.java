@@ -70,7 +70,7 @@ class TJunctionDesign extends ThemedDialog {
         Label lblCoordsPrec = Theming.label(cmpContainer, SWT.NONE);
         lblCoordsPrec.setText(I18n.TJUNCTION_MODE);
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.TJUNCTION_FIND, I18n.TJUNCTION_NORMAL, I18n.TJUNCTION_AGGRESSIVE);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
