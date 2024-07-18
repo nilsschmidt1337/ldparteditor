@@ -229,7 +229,7 @@ public class OptionsDialog extends OptionsDesign {
 
                 Theming.setCurrentTheme(theme);
                 WorkbenchManager.getUserSettingState().setTheming(theme);
-
+                WorkbenchManager.getThemeSettingState().setShowingAxisLabels(WorkbenchManager.getUserSettingState().isShowingAxisLabels());
                 theme.overrideColours();
                 WorkbenchManager.getThemeSettingState().loadColourSettings();
 

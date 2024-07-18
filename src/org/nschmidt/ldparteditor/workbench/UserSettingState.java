@@ -1020,8 +1020,8 @@ public class UserSettingState implements Serializable {
             Colour.textColourB = Colour.textColourAltB;
         } else {
             Colour.textColourR = Colour.textColourDefaultR;
-            Colour.textColourR = Colour.textColourDefaultG;
-            Colour.textColourR = Colour.textColourDefaultB;
+            Colour.textColourG = Colour.textColourDefaultG;
+            Colour.textColourB = Colour.textColourDefaultB;
         }
 
         if (xAxisColour != null) {

@@ -135,6 +135,8 @@ public enum Theming implements ThemeColours {
     public static Color getBgColor() {
         if (currentTheme == DRACULA) {
             return SWTResourceManager.getColor(40, 42, 54);
+        } else if (currentTheme == LIGHT) {
+            return SWTResourceManager.getColor(255, 255, 255);
         }
 
         return SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND);
@@ -143,6 +145,8 @@ public enum Theming implements ThemeColours {
     public static Color getFgColor() {
         if (currentTheme == DRACULA) {
             return SWTResourceManager.getColor(248, 248, 242);
+        } else if (currentTheme == LIGHT) {
+            return SWTResourceManager.getColor(0, 0, 0);
         }
 
         return SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND);
