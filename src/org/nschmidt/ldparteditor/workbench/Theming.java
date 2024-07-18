@@ -27,17 +27,20 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
+@SuppressWarnings("java:S2696")
 public enum Theming implements ThemeColours {
     DEFAULT {
         @Override
         public void overrideColours() {
             super.overrideColours();
             NLogger.debug(Theming.class, "Restoring default theme."); //$NON-NLS-1$
-
-            // TODO Needs implementation!
+            WorkbenchManager.getUserSettingState().loadColourSettings();
+            WorkbenchManager.getUserSettingState().saveColours();
+            WorkbenchManager.getThemeSettingState().saveColours();
         }
     },
 
@@ -50,6 +53,36 @@ public enum Theming implements ThemeColours {
 
             TextEditorColour.loadTextBackground(getBgColor());
             TextEditorColour.loadTextForeground(getFgColor());
+
+            Colour.backgroundColourR = 40 / 255f;
+            Colour.backgroundColourG = 42 / 255f;
+            Colour.backgroundColourB = 54 / 255f;
+
+            Colour.gridColourR = 248 / 255f;
+            Colour.gridColourG = 248 / 255f;
+            Colour.gridColourB = 242 / 255f;
+
+            Colour.grid10ColourR = Colour.gridColourR;
+            Colour.grid10ColourG = Colour.gridColourG;
+            Colour.grid10ColourB = Colour.gridColourB;
+
+            Colour.primitiveBackgroundColourR = Colour.backgroundColourR;
+            Colour.primitiveBackgroundColourG = Colour.backgroundColourG;
+            Colour.primitiveBackgroundColourB = Colour.backgroundColourB;
+
+            TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(68, 71, 90));
+            TextEditorColour.loadLineHighlightSelectedBackground(SWTResourceManager.getColor(68, 71, 90));
+            TextEditorColour.loadLineCommentFont(SWTResourceManager.getColor(98, 114, 164));
+
+            TextEditorColour.loadLinePrimaryFont(SWTResourceManager.getColor(80, 250, 123));
+            TextEditorColour.loadLineSecondaryFont(SWTResourceManager.getColor(255, 121, 198));
+            TextEditorColour.loadLineQuadFont(SWTResourceManager.getColor(255, 184, 108));
+
+            TextEditorColour.loadLineErrorUnderline(SWTResourceManager.getColor(255, 85, 85));
+            TextEditorColour.loadLineWarningUnderline(SWTResourceManager.getColor(241, 250, 140));
+
+            TextEditorColour.loadLineBoxFont(getFgColor());
+
             // TODO Needs implementation!
 
             WorkbenchManager.getThemeSettingState().saveColours();
@@ -80,6 +113,7 @@ public enum Theming implements ThemeColours {
         return currentTheme;
     }
 
+    @SuppressWarnings("java:S3066")
     public static void setCurrentTheme(Theming currentTheme) {
         Theming.currentTheme = currentTheme;
     }

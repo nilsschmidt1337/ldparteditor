@@ -791,7 +791,7 @@ public class UserSettingState implements Serializable {
 
     public void loadColours() {
         if (theming != Theming.DEFAULT && theming != null && WorkbenchManager.getThemeSettingState() != null) {
-            // FIXME Do this override later in the options dialog!
+            // FIXME Do this override later in the options dialog, when every theme is defined!
             theming.overrideColours();
             WorkbenchManager.getThemeSettingState().loadColourSettings();
         } else {
