@@ -161,7 +161,12 @@ class CompositeTabDesign extends CTabItem {
                 CTabFolder tabFolderPartInformation = Theming.cTabFolder(cmpInfoArea, SWT.BORDER);
                 this.tabFolderPartInformationPtr[0] = tabFolderPartInformation;
                 tabFolderPartInformation.setSingle(true);
-                tabFolderPartInformation.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                if (Theming.getCurrentTheme() == Theming.DEFAULT) {
+                    tabFolderPartInformation.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                } else {
+                    tabFolderPartInformation.setSelectionBackground(TextEditorColour.getLineHighlightBackground());
+                    tabFolderPartInformation.setSelectionForeground(Theming.getFgColor());
+                }
 
                 CTabItem tbtmPartProblems = new CTabItem(tabFolderPartInformation, SWT.CLOSE);
                 tbtmPartProblems.setImage(null);

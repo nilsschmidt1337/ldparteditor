@@ -57,6 +57,7 @@ import org.nschmidt.ldparteditor.composite.ToolItemState;
 import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
+import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
@@ -488,7 +489,12 @@ class Editor3DDesign extends ApplicationWindow {
                 CTabFolder tabFolderOpenDatFiles = Theming.cTabFolder(cmpMainEditor, SWT.CLOSE);
                 this.tabFolderOpenDatFilesPtr[0] = tabFolderOpenDatFiles;
                 tabFolderOpenDatFiles.setMRUVisible(true);
-                tabFolderOpenDatFiles.setSelectionBackground(new Color[]{Theming.getBgColor(), Theming.getBgColor()}, new int[]{100}, true);
+                if (Theming.getCurrentTheme() == Theming.DEFAULT) {
+                    tabFolderOpenDatFiles.setSelectionBackground(new Color[]{Theming.getBgColor(), Theming.getBgColor()}, new int[]{100}, true);
+                } else {
+                    tabFolderOpenDatFiles.setSelectionBackground(TextEditorColour.getLineHighlightBackground());
+                    tabFolderOpenDatFiles.setSelectionForeground(Theming.getFgColor());
+                }
 
                 {
                     GridData gridDataX = new GridData();
@@ -546,7 +552,13 @@ class Editor3DDesign extends ApplicationWindow {
                         CTabFolder tabFolderSettings = Theming.cTabFolder(cmpContainer1, SWT.BORDER);
                         this.tabFolderSettingsPtr[0] = tabFolderSettings;
                         tabFolderSettings.setMRUVisible(true);
-                        tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                        if (Theming.getCurrentTheme() == Theming.DEFAULT) {
+                            tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                        } else {
+                            tabFolderSettings.setSelectionBackground(TextEditorColour.getLineHighlightBackground());
+                            tabFolderSettings.setSelectionForeground(Theming.getFgColor());
+                        }
+
                         GridData gridData = new GridData();
                         gridData.horizontalAlignment = SWT.FILL;
                         gridData.minimumHeight = 200;

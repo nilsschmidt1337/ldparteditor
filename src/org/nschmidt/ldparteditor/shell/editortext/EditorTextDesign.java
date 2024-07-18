@@ -44,6 +44,7 @@ import org.nschmidt.ldparteditor.enumtype.IconSize;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.Task;
+import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.enumtype.TextTask;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
@@ -670,7 +671,13 @@ class EditorTextDesign extends ApplicationWindow {
                 CompositeTabFolder tabFolder = new CompositeTabFolder(cmpTextEditor, SWT.BORDER);
                 this.tabFolderPtr[0] = tabFolder;
                 tabFolder.setMRUVisible(true);
-                tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                if (Theming.getCurrentTheme() == Theming.DEFAULT) {
+                    tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                } else {
+                    tabFolder.setSelectionBackground(TextEditorColour.getLineHighlightBackground());
+                    tabFolder.setSelectionForeground(Theming.getFgColor());
+                }
+
                 tabFolder.computeSize(SWT.DEFAULT, SWT.DEFAULT);
             }
         }

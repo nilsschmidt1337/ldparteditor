@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -208,7 +209,13 @@ class EditorMetaDesign extends ApplicationWindow {
         {
             CTabFolder tabFolderSettings = Theming.cTabFolder(container, SWT.BORDER);
             tabFolderSettings.setMRUVisible(true);
-            tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+            if (Theming.getCurrentTheme() == Theming.DEFAULT) {
+                tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+            } else {
+                tabFolderSettings.setSelectionBackground(TextEditorColour.getLineHighlightBackground());
+                tabFolderSettings.setSelectionForeground(Theming.getFgColor());
+            }
+
             GridData gridData = new GridData();
             gridData.horizontalAlignment = SWT.FILL;
             gridData.minimumHeight = 200;

@@ -168,7 +168,13 @@ class OptionsDesign extends ApplicationWindow {
         {
             CTabFolder tabFolderSettings = Theming.cTabFolder(container, SWT.BORDER);
             tabFolderSettings.setMRUVisible(true);
-            tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+            if (Theming.getCurrentTheme() == Theming.DEFAULT) {
+                tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+            } else {
+                tabFolderSettings.setSelectionBackground(TextEditorColour.getLineHighlightBackground());
+                tabFolderSettings.setSelectionForeground(Theming.getFgColor());
+            }
+
             GridData gridData = new GridData();
             gridData.horizontalAlignment = SWT.FILL;
             gridData.minimumHeight = 200;
