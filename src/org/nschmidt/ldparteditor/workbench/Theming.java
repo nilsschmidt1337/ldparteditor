@@ -107,8 +107,56 @@ public enum Theming implements ThemeColours {
         @Override
         public void overrideColours() {
             super.overrideColours();
+            NLogger.debug(Theming.class, "Loading Dark theme."); //$NON-NLS-1$
+            WorkbenchManager.getUserSettingState().loadColourSettings();
 
-            // TODO Needs implementation!
+            TextEditorColour.loadTextBackground(getBgColor());
+            TextEditorColour.loadTextForeground(getFgColor());
+
+            Colour.backgroundColourR = 0f;
+            Colour.backgroundColourG = 0f;
+            Colour.backgroundColourB = 0f;
+
+            Colour.gridColourR = 1f;
+            Colour.gridColourG = 1f;
+            Colour.gridColourB = 1f;
+
+            Colour.grid10ColourR = Colour.gridColourR;
+            Colour.grid10ColourG = Colour.gridColourG;
+            Colour.grid10ColourB = Colour.gridColourB;
+
+            Colour.primitiveBackgroundColourR = Colour.backgroundColourR;
+            Colour.primitiveBackgroundColourG = Colour.backgroundColourG;
+            Colour.primitiveBackgroundColourB = Colour.backgroundColourB;
+
+            Colour.textColourR = Colour.gridColourR;
+            Colour.textColourG = Colour.gridColourG;
+            Colour.textColourB = Colour.gridColourB;
+
+            Colour.textColourAltR = Colour.gridColourR;
+            Colour.textColourAltG = Colour.gridColourG;
+            Colour.textColourAltB = Colour.gridColourB;
+
+            Colour.textColourDefaultR = Colour.gridColourR;
+            Colour.textColourDefaultG = Colour.gridColourG;
+            Colour.textColourDefaultB = Colour.gridColourB;
+
+            TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(68, 71, 90));
+            TextEditorColour.loadLineHighlightSelectedBackground(SWTResourceManager.getColor(68, 71, 90));
+            TextEditorColour.loadLineCommentFont(SWTResourceManager.getColor(255, 200, 108));
+            TextEditorColour.loadTextForegroundHidden(SWTResourceManager.getColor(124, 124, 121));
+
+            TextEditorColour.loadLinePrimaryFont(SWTResourceManager.getColor(116, 129, 90));
+            TextEditorColour.loadLineSecondaryFont(SWTResourceManager.getColor(120, 83, 67));
+            TextEditorColour.loadLineQuadFont(SWTResourceManager.getColor(187, 24, 41));
+
+            TextEditorColour.loadLineErrorUnderline(SWTResourceManager.getColor(255, 85, 85));
+            TextEditorColour.loadLineWarningUnderline(SWTResourceManager.getColor(241, 250, 140));
+
+            TextEditorColour.loadLineBoxFont(getFgColor());
+            TextEditorColour.loadLineHintUnderline(SWTResourceManager.getColor(189, 147, 249));
+
+            WorkbenchManager.getThemeSettingState().saveColours();
         }
     },
 
@@ -120,8 +168,6 @@ public enum Theming implements ThemeColours {
             WorkbenchManager.getUserSettingState().loadColourSettings();
 
             TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(190, 190, 210));
-
-            // TODO Needs implementation!
 
             WorkbenchManager.getThemeSettingState().saveColours();
         }
@@ -143,6 +189,8 @@ public enum Theming implements ThemeColours {
             return SWTResourceManager.getColor(40, 42, 54);
         } else if (currentTheme == LIGHT) {
             return SWTResourceManager.getColor(255, 255, 255);
+        } else if (currentTheme == DARK) {
+            return SWTResourceManager.getColor(0, 0, 0);
         }
 
         return SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND);
@@ -153,6 +201,8 @@ public enum Theming implements ThemeColours {
             return SWTResourceManager.getColor(248, 248, 242);
         } else if (currentTheme == LIGHT) {
             return SWTResourceManager.getColor(0, 0, 0);
+        } else if (currentTheme == DARK) {
+            return SWTResourceManager.getColor(248, 248, 242);
         }
 
         return SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND);
