@@ -125,6 +125,10 @@ public enum Theming implements ThemeColours {
             Colour.grid10ColourG = Colour.gridColourG;
             Colour.grid10ColourB = Colour.gridColourB;
 
+            Colour.originColourR = 0.5f;
+            Colour.originColourG = 0.5f;
+            Colour.originColourB = 0.5f;
+
             Colour.primitiveBackgroundColourR = Colour.backgroundColourR;
             Colour.primitiveBackgroundColourG = Colour.backgroundColourG;
             Colour.primitiveBackgroundColourB = Colour.backgroundColourB;
@@ -281,6 +285,10 @@ public enum Theming implements ThemeColours {
 
             if (currentTheme == DRACULA) {
                 result.setHeaderBackground(SWTResourceManager.getColor(68, 71, 90));
+                result.setBackground(SWTResourceManager.getColor(70, 72, 84));
+            } else if (currentTheme == DARK) {
+                result.setHeaderBackground(SWTResourceManager.getColor(68, 71, 90));
+                result.setBackground(SWTResourceManager.getColor(122, 122, 122));
             } else {
                 result.setHeaderBackground(getBgColor());
             }
