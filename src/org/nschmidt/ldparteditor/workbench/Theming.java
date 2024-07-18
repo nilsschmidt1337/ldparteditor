@@ -116,8 +116,14 @@ public enum Theming implements ThemeColours {
         @Override
         public void overrideColours() {
             super.overrideColours();
+            NLogger.debug(Theming.class, "Loading Light theme."); //$NON-NLS-1$
+            WorkbenchManager.getUserSettingState().loadColourSettings();
+
+            TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(190, 190, 210));
 
             // TODO Needs implementation!
+
+            WorkbenchManager.getThemeSettingState().saveColours();
         }
     };
 
