@@ -42,6 +42,7 @@ import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * This first dialog - shown on startup - asks for mandatory information about
@@ -75,22 +76,22 @@ class ColourDesign extends ApplicationWindow {
      */
     @Override
     protected Control createContents(Composite parent) {
-        Composite cmpContainer = new Composite(parent, SWT.NONE);
+        Composite cmpContainer = Theming.composite(parent, SWT.NONE);
         GridLayout gridLayout = new GridLayout(1, true);
         gridLayout.verticalSpacing = 0;
         gridLayout.horizontalSpacing = 0;
         cmpContainer.setLayout(gridLayout);
 
-        Label lblColourTitle = new Label(cmpContainer, SWT.NONE);
+        Label lblColourTitle = Theming.label(cmpContainer, SWT.NONE);
         lblColourTitle.setText(I18n.COLOURDIALOG_COLOUR_TITLE);
 
         {
-            Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+            Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
             lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
         {
-            Label lblEmptyLine = new Label(cmpContainer, SWT.NONE);
+            Label lblEmptyLine = Theming.label(cmpContainer, SWT.NONE);
             lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
@@ -99,7 +100,7 @@ class ColourDesign extends ApplicationWindow {
         btnPickDirectColour.setText(I18n.COLOURDIALOG_DIRECT_COLOUR);
 
         {
-            Label lblEmptyLine = new Label(cmpContainer, SWT.NONE);
+            Label lblEmptyLine = Theming.label(cmpContainer, SWT.NONE);
             lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
@@ -110,21 +111,21 @@ class ColourDesign extends ApplicationWindow {
             btnRandomColour.setImage(ResourceManager.getImage("icon16_randomColours.png")); //$NON-NLS-1$
 
             {
-                Label lblEmptyLine = new Label(cmpContainer, SWT.NONE);
+                Label lblEmptyLine = Theming.label(cmpContainer, SWT.NONE);
                 lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             }
         }
 
-        Label lblStdColour = new Label(cmpContainer, SWT.NONE);
+        Label lblStdColour = Theming.label(cmpContainer, SWT.NONE);
         lblStdColour.setText(I18n.COLOURDIALOG_STANDARD_COLOURS);
 
         {
-            Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+            Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
             lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
         {
-            Label lblEmptyLine = new Label(cmpContainer, SWT.NONE);
+            Label lblEmptyLine = Theming.label(cmpContainer, SWT.NONE);
             lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
@@ -133,7 +134,7 @@ class ColourDesign extends ApplicationWindow {
         btnShowTable.setText(I18n.COLOURDIALOG_SHOW_COLOUR_TABLE);
 
         {
-            Label lblEmptyLine = new Label(cmpContainer, SWT.NONE);
+            Label lblEmptyLine = Theming.label(cmpContainer, SWT.NONE);
             lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 

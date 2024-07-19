@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.dialog.overwrite;
 
 import java.text.MessageFormat;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,10 +24,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
-class OverwriteDesign extends Dialog {
+class OverwriteDesign extends ThemedDialog {
 
     private final String whichFile;
 
@@ -49,7 +50,7 @@ class OverwriteDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblOverwrite = new Label(cmpContainer, SWT.NONE);
+        Label lblOverwrite = Theming.label(cmpContainer, SWT.NONE);
 
         Object[] messageArguments = {whichFile};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$

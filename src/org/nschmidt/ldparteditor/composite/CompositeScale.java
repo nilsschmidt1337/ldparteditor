@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enumtype.Font;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
@@ -42,6 +41,7 @@ import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 public class CompositeScale extends ScalableComposite {
 
@@ -84,8 +84,8 @@ public class CompositeScale extends ScalableComposite {
         });
 
         canvasHorizontal = new Canvas(this, SWT.BORDER | SWT.NO_BACKGROUND);
-        canvasHorizontal.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
-        canvasHorizontal.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+        canvasHorizontal.setForeground(Theming.getFgColor());
+        canvasHorizontal.setBackground(Theming.getBgColor());
         canvasHorizontal.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
         canvasHorizontal.setLayout(new FillLayout(SWT.HORIZONTAL));
 
@@ -99,6 +99,7 @@ public class CompositeScale extends ScalableComposite {
             GC gc = new GC(image);
             // Draw the background
             gc.setBackground(e.gc.getBackground());
+            gc.setForeground(e.gc.getForeground());
             gc.fillRectangle(image.getBounds());
 
             Composite3D c3d = me.getComposite3D();
@@ -231,7 +232,7 @@ public class CompositeScale extends ScalableComposite {
                 }
             }
             // Draw the triangle
-            gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
+            gc.setBackground(Theming.getFgColor());
             gc.fillPolygon(new int[] { posHorizontal - 5, 10, posHorizontal, 16, posHorizontal + 5, 10, posHorizontal - 5, 10 });
             // Draw the offscreen buffer to the screen
             e.gc.drawImage(image, 0, 0);
@@ -243,8 +244,8 @@ public class CompositeScale extends ScalableComposite {
         canvasHorizontal.addListener(SWT.Paint, paintHorizontalScaleListener);
 
         canvasVertical = new Canvas(this, SWT.BORDER | SWT.NO_BACKGROUND);
-        canvasVertical.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
-        canvasVertical.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+        canvasVertical.setForeground(Theming.getFgColor());
+        canvasVertical.setBackground(Theming.getBgColor());
         canvasVertical.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
         canvasVertical.setLayout(new FillLayout(SWT.HORIZONTAL));
 
@@ -258,6 +259,7 @@ public class CompositeScale extends ScalableComposite {
             GC gc = new GC(image);
             // Draw the background
             gc.setBackground(e.gc.getBackground());
+            gc.setForeground(e.gc.getForeground());
             gc.fillRectangle(image.getBounds());
 
             Composite3D c3d = me.getComposite3D();
@@ -400,7 +402,7 @@ public class CompositeScale extends ScalableComposite {
                 }
             }
             // Draw the triangle
-            gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
+            gc.setBackground(Theming.getFgColor());
             gc.fillPolygon(new int[] { 10, posVertical - 5, 16, posVertical, 10, posVertical + 5, 10, posVertical - 5 });
             // Draw the offscreen buffer to the screen
             e.gc.drawImage(image, 0, 0);

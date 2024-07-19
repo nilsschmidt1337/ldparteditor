@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.dialog.sort;
 
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -29,8 +28,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The sort dialog
@@ -38,7 +39,7 @@ import org.nschmidt.ldparteditor.widget.NButton;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class SortDesign extends Dialog {
+class SortDesign extends ThemedDialog {
 
 
     final Button[] btnOkPtr = new Button[1];
@@ -78,13 +79,13 @@ class SortDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.SORT_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.SORT_SCOPE_FILE, I18n.SORT_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -96,7 +97,7 @@ class SortDesign extends Dialog {
             scope = 1;
         }
 
-        Combo cmbSortCriteria = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbSortCriteria = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbSortCriteriaPtr[0] = cmbSortCriteria;
         widgetUtil(cmbSortCriteria).setItems(I18n.SORT_BY_COLOUR_ASC, I18n.SORT_BY_COLOUR_DESC, I18n.SORT_BY_TYPE_ASC, I18n.SORT_BY_TYPE_DESC, I18n.SORT_BY_TYPE_COLOUR_ASC, I18n.SORT_BY_TYPE_COLOUR_DESC);
         cmbSortCriteria.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

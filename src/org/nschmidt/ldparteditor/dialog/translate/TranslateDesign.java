@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.dialog.translate;
 
 import java.math.BigDecimal;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -29,6 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composite.ToolItem;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.enumtype.WorkingMode;
@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolI
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The translate dialog
@@ -46,7 +47,7 @@ import org.nschmidt.ldparteditor.widget.NButton;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class TranslateDesign extends Dialog {
+class TranslateDesign extends ThemedDialog {
 
     static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
@@ -88,14 +89,14 @@ class TranslateDesign extends Dialog {
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.TRANSLATE_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         if (MiscToggleToolItem.isMovingAdjacentData()) {
-            Label lblAdjacencyWarning = new Label(cmpContainer, SWT.NONE);
+            Label lblAdjacencyWarning = Theming.label(cmpContainer, SWT.NONE);
             lblAdjacencyWarning.setText(I18n.E3D_ADJACENT_WARNING_STATUS);
             lblAdjacencyWarning.setToolTipText(I18n.E3D_ADJACENT_WARNING_DIALOG);
             lblAdjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
@@ -125,7 +126,7 @@ class TranslateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -143,7 +144,7 @@ class TranslateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -161,7 +162,7 @@ class TranslateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(6, true));
 
@@ -192,11 +193,11 @@ class TranslateDesign extends Dialog {
         }
 
         {
-            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            Composite cmpTxt = Theming.composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
 
-            Label lblIterations = new Label(cmpTxt, SWT.NONE);
+            Label lblIterations = Theming.label(cmpTxt, SWT.NONE);
             lblIterations.setText(I18n.E3D_ITERATIONS);
 
             IntegerSpinner spnIterations = new IntegerSpinner(cmpTxt, SWT.NONE);

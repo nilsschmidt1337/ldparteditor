@@ -15,16 +15,17 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.key;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
-class KeyDesign extends Dialog {
+class KeyDesign extends ThemedDialog {
 
 
     protected static final Label[] lblPressKeyPtr = new Label[1];
@@ -41,7 +42,9 @@ class KeyDesign extends Dialog {
     @Override
     protected Control createDialogArea(final Composite parent) {
         this.getShell().setText(I18n.KEYBOARD_CUSTOMISE_SHORTKEYS);
-        return createControl(parent);
+        Control cmpContainer = createControl(parent);
+        cmpContainer.setBackground(Theming.getBgColor());
+        return cmpContainer;
     }
 
     /**
@@ -58,7 +61,7 @@ class KeyDesign extends Dialog {
     private static Control createControl(final Composite cmpContainer) {
         cmpContainer.setLayout(new GridLayout());
 
-        Label lblPressKey = new Label(cmpContainer, I18n.rightToLeftStyle());
+        Label lblPressKey = Theming.label(cmpContainer, I18n.rightToLeftStyle());
         lblPressKeyPtr[0] = lblPressKey;
         lblPressKey.setText(I18n.KEYBOARD_PRESS_A_KEY);
 

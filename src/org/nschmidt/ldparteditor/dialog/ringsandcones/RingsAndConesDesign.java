@@ -20,7 +20,6 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -30,11 +29,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The rings and cones dialog
@@ -42,7 +43,7 @@ import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class RingsAndConesDesign extends Dialog {
+class RingsAndConesDesign extends ThemedDialog {
 
     final RingsAndConesSettings rs;
 
@@ -76,29 +77,29 @@ class RingsAndConesDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.RCONES_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
-            Label lbl = new Label(cmpContainer, SWT.NONE);
+            Label lbl = Theming.label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_HINT);
         }
         {
-            Label lbl = new Label(cmpContainer, SWT.NONE);
+            Label lbl = Theming.label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_SHAPE);
         }
         {
-            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmb = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbShapePtr[0] = cmb;
             widgetUtil(cmb).setItems(I18n.RCONES_RING, I18n.RCONES_CONE, I18n.RCONES_RING_48, I18n.RCONES_CONE_48);
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select((rs.isUsingCones() ? 1 : 0) + (rs.isUsingHiRes() ? 2 : 0));
         }
         {
-            Label lbl = new Label(cmpContainer, SWT.NONE);
+            Label lbl = Theming.label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_RADIUS_1);
         }
         {
@@ -110,7 +111,7 @@ class RingsAndConesDesign extends Dialog {
             spn.setValue(rs.getRadius1());
         }
         {
-            Label lbl = new Label(cmpContainer, SWT.NONE);
+            Label lbl = Theming.label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_RADIUS_2);
         }
         {
@@ -123,7 +124,7 @@ class RingsAndConesDesign extends Dialog {
         }
 
         {
-            Label lbl = new Label(cmpContainer, SWT.NONE);
+            Label lbl = Theming.label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_HEIGHT);
         }
         {
@@ -136,11 +137,11 @@ class RingsAndConesDesign extends Dialog {
         }
 
         {
-            Label lbl = new Label(cmpContainer, SWT.NONE);
+            Label lbl = Theming.label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_ANGLE);
         }
         {
-            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmb = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbAnglePtr[0] = cmb;
             widgetUtil(cmb).setItems(
                     I18n.RCONES_ANGLE_01,
@@ -204,14 +205,14 @@ class RingsAndConesDesign extends Dialog {
             cmb.select(rs.getAngle());
         }
         {
-            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmb = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbExistingOnlyPtr[0] = cmb;
             widgetUtil(cmb).setItems(I18n.RCONES_PRIMS_1, I18n.RCONES_PRIMS_2);
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isUsingExistingPrimitives() ? 0 : 1);
         }
         {
-            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmb = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbCreateWhatPtr[0] = cmb;
             widgetUtil(cmb).setItems(I18n.RCONES_CREATE_1, I18n.RCONES_CREATE_2);
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

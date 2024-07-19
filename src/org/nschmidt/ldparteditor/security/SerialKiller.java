@@ -56,6 +56,7 @@ public class SerialKiller extends ObjectInputStream {
             "org.nschmidt.ldparteditor.enumtype.Task", //$NON-NLS-1$
             "\\[Lorg.nschmidt.ldparteditor.enumtype.TextTask;", //$NON-NLS-1$
             "org.nschmidt.ldparteditor.enumtype.TextTask", //$NON-NLS-1$
+            "org.nschmidt.ldparteditor.workbench.Theming", //$NON-NLS-1$
             "java.util.Locale", //$NON-NLS-1$
             "java.util.concurrent.atomic.AtomicBoolean", //$NON-NLS-1$
             "org.nschmidt.ldparteditor.data.GColour", //$NON-NLS-1$

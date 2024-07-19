@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.dialog.meshreducer;
 
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -27,8 +26,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.helper.composite3d.MeshReducerSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The edger2 dialog
@@ -36,7 +37,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class MeshReducerDesign extends Dialog {
+class MeshReducerDesign extends ThemedDialog {
 
     final MeshReducerSettings ms;
 
@@ -60,16 +61,16 @@ class MeshReducerDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.MESHREDUCE_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblCoordsPrec = new Label(cmpContainer, SWT.NONE);
+        Label lblCoordsPrec = Theming.label(cmpContainer, SWT.NONE);
         lblCoordsPrec.setText(I18n.MESHREDUCE_MODE);
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.MESHREDUCE_DESTROY_COLOURS, I18n.MESHREDUCE_KEEP_COLOURS);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

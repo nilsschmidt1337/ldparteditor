@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.dialog.isecalc;
 
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -27,9 +26,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.helper.composite3d.IsecalcSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -38,7 +39,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class IsecalcDesign extends Dialog {
+class IsecalcDesign extends ThemedDialog {
 
     final IsecalcSettings is;
     final Combo[] cmbScopePtr = new Combo[1];
@@ -63,22 +64,22 @@ class IsecalcDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.ISECALC_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        
-        Label lblHint = new Label(cmpContainer, SWT.NONE);
+
+        Label lblHint = Theming.label(cmpContainer, SWT.NONE);
         lblHint.setText(I18n.ISECALC_HINT);
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.ISECALC_SCOPE_FILE, I18n.ISECALC_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(is.getScope()));
         cmbScope.select(is.getScope());
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

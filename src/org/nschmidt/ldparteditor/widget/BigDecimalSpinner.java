@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.text.Evaluator;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 public class BigDecimalSpinner extends Composite {
 
@@ -66,6 +67,7 @@ public class BigDecimalSpinner extends Composite {
 
     public BigDecimalSpinner(final Composite parent, int style, String numberFormat) {
         super(parent, style);
+        this.setBackground(Theming.getBgColor());
         this.numberFormat = new java.text.DecimalFormat(numberFormat, new DecimalFormatSymbols(MyLanguage.getLocale()));
         me = this;
         createContents(parent);
@@ -77,6 +79,7 @@ public class BigDecimalSpinner extends Composite {
      */
     public BigDecimalSpinner(final Composite parent, int style) {
         super(parent, style);
+        this.setBackground(Theming.getBgColor());
         numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
         me = this;
         createContents(parent);
@@ -119,7 +122,7 @@ public class BigDecimalSpinner extends Composite {
             }
         });
 
-        Text txt = new Text(this, SWT.BORDER);
+        Text txt = Theming.text(this, SWT.BORDER);
         this.txtVal[0] = txt;
         txt.setLayoutData(gd1);
         txt.setText("0"); //$NON-NLS-1$
@@ -293,12 +296,12 @@ public class BigDecimalSpinner extends Composite {
             }
         });
 
-        Label warn = new Label(this, SWT.NONE);
+        Label warn = Theming.label(this, SWT.NONE);
         lblWarn[0] = warn;
         warn.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
         warn.setToolTipText(I18n.SPINNER_MORE_DIGITS_POSSIBLE);
 
-        Label placeholder = new Label(this, SWT.NONE);
+        Label placeholder = Theming.label(this, SWT.NONE);
         placeholder.setText("  "); //$NON-NLS-1$
 
         this.layout();

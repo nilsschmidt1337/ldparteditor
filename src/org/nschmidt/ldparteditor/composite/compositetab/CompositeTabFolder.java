@@ -20,6 +20,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 public class CompositeTabFolder extends CTabFolder {
 
@@ -28,6 +29,9 @@ public class CompositeTabFolder extends CTabFolder {
 
     public CompositeTabFolder(Composite parent, int style) {
         super(parent, style);
+        setSelectionForeground(Theming.getFgColor());
+        setBackground(Theming.getBgColor());
+        setForeground(Theming.getFgColor());
     }
 
     /**
@@ -44,7 +48,7 @@ public class CompositeTabFolder extends CTabFolder {
     public void setWindow(ApplicationWindow window) {
         this.window = window;
     }
-    
+
     public void cut() {
         CompositeTab selection = (CompositeTab) this.getSelection();
         if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {

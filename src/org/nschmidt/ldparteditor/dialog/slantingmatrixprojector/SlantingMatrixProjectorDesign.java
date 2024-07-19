@@ -20,7 +20,6 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -36,12 +35,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.enumtype.Font;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.composite3d.SlantingMatrixProjectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -50,7 +51,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class SlantingMatrixProjectorDesign extends Dialog {
+class SlantingMatrixProjectorDesign extends ThemedDialog {
 
     private final Text[] m00Ptr = new Text[1];
     private final Text[] m01Ptr = new Text[1];
@@ -94,14 +95,14 @@ class SlantingMatrixProjectorDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblTitle = new Label(cmpContainer, SWT.NONE);
+        Label lblTitle = Theming.label(cmpContainer, SWT.NONE);
         lblTitle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
         lblTitle.setText(I18n.SLANT_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
 
-        Label lblInfo = new Label(cmpContainer, SWT.NONE);
+        Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
         lblInfo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
 
         switch (vm.getSlantingMatrixStatus()) {
@@ -153,7 +154,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
             lblInfo.setText(I18n.SLANT_HOW_TO);
             break;
         }
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -204,7 +205,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
     }
 
     private void insertMatrixCell(Composite cmpContainer, BigDecimal val, Text[] textCmp) {
-        Text txtCell = new Text(cmpContainer, SWT.NONE);
+        Text txtCell = Theming.text(cmpContainer, SWT.NONE);
         textCmp[0] = txtCell;
         txtCell.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         txtCell.setText(numberFormat.format(val));

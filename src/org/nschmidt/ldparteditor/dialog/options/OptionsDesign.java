@@ -77,6 +77,7 @@ import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.widget.Tree;
 import org.nschmidt.ldparteditor.widget.TreeColumn;
 import org.nschmidt.ldparteditor.widget.TreeItem;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -110,6 +111,10 @@ class OptionsDesign extends ApplicationWindow {
     final IntegerSpinner[] spnDataFileSizeLimitPtr = new IntegerSpinner[1];
     final BigDecimalSpinner[] spnViewportScalePtr = new BigDecimalSpinner[1];
     final Map<String, Locale> localeMap = new HashMap<>();
+    final Combo[] cmbThemePtr = new Combo[1];
+    final Tree[] trColourTreePtr = new Tree[1];
+    final TreeItem[] trtmEditor3DPtr = new TreeItem[1];
+    final TreeItem[] trtmEditorTextPtr = new TreeItem[1];
 
     private Set<Task> s1 = new HashSet<>();
     private Set<TextTask> s2 = new HashSet<>();
@@ -157,13 +162,19 @@ class OptionsDesign extends ApplicationWindow {
         final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
         final Tree treeColours;
         setStatus(I18n.E3D_READY_STATUS);
-        Composite container = new Composite(parent, SWT.BORDER);
+        Composite container = Theming.composite(parent, SWT.BORDER);
         GridLayout gridLayout = new GridLayout(1, true);
         container.setLayout(gridLayout);
         {
-            CTabFolder tabFolderSettings = new CTabFolder(container, SWT.BORDER);
+            CTabFolder tabFolderSettings = Theming.cTabFolder(container, SWT.BORDER);
             tabFolderSettings.setMRUVisible(true);
-            tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+            if (Theming.getCurrentTheme() == Theming.DEFAULT) {
+                tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+            } else {
+                tabFolderSettings.setSelectionBackground(TextEditorColour.getLineHighlightBackground());
+                tabFolderSettings.setSelectionForeground(Theming.getFgColor());
+            }
+
             GridData gridData = new GridData();
             gridData.horizontalAlignment = SWT.FILL;
             gridData.minimumHeight = 200;
@@ -183,7 +194,7 @@ class OptionsDesign extends ApplicationWindow {
             {
 
                 final ScrolledComposite cmpContainerX = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
-                Composite cmpContainer = new Composite(cmpContainerX, Cocoa.getStyle());
+                Composite cmpContainer = Theming.composite(cmpContainerX, Cocoa.getStyle());
                 tItem0.setControl(cmpContainerX);
                 cmpContainerX.setContent(cmpContainer);
                 cmpContainerX.setExpandHorizontal(true);
@@ -228,25 +239,25 @@ class OptionsDesign extends ApplicationWindow {
                 btnShowAxisLabels.setSelection(userSettings.isShowingAxisLabels());
 
                 {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lblTextWinArr = new Label(cmpContainer, SWT.NONE);
+                Label lblTextWinArr = Theming.label(cmpContainer, SWT.NONE);
                 lblTextWinArr.setText(I18n.OPTIONS_TEXT_WINDOW_ARR);
 
-                Combo cmbTextWinArr = new Combo(cmpContainer, SWT.READ_ONLY);
+                Combo cmbTextWinArr = Theming.combo(cmpContainer, SWT.READ_ONLY);
                 this.cmbTextWinArrPtr[0] = cmbTextWinArr;
                 widgetUtil(cmbTextWinArr).setItems(I18n.OPTIONS_TEXT_WINDOW_SEPARATE, I18n.OPTIONS_TEXT_WINDOW_LEFT, I18n.OPTIONS_TEXT_WINDOW_RIGHT, I18n.OPTIONS_TEXT_WINDOW_SINGLE);
                 cmbTextWinArr.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbTextWinArr.select(userSettings.getTextWinArr());
 
                 {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lblCoplanarityWarning = new Label(cmpContainer, SWT.NONE);
+                Label lblCoplanarityWarning = Theming.label(cmpContainer, SWT.NONE);
                 lblCoplanarityWarning.setText(I18n.OPTIONS_COPLANARITY_WARNING);
                 lblCoplanarityWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -257,7 +268,7 @@ class OptionsDesign extends ApplicationWindow {
                 spnCoplanarityWarning.setValue(new BigDecimal(Threshold.coplanarityAngleWarning));
                 spnCoplanarityWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-                Label lblCoplanarityError = new Label(cmpContainer, SWT.NONE);
+                Label lblCoplanarityError = Theming.label(cmpContainer, SWT.NONE);
                 lblCoplanarityError.setText(I18n.OPTIONS_COPLANARITY_ERROR);
                 lblCoplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -269,11 +280,11 @@ class OptionsDesign extends ApplicationWindow {
                 spnCoplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lblDataFileSizeLimit = new Label(cmpContainer, SWT.NONE);
+                Label lblDataFileSizeLimit = Theming.label(cmpContainer, SWT.NONE);
                 lblDataFileSizeLimit.setText(I18n.OPTIONS_DATA_FILE_SIZE_LIMIT);
                 lblDataFileSizeLimit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -285,11 +296,11 @@ class OptionsDesign extends ApplicationWindow {
                 spnDataFileSizeLimit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lblViewportScale = new Label(cmpContainer, SWT.NONE);
+                Label lblViewportScale = Theming.label(cmpContainer, SWT.NONE);
                 lblViewportScale.setText(I18n.OPTIONS_SCALE_FACTOR);
                 lblViewportScale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -309,7 +320,7 @@ class OptionsDesign extends ApplicationWindow {
             {
 
                 final ScrolledComposite cmpContainerX = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
-                Composite cmpContainer = new Composite(cmpContainerX, Cocoa.getStyle());
+                Composite cmpContainer = Theming.composite(cmpContainerX, Cocoa.getStyle());
                 tItem00.setControl(cmpContainerX);
                 cmpContainerX.setContent(cmpContainer);
                 cmpContainerX.setExpandHorizontal(true);
@@ -318,10 +329,10 @@ class OptionsDesign extends ApplicationWindow {
                 cmpContainer.setLayout(new GridLayout());
                 cmpContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                Label lblLocale = new Label(cmpContainer, SWT.NONE);
+                Label lblLocale = Theming.label(cmpContainer, SWT.NONE);
                 lblLocale.setText(I18n.OPTIONS_CHOOSE_LOCALE);
 
-                Combo cmbLocale = new Combo(cmpContainer, SWT.READ_ONLY);
+                Combo cmbLocale = Theming.combo(cmpContainer, SWT.READ_ONLY);
                 this.cmbLocalePtr[0] = cmbLocale;
 
                 String[] locales = new String[DateFormat.getAvailableLocales().length];
@@ -344,13 +355,13 @@ class OptionsDesign extends ApplicationWindow {
                 cmbLocale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbLocale.select(englishIndex);
 
-                Label lblLdrawFolderQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblLdrawFolderQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblLdrawFolderQuestion.setText(I18n.OPTIONS_LDRAW_FOLDER);
 
-                Composite cmpPathChooser1 = new Composite(cmpContainer, SWT.NONE);
+                Composite cmpPathChooser1 = Theming.composite(cmpContainer, SWT.NONE);
                 cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-                Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
+                Text txtLdrawPath = Theming.text(cmpPathChooser1, SWT.BORDER);
                 this.txtLdrawPathPtr[0] = txtLdrawPath;
                 txtLdrawPath.setEditable(false);
                 txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -360,38 +371,38 @@ class OptionsDesign extends ApplicationWindow {
                 this.btnBrowseLdrawPathPtr[0] = btnBrowseLdrawPath;
                 btnBrowseLdrawPath.setText(I18n.OPTIONS_BROWSE);
 
-                Label lblLdrawUserQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblLdrawUserQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblLdrawUserQuestion.setText(I18n.OPTIONS_LDRAW_NAME);
 
-                Text txtLdrawUserName = new Text(cmpContainer, SWT.BORDER);
+                Text txtLdrawUserName = Theming.text(cmpContainer, SWT.BORDER);
                 this.txtLdrawUserNamePtr[0] = txtLdrawUserName;
                 txtLdrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 txtLdrawUserName.setText(userSettings.getLdrawUserName());
 
-                Label lblRealNameQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblRealNameQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblRealNameQuestion.setText(I18n.OPTIONS_REAL_NAME);
 
-                Text txtRealName = new Text(cmpContainer, SWT.BORDER);
+                Text txtRealName = Theming.text(cmpContainer, SWT.BORDER);
                 this.txtRealNamePtr[0] = txtRealName;
                 txtRealName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 txtRealName.setText(userSettings.getRealUserName());
 
-                Label lblLicenseQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblLicenseQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblLicenseQuestion.setText(I18n.OPTIONS_LICENSE);
 
-                Combo cmbLicense = new Combo(cmpContainer, SWT.NONE);
+                Combo cmbLicense = Theming.combo(cmpContainer, SWT.NONE);
                 this.cmbLicensePtr[0] = cmbLicense;
                 widgetUtil(cmbLicense).setItems("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt", "0 !LICENSE Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt", "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbLicense.setText(userSettings.getLicense());
 
-                Label lblAuthoringFolderQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblAuthoringFolderQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblAuthoringFolderQuestion.setText(I18n.OPTIONS_AUTHORING_FOLDER);
 
-                Composite cmpPathChooser2 = new Composite(cmpContainer, SWT.NONE);
+                Composite cmpPathChooser2 = Theming.composite(cmpContainer, SWT.NONE);
                 cmpPathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-                Text txtPartAuthoringPath = new Text(cmpPathChooser2, SWT.BORDER);
+                Text txtPartAuthoringPath = Theming.text(cmpPathChooser2, SWT.BORDER);
                 this.txtPartAuthoringPathPtr[0] = txtPartAuthoringPath;
                 txtPartAuthoringPath.setEditable(false);
                 txtPartAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -401,13 +412,13 @@ class OptionsDesign extends ApplicationWindow {
                 this.btnBrowseAuthoringPathPtr[0] = btnBrowseAuthoringPath;
                 btnBrowseAuthoringPath.setText(I18n.OPTIONS_BROWSE);
 
-                Label lblUnofficialPathQuestion = new Label(cmpContainer, SWT.NONE);
+                Label lblUnofficialPathQuestion = Theming.label(cmpContainer, SWT.NONE);
                 lblUnofficialPathQuestion.setText(I18n.OPTIONS_UNOFFICIAL_FOLDER);
 
-                Composite cmpPathChooser3 = new Composite(cmpContainer, SWT.NONE);
+                Composite cmpPathChooser3 = Theming.composite(cmpContainer, SWT.NONE);
                 cmpPathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-                Text txtUnofficialPath = new Text(cmpPathChooser3, SWT.BORDER);
+                Text txtUnofficialPath = Theming.text(cmpPathChooser3, SWT.BORDER);
                 this.txtUnofficialPathPtr[0] = txtUnofficialPath;
                 txtUnofficialPath.setEditable(false);
                 txtUnofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -423,16 +434,16 @@ class OptionsDesign extends ApplicationWindow {
             final CTabItem tItem1 = new CTabItem(tabFolderSettings, SWT.NONE);
             tItem1.setText(I18n.KEYBOARD_CUSTOMISE_SHORTKEYS);
             {
-                final Composite cmpContainer = new Composite(tabFolderSettings, SWT.NONE);
+                final Composite cmpContainer = Theming.composite(tabFolderSettings, SWT.NONE);
                 tItem1.setControl(cmpContainer);
 
                 cmpContainer.setLayout(new GridLayout());
                 cmpContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                Label lblMouseButtonLayout = new Label(cmpContainer, SWT.NONE);
+                Label lblMouseButtonLayout = Theming.label(cmpContainer, SWT.NONE);
                 lblMouseButtonLayout.setText(I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_TITLE);
 
-                Combo cmbMouseButtonLayout = new Combo(cmpContainer, SWT.READ_ONLY);
+                Combo cmbMouseButtonLayout = Theming.combo(cmpContainer, SWT.READ_ONLY);
                 this.cmbMouseButtonLayoutPtr[0] = cmbMouseButtonLayout;
                 widgetUtil(cmbMouseButtonLayout).setItems(I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_A, I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_B);
                 cmbMouseButtonLayout.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -445,11 +456,11 @@ class OptionsDesign extends ApplicationWindow {
 
 
                 {
-                    Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
                     lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lblDoubleClick = new Label(cmpContainer, I18n.rightToLeftStyle());
+                Label lblDoubleClick = Theming.label(cmpContainer, I18n.rightToLeftStyle());
                 lblDoubleClick.setText(I18n.KEYBOARD_DOUBLE_CLICK);
 
                 final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, Task.values().length + TextTask.values().length - 24);
@@ -626,16 +637,26 @@ class OptionsDesign extends ApplicationWindow {
             tItem2.setText(I18n.COLOUR_CUSTOMISE_COLOURS);
 
             {
-                final Composite cmpContainer = new Composite(tabFolderSettings, SWT.NONE);
+                final Composite cmpContainer = Theming.composite(tabFolderSettings, SWT.NONE);
                 tItem2.setControl(cmpContainer);
 
                 cmpContainer.setLayout(new GridLayout());
                 cmpContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                Label lblDoubleClick = new Label(cmpContainer, I18n.rightToLeftStyle());
+                Label lblTheme = Theming.label(cmpContainer, I18n.rightToLeftStyle());
+                lblTheme.setText(I18n.OPTIONS_THEME);
+
+                Combo cmbTheme = Theming.combo(cmpContainer, SWT.READ_ONLY);
+                this.cmbThemePtr[0] = cmbTheme;
+                widgetUtil(cmbTheme).setItems(java.util.Arrays.stream(Theming.values()).map(Enum::name).toArray(n->new String[n]));
+                cmbTheme.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmbTheme.select(userSettings.getTheming().ordinal());
+
+                Label lblDoubleClick = Theming.label(cmpContainer, I18n.rightToLeftStyle());
                 lblDoubleClick.setText(I18n.COLOUR_DOUBLE_CLICK);
 
                 final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, 67);
+                this.trColourTreePtr[0] = tree;
                 treeColours = tree;
 
                 tree.setLinesVisible(true);
@@ -651,98 +672,18 @@ class OptionsDesign extends ApplicationWindow {
                 trclmnColour.setText(I18n.COLOUR_COLOUR);
 
                 TreeItem trtmEditor3D = new TreeItem(tree);
+                this.trtmEditor3DPtr[0] = trtmEditor3D;
                 trtmEditor3D.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
                 trtmEditor3D.setText(new String[] { I18n.KEYBOARD_EDITOR_3D, "" }); //$NON-NLS-1$
                 trtmEditor3D.setVisible(true);
 
                 TreeItem trtmEditorText = new TreeItem(tree);
+                this.trtmEditorTextPtr[0] = trtmEditorText;
                 trtmEditorText.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
                 trtmEditorText.setText(new String[] { I18n.KEYBOARD_EDITOR_TEXT, "" }); //$NON-NLS-1$
                 trtmEditorText.setVisible(true);
 
-                registerColour(trtmEditor3D, I18n.COLOUR_OVERRIDE_COLOUR_16, ColourType.OPENGL_COLOUR, new Object[]{LDConfig.colour16overrideR, LDConfig.colour16overrideG, LDConfig.colour16overrideB}, (r, g, b) -> { LDConfig.colour16overrideR = r; LDConfig.colour16overrideG = g; LDConfig.colour16overrideB = b;});
-
-                registerColour(trtmEditor3D, I18n.COLOUR_BACKGROUND_3D_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.backgroundColourR, Colour.backgroundColourG, Colour.backgroundColourB}, (r, g, b) -> { Colour.backgroundColourR = r; Colour.backgroundColourG = g; Colour.backgroundColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_BFC_BACK_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB}, (r, g, b) -> { Colour.bfcBackColourR = r; Colour.bfcBackColourG = g; Colour.bfcBackColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_BFC_FRONT_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB}, (r, g, b) -> { Colour.bfcFrontColourR = r; Colour.bfcFrontColourG = g; Colour.bfcFrontColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_BFC_UNCERTIFIED, ColourType.OPENGL_COLOUR, new Object[]{Colour.bfcUncertifiedColourR, Colour.bfcUncertifiedColourG, Colour.bfcUncertifiedColourB}, (r, g, b) -> { Colour.bfcUncertifiedColourR = r; Colour.bfcUncertifiedColourG = g; Colour.bfcUncertifiedColourB = b;});
-
-                registerColour(trtmEditor3D, I18n.COLOUR_ORIGIN_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.originColourR, Colour.originColourG, Colour.originColourB}, (r, g, b) -> { Colour.originColourR = r; Colour.originColourG = g; Colour.originColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_GRID_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.gridColourR, Colour.gridColourG, Colour.gridColourB}, (r, g, b) -> { Colour.gridColourR = r; Colour.gridColourG = g; Colour.gridColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_GRID_10_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.grid10ColourR, Colour.grid10ColourG, Colour.grid10ColourB}, (r, g, b) -> { Colour.grid10ColourR = r; Colour.grid10ColourG = g; Colour.grid10ColourB = b;});
-
-                registerColour(trtmEditor3D, I18n.COLOUR_CURSOR_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.cursor1ColourR, Colour.cursor1ColourG, Colour.cursor1ColourB}, (r, g, b) -> { Colour.cursor1ColourR = r; Colour.cursor1ColourG = g; Colour.cursor1ColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_CURSOR_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.cursor2ColourR, Colour.cursor2ColourG, Colour.cursor2ColourB}, (r, g, b) -> { Colour.cursor2ColourR = r; Colour.cursor2ColourG = g; Colour.cursor2ColourB = b;});
-
-                registerColour(trtmEditor3D, I18n.COLOUR_MESH_LINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.meshlineColourR, Colour.meshlineColourG, Colour.meshlineColourB}, (r, g, b) -> { Colour.meshlineColourR = r; Colour.meshlineColourG = g; Colour.meshlineColourB = b;});
-
-                registerColour(trtmEditor3D, I18n.COLOUR_ADD_OBJECT_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB}, (r, g, b) -> { Colour.addObjectColourR = r; Colour.addObjectColourG = g; Colour.addObjectColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_SHOWN_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.condlineShownColourR, Colour.condlineShownColourG, Colour.condlineShownColourB}, (r, g, b) -> { Colour.condlineShownColourR = r; Colour.condlineShownColourG = g; Colour.condlineShownColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_HIDDEN_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.condlineHiddenColourR, Colour.condlineHiddenColourG, Colour.condlineHiddenColourB}, (r, g, b) -> { Colour.condlineHiddenColourR = r; Colour.condlineHiddenColourG = g; Colour.condlineHiddenColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light1ColourR, Colour.light1ColourG, Colour.light1ColourB}, (r, g, b) -> { Colour.light1ColourR = r; Colour.light1ColourG = g; Colour.light1ColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_1_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light1SpecularColourR, Colour.light1SpecularColourG, Colour.light1SpecularColourB}, (r, g, b) -> { Colour.light1SpecularColourR = r; Colour.light1SpecularColourG = g; Colour.light1SpecularColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light2ColourR, Colour.light2ColourG, Colour.light2ColourB}, (r, g, b) -> { Colour.light2ColourR = r; Colour.light2ColourG = g; Colour.light2ColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_2_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light2SpecularColourR, Colour.light2SpecularColourG, Colour.light2SpecularColourB}, (r, g, b) -> { Colour.light2SpecularColourR = r; Colour.light2SpecularColourG = g; Colour.light2SpecularColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_3_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light3ColourR, Colour.light3ColourG, Colour.light3ColourB}, (r, g, b) -> { Colour.light3ColourR = r; Colour.light3ColourG = g; Colour.light3ColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_3_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light3SpecularColourR, Colour.light3SpecularColourG, Colour.light3SpecularColourB}, (r, g, b) -> { Colour.light3SpecularColourR = r; Colour.light3SpecularColourG = g; Colour.light3SpecularColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_4_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light4ColourR, Colour.light4ColourG, Colour.light4ColourB}, (r, g, b) -> { Colour.light4ColourR = r; Colour.light4ColourG = g; Colour.light4ColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_4_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light4SpecularColourR, Colour.light4SpecularColourG, Colour.light4SpecularColourB}, (r, g, b) -> { Colour.light4SpecularColourR = r; Colour.light4SpecularColourG = g; Colour.light4SpecularColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_LINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.lineColourR, Colour.lineColourG, Colour.lineColourB}, (r, g, b) -> { Colour.lineColourR = r; Colour.lineColourG = g; Colour.lineColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_MANIPULATOR_INNER_CIRCLE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorInnerCircleColourR, Colour.manipulatorInnerCircleColourG, Colour.manipulatorInnerCircleColourB}, (r, g, b) -> { Colour.manipulatorInnerCircleColourR = r; Colour.manipulatorInnerCircleColourG = g; Colour.manipulatorInnerCircleColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_MANIPULATOR_OUTER_CIRCLE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorOuterCircleColourR, Colour.manipulatorOuterCircleColourG, Colour.manipulatorOuterCircleColourB}, (r, g, b) -> { Colour.manipulatorOuterCircleColourR = r; Colour.manipulatorOuterCircleColourG = g; Colour.manipulatorOuterCircleColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_MANIPULATOR_X_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourB}, (r, g, b) -> { Colour.manipulatorXAxisColourR = r; Colour.manipulatorXAxisColourG = g; Colour.manipulatorXAxisColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_MANIPULATOR_Y_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorYAxisColourR, Colour.manipulatorYAxisColourG, Colour.manipulatorYAxisColourB}, (r, g, b) -> { Colour.manipulatorYAxisColourR = r; Colour.manipulatorYAxisColourG = g; Colour.manipulatorYAxisColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_MANIPULATOR_Z_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorZAxisColourR, Colour.manipulatorZAxisColourG, Colour.manipulatorZAxisColourB}, (r, g, b) -> { Colour.manipulatorZAxisColourR = r; Colour.manipulatorZAxisColourG = g; Colour.manipulatorZAxisColourB = b;});
-
-                registerColour(trtmEditor3D, I18n.COLOUR_VERTEX_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.vertexColourR, Colour.vertexColourG, Colour.vertexColourB}, (r, g, b) -> { Colour.vertexColourR = r; Colour.vertexColourG = g; Colour.vertexColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_SELECTED_VERTEX_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB}, (r, g, b) -> { Colour.vertexSelectedColourR = r; Colour.vertexSelectedColourG = g; Colour.vertexSelectedColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_SELECTED_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.condlineSelectedColourR, Colour.condlineSelectedColourG, Colour.condlineSelectedColourB}, (r, g, b) -> { Colour.condlineSelectedColourR = r; Colour.condlineSelectedColourG = g; Colour.condlineSelectedColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_SELECTED_MANIPULATOR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB}, (r, g, b) -> { Colour.manipulatorSelectedColourR = r; Colour.manipulatorSelectedColourG = g; Colour.manipulatorSelectedColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_RUBBERBAND_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.rubberBandColourR, Colour.rubberBandColourG, Colour.rubberBandColourB}, (r, g, b) -> { Colour.rubberBandColourR = r; Colour.rubberBandColourG = g; Colour.rubberBandColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_TEXT_COLOUR_1, ColourType.OPENGL_COLOUR, new Object[]{Colour.textColourDefaultR, Colour.textColourDefaultG, Colour.textColourDefaultB}, (r, g, b) -> {
-                    Colour.textColourDefaultR = r; Colour.textColourDefaultG = g; Colour.textColourDefaultB = b;
-                    if (!userSettings.isShowingAxisLabels()) {
-                        Colour.textColourR = r; Colour.textColourG = g; Colour.textColourB = b;
-                    }
-                });
-                registerColour(trtmEditor3D, I18n.COLOUR_TEXT_COLOUR_2, ColourType.OPENGL_COLOUR, new Object[]{Colour.textColourAltR, Colour.textColourAltG, Colour.textColourAltB}, (r, g, b) -> {
-                    Colour.textColourAltR = r; Colour.textColourAltG = g; Colour.textColourAltB = b;
-                    if (userSettings.isShowingAxisLabels()) {
-                        Colour.textColourR = r; Colour.textColourG = g; Colour.textColourB = b;
-                    }
-                });
-                registerColour(trtmEditor3D, I18n.COLOUR_X_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.xAxisColourR, Colour.xAxisColourG, Colour.xAxisColourB}, (r, g, b) -> { Colour.xAxisColourR = r; Colour.xAxisColourG = g; Colour.xAxisColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_Y_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB}, (r, g, b) -> { Colour.yAxisColourR = r; Colour.yAxisColourG = g; Colour.yAxisColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_Z_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB}, (r, g, b) -> { Colour.zAxisColourR = r; Colour.zAxisColourG = g; Colour.zAxisColourB = b;});
-
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_BG_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveBackgroundColourR, Colour.primitiveBackgroundColourG, Colour.primitiveBackgroundColourB}, (r, g, b) -> { Colour.primitiveBackgroundColourR = r; Colour.primitiveBackgroundColourG = g; Colour.primitiveBackgroundColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_SIGN_FG_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveSignFgColourR, Colour.primitiveSignFgColourG, Colour.primitiveSignFgColourB}, (r, g, b) -> { Colour.primitiveSignFgColourR = r; Colour.primitiveSignFgColourG = g; Colour.primitiveSignFgColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_SIGN_BG_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveSignBgColourR, Colour.primitiveSignBgColourG, Colour.primitiveSignBgColourB}, (r, g, b) -> { Colour.primitiveSignBgColourR = r; Colour.primitiveSignBgColourG = g; Colour.primitiveSignBgColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_PLUS_MINUS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB}, (r, g, b) -> { Colour.primitivePlusNMinusColourR = r; Colour.primitivePlusNMinusColourG = g; Colour.primitivePlusNMinusColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_SELECTED_CELL_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveSelectedCellColourR, Colour.primitiveSelectedCellColourG, Colour.primitiveSelectedCellColourB}, (r, g, b) -> { Colour.primitiveSelectedCellColourR = r; Colour.primitiveSelectedCellColourG = g; Colour.primitiveSelectedCellColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_FOCUSED_CELL_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveFocusedCellColourR, Colour.primitiveFocusedCellColourG, Colour.primitiveFocusedCellColourB}, (r, g, b) -> { Colour.primitiveFocusedCellColourR = r; Colour.primitiveFocusedCellColourG = g; Colour.primitiveFocusedCellColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_NORMAL_CELL_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveNormalCellColourR, Colour.primitiveNormalCellColourG, Colour.primitiveNormalCellColourB}, (r, g, b) -> { Colour.primitiveNormalCellColourR = r; Colour.primitiveNormalCellColourG = g; Colour.primitiveNormalCellColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CELL_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveCell1ColourR, Colour.primitiveCell1ColourG, Colour.primitiveCell1ColourB}, (r, g, b) -> { Colour.primitiveCell1ColourR = r; Colour.primitiveCell1ColourG = g; Colour.primitiveCell1ColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CELL_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveCell2ColourR, Colour.primitiveCell2ColourG, Colour.primitiveCell2ColourB}, (r, g, b) -> { Colour.primitiveCell2ColourR = r; Colour.primitiveCell2ColourG = g; Colour.primitiveCell2ColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CATEGORY_CELL_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveCategoryCell1ColourR, Colour.primitiveCategoryCell1ColourG, Colour.primitiveCategoryCell1ColourB}, (r, g, b) -> { Colour.primitiveCategoryCell1ColourR = r; Colour.primitiveCategoryCell1ColourG = g; Colour.primitiveCategoryCell1ColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CATEGORY_CELL_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveCategoryCell2ColourR, Colour.primitiveCategoryCell2ColourG, Colour.primitiveCategoryCell2ColourB}, (r, g, b) -> { Colour.primitiveCategoryCell2ColourR = r; Colour.primitiveCategoryCell2ColourG = g; Colour.primitiveCategoryCell2ColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_EDGE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveEdgeColourR, Colour.primitiveEdgeColourG, Colour.primitiveEdgeColourB}, (r, g, b) -> { Colour.primitiveEdgeColourR = r; Colour.primitiveEdgeColourG = g; Colour.primitiveEdgeColourB = b;});
-                registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveCondlineColourR, Colour.primitiveCondlineColourG, Colour.primitiveCondlineColourB}, (r, g, b) -> { Colour.primitiveCondlineColourR = r; Colour.primitiveCondlineColourG = g; Colour.primitiveCondlineColourB = b;});
-
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_BG_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getTextBackground(), (r,g,b) -> TextEditorColour.loadTextBackground(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_FG_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getTextForeground(), (r,g,b) -> TextEditorColour.loadTextForeground(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_FG_COLOUR_HIDDEN, ColourType.SWT_COLOUR, TextEditorColour.getTextForegroundHidden(), (r,g,b) -> TextEditorColour.loadTextForegroundHidden(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_SELECTED_BG_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineHighlightSelectedBackground(), (r,g,b) -> TextEditorColour.loadLineHighlightSelectedBackground(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_HIGHLIGHT_BG_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineHighlightBackground(), (r,g,b) -> TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_COMMENT_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineCommentFont(), (r,g,b) -> TextEditorColour.loadLineCommentFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_HINT_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineHintUnderline(), (r,g,b) -> TextEditorColour.loadLineHintUnderline(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_WARNING_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineWarningUnderline(), (r,g,b) -> TextEditorColour.loadLineWarningUnderline(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_ERROR_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineErrorUnderline(), (r,g,b) -> TextEditorColour.loadLineErrorUnderline(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_PRIMARY_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLinePrimaryFont(), (r,g,b) -> TextEditorColour.loadLinePrimaryFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_SECONDARY_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineSecondaryFont(), (r,g,b) -> TextEditorColour.loadLineSecondaryFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_QUAD_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineQuadFont(), (r,g,b) -> TextEditorColour.loadLineQuadFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_COLOUR_ATTR_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineColourAttrFont(), (r,g,b) -> TextEditorColour.loadLineColourAttrFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_BOX_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineBoxFont(), (r,g,b) -> TextEditorColour.loadLineBoxFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+                buildColourTree(userSettings, trtmEditor3D, trtmEditorText);
 
                 tree.build();
 
@@ -791,7 +732,7 @@ class OptionsDesign extends ApplicationWindow {
         }
 
 
-        Composite cmpButtons = new Composite(container, SWT.NONE);
+        Composite cmpButtons = Theming.composite(container, SWT.NONE);
 
         GridData gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
@@ -804,7 +745,7 @@ class OptionsDesign extends ApplicationWindow {
         GridLayout gl = new GridLayout(2, true);
         cmpButtons.setLayout(gl);
 
-        Composite spacer = new Composite(cmpButtons, SWT.NONE);
+        Composite spacer = Theming.composite(cmpButtons, SWT.NONE);
 
         GridData gridData2 = new GridData();
         gridData2.horizontalAlignment = SWT.FILL;
@@ -829,6 +770,92 @@ class OptionsDesign extends ApplicationWindow {
         });
 
         return container;
+    }
+
+    protected void buildColourTree(final UserSettingState userSettings, TreeItem trtmEditor3D, TreeItem trtmEditorText) {
+        registerColour(trtmEditor3D, I18n.COLOUR_OVERRIDE_COLOUR_16, ColourType.OPENGL_COLOUR, new Object[]{LDConfig.colour16overrideR, LDConfig.colour16overrideG, LDConfig.colour16overrideB}, (r, g, b) -> { LDConfig.colour16overrideR = r; LDConfig.colour16overrideG = g; LDConfig.colour16overrideB = b;});
+
+        registerColour(trtmEditor3D, I18n.COLOUR_BACKGROUND_3D_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.backgroundColourR, Colour.backgroundColourG, Colour.backgroundColourB}, (r, g, b) -> { Colour.backgroundColourR = r; Colour.backgroundColourG = g; Colour.backgroundColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_BFC_BACK_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.bfcBackColourR, Colour.bfcBackColourG, Colour.bfcBackColourB}, (r, g, b) -> { Colour.bfcBackColourR = r; Colour.bfcBackColourG = g; Colour.bfcBackColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_BFC_FRONT_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.bfcFrontColourR, Colour.bfcFrontColourG, Colour.bfcFrontColourB}, (r, g, b) -> { Colour.bfcFrontColourR = r; Colour.bfcFrontColourG = g; Colour.bfcFrontColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_BFC_UNCERTIFIED, ColourType.OPENGL_COLOUR, new Object[]{Colour.bfcUncertifiedColourR, Colour.bfcUncertifiedColourG, Colour.bfcUncertifiedColourB}, (r, g, b) -> { Colour.bfcUncertifiedColourR = r; Colour.bfcUncertifiedColourG = g; Colour.bfcUncertifiedColourB = b;});
+
+        registerColour(trtmEditor3D, I18n.COLOUR_ORIGIN_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.originColourR, Colour.originColourG, Colour.originColourB}, (r, g, b) -> { Colour.originColourR = r; Colour.originColourG = g; Colour.originColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_GRID_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.gridColourR, Colour.gridColourG, Colour.gridColourB}, (r, g, b) -> { Colour.gridColourR = r; Colour.gridColourG = g; Colour.gridColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_GRID_10_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.grid10ColourR, Colour.grid10ColourG, Colour.grid10ColourB}, (r, g, b) -> { Colour.grid10ColourR = r; Colour.grid10ColourG = g; Colour.grid10ColourB = b;});
+
+        registerColour(trtmEditor3D, I18n.COLOUR_CURSOR_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.cursor1ColourR, Colour.cursor1ColourG, Colour.cursor1ColourB}, (r, g, b) -> { Colour.cursor1ColourR = r; Colour.cursor1ColourG = g; Colour.cursor1ColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_CURSOR_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.cursor2ColourR, Colour.cursor2ColourG, Colour.cursor2ColourB}, (r, g, b) -> { Colour.cursor2ColourR = r; Colour.cursor2ColourG = g; Colour.cursor2ColourB = b;});
+
+        registerColour(trtmEditor3D, I18n.COLOUR_MESH_LINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.meshlineColourR, Colour.meshlineColourG, Colour.meshlineColourB}, (r, g, b) -> { Colour.meshlineColourR = r; Colour.meshlineColourG = g; Colour.meshlineColourB = b;});
+
+        registerColour(trtmEditor3D, I18n.COLOUR_ADD_OBJECT_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB}, (r, g, b) -> { Colour.addObjectColourR = r; Colour.addObjectColourG = g; Colour.addObjectColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_SHOWN_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.condlineShownColourR, Colour.condlineShownColourG, Colour.condlineShownColourB}, (r, g, b) -> { Colour.condlineShownColourR = r; Colour.condlineShownColourG = g; Colour.condlineShownColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_HIDDEN_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.condlineHiddenColourR, Colour.condlineHiddenColourG, Colour.condlineHiddenColourB}, (r, g, b) -> { Colour.condlineHiddenColourR = r; Colour.condlineHiddenColourG = g; Colour.condlineHiddenColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light1ColourR, Colour.light1ColourG, Colour.light1ColourB}, (r, g, b) -> { Colour.light1ColourR = r; Colour.light1ColourG = g; Colour.light1ColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_1_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light1SpecularColourR, Colour.light1SpecularColourG, Colour.light1SpecularColourB}, (r, g, b) -> { Colour.light1SpecularColourR = r; Colour.light1SpecularColourG = g; Colour.light1SpecularColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light2ColourR, Colour.light2ColourG, Colour.light2ColourB}, (r, g, b) -> { Colour.light2ColourR = r; Colour.light2ColourG = g; Colour.light2ColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_2_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light2SpecularColourR, Colour.light2SpecularColourG, Colour.light2SpecularColourB}, (r, g, b) -> { Colour.light2SpecularColourR = r; Colour.light2SpecularColourG = g; Colour.light2SpecularColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_3_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light3ColourR, Colour.light3ColourG, Colour.light3ColourB}, (r, g, b) -> { Colour.light3ColourR = r; Colour.light3ColourG = g; Colour.light3ColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_3_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light3SpecularColourR, Colour.light3SpecularColourG, Colour.light3SpecularColourB}, (r, g, b) -> { Colour.light3SpecularColourR = r; Colour.light3SpecularColourG = g; Colour.light3SpecularColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_4_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light4ColourR, Colour.light4ColourG, Colour.light4ColourB}, (r, g, b) -> { Colour.light4ColourR = r; Colour.light4ColourG = g; Colour.light4ColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_LIGHT_4_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.light4SpecularColourR, Colour.light4SpecularColourG, Colour.light4SpecularColourB}, (r, g, b) -> { Colour.light4SpecularColourR = r; Colour.light4SpecularColourG = g; Colour.light4SpecularColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_LINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.lineColourR, Colour.lineColourG, Colour.lineColourB}, (r, g, b) -> { Colour.lineColourR = r; Colour.lineColourG = g; Colour.lineColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_MANIPULATOR_INNER_CIRCLE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorInnerCircleColourR, Colour.manipulatorInnerCircleColourG, Colour.manipulatorInnerCircleColourB}, (r, g, b) -> { Colour.manipulatorInnerCircleColourR = r; Colour.manipulatorInnerCircleColourG = g; Colour.manipulatorInnerCircleColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_MANIPULATOR_OUTER_CIRCLE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorOuterCircleColourR, Colour.manipulatorOuterCircleColourG, Colour.manipulatorOuterCircleColourB}, (r, g, b) -> { Colour.manipulatorOuterCircleColourR = r; Colour.manipulatorOuterCircleColourG = g; Colour.manipulatorOuterCircleColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_MANIPULATOR_X_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourB}, (r, g, b) -> { Colour.manipulatorXAxisColourR = r; Colour.manipulatorXAxisColourG = g; Colour.manipulatorXAxisColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_MANIPULATOR_Y_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorYAxisColourR, Colour.manipulatorYAxisColourG, Colour.manipulatorYAxisColourB}, (r, g, b) -> { Colour.manipulatorYAxisColourR = r; Colour.manipulatorYAxisColourG = g; Colour.manipulatorYAxisColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_MANIPULATOR_Z_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorZAxisColourR, Colour.manipulatorZAxisColourG, Colour.manipulatorZAxisColourB}, (r, g, b) -> { Colour.manipulatorZAxisColourR = r; Colour.manipulatorZAxisColourG = g; Colour.manipulatorZAxisColourB = b;});
+
+        registerColour(trtmEditor3D, I18n.COLOUR_VERTEX_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.vertexColourR, Colour.vertexColourG, Colour.vertexColourB}, (r, g, b) -> { Colour.vertexColourR = r; Colour.vertexColourG = g; Colour.vertexColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_SELECTED_VERTEX_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB}, (r, g, b) -> { Colour.vertexSelectedColourR = r; Colour.vertexSelectedColourG = g; Colour.vertexSelectedColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_SELECTED_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.condlineSelectedColourR, Colour.condlineSelectedColourG, Colour.condlineSelectedColourB}, (r, g, b) -> { Colour.condlineSelectedColourR = r; Colour.condlineSelectedColourG = g; Colour.condlineSelectedColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_SELECTED_MANIPULATOR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.manipulatorSelectedColourR, Colour.manipulatorSelectedColourG, Colour.manipulatorSelectedColourB}, (r, g, b) -> { Colour.manipulatorSelectedColourR = r; Colour.manipulatorSelectedColourG = g; Colour.manipulatorSelectedColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_RUBBERBAND_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.rubberBandColourR, Colour.rubberBandColourG, Colour.rubberBandColourB}, (r, g, b) -> { Colour.rubberBandColourR = r; Colour.rubberBandColourG = g; Colour.rubberBandColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_TEXT_COLOUR_1, ColourType.OPENGL_COLOUR, new Object[]{Colour.textColourDefaultR, Colour.textColourDefaultG, Colour.textColourDefaultB}, (r, g, b) -> {
+            Colour.textColourDefaultR = r; Colour.textColourDefaultG = g; Colour.textColourDefaultB = b;
+            if (!userSettings.isShowingAxisLabels()) {
+                Colour.textColourR = r; Colour.textColourG = g; Colour.textColourB = b;
+            }
+        });
+        registerColour(trtmEditor3D, I18n.COLOUR_TEXT_COLOUR_2, ColourType.OPENGL_COLOUR, new Object[]{Colour.textColourAltR, Colour.textColourAltG, Colour.textColourAltB}, (r, g, b) -> {
+            Colour.textColourAltR = r; Colour.textColourAltG = g; Colour.textColourAltB = b;
+            if (userSettings.isShowingAxisLabels()) {
+                Colour.textColourR = r; Colour.textColourG = g; Colour.textColourB = b;
+            }
+        });
+        registerColour(trtmEditor3D, I18n.COLOUR_X_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.xAxisColourR, Colour.xAxisColourG, Colour.xAxisColourB}, (r, g, b) -> { Colour.xAxisColourR = r; Colour.xAxisColourG = g; Colour.xAxisColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_Y_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.yAxisColourR, Colour.yAxisColourG, Colour.yAxisColourB}, (r, g, b) -> { Colour.yAxisColourR = r; Colour.yAxisColourG = g; Colour.yAxisColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_Z_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.zAxisColourR, Colour.zAxisColourG, Colour.zAxisColourB}, (r, g, b) -> { Colour.zAxisColourR = r; Colour.zAxisColourG = g; Colour.zAxisColourB = b;});
+
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_BG_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveBackgroundColourR, Colour.primitiveBackgroundColourG, Colour.primitiveBackgroundColourB}, (r, g, b) -> { Colour.primitiveBackgroundColourR = r; Colour.primitiveBackgroundColourG = g; Colour.primitiveBackgroundColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_SIGN_FG_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveSignFgColourR, Colour.primitiveSignFgColourG, Colour.primitiveSignFgColourB}, (r, g, b) -> { Colour.primitiveSignFgColourR = r; Colour.primitiveSignFgColourG = g; Colour.primitiveSignFgColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_SIGN_BG_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveSignBgColourR, Colour.primitiveSignBgColourG, Colour.primitiveSignBgColourB}, (r, g, b) -> { Colour.primitiveSignBgColourR = r; Colour.primitiveSignBgColourG = g; Colour.primitiveSignBgColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_PLUS_MINUS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitivePlusNMinusColourR, Colour.primitivePlusNMinusColourG, Colour.primitivePlusNMinusColourB}, (r, g, b) -> { Colour.primitivePlusNMinusColourR = r; Colour.primitivePlusNMinusColourG = g; Colour.primitivePlusNMinusColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_SELECTED_CELL_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveSelectedCellColourR, Colour.primitiveSelectedCellColourG, Colour.primitiveSelectedCellColourB}, (r, g, b) -> { Colour.primitiveSelectedCellColourR = r; Colour.primitiveSelectedCellColourG = g; Colour.primitiveSelectedCellColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_FOCUSED_CELL_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveFocusedCellColourR, Colour.primitiveFocusedCellColourG, Colour.primitiveFocusedCellColourB}, (r, g, b) -> { Colour.primitiveFocusedCellColourR = r; Colour.primitiveFocusedCellColourG = g; Colour.primitiveFocusedCellColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_NORMAL_CELL_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveNormalCellColourR, Colour.primitiveNormalCellColourG, Colour.primitiveNormalCellColourB}, (r, g, b) -> { Colour.primitiveNormalCellColourR = r; Colour.primitiveNormalCellColourG = g; Colour.primitiveNormalCellColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CELL_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveCell1ColourR, Colour.primitiveCell1ColourG, Colour.primitiveCell1ColourB}, (r, g, b) -> { Colour.primitiveCell1ColourR = r; Colour.primitiveCell1ColourG = g; Colour.primitiveCell1ColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CELL_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveCell2ColourR, Colour.primitiveCell2ColourG, Colour.primitiveCell2ColourB}, (r, g, b) -> { Colour.primitiveCell2ColourR = r; Colour.primitiveCell2ColourG = g; Colour.primitiveCell2ColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CATEGORY_CELL_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveCategoryCell1ColourR, Colour.primitiveCategoryCell1ColourG, Colour.primitiveCategoryCell1ColourB}, (r, g, b) -> { Colour.primitiveCategoryCell1ColourR = r; Colour.primitiveCategoryCell1ColourG = g; Colour.primitiveCategoryCell1ColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CATEGORY_CELL_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveCategoryCell2ColourR, Colour.primitiveCategoryCell2ColourG, Colour.primitiveCategoryCell2ColourB}, (r, g, b) -> { Colour.primitiveCategoryCell2ColourR = r; Colour.primitiveCategoryCell2ColourG = g; Colour.primitiveCategoryCell2ColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_EDGE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveEdgeColourR, Colour.primitiveEdgeColourG, Colour.primitiveEdgeColourB}, (r, g, b) -> { Colour.primitiveEdgeColourR = r; Colour.primitiveEdgeColourG = g; Colour.primitiveEdgeColourB = b;});
+        registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{Colour.primitiveCondlineColourR, Colour.primitiveCondlineColourG, Colour.primitiveCondlineColourB}, (r, g, b) -> { Colour.primitiveCondlineColourR = r; Colour.primitiveCondlineColourG = g; Colour.primitiveCondlineColourB = b;});
+
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_BG_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getTextBackground(), (r,g,b) -> TextEditorColour.loadTextBackground(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_FG_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getTextForeground(), (r,g,b) -> TextEditorColour.loadTextForeground(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_FG_COLOUR_HIDDEN, ColourType.SWT_COLOUR, TextEditorColour.getTextForegroundHidden(), (r,g,b) -> TextEditorColour.loadTextForegroundHidden(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_SELECTED_BG_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineHighlightSelectedBackground(), (r,g,b) -> TextEditorColour.loadLineHighlightSelectedBackground(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_HIGHLIGHT_BG_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineHighlightBackground(), (r,g,b) -> TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_COMMENT_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineCommentFont(), (r,g,b) -> TextEditorColour.loadLineCommentFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_HINT_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineHintUnderline(), (r,g,b) -> TextEditorColour.loadLineHintUnderline(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_WARNING_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineWarningUnderline(), (r,g,b) -> TextEditorColour.loadLineWarningUnderline(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_ERROR_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineErrorUnderline(), (r,g,b) -> TextEditorColour.loadLineErrorUnderline(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_PRIMARY_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLinePrimaryFont(), (r,g,b) -> TextEditorColour.loadLinePrimaryFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_SECONDARY_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineSecondaryFont(), (r,g,b) -> TextEditorColour.loadLineSecondaryFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_QUAD_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineQuadFont(), (r,g,b) -> TextEditorColour.loadLineQuadFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_COLOUR_ATTR_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineColourAttrFont(), (r,g,b) -> TextEditorColour.loadLineColourAttrFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
+        registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_BOX_COLOUR, ColourType.SWT_COLOUR, TextEditorColour.getLineBoxFont(), (r,g,b) -> TextEditorColour.loadLineBoxFont(SWTResourceManager.getColor(r.intValue(), g.intValue(), b.intValue())));
     }
 
     private void showKeyAlreadyInUseWarning(TreeItem parentItem, String keyString) {
@@ -861,7 +888,7 @@ class OptionsDesign extends ApplicationWindow {
         messageBoxInfo.open();
     }
 
-    private void updateColours(Tree tree) {
+    protected void updateColours(Tree tree) {
         for(TreeItem ti : tree.getItems()) {
             updateColoursHelper(ti);
         }

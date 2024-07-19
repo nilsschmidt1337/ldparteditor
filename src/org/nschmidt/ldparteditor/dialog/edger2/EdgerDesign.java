@@ -20,7 +20,6 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 import java.math.BigDecimal;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,10 +28,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.helper.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -41,7 +42,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class EdgerDesign extends TrayDialog {
+class EdgerDesign extends ThemedDialog {
 
     final Edger2Settings es;
 
@@ -74,13 +75,13 @@ class EdgerDesign extends TrayDialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.EDGER_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblCoordsPrec = new Label(cmpContainer, SWT.NONE);
+        Label lblCoordsPrec = Theming.label(cmpContainer, SWT.NONE);
         lblCoordsPrec.setText(I18n.EDGER_PRECISION);
 
         BigDecimalSpinner spnVequ = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -90,24 +91,24 @@ class EdgerDesign extends TrayDialog {
         spnVequ.setMinimum(new BigDecimal(0));
         spnVequ.setValue(es.getEqualDistance());
 
-        Label lblUse180deg = new Label(cmpContainer, SWT.NONE);
+        Label lblUse180deg = Theming.label(cmpContainer, SWT.NONE);
         lblUse180deg.setText(I18n.EDGER_RANGE);
 
-        Combo cmbB = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbB = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbBPtr[0] = cmbB;
         widgetUtil(cmbB).setItems(I18n.EDGER_0_TO_90, I18n.EDGER_0_TO_180);
         cmbB.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbB.setText(es.isExtendedRange() ? cmbB.getItem(1) : cmbB.getItem(0));
         cmbB.select(es.isExtendedRange() ? 1 : 0);
 
-        Combo cmbC = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbC = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbCPtr[0] = cmbC;
         widgetUtil(cmbC).setItems(I18n.EDGER_CONDLINE_ON_QUAD_OFF, I18n.EDGER_CONDLINE_ON_QUAD_ON);
         cmbC.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbC.setText(es.isCondlineOnQuads() ? cmbC.getItem(1) : cmbC.getItem(0));
         cmbC.select(es.isCondlineOnQuads() ? 1 : 0);
 
-        Label lblAf = new Label(cmpContainer, SWT.NONE);
+        Label lblAf = Theming.label(cmpContainer, SWT.NONE);
         lblAf.setText(I18n.EDGER_FLAT_MAX_ANGLE);
 
         BigDecimalSpinner spnAf = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -117,7 +118,7 @@ class EdgerDesign extends TrayDialog {
         spnAf.setMinimum(new BigDecimal(0));
         spnAf.setValue(es.getAf());
 
-        Label lblAc = new Label(cmpContainer, SWT.NONE);
+        Label lblAc = Theming.label(cmpContainer, SWT.NONE);
         lblAc.setText(I18n.EDGER_CONDLINE_MAX_ANGLE);
 
         BigDecimalSpinner spnAc = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -127,7 +128,7 @@ class EdgerDesign extends TrayDialog {
         spnAc.setMinimum(new BigDecimal(0));
         spnAc.setValue(es.getAc());
 
-        Label lblAe = new Label(cmpContainer, SWT.NONE);
+        Label lblAe = Theming.label(cmpContainer, SWT.NONE);
         lblAe.setText(I18n.EDGER_EDGE_MAX_ANGLE);
 
         BigDecimalSpinner spnAe = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -137,14 +138,14 @@ class EdgerDesign extends TrayDialog {
         spnAe.setMinimum(new BigDecimal(0));
         spnAe.setValue(es.getAe());
 
-        Combo cmbU = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbU = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbUPtr[0] = cmbU;
         widgetUtil(cmbU).setItems(I18n.EDGER_INCLUDE_UNMATCHED, I18n.EDGER_EXCLUDE_UNMATCHED, I18n.EDGER_UNMATCHED_ONLY);
         cmbU.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbU.setText(cmbU.getItem(es.getUnmatchedMode()));
         cmbU.select(es.getUnmatchedMode());
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.EDGER_SCOPE_FILE_SUBFILES, I18n.EDGER_SCOPE_FILE, I18n.EDGER_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -157,13 +158,13 @@ class EdgerDesign extends TrayDialog {
         btnVerbose.setText(I18n.EDGER_VERBOSE);
         btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseEdger2());
 
-        Label lbl1 = new Label(cmpContainer, SWT.NONE);
+        Label lbl1 = Theming.label(cmpContainer, SWT.NONE);
         lbl1.setText(I18n.EDGER_CONDITION_1);
-        Label lbl2 = new Label(cmpContainer, SWT.NONE);
+        Label lbl2 = Theming.label(cmpContainer, SWT.NONE);
         lbl2.setText(I18n.EDGER_CONDITION_2);
-        Label lbl3 = new Label(cmpContainer, SWT.NONE);
+        Label lbl3 = Theming.label(cmpContainer, SWT.NONE);
         lbl3.setText(I18n.EDGER_CONDITION_3);
-        Label lbl4 = new Label(cmpContainer, SWT.NONE);
+        Label lbl4 = Theming.label(cmpContainer, SWT.NONE);
         lbl4.setText(I18n.EDGER_CONDITION_4);
 
         cmpContainer.pack();

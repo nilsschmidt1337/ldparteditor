@@ -19,7 +19,6 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -29,10 +28,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -41,7 +42,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class RectifierDesign extends Dialog {
+class RectifierDesign extends ThemedDialog {
 
     final RectifierSettings rs;
     final BigDecimalSpinner[] spnAnglePtr = new BigDecimalSpinner[1];
@@ -72,13 +73,13 @@ class RectifierDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.RECTIFIER_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblAngle = new Label(cmpContainer, SWT.NONE);
+        Label lblAngle = Theming.label(cmpContainer, SWT.NONE);
         lblAngle.setText(I18n.RECTIFIER_MAX_ANGLE);
 
         BigDecimalSpinner spnAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -89,7 +90,7 @@ class RectifierDesign extends Dialog {
         spnAngle.setValue(rs.getMaximumAngle());
 
         {
-            Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbColourise = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbColourisePtr[0] = cmbColourise;
             widgetUtil(cmbColourise).setItems(I18n.RECTIFIER_COLOUR_1, I18n.RECTIFIER_COLOUR_2);
             cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -97,7 +98,7 @@ class RectifierDesign extends Dialog {
             cmbColourise.select(rs.isColourise() ? 1 : 0);
         }
         {
-            Combo cmbNoQuadConversation = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbNoQuadConversation = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbNoQuadConversationPtr[0] = cmbNoQuadConversation;
             widgetUtil(cmbNoQuadConversation).setItems(I18n.RECTIFIER_TRI_QUADS_1, I18n.RECTIFIER_TRI_QUADS_2);
             cmbNoQuadConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -105,7 +106,7 @@ class RectifierDesign extends Dialog {
             cmbNoQuadConversation.select(rs.isNoQuadConversation() ? 1 : 0);
         }
         {
-            Combo cmbNoBorderedQuadToRectConversation = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbNoBorderedQuadToRectConversation = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbNoBorderedQuadToRectConversationPtr[0] = cmbNoBorderedQuadToRectConversation;
             widgetUtil(cmbNoBorderedQuadToRectConversation).setItems(I18n.RECTIFIER_RECT_1, I18n.RECTIFIER_RECT_2);
             cmbNoBorderedQuadToRectConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -113,14 +114,14 @@ class RectifierDesign extends Dialog {
             cmbNoBorderedQuadToRectConversation.select(rs.isNoBorderedQuadToRectConversation() ? 1 : 0);
         }
         {
-            Combo cmbNoRectConversationOnAdjacentCondlines = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbNoRectConversationOnAdjacentCondlines = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbNoRectConversationOnAdjacentCondlinesPtr[0] = cmbNoRectConversationOnAdjacentCondlines;
             widgetUtil(cmbNoRectConversationOnAdjacentCondlines).setItems(I18n.RECTIFIER_RECT_3, I18n.RECTIFIER_RECT_4);
             cmbNoRectConversationOnAdjacentCondlines.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbNoRectConversationOnAdjacentCondlines.setText(cmbNoRectConversationOnAdjacentCondlines.getItem(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0));
             cmbNoRectConversationOnAdjacentCondlines.select(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0);
         }
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.RECTIFIER_SCOPE_FILE, I18n.RECTIFIER_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

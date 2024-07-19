@@ -15,7 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.value;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -25,10 +24,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
-class ValueDesignInt extends Dialog {
+class ValueDesignInt extends ThemedDialog {
 
     private Label[] lblUnitPtr = new Label[1];
     Button[] btnOkPtr = new Button[1];
@@ -64,7 +65,7 @@ class ValueDesignInt extends Dialog {
         spnValue.setLayoutData(gd);
 
 
-        Label lblUnit = new Label(cmpContainer, SWT.NONE);
+        Label lblUnit = Theming.label(cmpContainer, SWT.NONE);
         this.lblUnitPtr[0] = lblUnit;
         lblUnit.setText(unitText);
 

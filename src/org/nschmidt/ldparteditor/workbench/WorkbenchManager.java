@@ -51,6 +51,9 @@ public enum WorkbenchManager {
     private static EditorTextWindowState editorTextWindowState;
     /** The state of the user setting */
     private static UserSettingState userSettingState;
+    /** The state of the theme setting */
+    private static UserSettingState themeSettingState;
+
     /** The primitive cache */
     private static PrimitiveCache primitiveCache;
     /**
@@ -93,6 +96,20 @@ public enum WorkbenchManager {
                         WorkbenchManager.userSettingState.getMediumRotateSnap(),
                         WorkbenchManager.userSettingState.getMediumScaleSnap());
                 try {
+                    WorkbenchManager.themeSettingState = (UserSettingState) settingsFileStream.readObject();
+                    if (WorkbenchManager.themeSettingState == null) {
+                        WorkbenchManager.themeSettingState = new UserSettingState();
+                    }
+
+                    Theming.setCurrentTheme(WorkbenchManager.userSettingState.getTheming());
+                } catch (Exception e) {
+                    WorkbenchManager.userSettingState.setTheming(Theming.DEFAULT);
+                    WorkbenchManager.themeSettingState = new UserSettingState();
+                    NLogger.debug(WorkbenchManager.class, "Could not load the theme."); //$NON-NLS-1$
+                    NLogger.debug(WorkbenchManager.class, e);
+                }
+
+                try {
                     WorkbenchManager.primitiveCache = (PrimitiveCache) settingsFileStream.readObject();
                 } catch (Exception e) {
                     WorkbenchManager.primitiveCache = new PrimitiveCache();
@@ -125,7 +142,7 @@ public enum WorkbenchManager {
         if (Math.abs(WorkbenchManager.userSettingState.getViewportScaleFactor() - 0.0) < 0.001) {
             WorkbenchManager.userSettingState.setViewportScaleFactor(1.0);
         }
-        
+
 
         if (WorkbenchManager.userSettingState.getStudMoveSnap() == null) {
             WorkbenchManager.userSettingState.setStudMoveSnap(BigDecimal.TEN);
@@ -137,6 +154,10 @@ public enum WorkbenchManager {
 
         if (WorkbenchManager.userSettingState.getStudScaleSnap() == null) {
             WorkbenchManager.userSettingState.setStudScaleSnap(BigDecimal.ONE);
+        }
+
+        if (WorkbenchManager.userSettingState.getTheming() == null) {
+            WorkbenchManager.userSettingState.setTheming(Theming.DEFAULT);
         }
 
         WorkbenchManager.userSettingState.setDataFileSizeLimit(Math.clamp(WorkbenchManager.userSettingState.getDataFileSizeLimit(), 45, 1024_000));
@@ -182,9 +203,19 @@ public enum WorkbenchManager {
             settingsFileStream.writeObject(WorkbenchManager.editorTextWindowState);
             if (WorkbenchManager.userSettingState != null) {
                 WorkbenchManager.userSettingState.saveShortkeys();
-                WorkbenchManager.userSettingState.saveColours();
+                WorkbenchManager.userSettingState.setTheming(Theming.getCurrentTheme());
+                if (WorkbenchManager.themeSettingState == null
+                        || WorkbenchManager.userSettingState.getTheming() == Theming.DEFAULT
+                        || WorkbenchManager.userSettingState.getTheming() == null) {
+                    WorkbenchManager.userSettingState.setTheming(Theming.DEFAULT);
+                    WorkbenchManager.userSettingState.saveColours();
+                }
             }
             settingsFileStream.writeObject(WorkbenchManager.userSettingState);
+            if (WorkbenchManager.themeSettingState != null && WorkbenchManager.userSettingState.getTheming() != Theming.DEFAULT) {
+                WorkbenchManager.themeSettingState.saveColours();
+            }
+            settingsFileStream.writeObject(WorkbenchManager.themeSettingState);
             try {
                 settingsFileStream.writeObject(WorkbenchManager.primitiveCache);
             } catch (Exception e) {
@@ -232,6 +263,14 @@ public enum WorkbenchManager {
 
     public static void setPrimitiveCache(PrimitiveCache primitiveCache) {
         WorkbenchManager.primitiveCache = primitiveCache;
+    }
+
+    public static UserSettingState getThemeSettingState() {
+        return themeSettingState;
+    }
+
+    public static void setThemeSettingState(UserSettingState themeSettingState) {
+        WorkbenchManager.themeSettingState = themeSettingState;
     }
 
     public static String getDefaultFileHeader() {

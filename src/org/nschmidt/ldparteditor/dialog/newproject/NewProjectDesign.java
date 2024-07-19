@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.dialog.newproject;
 
 import java.io.File;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -30,12 +29,14 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-class NewProjectDesign extends Dialog {
+class NewProjectDesign extends ThemedDialog {
 
     Text[] txtProjectPathPtr = new Text[1];
     Text[] txtProjectNamePtr = new Text[1];
@@ -60,23 +61,23 @@ class NewProjectDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblNewProject = new Label(cmpContainer, SWT.NONE);
+        Label lblNewProject = Theming.label(cmpContainer, SWT.NONE);
         if (saveAs) {
             lblNewProject.setText(I18n.PROJECT_SAVE_PROJECT);
         } else {
             lblNewProject.setText(I18n.PROJECT_CREATE_NEW_PROJECT);
         }
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblProjectLocation = new Label(cmpContainer, SWT.NONE);
+        Label lblProjectLocation = Theming.label(cmpContainer, SWT.NONE);
         lblProjectLocation.setText(I18n.PROJECT_PROJECT_LOCATION);
 
-        Composite cmpPathChooser1 = new Composite(cmpContainer, SWT.NONE);
+        Composite cmpPathChooser1 = Theming.composite(cmpContainer, SWT.NONE);
         cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
+        Text txtLdrawPath = Theming.text(cmpPathChooser1, SWT.BORDER);
         this.txtProjectPathPtr[0] = txtLdrawPath;
         txtLdrawPath.setEditable(false);
         txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -91,13 +92,13 @@ class NewProjectDesign extends Dialog {
         this.btnBrowseProjectPathPtr[0] = btnBrowseLdrawPath;
         btnBrowseLdrawPath.setText(I18n.DIALOG_BROWSE);
 
-        Label lblProjectName = new Label(cmpContainer, SWT.NONE);
+        Label lblProjectName = Theming.label(cmpContainer, SWT.NONE);
         lblProjectName.setText(I18n.PROJECT_PROJECT_NAME);
 
-        Composite cmpProjectName = new Composite(cmpContainer, SWT.NONE);
+        Composite cmpProjectName = Theming.composite(cmpContainer, SWT.NONE);
         cmpProjectName.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txtProjectName = new Text(cmpProjectName, SWT.BORDER);
+        Text txtProjectName = Theming.text(cmpProjectName, SWT.BORDER);
         this.txtProjectNamePtr[0] = txtProjectName;
         txtProjectName.setLayoutData(new RowData(294, SWT.DEFAULT));
 

@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 class SearchDesign extends ApplicationWindow {
 
@@ -61,28 +62,28 @@ class SearchDesign extends ApplicationWindow {
      */
     @Override
     protected Control createContents(Composite cmpContainer) {
-
+        cmpContainer.setBackground(Theming.getBgColor());
         cmpContainer.setLayout(new GridLayout(1, true));
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblFind = new Label(cmpContainer, SWT.NONE);
+        Label lblFind = Theming.label(cmpContainer, SWT.NONE);
         lblFind.setText(I18n.SEARCH_FIND);
 
-        Text txtFind = new Text(cmpContainer, SWT.NONE);
+        Text txtFind = Theming.text(cmpContainer, SWT.NONE);
         this.txtFindPtr[0] = txtFind;
         txtFind.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 
-        Label lblReplace = new Label(cmpContainer, SWT.NONE);
+        Label lblReplace = Theming.label(cmpContainer, SWT.NONE);
         lblReplace.setText(I18n.SEARCH_REPLACE_WITH);
 
-        Text txtReplace = new Text(cmpContainer, SWT.NONE);
+        Text txtReplace = Theming.text(cmpContainer, SWT.NONE);
         this.txtReplacePtr[0] = txtReplace;
         txtReplace.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-        Group grpDir = new Group(cmpContainer, SWT.NONE);
+        Group grpDir = Theming.group(cmpContainer, SWT.NONE);
         grpDir.setText(I18n.SEARCH_DIRECTION);
         grpDir.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         grpDir.setLayout(new GridLayout(3, false));
@@ -98,7 +99,7 @@ class SearchDesign extends ApplicationWindow {
         grpDir.layout();
 
 
-        Group grpScope = new Group(cmpContainer, SWT.NONE);
+        Group grpScope = Theming.group(cmpContainer, SWT.NONE);
         grpScope.setText(I18n.SEARCH_SCOPE);
         grpScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         grpScope.setLayout(new GridLayout(3, false));
@@ -114,7 +115,7 @@ class SearchDesign extends ApplicationWindow {
 
         grpScope.layout();
 
-        Group grpLocation = new Group(cmpContainer, SWT.NONE);
+        Group grpLocation = Theming.group(cmpContainer, SWT.NONE);
         grpLocation.setText(I18n.SEARCH_OPTIONS);
         grpLocation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         grpLocation.setLayout(new GridLayout());
@@ -129,7 +130,7 @@ class SearchDesign extends ApplicationWindow {
 
         grpLocation.layout();
 
-        Composite cmpBtnGrid = new Composite(cmpContainer, SWT.NONE);
+        Composite cmpBtnGrid = Theming.composite(cmpContainer, SWT.NONE);
         cmpBtnGrid.setLayoutData(new GridData(SWT.FILL, SWT.LEFT, false, false, 1, 1));
         cmpBtnGrid.setLayout(new GridLayout(2, true));
         {

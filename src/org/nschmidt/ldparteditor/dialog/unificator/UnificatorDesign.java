@@ -19,7 +19,6 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -29,10 +28,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.helper.composite3d.UnificatorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -41,7 +42,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class UnificatorDesign extends Dialog {
+class UnificatorDesign extends ThemedDialog {
 
     final UnificatorSettings us;
     final BigDecimalSpinner[] spnVertexThresholdPtr = new BigDecimalSpinner[1];
@@ -49,7 +50,7 @@ class UnificatorDesign extends Dialog {
 
     final Combo[] cmbWhatToUnifyPtr = new Combo[1];
     final Combo[] cmbScopePtr = new Combo[1];
-    
+
     final NButton[] btnVerbosePtr = new NButton[1];
 
     // Use final only for subclass/listener references!
@@ -71,13 +72,13 @@ class UnificatorDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.UNIFICATOR_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblHint = new Label(cmpContainer, SWT.NONE);
+        Label lblHint = Theming.label(cmpContainer, SWT.NONE);
         lblHint.setText(I18n.UNIFICATOR_VERTEX_UNIFIATION);
 
         BigDecimalSpinner spnVertexThreshold = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -87,7 +88,7 @@ class UnificatorDesign extends Dialog {
         spnVertexThreshold.setMinimum(new BigDecimal(0));
         spnVertexThreshold.setValue(us.getVertexThreshold());
 
-        Label lblPrecision = new Label(cmpContainer, SWT.NONE);
+        Label lblPrecision = Theming.label(cmpContainer, SWT.NONE);
         lblPrecision.setText(I18n.UNIFICATOR_VERTEX_SNAP);
 
         BigDecimalSpinner spnSubfileThreshold = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -97,11 +98,11 @@ class UnificatorDesign extends Dialog {
         spnSubfileThreshold.setMinimum(new BigDecimal(0));
         spnSubfileThreshold.setValue(us.getSubvertexThreshold());
 
-        Label lblSplitPlane = new Label(cmpContainer, SWT.NONE);
+        Label lblSplitPlane = Theming.label(cmpContainer, SWT.NONE);
         lblSplitPlane.setText(I18n.UNIFICATOR_SNAP_ON);
 
         {
-            Combo cmbSplitPlane = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbSplitPlane = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbWhatToUnifyPtr[0] = cmbSplitPlane;
             widgetUtil(cmbSplitPlane).setItems(I18n.UNIFICATOR_VERTICES, I18n.UNIFICATOR_SUBPART_VERTICES, I18n.UNIFICATOR_VERTICES_SUBPART_VERTICES);
             cmbSplitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -109,13 +110,13 @@ class UnificatorDesign extends Dialog {
             cmbSplitPlane.select(us.getSnapOn());
         }
 
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.UNIFICATOR_SCOPE_FILE, I18n.UNIFICATOR_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(us.getScope()));
         cmbScope.select(us.getScope());
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

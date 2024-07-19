@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 public class IntegerSpinner extends Composite {
 
@@ -60,6 +61,7 @@ public class IntegerSpinner extends Composite {
      */
     public IntegerSpinner(final Composite parent, int style) {
         super(parent, style);
+        this.setBackground(Theming.getBgColor());
         me = this;
         GridLayout gl = new GridLayout(4, false);
 
@@ -96,7 +98,7 @@ public class IntegerSpinner extends Composite {
             }
         });
 
-        Text txt = new Text(this, SWT.BORDER);
+        Text txt = Theming.text(this, SWT.BORDER);
         this.txtValPtr[0] = txt;
         txt.setLayoutData(gd1);
         txt.setText("0"); //$NON-NLS-1$
@@ -223,7 +225,7 @@ public class IntegerSpinner extends Composite {
             }
         });
 
-        Label placeholder = new Label(this, SWT.NONE);
+        Label placeholder = Theming.label(this, SWT.NONE);
         placeholder.setText("  "); //$NON-NLS-1$
 
         this.layout();

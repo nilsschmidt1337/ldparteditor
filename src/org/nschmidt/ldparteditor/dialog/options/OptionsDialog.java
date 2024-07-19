@@ -20,16 +20,21 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.helper.Version;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -64,7 +69,7 @@ public class OptionsDialog extends OptionsDesign {
         widgetUtil(btnInvertInvertWheelZoomDirectionPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btnInvertInvertWheelZoomDirectionPtr[0].getSelection()));
         widgetUtil(btnShowAxisLabelsPtr[0]).addSelectionListener(e -> {
             WorkbenchManager.getUserSettingState().setShowingAxisLabels(btnShowAxisLabelsPtr[0].getSelection());
-            
+
             if (WorkbenchManager.getUserSettingState().isShowingAxisLabels()) {
                 Colour.textColourR = Colour.textColourAltR;
                 Colour.textColourG = Colour.textColourAltG;
@@ -194,6 +199,11 @@ public class OptionsDialog extends OptionsDesign {
                 userSettingState.setMouseButtonLayout(index);
             }
         });
+        cmbThemePtr[0].addListener(SWT.Modify, e -> {
+            // This needs to be done twice to have an effect on the UI.
+            updateTheme();
+            updateTheme();
+        });
         this.open();
     }
 
@@ -210,5 +220,38 @@ public class OptionsDialog extends OptionsDesign {
         Editor3DWindow.getWindow().compileAll(true);
         // Re-initialise the renderer
         Editor3DWindow.getWindow().initAllRenderers();
+    }
+
+    private void updateTheme() {
+        final String themeName = cmbThemePtr[0].getText();
+        for (Theming theme : Theming.values()) {
+            if (theme.name().equals(themeName)) {
+
+                Theming.setCurrentTheme(theme);
+                WorkbenchManager.getUserSettingState().setTheming(theme);
+                WorkbenchManager.getThemeSettingState().setShowingAxisLabels(WorkbenchManager.getUserSettingState().isShowingAxisLabels());
+                theme.overrideColours();
+                WorkbenchManager.getThemeSettingState().loadColourSettings();
+
+                updateColours(trColourTreePtr[0]);
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        ((CompositeTab) t).updateColours();
+                    }
+                }
+
+                trtmEditor3DPtr[0].getItems().clear();
+                trtmEditorTextPtr[0].getItems().clear();
+                if (theme == Theming.DEFAULT) {
+                    buildColourTree(WorkbenchManager.getUserSettingState(), trtmEditor3DPtr[0], trtmEditorTextPtr[0]);
+                } else {
+                    buildColourTree(WorkbenchManager.getThemeSettingState(), trtmEditor3DPtr[0], trtmEditorTextPtr[0]);
+                }
+
+                trColourTreePtr[0].build();
+                trColourTreePtr[0].update();
+                break;
+            }
+        }
     }
 }

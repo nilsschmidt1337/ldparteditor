@@ -15,7 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.partreview;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -26,11 +25,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-class PartReviewDesign extends Dialog {
+class PartReviewDesign extends ThemedDialog {
 
     static String fileName = ""; //$NON-NLS-1$
 
@@ -59,22 +60,22 @@ class PartReviewDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         if (alreadyReviewing) {
-            Label lblInfo = new Label(cmpContainer, SWT.NONE);
+            Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
             lblInfo.setText(I18n.PARTREVIEW_ALREADY);
         } else {
-            Label lblPartName = new Label(cmpContainer, SWT.NONE);
+            Label lblPartName = Theming.label(cmpContainer, SWT.NONE);
             lblPartName.setText(I18n.PARTREVIEW_ENTER_PART_NAME);
 
-            Text txtFile2 = new Text(cmpContainer, SWT.NONE);
+            Text txtFile2 = Theming.text(cmpContainer, SWT.NONE);
             this.txtFilePtr[0] = txtFile2;
             GridData gd = new GridData();
             gd.grabExcessHorizontalSpace = true;
             gd.horizontalAlignment = SWT.FILL;
             txtFile2.setLayoutData(gd);
 
-            Label lblInfo = new Label(cmpContainer, SWT.NONE);
+            Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
             lblInfo.setText(I18n.PARTREVIEW_INFO);
-            
+
             NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
             this.btnVerbosePtr[0] = btnVerbose;
             btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

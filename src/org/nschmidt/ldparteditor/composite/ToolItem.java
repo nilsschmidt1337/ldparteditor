@@ -20,6 +20,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * This is a custom toolbar item
@@ -28,6 +29,7 @@ public class ToolItem extends Composite {
 
     public ToolItem(Composite parent, int style, boolean isHorizontal) {
         super(parent, style);
+        setBackground(Theming.getBgColor());
         if (isHorizontal) {
             this.setLayout(new RowLayout(SWT.HORIZONTAL));
             new ToolSeparator(this, SWT.NONE, isHorizontal);

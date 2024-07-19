@@ -103,6 +103,7 @@ import org.nschmidt.ldparteditor.text.Evaluator;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.SyntaxFormatter;
 import org.nschmidt.ldparteditor.widget.TreeItem;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -1911,9 +1912,11 @@ public class CompositeTab extends CompositeTabDesign {
         });
         canvasLineNumberAreaPtr[0].addPaintListener(e -> {
             e.gc.setFont(Font.monospaced());
+            e.gc.setForeground(Theming.getFgColor());
             final int topIndex = compositeTextPtr[0].getTopIndex();
             int yOffset = 0;
             int height = compositeContainerPtr[0].getBounds().height;
+            int width = canvasLineNumberAreaPtr[0].getBounds().width;
             int startLine =  topIndex + 1;
             int endLine = compositeTextPtr[0].getLineCount() - 1;
             compositeTextPtr[0].setTopIndex(topIndex);
@@ -1957,6 +1960,9 @@ public class CompositeTab extends CompositeTabDesign {
                 startLine++;
             }
 
+            if (WorkbenchManager.getUserSettingState().getTheming() != Theming.DEFAULT) {
+                e.gc.drawLine(width - 1, 0, width - 1, height);
+            }
         });
         widgetUtil(compositeTextPtr[0].getVerticalBar()).addSelectionListener(e -> {
             if (!isDisposed()) {

@@ -13,45 +13,41 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.dialog.infographic;
+package org.nschmidt.ldparteditor.dialog;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.dialog.ThemedDialog;
-import org.nschmidt.ldparteditor.resource.ResourceManager;
-import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
-class InfographicDesign extends ThemedDialog {
+public abstract class ThemedDialog extends Dialog {
 
-    private static final String CHEAT_SHEET_IMAGE = "ldparteditor_cheat_sheet_100dpi.png"; //$NON-NLS-1$
-
-    InfographicDesign(Shell parentShell) {
+    protected ThemedDialog(Shell parentShell) {
         super(parentShell);
-        this.setShellStyle(SWT.RESIZE | this.getShellStyle());
     }
 
-    /**
-     * Create contents of the dialog.
-     *
-     * @param parent
-     */
+    @Override
+    protected final Control createButtonBar(Composite parent) {
+        final Control btnBar = super.createButtonBar(parent);
+        parent.setBackground(Theming.getBgColor());
+        btnBar.setBackground(Theming.getBgColor());
+        return btnBar;
+    }
+
+    @Override
+    protected final Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+        final Button btn = super.createButton(parent, id, label, defaultButton);
+        btn.setBackground(Theming.getBgColor());
+        btn.setForeground(Theming.getFgColor());
+        return btn;
+    }
+
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
-        gridLayout.verticalSpacing = 10;
-        gridLayout.horizontalSpacing = 10;
-
-        NButton btnCheatSheet = new NButton(cmpContainer, SWT.NONE);
-        btnCheatSheet.setImage(ResourceManager.getImage(CHEAT_SHEET_IMAGE));
-        btnCheatSheet.setEnabled(false);
-        btnCheatSheet.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
-
-        cmpContainer.pack();
+        cmpContainer.setBackground(Theming.getBgColor());
         return cmpContainer;
     }
 }

@@ -41,6 +41,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.Tree;
 import org.nschmidt.ldparteditor.widget.TreeColumn;
 import org.nschmidt.ldparteditor.widget.TreeItem;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 class ColourTableDesign extends ApplicationWindow {
 
@@ -59,7 +60,7 @@ class ColourTableDesign extends ApplicationWindow {
     @Override
     protected Control createContents(Composite parent) {
         final ColourTableDesign me = this;
-        Composite cmpContainer = new Composite(parent, SWT.NONE);
+        Composite cmpContainer = Theming.composite(parent, SWT.NONE);
         GridLayout gridLayout = new GridLayout(1, true);
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;

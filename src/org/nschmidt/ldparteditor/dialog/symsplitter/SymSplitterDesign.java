@@ -19,7 +19,6 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -29,10 +28,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.helper.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -41,7 +42,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class SymSplitterDesign extends Dialog {
+class SymSplitterDesign extends ThemedDialog {
 
     final SymSplitterSettings ss;
     final BigDecimalSpinner[] spnOffsetPtr = new BigDecimalSpinner[1];
@@ -74,13 +75,13 @@ class SymSplitterDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.SYMSPLITTER_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblHint = new Label(cmpContainer, SWT.NONE);
+        Label lblHint = Theming.label(cmpContainer, SWT.NONE);
         lblHint.setText(I18n.SYMSPLITTER_HINT);
 
         BigDecimalSpinner spnOffset = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -90,7 +91,7 @@ class SymSplitterDesign extends Dialog {
         spnOffset.setMinimum(new BigDecimal(-100000000));
         spnOffset.setValue(ss.getOffset());
 
-        Label lblPrecision = new Label(cmpContainer, SWT.NONE);
+        Label lblPrecision = Theming.label(cmpContainer, SWT.NONE);
         lblPrecision.setText(I18n.SYMSPLITTER_VERTEX_THRESHOLD);
 
         BigDecimalSpinner spnPrecision = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -100,11 +101,11 @@ class SymSplitterDesign extends Dialog {
         spnPrecision.setMinimum(new BigDecimal(0));
         spnPrecision.setValue(ss.getPrecision());
 
-        Label lblSplitPlane = new Label(cmpContainer, SWT.NONE);
+        Label lblSplitPlane = Theming.label(cmpContainer, SWT.NONE);
         lblSplitPlane.setText(I18n.SYMSPLITTER_SPLITTING_PLANE);
 
         {
-            Combo cmbSplitPlane = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbSplitPlane = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbSplitPlanePtr[0] = cmbSplitPlane;
             widgetUtil(cmbSplitPlane).setItems(I18n.SYMSPLITTER_ZP, I18n.SYMSPLITTER_YP, I18n.SYMSPLITTER_XP, I18n.SYMSPLITTER_ZM, I18n.SYMSPLITTER_YM, I18n.SYMSPLITTER_XM);
             cmbSplitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -112,10 +113,10 @@ class SymSplitterDesign extends Dialog {
             cmbSplitPlane.select(ss.getSplitPlane());
         }
 
-        Label lblHide = new Label(cmpContainer, SWT.NONE);
+        Label lblHide = Theming.label(cmpContainer, SWT.NONE);
         lblHide.setText(I18n.SYMSPLITTER_SELECT_WHAT);
         {
-            Combo cmbHide = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbHide = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbHidePtr[0] = cmbHide;
             widgetUtil(cmbHide).setItems(I18n.SYMSPLITTER_SHOW_ALL, I18n.SYMSPLITTER_SHOW_MIDDLE, I18n.SYMSPLITTER_SHOW_FRONT, I18n.SYMSPLITTER_SHOW_BEHIND);
             cmbHide.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -123,11 +124,11 @@ class SymSplitterDesign extends Dialog {
             cmbHide.select(ss.getHideLevel());
         }
 
-        Label lblDummy = new Label(cmpContainer, SWT.NONE);
+        Label lblDummy = Theming.label(cmpContainer, SWT.NONE);
         lblDummy.setText(""); //$NON-NLS-1$
 
         {
-            Combo cmbValidate = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbValidate = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbValidatePtr[0] = cmbValidate;
             widgetUtil(cmbValidate).setItems(I18n.SYMSPLITTER_NO_VALIDATION, I18n.SYMSPLITTER_VALIDATION);
             cmbValidate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -135,7 +136,7 @@ class SymSplitterDesign extends Dialog {
             cmbValidate.select(ss.isValidate() ? 1 : 0);
         }
         {
-            Combo cmbCutAcross = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbCutAcross = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbCutAcrossPtr[0] = cmbCutAcross;
             widgetUtil(cmbCutAcross).setItems(I18n.SYMSPLITTER_DO_NOT_CUT, I18n.SYMSPLITTER_CUT);
             cmbCutAcross.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -143,21 +144,21 @@ class SymSplitterDesign extends Dialog {
             cmbCutAcross.select(ss.isCutAcross() ? 1 : 0);
         }
         {
-            Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
+            Combo cmbColourise = Theming.combo(cmpContainer, SWT.READ_ONLY);
             this.cmbColourisePtr[0] = cmbColourise;
             widgetUtil(cmbColourise).setItems(I18n.SYMSPLITTER_NOT_COLOURISE, I18n.SYMSPLITTER_COLOURISE);
             cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbColourise.setText(cmbColourise.getItem(ss.isColourise() ? 1 : 0));
             cmbColourise.select(ss.isColourise() ? 1 : 0);
         }
-        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
         widgetUtil(cmbScope).setItems(I18n.SYMSPLITTER_SCOPE_FILE, I18n.SYMSPLITTER_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(0));
         cmbScope.select(0);
         cmbScope.setEnabled(false);
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

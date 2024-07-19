@@ -57,6 +57,7 @@ import org.nschmidt.ldparteditor.composite.ToolItemState;
 import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
+import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
@@ -95,6 +96,7 @@ import org.nschmidt.ldparteditor.widget.Tree;
 import org.nschmidt.ldparteditor.widget.TreeItem;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -280,14 +282,14 @@ class Editor3DDesign extends ApplicationWindow {
         userSettings.setRoundZ(true);
 
         setStatus(I18n.E3D_READY_STATUS);
-        Composite containerTop = new Composite(parent, Cocoa.getStyle());
+        Composite containerTop = Theming.composite(parent, Cocoa.getStyle());
         containerTop.setLayout(new BorderLayout(0, 0));
 
         if (!userSettings.hasSeparateTextWindow()) {
-            containerTop = new SashForm(containerTop, SWT.BORDER);
+            containerTop = Theming.shashForm(containerTop, SWT.BORDER);
             splitSash[0] = (SashForm) containerTop;
             if (userSettings.getTextWinArr() == Editor3DWindow.TEXT_LEFT_3D_RIGHT) {
-                Composite containerTextEditor = new Composite(containerTop, Cocoa.getStyle());
+                Composite containerTextEditor = Theming.composite(containerTop, Cocoa.getStyle());
                 containerTextEditor.setLayout(new BorderLayout(0, 0));
                 EditorTextWindow tWin = new EditorTextWindow(containerTextEditor, this);
                 tWin.build();
@@ -297,24 +299,24 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
 
-        Composite container = new Composite(containerTop, Cocoa.getStyle());
+        Composite container = Theming.composite(containerTop, Cocoa.getStyle());
         container.setLayout(new BorderLayout(0, 0));
         {
-            cmpNorth = new Composite(container, Cocoa.getStyle());
+            cmpNorth = Theming.composite(container, Cocoa.getStyle());
             cmpNorth.setLayoutData(BorderLayout.NORTH);
             RowLayout rlRoolBar = new RowLayout(SWT.HORIZONTAL);
             rlRoolBar.center = true;
             cmpNorth.setLayout(rlRoolBar);
         }
         {
-            cmpEast = new Composite(container, Cocoa.getStyle());
+            cmpEast = Theming.composite(container, Cocoa.getStyle());
             cmpEast.setLayoutData(BorderLayout.EAST);
             RowLayout rlRoolBar = new RowLayout(SWT.VERTICAL);
             rlRoolBar.center = true;
             cmpEast.setLayout(rlRoolBar);
         }
         {
-            cmpWest = new Composite(container, Cocoa.getStyle());
+            cmpWest = Theming.composite(container, Cocoa.getStyle());
             cmpWest.setLayoutData(BorderLayout.WEST);
             RowLayout rlRoolBar = new RowLayout(SWT.VERTICAL);
             rlRoolBar.center = true;
@@ -463,11 +465,11 @@ class Editor3DDesign extends ApplicationWindow {
         if (missingItemsToCreate.contains("LINE_THICKNESS")) lastToolItem = createToolItemLineThickness(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL); // LINE_THICKNESS //$NON-NLS-1$
 
         {
-            Composite cmpMainEditor = new Composite(container, SWT.BORDER);
+            Composite cmpMainEditor = Theming.composite(container, SWT.BORDER);
             cmpMainEditor.setLayoutData(BorderLayout.CENTER);
             cmpMainEditor.setLayout(new GridLayout(2, false));
             {
-                Composite cmpSyncAndReview = new Composite(cmpMainEditor, SWT.NONE);
+                Composite cmpSyncAndReview = Theming.composite(cmpMainEditor, SWT.NONE);
                 cmpSyncAndReview.setLayout(new GridLayout(2, false));
                 this.cmpSyncAndReviewPtr[0] = cmpSyncAndReview;
                 {
@@ -484,10 +486,15 @@ class Editor3DDesign extends ApplicationWindow {
                     cmpSyncAndReview.setLayoutData(gridDataX);
                 }
 
-                CTabFolder tabFolderOpenDatFiles = new CTabFolder(cmpMainEditor, SWT.CLOSE);
+                CTabFolder tabFolderOpenDatFiles = Theming.cTabFolder(cmpMainEditor, SWT.CLOSE);
                 this.tabFolderOpenDatFilesPtr[0] = tabFolderOpenDatFiles;
                 tabFolderOpenDatFiles.setMRUVisible(true);
-                tabFolderOpenDatFiles.setSelectionBackground(new Color[]{Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND), Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND)}, new int[]{100}, true);
+                if (Theming.getCurrentTheme() == Theming.DEFAULT) {
+                    tabFolderOpenDatFiles.setSelectionBackground(new Color[]{Theming.getBgColor(), Theming.getBgColor()}, new int[]{100}, true);
+                } else {
+                    tabFolderOpenDatFiles.setSelectionBackground(TextEditorColour.getLineHighlightBackground());
+                    tabFolderOpenDatFiles.setSelectionForeground(Theming.getFgColor());
+                }
 
                 {
                     GridData gridDataX = new GridData();
@@ -515,7 +522,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                 tabFolderOpenDatFiles.setSelection(1);
 
-                SashForm sashFormCmpMain = new SashForm(cmpMainEditor, Cocoa.getStyle());
+                SashForm sashFormCmpMain = Theming.shashForm(cmpMainEditor, Cocoa.getStyle());
 
                 {
                     GridData gridDataX = new GridData();
@@ -536,16 +543,22 @@ class Editor3DDesign extends ApplicationWindow {
                 Editor3DDesign.setSashForm(sashFormCmpMain);
                 sashFormCmpMain.setToolTipText(I18n.E3D_DRAG_HINT);
                 {
-                    SashForm sashForm2 = new SashForm(sashFormCmpMain, SWT.VERTICAL);
+                    SashForm sashForm2 = Theming.shashForm(sashFormCmpMain, SWT.VERTICAL);
                     this.leftSash[0] = sashForm2;
-                    Composite cmpContainer1 = new Composite(sashForm2, SWT.BORDER);
+                    Composite cmpContainer1 = Theming.composite(sashForm2, SWT.BORDER);
                     GridLayout gridLayout = new GridLayout(1, true);
                     cmpContainer1.setLayout(gridLayout);
                     {
-                        CTabFolder tabFolderSettings = new CTabFolder(cmpContainer1, SWT.BORDER);
+                        CTabFolder tabFolderSettings = Theming.cTabFolder(cmpContainer1, SWT.BORDER);
                         this.tabFolderSettingsPtr[0] = tabFolderSettings;
                         tabFolderSettings.setMRUVisible(true);
-                        tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                        if (Theming.getCurrentTheme() == Theming.DEFAULT) {
+                            tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                        } else {
+                            tabFolderSettings.setSelectionBackground(TextEditorColour.getLineHighlightBackground());
+                            tabFolderSettings.setSelectionForeground(Theming.getFgColor());
+                        }
+
                         GridData gridData = new GridData();
                         gridData.horizontalAlignment = SWT.FILL;
                         gridData.minimumHeight = 200;
@@ -564,7 +577,7 @@ class Editor3DDesign extends ApplicationWindow {
                         tItem.setToolTipText(I18n.E3D_SNAPPING);
                         {
                             final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
-                            Composite cmpSnappingArea = new Composite(cmpScroll, Cocoa.getStyle());
+                            Composite cmpSnappingArea = Theming.composite(cmpScroll, Cocoa.getStyle());
                             tItem.setControl(cmpScroll);
                             cmpScroll.setContent(cmpSnappingArea);
                             cmpScroll.setExpandHorizontal(true);
@@ -576,7 +589,7 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmpSnappingArea.getLayout()).marginWidth = 0;
 
                             {
-                                Label lblTabHeader = new Label(cmpSnappingArea, Cocoa.getStyle());
+                                Label lblTabHeader = Theming.label(cmpSnappingArea, Cocoa.getStyle());
                                 lblTabHeader.setText(I18n.E3D_SNAPPING);
                                 lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                                 NButton btnShowUpper = new NButton(cmpSnappingArea, Cocoa.getStyle());
@@ -587,7 +600,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
 
                             {
-                                Composite cmpDummy = new Composite(cmpSnappingArea, Cocoa.getStyle());
+                                Composite cmpDummy = Theming.composite(cmpSnappingArea, Cocoa.getStyle());
                                 cmpDummy.setLayout(new FillLayout(SWT.HORIZONTAL));
 
                                 NButton btnStud = new NButton(cmpDummy, SWT.RADIO);
@@ -620,7 +633,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 formatter.setLocale(MyLanguage.getLocale());
                                 formatter.applyPattern(I18n.E3D_MOVE_SNAP);
 
-                                Label lblNewLabel = new Label(cmpSnappingArea, Cocoa.getStyle());
+                                Label lblNewLabel = Theming.label(cmpSnappingArea, Cocoa.getStyle());
                                 lblNewLabel.setText(formatter.format(messageArguments));
                                 lblNewLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
@@ -633,7 +646,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinner.setValue(userSettings.getMediumMoveSnap());
                             spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel2 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblNewLabel2 = Theming.label(cmpSnappingArea, Cocoa.getStyle());
                             lblNewLabel2.setText(I18n.E3D_ROTATE_SNAP);
                             lblNewLabel2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
@@ -644,7 +657,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinner2.setValue(userSettings.getMediumRotateSnap());
                             spinner2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel3 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblNewLabel3 = Theming.label(cmpSnappingArea, Cocoa.getStyle());
                             lblNewLabel3.setText(I18n.E3D_SCALE_SNAP);
                             lblNewLabel3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
@@ -662,7 +675,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 formatter.setLocale(MyLanguage.getLocale());
                                 formatter.applyPattern(I18n.E3D_SCALE_INITIAL);
 
-                                Label lblNewLabel31 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                                Label lblNewLabel31 = Theming.label(cmpSnappingArea, Cocoa.getStyle());
                                 lblNewLabel31.setText(formatter.format(messageArguments));
                                 lblNewLabel31.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                             }
@@ -674,18 +687,18 @@ class Editor3DDesign extends ApplicationWindow {
                             spinner4.setValue(BigDecimal.ZERO);
                             spinner4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblSpacer1 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblSpacer1 = Theming.label(cmpSnappingArea, Cocoa.getStyle());
                             lblSpacer1.setText(" "); //$NON-NLS-1$
                             lblSpacer1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
-                            Label separator2 = new Label(cmpSnappingArea, SWT.SEPARATOR | SWT.HORIZONTAL);
+                            Label separator2 = Theming.label(cmpSnappingArea, SWT.SEPARATOR | SWT.HORIZONTAL);
                             separator2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblSpacer2 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblSpacer2 = Theming.label(cmpSnappingArea, Cocoa.getStyle());
                             lblSpacer2.setText(" "); //$NON-NLS-1$
                             lblSpacer2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel8 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblNewLabel8 = Theming.label(cmpSnappingArea, Cocoa.getStyle());
                             lblNewLabel8.setText(I18n.E3D_THRESH_FOR_ADDING_ELEMENTS_3D);
                             lblNewLabel8.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
@@ -697,7 +710,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                             spinnerT3D.addValueChangeListener(spn -> WorkbenchManager.getUserSettingState().setFuzziness3D(spn.getValue()));
 
-                            Label lblNewLabel9 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblNewLabel9 = Theming.label(cmpSnappingArea, Cocoa.getStyle());
                             lblNewLabel9.setText(I18n.E3D_THRESH_FOR_ADDING_ELEMENTS_2D);
                             lblNewLabel9.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
@@ -709,7 +722,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                             spinnerT2D.addValueChangeListener(spn -> WorkbenchManager.getUserSettingState().setFuzziness2D(spn.getValue()));
 
-                            Label lblSpacer3 = new Label(cmpSnappingArea, Cocoa.getStyle());
+                            Label lblSpacer3 = Theming.label(cmpSnappingArea, Cocoa.getStyle());
                             lblSpacer3.setText(" "); //$NON-NLS-1$
                             lblSpacer3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
@@ -721,7 +734,7 @@ class Editor3DDesign extends ApplicationWindow {
                         tItem21.setToolTipText(I18n.E3D_CONVERTER);
                         {
                             final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
-                            Composite cmpConverterArea = new Composite(cmpScroll, Cocoa.getStyle());
+                            Composite cmpConverterArea = Theming.composite(cmpScroll, Cocoa.getStyle());
                             tItem21.setControl(cmpScroll);
                             cmpScroll.setContent(cmpConverterArea);
                             cmpScroll.setExpandHorizontal(true);
@@ -733,7 +746,7 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmpConverterArea.getLayout()).marginWidth = 0;
 
                             {
-                                Label lblTabHeader = new Label(cmpConverterArea, Cocoa.getStyle());
+                                Label lblTabHeader = Theming.label(cmpConverterArea, Cocoa.getStyle());
                                 lblTabHeader.setText(I18n.E3D_CONVERTER);
                                 lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                                 NButton btnShowUpper = new NButton(cmpConverterArea, Cocoa.getStyle());
@@ -743,11 +756,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 btnShowUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1));
                             }
 
-                            Label lblSpacer1 = new Label(cmpConverterArea, Cocoa.getStyle());
+                            Label lblSpacer1 = Theming.label(cmpConverterArea, Cocoa.getStyle());
                             lblSpacer1.setText(" "); //$NON-NLS-1$
                             lblSpacer1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel4 = new Label(cmpConverterArea, Cocoa.getStyle());
+                            Label lblNewLabel4 = Theming.label(cmpConverterArea, Cocoa.getStyle());
                             lblNewLabel4.setText(I18n.UNITS_NAME_LDU + " [" + I18n.UNITS_LDU + "]"); //$NON-NLS-1$ //$NON-NLS-2$
                             lblNewLabel4.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
@@ -757,7 +770,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinnerLDU.setValue(BigDecimal.ZERO);
                             spinnerLDU.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel5 = new Label(cmpConverterArea, Cocoa.getStyle());
+                            Label lblNewLabel5 = Theming.label(cmpConverterArea, Cocoa.getStyle());
                             lblNewLabel5.setText(I18n.UNITS_NAME_SECONDARY + " [" + I18n.UNITS_SECONDARY + "]"); //$NON-NLS-1$ //$NON-NLS-2$
                             lblNewLabel5.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
@@ -767,7 +780,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinnerMM.setValue(BigDecimal.ZERO);
                             spinnerMM.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel6 = new Label(cmpConverterArea, Cocoa.getStyle());
+                            Label lblNewLabel6 = Theming.label(cmpConverterArea, Cocoa.getStyle());
                             lblNewLabel6.setText(I18n.UNITS_NAME_TERTIARY + " [" + I18n.UNITS_TERTIARY + "]"); //$NON-NLS-1$ //$NON-NLS-2$
                             lblNewLabel6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
@@ -777,7 +790,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinnerStud.setValue(BigDecimal.ZERO);
                             spinnerStud.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            Label lblNewLabel7 = new Label(cmpConverterArea, Cocoa.getStyle());
+                            Label lblNewLabel7 = Theming.label(cmpConverterArea, Cocoa.getStyle());
                             lblNewLabel7.setText(I18n.UNITS_NAME_PRIMARY + " [" + I18n.UNITS_PRIMARY + "]"); //$NON-NLS-1$ //$NON-NLS-2$
                             lblNewLabel7.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
@@ -831,7 +844,7 @@ class Editor3DDesign extends ApplicationWindow {
                         tItem2.setToolTipText(I18n.E3D_SELECTION);
                         {
                             final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
-                            Composite cmpSelArea = new Composite(cmpScroll, Cocoa.getStyle());
+                            Composite cmpSelArea = Theming.composite(cmpScroll, Cocoa.getStyle());
                             tItem2.setControl(cmpScroll);
                             cmpScroll.setContent(cmpSelArea);
                             cmpScroll.setExpandHorizontal(true);
@@ -843,7 +856,7 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmpSelArea.getLayout()).marginWidth = 0;
 
                             {
-                                Label lblTabHeader = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblTabHeader = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 lblTabHeader.setText(I18n.E3D_SELECTION);
                                 lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                                 NButton btnShowUpper = new NButton(cmpSelArea, Cocoa.getStyle());
@@ -854,7 +867,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
 
                             {
-                                Composite cmpDummy = new Composite(cmpSelArea, Cocoa.getStyle());
+                                Composite cmpDummy = Theming.composite(cmpSelArea, Cocoa.getStyle());
                                 cmpDummy.setLayout(new FillLayout(SWT.HORIZONTAL));
 
                                 NButton btnPreviousSelection = new NButton(cmpDummy, Cocoa.getStyle());
@@ -871,10 +884,10 @@ class Editor3DDesign extends ApplicationWindow {
                             }
 
                             {
-                                Composite cmpLineSetup = new Composite(cmpSelArea, Cocoa.getStyle());
+                                Composite cmpLineSetup = Theming.composite(cmpSelArea, Cocoa.getStyle());
                                 cmpLineSetup.setLayout(new GridLayout(1, false));
 
-                                Text txtLine = new Text(cmpLineSetup, SWT.BORDER);
+                                Text txtLine = Theming.text(cmpLineSetup, SWT.BORDER);
                                 this.txtLinePtr[0] = txtLine;
                                 txtLine.setEnabled(false);
                                 txtLine.setEditable(false);
@@ -894,11 +907,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 cmpLineSetup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, SWT.SEPARATOR | SWT.HORIZONTAL);
+                                Label lblLabel = Theming.label(cmpSelArea, SWT.SEPARATOR | SWT.HORIZONTAL);
                                 lblLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionAnglePtr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_PROTRACTOR_ANGLE);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -911,7 +924,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionLengthPtr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_PROTRACTOR_LENGTH);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -924,7 +937,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionLengthMMPtr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_PROTRACTOR_LENGTH_MM);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -937,7 +950,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionX1Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_X1);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -950,7 +963,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionY1Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_Y1);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -963,7 +976,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionZ1Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_Z1);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -976,7 +989,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionX2Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_X2);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -989,7 +1002,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionY2Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_Y2);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -1002,7 +1015,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionZ2Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_Z2);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -1015,7 +1028,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionX3Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_X3);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -1028,7 +1041,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionY3Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_Y3);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -1041,7 +1054,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionZ3Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_Z3);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -1054,7 +1067,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionX4Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_X4);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -1067,7 +1080,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionY4Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_Y4);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -1080,7 +1093,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpSelArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpSelArea, Cocoa.getStyle());
                                 this.lblSelectionZ4Ptr[0] = lblLabel;
                                 lblLabel.setText(I18n.E3D_POSITION_Z4);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -1101,7 +1114,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                         {
                             final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.V_SCROLL | SWT.H_SCROLL);
-                            Composite cmpBgArea = new Composite(cmpScroll, Cocoa.getStyle());
+                            Composite cmpBgArea = Theming.composite(cmpScroll, Cocoa.getStyle());
                             tItem3.setControl(cmpScroll);
                             cmpScroll.setContent(cmpBgArea);
                             cmpScroll.setExpandHorizontal(true);
@@ -1113,7 +1126,7 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmpBgArea.getLayout()).marginWidth = 0;
 
                             {
-                                Label lblTabHeader = new Label(cmpBgArea, Cocoa.getStyle());
+                                Label lblTabHeader = Theming.label(cmpBgArea, Cocoa.getStyle());
                                 lblTabHeader.setText(I18n.E3D_BACKGROUND_IMAGE);
                                 lblTabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                                 NButton btnShowUpper = new NButton(cmpBgArea, Cocoa.getStyle());
@@ -1124,7 +1137,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
 
                             {
-                                Composite cmpDummy = new Composite(cmpBgArea, Cocoa.getStyle());
+                                Composite cmpDummy = Theming.composite(cmpBgArea, Cocoa.getStyle());
                                 cmpDummy.setLayout(new FillLayout(SWT.HORIZONTAL));
 
                                 NButton btnPrevious = new NButton(cmpDummy, Cocoa.getStyle());
@@ -1146,15 +1159,15 @@ class Editor3DDesign extends ApplicationWindow {
                             }
 
                             {
-                                Label lblLabel = new Label(cmpBgArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpBgArea, Cocoa.getStyle());
                                 lblLabel.setText(I18n.E3D_IMAGE);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Composite cmpPathChooser1 = new Composite(cmpBgArea, Cocoa.getStyle());
+                                Composite cmpPathChooser1 = Theming.composite(cmpBgArea, Cocoa.getStyle());
                                 cmpPathChooser1.setLayout(new GridLayout(2, false));
 
-                                Text txtPngPath = new Text(cmpPathChooser1, SWT.BORDER);
+                                Text txtPngPath = Theming.text(cmpPathChooser1, SWT.BORDER);
                                 this.txtPngPathPtr[0] = txtPngPath;
                                 txtPngPath.setEditable(false);
                                 txtPngPath.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -1166,7 +1179,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 cmpPathChooser1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Composite cmpCalibrate = new Composite(cmpBgArea, Cocoa.getStyle());
+                                Composite cmpCalibrate = Theming.composite(cmpBgArea, Cocoa.getStyle());
                                 cmpCalibrate.setLayout(new GridLayout(1, false));
 
                                 NButton btnCalibrate = new NButton(cmpCalibrate, Cocoa.getStyle() | SWT.TOGGLE);
@@ -1177,7 +1190,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 cmpCalibrate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpBgArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpBgArea, Cocoa.getStyle());
                                 lblLabel.setText(I18n.E3D_POSITION_X);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmpBgArea, Cocoa.getStyle());
@@ -1188,7 +1201,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpBgArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpBgArea, Cocoa.getStyle());
                                 lblLabel.setText(I18n.E3D_POSITION_Y);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmpBgArea, Cocoa.getStyle());
@@ -1199,7 +1212,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpBgArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpBgArea, Cocoa.getStyle());
                                 lblLabel.setText(I18n.E3D_POSITION_Z);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmpBgArea, Cocoa.getStyle());
@@ -1210,7 +1223,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpBgArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpBgArea, Cocoa.getStyle());
                                 lblLabel.setText(I18n.E3D_ANGLE_Y);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmpBgArea, Cocoa.getStyle());
@@ -1221,7 +1234,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpBgArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpBgArea, Cocoa.getStyle());
                                 lblLabel.setText(I18n.E3D_ANGLE_X);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmpBgArea, Cocoa.getStyle());
@@ -1232,7 +1245,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpBgArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpBgArea, Cocoa.getStyle());
                                 lblLabel.setText(I18n.E3D_ANGLE_Z);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmpBgArea, Cocoa.getStyle());
@@ -1243,7 +1256,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpBgArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpBgArea, Cocoa.getStyle());
                                 lblLabel.setText(I18n.E3D_SCALE_X);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmpBgArea, Cocoa.getStyle());
@@ -1254,7 +1267,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lblLabel = new Label(cmpBgArea, Cocoa.getStyle());
+                                Label lblLabel = Theming.label(cmpBgArea, Cocoa.getStyle());
                                 lblLabel.setText(I18n.E3D_SCALE_Y);
                                 lblLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
                                 BigDecimalSpinner spinner = new BigDecimalSpinner(cmpBgArea, Cocoa.getStyle());
@@ -1269,7 +1282,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                         tabFolderSettings.setSelection(tItem);
                     }
-                    Composite cmpContainer2 = new Composite(sashForm2, SWT.BORDER);
+                    Composite cmpContainer2 = Theming.composite(sashForm2, SWT.BORDER);
                     GridLayout gridLayout3 = new GridLayout(2, false);
                     cmpContainer2.setLayout(gridLayout3);
                     {
@@ -1442,7 +1455,7 @@ class Editor3DDesign extends ApplicationWindow {
                         btnClose.setEnabled(false);
                     }
                     {
-                        Composite cmpSearch = new Composite(cmpContainer2, Cocoa.getStyle());
+                        Composite cmpSearch = Theming.composite(cmpContainer2, Cocoa.getStyle());
                         GridData gridData = new GridData();
                         gridData.horizontalAlignment = SWT.FILL;
                         gridData.grabExcessHorizontalSpace = true;
@@ -1450,7 +1463,7 @@ class Editor3DDesign extends ApplicationWindow {
                         cmpSearch.setLayoutData(gridData);
                         GridLayout gridLayout2 = new GridLayout(4, false);
                         cmpSearch.setLayout(gridLayout2);
-                        Text txtSearch = new Text(cmpSearch, SWT.BORDER);
+                        Text txtSearch = Theming.text(cmpSearch, SWT.BORDER);
                         this.txtSearchPtr[0] = txtSearch;
                         txtSearch.setMessage(I18n.E3D_SEARCH);
                         GridData gridData2 = new GridData();
@@ -1462,7 +1475,7 @@ class Editor3DDesign extends ApplicationWindow {
                         btnResetSearch.setText(I18n.E3D_RESET);
                     }
 
-                    Composite cmpContainer4 = new Composite(sashForm2, SWT.BORDER);
+                    Composite cmpContainer4 = Theming.composite(sashForm2, SWT.BORDER);
                     GridLayout gridLayout4 = new GridLayout(1, true);
                     cmpContainer4.setLayout(gridLayout4);
 
@@ -1485,7 +1498,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                     cmpPrimitives.loadPrimitives();
 
-                    Label lblSelectedPrimitiveItem = new Label(cmpContainer4, Cocoa.getStyle());
+                    Label lblSelectedPrimitiveItem = Theming.label(cmpContainer4, Cocoa.getStyle());
                     this.lblSelectedPrimitiveItemPtr[0] = lblSelectedPrimitiveItem;
                     {
                         GridData gd2 = new GridData();
@@ -1496,14 +1509,14 @@ class Editor3DDesign extends ApplicationWindow {
                     lblSelectedPrimitiveItem.setText(I18n.E3D_NO_PRIMITIVE_LOADED);
 
                     {
-                        Composite cmpSearch = new Composite(cmpContainer4, Cocoa.getStyle());
+                        Composite cmpSearch = Theming.composite(cmpContainer4, Cocoa.getStyle());
                         GridData gridData = new GridData();
                         gridData.horizontalAlignment = SWT.FILL;
                         gridData.grabExcessHorizontalSpace = true;
                         cmpSearch.setLayoutData(gridData);
                         GridLayout gridLayout2 = new GridLayout(5, false);
                         cmpSearch.setLayout(gridLayout2);
-                        Text txtSearch = new Text(cmpSearch, SWT.BORDER);
+                        Text txtSearch = Theming.text(cmpSearch, SWT.BORDER);
                         this.txtPrimitiveSearchPtr[0] = txtSearch;
                         txtSearch.setMessage(I18n.E3D_SEARCH_PRIMITIVES);
                         GridData gridData2 = new GridData();
@@ -1562,18 +1575,18 @@ class Editor3DDesign extends ApplicationWindow {
                 }
             }
         }
-        status = new Composite(container, Cocoa.getStyle());
+        status = Theming.composite(container, Cocoa.getStyle());
         status.setLayoutData(BorderLayout.SOUTH);
         RowLayout rlStatusBar = new RowLayout(SWT.HORIZONTAL);
         rlStatusBar.center = true;
         status.setLayout(rlStatusBar);
         {
-            Label lblStatus = new Label(status, Cocoa.getStyle());
+            Label lblStatus = Theming.label(status, Cocoa.getStyle());
             lblStatus.setText(""); //$NON-NLS-1$
         }
 
         if (userSettings.getTextWinArr() == Editor3DWindow.TEXT_RIGHT_3D_LEFT) {
-            Composite containerTextEditor = new Composite(containerTop, Cocoa.getStyle());
+            Composite containerTextEditor = Theming.composite(containerTop, Cocoa.getStyle());
             containerTextEditor.setLayout(new BorderLayout(0, 0));
             EditorTextWindow tWin = new EditorTextWindow(containerTextEditor, this);
             tWin.build();

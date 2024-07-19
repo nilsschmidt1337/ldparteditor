@@ -38,6 +38,7 @@ import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -300,7 +301,7 @@ public class SyntaxFormatter {
         StyleRange commentStyleRange = new StyleRange();
         commentStyleRange.start = offset;
         commentStyleRange.length = e.lineText.length();
-        commentStyleRange.foreground = TextEditorColour.getLineCommentFont();
+        commentStyleRange.foreground = Theming.getCurrentTheme() == Theming.DEFAULT ? TextEditorColour.getLineCommentFont() : TextEditorColour.getTextForeground();
         styles.add(commentStyleRange);
 
         if (offset == 0)
@@ -310,6 +311,7 @@ public class SyntaxFormatter {
             if (segment.isEmpty() || segment.equals("0")) { //$NON-NLS-1$
                 offset++;
             } else if (segment.equals("//")) { //$NON-NLS-1$
+                commentStyleRange.foreground = TextEditorColour.getLineCommentFont();
                 return; // We got a real comment here. Do not
                 // highlight other KEYWORDS in these lines
             } else if (segment.equals("Name:") || segment.equals("Author:")) { //$NON-NLS-1$ //$NON-NLS-2$

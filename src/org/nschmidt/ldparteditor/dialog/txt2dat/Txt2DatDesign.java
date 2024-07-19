@@ -19,7 +19,6 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -31,11 +30,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.enumtype.Font;
 import org.nschmidt.ldparteditor.helper.composite3d.Txt2DatSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -44,7 +45,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class Txt2DatDesign extends Dialog {
+class Txt2DatDesign extends ThemedDialog {
 
     final Txt2DatSettings ts;
 
@@ -74,13 +75,13 @@ class Txt2DatDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        Label lblSpecify = Theming.label(cmpContainer, SWT.NONE);
         lblSpecify.setText(I18n.TXT2DAT_TITLE);
 
-        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblCoordsPrec = new Label(cmpContainer, SWT.NONE);
+        Label lblCoordsPrec = Theming.label(cmpContainer, SWT.NONE);
         lblCoordsPrec.setText(I18n.TXT2DAT_FONT + " [" + (ts.getFontData() == null ? Font.SYSTEM.getFontData()[0].getName() : ts.getFontData().getName()) + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 
         NButton spnVequ = new NButton(cmpContainer, SWT.NONE);
@@ -88,26 +89,26 @@ class Txt2DatDesign extends Dialog {
         spnVequ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnVequ.setText(I18n.TXT2DAT_SELECT);
 
-        Label lblText = new Label(cmpContainer, SWT.NONE);
+        Label lblText = Theming.label(cmpContainer, SWT.NONE);
         lblText.setText(I18n.TXT2DAT_TEXT);
 
-        Text txtText = new Text(cmpContainer, SWT.NONE);
+        Text txtText = Theming.text(cmpContainer, SWT.NONE);
         this.txtTextPtr[0] = txtText;
         if (ts.getFontData() != null) txtText.setFont(SWTResourceManager.getFont(ts.getFontData().getName(), ts.getFontData().getHeight(), ts.getFontData().getStyle()));
         txtText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 4));
         txtText.setText(ts.getText());
-        
-        Label lblMode = new Label(cmpContainer, SWT.NONE);
+
+        Label lblMode = Theming.label(cmpContainer, SWT.NONE);
         lblMode.setText(I18n.TXT2DAT_MODE);
-        
-        Combo cmbMode = new Combo(cmpContainer, SWT.READ_ONLY);
+
+        Combo cmbMode = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbModePtr[0] = cmbMode;
         widgetUtil(cmbMode).setItems(I18n.TXT2DAT_SINGLE_LETTERS, I18n.TXT2DAT_ONLY_CHARACTERS, I18n.TXT2DAT_SINGLE_BACKGROUND);
         cmbMode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbMode.setText(cmbMode.getItem(ts.getMode()));
         cmbMode.select(ts.getMode());
 
-        Label lblUse180deg = new Label(cmpContainer, SWT.NONE);
+        Label lblUse180deg = Theming.label(cmpContainer, SWT.NONE);
         lblUse180deg.setText(I18n.TXT2DAT_FLATNESS);
 
         BigDecimalSpinner spnFlatness = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -117,7 +118,7 @@ class Txt2DatDesign extends Dialog {
         spnFlatness.setMinimum(new BigDecimal(0));
         spnFlatness.setValue(ts.getFlatness());
 
-        Label lblAf = new Label(cmpContainer, SWT.NONE);
+        Label lblAf = Theming.label(cmpContainer, SWT.NONE);
         lblAf.setText(I18n.TXT2DAT_MARGIN);
 
         BigDecimalSpinner spnMarginPercentage = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -127,7 +128,7 @@ class Txt2DatDesign extends Dialog {
         spnMarginPercentage.setMinimum(new BigDecimal(0));
         spnMarginPercentage.setValue(ts.getMarginPercentage());
 
-        Label lblAc = new Label(cmpContainer, SWT.NONE);
+        Label lblAc = Theming.label(cmpContainer, SWT.NONE);
         lblAc.setText(I18n.TXT2DAT_FONT_HEIGHT);
 
         BigDecimalSpinner spnFontHeight = new BigDecimalSpinner(cmpContainer, SWT.NONE);
@@ -136,7 +137,7 @@ class Txt2DatDesign extends Dialog {
         spnFontHeight.setMaximum(new BigDecimal(10000));
         spnFontHeight.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
         spnFontHeight.setValue(ts.getFontHeight());
-        
+
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;
         btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

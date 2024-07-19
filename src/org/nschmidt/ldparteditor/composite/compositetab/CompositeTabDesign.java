@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enumtype.Font;
 import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -39,6 +38,7 @@ import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.widget.Tree;
 import org.nschmidt.ldparteditor.widget.TreeColumn;
 import org.nschmidt.ldparteditor.widget.TreeItem;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * The DAT file tab design for the text editor window
@@ -64,7 +64,7 @@ class CompositeTabDesign extends CTabItem {
 
     final MenuItem[] mntmImportPngDataPtr = new MenuItem[1];
     final MenuItem[] mntmExportPngDataPtr = new MenuItem[1];
-    
+
     final MenuItem[] mntmQuickFixPtr = new MenuItem[1];
     final MenuItem[] mntmQuickFixSamePtr = new MenuItem[1];
     final NButton[] btnQuickFixPtr = new NButton[1];
@@ -75,7 +75,7 @@ class CompositeTabDesign extends CTabItem {
     final MenuItem[] mntmInspectSamePtr = new MenuItem[1];
     final NButton[] btnInspectPtr = new NButton[1];
     final NButton[] btnInspectSamePtr = new NButton[1];
-    
+
     final MenuItem[] mntmCopyIssuesPtr = new MenuItem[1];
 
     final Canvas[] canvasLineNumberAreaPtr = new Canvas[1];
@@ -105,16 +105,16 @@ class CompositeTabDesign extends CTabItem {
     private final void createContents(CTabFolder tabFolder) {
         this.setText(I18n.COMPOSITETAB_NEW_FILE);
         {
-            Composite cmpTextArea = new Composite(tabFolder, SWT.NONE);
+            Composite cmpTextArea = Theming.composite(tabFolder, SWT.NONE);
             cmpTextArea.setLayout(new FillLayout(SWT.HORIZONTAL));
             this.setControl(cmpTextArea);
 
-            SashForm sashForm = new SashForm(cmpTextArea, SWT.VERTICAL);
+            SashForm sashForm = Theming.shashForm(cmpTextArea, SWT.VERTICAL);
             this.sashFormPtr[0] = sashForm;
 
-            Composite composite = new Composite(sashForm, SWT.NONE);
+            Composite composite = Theming.composite(sashForm, SWT.NONE);
             compositeContainerPtr[0] = composite;
-            composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+            composite.setBackground(Theming.getBgColor());
             GridLayout glComposite = new GridLayout(3, false);
             glComposite.marginBottom = 0;
             glComposite.marginHeight = 0;
@@ -126,7 +126,7 @@ class CompositeTabDesign extends CTabItem {
 
             Canvas canvasLineNumberArea = new Canvas(composite, SWT.NONE);
             this.canvasLineNumberAreaPtr[0] = canvasLineNumberArea;
-            canvasLineNumberArea.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+            canvasLineNumberArea.setBackground(Theming.getBgColor());
             canvasLineNumberArea.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
             this.canvasLineNumberAreaPtr[0].addDisposeListener(e -> canvasLineNumberAreaPtr[0].getCursor().dispose());
 
@@ -147,7 +147,7 @@ class CompositeTabDesign extends CTabItem {
             compositeText.setLineSpacing(0);
 
             Canvas canvasTextmarks = new Canvas(composite, SWT.NONE);
-            canvasTextmarks.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+            canvasTextmarks.setBackground(Theming.getBgColor());
 
             GridData gdCanvasTextmarks = new GridData(SWT.RIGHT, SWT.FILL, false, true);
             gdCanvasTextmarks.minimumWidth = 5;
@@ -155,23 +155,28 @@ class CompositeTabDesign extends CTabItem {
             canvasTextmarks.setLayoutData(gdCanvasTextmarks);
 
             {
-                Composite cmpInfoArea = new Composite(sashForm, SWT.NONE);
+                Composite cmpInfoArea = Theming.composite(sashForm, SWT.NONE);
                 cmpInfoArea.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-                CTabFolder tabFolderPartInformation = new CTabFolder(cmpInfoArea, SWT.BORDER);
+                CTabFolder tabFolderPartInformation = Theming.cTabFolder(cmpInfoArea, SWT.BORDER);
                 this.tabFolderPartInformationPtr[0] = tabFolderPartInformation;
                 tabFolderPartInformation.setSingle(true);
-                tabFolderPartInformation.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                if (Theming.getCurrentTheme() == Theming.DEFAULT) {
+                    tabFolderPartInformation.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+                } else {
+                    tabFolderPartInformation.setSelectionBackground(TextEditorColour.getLineHighlightBackground());
+                    tabFolderPartInformation.setSelectionForeground(Theming.getFgColor());
+                }
 
                 CTabItem tbtmPartProblems = new CTabItem(tabFolderPartInformation, SWT.CLOSE);
                 tbtmPartProblems.setImage(null);
                 tbtmPartProblems.setText(I18n.COMPOSITETAB_PROBLEMS);
                 tabFolderPartInformation.setSelection(tbtmPartProblems);
-                Composite cmpPartProblems = new Composite(tabFolderPartInformation, SWT.NONE);
+                Composite cmpPartProblems = Theming.composite(tabFolderPartInformation, SWT.NONE);
                 tbtmPartProblems.setControl(cmpPartProblems);
                 cmpPartProblems.setLayout(new GridLayout(8, false));
 
-                Label lblProblemCount = new Label(cmpPartProblems, SWT.NONE);
+                Label lblProblemCount = Theming.label(cmpPartProblems, SWT.NONE);
                 this.lblProblemCountPtr[0] = lblProblemCount;
                 lblProblemCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 8, 1));
                 lblProblemCount.setText("0 " + I18n.EDITORTEXT_ERRORS + ", 0 " + I18n.EDITORTEXT_WARNINGS + ", 0 " + I18n.EDITORTEXT_OTHERS + ", 0 " + I18n.EDITORTEXT_DUPLICATES); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -237,9 +242,9 @@ class CompositeTabDesign extends CTabItem {
                 mntmInspectSamePtr[0] = mntmInspectSame;
                 mntmInspectSame.setEnabled(true);
                 mntmInspectSame.setText(I18n.COMPOSITETAB_INSPECT_SIMILAR);
-                
+
                 new MenuItem(mnuTabFolder, SWT.SEPARATOR);
-                
+
                 MenuItem mntmCopyIssues = new MenuItem(mnuTabFolder, I18n.noBiDirectionalTextStyle());
                 mntmCopyIssuesPtr[0] = mntmCopyIssues;
                 mntmCopyIssues.setEnabled(true);
@@ -248,7 +253,7 @@ class CompositeTabDesign extends CTabItem {
 
                 tree.build();
 
-                Label lblSeparator = new Label(cmpPartProblems, SWT.NONE);
+                Label lblSeparator = Theming.label(cmpPartProblems, SWT.NONE);
                 lblSeparator.setText(" "); //$NON-NLS-1$
 
                 NButton btnInspect = new NButton(cmpPartProblems, SWT.NONE);
@@ -264,9 +269,9 @@ class CompositeTabDesign extends CTabItem {
                 btnInspectSame.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
                 btnInspectSame.setText(I18n.COMPOSITETAB_INSPECT_SIMILAR);
 
-                Label lblSeparator2 = new Label(cmpPartProblems, SWT.NONE);
+                Label lblSeparator2 = Theming.label(cmpPartProblems, SWT.NONE);
                 lblSeparator2.setText(" "); //$NON-NLS-1$
-                
+
                 NButton btnQuickFix = new NButton(cmpPartProblems, SWT.NONE);
                 this.btnQuickFixPtr[0] = btnQuickFix;
                 btnQuickFix.setEnabled(false);
@@ -278,10 +283,10 @@ class CompositeTabDesign extends CTabItem {
                 btnQuickFixSame.setEnabled(false);
                 btnQuickFixSame.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                 btnQuickFixSame.setText(I18n.COMPOSITETAB_QUICK_FIX_SIMILAR);
-                
-                Label lblSeparator3 = new Label(cmpPartProblems, SWT.NONE);
+
+                Label lblSeparator3 = Theming.label(cmpPartProblems, SWT.NONE);
                 lblSeparator3.setText(" "); //$NON-NLS-1$
-                
+
                 NButton btnCopyIssues = new NButton(cmpPartProblems, SWT.NONE);
                 this.btnCopyIssuesPtr[0] = btnCopyIssues;
                 btnCopyIssues.setEnabled(false);
@@ -336,14 +341,14 @@ class CompositeTabDesign extends CTabItem {
             mntmDelete.setText(I18n.COPYNPASTE_DELETE);
             mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
             mntmDeletePtr[0] = mntmDelete;
-            
+
             new MenuItem(menu[0], SWT.SEPARATOR);
 
             MenuItem mntmImportPngData = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmImportPngData.setText(I18n.EDITORTEXT_DATA_IMPORT);
             mntmImportPngData.setImage(ResourceManager.getImage("icon16_bgpic.png")); //$NON-NLS-1$
             mntmImportPngDataPtr[0] = mntmImportPngData;
-            
+
             MenuItem mntmExportPngData = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmExportPngData.setText(I18n.EDITORTEXT_DATA_EXPORT);
             mntmExportPngData.setImage(ResourceManager.getImage("icon16_bgpic.png")); //$NON-NLS-1$

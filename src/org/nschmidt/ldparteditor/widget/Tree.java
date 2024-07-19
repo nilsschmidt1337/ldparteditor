@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 public class Tree {
 
@@ -48,7 +49,7 @@ public class Tree {
      *
      */
     public Tree(Composite parent, int columnCount, int initialSize) {
-        tree = new org.eclipse.swt.widgets.Tree(parent, columnCount);
+        tree = Theming.tree(parent, columnCount);
         setItemsSWT(new org.eclipse.swt.widgets.TreeItem[initialSize]);
         for (int i = 0; i < initialSize; i++) {
             itemsSWT[i] = new org.eclipse.swt.widgets.TreeItem(tree, SWT.NONE);

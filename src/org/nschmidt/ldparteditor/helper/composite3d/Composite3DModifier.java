@@ -52,6 +52,7 @@ import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.widget.NButton;
+import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * Provides functions to perform view actions for the {@linkplain Composite3D}
@@ -239,7 +240,7 @@ public class Composite3DModifier {
             isUpperComposite = false;
         }
 
-        final SashForm newParentSashForm = new SashForm(c3d.getSashForm(), SWT.VERTICAL);
+        final SashForm newParentSashForm = Theming.shashForm(c3d.getSashForm(), SWT.VERTICAL);
         c3d.getCompositeContainer().setParent(newParentSashForm);
 
         CompositeContainer southComposite = new CompositeContainer(newParentSashForm, false, c3d.isSyncManipulator(), c3d.isSyncTranslation(), c3d.isSyncZoom());
@@ -280,7 +281,7 @@ public class Composite3DModifier {
             isUpperComposite = false;
         }
 
-        final SashForm newParentSashForm = new SashForm(c3d.getSashForm(), SWT.HORIZONTAL);
+        final SashForm newParentSashForm = Theming.shashForm(c3d.getSashForm(), SWT.HORIZONTAL);
         c3d.getCompositeContainer().setParent(newParentSashForm);
 
         CompositeContainer southComposite = new CompositeContainer(newParentSashForm, false, c3d.isSyncManipulator(), c3d.isSyncTranslation(), c3d.isSyncZoom());
@@ -395,7 +396,7 @@ public class Composite3DModifier {
 
             oldParentSashForm.getChildren()[1].dispose();
 
-            Composite nc = new Composite(oldParentSashForm, SWT.NONE);
+            Composite nc = Theming.composite(oldParentSashForm, SWT.NONE);
             nc.setData("%EMPTY%"); //$NON-NLS-1$
             nc.setLayout(new GridLayout());
             {

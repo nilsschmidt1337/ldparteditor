@@ -408,6 +408,7 @@ public class SplashScreen extends ApplicationWindow {
     protected Control createContents(final Composite parent) {
 
         final Color bgColor = SWTResourceManager.getColor(SWT.COLOR_WHITE);
+        final Color fgColor = SWTResourceManager.getColor(SWT.COLOR_BLACK);
         final Composite frame = new Composite(parent, SWT.NONE);
         final FormData titleData = new FormData();
         final FormData statusData = new FormData();
@@ -422,11 +423,16 @@ public class SplashScreen extends ApplicationWindow {
         titleLabel.setText(Version.getApplicationName() + " " + Version.getVersion() + "\n" + Version.getStage() + "\n(C) " + Version.getDevelopmentLead()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         titleLabel.setBackground(bgColor);
+        titleLabel.setForeground(fgColor);
         titleProgressBar.setBackground(bgColor);
         statusLabel.setBackground(bgColor);
+        statusLabel.setForeground(fgColor);
 
         frame.setLayout(layout);
-        frame.setBackgroundImage(ResourceManager.getImage("imgSplash.png")); //$NON-NLS-1$
+        frame.addPaintListener(e ->
+            e.gc.drawImage(ResourceManager.getImage("imgSplash.png"), 0, 0) //$NON-NLS-1$
+        );
+
 
         barData.left = new FormAttachment(15, 5);
         barData.right = new FormAttachment(100, -5);
