@@ -95,6 +95,18 @@ public enum Theming implements ThemeColours {
             Colour.meshlineColourG = Colour.gridColourG;
             Colour.meshlineColourB = Colour.gridColourB;
 
+            Colour.manipulatorXAxisColourR = 1f;
+            Colour.manipulatorXAxisColourG = 0.75f;
+            Colour.manipulatorXAxisColourB = 0.75f;
+
+            Colour.manipulatorYAxisColourR = 0.75f;
+            Colour.manipulatorYAxisColourG = 1f;
+            Colour.manipulatorYAxisColourB = 0.75f;
+
+            Colour.manipulatorZAxisColourR = 0.75f;
+            Colour.manipulatorZAxisColourG = 0.75f;
+            Colour.manipulatorZAxisColourB = 1f;
+
             TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(68, 71, 90));
             TextEditorColour.loadLineHighlightSelectedBackground(SWTResourceManager.getColor(68, 71, 90));
             TextEditorColour.loadLineCommentFont(SWTResourceManager.getColor(98, 114, 164));
@@ -163,6 +175,18 @@ public enum Theming implements ThemeColours {
             Colour.lineColourR = Colour.gridColourR;
             Colour.lineColourG = Colour.gridColourG;
             Colour.lineColourB = Colour.gridColourB;
+
+            Colour.manipulatorXAxisColourR = 1f;
+            Colour.manipulatorXAxisColourG = 0.75f;
+            Colour.manipulatorXAxisColourB = 0.75f;
+
+            Colour.manipulatorYAxisColourR = 0.75f;
+            Colour.manipulatorYAxisColourG = 1f;
+            Colour.manipulatorYAxisColourB = 0.75f;
+
+            Colour.manipulatorZAxisColourR = 0.75f;
+            Colour.manipulatorZAxisColourG = 0.75f;
+            Colour.manipulatorZAxisColourB = 1f;
 
             TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(68, 71, 90));
             TextEditorColour.loadLineHighlightSelectedBackground(SWTResourceManager.getColor(68, 71, 90));
