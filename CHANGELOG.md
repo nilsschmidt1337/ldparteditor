@@ -1,4 +1,14 @@
-# 13 July 2024
+# 19 Jul 2024
+With the release of 1.8.83 you are able to...
+-  ...change colour themes via "Tools..."->"Options..."->"Customise Colours:"->"Theme" (e.g. to dark mode/dracula theme) to make the software easier on the eyes.
+-  ...use "Swap X/Y/Z (for Selection)".
+-  ...use "Set X/Y/Z (for Selection)" to set the manipulator position, too.
+
+The following critical issue is fixed:
+1. Sometimes the text-editor remained read-only until the file was saved (e.g. after Edger2 runs).
+
+
+# 13 Jul 2024
 With the release of 1.8.82 you are able to...
 -  ..."un-inline" linked subfiles in the main part (with ctrl+click on the "Inline selection (Linked)" button).
 -  ...customise a key shortcut to activate links in the text editor (it was Ctrl/Cmd before, now it is Ctrl+Cmd+Shift).
@@ -10,7 +20,7 @@ The following critical issues are fixed:
 2. The path "parts/textures" was not used as a search path for PNG textures.
 
 
-# 04 July 2024
+# 04 Jul 2024
 With the release of 1.8.81 you are able to...
 -  ...ctrl-click a subpart or prim in the text editor to open it in the 3D editor and jump straight to it (cmd-click on Mac).
 -  ...use a faster way to move (G), rotate (R) and scale (S) (press G, S or R on the 3D view, press X, Y or Z to lock to an axis. Or ctrl-shift-x and so on to lock to a plane.).
