@@ -105,6 +105,10 @@ public class MiscToggleToolItem extends ToolItem {
         });
         widgetUtil(btnNoTransparentSelectionPtr[0]).addSelectionListener(e -> {
             setNoTransparentSelection(btnNoTransparentSelectionPtr[0].getSelection());
+            // Recompile
+            Editor3DWindow.getWindow().compileAll(true);
+            // Re-initialise the renderer
+            Editor3DWindow.getWindow().initAllRenderers();
             regainFocus();
         });
         widgetUtil(btnBFCTogglePtr[0]).addSelectionListener(e -> {

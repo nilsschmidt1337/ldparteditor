@@ -91,8 +91,10 @@ public enum DatParser {
     private static final Vector3d vertexB2 = new Vector3d();
     private static final Vector3d vertexC2 = new Vector3d();
     private static final Vector3d vertexD2 = new Vector3d();
-    
+
     private static final Map<String, String> constants = new TreeMap<>();
+
+    private static volatile int transparentSubfileContentCounter = 0;
 
     public static List<ParsingResult> parseLine(String line, int lineNumber, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed) {
@@ -198,6 +200,12 @@ public enum DatParser {
                 return substituteColour(arg, r, g, b, a);
             }
         }
+        if (transparentSubfileContentCounter > 0) {
+            cValue.setR(cValue.getR() / 3f);
+            cValue.setG(cValue.getG() / 3f);
+            cValue.setB(cValue.getB() / 3f);
+            cValue.setA(cValue.getA() / 3f);
+        }
         return cValue;
     }
 
@@ -243,6 +251,12 @@ public enum DatParser {
             }
             break;
         }
+        if (transparentSubfileContentCounter > 0) {
+            cValue.setR(cValue.getR() / 3f);
+            cValue.setG(cValue.getG() / 3f);
+            cValue.setB(cValue.getB() / 3f);
+            cValue.setA(cValue.getA() / 3f);
+        }
         return cValue;
     }
 
@@ -282,7 +296,7 @@ public enum DatParser {
                 GDataBinary newBinaryDataMetaTag = new GDataBinary(line, datFile, parent);
                 result.add(new ParsingResult(newBinaryDataMetaTag));
             }
-            
+
             result.add(new ParsingResult(I18n.DATPARSER_UNOFFICIAL_META_COMMAND, "[W0D] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
         } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
             GData newLPEmetaTag = TexMapParser.parseTEXMAP(dataSegments, line, parent);
@@ -479,17 +493,17 @@ public enum DatParser {
                     constants.put(dataSegments[3], evalResult);
                     constants.put("-" + dataSegments[3], "-" + evalResult); //$NON-NLS-1$ //$NON-NLS-2$
                 }
-                
-                // Don't delete constants on a quick fix, inline them. 
+
+                // Don't delete constants on a quick fix, inline them.
                 result.remove(result.size() - 1);
-                
+
                 Object[] messageArguments = {dataSegments[3], evalResult};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.getLocale());
                 formatter.applyPattern(I18n.DATPARSER_CONSTANT_AT);
                 result.add(new ParsingResult(formatter.format(messageArguments), "[WC0] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
-                
-                // Clear the cache when a constant was changed/defined 
+
+                // Clear the cache when a constant was changed/defined
                 GData.parsedLines.clear();
             }
         } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
@@ -1266,7 +1280,7 @@ public enum DatParser {
 
         return result;
     }
-    
+
     private static BigDecimal parseDecimal(final String segment, final MathContext mc) {
         try {
             return new BigDecimal(segment, mc);
@@ -1274,7 +1288,7 @@ public enum DatParser {
             return substituteDecimal(segment, nfe);
         }
     }
-    
+
     public static BigDecimal parseDecimal(final String segment) {
         try {
             return new BigDecimal(segment);
@@ -1282,7 +1296,7 @@ public enum DatParser {
             return substituteDecimal(segment, nfe);
         }
     }
-    
+
     public static int parseInteger(final String segment) {
         try {
             return Integer.parseInt(segment);
@@ -1290,7 +1304,7 @@ public enum DatParser {
             return substituteDecimal(segment, nfe).intValueExact();
         }
     }
-    
+
     private static BigDecimal substituteDecimal(final String segment, NumberFormatException nfe) {
         if (!constants.isEmpty()) {
             final String replacement = constants.getOrDefault(segment, "undefined"); //$NON-NLS-1$
@@ -1299,16 +1313,16 @@ public enum DatParser {
             throw nfe;
         }
     }
-    
+
     private static GColour substituteColour(final String arg, float r, float g, float b, float a) {
         if (!constants.isEmpty()) {
             final String replacement = constants.getOrDefault(arg, "0x2undefi"); //$NON-NLS-1$
             return validateColour(replacement, r, g, b, a);
         }
-        
+
         return null;
     }
-    
+
     public static Matrix4f matrixFromStrings(String s30, String s31, String s32, String s00, String s05, String s06, String s07, String s08, String s09, String s10, String s11, String s12) {
         List<String> as = new ArrayList<>();
         as.add(s30);
@@ -1356,7 +1370,7 @@ public enum DatParser {
         }
         return tMatrix;
     }
-    
+
     public static Matrix matrixFromStringsPrecise(String s30, String s31, String s32, String s00, String s05, String s06, String s07, String s08, String s09, String s10, String s11, String s12) {
 
         final BigDecimal[][] mn = new BigDecimal[4][4];
@@ -1418,5 +1432,17 @@ public enum DatParser {
     public static void clearConstants() {
         constants.clear();
         Evaluator.reset();
+    }
+
+    public static synchronized void resetTransparentSubfileContentCounter() {
+        transparentSubfileContentCounter = 0;
+    }
+
+    public static synchronized int increaseTransparentSubfileContentCounter() {
+        return transparentSubfileContentCounter++;
+    }
+
+    public static synchronized int decreaseTransparentSubfileContentCounter() {
+        return transparentSubfileContentCounter--;
     }
 }
