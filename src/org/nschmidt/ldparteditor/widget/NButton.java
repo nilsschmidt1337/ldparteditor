@@ -172,8 +172,8 @@ public class NButton extends Canvas {
             gc.setBackground(SWTResourceManager.getColor(160, 160, 200));
             gc.fillRoundRectangle(0, 0, Math.max(img_width + 9 + textExtent.x, this_width), Math.max(textExtent.y, img_height) + 9, 5, 5);
             gc.setBackground(getBackground());
-        } else if (!selected && Theming.getCurrentTheme() == Theming.DARK) {
-            gc.setBackground(SWTResourceManager.getColor(40, 40, 40));
+        } else if (!selected && !canCheck && (Theming.getCurrentTheme() == Theming.DARK || Theming.getCurrentTheme() == Theming.DRACULA)) {
+            gc.setBackground(SWTResourceManager.getColor(90, 90, 90));
             gc.fillRoundRectangle(0, 0, Math.max(img_width + 9 + textExtent.x, this_width), Math.max(textExtent.y, img_height) + 9, 5, 5);
             gc.setBackground(getBackground());
         }
