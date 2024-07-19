@@ -82,6 +82,10 @@ public enum Theming implements ThemeColours {
             Colour.textColourDefaultG = Colour.gridColourG;
             Colour.textColourDefaultB = Colour.gridColourB;
 
+            Colour.lineColourR = Colour.gridColourR;
+            Colour.lineColourG = Colour.gridColourG;
+            Colour.lineColourB = Colour.gridColourB;
+
             TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(68, 71, 90));
             TextEditorColour.loadLineHighlightSelectedBackground(SWTResourceManager.getColor(68, 71, 90));
             TextEditorColour.loadLineCommentFont(SWTResourceManager.getColor(98, 114, 164));
@@ -96,8 +100,6 @@ public enum Theming implements ThemeColours {
 
             TextEditorColour.loadLineBoxFont(getFgColor());
             TextEditorColour.loadLineHintUnderline(SWTResourceManager.getColor(189, 147, 249));
-
-            // TODO Needs implementation!
 
             WorkbenchManager.getThemeSettingState().saveColours();
         }
@@ -144,6 +146,10 @@ public enum Theming implements ThemeColours {
             Colour.textColourDefaultR = Colour.gridColourR;
             Colour.textColourDefaultG = Colour.gridColourG;
             Colour.textColourDefaultB = Colour.gridColourB;
+
+            Colour.lineColourR = Colour.gridColourR;
+            Colour.lineColourG = Colour.gridColourG;
+            Colour.lineColourB = Colour.gridColourB;
 
             TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(68, 71, 90));
             TextEditorColour.loadLineHighlightSelectedBackground(SWTResourceManager.getColor(68, 71, 90));
