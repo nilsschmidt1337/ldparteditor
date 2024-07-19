@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enumtype.Font;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
@@ -85,7 +84,7 @@ public class CompositeScale extends ScalableComposite {
         });
 
         canvasHorizontal = new Canvas(this, SWT.BORDER | SWT.NO_BACKGROUND);
-        canvasHorizontal.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
+        canvasHorizontal.setForeground(Theming.getFgColor());
         canvasHorizontal.setBackground(Theming.getBgColor());
         canvasHorizontal.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
         canvasHorizontal.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -100,6 +99,7 @@ public class CompositeScale extends ScalableComposite {
             GC gc = new GC(image);
             // Draw the background
             gc.setBackground(e.gc.getBackground());
+            gc.setForeground(e.gc.getForeground());
             gc.fillRectangle(image.getBounds());
 
             Composite3D c3d = me.getComposite3D();
@@ -259,6 +259,7 @@ public class CompositeScale extends ScalableComposite {
             GC gc = new GC(image);
             // Draw the background
             gc.setBackground(e.gc.getBackground());
+            gc.setForeground(e.gc.getForeground());
             gc.fillRectangle(image.getBounds());
 
             Composite3D c3d = me.getComposite3D();
