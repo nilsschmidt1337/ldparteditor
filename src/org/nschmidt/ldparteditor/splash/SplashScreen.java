@@ -65,7 +65,6 @@ import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
 import org.nschmidt.ldparteditor.workbench.PrimitiveCache;
-import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -157,7 +156,7 @@ public class SplashScreen extends ApplicationWindow {
         final boolean[] openGLerror = new boolean[1];
         try {
             Shell sh2 = new Shell();
-            Composite comp = Theming.composite(sh2, SWT.NONE);
+            Composite comp = new Composite(sh2, SWT.NONE);
             GLData data = new GLData();
             data.doubleBuffer = true;
             data.depthSize = 24;
@@ -410,12 +409,12 @@ public class SplashScreen extends ApplicationWindow {
 
         final Color bgColor = SWTResourceManager.getColor(SWT.COLOR_WHITE);
         final Color fgColor = SWTResourceManager.getColor(SWT.COLOR_BLACK);
-        final Composite frame = Theming.composite(parent, SWT.NONE);
+        final Composite frame = new Composite(parent, SWT.NONE);
         final FormData titleData = new FormData();
         final FormData statusData = new FormData();
         final FormLayout layout = new FormLayout();
-        final Label titleLabel = Theming.label(frame, SWT.NONE);
-        final Label statusLabel = Theming.label(frame, SWT.NONE);
+        final Label titleLabel = new Label(frame, SWT.NONE);
+        final Label statusLabel = new Label(frame, SWT.NONE);
         final ProgressBar titleProgressBar = new ProgressBar(frame, SWT.NONE);
         final FormData barData = new FormData();
 

@@ -97,6 +97,10 @@ public enum WorkbenchManager {
                         WorkbenchManager.userSettingState.getMediumScaleSnap());
                 try {
                     WorkbenchManager.themeSettingState = (UserSettingState) settingsFileStream.readObject();
+                    if (WorkbenchManager.themeSettingState == null) {
+                        WorkbenchManager.themeSettingState = new UserSettingState();
+                    }
+
                     Theming.setCurrentTheme(WorkbenchManager.userSettingState.getTheming());
                 } catch (Exception e) {
                     WorkbenchManager.userSettingState.setTheming(Theming.DEFAULT);
@@ -263,6 +267,10 @@ public enum WorkbenchManager {
 
     public static UserSettingState getThemeSettingState() {
         return themeSettingState;
+    }
+
+    public static void setThemeSettingState(UserSettingState themeSettingState) {
+        WorkbenchManager.themeSettingState = themeSettingState;
     }
 
     public static String getDefaultFileHeader() {

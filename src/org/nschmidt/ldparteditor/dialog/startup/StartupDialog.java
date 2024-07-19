@@ -205,6 +205,7 @@ public class StartupDialog extends StartupDesign {
             userSettingState.setLocale(locale);
             MyLanguage.setLocale(locale);
             WorkbenchManager.setUserSettingState(userSettingState);
+            WorkbenchManager.setThemeSettingState(new UserSettingState());
         });
         return super.open();
     }

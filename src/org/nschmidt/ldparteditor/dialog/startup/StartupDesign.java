@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -38,10 +39,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.widget.NButton;
-import org.nschmidt.ldparteditor.workbench.Theming;
 
 /**
  * This first dialog - shown on startup - asks for mandatory information about
@@ -50,7 +49,7 @@ import org.nschmidt.ldparteditor.workbench.Theming;
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
-class StartupDesign extends ThemedDialog {
+class StartupDesign extends Dialog {
 
     private static final String BROWSE = "Browse..."; //$NON-NLS-1$
 
@@ -88,19 +87,19 @@ class StartupDesign extends ThemedDialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lblWelcome = Theming.label(cmpContainer, SWT.NONE);
+        Label lblWelcome = new Label(cmpContainer, SWT.NONE);
         lblWelcome.setText("Welcome to LD Part Editor!"); //$NON-NLS-1$ NO_I18N!!
 
-        Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblFirstPrompt = Theming.label(cmpContainer, SWT.NONE);
+        Label lblFirstPrompt = new Label(cmpContainer, SWT.NONE);
         lblFirstPrompt.setText("Please answer the following questions on the first start of this program:"); //$NON-NLS-1$ NO_I18N!!
 
-        Label lblLocale = Theming.label(cmpContainer, SWT.NONE);
+        Label lblLocale = new Label(cmpContainer, SWT.NONE);
         lblLocale.setText("Choose your locale:"); //$NON-NLS-1$ NO_I18N!!
 
-        Combo cmbLocale = Theming.combo(cmpContainer, SWT.READ_ONLY);
+        Combo cmbLocale = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbLocalePtr[0] = cmbLocale;
 
         String[] locales = new String[DateFormat.getAvailableLocales().length];
@@ -122,13 +121,13 @@ class StartupDesign extends ThemedDialog {
         cmbLocale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbLocale.select(englishIndex);
 
-        Label lblLdrawFolderQuestion = Theming.label(cmpContainer, SWT.NONE);
+        Label lblLdrawFolderQuestion = new Label(cmpContainer, SWT.NONE);
         lblLdrawFolderQuestion.setText("Where is your LDraw™ folder located?"); //$NON-NLS-1$ NO_I18N!!
 
-        Composite cmpPathChooser1 = Theming.composite(cmpContainer, SWT.NONE);
+        Composite cmpPathChooser1 = new Composite(cmpContainer, SWT.NONE);
         cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txtLdrawPath = Theming.text(cmpPathChooser1, SWT.BORDER);
+        Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
         this.txtLdrawPathPtr[0] = txtLdrawPath;
         txtLdrawPath.setEditable(false);
         txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -142,37 +141,37 @@ class StartupDesign extends ThemedDialog {
         this.btnBrowseLdrawPathPtr[0] = btnBrowseLdrawPath;
         btnBrowseLdrawPath.setText(BROWSE);
 
-        Label lblLdrawUserQuestion = Theming.label(cmpContainer, SWT.NONE);
+        Label lblLdrawUserQuestion = new Label(cmpContainer, SWT.NONE);
         lblLdrawUserQuestion.setText("What is your LDraw™ user name?"); //$NON-NLS-1$ NO_I18N!!
 
-        Text txtLdrawUserName = Theming.text(cmpContainer, SWT.BORDER);
+        Text txtLdrawUserName = new Text(cmpContainer, SWT.BORDER);
         this.txtLdrawUserNamePtr[0] = txtLdrawUserName;
         txtLdrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblRealNameQuestion = Theming.label(cmpContainer, SWT.NONE);
+        Label lblRealNameQuestion = new Label(cmpContainer, SWT.NONE);
         lblRealNameQuestion.setText("What is your real name?"); //$NON-NLS-1$ NO_I18N!!
 
-        Text txtRealName = Theming.text(cmpContainer, SWT.BORDER);
+        Text txtRealName = new Text(cmpContainer, SWT.BORDER);
         this.txtRealNamePtr[0] = txtRealName;
         txtRealName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lblLicenseQuestion = Theming.label(cmpContainer, SWT.NONE);
+        Label lblLicenseQuestion = new Label(cmpContainer, SWT.NONE);
         lblLicenseQuestion.setText("Under which license do you want to publish your work?"); //$NON-NLS-1$ NO_I18N!!
 
-        Combo cmbLicense = Theming.combo(cmpContainer, SWT.NONE);
+        Combo cmbLicense = new Combo(cmpContainer, SWT.NONE);
         this.cmbLicensePtr[0] = cmbLicense;
         widgetUtil(cmbLicense).setItems("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt", "0 !LICENSE Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt", "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbLicense.setText("0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt"); //$NON-NLS-1$
         cmbLicense.select(0);
 
-        Label lblAuthoringFolderQuestion = Theming.label(cmpContainer, SWT.NONE);
+        Label lblAuthoringFolderQuestion = new Label(cmpContainer, SWT.NONE);
         lblAuthoringFolderQuestion.setText("Define the Part Authoring Folder Path:"); //$NON-NLS-1$ NO_I18N!!
 
-        Composite cmpPathChooser2 = Theming.composite(cmpContainer, SWT.NONE);
+        Composite cmpPathChooser2 = new Composite(cmpContainer, SWT.NONE);
         cmpPathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txtPartAuthoringPath = Theming.text(cmpPathChooser2, SWT.BORDER);
+        Text txtPartAuthoringPath = new Text(cmpPathChooser2, SWT.BORDER);
         this.txtPartAuthoringPathPtr[0] = txtPartAuthoringPath;
         txtPartAuthoringPath.setEditable(false);
         txtPartAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -181,13 +180,13 @@ class StartupDesign extends ThemedDialog {
         this.btnBrowseAuthoringPathPtr[0] = btnBrowseAuthoringPath;
         btnBrowseAuthoringPath.setText(BROWSE);
 
-        Label lblUnofficialPathQuestion = Theming.label(cmpContainer, SWT.NONE);
+        Label lblUnofficialPathQuestion = new Label(cmpContainer, SWT.NONE);
         lblUnofficialPathQuestion.setText("Define the Folder Path for Unofficial Parts:"); //$NON-NLS-1$ NO_I18N!!
 
-        Composite cmpPathChooser3 = Theming.composite(cmpContainer, SWT.NONE);
+        Composite cmpPathChooser3 = new Composite(cmpContainer, SWT.NONE);
         cmpPathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txtUnofficialPath = Theming.text(cmpPathChooser3, SWT.BORDER);
+        Text txtUnofficialPath = new Text(cmpPathChooser3, SWT.BORDER);
         this.txtUnofficialPathPtr[0] = txtUnofficialPath;
         txtUnofficialPath.setEditable(false);
         txtUnofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
@@ -200,18 +199,18 @@ class StartupDesign extends ThemedDialog {
         this.btnBrowseUnofficialPathPtr[0] = btnBrowseUnofficialPath;
         btnBrowseUnofficialPath.setText(BROWSE);
 
-        Composite cmpFormStatus = Theming.composite(cmpContainer, SWT.NONE);
+        Composite cmpFormStatus = new Composite(cmpContainer, SWT.NONE);
         cmpFormStatus.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Label lblFormStatusIcon = Theming.label(cmpFormStatus, SWT.NONE);
+        Label lblFormStatusIcon = new Label(cmpFormStatus, SWT.NONE);
         this.lblFormStatusIconPtr[0] = lblFormStatusIcon;
         lblFormStatusIcon.setImage(ResourceManager.getImage("icon16_info.png", 16)); //$NON-NLS-1$
 
-        Label lblFormStatus = Theming.label(cmpFormStatus, SWT.NONE);
+        Label lblFormStatus = new Label(cmpFormStatus, SWT.NONE);
         this.lblFormStatusPtr[0] = lblFormStatus;
         lblFormStatus.setText("Please complete the form."); //$NON-NLS-1$ NO_I18N!!
 
-        Label lblCurrentAction = Theming.label(cmpContainer, SWT.NONE);
+        Label lblCurrentAction = new Label(cmpContainer, SWT.NONE);
         this.lblCurrentActionPtr[0] = lblCurrentAction;
 
         return cmpContainer;

@@ -301,7 +301,7 @@ public class SyntaxFormatter {
         StyleRange commentStyleRange = new StyleRange();
         commentStyleRange.start = offset;
         commentStyleRange.length = e.lineText.length();
-        commentStyleRange.foreground = WorkbenchManager.getUserSettingState().getTheming() == Theming.DEFAULT ? TextEditorColour.getLineCommentFont() : TextEditorColour.getTextForeground();
+        commentStyleRange.foreground = Theming.getCurrentTheme() == Theming.DEFAULT ? TextEditorColour.getLineCommentFont() : TextEditorColour.getTextForeground();
         styles.add(commentStyleRange);
 
         if (offset == 0)
