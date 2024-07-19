@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
@@ -53,6 +54,10 @@ public enum Theming implements ThemeColours {
 
             TextEditorColour.loadTextBackground(getBgColor());
             TextEditorColour.loadTextForeground(getFgColor());
+
+            LDConfig.colour16overrideR = 0.3f;
+            LDConfig.colour16overrideG = 0.35f;
+            LDConfig.colour16overrideB = 0.38f;
 
             Colour.backgroundColourR = 40 / 255f;
             Colour.backgroundColourG = 42 / 255f;
@@ -86,6 +91,10 @@ public enum Theming implements ThemeColours {
             Colour.lineColourG = Colour.gridColourG;
             Colour.lineColourB = Colour.gridColourB;
 
+            Colour.meshlineColourR = Colour.gridColourR;
+            Colour.meshlineColourG = Colour.gridColourG;
+            Colour.meshlineColourB = Colour.gridColourB;
+
             TextEditorColour.loadLineHighlightBackground(SWTResourceManager.getColor(68, 71, 90));
             TextEditorColour.loadLineHighlightSelectedBackground(SWTResourceManager.getColor(68, 71, 90));
             TextEditorColour.loadLineCommentFont(SWTResourceManager.getColor(98, 114, 164));
@@ -114,6 +123,10 @@ public enum Theming implements ThemeColours {
 
             TextEditorColour.loadTextBackground(getBgColor());
             TextEditorColour.loadTextForeground(getFgColor());
+
+            LDConfig.colour16overrideR = 1f;
+            LDConfig.colour16overrideG = 0.7f;
+            LDConfig.colour16overrideB = 0.3f;
 
             Colour.backgroundColourR = 0f;
             Colour.backgroundColourG = 0f;
@@ -156,8 +169,8 @@ public enum Theming implements ThemeColours {
             TextEditorColour.loadLineCommentFont(SWTResourceManager.getColor(255, 200, 108));
             TextEditorColour.loadTextForegroundHidden(SWTResourceManager.getColor(124, 124, 121));
 
-            TextEditorColour.loadLinePrimaryFont(SWTResourceManager.getColor(116, 129, 90));
-            TextEditorColour.loadLineSecondaryFont(SWTResourceManager.getColor(120, 83, 67));
+            TextEditorColour.loadLinePrimaryFont(SWTResourceManager.getColor(170, 170, 255));
+            TextEditorColour.loadLineSecondaryFont(SWTResourceManager.getColor(225, 225, 225));
             TextEditorColour.loadLineQuadFont(SWTResourceManager.getColor(187, 24, 41));
 
             TextEditorColour.loadLineErrorUnderline(SWTResourceManager.getColor(255, 85, 85));
