@@ -786,6 +786,7 @@ public final class I18n {
     public static final String EDGER_CONDLINE_MAX_ANGLE = EDGER.getString(getProperty());
     public static final String EDGER_CONDLINE_ON_QUAD_OFF = EDGER.getString(getProperty());
     public static final String EDGER_CONDLINE_ON_QUAD_ON = EDGER.getString(getProperty());
+    public static final String EDGER_DEFAULTS = EDGER.getString(getProperty());
     public static final String EDGER_EDGE_MAX_ANGLE = EDGER.getString(getProperty());
     public static final String EDGER_EXCLUDE_UNMATCHED = EDGER.getString(getProperty());
     public static final String EDGER_FLAT_MAX_ANGLE = EDGER.getString(getProperty());

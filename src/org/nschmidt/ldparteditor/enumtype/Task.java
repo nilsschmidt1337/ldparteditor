@@ -154,5 +154,7 @@ public enum Task {
     QUICK_LOCK_YZ,
 
     TRIANGLE_TO_QUAD,
-    QUAD_TO_TRIANGLE
+    QUAD_TO_TRIANGLE,
+
+    EDGER2
 }

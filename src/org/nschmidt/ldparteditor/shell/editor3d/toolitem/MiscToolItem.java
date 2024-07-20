@@ -722,6 +722,11 @@ public class MiscToolItem extends ToolItem {
             Editor3DWindow.getWindow().regainFocus();
         });
 
+        final NButton btnEdger2 = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
+        btnEdger2.setText(I18n.E3D_EDGER_2);
+        KeyStateManager.addTooltipText(btnEdger2, I18n.EDGER_DEFAULTS, Task.EDGER2);
+        widgetUtil(btnEdger2).addSelectionListener(e -> edger2());
+
         final NButton btnInfographic = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
         btnInfographic.setText(I18n.INFOGRAPHIC_HELP_BUTTON_TITLE);
         btnInfographic.setToolTipText(I18n.INFOGRAPHIC_HELP_TOOLTIP);
@@ -3670,5 +3675,49 @@ public class MiscToolItem extends ToolItem {
         mntmSTrianglesPtr[0].setSelection(true);
         mntmSQuadsPtr[0].setSelection(true);
         mntmSCLinesPtr[0].setSelection(true);
+    }
+
+    public static void edger2() {
+        final Edger2Settings settings = new Edger2Settings();
+        settings.setUnmatchedMode(0);
+        settings.setScope(0);
+        for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+            Composite3D c3d = renderer.getC3D();
+            if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                final Set<GData2> oldLines = new HashSet<>();
+                final int oldCondlineCount = vm.getCondlines().size();
+                final int oldLineCount = vm.getLines().size();
+                oldLines.addAll(vm.getLines().keySet());
+
+                vm.addSnapshot();
+                vm.skipSyncTimer();
+                vm.addEdges(settings);
+
+                int unmatchedLines = 0;
+                for (GData2 g2 : vm.getLines().keySet()) {
+                    if (!oldLines.contains(g2) && g2.colourNumber == 4) {
+                        unmatchedLines += 1;
+                    }
+                }
+
+                MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                messageBox.setText(I18n.DIALOG_INFO);
+
+                Object[] messageArguments = {
+                        vm.getCondlines().size() - oldCondlineCount,
+                        vm.getLines().size() - oldLineCount - unmatchedLines,
+                        unmatchedLines};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.getLocale());
+                formatter.applyPattern(I18n.EDGER_VERBOSE_MSG);
+
+                messageBox.setMessage(formatter.format(messageArguments));
+                messageBox.open();
+                regainFocus();
+                return;
+            }
+        }
+        regainFocus();
     }
 }

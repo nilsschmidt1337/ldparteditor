@@ -318,6 +318,8 @@ public class KeyStateManager {
 
             addTask(Task.TRIANGLE_TO_QUAD, SWT.SHIFT, 'q');
             addTask(Task.QUAD_TO_TRIANGLE, SWT.SHIFT, 't');
+
+            addTask(Task.EDGER2, SWT.SHIFT, 'e');
         } else {
 
             reservedKeyCodes.add(SWT.ARROW_UP + CTRL_STRING);
@@ -473,6 +475,8 @@ public class KeyStateManager {
 
             addTask(Task.TRIANGLE_TO_QUAD, SWT.SHIFT, 'q');
             addTask(Task.QUAD_TO_TRIANGLE, SWT.SHIFT, 't');
+
+            addTask(Task.EDGER2, SWT.SHIFT, 'e');
         }
 
         backupTaskMap.putAll(taskMap);
@@ -1208,6 +1212,9 @@ public class KeyStateManager {
                         break;
                     case QUAD_TO_TRIANGLE:
                         vm.splitQuads(true);
+                        break;
+                    case EDGER2:
+                        MiscToolItem.edger2();
                         break;
                     }
                 }
