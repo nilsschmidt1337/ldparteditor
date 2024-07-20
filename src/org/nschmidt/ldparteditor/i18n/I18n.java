@@ -1125,6 +1125,7 @@ public final class I18n {
     public static final String PARTREVIEW_ENTER_PART_NAME = PARTREVIEW.getString(getProperty());
     public static final String PARTREVIEW_ERROR = PARTREVIEW.getString(getProperty());
     public static final String PARTREVIEW_INFO = PARTREVIEW.getString(getProperty());
+    public static final String PARTREVIEW_NUMBER_OF_3D_VIEWS = PARTREVIEW.getString(getProperty());
     public static final String PARTREVIEW_TITLE = PARTREVIEW.getString(getProperty());
     public static final String PARTREVIEW_VERBOSE = PARTREVIEW.getString(getProperty());
     public static final String PARTREVIEW_VERBOSE_MSG = PARTREVIEW.getString(getProperty());

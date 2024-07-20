@@ -262,6 +262,8 @@ public class UserSettingState implements Serializable {
 
     private Theming theming = Theming.DEFAULT;
 
+    private int partReview3dViewCount = 4;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -1511,5 +1513,13 @@ public class UserSettingState implements Serializable {
 
     public void setTheming(Theming theming) {
         this.theming = theming;
+    }
+
+    public int getPartReview3dViewCount() {
+        return partReview3dViewCount;
+    }
+
+    public void setPartReview3dViewCount(int partReview3dViewCount) {
+        this.partReview3dViewCount = partReview3dViewCount;
     }
 }

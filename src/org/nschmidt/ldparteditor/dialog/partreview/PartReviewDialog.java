@@ -25,13 +25,16 @@ public class PartReviewDialog extends PartReviewDesign {
     public PartReviewDialog(Shell parentShell, boolean alreadyReviewing) {
         super(parentShell, alreadyReviewing);
     }
-    
+
     @Override
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
         txtFilePtr[0].addModifyListener(e -> fileName = txtFilePtr[0].getText());
         widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerbosePartReview(btnVerbosePtr[0].getSelection()));
+        this.spnViewCountPtr[0].addValueChangeListener(spn ->
+            WorkbenchManager.getUserSettingState().setPartReview3dViewCount(spnViewCountPtr[0].getValue())
+        );
         return super.open();
     }
 

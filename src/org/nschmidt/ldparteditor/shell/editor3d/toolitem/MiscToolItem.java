@@ -2437,9 +2437,10 @@ public class MiscToolItem extends ToolItem {
                                     Project.setFileToEdit(main);
 
                                     Editor3DWindow.getWindow().openDatFile(main, OpenInWhat.EDITOR_3D, null);
-                                    Editor3DWindow.getRenders().get(0).getC3D().getModifier().splitViewHorizontally();
-                                    Editor3DWindow.getRenders().get(0).getC3D().getModifier().splitViewVertically();
-                                    Editor3DWindow.getRenders().get(1).getC3D().getModifier().splitViewVertically();
+                                    final int viewCount = WorkbenchManager.getUserSettingState().getPartReview3dViewCount();
+                                    if (viewCount > 1) Editor3DWindow.getRenders().get(0).getC3D().getModifier().splitViewHorizontally();
+                                    if (viewCount > 2) Editor3DWindow.getRenders().get(0).getC3D().getModifier().splitViewVertically();
+                                    if (viewCount > 3) Editor3DWindow.getRenders().get(1).getC3D().getModifier().splitViewVertically();
 
                                     int state = 0;
                                     for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {

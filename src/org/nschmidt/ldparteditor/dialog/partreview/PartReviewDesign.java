@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -46,6 +47,7 @@ class PartReviewDesign extends ThemedDialog {
     private Button[] btnCancelPtr = new Button[1];
     final Text[] txtFilePtr = new Text[1];
     final NButton[] btnVerbosePtr = new NButton[1];
+    final IntegerSpinner[] spnViewCountPtr = new IntegerSpinner[1];
 
     /**
      * Create contents of the dialog.
@@ -75,6 +77,15 @@ class PartReviewDesign extends ThemedDialog {
 
             Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
             lblInfo.setText(I18n.PARTREVIEW_INFO);
+
+            Label lblNumberOf3dViews = Theming.label(cmpContainer, SWT.NONE);
+            lblNumberOf3dViews.setText(I18n.PARTREVIEW_NUMBER_OF_3D_VIEWS);
+
+            IntegerSpinner spnViewCount = new IntegerSpinner(cmpContainer, SWT.NONE);
+            this.spnViewCountPtr[0] = spnViewCount;
+            spnViewCount.setMinimum(1);
+            spnViewCount.setMaximum(4);
+            spnViewCount.setValue(WorkbenchManager.getUserSettingState().getPartReview3dViewCount());
 
             NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
             this.btnVerbosePtr[0] = btnVerbose;

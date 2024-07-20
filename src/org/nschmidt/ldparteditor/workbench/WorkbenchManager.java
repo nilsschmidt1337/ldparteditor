@@ -166,6 +166,12 @@ public enum WorkbenchManager {
             MiscToolItem.includeUnmatchedEdgesByDefaultInEdger2();
         }
 
+        if (WorkbenchManager.userSettingState.getPartReview3dViewCount() <= 0) {
+            WorkbenchManager.userSettingState.setPartReview3dViewCount(4);
+        }
+
+        WorkbenchManager.userSettingState.setPartReview3dViewCount(Math.clamp(WorkbenchManager.userSettingState.getPartReview3dViewCount(), 1, 4));
+
         Threshold.coplanarityAngleWarning = WorkbenchManager.userSettingState.getCoplanarityAngleWarning();
         Threshold.coplanarityAngleError = WorkbenchManager.userSettingState.getCoplanarityAngleError();
 
