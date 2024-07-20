@@ -1215,6 +1215,7 @@ public class KeyStateManager {
                         break;
                     case EDGER2:
                         MiscToolItem.edger2();
+                        pressedKeyCodes.clear();
                         break;
                     }
                 }

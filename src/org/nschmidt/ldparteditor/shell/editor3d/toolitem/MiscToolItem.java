@@ -724,7 +724,7 @@ public class MiscToolItem extends ToolItem {
 
         final NButton btnEdger2 = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
         btnEdger2.setText(I18n.E3D_EDGER_2);
-        KeyStateManager.addTooltipText(btnEdger2, I18n.EDGER_DEFAULTS, Task.EDGER2);
+        KeyStateManager.addTooltipText(btnEdger2, I18n.EDGER_CURRENT_VERBOSE_RUN, Task.EDGER2);
         widgetUtil(btnEdger2).addSelectionListener(e -> edger2());
 
         final NButton btnInfographic = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
@@ -3678,9 +3678,6 @@ public class MiscToolItem extends ToolItem {
     }
 
     public static void edger2() {
-        final Edger2Settings settings = new Edger2Settings();
-        settings.setUnmatchedMode(0);
-        settings.setScope(0);
         for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3692,7 +3689,7 @@ public class MiscToolItem extends ToolItem {
 
                 vm.addSnapshot();
                 vm.skipSyncTimer();
-                vm.addEdges(settings);
+                vm.addEdges(es);
 
                 int unmatchedLines = 0;
                 for (GData2 g2 : vm.getLines().keySet()) {
