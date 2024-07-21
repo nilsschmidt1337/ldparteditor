@@ -1524,11 +1524,11 @@ public class UserSettingState implements Serializable {
         this.partReview3dViewCount = partReview3dViewCount;
     }
 
-	public boolean isPartReviewStoreLocalFiles() {
-		return partReviewStoreLocalFiles;
-	}
+    public boolean isPartReviewStoreLocalFiles() {
+        return !partReviewStoreLocalFiles;
+    }
 
-	public void setPartReviewStoreLocalFiles(boolean partReviewStoreLocalFiles) {
-		this.partReviewStoreLocalFiles = partReviewStoreLocalFiles;
-	}
+    public void setPartReviewStoreLocalFiles(boolean partReviewStoreLocalFiles) {
+        this.partReviewStoreLocalFiles = !partReviewStoreLocalFiles;
+    }
 }

@@ -27,13 +27,16 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class PartReviewDialog extends PartReviewDesign {
 
-    public PartReviewDialog(Shell parentShell, boolean alreadyReviewing) {
-        super(parentShell, alreadyReviewing);
+    private boolean saveAll = false;
+
+    public PartReviewDialog(Shell parentShell) {
+        super(parentShell);
     }
 
     @Override
     public int open() {
         super.create();
+        saveAll = false;
         // MARK All final listeners will be configured here..
         txtFilePtr[0].addModifyListener(e -> {
             fileName = txtFilePtr[0].getText();
@@ -50,11 +53,19 @@ public class PartReviewDialog extends PartReviewDesign {
             btnStoreLocallyPtr[0].setText(formatter.format(messageArguments));
             btnStoreLocallyPtr[0].getParent().layout();
         });
-        widgetUtil(btnStoreLocallyPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setPartReviewStoreLocalFiles(btnStoreLocallyPtr[0].getSelection()));
+        widgetUtil(btnStoreLocallyPtr[0]).addSelectionListener(e -> {
+            WorkbenchManager.getUserSettingState().setPartReviewStoreLocalFiles(btnStoreLocallyPtr[0].getSelection());
+            btnSaveAllPtr[0].setEnabled(WorkbenchManager.getUserSettingState().isPartReviewStoreLocalFiles());
+        });
         widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerbosePartReview(btnVerbosePtr[0].getSelection()));
         this.spnViewCountPtr[0].addValueChangeListener(spn ->
             WorkbenchManager.getUserSettingState().setPartReview3dViewCount(spnViewCountPtr[0].getValue())
         );
+        widgetUtil(btnSaveAllPtr[0]).addSelectionListener(e -> {
+            saveAll = true;
+            setReturnCode(OK);
+            close();
+        });
         return super.open();
     }
 
@@ -64,5 +75,9 @@ public class PartReviewDialog extends PartReviewDesign {
 
     public static String getProjectPath() {
         return projectPath;
+    }
+
+    public boolean isSaveAll() {
+        return saveAll;
     }
 }

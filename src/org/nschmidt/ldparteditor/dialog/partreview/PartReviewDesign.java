@@ -40,15 +40,13 @@ class PartReviewDesign extends ThemedDialog {
     static String fileName = ""; //$NON-NLS-1$
     static String projectPath = ""; //$NON-NLS-1$
 
-    private final boolean alreadyReviewing;
-
-    protected PartReviewDesign(Shell parentShell, boolean alreadyReviewing) {
+    protected PartReviewDesign(Shell parentShell) {
         super(parentShell);
-        this.alreadyReviewing = alreadyReviewing;
     }
 
     private Button[] btnOkPtr = new Button[1];
     private Button[] btnCancelPtr = new Button[1];
+    protected Button[] btnSaveAllPtr = new Button[1];
     final Text[] txtFilePtr = new Text[1];
     final IntegerSpinner[] spnViewCountPtr = new IntegerSpinner[1];
     final NButton[] btnStoreLocallyPtr = new NButton[1];
@@ -66,49 +64,44 @@ class PartReviewDesign extends ThemedDialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        if (alreadyReviewing) {
-            Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
-            lblInfo.setText(I18n.PARTREVIEW_ALREADY);
-        } else {
-            Label lblPartName = Theming.label(cmpContainer, SWT.NONE);
-            lblPartName.setText(I18n.PARTREVIEW_ENTER_PART_NAME);
+        Label lblPartName = Theming.label(cmpContainer, SWT.NONE);
+        lblPartName.setText(I18n.PARTREVIEW_ENTER_PART_NAME);
 
-            Text txtFile2 = Theming.text(cmpContainer, SWT.NONE);
-            this.txtFilePtr[0] = txtFile2;
-            GridData gd = new GridData();
-            gd.grabExcessHorizontalSpace = true;
-            gd.horizontalAlignment = SWT.FILL;
-            txtFile2.setLayoutData(gd);
-            txtFile2.setTextLimit(64);
+        Text txtFile2 = Theming.text(cmpContainer, SWT.NONE);
+        this.txtFilePtr[0] = txtFile2;
+        GridData gd = new GridData();
+        gd.grabExcessHorizontalSpace = true;
+        gd.horizontalAlignment = SWT.FILL;
+        txtFile2.setLayoutData(gd);
+        txtFile2.setTextLimit(64);
 
-            Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
-            lblInfo.setText(I18n.PARTREVIEW_INFO);
+        Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
+        lblInfo.setText(I18n.PARTREVIEW_INFO);
 
-            NButton btnStoreLocally = new NButton(cmpContainer, SWT.CHECK);
-            this.btnStoreLocallyPtr[0] = btnStoreLocally;
-            btnStoreLocally.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            Object[] messageArguments = {""}; //$NON-NLS-1$
-            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.getLocale());
-            formatter.applyPattern(I18n.PARTREVIEW_STORE_LOCATION);
-            btnStoreLocally.setText(formatter.format(messageArguments));
-            btnStoreLocally.setSelection(WorkbenchManager.getUserSettingState().isPartReviewStoreLocalFiles());
+        NButton btnStoreLocally = new NButton(cmpContainer, SWT.CHECK);
+        this.btnStoreLocallyPtr[0] = btnStoreLocally;
+        btnStoreLocally.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Object[] messageArguments = {""}; //$NON-NLS-1$
+        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+        formatter.setLocale(MyLanguage.getLocale());
+        formatter.applyPattern(I18n.PARTREVIEW_STORE_LOCATION);
+        btnStoreLocally.setText(formatter.format(messageArguments));
+        btnStoreLocally.setSelection(WorkbenchManager.getUserSettingState().isPartReviewStoreLocalFiles());
 
-            Label lblNumberOf3dViews = Theming.label(cmpContainer, SWT.NONE);
-            lblNumberOf3dViews.setText(I18n.PARTREVIEW_NUMBER_OF_3D_VIEWS);
+        Label lblNumberOf3dViews = Theming.label(cmpContainer, SWT.NONE);
+        lblNumberOf3dViews.setText(I18n.PARTREVIEW_NUMBER_OF_3D_VIEWS);
 
-            IntegerSpinner spnViewCount = new IntegerSpinner(cmpContainer, SWT.NONE);
-            this.spnViewCountPtr[0] = spnViewCount;
-            spnViewCount.setMinimum(1);
-            spnViewCount.setMaximum(4);
-            spnViewCount.setValue(WorkbenchManager.getUserSettingState().getPartReview3dViewCount());
+        IntegerSpinner spnViewCount = new IntegerSpinner(cmpContainer, SWT.NONE);
+        this.spnViewCountPtr[0] = spnViewCount;
+        spnViewCount.setMinimum(1);
+        spnViewCount.setMaximum(4);
+        spnViewCount.setValue(WorkbenchManager.getUserSettingState().getPartReview3dViewCount());
 
-            NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
-            this.btnVerbosePtr[0] = btnVerbose;
-            btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btnVerbose.setText(I18n.PARTREVIEW_VERBOSE);
-            btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerbosePartReview());
-        }
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btnVerbosePtr[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.PARTREVIEW_VERBOSE);
+        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerbosePartReview());
 
         cmpContainer.pack();
         return cmpContainer;
@@ -121,12 +114,9 @@ class PartReviewDesign extends ThemedDialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        if (alreadyReviewing) {
-            btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_YES, true);
-            btnCancelPtr[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_NO, false);
-        } else {
-            btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-            btnCancelPtr[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
-        }
+        btnSaveAllPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_SAVE_ALL, false);
+        btnSaveAllPtr[0].setEnabled(WorkbenchManager.getUserSettingState().isPartReviewStoreLocalFiles());
+        btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
+        btnCancelPtr[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 }

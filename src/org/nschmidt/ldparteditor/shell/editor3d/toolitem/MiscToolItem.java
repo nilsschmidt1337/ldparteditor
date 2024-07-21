@@ -2261,7 +2261,9 @@ public class MiscToolItem extends ToolItem {
                     return;
                 }
 
-                if (new PartReviewDialog(Editor3DWindow.getWindow().getShell(), Editor3DWindow.getWindow().isReviewingAPart()).open() == IDialogConstants.OK_ID) {
+                final PartReviewDialog dialog = new PartReviewDialog(Editor3DWindow.getWindow().getShell());
+
+                if (dialog.open() == IDialogConstants.OK_ID) {
 
                     final Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
                     winState.setThreeDwindowConfig(Editor3DWindow.getWindow().getC3DStates());
@@ -2351,7 +2353,8 @@ public class MiscToolItem extends ToolItem {
 
                                     if (WorkbenchManager.getUserSettingState().isPartReviewStoreLocalFiles()) {
                                         Project.setDefaultProject(false);
-                                        Project.setProjectPath(PartReviewDialog.getProjectPath());
+                                        // Remove the last slash from the project path
+                                        Project.setProjectPath(PartReviewDialog.getProjectPath().substring(0, PartReviewDialog.getProjectPath().length() - 1));
                                         // This is a hack to get this PartReview project to the list of recent projects
                                         NewOpenSaveProjectToolItem.addRecentFile(new DatFile(PartReviewDialog.getProjectPath()));
                                     } else {
@@ -2517,7 +2520,11 @@ public class MiscToolItem extends ToolItem {
                                     }
 
                                     Editor3DWindow.getWindow().setReviewingAPart(true, dfsToOpen);
-                                    regainFocus();
+                                    if (dialog.isSaveAll()) {
+                                        NewOpenSaveProjectToolItem.saveAll(true);
+                                    } else {
+                                        regainFocus();
+                                    }
                                 });
                             }
                         });

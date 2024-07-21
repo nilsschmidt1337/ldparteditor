@@ -88,7 +88,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
             if (ProjectActions.createNewProject(win, false)) {
                 addRecentFile(Project.getProjectPath());
             }
-            
+
             win.updateTreeUnsavedEntries();
             win.regainFocus();
         });
@@ -109,7 +109,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                 win.getSearchText().setText(" "); //$NON-NLS-1$
                 win.getSearchText().setText(""); //$NON-NLS-1$
             }
-            
+
             win.updateTreeUnsavedEntries();
             win.regainFocus();
         });
@@ -195,14 +195,14 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                     if (Project.isDefaultProject() && ProjectActions.createNewProject(win, true)) {
                         Project.setLastVisitedPath(Project.getProjectPath());
                     }
-                    
+
                     iterateOverItems(win.getProjectParts());
                     iterateOverItems(win.getProjectSubparts());
                     iterateOverItems(win.getProjectPrimitives());
                     iterateOverItems(win.getProjectPrimitives48());
                     iterateOverItems(win.getProjectPrimitives8());
                 }
-                
+
                 win.updateTreeUnsavedEntries();
                 win.regainFocus();
             }
@@ -238,35 +238,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
             }
         });
         widgetUtil(btnSaveAllPtr[0]).addSelectionListener(e -> {
-            Set<DatFile> dfs = new HashSet<>(Project.getUnsavedFiles());
-            for (DatFile df : dfs) {
-                if (!df.isReadOnly()) {
-                    if (df.isVirtual()) {
-                        if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
-                            Project.removeUnsavedFile(df);
-                            Project.removeOpenedFile(df);
-                            if (!win.closeDatfile(df)) {
-                                Project.addOpenedFile(df);
-                            }
-                        }
-
-                        win.updateTreeUnsavedEntries();
-                    } else if (df.save()) {
-                        addRecentFile(df);
-                        Project.removeUnsavedFile(df);
-                    } else {
-                        MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBoxError.setText(I18n.DIALOG_ERROR);
-                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
-                        messageBoxError.open();
-                    }
-                }
-            }
-            if (Project.isDefaultProject() && ProjectActions.createNewProject(win, true)) {
-                addRecentFile(Project.getProjectPath());
-            }
-            win.updateTreeUnsavedEntries();
-            win.regainFocus();
+            saveAll(false);
         });
     }
 
@@ -285,12 +257,46 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                     removedAnItem = false;
                 }
             }
-            
+
             recentItems.add(projectPath);
         }
     }
 
     public static void addRecentFile(DatFile dat) {
         addRecentFile(new File(dat.getNewName()).getAbsolutePath());
+    }
+
+    public static void saveAll(boolean onlyPartReviewFiles) {
+        final Editor3DWindow win = Editor3DWindow.getWindow();
+        Set<DatFile> dfs = new HashSet<>(Project.getUnsavedFiles());
+        for (DatFile df : dfs) {
+            if (onlyPartReviewFiles && !df.isFromPartReview()) continue;
+            if (!df.isReadOnly()) {
+                if (df.isVirtual()) {
+                    if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                        Project.removeUnsavedFile(df);
+                        Project.removeOpenedFile(df);
+                        if (!win.closeDatfile(df)) {
+                            Project.addOpenedFile(df);
+                        }
+                    }
+
+                    win.updateTreeUnsavedEntries();
+                } else if (df.save()) {
+                    addRecentFile(df);
+                    Project.removeUnsavedFile(df);
+                } else {
+                    MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
+                    messageBoxError.setText(I18n.DIALOG_ERROR);
+                    messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
+                    messageBoxError.open();
+                }
+            }
+        }
+        if (Project.isDefaultProject() && ProjectActions.createNewProject(win, true)) {
+            addRecentFile(Project.getProjectPath());
+        }
+        win.updateTreeUnsavedEntries();
+        win.regainFocus();
     }
 }
