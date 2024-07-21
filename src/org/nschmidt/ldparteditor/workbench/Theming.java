@@ -311,7 +311,7 @@ public enum Theming implements ThemeColours {
     }
 
     public static Text text(Composite parent, int style) {
-        final Text result = new Text(parent, style);
+        final Text result = new Text(parent, currentTheme != DEFAULT ? style | SWT.BORDER : style);
         if (currentTheme != DEFAULT) {
             setBgColor(result);
             setFgColor(result);
