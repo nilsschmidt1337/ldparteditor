@@ -3017,6 +3017,7 @@ public class Editor3DWindow extends Editor3DDesign {
             // Hide "End Review" button
             cmpSyncAndReviewPtr[0].getChildren()[1].dispose();
             // Reset project
+            Project.setDefaultProject(true);
             Project.setFileToEdit(View.DUMMY_DATFILE);
             Project.setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
             getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

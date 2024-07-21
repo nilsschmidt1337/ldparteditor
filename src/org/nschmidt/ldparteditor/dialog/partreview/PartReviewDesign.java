@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialog.partreview;
 
+import java.text.MessageFormat;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -26,6 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.dialog.ThemedDialog;
+import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widget.IntegerSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
@@ -35,6 +38,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 class PartReviewDesign extends ThemedDialog {
 
     static String fileName = ""; //$NON-NLS-1$
+    static String projectPath = ""; //$NON-NLS-1$
 
     private final boolean alreadyReviewing;
 
@@ -46,8 +50,9 @@ class PartReviewDesign extends ThemedDialog {
     private Button[] btnOkPtr = new Button[1];
     private Button[] btnCancelPtr = new Button[1];
     final Text[] txtFilePtr = new Text[1];
-    final NButton[] btnVerbosePtr = new NButton[1];
     final IntegerSpinner[] spnViewCountPtr = new IntegerSpinner[1];
+    final NButton[] btnStoreLocallyPtr = new NButton[1];
+    final NButton[] btnVerbosePtr = new NButton[1];
 
     /**
      * Create contents of the dialog.
@@ -74,9 +79,20 @@ class PartReviewDesign extends ThemedDialog {
             gd.grabExcessHorizontalSpace = true;
             gd.horizontalAlignment = SWT.FILL;
             txtFile2.setLayoutData(gd);
+            txtFile2.setTextLimit(64);
 
             Label lblInfo = Theming.label(cmpContainer, SWT.NONE);
             lblInfo.setText(I18n.PARTREVIEW_INFO);
+
+            NButton btnStoreLocally = new NButton(cmpContainer, SWT.CHECK);
+            this.btnStoreLocallyPtr[0] = btnStoreLocally;
+            btnStoreLocally.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            Object[] messageArguments = {""}; //$NON-NLS-1$
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.getLocale());
+            formatter.applyPattern(I18n.PARTREVIEW_STORE_LOCATION);
+            btnStoreLocally.setText(formatter.format(messageArguments));
+            btnStoreLocally.setSelection(WorkbenchManager.getUserSettingState().isPartReviewStoreLocalFiles());
 
             Label lblNumberOf3dViews = Theming.label(cmpContainer, SWT.NONE);
             lblNumberOf3dViews.setText(I18n.PARTREVIEW_NUMBER_OF_3D_VIEWS);

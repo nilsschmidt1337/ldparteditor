@@ -372,6 +372,11 @@ public class MiscToolItem extends ToolItem {
         btnRoundSelection.setToolTipText(I18n.E3D_ROUND + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnRoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
 
+        final NButton btnEdger2 = new NButton(miscToolItem, Cocoa.getStyle());
+        btnEdger2.setText(I18n.E3D_EDGER_2);
+        KeyStateManager.addTooltipText(btnEdger2, I18n.EDGER_CURRENT_VERBOSE_RUN, Task.EDGER2);
+        widgetUtil(btnEdger2).addSelectionListener(e -> edger2());
+
         final NButton btnSelect = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
         MiscToolItem.btnSelect2Ptr[0] = btnSelect;
         btnSelect.setToolTipText(I18n.E3D_ADVANCED_SELECT);
@@ -721,11 +726,6 @@ public class MiscToolItem extends ToolItem {
             mnuTools.setVisible(true);
             Editor3DWindow.getWindow().regainFocus();
         });
-
-        final NButton btnEdger2 = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
-        btnEdger2.setText(I18n.E3D_EDGER_2);
-        KeyStateManager.addTooltipText(btnEdger2, I18n.EDGER_CURRENT_VERBOSE_RUN, Task.EDGER2);
-        widgetUtil(btnEdger2).addSelectionListener(e -> edger2());
 
         final NButton btnInfographic = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
         btnInfographic.setText(I18n.INFOGRAPHIC_HELP_BUTTON_TITLE);
@@ -2297,6 +2297,21 @@ public class MiscToolItem extends ToolItem {
                                     return;
                                 }
 
+                                if (WorkbenchManager.getUserSettingState().isPartReviewStoreLocalFiles()) {
+                                    try {
+                                        Files.createDirectories(Path.of(PartReviewDialog.getProjectPath()));
+                                    } catch (IOException ex) {
+                                        NLogger.debug(MiscToolItem.class, ex);
+                                        Display.getDefault().syncExec(() -> {
+                                            MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
+                                            messageBox.setText(I18n.DIALOG_ERROR);
+                                            messageBox.setMessage(I18n.PARTREVIEW_STORE_ERROR);
+                                            messageBox.open();
+                                        });
+                                        return;
+                                    }
+                                }
+
                                 Set<String> files = new HashSet<>();
                                 files.add(fileName);
                                 List<String> list = buildFileList(source, new ArrayList<>(), files, monitor);
@@ -2333,8 +2348,17 @@ public class MiscToolItem extends ToolItem {
                                             txtwin.closeAllTabs();
                                         }
                                     }
-                                    Project.setDefaultProject(true);
-                                    Project.setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
+
+                                    if (WorkbenchManager.getUserSettingState().isPartReviewStoreLocalFiles()) {
+                                        Project.setDefaultProject(false);
+                                        Project.setProjectPath(PartReviewDialog.getProjectPath());
+                                        // This is a hack to get this PartReview project to the list of recent projects
+                                        NewOpenSaveProjectToolItem.addRecentFile(new DatFile(PartReviewDialog.getProjectPath()));
+                                    } else {
+                                        Project.setDefaultProject(true);
+                                        Project.setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
+                                    }
+
                                     Editor3DWindow.getWindow().getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     Editor3DWindow.getWindow().getShell().update();
                                     Editor3DWindow.getWindow().getProject().setText(fileName3);
@@ -2360,7 +2384,13 @@ public class MiscToolItem extends ToolItem {
                                         TreeItem n;
                                         fileName3 = list.get(i);
                                         source3 = list.get(i + 1);
-                                        df = DatFile.createDatFileForReview(fileName3);
+                                        if (WorkbenchManager.getUserSettingState().isPartReviewStoreLocalFiles()) {
+                                            df = DatFile.createDatFileForReviewInProject(fileName3, PartReviewDialog.getProjectPath());
+                                            fileName3 = df.getNewName();
+                                        } else {
+                                            df = DatFile.createDatFileForReview(fileName3);
+                                        }
+
                                         monitor.beginTask(fileName3, IProgressMonitor.UNKNOWN);
                                         Display.getCurrent().readAndDispatch();
                                         dfsToOpen.add(df);

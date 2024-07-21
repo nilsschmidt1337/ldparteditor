@@ -263,6 +263,7 @@ public class UserSettingState implements Serializable {
     private Theming theming = Theming.DEFAULT;
 
     private int partReview3dViewCount = 4;
+    private boolean partReviewStoreLocalFiles = false;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -1522,4 +1523,12 @@ public class UserSettingState implements Serializable {
     public void setPartReview3dViewCount(int partReview3dViewCount) {
         this.partReview3dViewCount = partReview3dViewCount;
     }
+
+	public boolean isPartReviewStoreLocalFiles() {
+		return partReviewStoreLocalFiles;
+	}
+
+	public void setPartReviewStoreLocalFiles(boolean partReviewStoreLocalFiles) {
+		this.partReviewStoreLocalFiles = partReviewStoreLocalFiles;
+	}
 }

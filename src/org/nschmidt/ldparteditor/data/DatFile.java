@@ -135,6 +135,15 @@ public final class DatFile {
         return new DatFile(path, true);
     }
 
+    public static DatFile createDatFileForReviewInProject(String path, String projectPath) {
+        final String basePath = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath() + File.separator;
+        String filePathInProject = path.substring(basePath.length());
+        filePathInProject = projectPath + filePathInProject;
+        DatFile df = new DatFile(filePathInProject, true);
+        df.setVirtual(false);
+        return df;
+    }
+
     private DatFile(String path, boolean fromPartReview) {
         this.projectFile = true;
         this.oldName = path;
@@ -1763,7 +1772,7 @@ public final class DatFile {
     }
 
     private boolean checkFileCollision(File theFile) {
-        if (theFile.lastModified() > lastModified) {
+        if (theFile.lastModified() > lastModified && lastModified != 0) {
             MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
             messageBox.setText(I18n.DIALOG_MODIFIED_TITLE);
 
