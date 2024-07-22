@@ -56,6 +56,7 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer33;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.LineThicknessToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 
 /**
@@ -129,6 +130,7 @@ public class GL33ModelRenderer {
     private volatile SortedSet<Vertex> pureCondlineControlPoints = new TreeSet<>();
     private volatile float[] dataTriangles = null;
     private volatile float[] dataLines = new float[]{0f};
+    private volatile float[][] dataHiQualityLines = new float[][]{{}};
     private volatile float[] dataTempLines = new float[]{0f};
     private volatile float[] dataVertices = null;
     private volatile float[] dataCondlines = new float[]{0f};
@@ -690,6 +692,7 @@ public class GL33ModelRenderer {
                 final Matrix4f transform = manipulator.getTempTransformation4f();
                 final boolean isTransforming = manipulator.isModified();
                 final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
+                final boolean hiQualityEdges = LineThicknessToolItem.hasHiQualityEdges();
 
                 final List<Matrix4f> stud1Matrices;
                 final List<Matrix4f> stud2Matrices;
@@ -942,6 +945,7 @@ public class GL33ModelRenderer {
                         }
                         final GData2 gd2 = (GData2) gd;
                         if (gd2.isLine) {
+                            if (hiQualityEdges) continue;
                             localLineSize += 14;
                             lineVertexCount += 2;
                         } else {
@@ -1030,7 +1034,7 @@ public class GL33ModelRenderer {
                             continue;
                         }
                     case 5:
-                        if (hideCondlines) {
+                        if (hideCondlines || hiQualityEdges) {
                             continue;
                         }
                         // Condlines are tricky, since I have to calculate their visibility
@@ -1183,6 +1187,15 @@ public class GL33ModelRenderer {
                 float yn4 = 0f;
                 float zn4 = 0f;
 
+                // [0][*chunk*] hi-quality solid lines
+                // [1][*chunk*] hi-quality transparent lines
+                // [2][*chunk*] hi-quality solid condlines
+                // [3][*chunk*] hi-quality transparent condlines
+                float[][] hiQualityEdgeData = null;
+                if (hiQualityEdges) {
+                    hiQualityEdgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder, hiddenSet, hideLines, hideCondlines);
+                }
+
                 // Iterate the objects and generate the buffer data
                 // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals / materials
                 for (GDataAndWinding gw : dataInOrder) {
@@ -1254,6 +1267,7 @@ public class GL33ModelRenderer {
                         GData2 gd2 = (GData2) gd;
                         v = vertexMap.get(gd);
                         if (gd2.isLine) {
+                            if (hiQualityEdges) continue;
                             pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
                             pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
                             if (renderMode != 1) {
@@ -2115,7 +2129,7 @@ public class GL33ModelRenderer {
                             continue;
                         }
                     case 5:
-                        if (hideCondlines) {
+                        if (hideCondlines || hiQualityEdges) {
                             continue;
                         }
                         GData5 gd5 = (GData5) gd;
@@ -2179,6 +2193,7 @@ public class GL33ModelRenderer {
                 dataVertices = vertexData;
                 lineSize = lineVertexCount;
                 dataLines = lineData;
+                dataHiQualityLines = hiQualityEdgeData;
                 condlineSize = condlineVertexCount;
                 dataCondlines = condlineData;
                 tempLineSize = tempLineVertexCount;
@@ -2236,7 +2251,7 @@ public class GL33ModelRenderer {
     private int toCSG;
     private int tsCSG;
 
-    public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, GLShader glyphShader, boolean drawSolidMaterials) {
+    public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, GLShader condlineShader2, GLShader glyphShader, boolean drawSolidMaterials) {
 
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewportInverse();

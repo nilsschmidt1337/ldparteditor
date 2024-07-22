@@ -36,6 +36,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class LineThicknessToolItem extends ToolItem {
 
+    private static volatile boolean hiQualityEdges = true;
+
     private static final NButton[] btnToggleLinesOpenGLPtr = new NButton[1];
     private static final NButton[] btnLineSize0Ptr = new NButton[1];
     private static final NButton[] btnLineSize1Ptr = new NButton[1];
@@ -76,26 +78,25 @@ public class LineThicknessToolItem extends ToolItem {
         btnLineSize4Ptr[0] = btnLineSize4;
         btnLineSize4.setToolTipText(I18n.E3D_LINE_SIZE_4 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnLineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
-        
+
         NButton btnLineSize5 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize5Ptr[0] = btnLineSize5;
         btnLineSize5.setToolTipText(I18n.E3D_LINE_SIZE_5 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnLineSize5.setImage(ResourceManager.getImage("icon16_linesize5.png")); //$NON-NLS-1$
-        
-        if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
-            NButton btnToggleLinesOpenGL = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
-            btnToggleLinesOpenGLPtr[0] = btnToggleLinesOpenGL;
-            btnToggleLinesOpenGL.setToolTipText(I18n.E3D_LINE_OPENGL);
-            btnToggleLinesOpenGL.setImage(ResourceManager.getImage("icon16_gllines.png")); //$NON-NLS-1$
-        }
+
+        NButton btnToggleLinesOpenGL = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
+        btnToggleLinesOpenGLPtr[0] = btnToggleLinesOpenGL;
+        btnToggleLinesOpenGL.setToolTipText(I18n.E3D_LINE_OPENGL);
+        btnToggleLinesOpenGL.setImage(ResourceManager.getImage("icon16_gllines.png")); //$NON-NLS-1$
     }
 
     private static void addListeners() {
-        if (btnToggleLinesOpenGLPtr[0] != null) widgetUtil(btnToggleLinesOpenGLPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnToggleLinesOpenGLPtr[0]).addSelectionListener(e -> {
+            hiQualityEdges = !btnToggleLinesOpenGLPtr[0].getSelection();
             if (btnToggleLinesOpenGLPtr[0].getSelection()) {
                 View.edgeThreshold = 5e6f;
             } else {
-                View.edgeThreshold = 5e-6f;
+                View.edgeThreshold = 2e-6f;
             }
             regainFocus();
         });
@@ -143,7 +144,7 @@ public class LineThicknessToolItem extends ToolItem {
                 }
             }.open();
         }
-        
+
         final float lineScaleFactor = Math.max(WorkbenchManager.getUserSettingState().getLineScaleFactor(), 1f);
         final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;
         View.lineWidth1000 = lineWidth1000 * lineScaleFactor;
@@ -154,19 +155,19 @@ public class LineThicknessToolItem extends ToolItem {
                 sp = new SphereGL20(View.lineWidth1000, 8);
                 spInv = new SphereGL20(-View.lineWidth1000, 8);
             }
-            
+
             GL20Primitives.sphere = sp;
             GL20Primitives.sphereInv = spInv;
             Editor3DWindow.getWindow().updateLineThickness();
         }
-        
+
         if (btnToggleLinesOpenGLPtr[0] != null && btnToggleLinesOpenGLPtr[0].getSelection()) {
             View.edgeThreshold = 5e6f;
         } else {
             // Intentional quadratic factor
-            View.edgeThreshold = 5e-6f / lineScaleFactor / lineScaleFactor;
+            View.edgeThreshold = 2e-6f / lineScaleFactor / lineScaleFactor;
         }
-        
+
         if (e != null) {
             boolean openGLLines = false;
             if (btnToggleLinesOpenGLPtr[0] != null)
@@ -180,5 +181,9 @@ public class LineThicknessToolItem extends ToolItem {
 
     private static void regainFocus() {
         Editor3DWindow.getWindow().regainFocus();
+    }
+
+    public static boolean hasHiQualityEdges() {
+        return hiQualityEdges;
     }
 }
