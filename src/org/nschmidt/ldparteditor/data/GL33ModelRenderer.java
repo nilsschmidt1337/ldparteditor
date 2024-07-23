@@ -130,7 +130,7 @@ public class GL33ModelRenderer {
     private volatile SortedSet<Vertex> pureCondlineControlPoints = new TreeSet<>();
     private volatile float[] dataTriangles = null;
     private volatile float[] dataLines = new float[]{0f};
-    private volatile float[][] dataHiQualityLines = new float[][]{{}};
+    private volatile float[][][] dataHiQualityLines = new float[][][]{{{}}};
     private volatile float[] dataTempLines = new float[]{0f};
     private volatile float[] dataVertices = null;
     private volatile float[] dataCondlines = new float[]{0f};
@@ -1191,7 +1191,7 @@ public class GL33ModelRenderer {
                 // [1][*chunk*] hi-quality transparent lines
                 // [2][*chunk*] hi-quality solid condlines
                 // [3][*chunk*] hi-quality transparent condlines
-                float[][] hiQualityEdgeData = null;
+                float[][][] hiQualityEdgeData = null;
                 if (hiQualityEdges) {
                     hiQualityEdgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder, hiddenSet, hideLines, hideCondlines);
                 }
@@ -2330,6 +2330,113 @@ public class GL33ModelRenderer {
             GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4l);
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        }
+
+        if (drawLines && LineThicknessToolItem.hasHiQualityEdges()) {
+            mainShader.lightsOff();
+
+            String tmp;
+            // [0][*chunk*] hi-quality solid lines
+            // [1][*chunk*] hi-quality transparent lines
+            // [2][*chunk*] hi-quality solid condlines
+            // [3][*chunk*] hi-quality transparent condlines
+            float[][] hiQualityLines;
+            float[][] hiQualityCondlines;
+            lock.lock();
+            if (dataHiQualityLines == null) {
+                hiQualityLines = new float[0][0];
+                hiQualityCondlines = new float[0][0];
+            } else if (drawSolidMaterials) {
+                hiQualityLines = dataHiQualityLines[0];
+                hiQualityCondlines = dataHiQualityLines[2];
+            } else {
+                hiQualityLines = dataHiQualityLines[1];
+                hiQualityCondlines = dataHiQualityLines[3];
+            }
+            lock.unlock();
+
+            condlineShader2.use();
+            stack.setShader(condlineShader2);
+
+            // Draw normal lines first (with a condline shader + 'Show All')
+            GL20.glUniform1f(condlineShader2.getUniformLocation("showAll"), 1f); //$NON-NLS-1$
+            GL20.glUniform1f(condlineShader2.getUniformLocation("condlineMode"), 0f); //$NON-NLS-1$
+
+            GL30.glBindVertexArray(vaoCondlines);
+            for (float[] data : hiQualityLines) {
+                if (data.length == 0) break;
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
+                // A vertex consists of 18 floats, a quad of 4 vertices
+                final int lineQuadCount = data.length / 18 / 4;
+
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 18 * 4, 0);
+                GL20.glEnableVertexAttribArray(1);
+                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 18 * 4, 3 * 4l);
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 18 * 4, 6 * 4l);
+                GL20.glEnableVertexAttribArray(3);
+                GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 18 * 4, 9 * 4l);
+                GL20.glEnableVertexAttribArray(4);
+                GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 18 * 4, 12 * 4l);
+                GL20.glEnableVertexAttribArray(5);
+                GL20.glVertexAttribPointer(5, 3, GL11.GL_FLOAT, false, 18 * 4, 15 * 4l);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+
+                Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
+                Matrix4f.transform(ivm, tr, tr);
+                stack.glPushMatrix();
+                stack.glTranslatef(tr.x, tr.y, tr.z);
+
+                GL11.glDrawArrays(GL11.GL_QUADS, 0, lineQuadCount);
+
+                stack.glPopMatrix();
+            }
+
+            // Draw condlines next
+            GL20.glUniform1f(condlineShader2.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
+            GL20.glUniform1f(condlineShader2.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
+
+            for (float[] data : hiQualityCondlines) {
+                if (data.length == 0) break;
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
+                // A vertex consists of 18 floats, a quad of 4 vertices
+                final int conlineQuadCount = data.length / 18 / 4;
+
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 18 * 4, 0);
+                GL20.glEnableVertexAttribArray(1);
+                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 18 * 4, 3 * 4l);
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 18 * 4, 6 * 4l);
+                GL20.glEnableVertexAttribArray(3);
+                GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 18 * 4, 9 * 4l);
+                GL20.glEnableVertexAttribArray(4);
+                GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 18 * 4, 12 * 4l);
+                GL20.glEnableVertexAttribArray(5);
+                GL20.glVertexAttribPointer(5, 3, GL11.GL_FLOAT, false, 18 * 4, 15 * 4l);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+
+                Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
+                Matrix4f.transform(ivm, tr, tr);
+                stack.glPushMatrix();
+                stack.glTranslatef(tr.x, tr.y, tr.z);
+
+                GL11.glDrawArrays(GL11.GL_QUADS, 0, conlineQuadCount);
+
+                stack.glPopMatrix();
+            }
+
+            mainShader.use();
+            stack.setShader(mainShader);
+
+            if (c3d.isLightOn()) {
+                mainShader.lightsOn();
+            }
         }
 
         GL30.glBindVertexArray(vao);
