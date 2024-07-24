@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
 
 public enum HiQualityEdgeCalculator {
     INSTANCE;
@@ -26,11 +28,13 @@ public enum HiQualityEdgeCalculator {
             final GData gd = d.data;
             if (hiddenSet.contains(gd)) continue;
             final float[][] lGeom;
+            final Matrix4f matrix;
             final float r;
             final float g;
             final float b;
             if (!hideLines && gd instanceof GData2 gd2) {
                 lGeom = gd2.lGeom;
+                matrix = gd2.parent.productMatrix;
                 r = gd2.r;
                 g = gd2.g;
                 b = gd2.b;
@@ -41,10 +45,11 @@ public enum HiQualityEdgeCalculator {
             }
 
             addQuad(target,
-                    lGeom[1][0], lGeom[1][1], lGeom[1][2],
-                    lGeom[0][0], lGeom[0][1], lGeom[0][2],
-                    lGeom[3][0], lGeom[3][1], lGeom[3][2],
-                    lGeom[2][0], lGeom[2][1], lGeom[2][2],
+                    matrix,
+                    lGeom[1][0] * lGeom[20][0], lGeom[1][1] * lGeom[20][1], lGeom[1][2] * lGeom[20][2],
+                    lGeom[0][0] * lGeom[20][0], lGeom[0][1] * lGeom[20][1], lGeom[0][2] * lGeom[20][2],
+                    lGeom[3][0] * lGeom[20][0], lGeom[3][1] * lGeom[20][1], lGeom[3][2] * lGeom[20][2],
+                    lGeom[2][0] * lGeom[20][0], lGeom[2][1] * lGeom[20][1], lGeom[2][2] * lGeom[20][2],
                     0f,0f,0f,
                     0f,0f,0f,
                     0f,0f,0f,
@@ -160,6 +165,7 @@ public enum HiQualityEdgeCalculator {
     }
 
     private static void addQuad(List<Float> data,
+            Matrix4f matrix,
             float v1x, float v1y, float v1z,
             float v2x, float v2y, float v2z,
             float v3x, float v3y, float v3z,
@@ -169,85 +175,23 @@ public enum HiQualityEdgeCalculator {
             float cx, float cy, float cz,
             float dx, float dy, float dz,
             float r, float g, float b) {
+        final Vector4f v1 = Matrix4f.transform(matrix, new Vector4f(v1x, v1y, v1z, 1f), null);
+        final Vector4f v2 = Matrix4f.transform(matrix, new Vector4f(v2x, v2y, v2z, 1f), null);
+        final Vector4f v3 = Matrix4f.transform(matrix, new Vector4f(v3x, v3y, v3z, 1f), null);
+        final Vector4f v4 = Matrix4f.transform(matrix, new Vector4f(v4x, v4y, v4z, 1f), null);
+        addPoint(data, v1.x, v1.y, v1.z, ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, r, g, b);
+        addPoint(data, v2.x, v2.y, v2.z, ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, r, g, b);
+        addPoint(data, v3.x, v3.y, v3.z, ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, r, g, b);
+        addPoint(data, v4.x, v4.y, v4.z, ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, r, g, b);
+    }
+
+    private static void addPoint(List<Float> data, float v1x, float v1y, float v1z, float ax, float ay, float az,
+            float bx, float by, float bz, float cx, float cy, float cz, float dx, float dy, float dz, float r, float g,
+            float b) {
         // Position
         data.add(v1x);
         data.add(v1y);
         data.add(v1z);
-        // Point A
-        data.add(ax);
-        data.add(ay);
-        data.add(az);
-        // Point B
-        data.add(bx);
-        data.add(by);
-        data.add(bz);
-        // Point C
-        data.add(cx);
-        data.add(cy);
-        data.add(cz);
-        // Point D
-        data.add(dx);
-        data.add(dy);
-        data.add(dz);
-        // Color
-        data.add(r);
-        data.add(g);
-        data.add(b);
-
-        // Position
-        data.add(v2x);
-        data.add(v2y);
-        data.add(v2z);
-        // Point A
-        data.add(ax);
-        data.add(ay);
-        data.add(az);
-        // Point B
-        data.add(bx);
-        data.add(by);
-        data.add(bz);
-        // Point C
-        data.add(cx);
-        data.add(cy);
-        data.add(cz);
-        // Point D
-        data.add(dx);
-        data.add(dy);
-        data.add(dz);
-        // Color
-        data.add(r);
-        data.add(g);
-        data.add(b);
-
-        // Position
-        data.add(v3x);
-        data.add(v3y);
-        data.add(v3z);
-        // Point A
-        data.add(ax);
-        data.add(ay);
-        data.add(az);
-        // Point B
-        data.add(bx);
-        data.add(by);
-        data.add(bz);
-        // Point C
-        data.add(cx);
-        data.add(cy);
-        data.add(cz);
-        // Point D
-        data.add(dx);
-        data.add(dy);
-        data.add(dz);
-        // Color
-        data.add(r);
-        data.add(g);
-        data.add(b);
-
-        // Position
-        data.add(v4x);
-        data.add(v4y);
-        data.add(v4z);
         // Point A
         data.add(ax);
         data.add(ay);
