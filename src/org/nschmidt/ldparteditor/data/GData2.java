@@ -46,7 +46,7 @@ public final class GData2 extends GData {
 
     public static final BigDecimal MILLIMETRE_PER_LDU = new BigDecimal("0.4"); //$NON-NLS-1$
     private static final BigDecimal STUD_PER_LDU = new BigDecimal("0.05"); //$NON-NLS-1$
-    
+
     public final int colourNumber;
     public final boolean isLine;
 
@@ -70,7 +70,7 @@ public final class GData2 extends GData {
     final BigDecimal y2p;
     final BigDecimal z2p;
 
-    private final float[][] lGeom;
+    final float[][] lGeom;
 
     private BigDecimal length = null;
     private int state = 0;
@@ -745,7 +745,7 @@ public final class GData2 extends GData {
         BigDecimal dA = length;
         BigDecimal dmm = dA.multiply(MILLIMETRE_PER_LDU);
         BigDecimal dst = dA.multiply(STUD_PER_LDU);
-        
+
         String dxS = numberFormat4f.format(dx);
         String dyS = numberFormat4f.format(dy);
         String dzS = numberFormat4f.format(dz);
@@ -988,7 +988,7 @@ public final class GData2 extends GData {
         drawNumberGL33(dyS, textOrigin.x + ox1, textOrigin.y + oy4, textOrigin.z, zoom);
         drawNumberGL33(dzS, textOrigin.x + ox1, textOrigin.y + oy5, textOrigin.z, zoom);
     }
-    
+
     public void updateLine() {
         float[][] lGeomNew = MathHelper.getLineVertices(new Vector3f(this.x1, this.y1, this.z1), new Vector3f(this.x2, this.y2, this.z2), parent.productMatrix);
         for (int i = 0; i < 21; i++) {

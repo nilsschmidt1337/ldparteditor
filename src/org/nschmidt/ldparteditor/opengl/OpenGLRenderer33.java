@@ -104,7 +104,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         if (shaderProgramCondline.isDefault()) shaderProgramCondline = new GLShader("condline.vert", "condline.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgramCondline2.isDefault()) shaderProgramCondline2 = new GLShader("condline2.vert", "condline2.frag"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        if (NLogger.debugging && debugCallback == null) debugCallback = GLUtil.setupDebugMessageCallback();
+        // if (NLogger.debugging && debugCallback == null) debugCallback = GLUtil.setupDebugMessageCallback();
 
         shaderProgramCondline.use();
 

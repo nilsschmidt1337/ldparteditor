@@ -84,7 +84,7 @@ public final class GData5 extends GData {
     private final Vector4f n = new Vector4f(0, 0, 0, 1f);
     private Matrix4f m = new Matrix4f();
 
-    private final float[][] lGeom;
+    final float[][] lGeom;
 
     private boolean wasShown = false;
 
@@ -1077,7 +1077,7 @@ public final class GData5 extends GData {
     boolean wasShown() {
         return wasShown;
     }
-    
+
     public void updateLine() {
         float[][] lGeomNew = MathHelper.getLineVertices(new Vector3f(this.x1, this.y1, this.z1), new Vector3f(this.x2, this.y2, this.z2), parent.productMatrix);
         for (int i = 0; i < 21; i++) {

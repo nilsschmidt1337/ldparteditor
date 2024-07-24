@@ -59,7 +59,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
         if (shaderProgram.isDefault()) shaderProgram = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgram2D.isDefault()) shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        if (NLogger.debugging && debugCallback == null) debugCallback = GLUtil.setupDebugMessageCallback();
+        // if (NLogger.debugging && debugCallback == null) debugCallback = GLUtil.setupDebugMessageCallback();
 
         stack.setShader(shaderProgram);
         shaderProgram.use();
@@ -120,13 +120,13 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
         final float viewport_height = bounds.height / View.PIXEL_PER_LDU;
         GLMatrixStack.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom()).store(projectionBuf);
         projectionBuf.position(0);
-        
+
         int view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(view, false, viewBuf);
 
         int projection = shaderProgram.getUniformLocation("projection" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(projection, false, projectionBuf);
-        
+
         stack.clear();
         GL33HelperPrimitives.createVBOprimitiveArea();
         helper.createVBO();
@@ -245,38 +245,38 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
             final float length = .025f;
             GL11.glDisable(GL11.GL_CULL_FACE);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
-            
+
             final Vector4f xAxis = new Vector4f(-length, 0f, 0f, 1f);
             final Vector4f yAxis = new Vector4f(0f, length, 0f, 1f);
             final Vector4f zAxis = new Vector4f(0f, 0f, length, 1f);
-            
+
             Matrix4f.transform(rotation, xAxis, xAxis);
             Matrix4f.transform(rotation, yAxis, yAxis);
             Matrix4f.transform(rotation, zAxis, zAxis);
 
             PGData3.beginDrawTextGL33(shaderProgram2D);
             stack.setShader(shaderProgram2D);
-            
+
             view = shaderProgram2D.getUniformLocation("view" ); //$NON-NLS-1$
             GL20.glUniformMatrix4fv(view, false, viewBuf);
-            
+
             projection = shaderProgram2D.getUniformLocation("projection" ); //$NON-NLS-1$
             GL20.glUniformMatrix4fv(projection, false, projectionBuf);
-            
+
             stack.glLoadIdentity();
 
             stack.glPushMatrix();
             stack.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
             stack.glScalef(-1f, 1f, 1f);
-            
+
             for (PGData3 tri : View.X) {
                 tri.drawTextGL33(-xAxis.x, xAxis.y, 0f);
             }
-            
+
             for (PGData3 tri : View.Y) {
                 tri.drawTextGL33(-yAxis.x, yAxis.y, 0f);
             }
-            
+
             for (PGData3 tri : View.Z) {
                 tri.drawTextGL33(-zAxis.x, zAxis.y, 0f);
             }
@@ -284,9 +284,9 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
             stack.setShader(shaderProgram);
             stack.glPopMatrix();
         }
-        
+
         cp.setMaxY(y - 22f);
-        
+
         if (!wasFocused && mouseX != -1) {
             cp.setFocusedPrimitive(null);
             cp.setSelectedPrimitive(null);

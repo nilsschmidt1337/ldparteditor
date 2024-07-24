@@ -14,6 +14,7 @@ uniform float zoom;
 
 uniform float showAll;
 uniform float condlineMode;
+uniform float alpha;
 
 out vec4 sceneColor;
 
@@ -30,7 +31,7 @@ void main()
 	
 	if (condlineMode < 1.0f) {
 		if (showAll > 0.0f || zoom / dot(N, C - A) * dot(N, D - A) > -1.0e-20f) {
-			sceneColor = vec4(in_color.r, in_color.g, in_color.b, 1.0f);
+			sceneColor = vec4(in_color.r, in_color.g, in_color.b, alpha);
 		} else {
 			sceneColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
 		}
@@ -38,7 +39,7 @@ void main()
 		if (zoom / dot(N, C - A) * dot(N, D - A) > -1.0e-20f) {
 			sceneColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 		} else {
-			sceneColor = vec4(in_color.r, in_color.g, in_color.b, 1.0f);
+			sceneColor = vec4(in_color.r, in_color.g, in_color.b, alpha);
 		}
 	}
 }

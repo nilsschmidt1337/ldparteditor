@@ -2361,6 +2361,7 @@ public class GL33ModelRenderer {
             // Draw normal lines first (with a condline shader + 'Show All')
             GL20.glUniform1f(condlineShader2.getUniformLocation("showAll"), 1f); //$NON-NLS-1$
             GL20.glUniform1f(condlineShader2.getUniformLocation("condlineMode"), 0f); //$NON-NLS-1$
+            GL20.glUniform1f(condlineShader2.getUniformLocation("alpha"), drawSolidMaterials ? 1f : 0.5f); //$NON-NLS-1$
 
             GL30.glBindVertexArray(vaoCondlines);
             for (float[] data : hiQualityLines) {
@@ -2368,7 +2369,7 @@ public class GL33ModelRenderer {
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
                 // A vertex consists of 18 floats, a quad of 4 vertices
-                final int lineQuadCount = data.length / 18 / 4;
+                final int vertexCount = data.length / 18;
 
                 GL20.glEnableVertexAttribArray(0);
                 GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 18 * 4, 0);
@@ -2390,7 +2391,7 @@ public class GL33ModelRenderer {
                 stack.glPushMatrix();
                 stack.glTranslatef(tr.x, tr.y, tr.z);
 
-                GL11.glDrawArrays(GL11.GL_QUADS, 0, lineQuadCount);
+                GL11.glDrawArrays(GL11.GL_QUADS, 0, vertexCount);
 
                 stack.glPopMatrix();
             }
@@ -2398,6 +2399,7 @@ public class GL33ModelRenderer {
             // Draw condlines next
             GL20.glUniform1f(condlineShader2.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
             GL20.glUniform1f(condlineShader2.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
+            GL20.glUniform1f(condlineShader2.getUniformLocation("alpha"), drawSolidMaterials ? 1f : 0.5f); //$NON-NLS-1$
 
             for (float[] data : hiQualityCondlines) {
                 if (data.length == 0) break;
