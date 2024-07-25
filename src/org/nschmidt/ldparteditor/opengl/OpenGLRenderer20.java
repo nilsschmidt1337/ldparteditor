@@ -64,6 +64,7 @@ import org.nschmidt.ldparteditor.data.colour.GCGlitter;
 import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.data.colour.GCType;
 import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.FontLetters;
 import org.nschmidt.ldparteditor.enumtype.GL20Primitives;
 import org.nschmidt.ldparteditor.enumtype.IconSize;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
@@ -2128,15 +2129,15 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             GL11.glLoadIdentity();
                             GL11.glTranslatef(manipulatorPos.x, manipulatorPos.y, 0f);
                             PGData3.beginDrawText();
-                            for (PGData3 tri : View.X) {
+                            for (PGData3 tri : FontLetters.X) {
                                 tri.drawText(manipulatorXAxis.x, manipulatorXAxis.y, manipulatorXAxis.z);
                             }
 
-                            for (PGData3 tri : View.Y) {
+                            for (PGData3 tri : FontLetters.Y) {
                                 tri.drawText(manipulatorYAxis.x, manipulatorYAxis.y, manipulatorYAxis.z);
                             }
 
-                            for (PGData3 tri : View.Z) {
+                            for (PGData3 tri : FontLetters.Z) {
                                 tri.drawText(manipulatorZAxis.x, manipulatorZAxis.y, manipulatorZAxis.z);
                             }
                             PGData3.endDrawText();
@@ -2146,15 +2147,15 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         GL11.glPushMatrix();
                         GL11.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
                         PGData3.beginDrawText();
-                        for (PGData3 tri : View.X) {
+                        for (PGData3 tri : FontLetters.X) {
                             tri.drawText(xAxis.x, xAxis.y, xAxis.z);
                         }
 
-                        for (PGData3 tri : View.Y) {
+                        for (PGData3 tri : FontLetters.Y) {
                             tri.drawText(yAxis.x, yAxis.y, yAxis.z);
                         }
 
-                        for (PGData3 tri : View.Z) {
+                        for (PGData3 tri : FontLetters.Z) {
                             tri.drawText(zAxis.x, zAxis.y, zAxis.z);
                         }
                         PGData3.endDrawText();
@@ -2168,32 +2169,32 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     PGData3.beginDrawText();
                     switch (c3d.getPerspectiveIndex()) {
                     case FRONT:
-                        for (PGData3 tri : View.FRONT) {
+                        for (PGData3 tri : FontLetters.FRONT) {
                             tri.drawText(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
                     case BACK:
-                        for (PGData3 tri : View.BACK) {
+                        for (PGData3 tri : FontLetters.BACK) {
                             tri.drawText(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
                     case TOP:
-                        for (PGData3 tri : View.TOP) {
+                        for (PGData3 tri : FontLetters.TOP) {
                             tri.drawText(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
                     case BOTTOM:
-                        for (PGData3 tri : View.BOTTOM) {
+                        for (PGData3 tri : FontLetters.BOTTOM) {
                             tri.drawText(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
                     case LEFT:
-                        for (PGData3 tri : View.LEFT) {
+                        for (PGData3 tri : FontLetters.LEFT) {
                             tri.drawText(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
                     case RIGHT:
-                        for (PGData3 tri : View.RIGHT) {
+                        for (PGData3 tri : FontLetters.RIGHT) {
                             tri.drawText(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;

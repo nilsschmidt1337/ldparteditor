@@ -28,6 +28,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.FontLetters;
 import org.nschmidt.ldparteditor.enumtype.GL20Primitives;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
@@ -758,25 +759,25 @@ public final class GData2 extends GData {
         final float oy4 = .075f * zoom;
         final float oy5 = .09f * zoom;
         final float ox1 = -.045f * zoom;
-        for (PGData3 tri : View.S) {
+        for (PGData3 tri : FontLetters.S) {
             tri.drawText(lineOrigin.x, lineOrigin.y, lineOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DA) {
+        for (PGData3 tri : FontLetters.DA) {
             tri.drawText(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.Dmm) {
+        for (PGData3 tri : FontLetters.Dmm) {
             tri.drawText(textOrigin.x, textOrigin.y + oy1, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.Dst) {
+        for (PGData3 tri : FontLetters.Dst) {
             tri.drawText(textOrigin.x, textOrigin.y + oy2, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DX) {
+        for (PGData3 tri : FontLetters.DX) {
             tri.drawText(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DY) {
+        for (PGData3 tri : FontLetters.DY) {
             tri.drawText(textOrigin.x, textOrigin.y + oy4, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DZ) {
+        for (PGData3 tri : FontLetters.DZ) {
             tri.drawText(textOrigin.x, textOrigin.y + oy5, textOrigin.z + 100000f, zoom);
         }
         drawNumber(dAS, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
@@ -798,43 +799,43 @@ public final class GData2 extends GData {
             final char c = number.charAt(i);
             switch (c) {
             case '0':
-                tris = View.D0;
+                tris = FontLetters.D0;
                 break;
             case '1':
-                tris = View.D1;
+                tris = FontLetters.D1;
                 break;
             case '2':
-                tris = View.D2;
+                tris = FontLetters.D2;
                 break;
             case '3':
-                tris = View.D3;
+                tris = FontLetters.D3;
                 break;
             case '4':
-                tris = View.D4;
+                tris = FontLetters.D4;
                 break;
             case '5':
-                tris = View.D5;
+                tris = FontLetters.D5;
                 break;
             case '6':
-                tris = View.D6;
+                tris = FontLetters.D6;
                 break;
             case '7':
-                tris = View.D7;
+                tris = FontLetters.D7;
                 break;
             case '8':
-                tris = View.D8;
+                tris = FontLetters.D8;
                 break;
             case '9':
-                tris = View.D9;
+                tris = FontLetters.D9;
                 break;
             case '.':
-                tris = View.DDot;
+                tris = FontLetters.DDot;
                 break;
             case ',':
-                tris = View.DComma;
+                tris = FontLetters.DComma;
                 break;
             case '-':
-                tris = View.DM;
+                tris = FontLetters.DM;
                 break;
             default:
                 break;
@@ -854,43 +855,43 @@ public final class GData2 extends GData {
             final char c = number.charAt(i);
             switch (c) {
             case '0':
-                tris = View.D0;
+                tris = FontLetters.D0;
                 break;
             case '1':
-                tris = View.D1;
+                tris = FontLetters.D1;
                 break;
             case '2':
-                tris = View.D2;
+                tris = FontLetters.D2;
                 break;
             case '3':
-                tris = View.D3;
+                tris = FontLetters.D3;
                 break;
             case '4':
-                tris = View.D4;
+                tris = FontLetters.D4;
                 break;
             case '5':
-                tris = View.D5;
+                tris = FontLetters.D5;
                 break;
             case '6':
-                tris = View.D6;
+                tris = FontLetters.D6;
                 break;
             case '7':
-                tris = View.D7;
+                tris = FontLetters.D7;
                 break;
             case '8':
-                tris = View.D8;
+                tris = FontLetters.D8;
                 break;
             case '9':
-                tris = View.D9;
+                tris = FontLetters.D9;
                 break;
             case '.':
-                tris = View.DDot;
+                tris = FontLetters.DDot;
                 break;
             case ',':
-                tris = View.DComma;
+                tris = FontLetters.DComma;
                 break;
             case '-':
-                tris = View.DM;
+                tris = FontLetters.DM;
                 break;
             default:
                 break;
@@ -960,25 +961,25 @@ public final class GData2 extends GData {
         final float oy4 = .075f * zoom;
         final float oy5 = .09f * zoom;
         final float ox1 = -.045f * zoom;
-        for (PGData3 tri : View.S) {
+        for (PGData3 tri : FontLetters.S) {
             tri.drawTextGL33(lineOrigin.x, lineOrigin.y, lineOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DA) {
+        for (PGData3 tri : FontLetters.DA) {
             tri.drawTextGL33(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.Dmm) {
+        for (PGData3 tri : FontLetters.Dmm) {
             tri.drawTextGL33(textOrigin.x, textOrigin.y + oy1, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.Dst) {
+        for (PGData3 tri : FontLetters.Dst) {
             tri.drawTextGL33(textOrigin.x, textOrigin.y + oy2, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DX) {
+        for (PGData3 tri : FontLetters.DX) {
             tri.drawTextGL33(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DY) {
+        for (PGData3 tri : FontLetters.DY) {
             tri.drawTextGL33(textOrigin.x, textOrigin.y + oy4, textOrigin.z + 100000f, zoom);
         }
-        for (PGData3 tri : View.DZ) {
+        for (PGData3 tri : FontLetters.DZ) {
             tri.drawTextGL33(textOrigin.x, textOrigin.y + oy5, textOrigin.z + 100000f, zoom);
         }
         drawNumberGL33(dAS, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);

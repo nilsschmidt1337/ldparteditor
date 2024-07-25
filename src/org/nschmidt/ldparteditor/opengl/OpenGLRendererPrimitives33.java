@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.FontLetters;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Arrow;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -269,15 +270,15 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
             stack.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
             stack.glScalef(-1f, 1f, 1f);
 
-            for (PGData3 tri : View.X) {
+            for (PGData3 tri : FontLetters.X) {
                 tri.drawTextGL33(-xAxis.x, xAxis.y, 0f);
             }
 
-            for (PGData3 tri : View.Y) {
+            for (PGData3 tri : FontLetters.Y) {
                 tri.drawTextGL33(-yAxis.x, yAxis.y, 0f);
             }
 
-            for (PGData3 tri : View.Z) {
+            for (PGData3 tri : FontLetters.Z) {
                 tri.drawTextGL33(-zAxis.x, zAxis.y, 0f);
             }
             PGData3.endDrawTextGL33(shaderProgram);

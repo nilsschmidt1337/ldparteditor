@@ -43,6 +43,7 @@ import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.FontLetters;
 import org.nschmidt.ldparteditor.enumtype.GL33Primitives;
 import org.nschmidt.ldparteditor.enumtype.IconSize;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
@@ -1496,30 +1497,30 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                             stack.glLoadIdentity();
                             stack.glTranslatef(manipulatorPos.x, manipulatorPos.y, 0f);
-                            for (PGData3 tri : View.X) {
+                            for (PGData3 tri : FontLetters.X) {
                                 tri.drawTextGL33(manipulatorXAxis.x, manipulatorXAxis.y, viewportOriginAxis[0].z);
                             }
 
-                            for (PGData3 tri : View.Y) {
+                            for (PGData3 tri : FontLetters.Y) {
                                 tri.drawTextGL33(manipulatorYAxis.x, manipulatorYAxis.y, viewportOriginAxis[0].z);
                             }
 
-                            for (PGData3 tri : View.Z) {
+                            for (PGData3 tri : FontLetters.Z) {
                                 tri.drawTextGL33(manipulatorZAxis.x, manipulatorZAxis.y, viewportOriginAxis[0].z);
                             }
                         }
 
                         stack.glLoadIdentity();
                         stack.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
-                        for (PGData3 tri : View.X) {
+                        for (PGData3 tri : FontLetters.X) {
                             tri.drawTextGL33(xAxis.x, xAxis.y, viewportOriginAxis[0].z);
                         }
 
-                        for (PGData3 tri : View.Y) {
+                        for (PGData3 tri : FontLetters.Y) {
                             tri.drawTextGL33(yAxis.x, yAxis.y, viewportOriginAxis[0].z);
                         }
 
-                        for (PGData3 tri : View.Z) {
+                        for (PGData3 tri : FontLetters.Z) {
                             tri.drawTextGL33(zAxis.x, zAxis.y, viewportOriginAxis[0].z);
                         }
                         PGData3.endDrawTextGL33(shaderProgram2);
@@ -1535,32 +1536,32 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     stack.glLoadIdentity();
                     switch (c3d.getPerspectiveIndex()) {
                     case FRONT:
-                        for (PGData3 tri : View.FRONT) {
+                        for (PGData3 tri : FontLetters.FRONT) {
                             tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
                     case BACK:
-                        for (PGData3 tri : View.BACK) {
+                        for (PGData3 tri : FontLetters.BACK) {
                             tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
                     case TOP:
-                        for (PGData3 tri : View.TOP) {
+                        for (PGData3 tri : FontLetters.TOP) {
                             tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
                     case BOTTOM:
-                        for (PGData3 tri : View.BOTTOM) {
+                        for (PGData3 tri : FontLetters.BOTTOM) {
                             tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
                     case LEFT:
-                        for (PGData3 tri : View.LEFT) {
+                        for (PGData3 tri : FontLetters.LEFT) {
                             tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
                     case RIGHT:
-                        for (PGData3 tri : View.RIGHT) {
+                        for (PGData3 tri : FontLetters.RIGHT) {
                             tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
                         }
                         break;
