@@ -25,6 +25,7 @@ public enum HiQualityEdgeCalculator {
         for (GDataAndWinding d : dataInOrder) {
             List<Float> target = data;
             final GData gd = d.data;
+            final boolean negDet = d.negativeDeterminant;
             if (hiddenSet.contains(gd)) continue;
             final float[][] lGeom;
             final Matrix4f matrix;
@@ -44,7 +45,7 @@ public enum HiQualityEdgeCalculator {
             }
 
             addQuad(target,
-                    matrix,
+                    matrix, negDet,
                     lGeom[2][0] * lGeom[20][0], lGeom[2][1] * lGeom[20][1], lGeom[2][2] * lGeom[20][2],
                     lGeom[4][0] * lGeom[20][0], lGeom[4][1] * lGeom[20][1], lGeom[4][2] * lGeom[20][2],
                     lGeom[5][0] * lGeom[20][0], lGeom[5][1] * lGeom[20][1], lGeom[5][2] * lGeom[20][2],
@@ -56,7 +57,7 @@ public enum HiQualityEdgeCalculator {
                     r,g,b);
 
             addQuad(target,
-                    matrix,
+                    matrix, negDet,
                     lGeom[4][0] * lGeom[20][0], lGeom[4][1] * lGeom[20][1], lGeom[4][2] * lGeom[20][2],
                     lGeom[6][0] * lGeom[20][0], lGeom[6][1] * lGeom[20][1], lGeom[6][2] * lGeom[20][2],
                     lGeom[7][0] * lGeom[20][0], lGeom[7][1] * lGeom[20][1], lGeom[7][2] * lGeom[20][2],
@@ -68,7 +69,7 @@ public enum HiQualityEdgeCalculator {
                     r,g,b);
 
             addQuad(target,
-                    matrix,
+                    matrix, negDet,
                     lGeom[6][0] * lGeom[20][0], lGeom[6][1] * lGeom[20][1], lGeom[6][2] * lGeom[20][2],
                     lGeom[8][0] * lGeom[20][0], lGeom[8][1] * lGeom[20][1], lGeom[8][2] * lGeom[20][2],
                     lGeom[9][0] * lGeom[20][0], lGeom[9][1] * lGeom[20][1], lGeom[9][2] * lGeom[20][2],
@@ -80,7 +81,7 @@ public enum HiQualityEdgeCalculator {
                     r,g,b);
 
             addQuad(target,
-                    matrix,
+                    matrix, negDet,
                     lGeom[8][0] * lGeom[20][0], lGeom[8][1] * lGeom[20][1], lGeom[8][2] * lGeom[20][2],
                     lGeom[10][0] * lGeom[20][0], lGeom[10][1] * lGeom[20][1], lGeom[10][2] * lGeom[20][2],
                     lGeom[11][0] * lGeom[20][0], lGeom[11][1] * lGeom[20][1], lGeom[11][2] * lGeom[20][2],
@@ -92,7 +93,7 @@ public enum HiQualityEdgeCalculator {
                     r,g,b);
 
             addQuad(target,
-                    matrix,
+                    matrix, negDet,
                     lGeom[10][0] * lGeom[20][0], lGeom[10][1] * lGeom[20][1], lGeom[10][2] * lGeom[20][2],
                     lGeom[12][0] * lGeom[20][0], lGeom[12][1] * lGeom[20][1], lGeom[12][2] * lGeom[20][2],
                     lGeom[13][0] * lGeom[20][0], lGeom[13][1] * lGeom[20][1], lGeom[13][2] * lGeom[20][2],
@@ -104,7 +105,7 @@ public enum HiQualityEdgeCalculator {
                     r,g,b);
 
             addQuad(target,
-                    matrix,
+                    matrix, negDet,
                     lGeom[12][0] * lGeom[20][0], lGeom[12][1] * lGeom[20][1], lGeom[12][2] * lGeom[20][2],
                     lGeom[14][0] * lGeom[20][0], lGeom[14][1] * lGeom[20][1], lGeom[14][2] * lGeom[20][2],
                     lGeom[15][0] * lGeom[20][0], lGeom[15][1] * lGeom[20][1], lGeom[15][2] * lGeom[20][2],
@@ -116,7 +117,7 @@ public enum HiQualityEdgeCalculator {
                     r,g,b);
 
             addQuad(target,
-                    matrix,
+                    matrix, negDet,
                     lGeom[14][0] * lGeom[20][0], lGeom[14][1] * lGeom[20][1], lGeom[14][2] * lGeom[20][2],
                     lGeom[16][0] * lGeom[20][0], lGeom[16][1] * lGeom[20][1], lGeom[16][2] * lGeom[20][2],
                     lGeom[17][0] * lGeom[20][0], lGeom[17][1] * lGeom[20][1], lGeom[17][2] * lGeom[20][2],
@@ -128,7 +129,7 @@ public enum HiQualityEdgeCalculator {
                     r,g,b);
 
             addQuad(target,
-                    matrix,
+                    matrix, negDet,
                     lGeom[16][0] * lGeom[20][0], lGeom[16][1] * lGeom[20][1], lGeom[16][2] * lGeom[20][2],
                     lGeom[2][0] * lGeom[20][0], lGeom[2][1] * lGeom[20][1], lGeom[2][2] * lGeom[20][2],
                     lGeom[3][0] * lGeom[20][0], lGeom[3][1] * lGeom[20][1], lGeom[3][2] * lGeom[20][2],
@@ -248,26 +249,26 @@ public enum HiQualityEdgeCalculator {
     }
 
     private static void addQuad(List<Float> data,
-            Matrix4f matrix,
-            float v1x, float v1y, float v1z,
-            float v2x, float v2y, float v2z,
-            float v3x, float v3y, float v3z,
-            float v4x, float v4y, float v4z,
-            float ax, float ay, float az,
-            float bx, float by, float bz,
-            float cx, float cy, float cz,
-            float dx, float dy, float dz,
-            float r, float g, float b) {
+            Matrix4f matrix, boolean negDet,
+            float v1x, float v1y,
+            float v1z, float v2x, float v2y,
+            float v2z, float v3x, float v3y,
+            float v3z, float v4x, float v4y,
+            float v4z, float ax, float ay,
+            float az, float bx, float by,
+            float bz, float cx, float cy,
+            float cz, float dx, float dy,
+            float dz, float r, float g, float b) {
         final Vector4f v1;
         final Vector4f v2 = Matrix4f.transform(matrix, new Vector4f(v2x, v2y, v2z, 1f), null);
         final Vector4f v3;
         final Vector4f v4 = Matrix4f.transform(matrix, new Vector4f(v4x, v4y, v4z, 1f), null);
-        if (matrix.determinant() > 0f) {
-            v1 = Matrix4f.transform(matrix, new Vector4f(v3x, v3y, v3z, 1f), null);
-            v3 = Matrix4f.transform(matrix, new Vector4f(v1x, v1y, v1z, 1f), null);
-        } else {
+        if (negDet) {
             v1 = Matrix4f.transform(matrix, new Vector4f(v1x, v1y, v1z, 1f), null);
             v3 = Matrix4f.transform(matrix, new Vector4f(v3x, v3y, v3z, 1f), null);
+        } else {
+            v1 = Matrix4f.transform(matrix, new Vector4f(v3x, v3y, v3z, 1f), null);
+            v3 = Matrix4f.transform(matrix, new Vector4f(v1x, v1y, v1z, 1f), null);
         }
         addPoint(data, v1.x, v1.y, v1.z, ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, r, g, b);
         addPoint(data, v2.x, v2.y, v2.z, ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, r, g, b);

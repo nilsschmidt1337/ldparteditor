@@ -18,7 +18,7 @@ package org.nschmidt.ldparteditor.data;
 /**
  * Value object for the new render engine
  */
-class GDataAndWinding {
+public class GDataAndWinding {
     final GData data;
     final BFC winding;
     final boolean negativeDeterminant;
