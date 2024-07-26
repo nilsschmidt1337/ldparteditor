@@ -1,6 +1,6 @@
 package org.nschmidt.ldparteditor.data;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +21,8 @@ public enum HiQualityEdgeCalculator {
 
         // TODO Auto-generated method stub
 
-        List<Float> data = new LinkedList<>();
+        List<Float> data = new ArrayList<>(1_000_000);
+        List<Integer> indices = new ArrayList<>(1_000_000);
 
         for (GDataAndWinding d : dataInOrder) {
             List<Float> target = data;
@@ -243,7 +244,7 @@ public enum HiQualityEdgeCalculator {
         data.add(1f);
         data.add(0f);
 
-        result[0] = splitInChunks(data);
+        result[0] = splitInChunks(data, indices);
         result[1] = new EdgeData(new float[0][0], new int[0][0]);
         result[2] = new EdgeData(new float[0][0], new int[0][0]);
         result[3] = new EdgeData(new float[0][0], new int[0][0]);
@@ -308,16 +309,17 @@ public enum HiQualityEdgeCalculator {
         data.add(b);
     }
 
-    private static EdgeData splitInChunks(List<Float> data) {
+    private static EdgeData splitInChunks(List<Float> data, List<Integer> indices) {
         final int size = data.size();
         // TODO Do an actual split [multiple of 72 (18 * 4)]
-        float[][] result = new float[size > 0 ? 1 : 0][size];
+        final float[][] chunkedData = new float[size > 0 ? 1 : 0][size];
+        final int[][] chunkedIndices = new int[0][0];
         int i = 0;
         for (Float f : data) {
-            result[0][i] = f;
+            chunkedData[0][i] = f;
             i++;
         }
 
-        return new EdgeData(result, null);
+        return new EdgeData(chunkedData, chunkedIndices);
     }
 }
