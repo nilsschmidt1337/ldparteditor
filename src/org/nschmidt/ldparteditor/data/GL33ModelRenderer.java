@@ -46,6 +46,7 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.EdgeData;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.helper.StudLogo;
@@ -131,6 +132,7 @@ public class GL33ModelRenderer {
     private volatile float[] dataTriangles = null;
     private volatile float[] dataLines = new float[]{0f};
     private volatile float[][][] dataHiQualityLines = new float[][][]{{{}}};
+    private volatile int[][][] dataHiQualityLineIndices = new int[][][]{{{}}};
     private volatile float[] dataTempLines = new float[]{0f};
     private volatile float[] dataVertices = null;
     private volatile float[] dataCondlines = new float[]{0f};
@@ -1192,8 +1194,19 @@ public class GL33ModelRenderer {
                 // [2][*chunk*] hi-quality solid condlines
                 // [3][*chunk*] hi-quality transparent condlines
                 float[][][] hiQualityEdgeData = null;
+                int[][][] hiQualityEdgeIndices = null;
                 if (hiQualityEdges) {
-                    hiQualityEdgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder, hiddenSet, hideLines, hideCondlines);
+                    hiQualityEdgeData = new float[4][][];
+                    hiQualityEdgeIndices = new int[4][][];
+                    EdgeData[] edgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder, hiddenSet, hideLines, hideCondlines);
+                    hiQualityEdgeData[0] = edgeData[0].vertices();
+                    hiQualityEdgeData[1] = edgeData[1].vertices();
+                    hiQualityEdgeData[2] = edgeData[2].vertices();
+                    hiQualityEdgeData[3] = edgeData[3].vertices();
+                    hiQualityEdgeIndices[0] = edgeData[0].indices();
+                    hiQualityEdgeIndices[1] = edgeData[1].indices();
+                    hiQualityEdgeIndices[2] = edgeData[2].indices();
+                    hiQualityEdgeIndices[3] = edgeData[3].indices();
                 }
 
                 // Iterate the objects and generate the buffer data
@@ -2194,6 +2207,7 @@ public class GL33ModelRenderer {
                 lineSize = lineVertexCount;
                 dataLines = lineData;
                 dataHiQualityLines = hiQualityEdgeData;
+                dataHiQualityLineIndices = hiQualityEdgeIndices;
                 condlineSize = condlineVertexCount;
                 dataCondlines = condlineData;
                 tempLineSize = tempLineVertexCount;

@@ -6,13 +6,14 @@ import java.util.Set;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.ldparteditor.helper.EdgeData;
 
 public enum HiQualityEdgeCalculator {
     INSTANCE;
 
-    public static float[][][] hiQualityEdgeData(List<GDataAndWinding> dataInOrder, Set<GData> hiddenSet, boolean hideLines,
+    public static EdgeData[] hiQualityEdgeData(List<GDataAndWinding> dataInOrder, Set<GData> hiddenSet, boolean hideLines,
             boolean hideCondlines) {
-        float[][][] result = new float[4][0][0];
+        EdgeData[] result = new EdgeData[4];
         // [0][*chunk*] hi-quality solid lines
         // [1][*chunk*] hi-quality transparent lines
         // [2][*chunk*] hi-quality solid condlines
@@ -243,7 +244,9 @@ public enum HiQualityEdgeCalculator {
         data.add(0f);
 
         result[0] = splitInChunks(data);
-
+        result[1] = new EdgeData(new float[0][0], new int[0][0]);
+        result[2] = new EdgeData(new float[0][0], new int[0][0]);
+        result[3] = new EdgeData(new float[0][0], new int[0][0]);
 
         return result;
     }
@@ -305,7 +308,7 @@ public enum HiQualityEdgeCalculator {
         data.add(b);
     }
 
-    private static float[][] splitInChunks(List<Float> data) {
+    private static EdgeData splitInChunks(List<Float> data) {
         final int size = data.size();
         // TODO Do an actual split [multiple of 72 (18 * 4)]
         float[][] result = new float[size > 0 ? 1 : 0][size];
@@ -315,6 +318,6 @@ public enum HiQualityEdgeCalculator {
             i++;
         }
 
-        return result;
+        return new EdgeData(result, null);
     }
 }
