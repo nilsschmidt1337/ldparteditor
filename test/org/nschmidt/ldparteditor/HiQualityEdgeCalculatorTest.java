@@ -64,6 +64,75 @@ public class HiQualityEdgeCalculatorTest {
     }
 
     @Test
+    public void testOneTransparentEdge() {
+        final DatFile df = new DatFile(TEST);
+        final BigDecimal one = BigDecimal.ONE;
+        final BigDecimal zero = BigDecimal.ZERO;
+        final GData1 parent = new GData1(0, 0, 0, 0, 0,
+            View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
+            View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
+        final GData2 edge = new GData2(0, 0, 0, 0, 0.5f, zero, zero, zero, one, zero, zero, parent, df, true);
+        final GDataAndWinding w = new GDataAndWinding(edge, BFC.CCW, false, false, 0);
+        EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w), Set.of(), false, false);
+        assertEquals(4, result.length);
+        assertEquals(0, result[0].vertices().length);
+        assertEquals(1, result[1].vertices().length);
+        assertEquals(288, result[1].vertices()[0].length);
+        assertEquals(0, result[2].vertices().length);
+        assertEquals(0, result[3].vertices().length);
+        assertEquals(0, result[0].indices().length);
+        assertEquals(32, result[1].indices()[0].length);
+        assertEquals(0, result[2].indices().length);
+        assertEquals(0, result[3].indices().length);
+    }
+
+    @Test
+    public void testOneCondline() {
+        final DatFile df = new DatFile(TEST);
+        final BigDecimal one = BigDecimal.ONE;
+        final BigDecimal zero = BigDecimal.ZERO;
+        final GData1 parent = new GData1(0, 0, 0, 0, 0,
+            View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
+            View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
+        final GData5 condline = new GData5(0, 0, 0, 0, 1f, zero, zero, zero, one, zero, zero, zero, zero, zero, zero, zero, zero, parent, df);
+        final GDataAndWinding w = new GDataAndWinding(condline, BFC.CCW, false, false, 0);
+        EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w), Set.of(), false, false);
+        assertEquals(4, result.length);
+        assertEquals(0, result[0].vertices().length);
+        assertEquals(0, result[1].vertices().length);
+        assertEquals(1, result[2].vertices().length);
+        assertEquals(0, result[3].vertices().length);
+        assertEquals(288, result[2].vertices()[0].length);
+        assertEquals(0, result[0].indices().length);
+        assertEquals(0, result[1].indices().length);
+        assertEquals(32, result[2].indices()[0].length);
+        assertEquals(0, result[3].indices().length);
+    }
+
+    @Test
+    public void testOneTransparentCondline() {
+        final DatFile df = new DatFile(TEST);
+        final BigDecimal one = BigDecimal.ONE;
+        final BigDecimal zero = BigDecimal.ZERO;
+        final GData1 parent = new GData1(0, 0, 0, 0, 0,
+            View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
+            View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
+        final GData5 condline = new GData5(0, 0, 0, 0, 0.5f, zero, zero, zero, one, zero, zero, zero, zero, zero, zero, zero, zero, parent, df);
+        final GDataAndWinding w = new GDataAndWinding(condline, BFC.CCW, false, false, 0);
+        EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w), Set.of(), false, false);
+        assertEquals(4, result.length);
+        assertEquals(0, result[0].vertices().length);
+        assertEquals(0, result[1].vertices().length);
+        assertEquals(0, result[2].vertices().length);
+        assertEquals(1, result[3].vertices().length);
+        assertEquals(288, result[3].vertices()[0].length);
+        assertEquals(0, result[0].indices().length);
+        assertEquals(0, result[1].indices().length);
+        assertEquals(0, result[2].indices().length);
+        assertEquals(32, result[3].indices()[0].length);
+    }
+
+    @Test
     public void testOneHiddenEdge() {
         final DatFile df = new DatFile(TEST);
         final BigDecimal one = BigDecimal.ONE;

@@ -19,21 +19,27 @@ public enum HiQualityEdgeCalculator {
         // [2][*chunk*] hi-quality solid condlines
         // [3][*chunk*] hi-quality transparent condlines
 
-        // TODO Auto-generated method stub
-
-        List<Float> data = new ArrayList<>(1_000_000);
-        List<Integer> indices = new ArrayList<>(1_000_000);
+        List<Float> dataLines = new ArrayList<>(1_000_000);
+        List<Integer> indicesLines = new ArrayList<>(1_000_000);
 
         List<Float> dataCondlines = new ArrayList<>(1_000_000);
         List<Integer> indicesCondlines = new ArrayList<>(1_000_000);
 
-        int pointCount = 0;
+        List<Float> dataTransparentLines = new ArrayList<>(10_000);
+        List<Integer> indicesTransparentLines = new ArrayList<>(10_000);
+
+        List<Float> dataTransparentCondlines = new ArrayList<>(10_000);
+        List<Integer> indicesTransparentCondlines = new ArrayList<>(10_000);
+
+        int pointCountLines = 0;
         int pointCountCondlines = 0;
+        int pointCountTransparentLines = 0;
+        int pointCountTransparentCondlines = 0;
 
         for (GDataAndWinding d : dataInOrder) {
-            int index = pointCount;
-            List<Float> target = data;
-            List<Integer> tagetIndices = indices;
+            int index = pointCountLines;
+            List<Float> target = dataLines;
+            List<Integer> tagetIndices = indicesLines;
             final GData gd = d.data;
             final boolean negDet = d.negativeDeterminant;
             if (hiddenSet.contains(gd)) continue;
@@ -43,12 +49,21 @@ public enum HiQualityEdgeCalculator {
             final float g;
             final float b;
             if (!hideLines && gd instanceof GData2 gd2) {
-                pointCount += 16;
+                if (gd2.a < 1f) {
+                    index = pointCountTransparentLines;
+                    pointCountTransparentLines += 16;
+                    target = dataTransparentLines;
+                    tagetIndices = indicesTransparentLines;
+                } else {
+                    pointCountLines += 16;
+                }
+
                 lGeom = gd2.lGeom;
                 matrix = gd2.parent.productMatrix;
                 r = gd2.r;
                 g = gd2.g;
                 b = gd2.b;
+
 
                 for (int i = 2; i < 18; i++) {
                     addPoint(target, matrix,
@@ -56,10 +71,17 @@ public enum HiQualityEdgeCalculator {
                             r,g,b);
                 }
             } else if (!hideCondlines && gd instanceof GData5 gd5) {
-                index = pointCountCondlines;
-                pointCountCondlines += 16;
-                target = dataCondlines;
-                tagetIndices = indicesCondlines;
+                if (gd5.a < 1f) {
+                    index = pointCountTransparentCondlines;
+                    pointCountTransparentCondlines += 16;
+                    target = dataTransparentCondlines;
+                    tagetIndices = indicesTransparentCondlines;
+                } else {
+                    index = pointCountCondlines;
+                    pointCountCondlines += 16;
+                    target = dataCondlines;
+                    tagetIndices = indicesCondlines;
+                }
 
                 lGeom = gd5.lGeom;
                 matrix = gd5.parent.productMatrix;
@@ -116,10 +138,10 @@ public enum HiQualityEdgeCalculator {
             }
         }
 
-        result[0] = splitInChunks(data, indices);
-        result[1] = new EdgeData(new float[0][0], new int[0][0]);
+        result[0] = splitInChunks(dataLines, indicesLines);
+        result[1] = splitInChunks(dataTransparentLines, indicesTransparentLines);
         result[2] = splitInChunks(dataCondlines, indicesCondlines);
-        result[3] = new EdgeData(new float[0][0], new int[0][0]);
+        result[3] = splitInChunks(dataTransparentCondlines, indicesTransparentCondlines);
 
         return result;
     }
