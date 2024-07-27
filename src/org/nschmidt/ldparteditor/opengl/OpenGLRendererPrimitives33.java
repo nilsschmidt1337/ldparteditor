@@ -24,7 +24,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -35,7 +34,6 @@ import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.FontLetters;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Arrow;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -127,6 +125,9 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
 
         int projection = shaderProgram.getUniformLocation("projection" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(projection, false, projectionBuf);
+
+        int alphaInv = shaderProgram.getUniformLocation("alphaInv"); //$NON-NLS-1$
+        GL20.glUniform1f(alphaInv, 0f);
 
         stack.clear();
         GL33HelperPrimitives.createVBOprimitiveArea();

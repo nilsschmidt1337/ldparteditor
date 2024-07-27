@@ -164,8 +164,14 @@ public enum HiQualityEdgeCalculator {
             float vx, float vy, float vz,
             float r, float g, float b) {
         final Vector4f v = Matrix4f.transform(matrix, new Vector4f(vx, vy, vz, 1f), null);
-        // TODO Inline later?
-        addPoint(data, v.x, v.y, v.z, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, r, g, b);
+        // Position
+        data.add(v.x);
+        data.add(v.y);
+        data.add(v.z);
+        // Color
+        data.add(r);
+        data.add(g);
+        data.add(b);
     }
 
     private static void addPoint(List<Float> data, Matrix4f matrix,

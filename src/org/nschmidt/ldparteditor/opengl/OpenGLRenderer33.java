@@ -367,7 +367,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             if (ldrawStandardMode) {
                 modelRendererLDrawStandard.draw(stack, shaderProgram, shaderProgramCondline, true);
             } else {
-                modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgramCondline2, shaderProgram2D, true);
+                modelRenderer.draw(stack, shaderProgram, shaderProgram2, shaderProgramCondline, shaderProgramCondline2, shaderProgram2D, true);
             }
 
             if (window.getCompositePrimitive().isDoingDND()) {
@@ -378,6 +378,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     GL33HelperPrimitives.createVBOprimitiveArea();
                     stack.setShader(shaderProgram2);
                     shaderProgram2.use();
+                    GL20.glUniform1f(shaderProgram2.getUniformLocation("alphaInv"), 0f); //$NON-NLS-1$
                     p.drawGL33(stack, cur.x, cur.y, cur.z);
                     stack.setShader(shaderProgram);
                     shaderProgram.use();
@@ -391,11 +392,12 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             if (ldrawStandardMode) {
                 modelRendererLDrawStandard.draw(stack, shaderProgram, shaderProgramCondline, false);
             } else {
-                modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgramCondline2, shaderProgram2D, false);
+                modelRenderer.draw(stack, shaderProgram, shaderProgram2, shaderProgramCondline, shaderProgramCondline2, shaderProgram2D, false);
             }
 
             stack.setShader(shaderProgram2);
             shaderProgram2.use();
+            GL20.glUniform1f(shaderProgram2.getUniformLocation("alphaInv"), 0f); //$NON-NLS-1$
 
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 

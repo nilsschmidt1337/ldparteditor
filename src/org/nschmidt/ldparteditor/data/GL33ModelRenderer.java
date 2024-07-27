@@ -2274,7 +2274,7 @@ public class GL33ModelRenderer {
     private int toCSG;
     private int tsCSG;
 
-    public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, GLShader condlineShader2, GLShader glyphShader, boolean drawSolidMaterials) {
+    public void draw(GLMatrixStack stack, GLShader mainShader, GLShader lineShader, GLShader condlineShader, GLShader condlineShader2, GLShader glyphShader, boolean drawSolidMaterials) {
 
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewportInverse();
@@ -2387,13 +2387,11 @@ public class GL33ModelRenderer {
             }
             lock.unlock();
 
-            condlineShader2.use();
-            stack.setShader(condlineShader2);
+            lineShader.use();
+            stack.setShader(lineShader);
 
-            // Draw normal lines first (with a condline shader + 'Show All')
-            GL20.glUniform1f(condlineShader2.getUniformLocation("showAll"), 1f); //$NON-NLS-1$
-            GL20.glUniform1f(condlineShader2.getUniformLocation("condlineMode"), 0f); //$NON-NLS-1$
-            GL20.glUniform1f(condlineShader2.getUniformLocation("alpha"), drawSolidMaterials ? 1f : 0.5f); //$NON-NLS-1$
+            // Draw normal lines first (with a line shader)
+            GL20.glUniform1f(lineShader.getUniformLocation("alphaInv"), drawSolidMaterials ? 0f : 0.5f); //$NON-NLS-1$
 
             GL30.glBindVertexArray(vaoCondlines);
             i = 0;
@@ -2405,21 +2403,13 @@ public class GL33ModelRenderer {
                 GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboCondlinesIndices);
                 GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
 
-                // A vertex consists of 18 floats, a quad of 4 vertices
+                // A vertex consists of 6 floats, a quad of 4 vertices
                 final int indexCount = indices.length;
 
                 GL20.glEnableVertexAttribArray(0);
-                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 18 * 4, 0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 6 * 4, 0);
                 GL20.glEnableVertexAttribArray(1);
-                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 18 * 4, 3 * 4l);
-                GL20.glEnableVertexAttribArray(2);
-                GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 18 * 4, 6 * 4l);
-                GL20.glEnableVertexAttribArray(3);
-                GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 18 * 4, 9 * 4l);
-                GL20.glEnableVertexAttribArray(4);
-                GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 18 * 4, 12 * 4l);
-                GL20.glEnableVertexAttribArray(5);
-                GL20.glVertexAttribPointer(5, 3, GL11.GL_FLOAT, false, 18 * 4, 15 * 4l);
+                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 6 * 4, 3 * 4l);
 
                 Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
                 Matrix4f.transform(ivm, tr, tr);
@@ -2434,6 +2424,9 @@ public class GL33ModelRenderer {
                 stack.glPopMatrix();
                 i++;
             }
+
+            condlineShader2.use();
+            stack.setShader(condlineShader2);
 
             // Draw condlines next
             GL20.glUniform1f(condlineShader2.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
