@@ -14,10 +14,10 @@ public enum HiQualityEdgeCalculator {
     public static EdgeData[] hiQualityEdgeData(List<GDataAndWinding> dataInOrder, List<Float> dataLines, List<Integer> indicesLines, List<Float> dataTransparentLines, List<Integer> indicesTransparentLines, List<Float> dataCondlines, List<Integer> indicesCondlines, List<Float> dataTransparentCondlines, List<Integer> indicesTransparentCondlines, Set<GData> hiddenSet, boolean hideLines,
             boolean hideCondlines, boolean condlineMode) {
         EdgeData[] result = new EdgeData[4];
-        // [0][*chunk*] hi-quality solid lines
-        // [1][*chunk*] hi-quality transparent lines
-        // [2][*chunk*] hi-quality solid condlines
-        // [3][*chunk*] hi-quality transparent condlines
+        // [0] hi-quality solid lines
+        // [1] hi-quality transparent lines
+        // [2] hi-quality solid condlines
+        // [3] hi-quality transparent condlines
         dataLines.clear();
         indicesLines.clear();
 
@@ -213,16 +213,16 @@ public enum HiQualityEdgeCalculator {
     private static EdgeData copyData(List<Float> data, List<Integer> indices) {
         final int size = data.size();
         final int indexCount = indices.size();
-        final float[][] copiedData = new float[size > 0 ? 1 : 0][size];
-        final int[][] copiedIndices = new int[indexCount > 0 ? 1 : 0][indexCount];
+        final float[] copiedData = new float[size];
+        final int[] copiedIndices = new int[indexCount];
         int i = 0;
         for (Float f : data) {
-            copiedData[0][i++] = f;
+            copiedData[i++] = f;
         }
 
         i = 0;
         for (Integer n : indices) {
-            copiedIndices[0][i++] = n;
+            copiedIndices[i++] = n;
         }
 
         return new EdgeData(copiedData, copiedIndices);

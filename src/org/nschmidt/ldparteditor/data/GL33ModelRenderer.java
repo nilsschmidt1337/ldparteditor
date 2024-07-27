@@ -132,8 +132,8 @@ public class GL33ModelRenderer {
     private volatile SortedSet<Vertex> pureCondlineControlPoints = new TreeSet<>();
     private volatile float[] dataTriangles = null;
     private volatile float[] dataLines = new float[]{0f};
-    private volatile float[][][] dataHiQualityLines = new float[][][]{{{}}};
-    private volatile int[][][] dataHiQualityLineIndices = new int[][][]{{{}}};
+    private volatile float[][] dataHiQualityLines = new float[][]{{}};
+    private volatile int[][] dataHiQualityLineIndices = new int[][]{{}};
     private volatile float[] dataTempLines = new float[]{0f};
     private volatile float[] dataVertices = null;
     private volatile float[] dataCondlines = new float[]{0f};
@@ -1206,15 +1206,15 @@ public class GL33ModelRenderer {
                 float yn4 = 0f;
                 float zn4 = 0f;
 
-                // [0][*chunk*] hi-quality solid lines
-                // [1][*chunk*] hi-quality transparent lines
-                // [2][*chunk*] hi-quality solid condlines
-                // [3][*chunk*] hi-quality transparent condlines
-                float[][][] hiQualityEdgeData = null;
-                int[][][] hiQualityEdgeIndices = null;
+                // [0] hi-quality solid lines
+                // [1] hi-quality transparent lines
+                // [2] hi-quality solid condlines
+                // [3] hi-quality transparent condlines
+                float[][] hiQualityEdgeData = null;
+                int[][] hiQualityEdgeIndices = null;
                 if (hiQualityEdges) {
-                    hiQualityEdgeData = new float[4][][];
-                    hiQualityEdgeIndices = new int[4][][];
+                    hiQualityEdgeData = new float[4][];
+                    hiQualityEdgeIndices = new int[4][];
                     EdgeData[] edgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder,
                             dataLinesList, indicesLines, dataTransparentLines, indicesTransparentLines,
                             dataCondlinesList, indicesCondlines, dataTransparentCondlines, indicesTransparentCondlines,
@@ -2371,21 +2371,20 @@ public class GL33ModelRenderer {
             mainShader.lightsOff();
 
             String tmp;
-            // [0][*chunk*] hi-quality solid lines
-            // [1][*chunk*] hi-quality transparent lines
-            // [2][*chunk*] hi-quality solid condlines
-            // [3][*chunk*] hi-quality transparent condlines
-            float[][] hiQualityLines;
-            float[][] hiQualityCondlines;
-            int[][] hiQualityLineIndices;
-            int[][] hiQualityCondlineIndices;
-            int i;
+            // [0] hi-quality solid lines
+            // [1] hi-quality transparent lines
+            // [2] hi-quality solid condlines
+            // [3] hi-quality transparent condlines
+            float[] hiQualityLines;
+            float[] hiQualityCondlines;
+            int[] hiQualityLineIndices;
+            int[] hiQualityCondlineIndices;
             lock.lock();
             if (dataHiQualityLines == null) {
-                hiQualityLines = new float[0][0];
-                hiQualityCondlines = new float[0][0];
-                hiQualityLineIndices = new int[0][0];
-                hiQualityCondlineIndices = new int[0][0];
+                hiQualityLines = new float[0];
+                hiQualityCondlines = new float[0];
+                hiQualityLineIndices = new int[0];
+                hiQualityCondlineIndices = new int[0];
             } else if (drawSolidMaterials) {
                 hiQualityLines = dataHiQualityLines[0];
                 hiQualityCondlines = dataHiQualityLines[2];
@@ -2406,10 +2405,9 @@ public class GL33ModelRenderer {
             GL20.glUniform1f(lineShader.getUniformLocation("alphaInv"), drawSolidMaterials ? 0f : 0.5f); //$NON-NLS-1$
 
             GL30.glBindVertexArray(vaoCondlines);
-            i = 0;
-            for (float[] data : hiQualityLines) {
-                if (data.length == 0) break;
-                int[] indices = hiQualityLineIndices[i];
+            if (hiQualityLines.length > 0) {
+                float[] data = hiQualityLines;
+                int[] indices = hiQualityLineIndices;
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
                 GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboCondlinesIndices);
@@ -2434,7 +2432,6 @@ public class GL33ModelRenderer {
                 GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
                 stack.glPopMatrix();
-                i++;
             }
 
             condlineShader2.use();
@@ -2445,10 +2442,9 @@ public class GL33ModelRenderer {
             GL20.glUniform1f(condlineShader2.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
             GL20.glUniform1f(condlineShader2.getUniformLocation("alpha"), drawSolidMaterials ? 1f : 0.5f); //$NON-NLS-1$
 
-            i = 0;
-            for (float[] data : hiQualityCondlines) {
-                if (data.length == 0) break;
-                int[] indices = hiQualityCondlineIndices[i];
+            if (hiQualityCondlines.length > 0) {
+                float[] data = hiQualityCondlines;
+                int[] indices = hiQualityCondlineIndices;
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
                 GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboCondlinesIndices);
@@ -2482,7 +2478,6 @@ public class GL33ModelRenderer {
                 GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
                 stack.glPopMatrix();
-                i++;
             }
 
             mainShader.use();
