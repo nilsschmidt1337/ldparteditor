@@ -12,25 +12,24 @@ import org.nschmidt.ldparteditor.helper.EdgeData;
 public enum HiQualityEdgeCalculator {
     INSTANCE;
 
-    public static EdgeData[] hiQualityEdgeData(List<GDataAndWinding> dataInOrder, Set<GData> hiddenSet, boolean hideLines,
+    public static EdgeData[] hiQualityEdgeData(List<GDataAndWinding> dataInOrder, List<Float> dataLines, List<Integer> indicesLines, List<Float> dataTransparentLines, List<Integer> indicesTransparentLines, List<Float> dataCondlines, List<Integer> indicesCondlines, List<Float> dataTransparentCondlines, List<Integer> indicesTransparentCondlines, Set<GData> hiddenSet, boolean hideLines,
             boolean hideCondlines, boolean condlineMode) {
         EdgeData[] result = new EdgeData[4];
         // [0][*chunk*] hi-quality solid lines
         // [1][*chunk*] hi-quality transparent lines
         // [2][*chunk*] hi-quality solid condlines
         // [3][*chunk*] hi-quality transparent condlines
+        dataLines.clear();
+        indicesLines.clear();
 
-        List<Float> dataLines = new ArrayList<>(1_000_000);
-        List<Integer> indicesLines = new ArrayList<>(1_000_000);
+        dataCondlines.clear();
+        indicesCondlines.clear();
 
-        List<Float> dataCondlines = new ArrayList<>(1_000_000);
-        List<Integer> indicesCondlines = new ArrayList<>(1_000_000);
+        dataTransparentLines.clear();
+        indicesTransparentLines.clear();
 
-        List<Float> dataTransparentLines = new ArrayList<>(10_000);
-        List<Integer> indicesTransparentLines = new ArrayList<>(10_000);
-
-        List<Float> dataTransparentCondlines = new ArrayList<>(10_000);
-        List<Integer> indicesTransparentCondlines = new ArrayList<>(10_000);
+        dataTransparentCondlines.clear();
+        indicesTransparentCondlines.clear();
 
         int pointCountLines = 0;
         int pointCountCondlines = 0;

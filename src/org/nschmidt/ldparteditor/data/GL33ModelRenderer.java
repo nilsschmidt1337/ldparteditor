@@ -324,6 +324,15 @@ public class GL33ModelRenderer {
         final Matrix4f mm = new Matrix4f();
         Matrix4f.setIdentity(mm);
 
+        final List<Float> dataLinesList = new ArrayList<>(1_000_000);
+        final List<Integer> indicesLines = new ArrayList<>(1_000_000);
+        final List<Float> dataCondlinesList = new ArrayList<>(1_000_000);
+        final List<Integer> indicesCondlines = new ArrayList<>(1_000_000);
+        final List<Float> dataTransparentLines = new ArrayList<>(10_000);
+        final List<Integer> indicesTransparentLines = new ArrayList<>(10_000);
+        final List<Float> dataTransparentCondlines = new ArrayList<>(10_000);
+        final List<Integer> indicesTransparentCondlines = new ArrayList<>(10_000);
+
         final Set<GDataCSG> oldCsgData = new HashSet<>();
         final Set<GData> selectionSet = new HashSet<>();
         final Set<GData> hiddenSet = new HashSet<>();
@@ -1206,7 +1215,10 @@ public class GL33ModelRenderer {
                 if (hiQualityEdges) {
                     hiQualityEdgeData = new float[4][][];
                     hiQualityEdgeIndices = new int[4][][];
-                    EdgeData[] edgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder, hiddenSet, hideLines, hideCondlines, condlineMode);
+                    EdgeData[] edgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder,
+                            dataLinesList, indicesLines, dataTransparentLines, indicesTransparentLines,
+                            dataCondlinesList, indicesCondlines, dataTransparentCondlines, indicesTransparentCondlines,
+                            hiddenSet, hideLines, hideCondlines, condlineMode);
                     hiQualityEdgeData[0] = edgeData[0].vertices();
                     hiQualityEdgeData[1] = edgeData[1].vertices();
                     hiQualityEdgeData[2] = edgeData[2].vertices();
