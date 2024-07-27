@@ -24,10 +24,16 @@ public enum HiQualityEdgeCalculator {
         List<Float> data = new ArrayList<>(1_000_000);
         List<Integer> indices = new ArrayList<>(1_000_000);
 
+        List<Float> dataCondlines = new ArrayList<>(1_000_000);
+        List<Integer> indicesCondlines = new ArrayList<>(1_000_000);
+
         int pointCount = 0;
+        int pointCountCondlines = 0;
 
         for (GDataAndWinding d : dataInOrder) {
+            int index = pointCount;
             List<Float> target = data;
+            List<Integer> tagetIndices = indices;
             final GData gd = d.data;
             final boolean negDet = d.negativeDeterminant;
             if (hiddenSet.contains(gd)) continue;
@@ -37,86 +43,109 @@ public enum HiQualityEdgeCalculator {
             final float g;
             final float b;
             if (!hideLines && gd instanceof GData2 gd2) {
+                pointCount += 16;
                 lGeom = gd2.lGeom;
                 matrix = gd2.parent.productMatrix;
                 r = gd2.r;
                 g = gd2.g;
                 b = gd2.b;
+
+                for (int i = 2; i < 18; i++) {
+                    addPoint(target, matrix,
+                            lGeom[i][0] * lGeom[20][0], lGeom[i][1] * lGeom[20][1], lGeom[i][2] * lGeom[20][2],
+                            r,g,b);
+                }
             } else if (!hideCondlines && gd instanceof GData5 gd5) {
-                continue;
+                index = pointCountCondlines;
+                pointCountCondlines += 16;
+                target = dataCondlines;
+                tagetIndices = indicesCondlines;
+
+                lGeom = gd5.lGeom;
+                matrix = gd5.parent.productMatrix;
+                r = gd5.r;
+                g = gd5.g;
+                b = gd5.b;
+
+                for (int i = 2; i < 18; i++) {
+                    addPoint(target, matrix,
+                            lGeom[i][0] * lGeom[20][0], lGeom[i][1] * lGeom[20][1], lGeom[i][2] * lGeom[20][2],
+                            gd5.x1,gd5.y1,gd5.z1,
+                            gd5.x2,gd5.y2,gd5.z2,
+                            gd5.x3,gd5.y3,gd5.z3,
+                            gd5.x4,gd5.y4,gd5.z4,
+                            r,g,b);
+                }
             } else {
                 continue;
             }
 
-            for (int i = 2; i < 18; i++) {
-                addPoint(target, matrix,
-                        lGeom[i][0] * lGeom[20][0], lGeom[i][1] * lGeom[20][1], lGeom[i][2] * lGeom[20][2],
-                        0f,0f,0f,
-                        0f,0f,0f,
-                        0f,0f,0f,
-                        0f,0f,0f,
-                        r,g,b);
-            }
 
-            int index = pointCount;
-            pointCount += 16;
             if (negDet) {
                 int startIndex1 = index;
                 int startIndex2 = index + 1;
 
                 for (int i = 0; i < 7; i++) {
-                    indices.add(index + 3);
-                    indices.add(index + 1);
-                    indices.add(index);
-                    indices.add(index + 2);
+                    tagetIndices.add(index + 3);
+                    tagetIndices.add(index + 1);
+                    tagetIndices.add(index);
+                    tagetIndices.add(index + 2);
                     index += 2;
                 }
 
-                indices.add(index);
-                indices.add(startIndex1);
-                indices.add(startIndex2);
-                indices.add(index + 1);
+                tagetIndices.add(index);
+                tagetIndices.add(startIndex1);
+                tagetIndices.add(startIndex2);
+                tagetIndices.add(index + 1);
             } else {
                 int startIndex1 = index;
                 int startIndex2 = index + 1;
 
                 for (int i = 0; i < 7; i++) {
-                    indices.add(index + 3);
-                    indices.add(index + 2);
-                    indices.add(index);
-                    indices.add(index + 1);
+                    tagetIndices.add(index + 3);
+                    tagetIndices.add(index + 2);
+                    tagetIndices.add(index);
+                    tagetIndices.add(index + 1);
                     index += 2;
                 }
 
-                indices.add(index);
-                indices.add(index + 1);
-                indices.add(startIndex2);
-                indices.add(startIndex1);
+                tagetIndices.add(index);
+                tagetIndices.add(index + 1);
+                tagetIndices.add(startIndex2);
+                tagetIndices.add(startIndex1);
             }
         }
 
         result[0] = splitInChunks(data, indices);
         result[1] = new EdgeData(new float[0][0], new int[0][0]);
-        result[2] = new EdgeData(new float[0][0], new int[0][0]);
+        result[2] = splitInChunks(dataCondlines, indicesCondlines);
         result[3] = new EdgeData(new float[0][0], new int[0][0]);
 
         return result;
     }
 
     private static void addPoint(List<Float> data, Matrix4f matrix,
-            float v1x, float v1y, float v1z,
+            float vx, float vy, float vz,
+            float r, float g, float b) {
+        final Vector4f v = Matrix4f.transform(matrix, new Vector4f(vx, vy, vz, 1f), null);
+        // TODO Inline later?
+        addPoint(data, v.x, v.y, v.z, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, r, g, b);
+    }
+
+    private static void addPoint(List<Float> data, Matrix4f matrix,
+            float vx, float vy, float vz,
             float ax, float ay,float az,
             float bx, float by, float bz,
             float cx, float cy, float cz,
             float dx, float dy, float dz,
-            float r, float g, float b) {
-        final Vector4f v = Matrix4f.transform(matrix, new Vector4f(v1x, v1y, v1z, 1f), null);
-        /*final Vector4f a = Matrix4f.transform(matrix, new Vector4f(v1x, v1y, v1z, 1f), null);
-        final Vector4f b = Matrix4f.transform(matrix, new Vector4f(v1x, v1y, v1z, 1f), null);
-        final Vector4f c = Matrix4f.transform(matrix, new Vector4f(v1x, v1y, v1z, 1f), null);
-        final Vector4f d = Matrix4f.transform(matrix, new Vector4f(v1x, v1y, v1z, 1f), null);*/
+            float colR, float colG, float colB) {
+        final Vector4f v = Matrix4f.transform(matrix, new Vector4f(vx, vy, vz, 1f), null);
+        final Vector4f a = Matrix4f.transform(matrix, new Vector4f(ax, ay, az, 1f), null);
+        final Vector4f b = Matrix4f.transform(matrix, new Vector4f(bx, by, bz, 1f), null);
+        final Vector4f c = Matrix4f.transform(matrix, new Vector4f(cx, cy, cz, 1f), null);
+        final Vector4f d = Matrix4f.transform(matrix, new Vector4f(dx, dy, dz, 1f), null);
         // TODO Inline later?
-        addPoint(data, v.x, v.y, v.z, ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, r, g, b);
+        addPoint(data, v.x, v.y, v.z, a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z, d.x, d.y, d.z, colR, colG, colB);
     }
 
     private static void addPoint(List<Float> data, float x, float y, float z, float ax, float ay, float az,

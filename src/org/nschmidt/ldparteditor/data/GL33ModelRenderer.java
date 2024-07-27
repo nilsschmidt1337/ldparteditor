@@ -2446,8 +2446,11 @@ public class GL33ModelRenderer {
                 int[] indices = hiQualityCondlineIndices[i];
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
+                GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboCondlinesIndices);
+                GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
+
                 // A vertex consists of 18 floats, a quad of 4 vertices
-                final int conlineQuadCount = data.length / 18 / 4;
+                final int indexCount = indices.length;
 
                 GL20.glEnableVertexAttribArray(0);
                 GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 18 * 4, 0);
@@ -2462,14 +2465,16 @@ public class GL33ModelRenderer {
                 GL20.glEnableVertexAttribArray(5);
                 GL20.glVertexAttribPointer(5, 3, GL11.GL_FLOAT, false, 18 * 4, 15 * 4l);
 
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
                 Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
                 Matrix4f.transform(ivm, tr, tr);
                 stack.glPushMatrix();
                 stack.glTranslatef(tr.x, tr.y, tr.z);
 
-                GL11.glDrawArrays(GL11.GL_QUADS, 0, conlineQuadCount);
+                GL11.glDrawElements(GL11.GL_QUADS, indexCount, GL11.GL_UNSIGNED_INT, 0);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+                GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
                 stack.glPopMatrix();
                 i++;
