@@ -2370,7 +2370,6 @@ public class GL33ModelRenderer {
         if (drawLines && LineThicknessToolItem.hasHiQualityEdges()) {
             mainShader.lightsOff();
 
-            String tmp;
             // [0] hi-quality solid lines
             // [1] hi-quality transparent lines
             // [2] hi-quality solid condlines

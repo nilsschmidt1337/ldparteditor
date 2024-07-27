@@ -63,29 +63,21 @@ public enum HiQualityEdgeCalculator {
                 g = gd2.g;
                 b = gd2.b;
 
-
                 for (int i = 2; i < 18; i++) {
                     addPoint(target, matrix,
                             lGeom[i][0] * lGeom[20][0], lGeom[i][1] * lGeom[20][1], lGeom[i][2] * lGeom[20][2],
                             r,g,b);
                 }
             } else if (!hideCondlines && gd instanceof GData5 gd5) {
-                if (gd5.a < 1f) {
-                    index = pointCountTransparentCondlines;
-                    pointCountTransparentCondlines += 16;
-                    target = dataTransparentCondlines;
-                    tagetIndices = indicesTransparentCondlines;
-                } else {
-                    index = pointCountCondlines;
-                    pointCountCondlines += 16;
-                    target = dataCondlines;
-                    tagetIndices = indicesCondlines;
-                }
-
                 lGeom = gd5.lGeom;
                 matrix = gd5.parent.productMatrix;
 
                 if (condlineMode) {
+                    index = pointCountLines;
+                    pointCountLines += 16;
+                    target = dataLines;
+                    tagetIndices = indicesLines;
+
                     if (gd5.wasShown()) {
                         r = Colour.condlineShownColourR;
                         g = Colour.condlineShownColourG;
@@ -95,21 +87,40 @@ public enum HiQualityEdgeCalculator {
                         g = Colour.condlineHiddenColourG;
                         b = Colour.condlineHiddenColourB;
                     }
+
+                    for (int i = 2; i < 18; i++) {
+                        addPoint(target, matrix,
+                                lGeom[i][0] * lGeom[20][0], lGeom[i][1] * lGeom[20][1], lGeom[i][2] * lGeom[20][2],
+                                r,g,b);
+                    }
                 } else {
+                    if (gd5.a < 1f) {
+                        index = pointCountTransparentCondlines;
+                        pointCountTransparentCondlines += 16;
+                        target = dataTransparentCondlines;
+                        tagetIndices = indicesTransparentCondlines;
+                    } else {
+                        index = pointCountCondlines;
+                        pointCountCondlines += 16;
+                        target = dataCondlines;
+                        tagetIndices = indicesCondlines;
+                    }
+
                     r = gd5.r;
                     g = gd5.g;
                     b = gd5.b;
+
+                    for (int i = 2; i < 18; i++) {
+                        addPoint(target, matrix,
+                                lGeom[i][0] * lGeom[20][0], lGeom[i][1] * lGeom[20][1], lGeom[i][2] * lGeom[20][2],
+                                gd5.x1,gd5.y1,gd5.z1,
+                                gd5.x2,gd5.y2,gd5.z2,
+                                gd5.x3,gd5.y3,gd5.z3,
+                                gd5.x4,gd5.y4,gd5.z4,
+                                r,g,b);
+                    }
                 }
 
-                for (int i = 2; i < 18; i++) {
-                    addPoint(target, matrix,
-                            lGeom[i][0] * lGeom[20][0], lGeom[i][1] * lGeom[20][1], lGeom[i][2] * lGeom[20][2],
-                            gd5.x1,gd5.y1,gd5.z1,
-                            gd5.x2,gd5.y2,gd5.z2,
-                            gd5.x3,gd5.y3,gd5.z3,
-                            gd5.x4,gd5.y4,gd5.z4,
-                            r,g,b);
-                }
             } else {
                 continue;
             }
