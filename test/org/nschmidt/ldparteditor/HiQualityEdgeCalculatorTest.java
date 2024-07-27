@@ -25,12 +25,19 @@ public class HiQualityEdgeCalculatorTest {
     @Test
     public void testEmptyData() {
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(), Set.of(), false, false);
+        assertEmptyResult(result);
+    }
+
+    private void assertEmptyResult(EdgeData[] result) {
         assertEquals(4, result.length);
-        // FIXME: One for debugging. Should be zero.
-        assertEquals(1, result[0].vertices().length);
+        assertEquals(0, result[0].vertices().length);
         assertEquals(0, result[1].vertices().length);
         assertEquals(0, result[2].vertices().length);
         assertEquals(0, result[3].vertices().length);
+        assertEquals(0, result[0].indices().length);
+        assertEquals(0, result[1].indices().length);
+        assertEquals(0, result[2].indices().length);
+        assertEquals(0, result[3].indices().length);
     }
 
     @Test
@@ -41,17 +48,19 @@ public class HiQualityEdgeCalculatorTest {
         final GData1 parent = new GData1(0, 0, 0, 0, 0,
             View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
             View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
-        final GData2 edge = new GData2(0, 0, 0, 0, 0, zero, zero, zero, one, zero, zero, parent, df, true);
+        final GData2 edge = new GData2(0, 0, 0, 0, 1f, zero, zero, zero, one, zero, zero, parent, df, true);
         final GDataAndWinding w = new GDataAndWinding(edge, BFC.CCW, false, false, 0);
-        // TODO return index arrays, too: int[][][]
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w), Set.of(), false, false);
         assertEquals(4, result.length);
         assertEquals(1, result[0].vertices().length);
-        // TODO Reduce this size with an index array to 288 (16 * 18)
-        assertEquals(648, result[0].vertices()[0].length);
+        assertEquals(288, result[0].vertices()[0].length);
         assertEquals(0, result[1].vertices().length);
         assertEquals(0, result[2].vertices().length);
         assertEquals(0, result[3].vertices().length);
+        assertEquals(32, result[0].indices()[0].length);
+        assertEquals(0, result[1].indices().length);
+        assertEquals(0, result[2].indices().length);
+        assertEquals(0, result[3].indices().length);
     }
 
     @Test
@@ -62,16 +71,11 @@ public class HiQualityEdgeCalculatorTest {
         final GData1 parent = new GData1(0, 0, 0, 0, 0,
             View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
             View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
-        final GData2 edge = new GData2(0, 0, 0, 0, 0, zero, zero, zero, one, zero, zero, parent, df, true);
+        final GData2 edge = new GData2(0, 0, 0, 0, 1f, zero, zero, zero, one, zero, zero, parent, df, true);
         final GDataAndWinding w = new GDataAndWinding(edge, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w), Set.of(edge), false, false);
         assertEquals(4, result.length);
-        // FIXME: One for debugging. Should be zero.
-        assertEquals(1, result[0].vertices().length);
-        assertEquals(72, result[0].vertices()[0].length);
-        assertEquals(0, result[1].vertices().length);
-        assertEquals(0, result[2].vertices().length);
-        assertEquals(0, result[3].vertices().length);
+        assertEmptyResult(result);
     }
 
     @Test
@@ -82,16 +86,10 @@ public class HiQualityEdgeCalculatorTest {
         final GData1 parent = new GData1(0, 0, 0, 0, 0,
             View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
             View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
-        final GData2 edge = new GData2(0, 0, 0, 0, 0, zero, zero, zero, one, zero, zero, parent, df, true);
+        final GData2 edge = new GData2(0, 0, 0, 0, 1f, zero, zero, zero, one, zero, zero, parent, df, true);
         final GDataAndWinding w = new GDataAndWinding(edge, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w), Set.of(), true, false);
-        assertEquals(4, result.length);
-        // FIXME: One for debugging. Should be zero.
-        assertEquals(1, result[0].vertices().length);
-        assertEquals(72, result[0].vertices()[0].length);
-        assertEquals(0, result[1].vertices().length);
-        assertEquals(0, result[2].vertices().length);
-        assertEquals(0, result[3].vertices().length);
+        assertEmptyResult(result);
     }
 
     @Test
@@ -102,16 +100,10 @@ public class HiQualityEdgeCalculatorTest {
         final GData1 parent = new GData1(0, 0, 0, 0, 0,
             View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
             View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
-        final GData5 condline = new GData5(0, 0, 0, 0, 0, zero, zero, zero, one, zero, zero,
+        final GData5 condline = new GData5(0, 0, 0, 0, 1f, zero, zero, zero, one, zero, zero,
             zero, one, zero, zero, one.negate(), one, parent, df);
         final GDataAndWinding w = new GDataAndWinding(condline, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w), Set.of(), false, true);
-        assertEquals(4, result.length);
-        // FIXME: One for debugging. Should be zero.
-        assertEquals(1, result[0].vertices().length);
-        assertEquals(72, result[0].vertices()[0].length);
-        assertEquals(0, result[1].vertices().length);
-        assertEquals(0, result[2].vertices().length);
-        assertEquals(0, result[3].vertices().length);
+        assertEmptyResult(result);
     }
 }
