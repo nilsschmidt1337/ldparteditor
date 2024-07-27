@@ -1,6 +1,5 @@
 package org.nschmidt.ldparteditor.data;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -151,10 +150,10 @@ public enum HiQualityEdgeCalculator {
             }
         }
 
-        result[0] = splitInChunks(dataLines, indicesLines);
-        result[1] = splitInChunks(dataTransparentLines, indicesTransparentLines);
-        result[2] = splitInChunks(dataCondlines, indicesCondlines);
-        result[3] = splitInChunks(dataTransparentCondlines, indicesTransparentCondlines);
+        result[0] = copyData(dataLines, indicesLines);
+        result[1] = copyData(dataTransparentLines, indicesTransparentLines);
+        result[2] = copyData(dataCondlines, indicesCondlines);
+        result[3] = copyData(dataTransparentCondlines, indicesTransparentCondlines);
 
         return result;
     }
@@ -185,57 +184,47 @@ public enum HiQualityEdgeCalculator {
         final Vector4f b = Matrix4f.transform(matrix, new Vector4f(bx, by, bz, 1f), null);
         final Vector4f c = Matrix4f.transform(matrix, new Vector4f(cx, cy, cz, 1f), null);
         final Vector4f d = Matrix4f.transform(matrix, new Vector4f(dx, dy, dz, 1f), null);
-        // TODO Inline later?
-        addPoint(data, v.x, v.y, v.z, a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z, d.x, d.y, d.z, colR, colG, colB);
-    }
-
-    private static void addPoint(List<Float> data, float x, float y, float z, float ax, float ay, float az,
-            float bx, float by, float bz, float cx, float cy, float cz, float dx, float dy, float dz, float r, float g,
-            float b) {
         // Position
-        data.add(x);
-        data.add(y);
-        data.add(z);
+        data.add(v.x);
+        data.add(v.y);
+        data.add(v.z);
         // Point A
-        data.add(ax);
-        data.add(ay);
-        data.add(az);
+        data.add(a.x);
+        data.add(a.y);
+        data.add(a.z);
         // Point B
-        data.add(bx);
-        data.add(by);
-        data.add(bz);
+        data.add(b.x);
+        data.add(b.y);
+        data.add(b.z);
         // Point C
-        data.add(cx);
-        data.add(cy);
-        data.add(cz);
+        data.add(c.x);
+        data.add(c.y);
+        data.add(c.z);
         // Point D
-        data.add(dx);
-        data.add(dy);
-        data.add(dz);
+        data.add(d.x);
+        data.add(d.y);
+        data.add(d.z);
         // Color
-        data.add(r);
-        data.add(g);
-        data.add(b);
+        data.add(colR);
+        data.add(colG);
+        data.add(colB);
     }
 
-    private static EdgeData splitInChunks(List<Float> data, List<Integer> indices) {
+    private static EdgeData copyData(List<Float> data, List<Integer> indices) {
         final int size = data.size();
         final int indexCount = indices.size();
-        // TODO Do an actual split [multiple of 72 (18 * 4)]
-        final float[][] chunkedData = new float[size > 0 ? 1 : 0][size];
-        final int[][] chunkedIndices = new int[indexCount > 0 ? 1 : 0][indexCount];
+        final float[][] copiedData = new float[size > 0 ? 1 : 0][size];
+        final int[][] copiedIndices = new int[indexCount > 0 ? 1 : 0][indexCount];
         int i = 0;
         for (Float f : data) {
-            chunkedData[0][i] = f;
-            i++;
+            copiedData[0][i++] = f;
         }
 
         i = 0;
         for (Integer n : indices) {
-            chunkedIndices[0][i] = n;
-            i++;
+            copiedIndices[0][i++] = n;
         }
 
-        return new EdgeData(chunkedData, chunkedIndices);
+        return new EdgeData(copiedData, copiedIndices);
     }
 }
