@@ -6,13 +6,14 @@ import java.util.Set;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.helper.EdgeData;
 
 public enum HiQualityEdgeCalculator {
     INSTANCE;
 
     public static EdgeData[] hiQualityEdgeData(List<GDataAndWinding> dataInOrder, Set<GData> hiddenSet, boolean hideLines,
-            boolean hideCondlines) {
+            boolean hideCondlines, boolean condlineMode) {
         EdgeData[] result = new EdgeData[4];
         // [0][*chunk*] hi-quality solid lines
         // [1][*chunk*] hi-quality transparent lines
@@ -85,9 +86,22 @@ public enum HiQualityEdgeCalculator {
 
                 lGeom = gd5.lGeom;
                 matrix = gd5.parent.productMatrix;
-                r = gd5.r;
-                g = gd5.g;
-                b = gd5.b;
+
+                if (condlineMode) {
+                    if (gd5.wasShown()) {
+                        r = Colour.condlineShownColourR;
+                        g = Colour.condlineShownColourG;
+                        b = Colour.condlineShownColourB;
+                    } else {
+                        r = Colour.condlineHiddenColourR;
+                        g = Colour.condlineHiddenColourG;
+                        b = Colour.condlineHiddenColourB;
+                    }
+                } else {
+                    r = gd5.r;
+                    g = gd5.g;
+                    b = gd5.b;
+                }
 
                 for (int i = 2; i < 18; i++) {
                     addPoint(target, matrix,

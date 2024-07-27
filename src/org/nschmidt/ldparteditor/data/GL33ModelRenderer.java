@@ -1206,7 +1206,7 @@ public class GL33ModelRenderer {
                 if (hiQualityEdges) {
                     hiQualityEdgeData = new float[4][][];
                     hiQualityEdgeIndices = new int[4][][];
-                    EdgeData[] edgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder, hiddenSet, hideLines, hideCondlines);
+                    EdgeData[] edgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder, hiddenSet, hideLines, hideCondlines, condlineMode);
                     hiQualityEdgeData[0] = edgeData[0].vertices();
                     hiQualityEdgeData[1] = edgeData[1].vertices();
                     hiQualityEdgeData[2] = edgeData[2].vertices();
