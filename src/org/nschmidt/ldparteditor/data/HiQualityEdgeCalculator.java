@@ -7,12 +7,13 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.helper.EdgeData;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 
 public enum HiQualityEdgeCalculator {
     INSTANCE;
 
     public static EdgeData[] hiQualityEdgeData(List<GDataAndWinding> dataInOrder, List<Float> dataLines, List<Integer> indicesLines, List<Float> dataTransparentLines, List<Integer> indicesTransparentLines, List<Float> dataCondlines, List<Integer> indicesCondlines, List<Float> dataTransparentCondlines, List<Integer> indicesTransparentCondlines, Set<GData> hiddenSet, boolean hideLines,
-            boolean hideCondlines, boolean condlineMode) {
+            boolean hideCondlines, boolean condlineMode, boolean randomColours) {
         EdgeData[] result = new EdgeData[4];
         // [0] hi-quality solid lines
         // [1] hi-quality transparent lines
@@ -59,9 +60,17 @@ public enum HiQualityEdgeCalculator {
 
                 lGeom = gd2.lGeom;
                 matrix = gd2.parent.productMatrix;
-                r = gd2.r;
-                g = gd2.g;
-                b = gd2.b;
+
+                if (randomColours) {
+                    int id = gd.hashCode();
+                    r = MathHelper.randomFloat(id, 0);
+                    g = MathHelper.randomFloat(id, 1);
+                    b = MathHelper.randomFloat(id, 2);
+                } else {
+                    r = gd2.r;
+                    g = gd2.g;
+                    b = gd2.b;
+                }
 
                 for (int i = 2; i < 18; i++) {
                     addPoint(target, matrix,
@@ -106,9 +115,16 @@ public enum HiQualityEdgeCalculator {
                         tagetIndices = indicesCondlines;
                     }
 
-                    r = gd5.r;
-                    g = gd5.g;
-                    b = gd5.b;
+                    if (randomColours) {
+                        int id = gd.hashCode();
+                        r = MathHelper.randomFloat(id, 0);
+                        g = MathHelper.randomFloat(id, 1);
+                        b = MathHelper.randomFloat(id, 2);
+                    } else {
+                        r = gd5.r;
+                        g = gd5.g;
+                        b = gd5.b;
+                    }
 
                     for (int i = 2; i < 18; i++) {
                         addPoint(target, matrix,
@@ -120,11 +136,9 @@ public enum HiQualityEdgeCalculator {
                                 r,g,b);
                     }
                 }
-
             } else {
                 continue;
             }
-
 
             if (negDet) {
                 int startIndex1 = index;
