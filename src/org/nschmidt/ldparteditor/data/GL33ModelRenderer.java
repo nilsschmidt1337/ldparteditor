@@ -711,7 +711,7 @@ public class GL33ModelRenderer {
                 final Matrix4f transform = manipulator.getTempTransformation4f();
                 final boolean isTransforming = manipulator.isModified();
                 final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
-                final boolean hiQualityEdges = LineThicknessToolItem.hasHiQualityEdges();
+                final boolean hiQualityEdges = LineThicknessToolItem.hasHiQualityEdges() && !isTransforming;
 
                 final List<Matrix4f> stud1Matrices;
                 final List<Matrix4f> stud2Matrices;
