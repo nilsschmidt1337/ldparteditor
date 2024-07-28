@@ -20,7 +20,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public enum IconSize {
     INSTANCE;
 
-    private static final int ICON_SIZE = WorkbenchManager.getUserSettingState() != null ? WorkbenchManager.getUserSettingState().getIconSize() : 0;
+    private static final int ICON_SIZE = WorkbenchManager.getUserSettingState().getIconSize();
 
     public static int getIconsize() {
         return ICON_SIZE;

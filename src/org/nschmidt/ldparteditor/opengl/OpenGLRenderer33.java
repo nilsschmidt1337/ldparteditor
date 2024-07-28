@@ -28,6 +28,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -104,7 +105,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         if (shaderProgramCondline.isDefault()) shaderProgramCondline = new GLShader("condline.vert", "condline.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgramCondline2.isDefault()) shaderProgramCondline2 = new GLShader("condline2.vert", "condline2.frag"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        // if (NLogger.debugging && debugCallback == null) debugCallback = GLUtil.setupDebugMessageCallback();
+        if (NLogger.debugging && debugCallback == null) debugCallback = GLUtil.setupDebugMessageCallback();
 
         shaderProgramCondline.use();
 
