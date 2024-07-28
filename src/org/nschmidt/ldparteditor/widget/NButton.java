@@ -178,7 +178,11 @@ public class NButton extends Canvas {
             gc.setBackground(getBackground());
         }
 
-        gc.setForeground(SWTResourceManager.getColor(255, 255, 255));
+        if (Theming.getCurrentTheme() == Theming.DARK || Theming.getCurrentTheme() == Theming.DRACULA) {
+            gc.setForeground(SWTResourceManager.getColor(10, 10, 10));
+        } else {
+            gc.setForeground(SWTResourceManager.getColor(255, 255, 255));
+        }
 
         if (hovered || focused) {
             gc.setForeground(SWTResourceManager.getColor(0, 0, 0));
