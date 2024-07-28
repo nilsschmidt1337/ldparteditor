@@ -27,6 +27,7 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
@@ -192,14 +193,15 @@ class VM06Edger2 extends VM05Distance {
         }
     }
 
-    private void addLineQuadEdger2(GData4 g4, Set<AccurateEdge> presentEdges, Edger2Settings es, SortedMap<Vertex, Vertex> snap) {
+    private void addLineQuadEdger2(GData4 g4, List<AccurateEdge> presentEdges, Edger2Settings es, SortedMap<Vertex, Vertex> snap) {
 
         Vertex[] verts = quads.get(g4);
 
         Vertex v1 = verts[0];
         Vertex v2 = verts[2];
 
-        if (presentEdges.contains(new AccurateEdge(snap.get(v1), snap.get(v2)))) return;
+        final AccurateEdge e = new AccurateEdge(snap.get(v1), snap.get(v2));
+        if (presentEdges.parallelStream().anyMatch(e::equals)) return;
 
         Vector3d n1;
         Vector3d n2;
@@ -249,8 +251,8 @@ class VM06Edger2 extends VM05Distance {
         SortedMap<Vertex, Vertex> snap = new TreeMap<>();
         SortedMap<Vertex, SortedSet<Vertex>> snapToOriginal = new TreeMap<>();
 
-        Map<AccurateEdge, Integer> edges = new HashMap<>();
-        Set<AccurateEdge> presentEdges = new HashSet<>();
+        Map<AccurateEdge, AtomicInteger> edges = new HashMap<>();
+        List<AccurateEdge> presentEdges = new ArrayList<>();
 
         switch (es.getScope()) {
         case 0: // All Data
@@ -305,8 +307,8 @@ class VM06Edger2 extends VM05Distance {
             GColour tmpCol = ColourToolItem.getLastUsedColour();
             ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             if (es.getUnmatchedMode() < 2) {
-                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
-                    if (entry.getValue() > 1) {
+                for (Entry<AccurateEdge, AtomicInteger> entry : edges.entrySet()) {
+                    if (entry.getValue().get() > 1) {
                         AccurateEdge e = entry.getKey();
                         addLineEdger2(e.v1, e.v2, snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
                     }
@@ -315,8 +317,8 @@ class VM06Edger2 extends VM05Distance {
 
             ColourToolItem.setLastUsedColour(LDConfig.getColour(4));
             if (es.getUnmatchedMode() != 1) {
-                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
-                    if (entry.getValue() == 1) {
+                for (Entry<AccurateEdge, AtomicInteger> entry : edges.entrySet()) {
+                    if (entry.getValue().get() == 1) {
                         AccurateEdge e = entry.getKey();
                         addEdgeEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2));
                     }
@@ -377,8 +379,8 @@ class VM06Edger2 extends VM05Distance {
             GColour tmpCol = ColourToolItem.getLastUsedColour();
             ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             if (es.getUnmatchedMode() < 2) {
-                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
-                    if (entry.getValue() > 1) {
+                for (Entry<AccurateEdge, AtomicInteger> entry : edges.entrySet()) {
+                    if (entry.getValue().get() > 1) {
                         AccurateEdge e = entry.getKey();
                         addLineEdger2(e.v1, e.v2, snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
                     }
@@ -387,8 +389,8 @@ class VM06Edger2 extends VM05Distance {
 
             ColourToolItem.setLastUsedColour(LDConfig.getColour(4));
             if (es.getUnmatchedMode() != 1) {
-                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
-                    if (entry.getValue() == 1) {
+                for (Entry<AccurateEdge, AtomicInteger> entry : edges.entrySet()) {
+                    if (entry.getValue().get() == 1) {
                         AccurateEdge e = entry.getKey();
                         addEdgeEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2));
                     }
@@ -476,8 +478,8 @@ class VM06Edger2 extends VM05Distance {
             GColour tmpCol = ColourToolItem.getLastUsedColour();
             ColourToolItem.setLastUsedColour(LDConfig.getColour16());
             if (es.getUnmatchedMode() < 2) {
-                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
-                    if (entry.getValue() > 1) {
+                for (Entry<AccurateEdge, AtomicInteger> entry : edges.entrySet()) {
+                    if (entry.getValue().get() > 1) {
                         AccurateEdge e = entry.getKey();
                         addLineEdger2(e.v1, e.v2, snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
                     }
@@ -486,8 +488,8 @@ class VM06Edger2 extends VM05Distance {
 
             ColourToolItem.setLastUsedColour(LDConfig.getColour(4));
             if (es.getUnmatchedMode() != 1) {
-                for (Entry<AccurateEdge, Integer> entry : edges.entrySet()) {
-                    if (entry.getValue() == 1) {
+                for (Entry<AccurateEdge, AtomicInteger> entry : edges.entrySet()) {
+                    if (entry.getValue().get() == 1) {
                         AccurateEdge e = entry.getKey();
                         addEdgeEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2));
                     }
@@ -510,18 +512,18 @@ class VM06Edger2 extends VM05Distance {
 
     }
 
-    private void selectEdge(Set<AccurateEdge> presentEdges, Set<AccurateEdge> selectedEdges, AccurateEdge e) {
-        if (presentEdges.parallelStream().noneMatch(e::equals)) { // !presentEdges.contains is not efficient here!
+    private void selectEdge(List<AccurateEdge> presentEdges, Set<AccurateEdge> selectedEdges, AccurateEdge e) {
+        if (hasCondline(e.v1, e.v2) == null && hasEdge(e.v1, e.v2) == null && presentEdges.parallelStream().noneMatch(e::equals)) { // !presentEdges.contains is not efficient here!
             selectedEdges.add(e);
         }
     }
 
-    private void addEdge(Map<AccurateEdge, Integer> edges, Set<AccurateEdge> presentEdges, AccurateEdge e) {
-        if (presentEdges.parallelStream().noneMatch(e::equals)) { // !presentEdges.contains is not efficient here!
+    private void addEdge(Map<AccurateEdge, AtomicInteger> edges, List<AccurateEdge> presentEdges, AccurateEdge e) {
+        if (hasCondline(e.v1, e.v2) == null && hasEdge(e.v1, e.v2) == null && presentEdges.parallelStream().noneMatch(e::equals)) { // !presentEdges.contains is not efficient here!
             edges.entrySet().parallelStream()
                 .filter(entry -> entry.getKey().equals(e)).findAny()
-                .ifPresentOrElse(entry -> edges.put(e, entry.getValue() + 1),
-                                    () -> edges.put(e, 1));
+                .ifPresentOrElse(entry -> entry.getValue().incrementAndGet(),
+                                    () -> edges.put(e, new AtomicInteger(1)));
         }
     }
 
