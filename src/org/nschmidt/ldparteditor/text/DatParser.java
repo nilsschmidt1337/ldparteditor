@@ -204,7 +204,7 @@ public enum DatParser {
             cValue.setR(cValue.getR() / 3f);
             cValue.setG(cValue.getG() / 3f);
             cValue.setB(cValue.getB() / 3f);
-            cValue.setA(cValue.getA() / 3f);
+            cValue.setA(Math.max(cValue.getA() / 3f, .25f));
         }
         return cValue;
     }
@@ -255,7 +255,7 @@ public enum DatParser {
             cValue.setR(cValue.getR() / 3f);
             cValue.setG(cValue.getG() / 3f);
             cValue.setB(cValue.getB() / 3f);
-            cValue.setA(cValue.getA() / 3f);
+            cValue.setA(Math.max(cValue.getA() / 3f, .25f));
         }
         return cValue;
     }
