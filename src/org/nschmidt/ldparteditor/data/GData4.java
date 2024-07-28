@@ -1266,7 +1266,7 @@ public final class GData4 extends GData {
         calculateAngle();
         double delta = Threshold.coplanarityAngleError - Threshold.coplanarityAngleWarning;
         if (Math.abs(delta) < 0.0001) delta = 1.0;
-        float f = angle < Threshold.coplanarityAngleWarning ? 0f : angle >= Threshold.coplanarityAngleError ? 1f :
+        float f = angle >= Threshold.coplanarityAngleError ? 1f : angle < Threshold.coplanarityAngleWarning ? 0f :
             Math.min((float) ((angle - Threshold.coplanarityAngleWarning) / delta / 2.7 + .5), 1f);
 
         float red = 0f;
