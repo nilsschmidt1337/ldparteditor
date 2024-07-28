@@ -590,10 +590,17 @@ public class KeyStateManager {
                         win.updateInitialScale(BigDecimal.ZERO, BigDecimal.ONE, true);
                         if (!c3d.isQuicklyTransforming()) {
                             vm.clearSelection();
+                            final Manipulator mani = c3d.getManipulator();
+                            if (mani.isModified()) {
+                                mani.restoreBackup();
+                                mani.doBackup();
+                            }
+                        } else {
+                            c3d.getManipulator().restoreBackup();
                         }
+
                         vm.resetSlantingMatrixProjector();
                         c3d.setQuicklyTransforming(false);
-                        c3d.getManipulator().restoreBackup();
                         break;
                     case COPY:
                         vm.copy();

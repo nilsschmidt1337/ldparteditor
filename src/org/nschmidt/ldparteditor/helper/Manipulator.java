@@ -1175,9 +1175,7 @@ public class Manipulator {
     }
 
     public void startTranslation(Composite3D c3d) {
-        final Manipulator startState = new Manipulator();
-        startState.copyState(this);
-        backup = startState;
+        doBackup();
         initialScaleOld = initialScaleNew;
         c3d.getLockableDatFileReference().getVertexManager().backupHideShowState();
         modified = false;
@@ -2080,6 +2078,12 @@ public class Manipulator {
         yAxis = new Vector4f(0f, 1f, 0f, 1f);
         zAxis = new Vector4f(0f, 0f, 1f, 1f);
         position = new Vector4f(0f, 0f, 0f, 1f);
+    }
+
+    public void doBackup() {
+        final Manipulator startState = new Manipulator();
+        startState.copyState(this);
+        backup = startState;
     }
 
     public void restoreBackup() {
