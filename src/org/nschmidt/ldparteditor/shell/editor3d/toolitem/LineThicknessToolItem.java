@@ -36,7 +36,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class LineThicknessToolItem extends ToolItem {
 
-    private static volatile boolean hiQualityEdges = true;
+    private static volatile boolean hiQualityEdges = !WorkbenchManager.getUserSettingState().isDrawLinesOpenGL();
 
     private static final NButton[] btnToggleLinesOpenGLPtr = new NButton[1];
     private static final NButton[] btnLineSize0Ptr = new NButton[1];
@@ -88,11 +88,13 @@ public class LineThicknessToolItem extends ToolItem {
         btnToggleLinesOpenGLPtr[0] = btnToggleLinesOpenGL;
         btnToggleLinesOpenGL.setToolTipText(I18n.E3D_LINE_OPENGL);
         btnToggleLinesOpenGL.setImage(ResourceManager.getImage("icon16_gllines.png")); //$NON-NLS-1$
+        btnToggleLinesOpenGL.setSelection(!hiQualityEdges);
     }
 
     private static void addListeners() {
         widgetUtil(btnToggleLinesOpenGLPtr[0]).addSelectionListener(e -> {
             hiQualityEdges = !btnToggleLinesOpenGLPtr[0].getSelection();
+            WorkbenchManager.getUserSettingState().setDrawLinesOpenGL(!hiQualityEdges);
             if (btnToggleLinesOpenGLPtr[0].getSelection()) {
                 View.edgeThreshold = 5e6f;
             } else {

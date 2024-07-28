@@ -3566,6 +3566,13 @@ public class MiscToolItem extends ToolItem {
 
         widgetUtil(mntmOpenGL33EnginePtr[0]).addSelectionListener(e -> {
             WorkbenchManager.getUserSettingState().setOpenGL33Engine(mntmOpenGL33EnginePtr[0].getSelection());
+            // When the OpenGL 3.3 engine is activated, then switch to low quality edges by default:
+            if (WorkbenchManager.getUserSettingState().isOpenGL33Engine()) {
+                WorkbenchManager.getUserSettingState().setDrawLinesOpenGL(true);
+            } else {
+                // Restore the previous edge render settings.
+                WorkbenchManager.getUserSettingState().setDrawLinesOpenGL(!LineThicknessToolItem.hasHiQualityEdges());
+            }
             WorkbenchManager.getUserSettingState().setVulkanEngine(false);
             if (NLogger.debugging) {
                 mntmVulkanEnginePtr[0].setSelection(false);
