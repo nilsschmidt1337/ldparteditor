@@ -1,0 +1,14 @@
+0 Testcase for Hi-Quality Edges
+0 Name: edges.dat
+0 Author: Nils Schmidt [BlackBrick89]
+0 !LDRAW_ORG Unofficial_Part
+0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt
+
+0 BFC CERTIFY CCW
+
+1 41 0 0 0 1 0 0 0 1 0 0 0 1 1.dat
+1 16 0 96.1 0 1 0 0 0 1 0 0 0 1 10.dat
+
+2 44 0 0 -30 0 100 -30
+5 4 0 0 -50 0 100 -50 1 0 -50 -0.1 0 -51
+5 43 0 0 -60 0 100 -60 1 0 -60 -0.1 0 -61

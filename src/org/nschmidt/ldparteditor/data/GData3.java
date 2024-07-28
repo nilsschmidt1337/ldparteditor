@@ -27,6 +27,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.FontLetters;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
@@ -1693,46 +1694,46 @@ public final class GData3 extends GData {
             final char c = number.charAt(i);
             switch (c) {
             case '0':
-                tris = View.D0;
+                tris = FontLetters.D0;
                 break;
             case '1':
-                tris = View.D1;
+                tris = FontLetters.D1;
                 break;
             case '2':
-                tris = View.D2;
+                tris = FontLetters.D2;
                 break;
             case '3':
-                tris = View.D3;
+                tris = FontLetters.D3;
                 break;
             case '4':
-                tris = View.D4;
+                tris = FontLetters.D4;
                 break;
             case '5':
-                tris = View.D5;
+                tris = FontLetters.D5;
                 break;
             case '6':
-                tris = View.D6;
+                tris = FontLetters.D6;
                 break;
             case '7':
-                tris = View.D7;
+                tris = FontLetters.D7;
                 break;
             case '8':
-                tris = View.D8;
+                tris = FontLetters.D8;
                 break;
             case '9':
-                tris = View.D9;
+                tris = FontLetters.D9;
                 break;
             case '.':
-                tris = View.DDot;
+                tris = FontLetters.DDot;
                 break;
             case ',':
-                tris = View.DComma;
+                tris = FontLetters.DComma;
                 break;
             case '°':
-                tris = View.DDegree;
+                tris = FontLetters.DDegree;
                 break;
             case '-':
-                tris = View.DM;
+                tris = FontLetters.DM;
                 break;
             default:
                 break;
@@ -1752,46 +1753,46 @@ public final class GData3 extends GData {
             final char c = number.charAt(i);
             switch (c) {
             case '0':
-                tris = View.D0;
+                tris = FontLetters.D0;
                 break;
             case '1':
-                tris = View.D1;
+                tris = FontLetters.D1;
                 break;
             case '2':
-                tris = View.D2;
+                tris = FontLetters.D2;
                 break;
             case '3':
-                tris = View.D3;
+                tris = FontLetters.D3;
                 break;
             case '4':
-                tris = View.D4;
+                tris = FontLetters.D4;
                 break;
             case '5':
-                tris = View.D5;
+                tris = FontLetters.D5;
                 break;
             case '6':
-                tris = View.D6;
+                tris = FontLetters.D6;
                 break;
             case '7':
-                tris = View.D7;
+                tris = FontLetters.D7;
                 break;
             case '8':
-                tris = View.D8;
+                tris = FontLetters.D8;
                 break;
             case '9':
-                tris = View.D9;
+                tris = FontLetters.D9;
                 break;
             case '.':
-                tris = View.DDot;
+                tris = FontLetters.DDot;
                 break;
             case ',':
-                tris = View.DComma;
+                tris = FontLetters.DComma;
                 break;
             case '°':
-                tris = View.DDegree;
+                tris = FontLetters.DDegree;
                 break;
             case '-':
-                tris = View.DM;
+                tris = FontLetters.DM;
                 break;
             default:
                 break;

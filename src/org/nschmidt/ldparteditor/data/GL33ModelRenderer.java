@@ -46,6 +46,7 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.EdgeData;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.helper.StudLogo;
@@ -56,6 +57,7 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer33;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.LineThicknessToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 
 /**
@@ -107,6 +109,7 @@ public class GL33ModelRenderer {
 
     private int vaoCondlines;
     private int vboCondlines;
+    private int vboCondlinesIndices;
 
     private int vaoCSG;
     private int vboCSG;
@@ -129,6 +132,8 @@ public class GL33ModelRenderer {
     private volatile SortedSet<Vertex> pureCondlineControlPoints = new TreeSet<>();
     private volatile float[] dataTriangles = null;
     private volatile float[] dataLines = new float[]{0f};
+    private volatile float[][] dataHiQualityLines = new float[][]{{}};
+    private volatile int[][] dataHiQualityLineIndices = new int[][]{{}};
     private volatile float[] dataTempLines = new float[]{0f};
     private volatile float[] dataVertices = null;
     private volatile float[] dataCondlines = new float[]{0f};
@@ -301,6 +306,13 @@ public class GL33ModelRenderer {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
 
+        vboCondlinesIndices = GL15.glGenBuffers();
+        GL30.glBindVertexArray(vaoCondlines);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboCondlinesIndices);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
+
         new Thread(this::renderThread).start();
     }
 
@@ -311,6 +323,15 @@ public class GL33ModelRenderer {
         final Vector4f nv = new Vector4f(0, 0, 0, 1f);
         final Matrix4f mm = new Matrix4f();
         Matrix4f.setIdentity(mm);
+
+        final List<Float> dataLinesList = new ArrayList<>(1_000_000);
+        final List<Integer> indicesLines = new ArrayList<>(1_000_000);
+        final List<Float> dataCondlinesList = new ArrayList<>(1_000_000);
+        final List<Integer> indicesCondlines = new ArrayList<>(1_000_000);
+        final List<Float> dataTransparentLines = new ArrayList<>(10_000);
+        final List<Integer> indicesTransparentLines = new ArrayList<>(10_000);
+        final List<Float> dataTransparentCondlines = new ArrayList<>(10_000);
+        final List<Integer> indicesTransparentCondlines = new ArrayList<>(10_000);
 
         final Set<GDataCSG> oldCsgData = new HashSet<>();
         final Set<GData> selectionSet = new HashSet<>();
@@ -690,6 +711,7 @@ public class GL33ModelRenderer {
                 final Matrix4f transform = manipulator.getTempTransformation4f();
                 final boolean isTransforming = manipulator.isModified();
                 final boolean moveAdjacentData = MiscToggleToolItem.isMovingAdjacentData();
+                final boolean hiQualityEdges = LineThicknessToolItem.hasHiQualityEdges() && !isTransforming;
 
                 final List<Matrix4f> stud1Matrices;
                 final List<Matrix4f> stud2Matrices;
@@ -942,6 +964,7 @@ public class GL33ModelRenderer {
                         }
                         final GData2 gd2 = (GData2) gd;
                         if (gd2.isLine) {
+                            if (hiQualityEdges) continue;
                             localLineSize += 14;
                             lineVertexCount += 2;
                         } else {
@@ -1030,7 +1053,7 @@ public class GL33ModelRenderer {
                             continue;
                         }
                     case 5:
-                        if (hideCondlines) {
+                        if (hideCondlines || hiQualityEdges) {
                             continue;
                         }
                         // Condlines are tricky, since I have to calculate their visibility
@@ -1183,6 +1206,29 @@ public class GL33ModelRenderer {
                 float yn4 = 0f;
                 float zn4 = 0f;
 
+                // [0] hi-quality solid lines
+                // [1] hi-quality transparent lines
+                // [2] hi-quality solid condlines
+                // [3] hi-quality transparent condlines
+                float[][] hiQualityEdgeData = null;
+                int[][] hiQualityEdgeIndices = null;
+                if (hiQualityEdges) {
+                    hiQualityEdgeData = new float[4][];
+                    hiQualityEdgeIndices = new int[4][];
+                    EdgeData[] edgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder,
+                            dataLinesList, indicesLines, dataTransparentLines, indicesTransparentLines,
+                            dataCondlinesList, indicesCondlines, dataTransparentCondlines, indicesTransparentCondlines,
+                            hiddenSet, hideLines, hideCondlines, condlineMode, renderMode == 1);
+                    hiQualityEdgeData[0] = edgeData[0].vertices();
+                    hiQualityEdgeData[1] = edgeData[1].vertices();
+                    hiQualityEdgeData[2] = edgeData[2].vertices();
+                    hiQualityEdgeData[3] = edgeData[3].vertices();
+                    hiQualityEdgeIndices[0] = edgeData[0].indices();
+                    hiQualityEdgeIndices[1] = edgeData[1].indices();
+                    hiQualityEdgeIndices[2] = edgeData[2].indices();
+                    hiQualityEdgeIndices[3] = edgeData[3].indices();
+                }
+
                 // Iterate the objects and generate the buffer data
                 // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals / materials
                 for (GDataAndWinding gw : dataInOrder) {
@@ -1254,6 +1300,7 @@ public class GL33ModelRenderer {
                         GData2 gd2 = (GData2) gd;
                         v = vertexMap.get(gd);
                         if (gd2.isLine) {
+                            if (hiQualityEdges) continue;
                             pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
                             pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
                             if (renderMode != 1) {
@@ -2115,7 +2162,7 @@ public class GL33ModelRenderer {
                             continue;
                         }
                     case 5:
-                        if (hideCondlines) {
+                        if (hideCondlines || hiQualityEdges) {
                             continue;
                         }
                         GData5 gd5 = (GData5) gd;
@@ -2179,6 +2226,8 @@ public class GL33ModelRenderer {
                 dataVertices = vertexData;
                 lineSize = lineVertexCount;
                 dataLines = lineData;
+                dataHiQualityLines = hiQualityEdgeData;
+                dataHiQualityLineIndices = hiQualityEdgeIndices;
                 condlineSize = condlineVertexCount;
                 dataCondlines = condlineData;
                 tempLineSize = tempLineVertexCount;
@@ -2219,6 +2268,7 @@ public class GL33ModelRenderer {
         GL15.glDeleteBuffers(vboSelectionLines);
         GL30.glDeleteVertexArrays(vaoCondlines);
         GL15.glDeleteBuffers(vboCondlines);
+        GL15.glDeleteBuffers(vboCondlinesIndices);
         GL30.glDeleteVertexArrays(vaoCSG);
         GL15.glDeleteBuffers(vboCSG);
         GL30.glDeleteVertexArrays(vaoStudLogo1);
@@ -2236,7 +2286,7 @@ public class GL33ModelRenderer {
     private int toCSG;
     private int tsCSG;
 
-    public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, GLShader glyphShader, boolean drawSolidMaterials) {
+    public void draw(GLMatrixStack stack, GLShader mainShader, GLShader lineShader, GLShader condlineShader, GLShader condlineShader2, GLShader glyphShader, boolean drawSolidMaterials) {
 
         Matrix4f vm = c3d.getViewport();
         Matrix4f ivm = c3d.getViewportInverse();
@@ -2315,6 +2365,126 @@ public class GL33ModelRenderer {
             GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4) * 4, (3 + 3) * 4l);
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        }
+
+        if (drawLines && LineThicknessToolItem.hasHiQualityEdges()) {
+            mainShader.lightsOff();
+
+            // [0] hi-quality solid lines
+            // [1] hi-quality transparent lines
+            // [2] hi-quality solid condlines
+            // [3] hi-quality transparent condlines
+            float[] hiQualityLines;
+            float[] hiQualityCondlines;
+            int[] hiQualityLineIndices;
+            int[] hiQualityCondlineIndices;
+            lock.lock();
+            if (dataHiQualityLines == null) {
+                hiQualityLines = new float[0];
+                hiQualityCondlines = new float[0];
+                hiQualityLineIndices = new int[0];
+                hiQualityCondlineIndices = new int[0];
+            } else if (drawSolidMaterials) {
+                hiQualityLines = dataHiQualityLines[0];
+                hiQualityCondlines = dataHiQualityLines[2];
+                hiQualityLineIndices = dataHiQualityLineIndices[0];
+                hiQualityCondlineIndices = dataHiQualityLineIndices[2];
+            } else {
+                hiQualityLines = dataHiQualityLines[1];
+                hiQualityCondlines = dataHiQualityLines[3];
+                hiQualityLineIndices = dataHiQualityLineIndices[1];
+                hiQualityCondlineIndices = dataHiQualityLineIndices[3];
+            }
+            lock.unlock();
+
+            lineShader.use();
+            stack.setShader(lineShader);
+
+            // Draw normal lines first (with a line shader)
+            GL20.glUniform1f(lineShader.getUniformLocation("alphaInv"), drawSolidMaterials ? 0f : 0.5f); //$NON-NLS-1$
+
+            GL30.glBindVertexArray(vaoCondlines);
+            if (hiQualityLines.length > 0) {
+                float[] data = hiQualityLines;
+                int[] indices = hiQualityLineIndices;
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
+                GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboCondlinesIndices);
+                GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
+
+                // A vertex consists of 6 floats, a quad of 4 vertices
+                final int indexCount = indices.length;
+
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 6 * 4, 0);
+                GL20.glEnableVertexAttribArray(1);
+                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 6 * 4, 3 * 4l);
+
+                Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
+                Matrix4f.transform(ivm, tr, tr);
+                stack.glPushMatrix();
+                stack.glTranslatef(tr.x, tr.y, tr.z);
+
+                GL11.glDrawElements(GL11.GL_QUADS, indexCount, GL11.GL_UNSIGNED_INT, 0);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+                GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+
+                stack.glPopMatrix();
+            }
+
+            condlineShader2.use();
+            stack.setShader(condlineShader2);
+
+            // Draw condlines next
+            GL20.glUniform1f(condlineShader2.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
+            GL20.glUniform1f(condlineShader2.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
+            GL20.glUniform1f(condlineShader2.getUniformLocation("alpha"), drawSolidMaterials ? 1f : 0.5f); //$NON-NLS-1$
+
+            if (hiQualityCondlines.length > 0) {
+                float[] data = hiQualityCondlines;
+                int[] indices = hiQualityCondlineIndices;
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
+                GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboCondlinesIndices);
+                GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
+
+                // A vertex consists of 18 floats, a quad of 4 vertices
+                final int indexCount = indices.length;
+
+                GL20.glEnableVertexAttribArray(0);
+                GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 18 * 4, 0);
+                GL20.glEnableVertexAttribArray(1);
+                GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 18 * 4, 3 * 4l);
+                GL20.glEnableVertexAttribArray(2);
+                GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 18 * 4, 6 * 4l);
+                GL20.glEnableVertexAttribArray(3);
+                GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 18 * 4, 9 * 4l);
+                GL20.glEnableVertexAttribArray(4);
+                GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 18 * 4, 12 * 4l);
+                GL20.glEnableVertexAttribArray(5);
+                GL20.glVertexAttribPointer(5, 3, GL11.GL_FLOAT, false, 18 * 4, 15 * 4l);
+
+
+                Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
+                Matrix4f.transform(ivm, tr, tr);
+                stack.glPushMatrix();
+                stack.glTranslatef(tr.x, tr.y, tr.z);
+
+                GL11.glDrawElements(GL11.GL_QUADS, indexCount, GL11.GL_UNSIGNED_INT, 0);
+
+                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+                GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+
+                stack.glPopMatrix();
+            }
+
+            mainShader.use();
+            stack.setShader(mainShader);
+
+            if (c3d.isLightOn()) {
+                mainShader.lightsOn();
+            }
         }
 
         GL30.glBindVertexArray(vao);

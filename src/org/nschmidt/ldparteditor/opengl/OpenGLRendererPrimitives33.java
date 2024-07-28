@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.FontLetters;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Arrow;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -120,13 +121,16 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
         final float viewport_height = bounds.height / View.PIXEL_PER_LDU;
         GLMatrixStack.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom()).store(projectionBuf);
         projectionBuf.position(0);
-        
+
         int view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(view, false, viewBuf);
 
         int projection = shaderProgram.getUniformLocation("projection" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(projection, false, projectionBuf);
-        
+
+        int alphaInv = shaderProgram.getUniformLocation("alphaInv"); //$NON-NLS-1$
+        GL20.glUniform1f(alphaInv, 0f);
+
         stack.clear();
         GL33HelperPrimitives.createVBOprimitiveArea();
         helper.createVBO();
@@ -245,48 +249,48 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
             final float length = .025f;
             GL11.glDisable(GL11.GL_CULL_FACE);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
-            
+
             final Vector4f xAxis = new Vector4f(-length, 0f, 0f, 1f);
             final Vector4f yAxis = new Vector4f(0f, length, 0f, 1f);
             final Vector4f zAxis = new Vector4f(0f, 0f, length, 1f);
-            
+
             Matrix4f.transform(rotation, xAxis, xAxis);
             Matrix4f.transform(rotation, yAxis, yAxis);
             Matrix4f.transform(rotation, zAxis, zAxis);
 
             PGData3.beginDrawTextGL33(shaderProgram2D);
             stack.setShader(shaderProgram2D);
-            
+
             view = shaderProgram2D.getUniformLocation("view" ); //$NON-NLS-1$
             GL20.glUniformMatrix4fv(view, false, viewBuf);
-            
+
             projection = shaderProgram2D.getUniformLocation("projection" ); //$NON-NLS-1$
             GL20.glUniformMatrix4fv(projection, false, projectionBuf);
-            
+
             stack.glLoadIdentity();
 
             stack.glPushMatrix();
             stack.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
             stack.glScalef(-1f, 1f, 1f);
-            
-            for (PGData3 tri : View.X) {
+
+            for (PGData3 tri : FontLetters.X) {
                 tri.drawTextGL33(-xAxis.x, xAxis.y, 0f);
             }
-            
-            for (PGData3 tri : View.Y) {
+
+            for (PGData3 tri : FontLetters.Y) {
                 tri.drawTextGL33(-yAxis.x, yAxis.y, 0f);
             }
-            
-            for (PGData3 tri : View.Z) {
+
+            for (PGData3 tri : FontLetters.Z) {
                 tri.drawTextGL33(-zAxis.x, zAxis.y, 0f);
             }
             PGData3.endDrawTextGL33(shaderProgram);
             stack.setShader(shaderProgram);
             stack.glPopMatrix();
         }
-        
+
         cp.setMaxY(y - 22f);
-        
+
         if (!wasFocused && mouseX != -1) {
             cp.setFocusedPrimitive(null);
             cp.setSelectedPrimitive(null);

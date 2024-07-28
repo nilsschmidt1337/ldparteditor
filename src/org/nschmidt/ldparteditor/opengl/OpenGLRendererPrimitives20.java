@@ -30,6 +30,7 @@ import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.FontLetters;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Arrow;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
@@ -255,15 +256,15 @@ public class OpenGLRendererPrimitives20 implements OpenGLRendererPrimitives {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             
             PGData3.beginDrawText();
-            for (PGData3 tri : View.X) {
+            for (PGData3 tri : FontLetters.X) {
                 tri.drawText(-xAxis.x, xAxis.y, xAxis.z);
             }
             
-            for (PGData3 tri : View.Y) {
+            for (PGData3 tri : FontLetters.Y) {
                 tri.drawText(-yAxis.x, yAxis.y, yAxis.z);
             }
             
-            for (PGData3 tri : View.Z) {
+            for (PGData3 tri : FontLetters.Z) {
                 tri.drawText(-zAxis.x, zAxis.y, zAxis.z);
             }
             PGData3.endDrawText();

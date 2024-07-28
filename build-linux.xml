@@ -278,7 +278,7 @@
             <arg value="--no-header-files" />
             <arg value="--strip-debug"/>
             <arg value="--no-man-pages"/>
-            <arg value="--compress=2"/>
+            <arg value="--compress=zip-6"/>
             <arg value="--output"/>
             <arg value="${binariesFolder}/jvm-image"/>
         </exec>
