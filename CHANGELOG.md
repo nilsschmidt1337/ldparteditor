@@ -9,7 +9,7 @@ With the release of 1.8.84 you are able to...
 -  ...benefit from an improved Edger2 performance.
 -  ...show hi-quality edge lines in the OpenGL 3.3 renderer (TYPE 2 and 5).
 
-The following critical issue is fixed:
+The following critical issues are fixed:
 1. Uninlining left an additional blank line after un-inlining in the target file. 
 2. The ESC key reset the Manipulator when it was set by a double click on a surface before.
 3. Added a a missing border on text boxes which had a UI theme applied.
