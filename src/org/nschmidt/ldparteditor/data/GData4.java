@@ -1264,7 +1264,10 @@ public final class GData4 extends GData {
     @Override
     public void drawGL20CoplanarityHeatmap(Composite3D c3d) {
         calculateAngle();
-        float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarityAngleWarning) / Threshold.coplanarityAngleError);
+        double delta = Threshold.coplanarityAngleError - Threshold.coplanarityAngleWarning;
+        if (Math.abs(delta) < 0.0001) delta = 1.0;
+        float f = angle < Threshold.coplanarityAngleWarning ? 0f : angle >= Threshold.coplanarityAngleError ? 1f :
+            Math.min((float) ((angle - Threshold.coplanarityAngleWarning) / delta / 2.7 + .5), 1f);
 
         float red = 0f;
         float green;

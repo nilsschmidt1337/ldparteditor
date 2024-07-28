@@ -1948,7 +1948,10 @@ public class GL33ModelRenderer {
                             pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
 
                             final double angle = gd4.calculateAngle();
-                            float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarityAngleWarning) / Threshold.coplanarityAngleError);
+                            double delta = Threshold.coplanarityAngleError - Threshold.coplanarityAngleWarning;
+                            if (Math.abs(delta) < 0.0001) delta = 1.0;
+                            float f = angle < Threshold.coplanarityAngleWarning ? 0f : angle >= Threshold.coplanarityAngleError ? 1f :
+                                Math.min((float) ((angle - Threshold.coplanarityAngleWarning) / delta / 2.7 + .5), 1f);
 
                             float r = 0f;
                             float g;
