@@ -347,6 +347,12 @@ public enum SubfileCompiler {
                     df.setProjectFile(false);
                 }
 
+                // Remove the last line break at the end of the file
+                final int indexOfLastLineBreak = builder.lastIndexOf(StringHelper.getLineDelimiter());
+                if (indexOfLastLineBreak == 0 && builder.length() == StringHelper.getLineDelimiter().length() || (builder.length() - StringHelper.getLineDelimiter().length()) == indexOfLastLineBreak && indexOfLastLineBreak > 0) {
+                    builder.setLength(indexOfLastLineBreak);
+                }
+
                 df.setText(builder.toString());
                 TreeItem treeToSearch;
                 if (name.startsWith("s" + File.separator) || name.startsWith("S" + File.separator)) { //$NON-NLS-1$ //$NON-NLS-2$
