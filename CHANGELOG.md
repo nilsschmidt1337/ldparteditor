@@ -1,3 +1,20 @@
+# 28 Jul 2024
+With the release of 1.8.84 you are able to...
+-  ...visually identify which surfaces or lines belong to the model beeing edited or to a primitive/subpart (with the green "S" button in the upper left corner of the 3D editor).
+-  ...press a button to run Edger2 verbose with the current settings.
+-  ...set the number of open views for part review (1-4).
+-  ...see the location where PartReview will store its files and "Save All" files for review.
+-  ...benefit from a better button contrast on the dark UI themes.
+-  ...benefit from a better contrast for the coplanarity heatmap.
+-  ...benefit from an improved Edger2 performance.
+-  ...show hi-quality edge lines in the OpenGL 3.3 renderer (TYPE 2 and 5).
+
+The following critical issue is fixed:
+1. Uninlining left an additional blank line after un-inlining in the target file. 
+2. The ESC key reset the Manipulator when it was set by a double click on a surface before.
+3. Added a a missing border on text boxes which had a UI theme applied.
+
+
 # 19 Jul 2024
 With the release of 1.8.83 you are able to...
 -  ...change colour themes via "Tools..."->"Options..."->"Customise Colours:"->"Theme" (e.g. to dark mode/dracula theme) to make the software easier on the eyes.
