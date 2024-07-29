@@ -2395,7 +2395,10 @@ public class MiscToolItem extends ToolItem {
                                         }
 
                                         monitor.beginTask(fileName3, IProgressMonitor.UNKNOWN);
-                                        Display.getCurrent().readAndDispatch();
+
+                                        // This 'readAndDispatch' does not work on Mac OS X! Why? :(
+                                        if (!Cocoa.IS_COCOA) Display.getCurrent().readAndDispatch();
+
                                         dfsToOpen.add(df);
                                         df.setText(source3);
                                         // Add / remove from unsaved files is mandatory!
