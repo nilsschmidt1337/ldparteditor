@@ -3900,7 +3900,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 continue;
             }
             for (DatFile d : cachedReferences) {
-                if (dir.equals(d.getOldName()) || dir.equals(d.getNewName())) {
+                if (dir.equalsIgnoreCase(d.getOldName()) || dir.equalsIgnoreCase(d.getNewName())) {
                     return d;
                 }
             }
