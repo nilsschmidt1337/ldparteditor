@@ -2477,35 +2477,9 @@ public class MiscToolItem extends ToolItem {
 
                                     Project.setFileToEdit(main);
 
-                                    Editor3DWindow.getWindow().openDatFile(main, OpenInWhat.EDITOR_3D, null);
-                                    final int viewCount = WorkbenchManager.getUserSettingState().getPartReview3dViewCount();
-                                    if (viewCount > 1) Editor3DWindow.getRenders().get(0).getC3D().getModifier().splitViewHorizontally();
-                                    if (viewCount > 2) Editor3DWindow.getRenders().get(0).getC3D().getModifier().splitViewVertically();
-                                    if (viewCount > 3) Editor3DWindow.getRenders().get(1).getC3D().getModifier().splitViewVertically();
-
-                                    int state = 0;
-                                    for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
-                                        Composite3D c3d = renderer.getC3D();
-                                        WidgetSelectionHelper.unselectAllChildButtons(c3d.mnuRenderMode);
-                                        if (state == 0) {
-                                            c3d.mntmNoBFCPtr[0].setSelection(true);
-                                            c3d.getMntmStudLogo().setSelection(true);
-                                            c3d.getModifier().switchShowingLogo(true);
-                                            c3d.getModifier().setRenderMode(0);
-                                        }
-                                        if (state == 1) {
-                                            c3d.mntmRandomColoursPtr[0].setSelection(true);
-                                            c3d.getModifier().setRenderMode(1);
-                                        }
-                                        if (state == 2) {
-                                            c3d.mntmCondlineModePtr[0].setSelection(true);
-                                            c3d.getModifier().setRenderMode(6);
-                                        }
-                                        if (state == 3) {
-                                            c3d.mntmWireframeModePtr[0].setSelection(true);
-                                            c3d.getModifier().setRenderMode(-1);
-                                        }
-                                        state++;
+                                    if (!Cocoa.IS_COCOA) {
+                                        // Under Mac OS X open it outside of the dialog.
+                                        openPartReviewFileIn3DEditor();
                                     }
 
                                     Editor3DWindow.getWindow().updateTreeUnsavedEntries();
@@ -2536,6 +2510,19 @@ public class MiscToolItem extends ToolItem {
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
                         throw new LDPartEditorException(ie);
+                    }
+
+                    if (Cocoa.IS_COCOA && Editor3DWindow.getWindow().isReviewingAPart()) {
+                        // Mac OS X needs some sleep before displaying the part :/
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            throw new LDPartEditorException(ie);
+                        }
+
+                        // Open the part in the editor
+                        openPartReviewFileIn3DEditor();
                     }
                 }
             }
@@ -3763,5 +3750,38 @@ public class MiscToolItem extends ToolItem {
             }
         }
         regainFocus();
+    }
+
+    private static void openPartReviewFileIn3DEditor() {
+        Editor3DWindow.getWindow().openDatFile(Project.getFileToEdit(), OpenInWhat.EDITOR_3D, null);
+        final int viewCount = WorkbenchManager.getUserSettingState().getPartReview3dViewCount();
+        if (viewCount > 1) Editor3DWindow.getRenders().get(0).getC3D().getModifier().splitViewHorizontally();
+        if (viewCount > 2) Editor3DWindow.getRenders().get(0).getC3D().getModifier().splitViewVertically();
+        if (viewCount > 3) Editor3DWindow.getRenders().get(1).getC3D().getModifier().splitViewVertically();
+
+        int state = 0;
+        for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+            Composite3D c3d = renderer.getC3D();
+            WidgetSelectionHelper.unselectAllChildButtons(c3d.mnuRenderMode);
+            if (state == 0) {
+                c3d.mntmNoBFCPtr[0].setSelection(true);
+                c3d.getMntmStudLogo().setSelection(true);
+                c3d.getModifier().switchShowingLogo(true);
+                c3d.getModifier().setRenderMode(0);
+            }
+            if (state == 1) {
+                c3d.mntmRandomColoursPtr[0].setSelection(true);
+                c3d.getModifier().setRenderMode(1);
+            }
+            if (state == 2) {
+                c3d.mntmCondlineModePtr[0].setSelection(true);
+                c3d.getModifier().setRenderMode(6);
+            }
+            if (state == 3) {
+                c3d.mntmWireframeModePtr[0].setSelection(true);
+                c3d.getModifier().setRenderMode(-1);
+            }
+            state++;
+        }
     }
 }
