@@ -372,11 +372,6 @@ public class MiscToolItem extends ToolItem {
         btnRoundSelection.setToolTipText(I18n.E3D_ROUND + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnRoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
 
-        final NButton btnEdger2 = new NButton(miscToolItem, Cocoa.getStyle());
-        btnEdger2.setText(I18n.E3D_EDGER_2);
-        KeyStateManager.addTooltipText(btnEdger2, I18n.EDGER_CURRENT_VERBOSE_RUN, Task.EDGER2);
-        widgetUtil(btnEdger2).addSelectionListener(e -> edger2());
-
         final NButton btnSelect = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
         MiscToolItem.btnSelect2Ptr[0] = btnSelect;
         btnSelect.setToolTipText(I18n.E3D_ADVANCED_SELECT);
@@ -726,6 +721,11 @@ public class MiscToolItem extends ToolItem {
             mnuTools.setVisible(true);
             Editor3DWindow.getWindow().regainFocus();
         });
+
+        final NButton btnEdger2 = new NButton(miscToolItem, Cocoa.getStyle());
+        btnEdger2.setText(I18n.E3D_EDGER_2);
+        KeyStateManager.addTooltipText(btnEdger2, I18n.EDGER_CURRENT_VERBOSE_RUN, Task.EDGER2);
+        widgetUtil(btnEdger2).addSelectionListener(e -> edger2());
 
         final NButton btnInfographic = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
         btnInfographic.setText(I18n.INFOGRAPHIC_HELP_BUTTON_TITLE);

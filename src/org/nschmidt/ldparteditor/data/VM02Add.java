@@ -464,7 +464,7 @@ class VM02Add extends VM01SelectHelper {
 
     public void addQuad(Vertex v1, Vertex v2, Vertex v3, Vertex v4, Composite3D c3d) {
         if (v1 == null || v2 == null || v3 == null || v4 == null) return;
-        final boolean allowInvalidShapes = WorkbenchManager.getUserSettingState().isAllowInvalidShapes();
+        final boolean allowInvalidShapes = WorkbenchManager.getUserSettingState().isAllowInvalidShapes() || c3d.getRenderMode() == 7; // 7 = co-planarity heat-map
         {
             SortedSet<Vertex> dupl = new TreeSet<>();
             dupl.add(v1);
