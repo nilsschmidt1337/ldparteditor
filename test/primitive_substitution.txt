@@ -1,0 +1,20 @@
+0 Primitive Substitution Test / Truncated N-Dis Example
+0 Name: new.dat
+0 Author: Nils Schmidt [BlackBrick89]
+0 !LDRAW_ORG Unofficial_Part
+0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt
+
+
+0 BFC CERTIFY CCW
+
+1 16 0 0 0 10 0 0 0 0 10 0 1 0 4-4disc.dat
+1 1 0 0 1 -10 0 0 0 0 10 0 1 0 1-16tndis.dat
+1 15 0 0 2 -10 0 0 0 0 10 0 1 0 1-8tndis.dat
+1 14 0 0 2 -10 0 0 0 0 10 0 1 0 3-16tndis.dat
+
+1 16 0 20 0 10 0 0 0 0 10 0 1 0 48\4-4disc.dat
+1 1 0 20 1 -10 0 0 0 0 10 0 1 0 48\1-24tndis.dat
+1 15 0 20 2 -10 0 0 0 0 10 0 1 0 48\1-16tndis.dat
+1 5 0 20 3 -10 0 0 0 0 10 0 1 0 48\1-12tndis.dat
+1 14 0 20 4 -10 0 0 0 0 10 0 1 0 48\5-48tndis.dat
+1 2 0 20 5 -10 0 0 0 0 10 0 1 0 48\1-8tndis.dat

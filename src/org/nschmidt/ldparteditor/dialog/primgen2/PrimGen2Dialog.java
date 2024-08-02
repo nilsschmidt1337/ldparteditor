@@ -72,7 +72,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
     private static final int CYLINDER = 4;
     private static final int DISC = 5;
     private static final int DISC_NEGATIVE = 6;
-    private static final int CHORD = 7;
+    private static final int DISC_NEGATIVE_TRUNCATED = 7;
+    private static final int CHORD = 8;
 
     private boolean doUpdate = false;
     private boolean ok = false;
@@ -587,6 +588,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb.append("0 BFC CERTIFY CW\n\n"); //$NON-NLS-1$
         }
 
+        boolean truncated = false;
         final int pType = cmbTypePtr[0].getSelectionIndex();
         switch (pType) {
         case CIRCLE:
@@ -732,10 +734,12 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
 
             break;
+        case DISC_NEGATIVE_TRUNCATED:
+            truncated = true;
         case DISC_NEGATIVE:
             name = upper + "-" + lower + "ndis.dat"; //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Disc Negative " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            sb.insert(0, "0 " + resolution + "Disc Negative " + (truncated ? "Truncated " : "") + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
             {
                 double deltaAngle = Math.PI * 2d / divisions;
@@ -743,6 +747,14 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 int s1 = divisions / 4;
                 int s2 = s1 * 2;
                 int s3 = s1 * 3;
+
+                for(int i = 0; i < segments; i++) {
+                    angle = angle + deltaAngle;
+                }
+
+                double truncatedZ = Math.sin(angle);
+
+                angle = 0d;
                 for(int i = 0; i < segments; i++) {
                     double nextAngle = angle + deltaAngle;
                     double x2 = Math.cos(angle);
@@ -753,7 +765,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     double z3;
                     if (i < s1) {
                         x3 = 1d;
-                        z3 = 1d;
+                        z3 = truncated ? truncatedZ : 1d;
                     } else if (i < s2) {
                         x3 = -1d;
                         z3 = 1d;
@@ -2222,7 +2234,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
         {
         case CIRCLE, CYLINDER, DISC, DISC_NEGATIVE, CHORD:
             return true;
-
+        case DISC_NEGATIVE_TRUNCATED:
+            return segments < divisions && segments > 0;
         case RING, CONE:
             if (size % 1 != 0)
             {
