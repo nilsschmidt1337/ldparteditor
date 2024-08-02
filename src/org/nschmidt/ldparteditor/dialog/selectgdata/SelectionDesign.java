@@ -86,7 +86,7 @@ class SelectionDesign<T> extends ThemedDialog {
 
         for (T item : selectionData) {
             TreeItem trtmEditor3D = new TreeItem(tree);
-            trtmEditor3D.setImage(ResourceManager.getImage(icon));
+            trtmEditor3D.setImage(ResourceManager.getImageInvertedInDarkMode(icon));
             trtmEditor3D.setText(new String[] { item.toString() });
             trtmEditor3D.setVisible(true);
             trtmEditor3D.setData(item);

@@ -108,7 +108,7 @@ class TranslateDesign extends ThemedDialog {
             NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
             this.btnLocalPtr[0] = btnLocal;
             btnLocal.setToolTipText(I18n.E3D_LOCAL);
-            btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+            btnLocal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_local.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.LOCAL) {
                 btnLocal.setSelection(true);
                 TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
@@ -118,7 +118,7 @@ class TranslateDesign extends ThemedDialog {
             NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
             this.btnGlobalPtr[0] = btnGlobal;
             btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
-            btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+            btnGlobal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_global.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.GLOBAL) {
                 btnGlobal.setSelection(true);
                 TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
@@ -183,13 +183,13 @@ class TranslateDesign extends ThemedDialog {
             NButton btnToManipulatorPosition = new NButton(cmpContainer, SWT.NONE);
             this.btnToManipulatorPositionPtr[0] = btnToManipulatorPosition;
             btnToManipulatorPosition.setText(I18n.TRANSLATE_TO_MANIPULATOR_POSITION);
-            btnToManipulatorPosition.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+            btnToManipulatorPosition.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_local.png")); //$NON-NLS-1$
         }
         {
             NButton btnToManipulatorPositionInverted = new NButton(cmpContainer, SWT.NONE);
             this.btnToManipulatorPositionInvertedPtr[0] = btnToManipulatorPositionInverted;
             btnToManipulatorPositionInverted.setText(I18n.TRANSLATE_TO_MANIPULATOR_POSITION_INVERTED);
-            btnToManipulatorPositionInverted.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+            btnToManipulatorPositionInverted.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_local.png")); //$NON-NLS-1$
         }
 
         {

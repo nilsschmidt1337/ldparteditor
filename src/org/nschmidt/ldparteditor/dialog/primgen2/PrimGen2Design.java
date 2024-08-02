@@ -275,7 +275,7 @@ class PrimGen2Design extends ThemedDialog {
         NButton btnTop = new NButton(cmpContainer, SWT.NONE);
         this.btnTopPtr[0] = btnTop;
         btnTop.setText(I18n.PERSPECTIVE_TOP);
-        btnTop.setImage(ResourceManager.getImage("icon16_top.png")); //$NON-NLS-1$
+        btnTop.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_top.png")); //$NON-NLS-1$
         btnTop.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {

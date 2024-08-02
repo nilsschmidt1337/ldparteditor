@@ -409,7 +409,7 @@ class EditorTextDesign extends ApplicationWindow {
         {
             NButton btnUndo = new NButton(toolItemUndoRedo, Cocoa.getStyle());
             this.btnUndoPtr[0] = btnUndo;
-            btnUndo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
+            btnUndo.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_undo.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnUndo, I18n.E3D_UNDO, TextTask.EDITORTEXT_UNDO);
         }
         if (NLogger.debugging) {
@@ -421,14 +421,14 @@ class EditorTextDesign extends ApplicationWindow {
         {
             NButton btnRedo = new NButton(toolItemUndoRedo, Cocoa.getStyle());
             this.btnRedoPtr[0] = btnRedo;
-            btnRedo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
+            btnRedo.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_redo.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnRedo, I18n.E3D_REDO, TextTask.EDITORTEXT_REDO);
         }
         ToolItem toolItemCCPD = new ToolItem(toolBar, Cocoa.getStyle(), true);
         {
             NButton btnCut = new NButton(toolItemCCPD, Cocoa.getStyle());
             this.btnCutPtr[0] = btnCut;
-            btnCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
+            btnCut.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_edit-cut.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnCut, I18n.COPYNPASTE_CUT, Task.CUT);
         }
         {
@@ -459,25 +459,25 @@ class EditorTextDesign extends ApplicationWindow {
         {
             NButton btnFindAndReplace = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnFindAndReplacePtr[0] = btnFindAndReplace;
-            btnFindAndReplace.setImage(ResourceManager.getImage("icon16_findReplace.png")); //$NON-NLS-1$
+            btnFindAndReplace.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_findReplace.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnFindAndReplace, I18n.EDITORTEXT_FIND_REPLACE, TextTask.EDITORTEXT_FIND);
         }
         {
             NButton btnSort = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnSortPtr[0] = btnSort;
-            btnSort.setImage(ResourceManager.getImage("icon16_sort.png")); //$NON-NLS-1$
+            btnSort.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_sort.png")); //$NON-NLS-1$
             btnSort.setToolTipText(I18n.EDITORTEXT_SORT);
         }
         {
             NButton btnSplitQuad = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnSplitQuadPtr[0] = btnSplitQuad;
-            btnSplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
+            btnSplitQuad.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_quadToTri.png")); //$NON-NLS-1$
             btnSplitQuad.setToolTipText(I18n.EDITORTEXT_SPLIT_QUAD);
         }
         {
             NButton btnMergeQuad = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnMergeQuadPtr[0] = btnMergeQuad;
-            btnMergeQuad.setImage(ResourceManager.getImage("icon16_triToquad.png")); //$NON-NLS-1$
+            btnMergeQuad.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_triToquad.png")); //$NON-NLS-1$
             btnMergeQuad.setToolTipText(I18n.EDITORTEXT_MERGE_QUAD);
         }
         {
@@ -489,13 +489,13 @@ class EditorTextDesign extends ApplicationWindow {
         {
             NButton btnOpenIn3D = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnOpenIn3DPtr[0] = btnOpenIn3D;
-            btnOpenIn3D.setImage(ResourceManager.getImage("icon16_openIn3D.png")); //$NON-NLS-1$
+            btnOpenIn3D.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_openIn3D.png")); //$NON-NLS-1$
             btnOpenIn3D.setToolTipText(I18n.E3D_OPEN_IN_3D_EDITOR);
         }
         {
             NButton btnUnrectify = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnUnrectifyPtr[0] = btnUnrectify;
-            btnUnrectify.setImage(ResourceManager.getImage("icon16_unrectify.png")); //$NON-NLS-1$
+            btnUnrectify.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_unrectify.png")); //$NON-NLS-1$
             btnUnrectify.setToolTipText(Cocoa.replaceCtrlByCmd(I18n.EDITORTEXT_UNRECTIFY));
         }
         {
@@ -507,19 +507,19 @@ class EditorTextDesign extends ApplicationWindow {
         {
             NButton btnInline = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnInlinePtr[0] = btnInline;
-            btnInline.setImage(ResourceManager.getImage("icon16_inline.png")); //$NON-NLS-1$
+            btnInline.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_inline.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnInline, Cocoa.replaceCtrlByCmd(I18n.EDITORTEXT_INLINE_1), TextTask.EDITORTEXT_INLINE);
         }
         {
             NButton btnInlineDeep = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnInlineDeepPtr[0] = btnInlineDeep;
-            btnInlineDeep.setImage(ResourceManager.getImage("icon16_inlinedeep.png")); //$NON-NLS-1$
+            btnInlineDeep.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_inlinedeep.png")); //$NON-NLS-1$
             btnInlineDeep.setToolTipText(I18n.EDITORTEXT_INLINE_2);
         }
         {
             NButton btnInlineLinked = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnInlineLinkedPtr[0] = btnInlineLinked;
-            btnInlineLinked.setImage(ResourceManager.getImage("icon16_inlinelinked.png")); //$NON-NLS-1$
+            btnInlineLinked.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_inlinelinked.png")); //$NON-NLS-1$
             btnInlineLinked.setToolTipText(Cocoa.replaceCtrlByCmd(I18n.EDITORTEXT_INLINE_3));
         }
         {
@@ -538,21 +538,21 @@ class EditorTextDesign extends ApplicationWindow {
             NButton btnRoundSelection = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnRoundSelectionPtr[0] = btnRoundSelection;
             KeyStateManager.addTooltipText(btnRoundSelection, I18n.EDITORTEXT_ROUND + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY), TextTask.EDITORTEXT_ROUND);
-            btnRoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
+            btnRoundSelection.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_round.png")); //$NON-NLS-1$
         }
 
         {
             NButton btnTexmap = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnTexmapPtr[0] = btnTexmap;
             btnTexmap.setToolTipText(I18n.EDITORTEXT_TEXMAP);
-            btnTexmap.setImage(ResourceManager.getImage("icon16_texmap.png")); //$NON-NLS-1$
+            btnTexmap.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_texmap.png")); //$NON-NLS-1$
         }
 
         {
             NButton btnAnnotate = new NButton(toolItemDebug, Cocoa.getStyle());
             this.btnAnnotatePtr[0] = btnAnnotate;
             btnAnnotate.setToolTipText(I18n.EDITORTEXT_COMMENT);
-            btnAnnotate.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
+            btnAnnotate.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_annotate.png")); //$NON-NLS-1$
         }
 
         ToolItem toolItemMoveAndRotate = new ToolItem(toolBar, Cocoa.getStyle(), true);

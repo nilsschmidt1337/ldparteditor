@@ -35,7 +35,7 @@ public class UndoRedoToolItem extends ToolItem {
         super(parent, style, isHorizontal);
 
         NButton btnUndo = new NButton(this, Cocoa.getStyle());
-        btnUndo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
+        btnUndo.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_undo.png")); //$NON-NLS-1$
         KeyStateManager.addTooltipText(btnUndo, I18n.E3D_UNDO, Task.UNDO);
 
         if (NLogger.debugging) {
@@ -52,7 +52,7 @@ public class UndoRedoToolItem extends ToolItem {
         }
 
         NButton btnRedo = new NButton(this, Cocoa.getStyle());
-        btnRedo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
+        btnRedo.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_redo.png")); //$NON-NLS-1$
         KeyStateManager.addTooltipText(btnRedo, I18n.E3D_REDO, Task.REDO);
 
         widgetUtil(btnUndo).addSelectionListener(e -> {

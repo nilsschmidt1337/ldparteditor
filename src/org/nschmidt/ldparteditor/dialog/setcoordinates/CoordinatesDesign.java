@@ -119,14 +119,14 @@ class CoordinatesDesign extends ThemedDialog {
             NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
             this.btnLocalPtr[0] = btnLocal;
             btnLocal.setToolTipText(I18n.E3D_LOCAL);
-            btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+            btnLocal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_local.png")); //$NON-NLS-1$
         }
         {
             NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
             this.btnGlobalPtr[0] = btnGlobal;
             btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
             btnGlobal.setSelection(true);
-            btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+            btnGlobal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_global.png")); //$NON-NLS-1$
         }
 
         {
@@ -136,7 +136,7 @@ class CoordinatesDesign extends ThemedDialog {
             NButton btnManipulator = new NButton(cmpTxt, SWT.NONE);
             this.btnManipulatorPtr[0] = btnManipulator;
             btnManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btnManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnManipulator.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_local.png")); //$NON-NLS-1$
             btnManipulator.setText(I18n.COORDINATESDIALOG_MANIPULATOR);
         }
         {
@@ -211,7 +211,7 @@ class CoordinatesDesign extends ThemedDialog {
             NButton btnSetManipulator = new NButton(cmpTxt, SWT.NONE);
             this.btnSetManipulatorPtr[0] = btnSetManipulator;
             btnSetManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btnSetManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnSetManipulator.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_local.png")); //$NON-NLS-1$
             btnSetManipulator.setText(I18n.COORDINATESDIALOG_SET_MANIPULATOR);
         }
 

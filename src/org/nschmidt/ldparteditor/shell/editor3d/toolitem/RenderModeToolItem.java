@@ -36,39 +36,39 @@ public class RenderModeToolItem extends ToolItem {
 
         NButton btnRenderModeNoBackfaceCulling = new NButton(this, Cocoa.getStyle());
         KeyStateManager.addTooltipText(btnRenderModeNoBackfaceCulling, I18n.C3D_NO_BACKFACE_CULLING, Task.RENDERMODE_NO_BACKFACE_CULLING);
-        btnRenderModeNoBackfaceCulling.setImage(ResourceManager.getImage("icon16_noBfc.png")); //$NON-NLS-1$
+        btnRenderModeNoBackfaceCulling.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_noBfc.png")); //$NON-NLS-1$
 
         NButton btnRenderModeRandomColours = new NButton(this, Cocoa.getStyle());
         KeyStateManager.addTooltipText(btnRenderModeRandomColours, I18n.C3D_RANDOM_COLOURS, Task.RENDERMODE_RANDOM_COLOURS);
-        btnRenderModeRandomColours.setImage(ResourceManager.getImage("icon16_randomColour.png")); //$NON-NLS-1$
+        btnRenderModeRandomColours.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_randomColour.png")); //$NON-NLS-1$
 
         NButton btnRenderModeGreenRed = new NButton(this, Cocoa.getStyle());
         KeyStateManager.addTooltipText(btnRenderModeGreenRed, I18n.C3D_GREEN_RED, Task.RENDERMODE_GREEN_FRONTFACES_RED_BACKFACES);
-        btnRenderModeGreenRed.setImage(ResourceManager.getImage("icon16_greenFrontRedBack.png")); //$NON-NLS-1$
+        btnRenderModeGreenRed.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_greenFrontRedBack.png")); //$NON-NLS-1$
 
         NButton btnRenderModeRedBackfaces = new NButton(this, Cocoa.getStyle());
         KeyStateManager.addTooltipText(btnRenderModeRedBackfaces, I18n.C3D_RED_BACKFACES, Task.RENDERMODE_RED_BACKFACES);
-        btnRenderModeRedBackfaces.setImage(ResourceManager.getImage("icon16_redBackfaces.png")); //$NON-NLS-1$
+        btnRenderModeRedBackfaces.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_redBackfaces.png")); //$NON-NLS-1$
 
         NButton btnRenderModeRealBackfaceCulling = new NButton(this, Cocoa.getStyle());
         KeyStateManager.addTooltipText(btnRenderModeRealBackfaceCulling, I18n.C3D_REAL_BACKFACE_CULLING, Task.RENDERMODE_REAL_BACKFACE_CULLING);
-        btnRenderModeRealBackfaceCulling.setImage(ResourceManager.getImage("icon16_realBfc.png")); //$NON-NLS-1$
+        btnRenderModeRealBackfaceCulling.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_realBfc.png")); //$NON-NLS-1$
 
         NButton btnRenderModeLDrawStandard = new NButton(this, Cocoa.getStyle());
         KeyStateManager.addTooltipText(btnRenderModeLDrawStandard, I18n.C3D_LDRAW_STANDARD, Task.RENDERMODE_LDRAW_STANDARD);
-        btnRenderModeLDrawStandard.setImage(ResourceManager.getImage("icon16_ldrawStandard.png")); //$NON-NLS-1$
+        btnRenderModeLDrawStandard.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_ldrawStandard.png")); //$NON-NLS-1$
 
         NButton btnRenderModeCondlineMode = new NButton(this, Cocoa.getStyle());
         KeyStateManager.addTooltipText(btnRenderModeCondlineMode, I18n.C3D_CONDLINE_MODE, Task.RENDERMODE_SPECIAL_CONDLINE);
-        btnRenderModeCondlineMode.setImage(ResourceManager.getImage("icon16_specialCondline.png")); //$NON-NLS-1$
+        btnRenderModeCondlineMode.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_specialCondline.png")); //$NON-NLS-1$
 
         NButton btnRenderModeCoplanarityMode = new NButton(this, Cocoa.getStyle());
         KeyStateManager.addTooltipText(btnRenderModeCoplanarityMode, I18n.C3D_COPLANARITY_MODE, Task.RENDERMODE_COPLANARITY_HEATMAP);
-        btnRenderModeCoplanarityMode.setImage(ResourceManager.getImage("icon16_coplanarityHeatmap.png")); //$NON-NLS-1$
+        btnRenderModeCoplanarityMode.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_coplanarityHeatmap.png")); //$NON-NLS-1$
 
         NButton btnRenderModeWireframe = new NButton(this, Cocoa.getStyle());
         KeyStateManager.addTooltipText(btnRenderModeWireframe, I18n.C3D_WIREFRAME, Task.RENDERMODE_WIREFRAME);
-        btnRenderModeWireframe.setImage(ResourceManager.getImage("icon16_wireframe.png")); //$NON-NLS-1$
+        btnRenderModeWireframe.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_wireframe.png")); //$NON-NLS-1$
 
         widgetUtil(btnRenderModeNoBackfaceCulling).addSelectionListener(this::setRenderModeNoBackfaceCulling);
         widgetUtil(btnRenderModeRandomColours).addSelectionListener(this::setRenderModeRandomColours);

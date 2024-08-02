@@ -28,6 +28,8 @@ import org.nschmidt.ldparteditor.enumtype.IconSize;
 import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.workbench.Theming;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The resource manager, which returns pictures, sounds and so on..
@@ -38,6 +40,30 @@ public enum ResourceManager {
 
     /** The hash map, which stores already loaded images in-memory. */
     private static Map<String, Image> imageMap = new HashMap<>();
+
+    /**
+     * Loads a image with a given name from the resource package. Note: By
+     * convention the image name starts with "img" or "icon".
+     * When the dark mode is active, the image will be the inverted version.
+     *
+     * @param name
+     *            The name of the image located at
+     *            org.nschmidt.ldparteditor.resources
+     * @return The image as {@link org.eclipse.swt.graphics.Image}.
+     */
+    public static Image getImageInvertedInDarkMode(String name) {
+        if (!name.startsWith("img")) { //$NON-NLS-1$
+            final Theming theming = WorkbenchManager.getUserSettingState().getTheming();
+            if (theming == Theming.DARK || theming == Theming.DRACULA) {
+                final int underscoreIndex = name.indexOf('_');
+                if (underscoreIndex > -1) {
+                    name = name.substring(0, underscoreIndex + 1) + "_inverted_" + name.substring(underscoreIndex + 1); //$NON-NLS-1$
+                }
+            }
+        }
+
+        return getImage(name);
+    }
 
     /**
      * Loads a image with a given name from the resource package. Note: By
@@ -137,6 +163,10 @@ public enum ResourceManager {
             img = imageMap.get(name);
         } else {
             InputStream imgStream = ResourceManager.class.getResourceAsStream(name);
+            if (imgStream == null) {
+                imgStream = ResourceManager.class.getResourceAsStream(name.replace("_inverted_", "")); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+
             try {
                 if (imgStream != null) {
                     img = new Image(Display.getCurrent(), imgStream);

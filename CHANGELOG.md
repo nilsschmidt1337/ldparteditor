@@ -1,6 +1,6 @@
 # 28 Jul 2024
 With the release of 1.8.84 you are able to...
--  ...visually identify which surfaces or lines belong to the model beeing edited or to a primitive/subpart (with the green "S" button in the upper left corner of the 3D editor).
+-  ...visually identify which surfaces or lines belong to the model being edited or to a primitive/subpart (with the green "S" button in the upper left corner of the 3D editor).
 -  ...press a button to run Edger2 verbose with the current settings.
 -  ...set the number of open views for part review (1-4).
 -  ...see the location where PartReview will store its files and "Save All" files for review.

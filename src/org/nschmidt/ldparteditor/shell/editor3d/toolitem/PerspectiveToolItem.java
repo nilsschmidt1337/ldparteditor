@@ -46,7 +46,7 @@ public class PerspectiveToolItem extends ToolItem {
         createWidgets(this);
         addListeners();
     }
-    
+
     public static void refreshPerspectiveLockButton(Composite3D c3d) {
         if (c3d != null) {
             btnPerspectiveLockPtr[0].setSelection(c3d.getPerspectiveCalculator().hasRotationLock());
@@ -57,42 +57,42 @@ public class PerspectiveToolItem extends ToolItem {
         NButton btnPerspectiveFront = new NButton(perspectiveToolItem, Cocoa.getStyle());
         btnPerspectiveFrontPtr[0] = btnPerspectiveFront;
         KeyStateManager.addTooltipText(btnPerspectiveFront, I18n.PERSPECTIVE_FRONT, Task.PERSPECTIVE_FRONT);
-        btnPerspectiveFront.setImage(ResourceManager.getImage("icon16_front.png")); //$NON-NLS-1$
+        btnPerspectiveFront.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_front.png")); //$NON-NLS-1$
 
         NButton btnPerspectiveBack = new NButton(perspectiveToolItem, Cocoa.getStyle());
         btnPerspectiveBackPtr[0] = btnPerspectiveBack;
         KeyStateManager.addTooltipText(btnPerspectiveBack, I18n.PERSPECTIVE_BACK, Task.PERSPECTIVE_BACK);
-        btnPerspectiveBack.setImage(ResourceManager.getImage("icon16_back.png")); //$NON-NLS-1$
+        btnPerspectiveBack.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_back.png")); //$NON-NLS-1$
 
         NButton btnPerspectiveLeft = new NButton(perspectiveToolItem, Cocoa.getStyle());
         btnPerspectiveLeftPtr[0] = btnPerspectiveLeft;
         KeyStateManager.addTooltipText(btnPerspectiveLeft, I18n.PERSPECTIVE_LEFT, Task.PERSPECTIVE_LEFT);
-        btnPerspectiveLeft.setImage(ResourceManager.getImage("icon16_left.png")); //$NON-NLS-1$
+        btnPerspectiveLeft.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_left.png")); //$NON-NLS-1$
 
         NButton btnPerspectiveRight = new NButton(perspectiveToolItem, Cocoa.getStyle());
         btnPerspectiveRightPtr[0] = btnPerspectiveRight;
         KeyStateManager.addTooltipText(btnPerspectiveRight, I18n.PERSPECTIVE_RIGHT, Task.PERSPECTIVE_RIGHT);
-        btnPerspectiveRight.setImage(ResourceManager.getImage("icon16_right.png")); //$NON-NLS-1$
+        btnPerspectiveRight.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_right.png")); //$NON-NLS-1$
 
         NButton btnPerspectiveTop = new NButton(perspectiveToolItem, Cocoa.getStyle());
         btnPerspectiveTopPtr[0] = btnPerspectiveTop;
         KeyStateManager.addTooltipText(btnPerspectiveTop, I18n.PERSPECTIVE_TOP, Task.PERSPECTIVE_TOP);
-        btnPerspectiveTop.setImage(ResourceManager.getImage("icon16_top.png")); //$NON-NLS-1$
+        btnPerspectiveTop.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_top.png")); //$NON-NLS-1$
 
         NButton btnPerspectiveBottom = new NButton(perspectiveToolItem, Cocoa.getStyle());
         btnPerspectiveBottomPtr[0] = btnPerspectiveBottom;
         KeyStateManager.addTooltipText(btnPerspectiveBottom, I18n.PERSPECTIVE_BOTTOM, Task.PERSPECTIVE_BOTTOM);
-        btnPerspectiveBottom.setImage(ResourceManager.getImage("icon16_bottom.png")); //$NON-NLS-1$
+        btnPerspectiveBottom.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_bottom.png")); //$NON-NLS-1$
 
         NButton btnPerspectiveTwoThirds = new NButton(perspectiveToolItem, Cocoa.getStyle());
         btnPerspectiveTwoThirdsPtr[0] = btnPerspectiveTwoThirds;
         KeyStateManager.addTooltipText(btnPerspectiveTwoThirds, I18n.PERSPECTIVE_TWO_THIRDS, Task.PERSPECTIVE_TWO_THIRDS);
-        btnPerspectiveTwoThirds.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
-        
+        btnPerspectiveTwoThirds.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_twoThirds.png")); //$NON-NLS-1$
+
         NButton btnPerspectiveLock = new NButton(perspectiveToolItem, Cocoa.getStyle() | SWT.TOGGLE);
         btnPerspectiveLockPtr[0] = btnPerspectiveLock;
         btnPerspectiveLock.setToolTipText(I18n.PERSPECTIVE_LOCK);
-        btnPerspectiveLock.setImage(ResourceManager.getImage("icon16_lock.png")); //$NON-NLS-1$
+        btnPerspectiveLock.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_lock.png")); //$NON-NLS-1$
     }
 
     private static void addListeners() {
@@ -131,7 +131,7 @@ public class PerspectiveToolItem extends ToolItem {
             c3d.getPerspectiveCalculator().setPerspective(perspective);
             c3d.setPerspectiveOnContextMenu(perspective);
         }
-        
+
         regainFocus();
     }
 

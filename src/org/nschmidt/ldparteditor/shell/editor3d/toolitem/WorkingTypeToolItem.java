@@ -90,22 +90,22 @@ public class WorkingTypeToolItem extends ToolItem {
         btnVerticesPtr[0] = btnVertices;
         KeyStateManager.addTooltipText(btnVertices, I18n.E3D_MODE_VERTEX + I18n.E3D_ALT_TO_DESELECT, Task.OBJ_VERTEX);
         btnVertices.setSelection(true);
-        btnVertices.setImage(ResourceManager.getImage("icon16_vertices.png")); //$NON-NLS-1$
+        btnVertices.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_vertices.png")); //$NON-NLS-1$
 
         NButton btnTrisNQuads = new NButton(workingTypeToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnTrisNQuadsPtr[0] = btnTrisNQuads;
         KeyStateManager.addTooltipText(btnTrisNQuads, I18n.E3D_MODE_SURFACE + I18n.E3D_ALT_TO_DESELECT, Task.OBJ_FACE);
-        btnTrisNQuads.setImage(ResourceManager.getImage("icon16_trisNquads.png")); //$NON-NLS-1$
+        btnTrisNQuads.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_trisNquads.png")); //$NON-NLS-1$
 
         NButton btnLines = new NButton(workingTypeToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLinesPtr[0] = btnLines;
         KeyStateManager.addTooltipText(btnLines, I18n.E3D_MODE_LINE + I18n.E3D_ALT_TO_DESELECT, Task.OBJ_LINE);
-        btnLines.setImage(ResourceManager.getImage("icon16_lines.png")); //$NON-NLS-1$
+        btnLines.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_lines.png")); //$NON-NLS-1$
 
         NButton btnSubfiles = new NButton(workingTypeToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnSubfilesPtr[0] = btnSubfiles;
         KeyStateManager.addTooltipText(btnSubfiles, I18n.E3D_MODE_SUBPART + I18n.E3D_ALT_TO_DESELECT, Task.OBJ_PRIMITIVE);
-        btnSubfiles.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
+        btnSubfiles.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_primitives.png")); //$NON-NLS-1$
     }
 
     private static void addListeners() {
