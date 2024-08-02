@@ -605,23 +605,23 @@ class Editor3DDesign extends ApplicationWindow {
 
                                 NButton btnStud = new NButton(cmpDummy, SWT.RADIO);
                                 this.btnStudPtr[0] = btnStud;
-                                btnStud.setImage(ResourceManager.getImage("icon8_stud.png")); //$NON-NLS-1$
+                                btnStud.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_stud.png")); //$NON-NLS-1$
                                 btnStud.setToolTipText(I18n.E3D_STUD);
 
                                 NButton btnCoarse = new NButton(cmpDummy, SWT.RADIO);
                                 this.btnCoarsePtr[0] = btnCoarse;
-                                btnCoarse.setImage(ResourceManager.getImage("icon8_coarse.png")); //$NON-NLS-1$
+                                btnCoarse.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_coarse.png")); //$NON-NLS-1$
                                 btnCoarse.setToolTipText(I18n.E3D_COARSE);
 
                                 NButton btnMedium = new NButton(cmpDummy, SWT.RADIO);
                                 this.btnMediumPtr[0] = btnMedium;
                                 btnMedium.setSelection(true);
-                                btnMedium.setImage(ResourceManager.getImage("icon8_medium.png")); //$NON-NLS-1$
+                                btnMedium.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_medium.png")); //$NON-NLS-1$
                                 btnMedium.setToolTipText(I18n.E3D_MEDIUM);
 
                                 NButton btnFine = new NButton(cmpDummy, SWT.RADIO);
                                 this.btnFinePtr[0] = btnFine;
-                                btnFine.setImage(ResourceManager.getImage("icon8_fine.png")); //$NON-NLS-1$
+                                btnFine.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_fine.png")); //$NON-NLS-1$
                                 btnFine.setToolTipText(I18n.E3D_FINE);
 
                                 cmpDummy.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 4, 1));
@@ -900,7 +900,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                                 NButton btnLockAngle = new NButton(cmpLineSetup, SWT.TOGGLE);
                                 this.btnLockAnglePtr[0] = btnLockAngle;
-                                btnLockAngle.setImage(ResourceManager.getImage("icon16_lock.png")); //$NON-NLS-1$
+                                btnLockAngle.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_lock.png")); //$NON-NLS-1$
                                 btnLockAngle.setText(I18n.E3D_LOCK_PROTRACTOR_ANGLES);
                                 btnLockAngle.setToolTipText(I18n.E3D_LOCK_PROTRACTOR_TOOLTIP);
 
@@ -1147,7 +1147,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                                 NButton btnFocusBG = new NButton(cmpDummy, Cocoa.getStyle());
                                 btnPngFocusPtr[0] = btnFocusBG;
-                                btnFocusBG.setImage(ResourceManager.getImage("icon8_focus.png")); //$NON-NLS-1$
+                                btnFocusBG.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_focus.png")); //$NON-NLS-1$
                                 btnFocusBG.setToolTipText(I18n.E3D_FOCUS);
 
                                 NButton btnNext = new NButton(cmpDummy, Cocoa.getStyle());
@@ -1409,7 +1409,7 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         NButton btnOpenIn3DEditor = new NButton(cmpContainer2, Cocoa.getStyle());
                         this.btnOpenIn3DEditorPtr[0] = btnOpenIn3DEditor;
-                        btnOpenIn3DEditor.setImage(ResourceManager.getImage("icon16_openIn3D.png")); //$NON-NLS-1$
+                        btnOpenIn3DEditor.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_openIn3D.png")); //$NON-NLS-1$
                         btnOpenIn3DEditor.setToolTipText(I18n.E3D_OPEN_IN_3D_EDITOR);
                         btnOpenIn3DEditor.setLayoutData(new GridData());
                         btnOpenIn3DEditor.setEnabled(false);
@@ -1417,7 +1417,7 @@ class Editor3DDesign extends ApplicationWindow {
                     {
                         NButton btnOpenInTextEditor = new NButton(cmpContainer2, Cocoa.getStyle());
                         this.btnOpenInTextEditorPtr[0] = btnOpenInTextEditor;
-                        btnOpenInTextEditor.setImage(ResourceManager.getImage("icon16_openInText.png")); //$NON-NLS-1$
+                        btnOpenInTextEditor.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_openInText.png")); //$NON-NLS-1$
                         btnOpenInTextEditor.setToolTipText(I18n.E3D_OPEN_IN_TEXT_EDITOR);
                         btnOpenInTextEditor.setLayoutData(new GridData());
                         btnOpenInTextEditor.setEnabled(false);

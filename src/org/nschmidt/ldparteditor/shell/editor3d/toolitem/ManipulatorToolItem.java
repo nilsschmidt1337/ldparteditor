@@ -104,103 +104,103 @@ public class ManipulatorToolItem extends ToolItem {
         NButton btnManipulatorToOrigin = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToOriginPtr[0] = btnManipulatorToOrigin;
         btnManipulatorToOrigin.setToolTipText(I18n.E3D_MANIPULATOR_TO_ORIGIN);
-        btnManipulatorToOrigin.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
+        btnManipulatorToOrigin.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_toOrigin.png")); //$NON-NLS-1$
 
         NButton btnManipulatorToWorld = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToWorldPtr[0] = btnManipulatorToWorld;
         btnManipulatorToWorld.setToolTipText(I18n.E3D_MANIPULATOR_TO_WORLD);
-        btnManipulatorToWorld.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
+        btnManipulatorToWorld.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_toWorld.png")); //$NON-NLS-1$
 
         NButton btnManipulatorAdjustRotationCenter = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorAdjustRotationCenterPtr[0] = btnManipulatorAdjustRotationCenter;
         btnManipulatorAdjustRotationCenter.setToolTipText(I18n.E3D_ADJUST_ROTATION_CENTER);
-        btnManipulatorAdjustRotationCenter.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
+        btnManipulatorAdjustRotationCenter.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
 
         NButton btnManipulatorXReverse = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorXReversePtr[0] = btnManipulatorXReverse;
         btnManipulatorXReverse.setToolTipText(I18n.E3D_REVERSE_X);
-        btnManipulatorXReverse.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
+        btnManipulatorXReverse.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_Xinv.png")); //$NON-NLS-1$
 
         NButton btnManipulatorYReverse = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorYReversePtr[0] = btnManipulatorYReverse;
         btnManipulatorYReverse.setToolTipText(I18n.E3D_REVERSE_Y);
-        btnManipulatorYReverse.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
+        btnManipulatorYReverse.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_Yinv.png")); //$NON-NLS-1$
 
         NButton btnManipulatorZReverse = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorZReversePtr[0] = btnManipulatorZReverse;
         btnManipulatorZReverse.setToolTipText(I18n.E3D_REVERSE_Z);
-        btnManipulatorZReverse.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
+        btnManipulatorZReverse.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_Zinv.png")); //$NON-NLS-1$
 
         NButton btnManipulatorSwitchXY = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorSwitchXYPtr[0] = btnManipulatorSwitchXY;
         btnManipulatorSwitchXY.setToolTipText(I18n.E3D_SWAP_XY);
-        btnManipulatorSwitchXY.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
+        btnManipulatorSwitchXY.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_XswapY.png")); //$NON-NLS-1$
 
         NButton btnManipulatorSwitchXZ = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorSwitchXZPtr[0] = btnManipulatorSwitchXZ;
         btnManipulatorSwitchXZ.setToolTipText(I18n.E3D_SWAP_XZ);
-        btnManipulatorSwitchXZ.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
+        btnManipulatorSwitchXZ.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_XswapZ.png")); //$NON-NLS-1$
 
         NButton btnManipulatorSwitchYZ = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorSwitchYZPtr[0] = btnManipulatorSwitchYZ;
         btnManipulatorSwitchYZ.setToolTipText(I18n.E3D_SWAP_YZ);
-        btnManipulatorSwitchYZ.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
+        btnManipulatorSwitchYZ.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_YswapZ.png")); //$NON-NLS-1$
 
         NButton btnManipulatorCameraToPos = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorCameraToPosPtr[0] = btnManipulatorCameraToPos;
         btnManipulatorCameraToPos.setToolTipText(I18n.E3D_CAM_TO_MANIPULATOR);
-        btnManipulatorCameraToPos.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
+        btnManipulatorCameraToPos.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_cameratomanipulator.png")); //$NON-NLS-1$
 
         NButton btnManipulatorToAverage = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToAveragePtr[0] = btnManipulatorToAverage;
         btnManipulatorToAverage.setToolTipText(I18n.E3D_MANIPULATOR_TO_AVG);
-        btnManipulatorToAverage.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
+        btnManipulatorToAverage.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_toavg.png")); //$NON-NLS-1$
         KeyStateManager.addTooltipText(btnManipulatorToAverage, I18n.E3D_MANIPULATOR_TO_AVG, Task.MOVE_TO_AVG);
 
         NButton btnManipulatorToSubfile = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToSubfilePtr[0] = btnManipulatorToSubfile;
         btnManipulatorToSubfile.setToolTipText(I18n.E3D_MANIPULATOR_TO_SUBFILE);
-        btnManipulatorToSubfile.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
+        btnManipulatorToSubfile.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tosubfile.png")); //$NON-NLS-1$
 
         NButton btnManipulatorSubfileTo = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorSubfileToPtr[0] = btnManipulatorSubfileTo;
         btnManipulatorSubfileTo.setToolTipText(Cocoa.replaceCtrlByCmd(I18n.E3D_SUBFILE_TO_MANIPULATOR));
-        btnManipulatorSubfileTo.setImage(ResourceManager.getImage("icon16_tosubfile2.png")); //$NON-NLS-1$
+        btnManipulatorSubfileTo.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tosubfile2.png")); //$NON-NLS-1$
 
         NButton btnManipulatorToVertex = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToVertexPtr[0] = btnManipulatorToVertex;
         btnManipulatorToVertex.setToolTipText(I18n.E3D_MANIPULATOR_TO_VERTEX);
-        btnManipulatorToVertex.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
+        btnManipulatorToVertex.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tonearestvertex.png")); //$NON-NLS-1$
 
         NButton btnManipulatorToEdge = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToEdgePtr[0] = btnManipulatorToEdge;
         btnManipulatorToEdge.setToolTipText(I18n.E3D_MANIPULATOR_TO_EDGE);
-        btnManipulatorToEdge.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
+        btnManipulatorToEdge.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tonearestedge.png")); //$NON-NLS-1$
 
         NButton btnManipulatorToSurface = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToSurfacePtr[0] = btnManipulatorToSurface;
         btnManipulatorToSurface.setToolTipText(I18n.E3D_MANIPULATOR_TO_FACE);
-        btnManipulatorToSurface.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
+        btnManipulatorToSurface.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tonearestface.png")); //$NON-NLS-1$
 
         NButton btnManipulatorToVertexNormal = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToVertexNormalPtr[0] = btnManipulatorToVertexNormal;
         btnManipulatorToVertexNormal.setToolTipText(I18n.E3D_MANIPULATOR_TO_VERTEX_N);
-        btnManipulatorToVertexNormal.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
+        btnManipulatorToVertexNormal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tonearestvertexN.png")); //$NON-NLS-1$
 
         NButton btnManipulatorToVertexPosition = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToVertexPositionPtr[0] = btnManipulatorToVertexPosition;
         btnManipulatorToVertexPosition.setToolTipText(I18n.E3D_MANIPULATOR_TO_VERTEX_P);
-        btnManipulatorToVertexPosition.setImage(ResourceManager.getImage("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
+        btnManipulatorToVertexPosition.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
 
         NButton btnManipulatorToEdgeNormal = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToEdgeNormalPtr[0] = btnManipulatorToEdgeNormal;
         btnManipulatorToEdgeNormal.setToolTipText(I18n.E3D_MANIPULATOR_TO_EDGE_N);
-        btnManipulatorToEdgeNormal.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
+        btnManipulatorToEdgeNormal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tonearestedgeN.png")); //$NON-NLS-1$
 
         NButton btnManipulatorToSurfaceNormal = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToSurfaceNormalPtr[0] = btnManipulatorToSurfaceNormal;
         btnManipulatorToSurfaceNormal.setToolTipText(I18n.E3D_MANIPULATOR_TO_FACE_N);
-        btnManipulatorToSurfaceNormal.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
+        btnManipulatorToSurfaceNormal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tonearestfaceN.png")); //$NON-NLS-1$
     }
 
     private static void createMenuItemWidgets(Composite target, ToolItem toolItem, int style, boolean isHorizontal) {

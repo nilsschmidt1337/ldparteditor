@@ -140,7 +140,7 @@ class RotateDesign extends ThemedDialog {
             NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
             this.btnLocalPtr[0] = btnLocal;
             btnLocal.setToolTipText(I18n.E3D_LOCAL);
-            btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+            btnLocal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_local.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.LOCAL) {
                 btnLocal.setSelection(true);
                 TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
@@ -150,7 +150,7 @@ class RotateDesign extends ThemedDialog {
             NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
             this.btnGlobalPtr[0] = btnGlobal;
             btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
-            btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+            btnGlobal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_global.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.GLOBAL) {
                 btnGlobal.setSelection(true);
                 TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
@@ -207,7 +207,7 @@ class RotateDesign extends ThemedDialog {
             NButton btnPivotManipulator = new NButton(cmpTxt, SWT.NONE);
             this.btnPivotManipulatorPtr[0] = btnPivotManipulator;
             btnPivotManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btnPivotManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnPivotManipulator.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_local.png")); //$NON-NLS-1$
             btnPivotManipulator.setText(I18n.ROTATE_PIVOT_MANIPULATOR);
         }
         {

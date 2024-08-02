@@ -49,12 +49,12 @@ public class ManipulatorScopeToolItem extends ToolItem {
         btnLocalPtr[0] = btnLocal;
         btnLocal.setToolTipText(I18n.E3D_LOCAL);
         btnLocal.setSelection(true);
-        btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+        btnLocal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_local.png")); //$NON-NLS-1$
 
         NButton btnGlobal = new NButton(manipulatorScopeToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnGlobalPtr[0] = btnGlobal;
         btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
-        btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+        btnGlobal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_global.png")); //$NON-NLS-1$
     }
 
     private static void addListeners() {

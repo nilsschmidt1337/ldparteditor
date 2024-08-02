@@ -36,7 +36,7 @@ public class CopyPasteToolItem extends ToolItem {
         super(parent, style, isHorizontal);
 
         NButton btnCut = new NButton(this, Cocoa.getStyle());
-        btnCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
+        btnCut.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_edit-cut.png")); //$NON-NLS-1$
         KeyStateManager.addTooltipText(btnCut, I18n.COPYNPASTE_CUT, Task.CUT);
 
         NButton btnCopy = new NButton(this, Cocoa.getStyle());

@@ -56,38 +56,38 @@ public class LineThicknessToolItem extends ToolItem {
         NButton btnLineSize0 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize0Ptr[0] = btnLineSize0;
         btnLineSize0.setToolTipText(I18n.E3D_LINE_SIZE_0 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-        btnLineSize0.setImage(ResourceManager.getImage("icon16_linesize0.png")); //$NON-NLS-1$
+        btnLineSize0.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_linesize0.png")); //$NON-NLS-1$
 
         NButton btnLineSize1 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize1Ptr[0] = btnLineSize1;
         btnLineSize1.setToolTipText(I18n.E3D_LINE_SIZE_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-        btnLineSize1.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
+        btnLineSize1.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_linesize1.png")); //$NON-NLS-1$
 
         NButton btnLineSize2 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize2Ptr[0] = btnLineSize2;
         btnLineSize2.setToolTipText(I18n.E3D_LINE_SIZE_2 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-        btnLineSize2.setImage(ResourceManager.getImage("icon16_linesize2.png")); //$NON-NLS-1$
+        btnLineSize2.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_linesize2.png")); //$NON-NLS-1$
 
         NButton btnLineSize3 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize3.setSelection(true);
         btnLineSize3Ptr[0] = btnLineSize3;
         btnLineSize3.setToolTipText(I18n.E3D_LINE_SIZE_3 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-        btnLineSize3.setImage(ResourceManager.getImage("icon16_linesize3.png")); //$NON-NLS-1$
+        btnLineSize3.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_linesize3.png")); //$NON-NLS-1$
 
         NButton btnLineSize4 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize4Ptr[0] = btnLineSize4;
         btnLineSize4.setToolTipText(I18n.E3D_LINE_SIZE_4 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-        btnLineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
+        btnLineSize4.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_linesize4.png")); //$NON-NLS-1$
 
         NButton btnLineSize5 = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnLineSize5Ptr[0] = btnLineSize5;
         btnLineSize5.setToolTipText(I18n.E3D_LINE_SIZE_5 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-        btnLineSize5.setImage(ResourceManager.getImage("icon16_linesize5.png")); //$NON-NLS-1$
+        btnLineSize5.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_linesize5.png")); //$NON-NLS-1$
 
         NButton btnToggleLinesOpenGL = new NButton(lineThicknessToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnToggleLinesOpenGLPtr[0] = btnToggleLinesOpenGL;
         btnToggleLinesOpenGL.setToolTipText(I18n.E3D_LINE_OPENGL);
-        btnToggleLinesOpenGL.setImage(ResourceManager.getImage("icon16_gllines.png")); //$NON-NLS-1$
+        btnToggleLinesOpenGL.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_gllines.png")); //$NON-NLS-1$
         btnToggleLinesOpenGL.setSelection(!hiQualityEdges);
     }
 

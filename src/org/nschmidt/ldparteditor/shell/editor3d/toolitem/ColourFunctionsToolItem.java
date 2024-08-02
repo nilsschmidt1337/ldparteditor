@@ -97,7 +97,7 @@ public class ColourFunctionsToolItem extends ToolItem {
         NButton btnPipette = new NButton(colourFunctionsToolItem, Cocoa.getStyle());
         btnPipettePtr[0] = btnPipette;
         btnPipette.setToolTipText(I18n.E3D_PIPETTE);
-        btnPipette.setImage(ResourceManager.getImage("icon16_pipette.png")); //$NON-NLS-1$
+        btnPipette.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_pipette.png")); //$NON-NLS-1$
 
         NButton btnDecolour = new NButton(colourFunctionsToolItem, Cocoa.getStyle());
         btnDecolourPtr[0] = btnDecolour;

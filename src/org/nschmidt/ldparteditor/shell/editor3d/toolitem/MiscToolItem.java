@@ -335,16 +335,16 @@ public class MiscToolItem extends ToolItem {
         NButton btnSplitQuad = new NButton(miscToolItem, Cocoa.getStyle());
         MiscToolItem.btnSplitQuadPtr[0] = btnSplitQuad;
         KeyStateManager.addTooltipText(btnSplitQuad, I18n.E3D_SPLIT_QUAD, Task.QUAD_TO_TRIANGLE);
-        btnSplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
+        btnSplitQuad.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_quadToTri.png")); //$NON-NLS-1$
 
         NButton btnMergeQuad = new NButton(miscToolItem, Cocoa.getStyle());
         MiscToolItem.btnMergeQuadPtr[0] = btnMergeQuad;
         KeyStateManager.addTooltipText(btnMergeQuad, I18n.EDITORTEXT_MERGE_QUAD, Task.TRIANGLE_TO_QUAD);
-        btnMergeQuad.setImage(ResourceManager.getImage("icon16_triToquad.png")); //$NON-NLS-1$
+        btnMergeQuad.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_triToquad.png")); //$NON-NLS-1$
 
         NButton btnLineIntersection = new NButton(miscToolItem, Cocoa.getStyle());
         MiscToolItem.btnLineIntersectionPtr[0] = btnLineIntersection;
-        btnLineIntersection.setImage(ResourceManager.getImage("icon16_lineintersect.png")); //$NON-NLS-1$
+        btnLineIntersection.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_lineintersect.png")); //$NON-NLS-1$
         btnLineIntersection.setToolTipText(I18n.E3D_LINE_INTERSECTION + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_SURFACE));
 
         NButton btnCondlineToLine = new NButton(miscToolItem, Cocoa.getStyle());
@@ -370,7 +370,7 @@ public class MiscToolItem extends ToolItem {
         NButton btnRoundSelection = new NButton(miscToolItem, Cocoa.getStyle());
         MiscToolItem.btnRoundSelectionPtr[0] = btnRoundSelection;
         btnRoundSelection.setToolTipText(I18n.E3D_ROUND + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
-        btnRoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
+        btnRoundSelection.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_round.png")); //$NON-NLS-1$
 
         final NButton btnSelect = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
         MiscToolItem.btnSelect2Ptr[0] = btnSelect;

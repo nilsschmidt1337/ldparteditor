@@ -91,14 +91,14 @@ class SwapCoordinatesDesign extends ThemedDialog {
             this.btnLocalPtr[0] = btnLocal;
             btnLocal.setToolTipText(I18n.E3D_LOCAL);
             if (transformationMode == ManipulatorScope.LOCAL) btnLocal.setSelection(true);
-            btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+            btnLocal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_local.png")); //$NON-NLS-1$
         }
         {
             NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
             this.btnGlobalPtr[0] = btnGlobal;
             btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
             if (transformationMode == ManipulatorScope.GLOBAL) btnGlobal.setSelection(true);
-            btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+            btnGlobal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_global.png")); //$NON-NLS-1$
         }
 
         {
@@ -108,7 +108,7 @@ class SwapCoordinatesDesign extends ThemedDialog {
             NButton btnSwapXY = new NButton(cmpTxt, SWT.RADIO);
             this.btnSwapXYPtr[0] = btnSwapXY;
             btnSwapXY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btnSwapXY.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
+            btnSwapXY.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_XswapY.png")); //$NON-NLS-1$
             btnSwapXY.setText(' ' + I18n.SWAPCOORDINATES_SWAP_ON_XY);
             btnSwapXY.setSelection(true);
         }
@@ -119,7 +119,7 @@ class SwapCoordinatesDesign extends ThemedDialog {
             NButton btnSwapXZ = new NButton(cmpTxt, SWT.RADIO);
             this.btnSwapXZPtr[0] = btnSwapXZ;
             btnSwapXZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btnSwapXZ.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
+            btnSwapXZ.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_XswapZ.png")); //$NON-NLS-1$
             btnSwapXZ.setText(' ' + I18n.SWAPCOORDINATES_SWAP_ON_XZ);
         }
 
@@ -130,7 +130,7 @@ class SwapCoordinatesDesign extends ThemedDialog {
             NButton btnSwapYZ = new NButton(cmpTxt, SWT.RADIO);
             this.btnSwapYZPtr[0] = btnSwapYZ;
             btnSwapYZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btnSwapYZ.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
+            btnSwapYZ.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_YswapZ.png")); //$NON-NLS-1$
             btnSwapYZ.setText(' ' + I18n.SWAPCOORDINATES_SWAP_ON_YZ);
         }
 

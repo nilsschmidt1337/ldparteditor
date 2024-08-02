@@ -91,47 +91,47 @@ public class AddToolItem extends ToolItem {
         NButton btnAddComment = new NButton(addToolItem, Cocoa.getStyle());
         AddToolItem.btnAddCommentPtr[0] = btnAddComment;
         KeyStateManager.addTooltipText(btnAddComment, I18n.E3D_ADD_COMMENT, Task.ADD_COMMENTS);
-        btnAddComment.setImage(ResourceManager.getImage("icon16_addcomment.png")); //$NON-NLS-1$
+        btnAddComment.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_addcomment.png")); //$NON-NLS-1$
 
         NButton btnAddVertex = new NButton(addToolItem, SWT.TOGGLE | Cocoa.getStyle());
         AddToolItem.btnAddVertexPtr[0] = btnAddVertex;
         KeyStateManager.addTooltipText(btnAddVertex, I18n.E3D_ADD_VERTEX, Task.ADD_VERTEX);
-        btnAddVertex.setImage(ResourceManager.getImage("icon16_addvertex.png")); //$NON-NLS-1$
+        btnAddVertex.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_addvertex.png")); //$NON-NLS-1$
 
         NButton btnAddPrimitive = new NButton(addToolItem, SWT.TOGGLE | Cocoa.getStyle());
         AddToolItem.btnAddPrimitivePtr[0] = btnAddPrimitive;
         btnAddPrimitive.setToolTipText(I18n.E3D_ADD_SUBPART);
-        btnAddPrimitive.setImage(ResourceManager.getImage("icon16_addprimitive.png")); //$NON-NLS-1$
+        btnAddPrimitive.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_addprimitive.png")); //$NON-NLS-1$
 
         NButton btnAddLine = new NButton(addToolItem, SWT.TOGGLE | Cocoa.getStyle());
         AddToolItem.btnAddLinePtr[0] = btnAddLine;
         KeyStateManager.addTooltipText(btnAddLine, I18n.E3D_ADD_LINE, Task.ADD_LINE);
-        btnAddLine.setImage(ResourceManager.getImage("icon16_addline.png")); //$NON-NLS-1$
+        btnAddLine.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_addline.png")); //$NON-NLS-1$
 
         NButton btnAddTriangle = new NButton(addToolItem, SWT.TOGGLE | Cocoa.getStyle());
         AddToolItem.btnAddTrianglePtr[0] = btnAddTriangle;
         KeyStateManager.addTooltipText(btnAddTriangle, I18n.E3D_ADD_TRIANGLE, Task.ADD_TRIANGLE);
-        btnAddTriangle.setImage(ResourceManager.getImage("icon16_addtriangle.png")); //$NON-NLS-1$
+        btnAddTriangle.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_addtriangle.png")); //$NON-NLS-1$
 
         NButton btnAddQuad = new NButton(addToolItem, SWT.TOGGLE | Cocoa.getStyle());
         AddToolItem.btnAddQuadPtr[0] = btnAddQuad;
         KeyStateManager.addTooltipText(btnAddQuad, I18n.E3D_ADD_QUAD, Task.ADD_QUAD);
-        btnAddQuad.setImage(ResourceManager.getImage("icon16_addquad.png")); //$NON-NLS-1$
+        btnAddQuad.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_addquad.png")); //$NON-NLS-1$
 
         NButton btnAddCondline = new NButton(addToolItem, SWT.TOGGLE | Cocoa.getStyle());
         AddToolItem.btnAddCondlinePtr[0] = btnAddCondline;
         KeyStateManager.addTooltipText(btnAddCondline, I18n.E3D_ADD_CONDLINE, Task.ADD_CONDLINE);
-        btnAddCondline.setImage(ResourceManager.getImage("icon16_addcondline.png")); //$NON-NLS-1$
+        btnAddCondline.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_addcondline.png")); //$NON-NLS-1$
 
         NButton btnAddDistance = new NButton(addToolItem, SWT.TOGGLE | Cocoa.getStyle());
         AddToolItem.btnAddDistancePtr[0] = btnAddDistance;
         KeyStateManager.addTooltipText(btnAddDistance, I18n.E3D_ADD_DISTANCE, Task.ADD_DISTANCE);
-        btnAddDistance.setImage(ResourceManager.getImage("icon16_adddistance.png")); //$NON-NLS-1$
+        btnAddDistance.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_adddistance.png")); //$NON-NLS-1$
 
         NButton btnAddProtractor = new NButton(addToolItem, SWT.TOGGLE | Cocoa.getStyle());
         AddToolItem.btnAddProtractorPtr[0] = btnAddProtractor;
         KeyStateManager.addTooltipText(btnAddProtractor, I18n.E3D_ADD_PROTRACTOR, Task.ADD_PROTRACTOR);
-        btnAddProtractor.setImage(ResourceManager.getImage("icon16_addprotractor.png")); //$NON-NLS-1$
+        btnAddProtractor.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_addprotractor.png")); //$NON-NLS-1$
     }
 
     private static void addListeners() {

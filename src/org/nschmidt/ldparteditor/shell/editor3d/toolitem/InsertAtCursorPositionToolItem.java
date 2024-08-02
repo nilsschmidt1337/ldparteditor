@@ -58,7 +58,7 @@ public class InsertAtCursorPositionToolItem extends ToolItem {
         NButton btnInsertAtCursorPosition = new NButton(insertAtCursorPositionToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnInsertAtCursorPositionPtr[0] = btnInsertAtCursorPosition;
         KeyStateManager.addTooltipText(btnInsertAtCursorPosition, I18n.E3D_INSERT_AT_CURSOR_POSITION, Task.INSERT_AT_CURSOR);
-        btnInsertAtCursorPosition.setImage(ResourceManager.getImage("icon16_insertAtCursor.png")); //$NON-NLS-1$
+        btnInsertAtCursorPosition.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_insertAtCursor.png")); //$NON-NLS-1$
     }
 
     private static void addListeners() {

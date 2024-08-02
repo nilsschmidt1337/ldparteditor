@@ -478,12 +478,12 @@ class OptionsDesign extends ApplicationWindow {
                 trclmnLocation.setText(I18n.KEYBOARD_SHORTKEY);
 
                 TreeItem trtmEditor3D = new TreeItem(tree);
-                trtmEditor3D.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
+                trtmEditor3D.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_primitives.png")); //$NON-NLS-1$
                 trtmEditor3D.setText(new String[] { I18n.KEYBOARD_EDITOR_3D, "" }); //$NON-NLS-1$
                 trtmEditor3D.setVisible(true);
 
                 TreeItem trtmEditorText = new TreeItem(tree);
-                trtmEditorText.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
+                trtmEditorText.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_annotate.png")); //$NON-NLS-1$
                 trtmEditorText.setText(new String[] { I18n.KEYBOARD_EDITOR_TEXT, "" }); //$NON-NLS-1$
                 trtmEditorText.setVisible(true);
 
@@ -674,13 +674,13 @@ class OptionsDesign extends ApplicationWindow {
 
                 TreeItem trtmEditor3D = new TreeItem(tree);
                 this.trtmEditor3DPtr[0] = trtmEditor3D;
-                trtmEditor3D.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
+                trtmEditor3D.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_primitives.png")); //$NON-NLS-1$
                 trtmEditor3D.setText(new String[] { I18n.KEYBOARD_EDITOR_3D, "" }); //$NON-NLS-1$
                 trtmEditor3D.setVisible(true);
 
                 TreeItem trtmEditorText = new TreeItem(tree);
                 this.trtmEditorTextPtr[0] = trtmEditorText;
-                trtmEditorText.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
+                trtmEditorText.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_annotate.png")); //$NON-NLS-1$
                 trtmEditorText.setText(new String[] { I18n.KEYBOARD_EDITOR_TEXT, "" }); //$NON-NLS-1$
                 trtmEditorText.setVisible(true);
 

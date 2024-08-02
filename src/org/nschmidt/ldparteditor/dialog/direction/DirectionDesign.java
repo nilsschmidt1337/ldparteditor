@@ -100,7 +100,7 @@ class DirectionDesign extends ThemedDialog {
             if (transformationMode == ManipulatorScope.LOCAL) {
                 btnLocal.setSelection(true);
             }
-            btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+            btnLocal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_local.png")); //$NON-NLS-1$
         }
         {
             NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
@@ -109,7 +109,7 @@ class DirectionDesign extends ThemedDialog {
             if (transformationMode == ManipulatorScope.GLOBAL) {
                 btnGlobal.setSelection(true);
             }
-            btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+            btnGlobal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_global.png")); //$NON-NLS-1$
         }
 
         Label lblCartesianCoords = Theming.label(cmpContainer, I18n.rightToLeftStyle());
@@ -221,7 +221,7 @@ class DirectionDesign extends ThemedDialog {
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
             this.btnMXPtr[0] = btnClipboard;
             btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnClipboard.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_local.png")); //$NON-NLS-1$
             btnClipboard.setText(I18n.DIRECTION_MANIPULATOR_X);
         }
 
@@ -232,7 +232,7 @@ class DirectionDesign extends ThemedDialog {
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
             this.btnMYPtr[0] = btnClipboard;
             btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnClipboard.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_local.png")); //$NON-NLS-1$
             btnClipboard.setText(I18n.DIRECTION_MANIPULATOR_Y);
         }
 
@@ -243,7 +243,7 @@ class DirectionDesign extends ThemedDialog {
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
             this.btnMZPtr[0] = btnClipboard;
             btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnClipboard.setImage(ResourceManager.getImageInvertedInDarkMode("icon8_local.png")); //$NON-NLS-1$
             btnClipboard.setText(I18n.DIRECTION_MANIPULATOR_Z);
         }
 

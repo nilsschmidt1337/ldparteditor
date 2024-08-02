@@ -77,27 +77,27 @@ public class TransformationModeToolItem extends ToolItem {
         btnSelectPtr[0] = btnSelect;
         KeyStateManager.addTooltipText(btnSelect, I18n.E3D_SELECT, Task.MODE_SELECT);
         btnSelect.setSelection(true);
-        btnSelect.setImage(ResourceManager.getImage("icon16_select.png")); //$NON-NLS-1$
+        btnSelect.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_select.png")); //$NON-NLS-1$
 
         NButton btnMove = new NButton(transformationModeToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnMovePtr[0] = btnMove;
         KeyStateManager.addTooltipText(btnMove, I18n.E3D_MOVE, Task.MODE_MOVE);
-        btnMove.setImage(ResourceManager.getImage("icon16_move.png")); //$NON-NLS-1$
+        btnMove.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_move.png")); //$NON-NLS-1$
 
         NButton btnRotate = new NButton(transformationModeToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnRotatePtr[0] = btnRotate;
         KeyStateManager.addTooltipText(btnRotate, I18n.E3D_ROTATE, Task.MODE_ROTATE);
-        btnRotate.setImage(ResourceManager.getImage("icon16_rotate.png")); //$NON-NLS-1$
+        btnRotate.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_rotate.png")); //$NON-NLS-1$
 
         NButton btnScale = new NButton(transformationModeToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnScalePtr[0] = btnScale;
         KeyStateManager.addTooltipText(btnScale, I18n.E3D_SCALE, Task.MODE_SCALE);
-        btnScale.setImage(ResourceManager.getImage("icon16_scale.png")); //$NON-NLS-1$
+        btnScale.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_scale.png")); //$NON-NLS-1$
 
         NButton btnCombined = new NButton(transformationModeToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnCombinedPtr[0] = btnCombined;
         KeyStateManager.addTooltipText(btnCombined, I18n.E3D_COMBINED, Task.MODE_COMBINED);
-        btnCombined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
+        btnCombined.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_combined.png")); //$NON-NLS-1$
     }
 
     private static void addListeners() {
