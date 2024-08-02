@@ -65,32 +65,32 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class PrimGen2Dialog extends PrimGen2Design {
 
-    private static final int CIRCLE = 0;
-    private static final int RING = 1;
-    private static final int CONE = 2;
-    private static final int TORUS = 3;
-    private static final int CYLINDER = 4;
-    private static final int DISC = 5;
-    private static final int DISC_NEGATIVE = 6;
-    private static final int DISC_NEGATIVE_TRUNCATED = 7;
-    private static final int CHORD = 8;
+    public static final int CIRCLE = 0;
+    public static final int RING = 1;
+    public static final int CONE = 2;
+    public static final int TORUS = 3;
+    public static final int CYLINDER = 4;
+    public static final int DISC = 5;
+    public static final int DISC_NEGATIVE = 6;
+    public static final int DISC_NEGATIVE_TRUNCATED = 7;
+    public static final int CHORD = 8;
 
     private boolean doUpdate = false;
     private boolean ok = false;
 
-    private final DecimalFormat decvformat4f = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
-    private final DecimalFormat decvformat0f = new DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.getLocale()));
+    private static final DecimalFormat decvformat4f = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
+    private static final DecimalFormat decvformat0f = new DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.getLocale()));
 
-    private final DecimalFormat decformat4f = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(Locale.ENGLISH));
+    private static final DecimalFormat decformat4f = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(Locale.ENGLISH));
 
-    private String name = "1-4edge.dat"; //$NON-NLS-1$
+    private static String name = "1-4edge.dat"; //$NON-NLS-1$
 
     private enum EventType {
         SPN,
         CBO
     }
 
-    private String resPrefix = ""; //$NON-NLS-1$
+    private static String resPrefix = ""; //$NON-NLS-1$
 
     /**
      * Create the dialog.
@@ -114,6 +114,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
         spnMajorPtr[0].setValue(2);
         spnMinorPtr[0].setValue(BigDecimal.ONE);
+        name = "1-4edge.dat"; //$NON-NLS-1$
+        resPrefix = ""; //$NON-NLS-1$
 
         Display.getCurrent().asyncExec(() -> {
 
@@ -500,7 +502,10 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
 
         doUpdate = false;
-
+        final UserSettingState user = WorkbenchManager.getUserSettingState();
+        final String ldrawName = user.getLdrawUserName();
+        final String realName = user.getRealUserName();
+        final int pType = cmbTypePtr[0].getSelectionIndex();
         int divisions = spnDivisionsPtr[0].getValue();
         int segments = spnSegmentsPtr[0].getValue();
         int edgesPerCrossSections = spnEdgesPerCrossSectionsPtr[0].getValue();
@@ -508,6 +513,18 @@ public class PrimGen2Dialog extends PrimGen2Design {
         int minor = spnMinorPtr[0].getValue().intValue();
         double width = spnMinorPtr[0].getValue().doubleValue();
         double size = spnSizePtr[0].getValue().doubleValue();
+
+        final String primitiveSource = buildPrimitiveSource(pType, divisions, segments, edgesPerCrossSections, major, minor, width, size, ccw, torusType, realName, ldrawName);
+
+        if (isOfficialRules(pType, size, divisions, segments, minor, ccw)) {
+            lblStandardPtr[0].setText(I18n.PRIMGEN_STANDARD);
+        } else {
+            lblStandardPtr[0].setText(I18n.PRIMGEN_NON_STANDARD);
+        }
+        txtDataPtr[0].setText(primitiveSource);
+    }
+
+    public static String buildPrimitiveSource(int pType, int divisions, int segments, int edgesPerCrossSections, int major, int minor, double width, double size, boolean ccw, int torusType, String realName, String ldrawName) {
 
         int gcd = gcd(divisions, segments);
 
@@ -560,11 +577,6 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
 
         final StringBuilder sb = new StringBuilder();
-
-        final UserSettingState user = WorkbenchManager.getUserSettingState();
-
-        String ldrawName = user.getLdrawUserName();
-        String realName = user.getRealUserName();
         if (ldrawName == null || ldrawName.isEmpty()) {
             if (realName == null || realName.isEmpty()) {
                 sb.append("0 Author: Primitive Generator 2\n"); //$NON-NLS-1$
@@ -589,7 +601,6 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
 
         boolean truncated = false;
-        final int pType = cmbTypePtr[0].getSelectionIndex();
         switch (pType) {
         case CIRCLE:
             name = upper + "-" + lower + "edge.dat"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -857,16 +868,10 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
 
         sb.append("0 // Build by LDPartEditor (PrimGen 2.X)"); //$NON-NLS-1$
-
-        if (isOfficialRules(pType, size, divisions, segments, minor, ccw)) {
-            lblStandardPtr[0].setText(I18n.PRIMGEN_STANDARD);
-        } else {
-            lblStandardPtr[0].setText(I18n.PRIMGEN_NON_STANDARD);
-        }
-        txtDataPtr[0].setText(sb.toString());
+        return sb.toString();
     }
 
-    private Object cylinder(int divisions, int segments, boolean ccw) {
+    private static Object cylinder(int divisions, int segments, boolean ccw) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
@@ -1002,7 +1007,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
-    private Object cone(int divisions, int segments, double innerDiameter, boolean ccw, double width) {
+    private static Object cone(int divisions, int segments, double innerDiameter, boolean ccw, double width) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
@@ -1138,7 +1143,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
-    private String ring(int divisions, int segments, double innerDiameter, boolean ccw, double width) {
+    private static String ring(int divisions, int segments, double innerDiameter, boolean ccw, double width) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
@@ -1205,7 +1210,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
-    private String torus(int divisions, int segments, int edgesPerCrossSections, int type, int major, int minor, boolean ccw) {
+    private static String torus(int divisions, int segments, int edgesPerCrossSections, int type, int major, int minor, boolean ccw) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
@@ -1380,7 +1385,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
-    private void addCondlinesForTorusInside(List<Double[]> points, int num, int num5, int num8, StringBuilder sb2, boolean closed) {
+    private static void addCondlinesForTorusInside(List<Double[]> points, int num, int num5, int num8, StringBuilder sb2, boolean closed) {
         int pointIndex = 0;
         for (int num2 = 0; num2 <= num8; num2++)
         {
@@ -1628,7 +1633,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
     }
 
-    private void addCondlinesForTorusTube(List<Double[]> points, int num, int num5, int num8, StringBuilder sb2, boolean closed) {
+    private static void addCondlinesForTorusTube(List<Double[]> points, int num, int num5, int num8, StringBuilder sb2, boolean closed) {
         int pointIndex = 0;
         for (int num2 = 0; num2 <= num8; num2++)
         {
@@ -1824,7 +1829,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
     }
 
-    private void addCondlinesForTorusOutside(List<Double[]> points, int num, int num5, int num8, StringBuilder sb2, boolean closed) {
+    private static void addCondlinesForTorusOutside(List<Double[]> points, int num, int num5, int num8, StringBuilder sb2, boolean closed) {
         int pointIndex = 0;
         for (int num2 = 0; num2 <= num8; num2++)
         {
@@ -2073,15 +2078,15 @@ public class PrimGen2Dialog extends PrimGen2Design {
     }
 
     @SuppressWarnings("java:S2111")
-    private double round4f(double d) {
+    private static double round4f(double d) {
         return new BigDecimal(d).setScale(4, RoundingMode.HALF_EVEN).doubleValue();
     }
 
-    private String formatDec(double d) {
+    private static String formatDec(double d) {
         return bigDecimalToString(new BigDecimal(String.valueOf(d)).setScale(8, RoundingMode.HALF_UP).setScale(4, RoundingMode.HALF_UP));
     }
 
-    private String bigDecimalToString(BigDecimal bd) {
+    private static String bigDecimalToString(BigDecimal bd) {
         String result;
         if (bd.compareTo(BigDecimal.ZERO) == 0)
             return "0"; //$NON-NLS-1$
@@ -2090,7 +2095,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return result;
     }
 
-    private int gcd(int a, int b) {
+    private static int gcd(int a, int b) {
         while (b > 0)
         {
             int temp = b;
@@ -2100,7 +2105,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return a;
     }
 
-    private String removeTrailingZeros(String str) {
+    private static String removeTrailingZeros(String str) {
         StringBuilder sb = new StringBuilder();
         if (str.contains(".")) { //$NON-NLS-1$
             final int len = str.length();
@@ -2133,7 +2138,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
     }
 
-    private String removeTrailingZeros2(String str) {
+    private static String removeTrailingZeros2(String str) {
         StringBuilder sb = new StringBuilder();
         String result = str;
         if (str.contains(".")) { //$NON-NLS-1$
@@ -2168,7 +2173,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return result;
     }
 
-    private String removeTrailingZeros3(String str) {
+    private static String removeTrailingZeros3(String str) {
         StringBuilder sb = new StringBuilder();
         String result = str;
         if (str.contains(".")) { //$NON-NLS-1$
@@ -2206,7 +2211,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return result;
     }
 
-    private String addExtraSpaces1(String str) {
+    private static String addExtraSpaces1(String str) {
         final int len = str.length();
         if (len == 1) {
             return " " + str; //$NON-NLS-1$
