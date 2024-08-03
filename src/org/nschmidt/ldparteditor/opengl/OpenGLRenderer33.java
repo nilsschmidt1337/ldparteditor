@@ -1133,12 +1133,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             if (c3d.isGridShown3D()) {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 float gridSize = 1000f;
-                int z = (int) Math.log10(zoom);
+                int z = (int) (Math.log10(zoom) - .125);
                 switch (z) {
-                    case -6:
-                        gridSize *= 1E1f;
-                        break;
-                    case -5:
+                    case -7, -6, -5:
                         gridSize *= 1E1f;
                         break;
                     case -4:
@@ -1280,17 +1277,29 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 GL11.glLineWidth(3f);
                 helper.drawLinesRGBgeneral(crosses);
 
+                GL11.glDepthMask(false);
                 drawGrid3D(gridSize, gridSize10, gridSize20,
                         offsetXX, offsetXY, offsetXZ,
                         offsetYX, offsetYY, offsetYZ,
-                        offsetZX, offsetZY, offsetZZ, false);
+                        offsetZX, offsetZY, offsetZZ, false, true);
 
                 drawGrid3D(gridSize, gridSize10, gridSize20,
                         offsetXX, offsetXY, offsetXZ,
                         offsetYX, offsetYY, offsetYZ,
-                        offsetZX, offsetZY, offsetZZ, true);
+                        offsetZX, offsetZY, offsetZZ, true, true);
+                GL11.glDepthMask(true);
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+                drawGrid3D(gridSize, gridSize10, gridSize20,
+                        offsetXX, offsetXY, offsetXZ,
+                        offsetYX, offsetYY, offsetYZ,
+                        offsetZX, offsetZY, offsetZZ, false, false);
+
+                drawGrid3D(gridSize, gridSize10, gridSize20,
+                        offsetXX, offsetXY, offsetXZ,
+                        offsetYX, offsetYY, offsetYZ,
+                        offsetZX, offsetZY, offsetZZ, true, false);
             }
 
             // To make it easier to draw and calculate the grid and the origin,
@@ -1825,7 +1834,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
     private void drawGrid3D(float gridSize, final float gridSize10, final float gridSize20, float offsetXX,
             float offsetXY, float offsetXZ, float offsetYX, float offsetYY, float offsetYZ, float offsetZX,
-            float offsetZY, float offsetZZ, boolean drawn10th) {
+            float offsetZY, float offsetZZ, boolean drawn10th, boolean bgColour) {
         int j = 0;
         final float[] grid = new float[3000];
      // X
@@ -1835,15 +1844,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 grid[j] = offsetXX; j++;
                 grid[j] = offsetXY + step; j++;
                 grid[j] = offsetXZ + gridSize20; j++;
-                grid[j] = Colour.manipulatorXAxisColourR; j++;
-                grid[j] = Colour.manipulatorXAxisColourG; j++;
-                grid[j] = Colour.manipulatorXAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorXAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorXAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorXAxisColourB; j++;
                 grid[j] = offsetXX; j++;
                 grid[j] = offsetXY + step; j++;
                 grid[j] = offsetXZ - gridSize20; j++;
-                grid[j] = Colour.manipulatorXAxisColourR; j++;
-                grid[j] = Colour.manipulatorXAxisColourG; j++;
-                grid[j] = Colour.manipulatorXAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorXAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorXAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorXAxisColourB; j++;
             }
             step = step + gridSize;
         }
@@ -1854,15 +1863,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 grid[j] = offsetXX; j++;
                 grid[j] = offsetXY + gridSize20; j++;
                 grid[j] = offsetXZ + step; j++;
-                grid[j] = Colour.manipulatorXAxisColourR; j++;
-                grid[j] = Colour.manipulatorXAxisColourG; j++;
-                grid[j] = Colour.manipulatorXAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorXAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorXAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorXAxisColourB; j++;
                 grid[j] = offsetXX; j++;
                 grid[j] = offsetXY - gridSize20; j++;
                 grid[j] = offsetXZ + step; j++;
-                grid[j] = Colour.manipulatorXAxisColourR; j++;
-                grid[j] = Colour.manipulatorXAxisColourG; j++;
-                grid[j] = Colour.manipulatorXAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorXAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorXAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorXAxisColourB; j++;
             }
             step = step + gridSize;
         }
@@ -1874,15 +1883,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 grid[j] = offsetYX + step; j++;
                 grid[j] = offsetYY; j++;
                 grid[j] = offsetYZ + gridSize20; j++;
-                grid[j] = Colour.manipulatorYAxisColourR; j++;
-                grid[j] = Colour.manipulatorYAxisColourG; j++;
-                grid[j] = Colour.manipulatorYAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorYAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorYAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorYAxisColourB; j++;
                 grid[j] = offsetYX + step; j++;
                 grid[j] = offsetYY; j++;
                 grid[j] = offsetYZ - gridSize20; j++;
-                grid[j] = Colour.manipulatorYAxisColourR; j++;
-                grid[j] = Colour.manipulatorYAxisColourG; j++;
-                grid[j] = Colour.manipulatorYAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorYAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorYAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorYAxisColourB; j++;
             }
             step = step + gridSize;
         }
@@ -1893,15 +1902,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 grid[j] = offsetYX + gridSize20; j++;
                 grid[j] = offsetYY; j++;
                 grid[j] = offsetYZ + step; j++;
-                grid[j] = Colour.manipulatorYAxisColourR; j++;
-                grid[j] = Colour.manipulatorYAxisColourG; j++;
-                grid[j] = Colour.originColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorYAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorYAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorYAxisColourB; j++;
                 grid[j] = offsetYX - gridSize20; j++;
                 grid[j] = offsetYY; j++;
                 grid[j] = offsetYZ + step; j++;
-                grid[j] = Colour.manipulatorYAxisColourR; j++;
-                grid[j] = Colour.manipulatorYAxisColourG; j++;
-                grid[j] = Colour.manipulatorYAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorYAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorYAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorYAxisColourB; j++;
             }
             step = step + gridSize;
         }
@@ -1913,15 +1922,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 grid[j] = offsetZX + step; j++;
                 grid[j] = offsetZY + gridSize20; j++;
                 grid[j] = offsetZZ; j++;
-                grid[j] = Colour.manipulatorZAxisColourR; j++;
-                grid[j] = Colour.manipulatorZAxisColourG; j++;
-                grid[j] = Colour.manipulatorZAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorZAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorZAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorZAxisColourB; j++;
                 grid[j] = offsetZX + step; j++;
                 grid[j] = offsetZY - gridSize20; j++;
                 grid[j] = offsetZZ; j++;
-                grid[j] = Colour.manipulatorZAxisColourR; j++;
-                grid[j] = Colour.manipulatorZAxisColourG; j++;
-                grid[j] = Colour.manipulatorZAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorZAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorZAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorZAxisColourB; j++;
             }
             step = step + gridSize;
         }
@@ -1932,15 +1941,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 grid[j] = offsetZX + gridSize20; j++;
                 grid[j] = offsetZY + step; j++;
                 grid[j] = offsetZZ; j++;
-                grid[j] = Colour.manipulatorZAxisColourR; j++;
-                grid[j] = Colour.manipulatorZAxisColourG; j++;
-                grid[j] = Colour.manipulatorZAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorZAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorZAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorZAxisColourB; j++;
                 grid[j] = offsetZX - gridSize20; j++;
                 grid[j] = offsetZY + step; j++;
                 grid[j] = offsetZZ; j++;
-                grid[j] = Colour.manipulatorZAxisColourR; j++;
-                grid[j] = Colour.manipulatorZAxisColourG; j++;
-                grid[j] = Colour.manipulatorZAxisColourB; j++;
+                grid[j] = bgColour ? Colour.backgroundColourR : Colour.manipulatorZAxisColourR; j++;
+                grid[j] = bgColour ? Colour.backgroundColourG : Colour.manipulatorZAxisColourG; j++;
+                grid[j] = bgColour ? Colour.backgroundColourB : Colour.manipulatorZAxisColourB; j++;
             }
             step = step + gridSize;
         }

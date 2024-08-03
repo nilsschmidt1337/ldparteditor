@@ -1889,12 +1889,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             if (c3d.isGridShown3D()) {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 float gridSize = 1000f;
-                int z = (int) Math.log10(zoom);
+                int z = (int) (Math.log10(zoom) - .125);
                 switch (z) {
-                    case -6:
-                        gridSize *= 1E1f;
-                        break;
-                    case -5:
+                    case -7, -6, -5:
                         gridSize *= 1E1f;
                         break;
                     case -4:
@@ -1975,18 +1972,31 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 GL11.glVertex3f(maniX - gridSizeHalf, maniY + gridSizeHalf, offsetZZ);
                 GL11.glEnd();
 
+                GL11.glDepthMask(false);
                 GL11.glLineWidth(1f);
                 drawGrid3D(gridSize, gridSize10, gridSize20,
                         offsetXX, offsetXY, offsetXZ,
                         offsetYX, offsetYY, offsetYZ,
-                        offsetZX, offsetZY, offsetZZ, false);
+                        offsetZX, offsetZY, offsetZZ, false, true);
                 GL11.glLineWidth(2f);
                 drawGrid3D(gridSize, gridSize10, gridSize20,
                         offsetXX, offsetXY, offsetXZ,
                         offsetYX, offsetYY, offsetYZ,
-                        offsetZX, offsetZY, offsetZZ, true);
+                        offsetZX, offsetZY, offsetZZ, true, true);
+                GL11.glDepthMask(true);
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+                GL11.glLineWidth(1f);
+                drawGrid3D(gridSize, gridSize10, gridSize20,
+                        offsetXX, offsetXY, offsetXZ,
+                        offsetYX, offsetYY, offsetYZ,
+                        offsetZX, offsetZY, offsetZZ, false, false);
+                GL11.glLineWidth(2f);
+                drawGrid3D(gridSize, gridSize10, gridSize20,
+                        offsetXX, offsetXY, offsetXZ,
+                        offsetYX, offsetYY, offsetYZ,
+                        offsetZX, offsetZY, offsetZZ, true, false);
             }
 
             // To make it easier to draw and calculate the grid and the origin,
@@ -2371,12 +2381,16 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
     private void drawGrid3D(float gridSize, final float gridSize10, final float gridSize20, float offsetXX,
             float offsetXY, float offsetXZ, float offsetYX, float offsetYY, float offsetYZ, float offsetZX,
-            float offsetZY, float offsetZZ, boolean drawn10th) {
+            float offsetZY, float offsetZZ, boolean drawn10th, boolean bgColour) {
         // Draw the grid and filter out 10th steps
         GL11.glBegin(GL11.GL_LINES);
         // X
         float step = -gridSize20;
-        GL11.glColor3f(Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourB);
+        if (bgColour) {
+            GL11.glColor3f(Colour.backgroundColourR, Colour.backgroundColourG, Colour.backgroundColourB);
+        } else {
+            GL11.glColor3f(Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourB);
+        }
         for (int i = 0; i < 41; i++) {
             if ((offsetXY + step) % gridSize10 != 0 ^ drawn10th) {
                 GL11.glVertex3f(offsetXX, offsetXY + step, offsetXZ + gridSize20);
@@ -2396,7 +2410,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
         // Y
         step = -gridSize20;
-        GL11.glColor3f(Colour.manipulatorYAxisColourR, Colour.manipulatorYAxisColourG, Colour.manipulatorYAxisColourB);
+        if (!bgColour) {
+            GL11.glColor3f(Colour.manipulatorYAxisColourR, Colour.manipulatorYAxisColourG, Colour.manipulatorYAxisColourB);
+        }
         for (int i = 0; i < 41; i++) {
             if ((offsetYX + step) % gridSize10 != 0 ^ drawn10th) {
                 GL11.glVertex3f(offsetYX + step, offsetYY, offsetYZ + gridSize20);
@@ -2416,7 +2432,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
         // Z
         step = -gridSize20;
-        GL11.glColor3f(Colour.manipulatorZAxisColourR, Colour.manipulatorZAxisColourG, Colour.manipulatorZAxisColourB);
+        if (!bgColour) {
+            GL11.glColor3f(Colour.manipulatorZAxisColourR, Colour.manipulatorZAxisColourG, Colour.manipulatorZAxisColourB);
+        }
         for (int i = 0; i < 41; i++) {
             if ((offsetZX + step) % gridSize10 != 0 ^ drawn10th) {
                 GL11.glVertex3f(offsetZX + step, offsetZY + gridSize20, offsetZZ);
