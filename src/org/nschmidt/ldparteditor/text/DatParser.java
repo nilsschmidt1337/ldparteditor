@@ -64,6 +64,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -678,16 +679,18 @@ public enum DatParser {
 
             String[] prefix ;
             int readyOnlyAt = 2;
+            final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
+            final boolean isSubstitutingPrimitives = userSettings.isSubstitutingPrimitives();
             if (datFile != null && !datFile.isProjectFile() && !View.DUMMY_DATFILE.equals(datFile)) {
                 File dff = new File(datFile.getOldName()).getParentFile();
                 if (dff != null && dff.exists() && dff.isDirectory()) {
-                    prefix = new String[]{dff.getAbsolutePath(), Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+                    prefix = new String[]{dff.getAbsolutePath(), Project.getProjectPath(), userSettings.getUnofficialFolderPath(), userSettings.getLdrawFolderPath()};
                     readyOnlyAt = 3;
                 } else {
-                    prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+                    prefix = new String[]{Project.getProjectPath(), userSettings.getUnofficialFolderPath(), userSettings.getLdrawFolderPath()};
                 }
             } else {
-                prefix = new String[]{Project.getProjectPath(), WorkbenchManager.getUserSettingState().getUnofficialFolderPath(), WorkbenchManager.getUserSettingState().getLdrawFolderPath()};
+                prefix = new String[]{Project.getProjectPath(), userSettings.getUnofficialFolderPath(), userSettings.getLdrawFolderPath()};
             }
 
             String[] middle = new String[]{"", File.separator + "PARTS", File.separator + "parts", File.separator + "P", File.separator + "p"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -742,6 +745,13 @@ public enum DatParser {
                     if (isVirtual) break;
                 }
                 if (isVirtual) break;
+            }
+
+            if (!isVirtual && isSubstitutingPrimitives) {
+                lines = PrimitiveReplacer.substitutePrimitives(shortFilename, userSettings.getPrimitiveSubstitutionQuality());
+                if (!lines.isEmpty()) {
+                    isVirtual = true;
+                }
             }
 
             if (isVirtual) {

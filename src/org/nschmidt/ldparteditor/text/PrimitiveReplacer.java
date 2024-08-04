@@ -16,14 +16,48 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.text;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 public enum PrimitiveReplacer {
     INSTANCE;
 
-    private static final Map<String, String> GENERATED_PRIMITIVES_CACHE = new HashMap<>();
+    private static final Map<PrimitiveKey, List<String>> GENERATED_PRIMITIVES_CACHE = new HashMap<>();
 
     public static void clearCache() {
         GENERATED_PRIMITIVES_CACHE.clear();
     }
+
+    public static List<String> substitutePrimitives(String shortFilename, int primitiveSubstitutionQuality) {
+        final PrimitiveKey key = new PrimitiveKey(shortFilename, primitiveSubstitutionQuality);
+        final List<String> cachedResult = GENERATED_PRIMITIVES_CACHE.get(key);
+        if (cachedResult != null) {
+            NLogger.debug(PrimitiveReplacer.class, "Cache hit for : {0}", shortFilename); //$NON-NLS-1$
+            return cachedResult;
+        }
+
+        NLogger.debug(PrimitiveReplacer.class, "Checking potential primitive for substitution (quality {0}) : {1}", primitiveSubstitutionQuality, shortFilename); //$NON-NLS-1$
+
+        final boolean isHiQuality = shortFilename.startsWith("48\\"); //$NON-NLS-1$
+
+        if (shortFilename.startsWith("8\\") || primitiveSubstitutionQuality <= 48 && isHiQuality) { //$NON-NLS-1$
+            NLogger.debug(PrimitiveReplacer.class, "Skipping primitive (low-quality or reduced hi-quality) : {0}", shortFilename); //$NON-NLS-1$
+            return List.of();
+        }
+
+        if (isHiQuality) {
+            shortFilename = shortFilename.substring(3);
+        }
+
+        return substitutePrimitives(shortFilename, primitiveSubstitutionQuality, isHiQuality);
+    }
+
+    private static List<String> substitutePrimitives(String shortFilename, int primitiveSubstitutionQuality, boolean isHiQuality) {
+        // TODO Needs implementation!
+        return List.of();
+    }
+
+    private record PrimitiveKey(String shortFilename, int primitiveSubstitutionQuality) {}
 }
