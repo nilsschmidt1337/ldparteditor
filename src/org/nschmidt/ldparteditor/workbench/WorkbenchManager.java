@@ -170,7 +170,16 @@ public enum WorkbenchManager {
             WorkbenchManager.userSettingState.setPartReview3dViewCount(4);
         }
 
+
         WorkbenchManager.userSettingState.setPartReview3dViewCount(Math.clamp(WorkbenchManager.userSettingState.getPartReview3dViewCount(), 1, 4));
+
+        int primSubQuality = WorkbenchManager.userSettingState.getPrimitiveSubstitutionQuality();
+        if (primSubQuality <= 0) {
+            // 56 is LDView's default quality. It will affect normal and hi-res primitives.
+            primSubQuality = 56;
+        }
+
+        WorkbenchManager.userSettingState.setPrimitiveSubstitutionQuality(Math.clamp((primSubQuality - primSubQuality % 8), 8, 96));
 
         Threshold.coplanarityAngleWarning = WorkbenchManager.userSettingState.getCoplanarityAngleWarning();
         Threshold.coplanarityAngleError = WorkbenchManager.userSettingState.getCoplanarityAngleError();

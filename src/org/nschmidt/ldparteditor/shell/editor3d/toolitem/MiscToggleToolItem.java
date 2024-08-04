@@ -17,9 +17,11 @@ package org.nschmidt.ldparteditor.shell.editor3d.toolitem;
 
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.nschmidt.ldparteditor.composite.ToolItem;
+import org.nschmidt.ldparteditor.dialog.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
@@ -27,6 +29,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
+import org.nschmidt.ldparteditor.text.PrimitiveReplacer;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -34,11 +37,13 @@ public class MiscToggleToolItem extends ToolItem {
 
     private static final NButton[] btnMoveAdjacentDataPtr = new NButton[1];
     private static final NButton[] btnNoTransparentSelectionPtr = new NButton[1];
+    private static final NButton[] btnPrimitiveSubstitutionPtr = new NButton[1];
     private static final NButton[] btnBFCTogglePtr = new NButton[1];
 
     private static boolean movingAdjacentData = WorkbenchManager.getUserSettingState().isMovingAdjacentData();
     private static boolean noTransparentSelection = false;
     private static boolean bfcToggle = false;
+    private static boolean substitutingPrimitives = false;
 
     public MiscToggleToolItem(Composite parent, int style, boolean isHorizontal) {
         super(parent, style, isHorizontal);
@@ -78,6 +83,10 @@ public class MiscToggleToolItem extends ToolItem {
         MiscToggleToolItem.bfcToggle = bfcToggle;
     }
 
+    public static boolean isSubstitutingPrimitives() {
+        return substitutingPrimitives;
+    }
+
     private static void createWidgets(MiscToggleToolItem miscToggleToolItem) {
         NButton btnAdjacentMove = new NButton(miscToggleToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnMoveAdjacentDataPtr[0] = btnAdjacentMove;
@@ -89,6 +98,13 @@ public class MiscToggleToolItem extends ToolItem {
         btnNoTransparentSelectionPtr[0] = btnTransSelection;
         btnTransSelection.setToolTipText(I18n.E3D_TOGGLE_TRANSPARENT);
         btnTransSelection.setImage(ResourceManager.getImage("icon16_notrans.png")); //$NON-NLS-1$
+
+        NButton btnPrimitiveSubstitution = new NButton(miscToggleToolItem, SWT.TOGGLE | Cocoa.getStyle());
+        btnPrimitiveSubstitutionPtr[0] = btnPrimitiveSubstitution;
+        btnPrimitiveSubstitution.setToolTipText(I18n.E3D_TOGGLE_PRIMITIVE_SUBSTITUTION + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
+        btnPrimitiveSubstitution.setImage(ResourceManager.getImage("icon16_primSub.png")); //$NON-NLS-1$
+        substitutingPrimitives = WorkbenchManager.getUserSettingState().isSubstitutingPrimitives();
+        btnPrimitiveSubstitution.setSelection(substitutingPrimitives);
 
         NButton btnBFCToggle = new NButton(miscToggleToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnBFCTogglePtr[0] = btnBFCToggle;
@@ -105,6 +121,40 @@ public class MiscToggleToolItem extends ToolItem {
         });
         widgetUtil(btnNoTransparentSelectionPtr[0]).addSelectionListener(e -> {
             setNoTransparentSelection(btnNoTransparentSelectionPtr[0].getSelection());
+            // Recompile
+            Editor3DWindow.getWindow().compileAll(true);
+            // Re-initialise the renderer
+            Editor3DWindow.getWindow().initAllRenderers();
+            regainFocus();
+        });
+        widgetUtil(btnPrimitiveSubstitutionPtr[0]).addSelectionListener(e -> {
+            substitutingPrimitives = btnPrimitiveSubstitutionPtr[0].getSelection();
+            WorkbenchManager.getUserSettingState().setSubstitutingPrimitives(substitutingPrimitives);
+            PrimitiveReplacer.clearCache();
+            if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
+                final int[] quality = new int[1];
+                if (new ValueDialogInt(Editor3DWindow.getWindow().getShell(), I18n.E3D_PRIMITIVE_CURVE_QUALITY, "") { //$NON-NLS-1$
+
+                    @Override
+                    public void initializeSpinner() {
+                        this.spnValuePtr[0].setMinimum(0);
+                        this.spnValuePtr[0].setMaximum(96);
+                        this.spnValuePtr[0].setValue(WorkbenchManager.getUserSettingState().getPrimitiveSubstitutionQuality());
+                    }
+
+                    @Override
+                    public void applyValue() {
+                        quality[0] = this.spnValuePtr[0].getValue();
+                    }
+                }.open() == Window.OK) {
+                    int resultingQuality = Math.clamp((quality[0] - quality[0] % 8), 8, 96);
+                    WorkbenchManager.getUserSettingState().setPrimitiveSubstitutionQuality(resultingQuality);
+                    substitutingPrimitives = true;
+                    WorkbenchManager.getUserSettingState().setSubstitutingPrimitives(substitutingPrimitives);
+                    btnPrimitiveSubstitutionPtr[0].setSelection(true);
+                }
+            }
+
             // Recompile
             Editor3DWindow.getWindow().compileAll(true);
             // Re-initialise the renderer

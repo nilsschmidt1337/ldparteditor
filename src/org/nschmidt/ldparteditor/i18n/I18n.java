@@ -637,6 +637,7 @@ public final class I18n {
     public static final String E3D_PREVIOUS = E3D.getString(getProperty());
     public static final String E3D_PREVIOUS_ITEM = E3D.getString(getProperty());
     public static final String E3D_PRIMGEN2 = E3D.getString(getProperty());
+    public static final String E3D_PRIMITIVE_CURVE_QUALITY = E3D.getString(getProperty());
     public static final String E3D_PROTRACTOR_ANGLE = E3D.getString(getProperty());
     public static final String E3D_PROTRACTOR_LENGTH = E3D.getString(getProperty());
     public static final String E3D_PROTRACTOR_LENGTH_MM = E3D.getString(getProperty());
@@ -739,6 +740,7 @@ public final class I18n {
     public static final String E3D_THRESH_IN_DEG = E3D.getString(getProperty());
     public static final String E3D_THRESH_IN_LDU = E3D.getString(getProperty());
     public static final String E3D_TOGGLE_BFC = E3D.getString(getProperty());
+    public static final String E3D_TOGGLE_PRIMITIVE_SUBSTITUTION = E3D.getString(getProperty());
     public static final String E3D_TOGGLE_TRANSPARENT = E3D.getString(getProperty());
     public static final String E3D_TOOLS = E3D.getString(getProperty());
     public static final String E3D_TOOLS_OPTIONS = E3D.getString(getProperty());

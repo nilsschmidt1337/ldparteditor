@@ -2387,7 +2387,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         // X
         float step = -gridSize20;
         if (bgColour) {
-            GL11.glColor3f(Colour.backgroundColourR, Colour.backgroundColourG, Colour.backgroundColourB);
+            GL11.glColor4f(Colour.backgroundColourR, Colour.backgroundColourG, Colour.backgroundColourB, .5f);
         } else {
             GL11.glColor3f(Colour.manipulatorXAxisColourR, Colour.manipulatorXAxisColourG, Colour.manipulatorXAxisColourB);
         }
