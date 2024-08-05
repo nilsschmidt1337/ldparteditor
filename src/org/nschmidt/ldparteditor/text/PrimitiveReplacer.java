@@ -15,10 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.text;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.nschmidt.ldparteditor.dialog.primgen2.PrimGen2Dialog;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
 public enum PrimitiveReplacer {
@@ -51,10 +53,10 @@ public enum PrimitiveReplacer {
             shortFilename = shortFilename.substring(3);
         }
 
-        return substitutePrimitivesParseFraction(key, shortFilename, isHiQuality);
+        return substitutePrimitivesParseFraction(key, shortFilename, primitiveSubstitutionQuality);
     }
 
-    private static List<String> substitutePrimitivesParseFraction(PrimitiveKey key, String name, boolean isHiQuality) {
+    private static List<String> substitutePrimitivesParseFraction(PrimitiveKey key, String name, int quality) {
         int length = name.length();
 
         if (name.endsWith(".dat")) { //$NON-NLS-1$
@@ -73,6 +75,7 @@ public enum PrimitiveReplacer {
         if (i > 0 && i < length && name.charAt(i) == '-') {
             try {
                 upper = Integer.parseInt(name.substring(0, i));
+                i++;
             } catch (NumberFormatException nfe) {
                 NLogger.debug(PrimitiveReplacer.class, nfe);
                 hasFraction = false;
@@ -81,29 +84,116 @@ public enum PrimitiveReplacer {
             hasFraction = false;
         }
 
-        int lowerStart = i + 1;
+        int lowerStart = i;
         while (i < length) {
             if (!Character.isDigit(name.charAt(i))) break;
             i++;
         }
 
-        if (hasFraction && i > 0 && i < length) {
+        if (hasFraction && i > 0 && i < length && lowerStart < i) {
             try {
-                lower = Integer.parseInt(name.substring(lowerStart, i));
+                lower = Math.max(Integer.parseInt(name.substring(lowerStart, i)), 1);
             } catch (NumberFormatException nfe) {
                 NLogger.debug(PrimitiveReplacer.class, nfe);
                 hasFraction = false;
             }
+
+            if (upper > lower) upper = lower;
+
+            NLogger.debug(PrimitiveReplacer.class, "Primitive {0} uses fraction {1}/{2}.", name, upper, lower); //$NON-NLS-1$
+            name = name.substring(i);
         } else {
             hasFraction = false;
         }
 
-        final PrimitiveFraction fraction = new PrimitiveFraction(upper, lower, hasFraction);
-        return substitutePrimitivesParseTori(key, name, fraction, isHiQuality);
+        if (hasFraction) {
+            final PrimitiveFraction fraction = new PrimitiveFraction(upper, lower, hasFraction);
+            return substitutePrimitivesWithFraction(key, name, fraction, quality);
+        }
+
+        return substitutePrimitivesTori(key, name, quality);
     }
 
-    private static List<String> substitutePrimitivesParseTori(PrimitiveKey key, String name, PrimitiveFraction fraction,
-            boolean isHiQuality) {
+    private static List<String> substitutePrimitivesWithFraction(PrimitiveKey key, String name, PrimitiveFraction fraction,
+            int quality) {
+        final int segments = quality * fraction.upper / fraction.lower;
+
+        final List<String> simpleResult = substituteSimplePrimitivesWithFraction(name, quality, segments);
+        if (!simpleResult.isEmpty()) {
+            return simpleResult;
+        }
+
+        final List<String> ringResult = substituteRingPrimitivesWithFraction(name, quality, segments);
+        if (!ringResult.isEmpty()) {
+            return ringResult;
+        }
+
+        // TODO Needs implementation!
+        return List.of();
+    }
+
+    public static List<String> substituteRingPrimitivesWithFraction(String name, int quality, final int segments) {
+        if (name.startsWith("ring") && name.length() > 4) { //$NON-NLS-1$
+            try {
+                final int size = Integer.parseInt(name.substring(4));
+                return buildPrimitive(PrimGen2Dialog.RING, quality, segments, size);
+            } catch (NumberFormatException nfe) {
+                NLogger.debug(PrimitiveReplacer.class, nfe);
+            }
+        }
+
+
+        if (name.startsWith("rin") && name.length() > 3) { //$NON-NLS-1$
+            try {
+                final int size = Integer.parseInt(name.substring(3));
+                return buildPrimitive(PrimGen2Dialog.RING, quality, segments, size);
+            } catch (NumberFormatException nfe) {
+                NLogger.debug(PrimitiveReplacer.class, nfe);
+            }
+        }
+
+        if (name.startsWith("ri") && name.length() > 2) { //$NON-NLS-1$
+            try {
+                final int size = Integer.parseInt(name.substring(2));
+                return buildPrimitive(PrimGen2Dialog.RING, quality, segments, size);
+            } catch (NumberFormatException nfe) {
+                NLogger.debug(PrimitiveReplacer.class, nfe);
+            }
+        }
+
+        return List.of();
+    }
+
+    public static List<String> substituteSimplePrimitivesWithFraction(String name, int quality, final int segments) {
+        // Substitute edges
+        if ("edge".equals(name)) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.CIRCLE, quality, segments);
+        }
+
+        // Substitute discs
+        if ("disc".equals(name)) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.DISC, quality, segments);
+        }
+
+        // Substitute n-discs
+        if ("ndis".equals(name)) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.DISC_NEGATIVE, quality, segments);
+        }
+
+        // Substitute truncated n-discs
+        if ("tndis".equals(name)) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.DISC_NEGATIVE_TRUNCATED, quality, segments);
+        }
+
+        // Substitute cylinders
+        if ("cyli".equals(name)) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.CYLINDER, quality, segments);
+        }
+
+        return List.of();
+    }
+
+    private static List<String> substitutePrimitivesTori(PrimitiveKey key, String name, int quality) {
 
         // TODO Needs implementation!
 
@@ -111,9 +201,18 @@ public enum PrimitiveReplacer {
 
         }
 
-
         return List.of();
     }
+
+    private static List<String> buildPrimitive(int type, int divisions, int segments) {
+        return buildPrimitive(type, divisions, segments, 0);
+    }
+
+    private static List<String> buildPrimitive(int type, int divisions, int segments, int size) {
+        final String source = PrimGen2Dialog.buildPrimitiveSource(type, divisions, segments, 0, 0, 0, 1, size, true, 0, "Primitive Substitution", "LDPartEditor"); //$NON-NLS-1$ //$NON-NLS-2$
+        return Arrays.asList(source.split("\n")); //$NON-NLS-1$
+    }
+
 
     private record PrimitiveKey(String shortFilename, int primitiveSubstitutionQuality) {}
     private record PrimitiveFraction(int upper, int lower, boolean hasFraction) {}

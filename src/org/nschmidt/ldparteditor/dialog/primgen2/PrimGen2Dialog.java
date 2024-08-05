@@ -65,6 +65,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class PrimGen2Dialog extends PrimGen2Design {
 
+    public static final String UNIT = "unit"; //$NON-NLS-1$
     public static final int CIRCLE = 0;
     public static final int RING = 1;
     public static final int CONE = 2;
@@ -652,6 +653,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             boolean mixed = edgesPerCrossSections != divisions;
             String sweep = decformat4f.format(minor * 1d / major);
             String sweep2 = sweep.replace(".", "").substring(sweep.charAt(0) == '0' ? 1 : 0, Math.min(sweep.charAt(0) == '0' ? 5 : 4, sweep.length())); //$NON-NLS-1$ //$NON-NLS-2$
+            if ("1.0000".equals(sweep)) sweep2 = UNIT; //$NON-NLS-1$
             String frac = "99"; //$NON-NLS-1$
             // 01=1/1, 02=1/2, 04=1/4, 08=1/8, 16=1/16, 32=1/32, 48=1/48
             if (upper == 2 && lower == 4) {
