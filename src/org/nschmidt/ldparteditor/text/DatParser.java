@@ -751,6 +751,8 @@ public enum DatParser {
                 lines = PrimitiveReplacer.substitutePrimitives(shortFilename, userSettings.getPrimitiveSubstitutionQuality());
                 if (!lines.isEmpty()) {
                     isVirtual = true;
+                    result.clear();
+                    absoluteFilename = shortFilename;
                 }
             }
 
