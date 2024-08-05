@@ -747,7 +747,7 @@ public enum DatParser {
                 if (isVirtual) break;
             }
 
-            if (!isVirtual && isSubstitutingPrimitives) {
+            if (isSubstitutingPrimitives) {
                 lines = PrimitiveReplacer.substitutePrimitives(shortFilename, userSettings.getPrimitiveSubstitutionQuality());
                 if (!lines.isEmpty()) {
                     isVirtual = true;

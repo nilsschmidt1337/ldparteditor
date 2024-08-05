@@ -51,13 +51,70 @@ public enum PrimitiveReplacer {
             shortFilename = shortFilename.substring(3);
         }
 
-        return substitutePrimitives(shortFilename, primitiveSubstitutionQuality, isHiQuality);
+        return substitutePrimitivesParseFraction(key, shortFilename, isHiQuality);
     }
 
-    private static List<String> substitutePrimitives(String shortFilename, int primitiveSubstitutionQuality, boolean isHiQuality) {
+    private static List<String> substitutePrimitivesParseFraction(PrimitiveKey key, String name, boolean isHiQuality) {
+        int length = name.length();
+
+        if (name.endsWith(".dat")) { //$NON-NLS-1$
+            name = name.substring(0, length - 4);
+            length -= 4;
+        }
+
+        boolean hasFraction = true;
+        int upper = 0;
+        int lower = 0;
+        int i;
+        for (i = 0; i < name.length(); i++) {
+            if (!Character.isDigit(name.charAt(i))) break;
+        }
+
+        if (i > 0 && i < length && name.charAt(i) == '-') {
+            try {
+                upper = Integer.parseInt(name.substring(0, i));
+            } catch (NumberFormatException nfe) {
+                NLogger.debug(PrimitiveReplacer.class, nfe);
+                hasFraction = false;
+            }
+        } else {
+            hasFraction = false;
+        }
+
+        int lowerStart = i + 1;
+        while (i < length) {
+            if (!Character.isDigit(name.charAt(i))) break;
+            i++;
+        }
+
+        if (hasFraction && i > 0 && i < length) {
+            try {
+                lower = Integer.parseInt(name.substring(lowerStart, i));
+            } catch (NumberFormatException nfe) {
+                NLogger.debug(PrimitiveReplacer.class, nfe);
+                hasFraction = false;
+            }
+        } else {
+            hasFraction = false;
+        }
+
+        final PrimitiveFraction fraction = new PrimitiveFraction(upper, lower, hasFraction);
+        return substitutePrimitivesParseTori(key, name, fraction, isHiQuality);
+    }
+
+    private static List<String> substitutePrimitivesParseTori(PrimitiveKey key, String name, PrimitiveFraction fraction,
+            boolean isHiQuality) {
+
         // TODO Needs implementation!
+
+        if (name.startsWith("t")) { //$NON-NLS-1$
+
+        }
+
+
         return List.of();
     }
 
     private record PrimitiveKey(String shortFilename, int primitiveSubstitutionQuality) {}
+    private record PrimitiveFraction(int upper, int lower, boolean hasFraction) {}
 }

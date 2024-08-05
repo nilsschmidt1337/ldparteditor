@@ -16,9 +16,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.nschmidt.ldparteditor.dialog.primgen2.PrimGen2Dialog;
+import org.nschmidt.ldparteditor.text.PrimitiveReplacer;
 
 @SuppressWarnings("java:S5960")
 public class PrimGen2Test {
@@ -45,5 +49,11 @@ public class PrimGen2Test {
 
                 2 24 1 0 0 0.9239 0 0.3827
                 0 // Build by LDPartEditor (PrimGen 2.X)""", result); //$NON-NLS-1$
+    }
+
+    @Test
+    public void testPrimitiveReplacementOfUnknownFile() {
+        final List<String> result = PrimitiveReplacer.substitutePrimitives("unknown.dat", 56); //$NON-NLS-1$
+        assertTrue(result.isEmpty());
     }
 }
