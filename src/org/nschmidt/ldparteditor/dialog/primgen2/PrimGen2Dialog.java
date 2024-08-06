@@ -269,7 +269,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             doUpdate = true;
 
             switch (cmbTypePtr[0].getSelectionIndex()) {
-            case CIRCLE, CYLINDER, DISC, DISC_NEGATIVE, CHORD:
+            case CIRCLE, CYLINDER, DISC, DISC_NEGATIVE, DISC_NEGATIVE_TRUNCATED, CHORD:
                 lblMinorPtr[0].setText(I18n.PRIMGEN_MINOR);
                 lblMajorPtr[0].setEnabled(false);
                 lblMinorPtr[0].setEnabled(false);
@@ -2242,7 +2242,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         case CIRCLE, CYLINDER, DISC, DISC_NEGATIVE, CHORD:
             return true;
         case DISC_NEGATIVE_TRUNCATED:
-            return segments < divisions && segments > 0;
+            return segments < divisions && segments > 0 && divisions / segments >= 4.0;
         case RING, CONE:
             if (size % 1 != 0)
             {

@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.text;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,8 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 public enum PrimitiveReplacer {
     INSTANCE;
 
+    private static final String PREFIX_8 = "8" + File.separator; //$NON-NLS-1$
+    private static final String PREFIX_48 = "48" + File.separator; //$NON-NLS-1$
     private static final Map<PrimitiveKey, List<String>> GENERATED_PRIMITIVES_CACHE = new HashMap<>();
 
     public static void clearCache() {
@@ -42,9 +45,9 @@ public enum PrimitiveReplacer {
 
         NLogger.debug(PrimitiveReplacer.class, "Checking potential primitive for substitution (quality {0}) : {1}", primitiveSubstitutionQuality, shortFilename); //$NON-NLS-1$
 
-        final boolean isHiQuality = shortFilename.startsWith("48\\"); //$NON-NLS-1$
+        final boolean isHiQuality = shortFilename.startsWith(PREFIX_48);
 
-        if (shortFilename.startsWith("8\\") || primitiveSubstitutionQuality <= 48 && isHiQuality) { //$NON-NLS-1$
+        if (shortFilename.startsWith(PREFIX_8) || primitiveSubstitutionQuality <= 48 && isHiQuality) {
             NLogger.debug(PrimitiveReplacer.class, "Skipping primitive (low-quality or reduced hi-quality) : {0}", shortFilename); //$NON-NLS-1$
             return List.of();
         }
