@@ -22,7 +22,7 @@ The Standard Widget Toolkit (SWT) and its JFace library from Eclipse are used fo
 
 Unless otherwise indicated below, the SWT is provided to you under the terms and conditions of the Eclipse Public License Version 2.0 ("EPL"). A copy of the EPL is available at http://www.eclipse.org/legal/epl-2.0. For purposes of the EPL, "Program" will mean the SWT.
 
-If you did not receive this SWT directly from the Eclipse Foundation, the SWT is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the SWT. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the SWT and such source code may be obtained at http://www.eclipse.org.
+If you did not receive this SWT directly from the Eclipse Foundation, the SWT is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the SWT. Check the Redistributor's license that was provided with the SWT. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the SWT and such source code may be obtained at http://www.eclipse.org.
 
 Third Party Content of SWT
 
