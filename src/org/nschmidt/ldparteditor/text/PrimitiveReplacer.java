@@ -227,11 +227,65 @@ public enum PrimitiveReplacer {
 
         // TODO Needs implementation!
 
-        if (name.startsWith("t")) { //$NON-NLS-1$
+        if (name.startsWith("t") || name.startsWith("r")) { //$NON-NLS-1$ //$NON-NLS-2$
+            String toriName = name;
+            boolean mixedMode = false;
+            if (toriName.startsWith("tm") || name.startsWith("rm")) { //$NON-NLS-1$ //$NON-NLS-2$
+                toriName = toriName.substring(0, 1) + toriName.substring(2);
+                mixedMode = true;
+            }
 
+            final int length = toriName.length();
+            if (length == 8 && validToriName(toriName)) {
+                try {
+                    boolean isUnit = "unit".equalsIgnoreCase(name.substring(4)); //$NON-NLS-1$
+                    double inverseFraction = 1.0 / Math.max(1.0, Integer.parseInt(toriName.substring(1, 3)));
+                    int segments = (int) (quality * inverseFraction);
+                    double radius = isUnit ? 1.0 : Math.max(1.0, Integer.parseInt(toriName.substring(4)));
+                    int major = 1;
+                    int minor = 1;
+                    if (!isUnit) {
+                        if (toriName.startsWith("t")) { //$NON-NLS-1$
+                            major = (int) (1.0 / (radius / 10000.0));
+                        } else {
+                            minor = (int) (radius / 1000.0);
+                        }
+                    }
+
+                    int toriType = 0;
+                    switch (toriName.substring(3, 4)) {
+                        case "i": //$NON-NLS-1$
+                            toriType = 0;
+                            break;
+                        case "o": //$NON-NLS-1$
+                            toriType = 1;
+                            break;
+                        case "q": //$NON-NLS-1$
+                            toriType = 2;
+                            break;
+                        default:
+                            return List.of();
+                    }
+
+                    final String source = PrimGen2Dialog.buildPrimitiveSource(PrimGen2Dialog.TORUS, quality, segments, quality, major, minor, 1, 0, true, toriType, "Primitive Substitution", "LDPartEditor"); //$NON-NLS-1$ //$NON-NLS-2$
+                    return Arrays.asList(source.split("\n")); //$NON-NLS-1$
+                } catch (NumberFormatException nfe) {
+                    NLogger.debug(PrimitiveReplacer.class, nfe);
+                }
+            }
         }
 
         return List.of();
+    }
+
+    private static boolean validToriName(String name) {
+        if (!"unit".equalsIgnoreCase(name.substring(4))) {//$NON-NLS-1$
+            for (int i = 4; i < 8; i++) {
+                if (!Character.isDigit(name.charAt(i))) return false;
+            }
+        }
+
+        return Character.isDigit(name.charAt(1)) && Character.isDigit(name.charAt(2));
     }
 
     private static List<String> buildPrimitive(int type, int divisions, int segments) {
