@@ -56,10 +56,12 @@ public enum PrimitiveReplacer {
             shortFilename = shortFilename.substring(3);
         }
 
-        return substitutePrimitivesParseFraction(key, shortFilename, primitiveSubstitutionQuality);
+        final List<String> value = substitutePrimitivesParseFraction(shortFilename, primitiveSubstitutionQuality);
+        // TODO GENERATED_PRIMITIVES_CACHE.put(key, value);
+        return value;
     }
 
-    private static List<String> substitutePrimitivesParseFraction(PrimitiveKey key, String name, int quality) {
+    private static List<String> substitutePrimitivesParseFraction(String name, int quality) {
         int length = name.length();
 
         if (name.endsWith(".dat")) { //$NON-NLS-1$
@@ -70,9 +72,10 @@ public enum PrimitiveReplacer {
         boolean hasFraction = true;
         int upper = 0;
         int lower = 0;
-        int i;
-        for (i = 0; i < name.length(); i++) {
+        int i = 0;
+        while (i < length) {
             if (!Character.isDigit(name.charAt(i))) break;
+            i++;
         }
 
         if (i > 0 && i < length && name.charAt(i) == '-') {
@@ -111,13 +114,13 @@ public enum PrimitiveReplacer {
 
         if (hasFraction) {
             final PrimitiveFraction fraction = new PrimitiveFraction(upper, lower, hasFraction);
-            return substitutePrimitivesWithFraction(key, name, fraction, quality);
+            return substitutePrimitivesWithFraction(name, fraction, quality);
         }
 
-        return substitutePrimitivesTori(key, name, quality);
+        return substitutePrimitivesTori(name, quality);
     }
 
-    private static List<String> substitutePrimitivesWithFraction(PrimitiveKey key, String name, PrimitiveFraction fraction,
+    private static List<String> substitutePrimitivesWithFraction(String name, PrimitiveFraction fraction,
             int quality) {
         final int segments = quality * fraction.upper / fraction.lower;
 
@@ -135,7 +138,7 @@ public enum PrimitiveReplacer {
         return List.of();
     }
 
-    public static List<String> substituteRingPrimitivesWithFraction(String name, int quality, final int segments) {
+    private static List<String> substituteRingPrimitivesWithFraction(String name, int quality, final int segments) {
         if (name.startsWith("ring") && name.length() > 4) { //$NON-NLS-1$
             try {
                 final int size = Integer.parseInt(name.substring(4));
@@ -167,7 +170,7 @@ public enum PrimitiveReplacer {
         return List.of();
     }
 
-    public static List<String> substituteSimplePrimitivesWithFraction(String name, int quality, final int segments) {
+    private static List<String> substituteSimplePrimitivesWithFraction(String name, int quality, final int segments) {
         // Substitute edges
         if ("edge".equals(name)) { //$NON-NLS-1$
             return buildPrimitive(PrimGen2Dialog.CIRCLE, quality, segments);
@@ -201,7 +204,7 @@ public enum PrimitiveReplacer {
         return List.of();
     }
 
-    private static List<String> substitutePrimitivesTori(PrimitiveKey key, String name, int quality) {
+    private static List<String> substitutePrimitivesTori(String name, int quality) {
 
         // TODO Needs implementation!
 
