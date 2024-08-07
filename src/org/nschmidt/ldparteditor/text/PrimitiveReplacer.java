@@ -134,7 +134,26 @@ public enum PrimitiveReplacer {
             return ringResult;
         }
 
+        final List<String> coneResult = substituteConePrimitivesWithFraction(name, quality, segments);
+        if (!coneResult.isEmpty()) {
+            return coneResult;
+        }
+
+
         // TODO Needs implementation!
+        return List.of();
+    }
+
+    private static List<String> substituteConePrimitivesWithFraction(String name, int quality, final int segments) {
+        if (name.startsWith("con") && name.length() > 3) { //$NON-NLS-1$
+            try {
+                final int size = Integer.parseInt(name.substring(3));
+                return buildPrimitive(PrimGen2Dialog.CONE, quality, segments, size);
+            } catch (NumberFormatException nfe) {
+                NLogger.debug(PrimitiveReplacer.class, nfe);
+            }
+        }
+
         return List.of();
     }
 
