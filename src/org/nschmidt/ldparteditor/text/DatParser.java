@@ -748,7 +748,23 @@ public enum DatParser {
             }
 
             if (isSubstitutingPrimitives) {
-                lines = PrimitiveReplacer.substitutePrimitives(shortFilename, userSettings.getPrimitiveSubstitutionQuality());
+                if (!isVirtual && fileExists) {
+                    absoluteFilename = fileToOpen.getAbsolutePath();
+                    String line = null;
+                    lines = new ArrayList<>(4096);
+                    try (UTF8BufferedReader reader = new UTF8BufferedReader(absoluteFilename)) {
+                        while (true) {
+                            line = reader.readLine();
+                            if (line == null) {
+                                break;
+                            }
+                            lines.add(line);
+                        }
+                    } catch (FileNotFoundException | LDParsingException ex) {
+                        NLogger.debug(DatParser.class, ex);
+                    }
+                }
+                lines = PrimitiveReplacer.substitutePrimitives(shortFilename, lines, userSettings.getPrimitiveSubstitutionQuality());
                 if (!lines.isEmpty()) {
                     isVirtual = true;
                     result.clear();

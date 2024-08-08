@@ -53,7 +53,7 @@ public class PrimGen2Test {
 
     @Test
     public void testPrimitiveReplacementOfUnknownFile() {
-        final List<String> result = PrimitiveReplacer.substitutePrimitives("unknown.dat", 56); //$NON-NLS-1$
+        final List<String> result = PrimitiveReplacer.substitutePrimitives("unknown.dat", List.of(), 56); //$NON-NLS-1$
         assertTrue(result.isEmpty());
     }
 }

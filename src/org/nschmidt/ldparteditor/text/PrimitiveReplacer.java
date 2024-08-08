@@ -35,7 +35,7 @@ public enum PrimitiveReplacer {
         GENERATED_PRIMITIVES_CACHE.clear();
     }
 
-    public static List<String> substitutePrimitives(String shortFilename, int primitiveSubstitutionQuality) {
+    public static List<String> substitutePrimitives(String shortFilename, List<String> lines, int primitiveSubstitutionQuality) {
         final PrimitiveKey key = new PrimitiveKey(shortFilename, primitiveSubstitutionQuality);
         final List<String> cachedResult = GENERATED_PRIMITIVES_CACHE.get(key);
         if (cachedResult != null) {
@@ -56,12 +56,12 @@ public enum PrimitiveReplacer {
             shortFilename = shortFilename.substring(3);
         }
 
-        final List<String> value = substitutePrimitivesParseFraction(shortFilename, primitiveSubstitutionQuality);
+        final List<String> value = substitutePrimitivesParseFraction(shortFilename, lines, primitiveSubstitutionQuality);
         // TODO GENERATED_PRIMITIVES_CACHE.put(key, value);
         return value;
     }
 
-    private static List<String> substitutePrimitivesParseFraction(String name, int quality) {
+    private static List<String> substitutePrimitivesParseFraction(String name, List<String> lines, int quality) {
         int length = name.length();
 
         if (name.endsWith(".dat")) { //$NON-NLS-1$
@@ -117,7 +117,7 @@ public enum PrimitiveReplacer {
             return substitutePrimitivesWithFraction(name, fraction, quality);
         }
 
-        return substitutePrimitivesTori(name, quality);
+        return substitutePrimitivesTori(name, lines, quality);
     }
 
     private static List<String> substitutePrimitivesWithFraction(String name, PrimitiveFraction fraction,
@@ -223,7 +223,7 @@ public enum PrimitiveReplacer {
         return List.of();
     }
 
-    private static List<String> substitutePrimitivesTori(String name, int quality) {
+    private static List<String> substitutePrimitivesTori(String name, List<String> lines, int quality) {
 
         // TODO Needs implementation!
 
@@ -238,19 +238,23 @@ public enum PrimitiveReplacer {
             final int length = toriName.length();
             if (length == 8 && validToriName(toriName)) {
                 try {
-                    boolean isUnit = "unit".equalsIgnoreCase(name.substring(4)); //$NON-NLS-1$
+                    double major = 1;
+                    double minor = 1;
+                    for (String line : lines) {
+                        if (line.startsWith("0 // Major Radius: ")) { //$NON-NLS-1$
+                            major = Double.parseDouble(line.substring(19).trim());
+                        } else if (line.startsWith("0 // Tube(Minor) Radius: ")) { //$NON-NLS-1$
+                            minor = Double.parseDouble(line.substring(25).trim());
+                        }
+
+                        if (line.startsWith("4") || line.startsWith("5")) break; //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+
+                    if (Math.abs(major) < 0.0001) major = 1.0;
+                    if (Math.abs(minor) < 0.0001) minor = 1.0;
+
                     double inverseFraction = 1.0 / Math.max(1.0, Integer.parseInt(toriName.substring(1, 3)));
                     int segments = (int) (quality * inverseFraction);
-                    double radius = isUnit ? 1.0 : Math.max(1.0, Integer.parseInt(toriName.substring(4)));
-                    int major = 1;
-                    int minor = 1;
-                    if (!isUnit) {
-                        if (toriName.startsWith("t")) { //$NON-NLS-1$
-                            major = (int) (1.0 / (radius / 10000.0));
-                        } else {
-                            minor = (int) (radius / 1000.0);
-                        }
-                    }
 
                     int toriType = 0;
                     switch (toriName.substring(3, 4)) {

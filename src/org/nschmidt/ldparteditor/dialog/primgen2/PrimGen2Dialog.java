@@ -525,7 +525,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         txtDataPtr[0].setText(primitiveSource);
     }
 
-    public static String buildPrimitiveSource(int pType, int divisions, int segments, int edgesPerCrossSections, int major, int minor, double width, double size, boolean ccw, int torusType, String realName, String ldrawName) {
+    public static String buildPrimitiveSource(int pType, int divisions, int segments, int edgesPerCrossSections, double major, double minor, double width, double size, boolean ccw, int torusType, String realName, String ldrawName) {
 
         int gcd = gcd(divisions, segments);
 
@@ -694,7 +694,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb.append("0 // 1 9 0 0 0 1 0 0 0 1 0 0 0 1 4-4edge.dat\n"); //$NON-NLS-1$
             sb.append("0 // 1 12 1 0 0 " + sweep + " 0 0 0 0 " + sweep + " 0 1 0 4-4edge.dat\n\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-            sb.append(torus(divisions, segments, edgesPerCrossSections, torusType, major, minor, ccw));
+            sb.append(torus(divisions, segments, edgesPerCrossSections, torusType, (double) major, (double) minor, ccw));
         }
 
         break;
@@ -1212,7 +1212,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
-    private static String torus(int divisions, int segments, int edgesPerCrossSections, int type, int major, int minor, boolean ccw) {
+    private static String torus(int divisions, int segments, int edgesPerCrossSections, int type, double major, double minor, boolean ccw) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
