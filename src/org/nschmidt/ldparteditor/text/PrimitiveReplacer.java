@@ -113,6 +113,10 @@ public enum PrimitiveReplacer {
         }
 
         if (hasFraction) {
+            int gcd = PrimGen2Dialog.gcd(lower, upper);
+            upper = upper / gcd;
+            lower = lower / gcd;
+
             final PrimitiveFraction fraction = new PrimitiveFraction(upper, lower, hasFraction);
             return substitutePrimitivesWithFraction(name, fraction, quality);
         }
@@ -232,9 +236,6 @@ public enum PrimitiveReplacer {
     }
 
     private static List<String> substitutePrimitivesTori(String name, List<String> lines, int quality) {
-
-        // TODO Needs implementation!
-
         if (name.startsWith("t") || name.startsWith("r")) { //$NON-NLS-1$ //$NON-NLS-2$
             String toriName = name;
             boolean mixedMode = false;
@@ -258,10 +259,14 @@ public enum PrimitiveReplacer {
                         } else if (line.startsWith("0 // Segments(Sweep): ") && line.indexOf('/', 4) != -1 && line.indexOf('=') != -1) { //$NON-NLS-1$
                             final String[] sweep = line.substring(22, line.indexOf('=')).trim().split("/"); //$NON-NLS-1$
                             if (sweep.length == 2) {
-                                realSegments = Integer.parseInt(sweep[0]);
-                                realDivisions = Integer.parseInt(sweep[1]);
+                                realSegments = Math.max(Integer.parseInt(sweep[0]), 1);
+                                realDivisions = Math.max(Integer.parseInt(sweep[1]), 1);
 
-                                for (int i = 1; i < 10; i++) {
+                                int gcd = PrimGen2Dialog.gcd(realDivisions, realSegments);
+                                realSegments = realSegments / gcd;
+                                realDivisions = realDivisions / gcd;
+
+                                for (int i = 1; i < 100; i++) {
                                     if (realDivisions * (i + 1) > quality) {
                                         realDivisions *= i;
                                         realSegments *= i;
@@ -292,6 +297,8 @@ public enum PrimitiveReplacer {
                             return List.of();
                     }
 
+                    NLogger.debug(PrimitiveReplacer.class, "Primitive {0} is a torus (major: {1}, minor: {2}, fraction: {3}/{4}, mixed: {5}).", name, major, minor, realSegments, realDivisions, mixedMode); //$NON-NLS-1$
+
                     final String source = PrimGen2Dialog.buildPrimitiveSource(PrimGen2Dialog.TORUS, realDivisions, realSegments, quality, major, minor, 1, 0, true, toriType, "Primitive Substitution", "LDPartEditor"); //$NON-NLS-1$ //$NON-NLS-2$
                     return Arrays.asList(source.split("\n")); //$NON-NLS-1$
                 } catch (NumberFormatException nfe) {
@@ -321,7 +328,6 @@ public enum PrimitiveReplacer {
         final String source = PrimGen2Dialog.buildPrimitiveSource(type, divisions, segments, 0, 0, 0, 1, size, true, 0, "Primitive Substitution", "LDPartEditor"); //$NON-NLS-1$ //$NON-NLS-2$
         return Arrays.asList(source.split("\n")); //$NON-NLS-1$
     }
-
 
     private record PrimitiveKey(String shortFilename, int primitiveSubstitutionQuality) {}
     private record PrimitiveFraction(int upper, int lower, boolean hasFraction) {}
