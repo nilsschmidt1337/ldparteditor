@@ -122,7 +122,15 @@ public enum PrimitiveReplacer {
 
     private static List<String> substitutePrimitivesWithFraction(String name, PrimitiveFraction fraction,
             int quality) {
-        final int segments = quality * fraction.upper / fraction.lower;
+        int segments = quality;
+
+        for (int i = 1; i < 100; i++) {
+            if (fraction.lower * (i + 1) > quality) {
+                segments = fraction.upper * i;
+                quality = fraction.lower * i;
+                break;
+            }
+        }
 
         final List<String> simpleResult = substituteSimplePrimitivesWithFraction(name, quality, segments);
         if (!simpleResult.isEmpty()) {
@@ -240,11 +248,27 @@ public enum PrimitiveReplacer {
                 try {
                     double major = 1;
                     double minor = 1;
+                    int realDivisions = quality;
+                    int realSegments = quality;
                     for (String line : lines) {
                         if (line.startsWith("0 // Major Radius: ")) { //$NON-NLS-1$
                             major = Double.parseDouble(line.substring(19).trim());
                         } else if (line.startsWith("0 // Tube(Minor) Radius: ")) { //$NON-NLS-1$
                             minor = Double.parseDouble(line.substring(25).trim());
+                        } else if (line.startsWith("0 // Segments(Sweep): ") && line.indexOf('/', 4) != -1 && line.indexOf('=') != -1) { //$NON-NLS-1$
+                            final String[] sweep = line.substring(22, line.indexOf('=')).trim().split("/"); //$NON-NLS-1$
+                            if (sweep.length == 2) {
+                                realSegments = Integer.parseInt(sweep[0]);
+                                realDivisions = Integer.parseInt(sweep[1]);
+
+                                for (int i = 1; i < 10; i++) {
+                                    if (realDivisions * (i + 1) > quality) {
+                                        realDivisions *= i;
+                                        realSegments *= i;
+                                        break;
+                                    }
+                                }
+                            }
                         }
 
                         if (line.startsWith("4") || line.startsWith("5")) break; //$NON-NLS-1$ //$NON-NLS-2$
@@ -252,9 +276,6 @@ public enum PrimitiveReplacer {
 
                     if (Math.abs(major) < 0.0001) major = 1.0;
                     if (Math.abs(minor) < 0.0001) minor = 1.0;
-
-                    double inverseFraction = 1.0 / Math.max(1.0, Integer.parseInt(toriName.substring(1, 3)));
-                    int segments = (int) (quality * inverseFraction);
 
                     int toriType = 0;
                     switch (toriName.substring(3, 4)) {
@@ -271,7 +292,7 @@ public enum PrimitiveReplacer {
                             return List.of();
                     }
 
-                    final String source = PrimGen2Dialog.buildPrimitiveSource(PrimGen2Dialog.TORUS, quality, segments, quality, major, minor, 1, 0, true, toriType, "Primitive Substitution", "LDPartEditor"); //$NON-NLS-1$ //$NON-NLS-2$
+                    final String source = PrimGen2Dialog.buildPrimitiveSource(PrimGen2Dialog.TORUS, realDivisions, realSegments, quality, major, minor, 1, 0, true, toriType, "Primitive Substitution", "LDPartEditor"); //$NON-NLS-1$ //$NON-NLS-2$
                     return Arrays.asList(source.split("\n")); //$NON-NLS-1$
                 } catch (NumberFormatException nfe) {
                     NLogger.debug(PrimitiveReplacer.class, nfe);
