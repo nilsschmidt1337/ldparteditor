@@ -1192,6 +1192,7 @@ public final class I18n {
     public static final String PRIMGEN_SIXTEEN = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_SIZE = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_STANDARD = PRIMGEN.getString(getProperty());
+    public static final String PRIMGEN_TANGENTIAL_RING_SEGMENT = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_THREE_QUARTER = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_TITLE = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_TORUS = PRIMGEN.getString(getProperty());

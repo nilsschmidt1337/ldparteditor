@@ -232,6 +232,11 @@ public enum PrimitiveReplacer {
             return buildPrimitive(PrimGen2Dialog.CHORD, quality, segments);
         }
 
+        // Substitute tangential ring segments
+        if ("tang".equals(name)) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.TANGENTIAL_RING_SEGMENT, quality, segments);
+        }
+
         return List.of();
     }
 

@@ -75,6 +75,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
     public static final int DISC_NEGATIVE = 6;
     public static final int DISC_NEGATIVE_TRUNCATED = 7;
     public static final int CHORD = 8;
+    public static final int TANGENTIAL_RING_SEGMENT = 9;
 
     private boolean doUpdate = false;
     private boolean ok = false;
@@ -269,7 +270,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             doUpdate = true;
 
             switch (cmbTypePtr[0].getSelectionIndex()) {
-            case CIRCLE, CYLINDER, DISC, DISC_NEGATIVE, DISC_NEGATIVE_TRUNCATED, CHORD:
+            case CIRCLE, CYLINDER, DISC, DISC_NEGATIVE, DISC_NEGATIVE_TRUNCATED, CHORD, TANGENTIAL_RING_SEGMENT:
                 lblMinorPtr[0].setText(I18n.PRIMGEN_MINOR);
                 lblMajorPtr[0].setEnabled(false);
                 lblMinorPtr[0].setEnabled(false);
@@ -857,6 +858,64 @@ public class PrimGen2Dialog extends PrimGen2Design {
                         sb.append(" 0 "); //$NON-NLS-1$
                         sb.append(removeTrailingZeros(decformat4f.format(z1)));
                         sb.append(" 1 0 0"); //$NON-NLS-1$
+                    }
+
+                    sb.append("\n"); //$NON-NLS-1$
+                    angle = nextAngle;
+                }
+            }
+
+            break;
+        case TANGENTIAL_RING_SEGMENT:
+            name = upper + "-" + lower + "tang.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 " + resolution + "Disc Negative Tangent " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+            {
+                // its always 16, there is no hi-res outer tangent (48\3-16tang.dat and 3-16tang.dat are used to pad a 16-sided polygon!)
+                int tangentStep = divisions / 16;
+                double deltaAngle = Math.PI * 2d / divisions;
+                double deltaAngleTangent = Math.PI / 16.0;
+                double scale = 1.0 / Math.cos(deltaAngleTangent);
+                double angle = 0d;
+                double angleTangent = -deltaAngleTangent;
+                for(int i = 0; i < segments; i++) {
+                    double nextAngle = angle + deltaAngle;
+                    double x1 = Math.cos(angle);
+                    double z1 = Math.sin(angle);
+                    double x2 = Math.cos(nextAngle);
+                    double z2 = Math.sin(nextAngle);
+                    if (i % tangentStep == 0) {
+                        angleTangent = angleTangent + deltaAngleTangent * 2d;
+                    }
+                    double x3 = Math.cos(angleTangent) * scale;
+                    double z3 = Math.sin(angleTangent) * scale;
+                    if (ccw) {
+                        sb.append("3 16 "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(x2)));
+                        sb.append(" 0 "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(z2)));
+                        sb.append(" "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(x1)));
+                        sb.append(" 0 "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(z1)));
+                        sb.append(" "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(x3)));
+                        sb.append(" 0 "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(z3)));
+                    } else {
+                        sb.append("3 16 "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(x3)));
+                        sb.append(" 0 "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(z3)));
+                        sb.append(" "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(x1)));
+                        sb.append(" 0 "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(z1)));
+                        sb.append(" "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(x2)));
+                        sb.append(" 0 "); //$NON-NLS-1$
+                        sb.append(removeTrailingZeros(decformat4f.format(z2)));
                     }
 
                     sb.append("\n"); //$NON-NLS-1$
@@ -2239,7 +2298,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
         switch (typ)
         {
-        case CIRCLE, CYLINDER, DISC, DISC_NEGATIVE, CHORD:
+        case CIRCLE, CYLINDER, DISC, DISC_NEGATIVE, CHORD, TANGENTIAL_RING_SEGMENT:
             return true;
         case DISC_NEGATIVE_TRUNCATED:
             return segments < divisions && segments > 0 && divisions / segments >= 4.0;
