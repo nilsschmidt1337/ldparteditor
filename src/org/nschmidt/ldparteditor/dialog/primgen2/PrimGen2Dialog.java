@@ -71,6 +71,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
     public static final int CONE = 2;
     public static final int TORUS = 3;
     public static final int CYLINDER = 4;
+    public static final int CYLINDER_WITHOUT_CONDLINES = -4;
     public static final int DISC = 5;
     public static final int DISC_NEGATIVE = 6;
     public static final int DISC_NEGATIVE_TRUNCATED = 7;
@@ -699,12 +700,20 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
 
         break;
+        case CYLINDER_WITHOUT_CONDLINES:
+            name = upper + "-" + lower + "cyli2.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 " + resolution + "Cylinder " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "  without Conditional Lines\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+            sb.append(cylinder(divisions, segments, ccw, false));
+
+            break;
         case CYLINDER:
             name = upper + "-" + lower + "cyli.dat"; //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 " + resolution + "Cylinder " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-            sb.append(cylinder(divisions, segments, ccw));
+            sb.append(cylinder(divisions, segments, ccw, true));
 
             break;
         case DISC:
@@ -932,7 +941,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb.toString();
     }
 
-    private static Object cylinder(int divisions, int segments, boolean ccw) {
+    private static Object cylinder(int divisions, int segments, boolean ccw, boolean condlines) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
@@ -1001,6 +1010,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
             sb2.append("\n"); //$NON-NLS-1$
         }
+
+        if (!condlines) return sb2.toString();
         sb2.append("0 // conditional lines\n"); //$NON-NLS-1$
         for (int num = 0; num <= segments; num++)
         {
@@ -2298,7 +2309,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
         switch (typ)
         {
-        case CIRCLE, CYLINDER, DISC, DISC_NEGATIVE, CHORD, TANGENTIAL_RING_SEGMENT:
+        case CIRCLE, CYLINDER, CYLINDER_WITHOUT_CONDLINES, DISC, DISC_NEGATIVE, CHORD, TANGENTIAL_RING_SEGMENT:
             return true;
         case DISC_NEGATIVE_TRUNCATED:
             return segments < divisions && segments > 0 && divisions / segments >= 4.0;

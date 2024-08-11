@@ -227,6 +227,10 @@ public enum PrimitiveReplacer {
             return buildPrimitive(PrimGen2Dialog.CYLINDER, quality, segments);
         }
 
+        if ("cyli2".equals(name)) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.CYLINDER_WITHOUT_CONDLINES, quality, segments);
+        }
+
         // Substitute circular disc segments
         if ("chrd".equals(name)) { //$NON-NLS-1$
             return buildPrimitive(PrimGen2Dialog.CHORD, quality, segments);
