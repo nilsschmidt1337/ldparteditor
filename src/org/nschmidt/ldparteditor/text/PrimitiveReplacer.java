@@ -231,6 +231,15 @@ public enum PrimitiveReplacer {
             return buildPrimitive(PrimGen2Dialog.CYLINDER_WITHOUT_CONDLINES, quality, segments);
         }
 
+        // Substitute cylinders sloped (truncated by an angled plane)
+        if ("cyls".equals(name)) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.CYLINDER_SLOPED, quality, segments);
+        }
+
+        if ("cyls2".equals(name)) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.CYLINDER_SLOPED_CONVEX, quality, segments);
+        }
+
         // Substitute circular disc segments
         if ("chrd".equals(name)) { //$NON-NLS-1$
             return buildPrimitive(PrimGen2Dialog.CHORD, quality, segments);

@@ -72,6 +72,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
     public static final int TORUS = 3;
     public static final int CYLINDER = 4;
     public static final int CYLINDER_WITHOUT_CONDLINES = -4;
+    public static final int CYLINDER_SLOPED = -5;
+    public static final int CYLINDER_SLOPED_CONVEX = -6;
     public static final int DISC = 5;
     public static final int DISC_NEGATIVE = 6;
     public static final int DISC_NEGATIVE_TRUNCATED = 7;
@@ -716,6 +718,22 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb.append(cylinder(divisions, segments, ccw, true));
 
             break;
+        case CYLINDER_SLOPED_CONVEX:
+            name = upper + "-" + lower + "cyls2.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 " + resolution + "Cylinder Sloped " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + " Convex\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+            sb.append(cylinderSloped(divisions, segments, ccw, true));
+
+            break;
+        case CYLINDER_SLOPED:
+            name = upper + "-" + lower + "cyls.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 " + resolution + "Cylinder Sloped " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+            sb.append(cylinderSloped(divisions, segments, ccw, false));
+
+            break;
         case DISC:
             name = upper + "-" + lower + "disc.dat"; //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1078,6 +1096,146 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
         return sb2.toString();
     }
+
+
+    private static Object cylinderSloped(int divisions, int segments, boolean ccw, boolean convex) {
+
+        // Crazy Reverse Engineering from Mike's PrimGen2
+        // Thanks to Mr. Heidemann! :)
+
+        // DONT TOUCH THIS CODE! It simply works...
+
+        final StringBuilder sb2 = new StringBuilder();
+        if (segments > divisions)
+        {
+            return sb2.toString();
+        }
+        if (segments > divisions)
+        {
+            return null;
+        }
+
+        int num3 = segments - 1;
+        for (int num = 0; num <= num3; num++)
+        {
+            double objdatLinePoint1X = Math.cos((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint1Y = 0.0;
+            double objdatLinePoint1Z = Math.sin((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint2X = Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint2Y = 0.0;
+            double objdatLinePoint2Z = Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint3X = objdatLinePoint2X;
+            double objdatLinePoint3Y = 1.0 - objdatLinePoint2X;
+            double objdatLinePoint3Z = objdatLinePoint2Z;
+            double objdatLinePoint4X = objdatLinePoint1X;
+            double objdatLinePoint4Y = 1.0 - objdatLinePoint1X;
+            double objdatLinePoint4Z = objdatLinePoint1Z;
+
+            sb2.append("4 16 "); //$NON-NLS-1$
+            if (ccw) {
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+                sb2.append(" "); //$NON-NLS-1$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                sb2.append(" "); //$NON-NLS-1$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                sb2.append(" "); //$NON-NLS-1$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+            } else {
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+                sb2.append(" "); //$NON-NLS-1$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+                sb2.append(" "); //$NON-NLS-1$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+                sb2.append(" "); //$NON-NLS-1$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+                sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+                sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+            }
+            sb2.append("\n"); //$NON-NLS-1$
+        }
+
+        if (!convex) return sb2.toString();
+        sb2.append("0 // conditional lines\n"); //$NON-NLS-1$
+        for (int num = 0; num <= segments; num++)
+        {
+            if (num == divisions)
+            {
+                break;
+            }
+            double objdatLinePoint1X = Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint1Y = 1.0;
+            double objdatLinePoint1Z = Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint2X = Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint2Y = 0.0;
+            double objdatLinePoint2Z = Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint3X;
+            double objdatLinePoint3Y;
+            double objdatLinePoint3Z;
+            double objdatLinePoint4X;
+            double objdatLinePoint4Y;
+            double objdatLinePoint4Z;
+            if (divisions == segments || num != 0 && num != segments)
+            {
+                objdatLinePoint3X = Math.cos((num - 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+                objdatLinePoint3Y = 1.0;
+                objdatLinePoint3Z = Math.sin((num - 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+                objdatLinePoint4X = Math.cos((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+                objdatLinePoint4Y = 1.0;
+                objdatLinePoint4Z = Math.sin((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            }
+            else if (num == 0)
+            {
+                objdatLinePoint3X = Math.cos((double) num / (double) divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint3Y = 1.0;
+                objdatLinePoint3Z = Math.tan((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint4X = Math.cos((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint4Y = 1.0;
+                objdatLinePoint4Z = Math.sin((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931);
+            }
+            else
+            {
+                objdatLinePoint3X = Math.cos((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint3Y = 1.0;
+                objdatLinePoint3Z = Math.sin((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint4X = Math.cos((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / divisions);
+                objdatLinePoint4Y = 1.0;
+                objdatLinePoint4Z = Math.sin((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / divisions);
+            }
+            sb2.append("5 24 "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint3Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint3Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint4Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint4Z)));
+            sb2.append("\n"); //$NON-NLS-1$
+        }
+        return sb2.toString();
+    }
+
 
     private static Object cone(int divisions, int segments, double innerDiameter, boolean ccw, double width) {
 
@@ -2309,7 +2467,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
         switch (typ)
         {
-        case CIRCLE, CYLINDER, CYLINDER_WITHOUT_CONDLINES, DISC, DISC_NEGATIVE, CHORD, TANGENTIAL_RING_SEGMENT:
+        case CIRCLE, CYLINDER, CYLINDER_WITHOUT_CONDLINES, CYLINDER_SLOPED, CYLINDER_SLOPED_CONVEX
+           , DISC, DISC_NEGATIVE, CHORD, TANGENTIAL_RING_SEGMENT:
             return true;
         case DISC_NEGATIVE_TRUNCATED:
             return segments < divisions && segments > 0 && divisions / segments >= 4.0;
