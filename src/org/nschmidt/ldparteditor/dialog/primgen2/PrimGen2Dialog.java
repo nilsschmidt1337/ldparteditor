@@ -1131,8 +1131,17 @@ public class PrimGen2Dialog extends PrimGen2Design {
             double objdatLinePoint4Y = 1.0 - objdatLinePoint1X;
             double objdatLinePoint4Z = objdatLinePoint1Z;
 
+            if (convex) {
+                objdatLinePoint1X *= -1.0;
+                objdatLinePoint2X *= -1.0;
+                objdatLinePoint3X *= -1.0;
+                objdatLinePoint4X *= -1.0;
+                objdatLinePoint3Y = 1.0 - objdatLinePoint3Y;
+                objdatLinePoint4Y = 1.0 - objdatLinePoint4Y;
+            }
+
             sb2.append("4 16 "); //$NON-NLS-1$
-            if (ccw) {
+            if (ccw ^ convex) {
                 sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
                 sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
                 sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
@@ -1168,7 +1177,6 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb2.append("\n"); //$NON-NLS-1$
         }
 
-        if (!convex) return sb2.toString();
         sb2.append("0 // conditional lines\n"); //$NON-NLS-1$
         for (int num = 0; num <= segments; num++)
         {
@@ -1177,10 +1185,10 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 break;
             }
             double objdatLinePoint1X = Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
-            double objdatLinePoint1Y = 1.0;
+            double objdatLinePoint1Y = 0.0;
             double objdatLinePoint1Z = Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
             double objdatLinePoint2X = Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
-            double objdatLinePoint2Y = 0.0;
+            double objdatLinePoint2Y = 1.0 - objdatLinePoint2X;
             double objdatLinePoint2Z = Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
             double objdatLinePoint3X;
             double objdatLinePoint3Y;
@@ -1191,29 +1199,40 @@ public class PrimGen2Dialog extends PrimGen2Design {
             if (divisions == segments || num != 0 && num != segments)
             {
                 objdatLinePoint3X = Math.cos((num - 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
-                objdatLinePoint3Y = 1.0;
+                objdatLinePoint3Y = 1.0 - objdatLinePoint2X;
                 objdatLinePoint3Z = Math.sin((num - 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
                 objdatLinePoint4X = Math.cos((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
-                objdatLinePoint4Y = 1.0;
+                objdatLinePoint4Y = 1.0 - objdatLinePoint1X;
                 objdatLinePoint4Z = Math.sin((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
             }
             else if (num == 0)
             {
                 objdatLinePoint3X = Math.cos((double) num / (double) divisions * 2.0 * 3.1415926535897931);
-                objdatLinePoint3Y = 1.0;
+                objdatLinePoint3Y = 1.0 - objdatLinePoint2X;
                 objdatLinePoint3Z = Math.tan((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931);
                 objdatLinePoint4X = Math.cos((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931);
-                objdatLinePoint4Y = 1.0;
+                objdatLinePoint4Y = 1.0 - objdatLinePoint1X;
                 objdatLinePoint4Z = Math.sin((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931);
             }
             else
             {
                 objdatLinePoint3X = Math.cos((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931);
-                objdatLinePoint3Y = 1.0;
+                objdatLinePoint3Y = 1.0 - objdatLinePoint2X;
                 objdatLinePoint3Z = Math.sin((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931);
                 objdatLinePoint4X = Math.cos((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / divisions);
-                objdatLinePoint4Y = 1.0;
+                objdatLinePoint4Y = 1.0 - objdatLinePoint1X;
                 objdatLinePoint4Z = Math.sin((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / divisions);
+            }
+
+            if (convex) {
+                objdatLinePoint1X *= -1.0;
+                objdatLinePoint2X *= -1.0;
+                objdatLinePoint3X *= -1.0;
+                objdatLinePoint4X *= -1.0;
+
+                objdatLinePoint2Y = 1.0 - objdatLinePoint2Y;
+                objdatLinePoint3Y = 0.0;
+                objdatLinePoint4Y = 0.0;
             }
             sb2.append("5 24 "); //$NON-NLS-1$
             sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
