@@ -2326,6 +2326,180 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
     }
 
+    public static List<String> addEighthSphere(int numSegments, boolean shouldLoadConditionals) {
+
+        // FIXME This is C++ code from LDView which needs to be adapted to Java code, MIT licensed by Travis Cobbs, Peter Bartfai
+
+        final List<String> result = new ArrayList<>();
+        if (numSegments == 0) return result;
+        float radius = 1f;
+        TCVector[] zeroXPoints;
+        TCVector[] zeroYPoints;
+        TCVector[] zeroZPoints;
+        int usedSegments = numSegments / 4;
+        TCVector p1, p2, p3;
+        TCVector[] spherePoints = null;
+        int numMainPoints = (usedSegments + 1) * (usedSegments + 1) - 1;
+        int mainSpot = 0;
+
+        if (shouldLoadConditionals) {
+            spherePoints = new TCVector[numMainPoints];
+        }
+
+        int loopCount = usedSegments + 1;
+        zeroXPoints = new TCVector[loopCount > 0 ? loopCount : 0];
+        zeroYPoints = new TCVector[loopCount > 0 ? loopCount : 0];
+        zeroZPoints = new TCVector[loopCount > 0 ? loopCount : 0];
+        for (int i = 0; i < loopCount; i++) {
+            float angle = (float) (2.0f * Math.PI / numSegments * i);
+
+            zeroYPoints[i].setX((float) (1.0f / (Math.tan(angle) + 1)));
+            zeroYPoints[i].setY(0.0f);
+            zeroYPoints[i].setZ(1.0f - zeroYPoints[i].getX());
+            zeroZPoints[i] = zeroYPoints[i].rearrange(2, 0, 1);
+            zeroXPoints[i] = zeroYPoints[i].rearrange(1, 2, 0);
+        }
+
+        for (int j = 0; j < usedSegments; j++) {
+            int stripCount = usedSegments - j;
+            int stripSpot = 0;
+            TCVector[] points = new TCVector[stripCount * 2 + 1];
+            TCVector[] normals = new TCVector[stripCount * 2 + 1];
+
+            for (int i = 0; i < stripCount; i++) {
+                if (i == 0) {
+                    p1 = calcIntersection(i, j, usedSegments, zeroXPoints,
+                            zeroYPoints, zeroZPoints);
+                    p1.scale(radius / p1.length());
+                    normals[stripSpot] = p1.normalize();
+                    points[stripSpot++] = p1;
+                    if (shouldLoadConditionals) {
+                        spherePoints[mainSpot++] = p1;
+                    }
+                }
+
+                p2 = calcIntersection(i, j + 1, usedSegments, zeroXPoints,
+                        zeroYPoints, zeroZPoints);
+                p2.scale(radius / p2.length());
+                p3 = calcIntersection(i + 1, j, usedSegments, zeroXPoints,
+                        zeroYPoints, zeroZPoints);
+                p3.scale(radius / p3.length());
+                normals[stripSpot] = p2.normalize();
+                points[stripSpot++] = p2;
+                normals[stripSpot] = p3.normalize();
+                points[stripSpot++] = p3;
+                if (shouldLoadConditionals) {
+                    spherePoints[mainSpot++] = p2;
+                    spherePoints[mainSpot++] = p3;
+                }
+            }
+
+            addTriangleStrip(points, normals, stripSpot, result);
+        }
+
+        if (shouldLoadConditionals) {
+            addEighthSphereConditionals(spherePoints, numSegments, result);
+        }
+
+        return result;
+    }
+
+    private static void addEighthSphereConditionals(TCVector[] points, int numSegments, List<String> result) {
+        // FIXME This is C++ code from LDView which needs to be adapted to Java code, MIT licensed by Travis Cobbs, Peter Bartfai
+        int usedSegments = numSegments / 4;
+        TCVector p1, p2, p3, p4;
+        int mainSpot = 0;
+
+        for (int j = 0; j < usedSegments; j++) {
+            int stripCount = usedSegments - j;
+
+            for (int i = 0; i < stripCount; i++) {
+                if (i > 0) {
+                    p3 = points[mainSpot - 1];
+                } else {
+                    p3 = points[mainSpot];
+                    p3.setZ(p3.getZ() - 0.1f);
+                }
+                p4 = points[mainSpot + 2];
+                p1 = points[mainSpot];
+                p2 = points[mainSpot + 1];
+                addConditionalLine(p1, p2, p3, p4, result);
+                p3 = p1;
+                p1 = p2;
+                p2 = p4;
+                if (i < stripCount - 1) {
+                    p4 = points[mainSpot + 3];
+                } else {
+                    p4 = points[mainSpot + 1];
+                    p4.setX(p4.getX() - 0.1f);
+                }
+
+                addConditionalLine(p1, p2, p3, p4, result);
+                p1 = points[mainSpot];
+                p2 = points[mainSpot + 2];
+                p3 = points[mainSpot + 1];
+                if (j == 0) {
+                    p4 = points[mainSpot];
+                    p4.setY(p4.getY() - 0.1f);
+                } else {
+                    p4 = points[sphereIndex(i * 2 + 2, j - 1, usedSegments)];
+                }
+
+                addConditionalLine(p1, p2, p3, p4, result);
+                mainSpot += 2;
+            }
+
+            mainSpot++;
+        }
+    }
+
+    private static int sphereIndex(int i, int j, int usedSegments) {
+        int retVal = 0;
+        for (int k = 0; k < j; k++) {
+            int rowSize = usedSegments - k;
+            retVal += rowSize * 2 + 1;
+        }
+
+        return retVal + i;
+    }
+
+    private static void addConditionalLine(TCVector p1, TCVector p2, TCVector p3, TCVector p4, List<String> result) {
+        // TODO Auto-generated method stub
+
+    }
+
+    private static void addTriangleStrip(TCVector[] points, TCVector[] normals, int count, List<String> result) {
+        // TODO Auto-generated method stub
+
+    }
+
+    private static TCVector calcIntersection(int i, int j, int num,
+            TCVector[] zeroXPoints,
+            TCVector[] zeroYPoints,
+            TCVector[] zeroZPoints) {
+        // FIXME This is C++ code from LDView which needs to be adapted to Java code, MIT licensed by Travis Cobbs, Peter Bartfai
+
+        TCVector temp1, temp2, temp3, temp4, temp5, temp6;
+
+        if (i + j == num) {
+            return zeroXPoints[j];
+        } else if (i == 0) {
+            return zeroZPoints[num - j];
+        } else if (j == 0) {
+            return zeroYPoints[i];
+        }
+
+        temp1 = zeroYPoints[i];
+        temp2 = zeroXPoints[num - i];
+        temp3 = zeroZPoints[num - j];
+        temp4 = zeroXPoints[j];
+        temp5 = zeroYPoints[i + j];
+        temp6 = zeroZPoints[num - i - j];
+
+        return temp1.add(temp2).add(temp3).add(temp4).add(temp5).add(temp6)
+                .sub(zeroXPoints[0]).sub(zeroYPoints[0]).sub(zeroZPoints[0]).scale(1 / 9.0f);
+    }
+
     @SuppressWarnings("java:S2111")
     private static double round4f(double d) {
         return new BigDecimal(d).setScale(4, RoundingMode.HALF_EVEN).doubleValue();
@@ -2507,4 +2681,67 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
         return false;
     }
+
+    private record TCVector() {
+
+        public float length() {
+            // TODO Auto-generated method stub
+            return 1f;
+        }
+
+        public TCVector sub(TCVector v) {
+            // TODO Auto-generated method stub
+            return v;
+        }
+
+        public TCVector add(TCVector v) {
+            // TODO Auto-generated method stub
+            return v;
+        }
+
+        public float getZ() {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+
+        public float getY() {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+
+        public void setZ(float f) {
+            // TODO Auto-generated method stub
+
+        }
+
+        public float getX() {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+
+        public void setY(float f) {
+            // TODO Auto-generated method stub
+
+        }
+
+        public void setX(float d) {
+            // TODO Auto-generated method stub
+
+        }
+
+        public TCVector rearrange(int i, int j, int k) {
+            // TODO Auto-generated method stub
+            return this;
+        }
+
+        public TCVector scale(float f) {
+            // TODO Auto-generated method stub
+            return this;
+
+        }
+
+        public TCVector normalize() {
+            // TODO Auto-generated method stub
+            return this;
+        }}
 }

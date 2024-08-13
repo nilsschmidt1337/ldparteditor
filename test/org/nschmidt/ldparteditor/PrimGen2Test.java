@@ -56,4 +56,10 @@ public class PrimGen2Test {
         final List<String> result = PrimitiveReplacer.substitutePrimitives("unknown.dat", List.of(), 56); //$NON-NLS-1$
         assertTrue(result.isEmpty());
     }
+
+    @Test
+    public void testEmptyEightSphere() {
+        final List<String> result = PrimGen2Dialog.addEighthSphere(0, false);
+        assertTrue(result.isEmpty());
+    }
 }
