@@ -33,6 +33,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
+import org.lwjgl.util.vector.Vector3f;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataCSG;
@@ -74,6 +75,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
     public static final int CYLINDER_WITHOUT_CONDLINES = -4;
     public static final int CYLINDER_SLOPED = -5;
     public static final int CYLINDER_SLOPED_CONVEX = -6;
+    public static final int EIGHT_SPHERE = -7;
     public static final int DISC = 5;
     public static final int DISC_NEGATIVE = 6;
     public static final int DISC_NEGATIVE_TRUNCATED = 7;
@@ -890,6 +892,19 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     sb.append("\n"); //$NON-NLS-1$
                     angle = nextAngle;
                 }
+            }
+
+            break;
+        case EIGHT_SPHERE:
+            name = "1-8sphe.dat"; //$NON-NLS-1$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 " + resolution + "Disc Negative Tangent " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+            final List<String> sphereLines = addEightSphere(divisions, true);
+
+            for (String line : sphereLines) {
+                sb.append(line);
+                sb.append("\n"); //$NON-NLS-1$
             }
 
             break;
@@ -2326,12 +2341,11 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
     }
 
-    public static List<String> addEighthSphere(int numSegments, boolean shouldLoadConditionals) {
+    public static List<String> addEightSphere(int numSegments, boolean shouldLoadConditionals) {
 
         // FIXME This is C++ code from LDView which needs to be adapted to Java code, MIT licensed by Travis Cobbs, Peter Bartfai
 
         final List<String> result = new ArrayList<>();
-        if (numSegments == 0) return result;
         float radius = 1f;
         TCVector[] zeroXPoints;
         TCVector[] zeroYPoints;
@@ -2343,13 +2357,13 @@ public class PrimGen2Dialog extends PrimGen2Design {
         int mainSpot = 0;
 
         if (shouldLoadConditionals) {
-            spherePoints = new TCVector[numMainPoints];
+            spherePoints = init(new TCVector[numMainPoints]);
         }
 
         int loopCount = usedSegments + 1;
-        zeroXPoints = new TCVector[loopCount > 0 ? loopCount : 0];
-        zeroYPoints = new TCVector[loopCount > 0 ? loopCount : 0];
-        zeroZPoints = new TCVector[loopCount > 0 ? loopCount : 0];
+        zeroXPoints = init(new TCVector[loopCount > 0 ? loopCount : 0]);
+        zeroYPoints = init(new TCVector[loopCount > 0 ? loopCount : 0]);
+        zeroZPoints = init(new TCVector[loopCount > 0 ? loopCount : 0]);
         for (int i = 0; i < loopCount; i++) {
             float angle = (float) (2.0f * Math.PI / numSegments * i);
 
@@ -2363,15 +2377,13 @@ public class PrimGen2Dialog extends PrimGen2Design {
         for (int j = 0; j < usedSegments; j++) {
             int stripCount = usedSegments - j;
             int stripSpot = 0;
-            TCVector[] points = new TCVector[stripCount * 2 + 1];
-            TCVector[] normals = new TCVector[stripCount * 2 + 1];
+            TCVector[] points = init(new TCVector[stripCount * 2 + 1]);
 
             for (int i = 0; i < stripCount; i++) {
                 if (i == 0) {
                     p1 = calcIntersection(i, j, usedSegments, zeroXPoints,
                             zeroYPoints, zeroZPoints);
                     p1.scale(radius / p1.length());
-                    normals[stripSpot] = p1.normalize();
                     points[stripSpot++] = p1;
                     if (shouldLoadConditionals) {
                         spherePoints[mainSpot++] = p1;
@@ -2384,9 +2396,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 p3 = calcIntersection(i + 1, j, usedSegments, zeroXPoints,
                         zeroYPoints, zeroZPoints);
                 p3.scale(radius / p3.length());
-                normals[stripSpot] = p2.normalize();
                 points[stripSpot++] = p2;
-                normals[stripSpot] = p3.normalize();
                 points[stripSpot++] = p3;
                 if (shouldLoadConditionals) {
                     spherePoints[mainSpot++] = p2;
@@ -2394,7 +2404,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 }
             }
 
-            addTriangleStrip(points, normals, stripSpot, result);
+            addTriangleStrip(points, stripSpot, result);
         }
 
         if (shouldLoadConditionals) {
@@ -2402,6 +2412,14 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
 
         return result;
+    }
+
+    private static TCVector[] init(TCVector[] tcVectors) {
+        for (int i = 0; i < tcVectors.length; i++) {
+            tcVectors[i] = new TCVector(new Vector3f());
+        }
+
+        return tcVectors;
     }
 
     private static void addEighthSphereConditionals(TCVector[] points, int numSegments, List<String> result) {
@@ -2464,13 +2482,41 @@ public class PrimGen2Dialog extends PrimGen2Design {
     }
 
     private static void addConditionalLine(TCVector p1, TCVector p2, TCVector p3, TCVector p4, List<String> result) {
-        // TODO Auto-generated method stub
-
+        final StringBuilder sb = new StringBuilder();
+        sb.append("5 24 "); //$NON-NLS-1$
+        sb.append(p1.toString());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(p2.toString());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(p3.toString());
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(p4.toString());
+        result.add(sb.toString());
     }
 
-    private static void addTriangleStrip(TCVector[] points, TCVector[] normals, int count, List<String> result) {
-        // TODO Auto-generated method stub
+    private static void addTriangleStrip(TCVector[] points, int count, List<String> result) {
+        if (points.length < 3) return;
+        boolean flip = false;
+        for (int i = 0; i < points.length - 2 && i < count; i++) {
+            TCVector a = points[i];
+            TCVector b = points[i + 1];
+            TCVector c = points[i + 2];
+            if (flip) {
+                TCVector t = b;
+                b = c;
+                c = t;
+            }
 
+            final StringBuilder sb = new StringBuilder();
+            sb.append("3 16 "); //$NON-NLS-1$
+            sb.append(a.toString());
+            sb.append(" "); //$NON-NLS-1$
+            sb.append(b.toString());
+            sb.append(" "); //$NON-NLS-1$
+            sb.append(c.toString());
+            result.add(sb.toString());
+            flip = !flip;
+        }
     }
 
     private static TCVector calcIntersection(int i, int j, int num,
@@ -2478,8 +2524,6 @@ public class PrimGen2Dialog extends PrimGen2Design {
             TCVector[] zeroYPoints,
             TCVector[] zeroZPoints) {
         // FIXME This is C++ code from LDView which needs to be adapted to Java code, MIT licensed by Travis Cobbs, Peter Bartfai
-
-        TCVector temp1, temp2, temp3, temp4, temp5, temp6;
 
         if (i + j == num) {
             return zeroXPoints[j];
@@ -2489,12 +2533,12 @@ public class PrimGen2Dialog extends PrimGen2Design {
             return zeroYPoints[i];
         }
 
-        temp1 = zeroYPoints[i];
-        temp2 = zeroXPoints[num - i];
-        temp3 = zeroZPoints[num - j];
-        temp4 = zeroXPoints[j];
-        temp5 = zeroYPoints[i + j];
-        temp6 = zeroZPoints[num - i - j];
+        TCVector temp1 = zeroYPoints[i];
+        TCVector temp2 = zeroXPoints[num - i];
+        TCVector temp3 = zeroZPoints[num - j];
+        TCVector temp4 = zeroXPoints[j];
+        TCVector temp5 = zeroYPoints[i + j];
+        TCVector temp6 = zeroZPoints[num - i - j];
 
         return temp1.add(temp2).add(temp3).add(temp4).add(temp5).add(temp6)
                 .sub(zeroXPoints[0]).sub(zeroYPoints[0]).sub(zeroZPoints[0]).scale(1 / 9.0f);
@@ -2682,66 +2726,63 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return false;
     }
 
-    private record TCVector() {
+    private record TCVector(Vector3f v) {
 
         public float length() {
-            // TODO Auto-generated method stub
-            return 1f;
+            return v.length();
         }
 
         public TCVector sub(TCVector v) {
-            // TODO Auto-generated method stub
-            return v;
+            return new TCVector(Vector3f.sub(this.v, v.v, null));
         }
 
         public TCVector add(TCVector v) {
-            // TODO Auto-generated method stub
-            return v;
-        }
-
-        public float getZ() {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        public float getY() {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        public void setZ(float f) {
-            // TODO Auto-generated method stub
-
+            return new TCVector(Vector3f.add(this.v, v.v, null));
         }
 
         public float getX() {
-            // TODO Auto-generated method stub
-            return 0;
+            return v.x;
         }
 
-        public void setY(float f) {
-            // TODO Auto-generated method stub
-
+        public float getY() {
+            return v.y;
         }
 
-        public void setX(float d) {
-            // TODO Auto-generated method stub
-
+        public float getZ() {
+            return v.z;
         }
 
-        public TCVector rearrange(int i, int j, int k) {
-            // TODO Auto-generated method stub
-            return this;
+        public void setX(float x) {
+            v.setX(x);
         }
 
-        public TCVector scale(float f) {
-            // TODO Auto-generated method stub
-            return this;
-
+        public void setY(float y) {
+            v.setY(y);
         }
 
-        public TCVector normalize() {
-            // TODO Auto-generated method stub
-            return this;
+        public void setZ(float z) {
+            v.setZ(z);
+        }
+
+        public TCVector rearrange(int xi, int yi, int zi) {
+            final float x = getCoord(xi);
+            final float y = getCoord(yi);
+            final float z = getCoord(zi);
+            return new TCVector(new Vector3f(x, y, z));
+        }
+
+        private float getCoord(int i) {
+            if (i == 0) return v.x;
+            if (i == 1) return v.y;
+            return v.z;
+        }
+
+        public TCVector scale(float factor) {
+            return new TCVector((Vector3f) v.scale(factor));
+        }
+
+        @Override
+        public String toString() {
+            return v.x + " " + v.y + " " + v.z; //$NON-NLS-1$ //$NON-NLS-2$
         }}
 }

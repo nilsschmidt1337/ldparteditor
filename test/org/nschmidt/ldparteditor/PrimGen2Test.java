@@ -59,7 +59,31 @@ public class PrimGen2Test {
 
     @Test
     public void testEmptyEightSphere() {
-        final List<String> result = PrimGen2Dialog.addEighthSphere(0, false);
+        final List<String> result = PrimGen2Dialog.addEightSphere(0, false);
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testLowResEightSphereWithCondlines() {
+        final List<String> result = PrimGen2Dialog.addEightSphere(8, true);
+        assertEquals(13, result.size());
+    }
+
+    @Test
+    public void testNormalEightSphereWithCondlines() {
+        final List<String> result = PrimGen2Dialog.addEightSphere(16, true);
+        assertEquals(46, result.size());
+    }
+
+    @Test
+    public void testLowResEightSphereWithoutCondlines() {
+        final List<String> result = PrimGen2Dialog.addEightSphere(8, false);
+        assertEquals(4, result.size());
+    }
+
+    @Test
+    public void testNormalEightSphereWithoutCondlines() {
+        final List<String> result = PrimGen2Dialog.addEightSphere(16, false);
+        assertEquals(16, result.size());
     }
 }
