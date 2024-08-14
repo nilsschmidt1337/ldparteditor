@@ -21,39 +21,38 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
-import org.nschmidt.ldparteditor.dialog.primgen2.PrimGen2Dialog;
-import org.nschmidt.ldparteditor.text.PrimitiveReplacer;
+import org.nschmidt.ldparteditor.helper.math.EightSphereGenerator;
 
 @SuppressWarnings("java:S5960")
-public class PrimGen2Test {
-
-    private static final String NAME = "Nils Schmidt"; //$NON-NLS-1$
-    private static final String LDRAW_USER = "BlackBrick89"; //$NON-NLS-1$
-
-    @Test(expected = ArithmeticException.class)
-    public void testZeroSizedCirlce() {
-        PrimGen2Dialog.buildPrimitiveSource(PrimGen2Dialog.CIRCLE, 0, 0, 0, 0, 0, 0, 0, false, 0, NAME, LDRAW_USER);
-    }
+public class EightSphereGeneratorTest {
 
     @Test
-    public void testOneSixteenthCirlce() {
-        final String result = PrimGen2Dialog.buildPrimitiveSource(PrimGen2Dialog.CIRCLE, 16, 1, 0, 0, 0, 0, 0, false, 0, NAME, LDRAW_USER);
-        assertEquals("""
-                0 Circle 0.0625
-                0 Name: 1-16edge.dat
-                0 Author: Nils Schmidt [BlackBrick89]
-                0 !LDRAW_ORG Unofficial_Primitive
-                0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt
-
-                0 BFC CERTIFY CW
-
-                2 24 1 0 0 0.9239 0 0.3827
-                0 // Build by LDPartEditor (PrimGen 2.X)""", result); //$NON-NLS-1$
-    }
-
-    @Test
-    public void testPrimitiveReplacementOfUnknownFile() {
-        final List<String> result = PrimitiveReplacer.substitutePrimitives("unknown.dat", List.of(), 56); //$NON-NLS-1$
+    public void testEmptyEightSphere() {
+        final List<String> result = EightSphereGenerator.addEightSphere(0, false);
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testLowResEightSphereWithCondlines() {
+        final List<String> result = EightSphereGenerator.addEightSphere(8, true);
+        assertEquals(13, result.size());
+    }
+
+    @Test
+    public void testNormalEightSphereWithCondlines() {
+        final List<String> result = EightSphereGenerator.addEightSphere(16, true);
+        assertEquals(46, result.size());
+    }
+
+    @Test
+    public void testLowResEightSphereWithoutCondlines() {
+        final List<String> result = EightSphereGenerator.addEightSphere(8, false);
+        assertEquals(4, result.size());
+    }
+
+    @Test
+    public void testNormalEightSphereWithoutCondlines() {
+        final List<String> result = EightSphereGenerator.addEightSphere(16, false);
+        assertEquals(16, result.size());
     }
 }

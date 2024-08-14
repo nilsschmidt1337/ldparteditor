@@ -136,6 +136,11 @@ public enum PrimitiveReplacer {
             }
         }
 
+        final List<String> sphereResult = substituteEightSphere(name, quality, segments, fraction);
+        if (!sphereResult.isEmpty()) {
+            return sphereResult;
+        }
+
         final List<String> simpleResult = substituteSimplePrimitivesWithFraction(name, quality, segments);
         if (!simpleResult.isEmpty()) {
             return simpleResult;
@@ -153,6 +158,15 @@ public enum PrimitiveReplacer {
 
 
         // TODO Needs implementation!
+        return List.of();
+    }
+
+    public static List<String> substituteEightSphere(String name, int quality, int segments,
+            PrimitiveFraction fraction) {
+        if ("sphe".equals(name) && fraction.upper == 1 && fraction.lower == 8) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.EIGHT_SPHERE, quality, segments);
+        }
+
         return List.of();
     }
 
