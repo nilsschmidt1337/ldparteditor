@@ -69,8 +69,8 @@ public enum EightSphereGenerator {
             for (int i = 0; i < stripCount; i++) {
                 if (i == 0) {
                     p1 = calcIntersection(i, j, usedSegments, zeroXPoints,
-                            zeroYPoints, zeroZPoints);
-                    p1.scale(radius / p1.length());
+                            zeroYPoints, zeroZPoints).copy();
+                    p1 = p1.scale(radius / p1.length());
                     points[stripSpot++] = p1;
                     if (shouldLoadConditionals) {
                         spherePoints[mainSpot++] = p1;
@@ -78,11 +78,11 @@ public enum EightSphereGenerator {
                 }
 
                 p2 = calcIntersection(i, j + 1, usedSegments, zeroXPoints,
-                        zeroYPoints, zeroZPoints);
-                p2.scale(radius / p2.length());
+                        zeroYPoints, zeroZPoints).copy();
+                p2 = p2.scale(radius / p2.length());
                 p3 = calcIntersection(i + 1, j, usedSegments, zeroXPoints,
-                        zeroYPoints, zeroZPoints);
-                p3.scale(radius / p3.length());
+                        zeroYPoints, zeroZPoints).copy();
+                p3 = p3.scale(radius / p3.length());
                 points[stripSpot++] = p2;
                 points[stripSpot++] = p3;
                 if (shouldLoadConditionals) {
@@ -123,34 +123,34 @@ public enum EightSphereGenerator {
 
             for (int i = 0; i < stripCount; i++) {
                 if (i > 0) {
-                    p3 = points[mainSpot - 1];
+                    p3 = points[mainSpot - 1].copy();
                 } else {
-                    p3 = points[mainSpot];
-                    p3.setZ(p3.getZ() - 0.1f);
+                    p3 = points[mainSpot].copy();
+                    p3.setZ(p3.getZ() - 1f);
                 }
-                p4 = points[mainSpot + 2];
-                p1 = points[mainSpot];
-                p2 = points[mainSpot + 1];
+                p4 = points[mainSpot + 2].copy();
+                p1 = points[mainSpot].copy();
+                p2 = points[mainSpot + 1].copy();
                 addConditionalLine(p1, p2, p3, p4, result);
                 p3 = p1;
                 p1 = p2;
                 p2 = p4;
                 if (i < stripCount - 1) {
-                    p4 = points[mainSpot + 3];
+                    p4 = points[mainSpot + 3].copy();
                 } else {
-                    p4 = points[mainSpot + 1];
-                    p4.setX(p4.getX() - 0.1f);
+                    p4 = points[mainSpot + 1].copy();
+                    p4.setX(p4.getX() - 1f);
                 }
 
                 addConditionalLine(p1, p2, p3, p4, result);
-                p1 = points[mainSpot];
-                p2 = points[mainSpot + 2];
-                p3 = points[mainSpot + 1];
+                p1 = points[mainSpot].copy();
+                p2 = points[mainSpot + 2].copy();
+                p3 = points[mainSpot + 1].copy();
                 if (j == 0) {
-                    p4 = points[mainSpot];
-                    p4.setY(p4.getY() - 0.1f);
+                    p4 = points[mainSpot].copy();
+                    p4.setY(p4.getY() - 1f);
                 } else {
-                    p4 = points[sphereIndex(i * 2 + 2, j - 1, usedSegments)];
+                    p4 = points[sphereIndex(i * 2 + 2, j - 1, usedSegments)].copy();
                 }
 
                 addConditionalLine(p1, p2, p3, p4, result);
@@ -235,6 +235,10 @@ public enum EightSphereGenerator {
 
 
     private record TCVector(Vector3f v) {
+
+        public TCVector copy() {
+            return new TCVector(new Vector3f(v));
+        }
 
         public float length() {
             return v.length();

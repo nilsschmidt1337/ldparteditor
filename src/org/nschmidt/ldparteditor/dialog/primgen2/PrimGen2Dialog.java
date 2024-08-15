@@ -898,7 +898,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         case EIGHT_SPHERE:
             name = "1-8sphe.dat"; //$NON-NLS-1$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Disc Negative Tangent " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            sb.insert(0, "0 " + resolution + "Sphere " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
             final List<String> sphereLines = EightSphereGenerator.addEightSphere(divisions, true);
 
