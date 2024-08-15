@@ -75,7 +75,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
     public static final int CYLINDER_WITHOUT_CONDLINES = -4;
     public static final int CYLINDER_SLOPED = -5;
     public static final int CYLINDER_SLOPED_CONVEX = -6;
-    public static final int EIGHT_SPHERE = -7;
+    public static final int CYLINDER_SLOPED_HELICAL = -7;
+    public static final int EIGHT_SPHERE = -8;
     public static final int DISC = 5;
     public static final int DISC_NEGATIVE = 6;
     public static final int DISC_NEGATIVE_TRUNCATED = 7;
@@ -725,7 +726,15 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 " + resolution + "Cylinder Sloped " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + " Convex\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-            sb.append(cylinderSloped(divisions, segments, ccw, true));
+            sb.append(cylinderSloped(divisions, segments, ccw, true, false));
+
+            break;
+        case CYLINDER_SLOPED_HELICAL:
+            name = upper + "-" + lower + "cylh.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 " + resolution + "Cylinder Helical " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+            sb.append(cylinderSloped(divisions, segments, ccw, false, true));
 
             break;
         case CYLINDER_SLOPED:
@@ -733,7 +742,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 " + resolution + "Cylinder Sloped " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-            sb.append(cylinderSloped(divisions, segments, ccw, false));
+            sb.append(cylinderSloped(divisions, segments, ccw, false, false));
 
             break;
         case DISC:
@@ -1113,7 +1122,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
     }
 
 
-    private static Object cylinderSloped(int divisions, int segments, boolean ccw, boolean convex) {
+    private static Object cylinderSloped(int divisions, int segments, boolean ccw, boolean convex, boolean helical) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
@@ -1153,6 +1162,11 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 objdatLinePoint4X *= -1.0;
                 objdatLinePoint3Y = 1.0 - objdatLinePoint3Y;
                 objdatLinePoint4Y = 1.0 - objdatLinePoint4Y;
+            }
+
+            if (helical) {
+                objdatLinePoint3Y = (num / (divisions / 4.0));
+                objdatLinePoint4Y = ((num + 1) / (divisions / 4.0));
             }
 
             sb2.append("4 16 "); //$NON-NLS-1$
@@ -1249,6 +1263,13 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 objdatLinePoint3Y = 0.0;
                 objdatLinePoint4Y = 0.0;
             }
+
+            if (helical) {
+                objdatLinePoint2Y = (num / (divisions / 4.0));
+                objdatLinePoint3Y = 0.0;
+                objdatLinePoint4Y = 0.0;
+            }
+
             sb2.append("5 24 "); //$NON-NLS-1$
             sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
             sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2501,7 +2522,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
         switch (typ)
         {
-        case CIRCLE, CYLINDER, CYLINDER_WITHOUT_CONDLINES, CYLINDER_SLOPED, CYLINDER_SLOPED_CONVEX
+        case CIRCLE, CYLINDER, CYLINDER_WITHOUT_CONDLINES, CYLINDER_SLOPED, CYLINDER_SLOPED_CONVEX, CYLINDER_SLOPED_HELICAL
            , DISC, DISC_NEGATIVE, CHORD, TANGENTIAL_RING_SEGMENT:
             return true;
         case DISC_NEGATIVE_TRUNCATED:
