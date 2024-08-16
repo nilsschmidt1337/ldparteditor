@@ -283,7 +283,7 @@ public enum PrimitiveReplacer {
             }
 
             final int length = toriName.length();
-            if (length == 8 && validToriName(toriName)) {
+            if (length == 8 && validToriName(toriName) && lines != null) {
                 try {
                     double major = 1;
                     double minor = 1;
