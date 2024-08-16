@@ -59,3 +59,137 @@ jobs:
         fail_on_failure: true
         require_passed_tests: true
 
+  build-linux:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Get dependent binaries from cache
+      uses: actions/cache@v4
+      with:
+        path: ./dependencies
+        key: swt-jface-lwjgl3zip-tools-linux-v5
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: 21
+    - name: Build with Ant
+      run: ant -noinput -buildfile build-linux.xml
+    - name: Archive linux installer for gtk3-x64
+      uses: actions/upload-artifact@v4
+      id: artifact-upload-step2
+      with:
+        name: LDPartEditor_linux_x64
+        path: bin/linux-gtk3/setup
+    - name: Output artifact ID
+      run:  echo 'Artifact ID is ${{ steps.artifact-upload-step2.outputs.artifact-id }}'
+    - name: Download artifact
+      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step2.outputs.artifact-id }}/zip > LDPartEditor_linux_x64.zip
+      env:
+        GH_TOKEN: ${{ github.token }}
+    - name: Calculate SHA
+      run: shasum -a 256 LDPartEditor_linux_x64.zip > LDPartEditor_linux_x64_sha256_checksum.txt
+    - name: Archive checksum
+      uses: actions/upload-artifact@v4
+      with:
+        name: LDPartEditor_linux_x64_sha256_checksum
+        path: LDPartEditor_linux_x64_sha256_checksum.txt
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v4
+      with:
+        check_name: junit-linux
+        report_paths: '**/report/TEST-*.xml'
+        fail_on_failure: true
+        require_passed_tests: true
+
+  build-macos-arm:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Get dependent binaries from cache
+      uses: actions/cache@v4
+      with:
+        path: ./dependencies
+        key: swt-jface-lwjgl3zip-tools-macos-arm-v5
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: 21
+    - name: Build with Ant
+      run: ant -noinput -buildfile build-macos-arm.xml
+    - name: Archive macosx installer for cocoa-x64
+      uses: actions/upload-artifact@v4
+      id: artifact-upload-step3
+      with:
+        name: LDPartEditor_mac_arm
+        path: bin/macosx/setup
+    - name: Output artifact ID
+      run:  echo 'Artifact ID is ${{ steps.artifact-upload-step3.outputs.artifact-id }}'
+    - name: Download artifact
+      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step3.outputs.artifact-id }}/zip > LDPartEditor_mac_arm.zip
+      env:
+        GH_TOKEN: ${{ github.token }}
+    - name: Calculate SHA
+      run: shasum -a 256 LDPartEditor_mac_arm.zip > LDPartEditor_mac_arm_sha256_checksum.txt
+    - name: Archive checksum
+      uses: actions/upload-artifact@v4
+      with:
+        name: LDPartEditor_mac_arm_sha256_checksum
+        path: LDPartEditor_mac_arm_sha256_checksum.txt
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v4
+      with:
+        check_name: junit-macos-arm
+        report_paths: '**/report/TEST-*.xml'
+        fail_on_failure: true
+        require_passed_tests: true
+
+  build-macos:
+
+    runs-on: macos-13
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Get dependent binaries from cache
+      uses: actions/cache@v4
+      with:
+        path: ./dependencies
+        key: swt-jface-lwjgl3zip-tools-macos-v5
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: 21
+    - name: Build with Ant
+      run: ant -noinput -buildfile build-macos.xml
+    - name: Archive macosx installer for cocoa-x64
+      uses: actions/upload-artifact@v4
+      id: artifact-upload-step4
+      with:
+        name: LDPartEditor_mac_x64
+        path: bin/macosx/setup
+    - name: Output artifact ID
+      run:  echo 'Artifact ID is ${{ steps.artifact-upload-step4.outputs.artifact-id }}'
+    - name: Download artifact
+      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step4.outputs.artifact-id }}/zip > LDPartEditor_mac_x64.zip
+      env:
+        GH_TOKEN: ${{ github.token }}
+    - name: Calculate SHA
+      run: shasum -a 256 LDPartEditor_mac_x64.zip > LDPartEditor_mac_x64_sha256_checksum.txt
+    - name: Archive checksum
+      uses: actions/upload-artifact@v4
+      with:
+        name: LDPartEditor_mac_x64_sha256_checksum
+        path: LDPartEditor_mac_x64_sha256_checksum.txt
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v4
+      with:
+        check_name: junit-macos
+        report_paths: '**/report/TEST-*.xml'
+        fail_on_failure: true
+        require_passed_tests: true
