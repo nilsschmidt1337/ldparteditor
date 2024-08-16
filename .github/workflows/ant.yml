@@ -3,48 +3,6 @@ name: Java CI
 on: [push, pull_request]
 
 jobs:
-  build-windows:
-
-    runs-on: windows-latest
-
-    steps:
-    - name: Download Wix
-      uses: nilsschmidt1337/download-release-asset@v1.3.4
-      with:
-        owner: wixtoolset
-        repo: wix3
-        tag: wix3112rtm
-        file: wix311-binaries.zip
-    - name: Decompress Wix
-      run: 7z x wix311-binaries.zip -o".\target\wix" -aoa
-    - name: Add Wix to Path
-      run: echo "$HOME/target/wix" >> $GITHUB_PATH
-    - uses: actions/checkout@v4
-    - name: Get dependent binaries from cache
-      uses: actions/cache@v4
-      with:
-        path: ./dependencies
-        key: swt-jface-lwjgl3zip-tools-windows-v5
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'zulu'
-        java-version: 21
-    - name: Build with Ant
-      run: ant -noinput -buildfile build-windows.xml
-    - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v4
-      with:
-        check_name: junit-windows
-        report_paths: '**/report/TEST-*.xml'
-        fail_on_failure: true
-        require_passed_tests: true
-    - name: Archive windows installer for win32-x64
-      uses: actions/upload-artifact@v4
-      with:
-        name: LDPartEditor_win32_x64
-        path: bin/windows/setup
-
   build-linux:
 
     runs-on: ubuntu-latest
@@ -63,6 +21,18 @@ jobs:
         java-version: 21
     - name: Build with Ant
       run: ant -noinput -buildfile build-linux.xml
+    - name: Archive linux installer for gtk3-x64
+      uses: actions/upload-artifact@v4
+      id: artifact-upload-step
+      with:
+        name: LDPartEditor_linux_x64
+        path: bin/linux-gtk3/setup
+    - name: Output artifact ID
+      run:  echo 'Artifact ID is ${{ steps.artifact-upload-step.outputs.artifact-id }}'
+    - name: Download artifact
+      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }}/zip
+    - name: Output artifact folder
+      run:  ls -l
     - name: Publish Test Report
       uses: mikepenz/action-junit-report@v4
       with:
@@ -70,70 +40,3 @@ jobs:
         report_paths: '**/report/TEST-*.xml'
         fail_on_failure: true
         require_passed_tests: true
-    - name: Archive linux installer for gtk3-x64
-      uses: actions/upload-artifact@v4
-      with:
-        name: LDPartEditor_linux_x64
-        path: bin/linux-gtk3/setup
-
-  build-macos-arm:
-
-    runs-on: macos-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Get dependent binaries from cache
-      uses: actions/cache@v4
-      with:
-        path: ./dependencies
-        key: swt-jface-lwjgl3zip-tools-macos-arm-v5
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'zulu'
-        java-version: 21
-    - name: Build with Ant
-      run: ant -noinput -buildfile build-macos-arm.xml
-    - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v4
-      with:
-        check_name: junit-macos-arm
-        report_paths: '**/report/TEST-*.xml'
-        fail_on_failure: true
-        require_passed_tests: true
-    - name: Archive macosx installer for cocoa-x64
-      uses: actions/upload-artifact@v4
-      with:
-        name: LDPartEditor_mac_arm
-        path: bin/macosx/setup
-
-  build-macos:
-
-    runs-on: macos-13
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Get dependent binaries from cache
-      uses: actions/cache@v4
-      with:
-        path: ./dependencies
-        key: swt-jface-lwjgl3zip-tools-macos-v5
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'zulu'
-        java-version: 21
-    - name: Build with Ant
-      run: ant -noinput -buildfile build-macos.xml
-    - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v4
-      with:
-        check_name: junit-macos
-        report_paths: '**/report/TEST-*.xml'
-        fail_on_failure: true
-        require_passed_tests: true
-    - name: Archive macosx installer for cocoa-x64
-      uses: actions/upload-artifact@v4
-      with:
-        name: LDPartEditor_mac_x64
-        path: bin/macosx/setup
