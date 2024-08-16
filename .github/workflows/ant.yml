@@ -31,6 +31,8 @@ jobs:
       run:  echo 'Artifact ID is ${{ steps.artifact-upload-step.outputs.artifact-id }}'
     - name: Download artifact
       run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }}/zip
+      env:
+        GH_TOKEN: ${{ github.token }}
     - name: Output artifact folder
       run:  ls -l
     - name: Publish Test Report
