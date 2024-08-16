@@ -57,7 +57,7 @@ public enum PrimitiveReplacer {
         }
 
         final List<String> value = substitutePrimitivesParseFraction(shortFilename, lines, primitiveSubstitutionQuality);
-        // TODO GENERATED_PRIMITIVES_CACHE.put(key, value);
+        GENERATED_PRIMITIVES_CACHE.put(key, value);
         return value;
     }
 
@@ -156,8 +156,6 @@ public enum PrimitiveReplacer {
             return coneResult;
         }
 
-
-        // TODO Needs implementation!
         return List.of();
     }
 
@@ -256,6 +254,10 @@ public enum PrimitiveReplacer {
 
         if ("cylh".equals(name)) { //$NON-NLS-1$
             return buildPrimitive(PrimGen2Dialog.CYLINDER_SLOPED_HELICAL, quality, segments);
+        }
+
+        if ("edgh".equals(name)) { //$NON-NLS-1$
+            return buildPrimitive(PrimGen2Dialog.CYLINDER_SLOPED_HELICAL_EDGE, quality, segments);
         }
 
         // Substitute circular disc segments

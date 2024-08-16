@@ -76,7 +76,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
     public static final int CYLINDER_SLOPED = -5;
     public static final int CYLINDER_SLOPED_CONVEX = -6;
     public static final int CYLINDER_SLOPED_HELICAL = -7;
-    public static final int EIGHT_SPHERE = -8;
+    public static final int CYLINDER_SLOPED_HELICAL_EDGE = -8;
+    public static final int EIGHT_SPHERE = -9;
     public static final int DISC = 5;
     public static final int DISC_NEGATIVE = 6;
     public static final int DISC_NEGATIVE_TRUNCATED = 7;
@@ -737,6 +738,14 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb.append(cylinderSloped(divisions, segments, ccw, false, true));
 
             break;
+        case CYLINDER_SLOPED_HELICAL_EDGE:
+            name = upper + "-" + lower + "edgh.dat"; //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.insert(0, "0 " + resolution + "Cylinder Helical Edge " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+            sb.append(helicalEdge(divisions, segments));
+
+            break;
         case CYLINDER_SLOPED:
             name = upper + "-" + lower + "cyls.dat"; //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1121,6 +1130,35 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
+    private static Object helicalEdge(int divisions, int segments) {
+        final StringBuilder sb2 = new StringBuilder();
+        if (segments > divisions)
+        {
+            return sb2.toString();
+        }
+
+        for (int num = 0; num < segments; num++)
+        {
+            double objdatLinePoint1X = Math.cos((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint1Y = ((num + 1) / (divisions / 4.0));
+            double objdatLinePoint1Z = Math.sin((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint2X = Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint2Y = (num / (divisions / 4.0));
+            double objdatLinePoint2Z = Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+
+            sb2.append("2 24 "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint1Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1Z)));
+            sb2.append(" "); //$NON-NLS-1$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2X)));
+            sb2.append(" " + removeTrailingZeros(formatDec(objdatLinePoint2Y)) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb2.append(removeTrailingZeros(formatDec(objdatLinePoint2Z)));
+            sb2.append("\n"); //$NON-NLS-1$
+        }
+
+        return sb2.toString();
+    }
 
     private static Object cylinderSloped(int divisions, int segments, boolean ccw, boolean convex, boolean helical) {
 
@@ -2522,7 +2560,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
         }
         switch (typ)
         {
-        case CIRCLE, CYLINDER, CYLINDER_WITHOUT_CONDLINES, CYLINDER_SLOPED, CYLINDER_SLOPED_CONVEX, CYLINDER_SLOPED_HELICAL
+        case CIRCLE, CYLINDER, CYLINDER_WITHOUT_CONDLINES
+           , CYLINDER_SLOPED, CYLINDER_SLOPED_CONVEX, CYLINDER_SLOPED_HELICAL, CYLINDER_SLOPED_HELICAL_EDGE
            , DISC, DISC_NEGATIVE, CHORD, TANGENTIAL_RING_SEGMENT:
             return true;
         case DISC_NEGATIVE_TRUNCATED:
