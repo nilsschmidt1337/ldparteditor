@@ -1,3 +1,15 @@
+# 16 Aug 2024
+With the release of 1.8.85 you are able to...
+-  ...use primitive substitution (blue circle button at the upper left corner, ctrl-click to modify substitution quality).
+-  ...benefit from a 3D grid that shows 3D model intersections and has a lager size.
+-  ...benefit from inverted icons for a better contrast with dark buttons.
+-  ...create a coplanar quad within the "Coplanarity Heatmap" mode.
+
+The following critical issues are fixed:
+1. PartReview had loading problems under MacOS (the 3D view was gone).
+2. (Linux/Mac) Case-sensitivity when following a reference from the text editor with a mouse click if the target file was already opened caused problems.
+
+
 # 28 Jul 2024
 With the release of 1.8.84 you are able to...
 -  ...visually identify which surfaces or lines belong to the model being edited or to a primitive/subpart (with the green "S" button in the upper left corner of the 3D editor).
