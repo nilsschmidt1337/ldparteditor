@@ -2204,7 +2204,7 @@ public final class GData1 extends GData {
                     lineBuilder8.append(dataSegments2[3] + this.id + " " + dataSegments2[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
-                case QUALITY, EPSILON, TJUNCTION, COLLAPSE, DONTOPTIMIZE, EXTRUDE_CFG:
+                case QUALITY, EPSILON, TJUNCTION, COLLAPSE, UNIFY, DONTOPTIMIZE, EXTRUDE_CFG:
                     lineBuilder8.append(g8.getNiceString());
                     break;
                 case COMPILE:

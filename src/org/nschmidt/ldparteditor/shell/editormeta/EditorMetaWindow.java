@@ -482,23 +482,23 @@ public class EditorMetaWindow extends EditorMetaDesign {
         });
 
         evTodoTxtPtr[0].addModifyListener(e -> updateLpeTODO());
-        
+
         evConst1TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateLpeConst();
             }
         });
-        
+
         evConst1TxtPtr[0].addModifyListener(e -> updateLpeConst());
-        
+
         evConst2TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateLpeConst();
             }
         });
-        
+
         evConst2TxtPtr[0].addModifyListener(e -> updateLpeConst());
 
         {
@@ -688,6 +688,15 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
         evCsgEdgeCollapseEpsilonTxtPtr[0].addModifyListener(e -> updateCSGedgeCollapseEpsilon());
 
+        evCsgUnifyEpsilonTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                updateCSGunifyEpsilon();
+            }
+        });
+
+        evCsgUnifyEpsilonTxtPtr[0].addModifyListener(e -> updateCSGunifyEpsilon());
+
         widgetUtil(evCsgDontOptimizeBtnPtr[0]).addSelectionListener(e -> updateCSGdontOptimize());
 
         evCsgCompileTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
@@ -823,6 +832,11 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
     private void updateCSGedgeCollapseEpsilon() {
         lblLineToInsertPtr[0].setText("0 !LPE CSG_EDGE_COLLAPSE_EPSILON " + evCsgEdgeCollapseEpsilonTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
+    }
+
+    private void updateCSGunifyEpsilon() {
+        lblLineToInsertPtr[0].setText("0 !LPE CSG_UNIFY_EPSILON " + evCsgUnifyEpsilonTxtPtr[0].getText().trim()); //$NON-NLS-1$
         lblLineToInsertPtr[0].getParent().layout();
     }
 
@@ -973,7 +987,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
         lblLineToInsertPtr[0].setText("0 !LPE TODO " + evTodoTxtPtr[0].getText().trim()); //$NON-NLS-1$
         lblLineToInsertPtr[0].getParent().layout();
     }
-    
+
     private void updateLpeConst() {
         lblLineToInsertPtr[0].setText("0 !LPE CONST " + evConst1TxtPtr[0].getText().trim() + " = " + evConst2TxtPtr[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$
         lblLineToInsertPtr[0].getParent().layout();

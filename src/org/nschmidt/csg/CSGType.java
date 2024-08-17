@@ -34,5 +34,6 @@ public enum CSGType {
     EXTRUDE_CFG,
     TJUNCTION,
     COLLAPSE,
+    UNIFY,
     DONTOPTIMIZE
 }

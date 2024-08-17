@@ -48,6 +48,7 @@ import org.nschmidt.csg.CSGExtrude;
 import org.nschmidt.csg.CSGMesh;
 import org.nschmidt.csg.CSGOptimizerEdgeCollapse;
 import org.nschmidt.csg.CSGOptimizerTJunction;
+import org.nschmidt.csg.CSGOptimizerUnificator;
 import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.CSGType;
@@ -310,6 +311,25 @@ public final class GDataCSG extends GData {
                     double q = Double.parseDouble(dataSegments[3]);
                     if (q > 0d && q <= 1d) {
                         CSGOptimizerEdgeCollapse.epsilon = q;
+                    }
+                } catch (NumberFormatException e) {
+                    NLogger.debug(GDataCSG.class, e);
+                }
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+            } else {
+                ref1 = null;
+            }
+            ref2 = null;
+            ref3 = null;
+            colour = null;
+            matrix = null;
+            break;
+        case UNIFY:
+            if (dataSegments.length == 4) {
+                try {
+                    double q = Double.parseDouble(dataSegments[3]);
+                    if (q >= 0d && q <= 10d) {
+                        CSGOptimizerUnificator.epsilon = q;
                     }
                 } catch (NumberFormatException e) {
                     NLogger.debug(GDataCSG.class, e);
@@ -1151,7 +1171,7 @@ public final class GDataCSG extends GData {
     }
 
     synchronized boolean canSelect() {
-        return ref1 != null && ref2 == null && ref3 == null && type != CSGType.COMPILE && ref1.endsWith("#>null") && type != CSGType.QUALITY && type != CSGType.EPSILON && type != CSGType.TJUNCTION && type != CSGType.COLLAPSE && type != CSGType.DONTOPTIMIZE; //$NON-NLS-1$
+        return ref1 != null && ref2 == null && ref3 == null && type != CSGType.COMPILE && ref1.endsWith("#>null") && type != CSGType.QUALITY && type != CSGType.EPSILON && type != CSGType.TJUNCTION && type != CSGType.COLLAPSE && type != CSGType.UNIFY && type != CSGType.DONTOPTIMIZE; //$NON-NLS-1$
     }
 
     static synchronized Set<GColour> getSelectedColours(DatFile df) {

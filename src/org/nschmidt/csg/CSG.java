@@ -481,7 +481,8 @@ public class CSG {
                 if (optimizedResult != null) {
                     optimization.putAll(optimizedResult);
                 } else {
-                    optimization.putAll(optimizedTriangles);
+                    // Unify once before the first optimization loop
+                    optimization.putAll(CSGOptimizerUnificator.optimize(optimizedTriangles));
                 }
 
                 // Optimize for each plane

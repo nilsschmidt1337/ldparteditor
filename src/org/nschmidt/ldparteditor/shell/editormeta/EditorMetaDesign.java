@@ -174,6 +174,7 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] evCsgEpsilonTxtPtr = new Text[1];
     final Text[] evCsgTJunctionEpsilonTxtPtr = new Text[1];
     final Text[] evCsgEdgeCollapseEpsilonTxtPtr = new Text[1];
+    final Text[] evCsgUnifyEpsilonTxtPtr = new Text[1];
     final NButton[] evCsgDontOptimizeBtnPtr = new NButton[1];
     final Text[] evPng1TxtPtr = new Text[1];
     final Text[] evPng2TxtPtr = new Text[1];
@@ -1278,6 +1279,19 @@ class EditorMetaDesign extends ApplicationWindow {
                             txtCsgEdgeCollapseEpsilon.setMessage(I18n.META_CSG_COLLAPSE_1);
                             txtCsgEdgeCollapseEpsilon.setToolTipText(I18n.META_CSG_COLLAPSE_2);
                             evCsgEdgeCollapseEpsilonTxtPtr[0] = txtCsgEdgeCollapseEpsilon;
+                        }
+                    }
+
+                    {
+                        Composite cmpLpe = Theming.composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(2, false));
+                        Label lblVertex = Theming.label(cmpLpe, SWT.NONE);
+                        lblVertex.setText("0 !LPE CSG_UNIFY_EPSILON"); //$NON-NLS-1$
+                        {
+                            Text txtCsgUnifyEpsilon = Theming.text(cmpLpe, SWT.SEARCH);
+                            txtCsgUnifyEpsilon.setMessage(I18n.META_CSG_UNIFY_1);
+                            txtCsgUnifyEpsilon.setToolTipText(I18n.META_CSG_UNIFY_2);
+                            evCsgUnifyEpsilonTxtPtr[0] = txtCsgUnifyEpsilon;
                         }
                     }
 

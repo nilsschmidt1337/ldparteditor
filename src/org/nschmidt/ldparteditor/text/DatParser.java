@@ -453,6 +453,9 @@ public enum DatParser {
                 } else if (line.startsWith("EDGE_COLLAPSE_EPSILON", 11)) { //$NON-NLS-1$
                     result.remove(0);
                     result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.COLLAPSE, line, parent)));
+                } else if (line.startsWith("UNIFY_EPSILON", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.UNIFY, line, parent)));
                 } else if (line.startsWith("DONT_OPTIMIZE", 11) || line.startsWith("DONT_OPTIMISE", 11) ) { //$NON-NLS-1$ //$NON-NLS-2$
                     result.remove(0);
                     result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.DONTOPTIMIZE, line, parent)));

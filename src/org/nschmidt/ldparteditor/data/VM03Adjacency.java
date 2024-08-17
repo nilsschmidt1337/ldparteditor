@@ -897,7 +897,7 @@ class VM03Adjacency extends VM02Add {
                 Set<GDataCSG> newCSGSelection = new HashSet<>();
                 HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
                 for (GDataCSG csg : GDataCSG.getSelection(linkedDatFile)) {
-                    if (csg.type == CSGType.COMPILE || csg.type == CSGType.QUALITY || csg.type == CSGType.UNION || csg.type == CSGType.DIFFERENCE || csg.type == CSGType.INTERSECTION  || csg.type == CSGType.EPSILON || csg.type == CSGType.TJUNCTION || csg.type == CSGType.COLLAPSE || csg.type == CSGType.DONTOPTIMIZE || csg.type == CSGType.EXTRUDE_CFG) {
+                    if (csg.type == CSGType.COMPILE || csg.type == CSGType.QUALITY || csg.type == CSGType.UNION || csg.type == CSGType.DIFFERENCE || csg.type == CSGType.INTERSECTION  || csg.type == CSGType.EPSILON || csg.type == CSGType.TJUNCTION || csg.type == CSGType.COLLAPSE || csg.type == CSGType.UNIFY || csg.type == CSGType.DONTOPTIMIZE || csg.type == CSGType.EXTRUDE_CFG) {
                         continue;
                     }
                     GColour col = csg.getColour();

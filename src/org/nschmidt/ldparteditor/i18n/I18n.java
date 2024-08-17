@@ -1032,6 +1032,8 @@ public final class I18n {
     public static final String META_CSG_SOURCE_2 = META.getString(getProperty());
     public static final String META_CSG_SOURCE_3 = META.getString(getProperty());
     public static final String META_CSG_TARGET_1 = META.getString(getProperty());
+    public static final String META_CSG_UNIFY_1= META.getString(getProperty());
+    public static final String META_CSG_UNIFY_2 = META.getString(getProperty());
     public static final String META_CSG_UNIQUE = META.getString(getProperty());
     public static final String META_CSG_UNIQUE_HINT = META.getString(getProperty());
     public static final String META_CYLINDER_BOTTOM_CENTER = META.getString(getProperty());
