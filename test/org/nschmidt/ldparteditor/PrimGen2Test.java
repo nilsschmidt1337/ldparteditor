@@ -56,4 +56,10 @@ public class PrimGen2Test {
         final List<String> result = PrimitiveReplacer.substitutePrimitives("unknown.dat", List.of(), 56); //$NON-NLS-1$
         assertTrue(result.isEmpty());
     }
+
+    @Test
+    public void testPrimitiveReplacementOfInvalidToriWithNullLines() {
+        final List<String> result = PrimitiveReplacer.substitutePrimitives("t00i0000.dat", null, 56); //$NON-NLS-1$
+        assertTrue(result.isEmpty());
+    }
 }

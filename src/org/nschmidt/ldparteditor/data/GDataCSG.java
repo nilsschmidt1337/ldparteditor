@@ -423,7 +423,7 @@ public final class GDataCSG extends GData {
                                 tmpLinkedCSG.put(ref1, csgCircle);
                                 break;
                             case ELLIPSOID:
-                                CSGSphere sphere = new CSGSphere(quality, quality / 2);
+                                CSGSphere sphere = new CSGSphere(quality);
                                 tmpIdToGDataCSG.put(sphere.id, this);
                                 CSG csgSphere = sphere.toCSG(df, colour);
                                 if (modified && isSelected(df)) {

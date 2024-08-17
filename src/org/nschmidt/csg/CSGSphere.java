@@ -1,175 +1,111 @@
-/**
- * CSGSphere.java
- *
- * Copyright 2014-2014 Michael Hoffer <info@michaelhoffer.de>. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification, are
- * permitted provided that the following conditions are met:
- *
- *    1. Redistributions of source code must retain the above copyright notice, this list of
- *       conditions and the following disclaimer.
- *
- *    2. Redistributions in binary form must reproduce the above copyright notice, this list
- *       of conditions and the following disclaimer in the documentation and/or other materials
- *       provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY Michael Hoffer <info@michaelhoffer.de> "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL Michael Hoffer <info@michaelhoffer.de> OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
- * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * The views and conclusions contained in the software and documentation are those of the
- * authors and should not be interpreted as representing official policies, either expressed
- * or implied, of Michael Hoffer <info@michaelhoffer.de>.
- */
+/* MIT - License
 
+Copyright (c) 2012 - this year, Nils Schmidt
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.csg;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourIndex;
+import org.nschmidt.ldparteditor.helper.math.EightSphereGenerator;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
- * A solid sphere.
+ * A solid iso-sphere.
  *
- * The tessellation along the longitude and latitude directions can be
- * controlled via the {@link #numSlices} and {@link #numStacks} parameters.
  */
 public class CSGSphere implements Primitive {
 
     public final int id = idCounter.getAndIncrement();
 
-    private VectorCSGd center;
-    private double radius;
-    private int numSlices;
-    private int numStacks;
+    private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
+
+    private int divisions;
 
     /**
-     * Constructor. Creates a sphere with radius 1, 16 slices and 8 stacks and
-     * center [0,0,0].
-     *
+     * Constructor. Creates a sphere with radius 1 and center [0,0,0].
      */
     public CSGSphere() {
         init();
     }
 
     /**
-     * Constructor. Creates a sphere with the specified number of slices and
-     * stacks.
+     * Constructor. Creates a sphere with the specified divisions.
      *
-     * @param numSlices
-     *            number of slices
-     * @param numStacks
-     *            number of stacks
+     * @param divisions
+     *            number of divisions
      */
-    public CSGSphere(int numSlices, int numStacks) {
-        this.center = new VectorCSGd(0, 0, 0);
-        this.radius = 1000d;
-        this.numSlices = numSlices;
-        this.numStacks = numStacks;
+    public CSGSphere(int divisions) {
+        this.divisions = divisions;
     }
 
     private void init() {
-        center = new VectorCSGd(0, 0, 0);
-        radius = 1000d;
-        numSlices = 16;
-        numStacks = 8;
-    }
-
-    private VectorCSGd sphereVertex(VectorCSGd c, double r, double theta, double phi) {
-        theta *= Math.PI * 2;
-        phi *= Math.PI;
-        VectorCSGd dir = new VectorCSGd(Math.cos(theta) * Math.sin(phi), Math.cos(phi), Math.sin(theta) * Math.sin(phi));
-        return c.plus(dir.times(r));
+        divisions = 16;
     }
 
     @Override
     public List<Polygon> toPolygons(DatFile df, GColour colour) {
         List<Polygon> polygons = new ArrayList<>();
-        for (int i = 0; i < numSlices; i++) {
-            for (int j = 0; j < numStacks; j++) {
-                final List<VectorCSGd> vertices = new ArrayList<>();
+        final List<String> lines = EightSphereGenerator.addEightSphere(divisions, false);
+        for (String line : lines) {
+            String[] segments = WHITESPACE.split(line);
+            if (segments.length < 11) continue;
 
-                vertices.add(sphereVertex(center, radius, i / (double) numSlices, j / (double) numStacks));
-                if (j > 0) {
-                    vertices.add(sphereVertex(center, radius, (i + 1) / (double) numSlices, j / (double) numStacks));
+            try {
+                final double v1x = Double.parseDouble(segments[2]);
+                final double v1y = Double.parseDouble(segments[3]);
+                final double v1z = Double.parseDouble(segments[4]);
+
+                final double v2x = Double.parseDouble(segments[5]);
+                final double v2y = Double.parseDouble(segments[6]);
+                final double v2z = Double.parseDouble(segments[7]);
+
+                final double v3x = Double.parseDouble(segments[8]);
+                final double v3y = Double.parseDouble(segments[9]);
+                final double v3z = Double.parseDouble(segments[10]);
+
+                for (int xf = -1; xf < 2; xf += 2) {
+                    for (int yf = -1; yf < 2; yf += 2) {
+                        for (int zf = -1; zf < 2; zf += 2) {
+                            final VectorCSGd a = new VectorCSGd(xf * v1x * 1000.0, yf * v1y * 1000.0, zf * v1z * 1000.0);
+                            final VectorCSGd b = new VectorCSGd(xf * v2x * 1000.0, yf * v2y * 1000.0, zf * v2z * 1000.0);
+                            final VectorCSGd c = new VectorCSGd(xf * v3x * 1000.0, yf * v3y * 1000.0, zf * v3z * 1000.0);
+
+                            final List<VectorCSGd> vertices = new ArrayList<>(3);
+                            vertices.add(a);
+                            if (xf * yf * zf < 0) {
+                                vertices.add(c);
+                                vertices.add(b);
+                            } else {
+                                vertices.add(b);
+                                vertices.add(c);
+                            }
+
+                            polygons.add(new Polygon(df, vertices, new GColourIndex(colour, id)));
+                        }
+                    }
                 }
-                if (j < numStacks - 1) {
-                    vertices.add(sphereVertex(center, radius, (i + 1) / (double) numSlices, (j + 1) / (double) numStacks));
-                }
-                vertices.add(sphereVertex(center, radius, i / (double) numSlices, (j + 1) / (double) numStacks));
-                polygons.add(new Polygon(df, vertices, new GColourIndex(colour, id)));
+            } catch (NumberFormatException nfe) {
+                NLogger.debug(CSGSphere.class, nfe);
             }
         }
+
         return polygons;
-    }
-
-    /**
-     * @return the center
-     */
-    public VectorCSGd getCenter() {
-        return center;
-    }
-
-    /**
-     * @param center
-     *            the center to set
-     */
-    public void setCenter(VectorCSGd center) {
-        this.center = center;
-    }
-
-    /**
-     * @return the radius
-     */
-    public double getRadius() {
-        return radius;
-    }
-
-    /**
-     * @param radius
-     *            the radius to set
-     */
-    public void setRadius(double radius) {
-        this.radius = radius;
-    }
-
-    /**
-     * @return the numSlices
-     */
-    public int getNumSlices() {
-        return numSlices;
-    }
-
-    /**
-     * @param numSlices
-     *            the numSlices to set
-     */
-    public void setNumSlices(int numSlices) {
-        this.numSlices = numSlices;
-    }
-
-    /**
-     * @return the numStacks
-     */
-    public int getNumStacks() {
-        return numStacks;
-    }
-
-    /**
-     * @param numStacks
-     *            the numStacks to set
-     */
-    public void setNumStacks(int numStacks) {
-        this.numStacks = numStacks;
     }
 
     @Override
