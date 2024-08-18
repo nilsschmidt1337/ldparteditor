@@ -114,12 +114,29 @@ public class Plane implements Comparable<Plane> {
         final int size = polygon.vertices.size();
         final int[] types = new int[size + 1];
         int polygonType = 0;
+        int coplanarityHits = 0;
+        boolean noCoplanar = false;
         for (int i = 0; i < size; i++) {
             double t = this.normal.dot(polygon.vertices.get(i)) - this.dist;
             int type = t < -Plane.epsilon ? BACK : t > Plane.epsilon ? FRONT : COPLANAR;
+            if (type == COPLANAR) {
+                coplanarityHits += 1;
+                if (coplanarityHits > 2 && noCoplanar) break;
+            } else {
+                noCoplanar = true;
+            }
             polygonType |= type;
             types[i] = type;
         }
+
+        // When three or more points are co-planar, then the whole polygon is co-planar!
+        if (coplanarityHits > 2 && noCoplanar) {
+            polygonType = COPLANAR;
+            for (int i = 0; i < size; i++) {
+                types[i] = COPLANAR;
+            }
+        }
+
         types[size] = polygonType;
         return types;
     }

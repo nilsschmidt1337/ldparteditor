@@ -215,15 +215,18 @@ public class CSG {
         });
 
         CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(thisPolys));
-        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
-        CompletableFuture.allOf(f1, f2).join();
+        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(this.createClone().polygons));
+        CompletableFuture<Node> f3 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
+        CompletableFuture.allOf(f1, f2, f3).join();
 
-        final Node a;
+        final Node a1;
+        final Node a2;
         final Node b;
 
         try {
-            a = f1.get();
-            b = f2.get();
+            a1 = f1.get();
+            a2 = f2.get();
+            b = f3.get();
         } catch (ExecutionException e) {
             // Exceptions should (tm) already be thrown by the "join()" call.
             throw new LDPartEditorException(e);
@@ -232,15 +235,12 @@ public class CSG {
             throw new LDPartEditorException(e);
         }
 
-        a.clipTo(b);
-        b.clipTo(a);
-        b.invert();
-        b.clipTo(a);
-        b.invert();
+        a1.clipTo(b);
+        b.clipTo(a2);
 
         final List<Node> nodes = new ArrayList<>();
         final Deque<NodePolygon> st = new LinkedList<>();
-        st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
+        st.push(new NodePolygon(a1, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
             Node n = np.node();
@@ -251,7 +251,7 @@ public class CSG {
             }
         }
 
-        final List<Polygon> resultPolys = a.allPolygons(nonIntersectingPolys);
+        final List<Polygon> resultPolys = a1.allPolygons(nonIntersectingPolys);
         return CSG.fromPolygons(resultPolys);
     }
 

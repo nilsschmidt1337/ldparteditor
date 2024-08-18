@@ -91,6 +91,10 @@ final class Node {
                     st.push(np2);
                 }
             }
+
+            if (it == 10000) {
+                NLogger.debug(getClass(), "CSG limit exceeded."); //$NON-NLS-1$
+            }
         }
     }
 
