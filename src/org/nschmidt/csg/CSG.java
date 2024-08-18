@@ -191,68 +191,30 @@ public class CSG {
      */
     public CSG union(CSG csg) {
 
-        final List<Polygon> thisPolys = this.createClone().polygons;
-        final List<Polygon> otherPolys = csg.createClone().polygons;
-        final Bounds thisBounds = this.getBounds();
-        final Bounds otherBounds = csg.getBounds();
+        // This is a little bit "slower", but much more accurate than the previous version!
 
-        final List<Polygon> nonIntersectingPolys = new ArrayList<>();
+        CompletableFuture<CSG> f1 = CompletableFuture.supplyAsync(() -> difference(csg, false));
+        CompletableFuture<CSG> f2 = CompletableFuture.supplyAsync(() -> csg.difference(this, false));
+        CompletableFuture.allOf(f1, f2).join();
 
-        thisPolys.removeIf(poly -> {
-            final boolean result = !otherBounds.intersects(poly.getBounds());
-            if (result) {
-                nonIntersectingPolys.add(poly);
-            }
-            return result;
-        });
-
-        otherPolys.removeIf(poly -> {
-            final boolean result = !thisBounds.intersects(poly.getBounds());
-            if (result) {
-                nonIntersectingPolys.add(poly);
-            }
-            return result;
-        });
-
-        CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(thisPolys));
-        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(this.createClone().polygons));
-        CompletableFuture<Node> f3 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
-        CompletableFuture.allOf(f1, f2, f3).join();
-
-        final Node a1;
-        final Node a2;
-        final Node b;
+        final CSG c1;
+        final CSG c2;
 
         try {
-            a1 = f1.get();
-            a2 = f2.get();
-            b = f3.get();
+            c1 = f1.get();
+            c2 = f2.get();
         } catch (ExecutionException e) {
             // Exceptions should (tm) already be thrown by the "join()" call.
             throw new LDPartEditorException(e);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
-            throw new LDPartEditorException(e);
+            throw new LDPartEditorException(ie);
         }
 
-        a1.clipTo(b);
-        b.clipTo(a2);
+        final List<Polygon> polygons = new ArrayList<>(c1.polygons);
+        polygons.addAll(c2.polygons);
 
-        final List<Node> nodes = new ArrayList<>();
-        final Deque<NodePolygon> st = new LinkedList<>();
-        st.push(new NodePolygon(a1, b.allPolygons(new ArrayList<>())));
-        while (!st.isEmpty()) {
-            NodePolygon np = st.pop();
-            Node n = np.node();
-            nodes.add(n);
-            List<NodePolygon> npr = n.buildForResult(np.polygons());
-            for (NodePolygon np2 : npr) {
-                st.push(np2);
-            }
-        }
-
-        final List<Polygon> resultPolys = a1.allPolygons(nonIntersectingPolys);
-        return CSG.fromPolygons(resultPolys);
+        return CSG.fromPolygons(polygons);
     }
 
     /**
@@ -283,6 +245,10 @@ public class CSG {
      * @return difference of this csg and the specified csg
      */
     public CSG difference(CSG csg) {
+        return difference(csg, true);
+    }
+
+    public CSG difference(CSG csg, boolean includeB) {
 
         final List<Polygon> thisPolys = this.createClone().polygons;
         final List<Polygon> otherPolys = csg.createClone().polygons;
@@ -329,7 +295,12 @@ public class CSG {
         b.invert();
 
         Deque<NodePolygon> st = new LinkedList<>();
-        st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
+        if (includeB) {
+            st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
+        } else {
+            st.push(new NodePolygon(a, new ArrayList<>()));
+        }
+
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
             List<NodePolygon> npr = np.node().buildForResult(np.polygons());
