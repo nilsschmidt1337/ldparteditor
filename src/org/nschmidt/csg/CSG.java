@@ -211,10 +211,11 @@ public class CSG {
             throw new LDPartEditorException(ie);
         }
 
-        final List<Polygon> polygons = new ArrayList<>(c1.polygons);
-        polygons.addAll(c2.polygons);
+        final List<Polygon> unifiedPolygons = new ArrayList<>(c1.polygons.size() + c2.polygons.size());
+        unifiedPolygons.addAll(c1.polygons);
+        unifiedPolygons.addAll(c2.polygons);
 
-        return CSG.fromPolygons(polygons);
+        return CSG.fromPolygons(unifiedPolygons);
     }
 
     /**
