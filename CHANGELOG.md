@@ -1,3 +1,11 @@
+# 20 Aug 2024
+With the release of 1.8.86 you are able to...
+-  ...use the sphere mesh from LDView for CSG operations, too (!LPE CSG_ELLIPSOID).
+
+The following critical issue is fixed:
+1. !LPE CSG_UNION "consumed" a few triangles. Other triangle defects could still occur, but only with very complex union intersections.
+
+
 # 16 Aug 2024
 With the release of 1.8.85 you are able to...
 -  ...use primitive substitution (blue circle button at the upper left corner, ctrl-click to modify substitution quality).
