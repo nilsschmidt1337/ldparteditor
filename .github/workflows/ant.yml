@@ -33,7 +33,7 @@ jobs:
     - name: Build with Ant
       run: ant -noinput -buildfile build-windows.xml
     - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v4
+      uses: mikepenz/action-junit-report@db71d41eb79864e25ab0337e395c352e84523afe #v4.3.1
       with:
         check_name: junit-windows
         report_paths: '**/report/TEST-*.xml'
@@ -78,7 +78,7 @@ jobs:
     - name: Build with Ant
       run: ant -noinput -buildfile build-linux.xml
     - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v4
+      uses: mikepenz/action-junit-report@db71d41eb79864e25ab0337e395c352e84523afe #v4.3.1
       with:
         check_name: junit-linux
         report_paths: '**/report/TEST-*.xml'
@@ -123,7 +123,7 @@ jobs:
     - name: Build with Ant
       run: ant -noinput -buildfile build-macos-arm.xml
     - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v4
+      uses: mikepenz/action-junit-report@db71d41eb79864e25ab0337e395c352e84523afe #v4.3.1
       with:
         check_name: junit-macos-arm
         report_paths: '**/report/TEST-*.xml'
@@ -168,7 +168,7 @@ jobs:
     - name: Build with Ant
       run: ant -noinput -buildfile build-macos.xml
     - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v4
+      uses: mikepenz/action-junit-report@db71d41eb79864e25ab0337e395c352e84523afe #v4.3.1
       with:
         check_name: junit-macos
         report_paths: '**/report/TEST-*.xml'
