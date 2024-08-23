@@ -8,16 +8,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Download Wix
-      uses: nilsschmidt1337/download-release-asset@v1.3.4
-      with:
-        owner: wixtoolset
-        repo: wix3
-        tag: wix3112rtm
-        file: wix311-binaries.zip
-    - name: Decompress Wix
+    - name: Download WiX
+      run: gh release download wix3112rtm --repo wixtoolset/wix3 --pattern 'wix311-binaries.zip'
+      env:
+        GH_TOKEN: ${{ github.token }}
+    - name: Decompress WiX
       run: 7z x wix311-binaries.zip -o".\target\wix" -aoa
-    - name: Add Wix to Path
+    - name: Add WiX to Path
       run: echo "$HOME/target/wix" >> $GITHUB_PATH
     - uses: actions/checkout@v4
     - name: Get dependent binaries from cache
@@ -193,3 +190,6 @@ jobs:
       with:
         name: LDPartEditor_mac_x64_sha256_checksum
         path: LDPartEditor_mac_x64_sha256_checksum.txt
+
+
+
