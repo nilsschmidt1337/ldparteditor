@@ -56,7 +56,7 @@ jobs:
         name: LDPartEditor_win32_x64_sha256_checksum
         path: LDPartEditor_win32_x64_sha256_checksum.txt
 
-build-linux:
+  build-linux:
 
     runs-on: ubuntu-latest
 
