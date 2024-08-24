@@ -2,6 +2,10 @@ name: Java CI
 
 on: [push, pull_request]
 
+permissions:
+  checks: write
+  contents: read
+
 jobs:
   build-windows:
 
