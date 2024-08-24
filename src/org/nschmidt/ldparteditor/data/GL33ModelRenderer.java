@@ -2225,7 +2225,7 @@ public class GL33ModelRenderer {
                 transparentTriangleSize = transparentTriangleVertexCount;
                 transparentTriangleOffset = triangleVertexCount;
                 vertexSize = localVerticesSize;
-                selectedVerticesSize = localSelectedVerticesSize;
+                selectedVerticesSize = Math.min(localSelectedVerticesSize, localVerticesSize);
                 dataVertices = vertexData;
                 lineSize = lineVertexCount;
                 dataLines = lineData;
@@ -2617,7 +2617,7 @@ public class GL33ModelRenderer {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glDrawArrays(GL11.GL_POINTS, 0, svs);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
-                GL11.glDrawArrays(GL11.GL_POINTS, svs, vs - svs);
+                GL11.glDrawArrays(GL11.GL_POINTS, svs, Math.max(vs - svs, 0));
                 stack.glPopMatrix();
             }
         }

@@ -136,7 +136,7 @@ public class GL33ModelRendererLDrawStandard {
 
         GL20.glEnableVertexAttribArray(2);
         GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, (3 + 3) * 4l);
-        
+
         GL20.glEnableVertexAttribArray(3);
         GL20.glVertexAttribPointer(3, 2, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, (3 + 3 + 4) * 4l);
 
@@ -964,17 +964,17 @@ public class GL33ModelRendererLDrawStandard {
                             pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                             pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                             pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
-                            
+
                             float d1 = (float) Math.sqrt(Math.pow(v[0].x - v[1].x, 2.0) + Math.pow(v[0].y - v[1].y, 2.0) +  Math.pow(v[0].z - v[1].z, 2.0)) / 4096f;
                             float d2 = (float) Math.sqrt(Math.pow(v[0].x - v[2].x, 2.0) + Math.pow(v[0].y - v[2].y, 2.0) +  Math.pow(v[0].z - v[2].z, 2.0)) / 4096f;
-                            
+
                             uv(0, 0f, 0f, triangleData, tempIndex);
                             uv(1, 0f, d1, triangleData, tempIndex);
                             uv(2, d2, d1, triangleData, tempIndex);
                             uv(3, 0f, 0f, triangleData, tempIndex);
                             uv(4, 0f, d1, triangleData, tempIndex);
                             uv(5, d2, d1, triangleData, tempIndex);
-                            
+
                             uv(6, 0f, 0f, triangleData, tempIndex);
                             uv(7, 0f, d1, triangleData, tempIndex);
                             uv(8, d2, d1, triangleData, tempIndex);
@@ -1313,7 +1313,7 @@ public class GL33ModelRendererLDrawStandard {
 
             GL20.glEnableVertexAttribArray(2);
             GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, (3 + 3) * 4l);
-            
+
             GL20.glEnableVertexAttribArray(3);
             GL20.glVertexAttribPointer(3, 2, GL11.GL_FLOAT, false, (3 + 3 + 4 + 2) * 4, (3 + 3 + 4) * 4l);
 
@@ -1744,7 +1744,7 @@ public class GL33ModelRendererLDrawStandard {
             vertexData[pos + 9] = a;
         }
     }
-    
+
     private void uv(int offset, float u, float v, float[] vertexData, int i) {
         int pos = (offset + i) * 12;
         vertexData[pos + 10] = u;
