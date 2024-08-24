@@ -134,6 +134,8 @@ public class Composite3D extends ScalableComposite {
     public final Menu mnuRenderMode;
     /** The "Line Mode"-Menu */
     private final Menu mnuLineMode;
+    /** The "XYZ-Axis"-Menu */
+    private final Menu mnuXyzAxis;
     /** The "Synchronise..."-Menu */
     private final Menu mnuSyncronise;
     /** The "Manipulator"-Menu */
@@ -254,6 +256,7 @@ public class Composite3D extends ScalableComposite {
     private boolean syncZoom;
 
     private boolean showingAxis;
+    private boolean showingAxisCentered;
     private boolean showingLabels;
 
     private boolean smoothShading;
@@ -284,6 +287,7 @@ public class Composite3D extends ScalableComposite {
     public final MenuItem[] mntmWireframeModePtr = new MenuItem[1];
     private final MenuItem[] mntmAnaglyphPtr = new MenuItem[1];
     private final MenuItem[] mntmAxisPtr = new MenuItem[1];
+    private final MenuItem[] mntmAxisCenteredPtr = new MenuItem[1];
     private final MenuItem[] mntmAxisLabelPtr = new MenuItem[1];
     private final MenuItem[] mntmAlwaysBlackPtr = new MenuItem[1];
     private final MenuItem[] mntmHideAllPtr = new MenuItem[1];
@@ -902,29 +906,9 @@ public class Composite3D extends ScalableComposite {
             });
             KeyStateManager.addKeyText(mntmShowScale, I18n.E3D_RULER, Task.SHOW_RULER);
 
-            final MenuItem mntmAxis = new MenuItem(mnuViewActions, SWT.CHECK);
-            this.mntmAxisPtr[0] = mntmAxis;
-            widgetUtil(mntmAxis).addSelectionListener(e -> c3dModifier.switchAxis(mntmAxis.getSelection()));
-            mntmAxis.setText(I18n.C3D_XYZ_AXIS);
-            mntmAxis.setSelection(true);
 
-            final MenuItem mntmAxisLabel = new MenuItem(mnuViewActions, SWT.CHECK);
-            this.mntmAxisLabelPtr[0] = mntmAxisLabel;
-            widgetUtil(mntmAxisLabel).addSelectionListener(e -> {
-                final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
-                userSettings.setShowingAxisLabels(!userSettings.isShowingAxisLabels());
-                if (userSettings.isShowingAxisLabels()) {
-                    Colour.textColourR = Colour.textColourAltR; Colour.textColourG = Colour.textColourAltG; Colour.textColourB = Colour.textColourAltB;
-                } else {
-                    Colour.textColourR = Colour.textColourDefaultR; Colour.textColourG = Colour.textColourDefaultG; Colour.textColourB = Colour.textColourDefaultB;
-                }
-
-                for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
-                    renderer.getC3D().getMntmAxisLabel().setSelection(userSettings.isShowingAxisLabels());
-                }
-            });
-            mntmAxisLabel.setText(I18n.C3D_AXIS_LABEL);
-            mntmAxisLabel.setSelection(WorkbenchManager.getUserSettingState().isShowingAxisLabels());
+            final MenuItem mntmXyzAxis = new MenuItem(mnuViewActions, SWT.CASCADE);
+            mntmXyzAxis.setText(I18n.C3D_XYZ_AXIS_MENU);
 
             final MenuItem mntmLabel = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmLabelPtr[0] = mntmLabel;
@@ -959,6 +943,43 @@ public class Composite3D extends ScalableComposite {
             MenuItem mntmClose = new MenuItem(mnuViewActions, SWT.NONE);
             widgetUtil(mntmClose).addSelectionListener(e -> c3dModifier.closeView());
             mntmClose.setText(I18n.E3D_CLOSE_VIEW);
+
+
+            {
+                // MARK CMenu XYZ axis
+                mnuXyzAxis = new Menu(mntmXyzAxis);
+                mntmXyzAxis.setMenu(mnuXyzAxis);
+
+                final MenuItem mntmAxis = new MenuItem(mnuXyzAxis, SWT.CHECK);
+                this.mntmAxisPtr[0] = mntmAxis;
+                widgetUtil(mntmAxis).addSelectionListener(e -> c3dModifier.switchAxis(mntmAxis.getSelection()));
+                mntmAxis.setText(I18n.C3D_XYZ_AXIS_SHOW);
+                mntmAxis.setSelection(true);
+
+                final MenuItem mntmAxisCentered = new MenuItem(mnuXyzAxis, SWT.CHECK);
+                this.mntmAxisCenteredPtr[0] = mntmAxisCentered;
+                widgetUtil(mntmAxisCentered).addSelectionListener(e -> c3dModifier.switchAxisCentered(mntmAxisCentered.getSelection()));
+                mntmAxisCentered.setText(I18n.C3D_XYZ_AXIS_CENTER);
+                mntmAxisCentered.setSelection(false);
+
+                final MenuItem mntmAxisLabel = new MenuItem(mnuXyzAxis, SWT.CHECK);
+                this.mntmAxisLabelPtr[0] = mntmAxisLabel;
+                widgetUtil(mntmAxisLabel).addSelectionListener(e -> {
+                    final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
+                    userSettings.setShowingAxisLabels(!userSettings.isShowingAxisLabels());
+                    if (userSettings.isShowingAxisLabels()) {
+                        Colour.textColourR = Colour.textColourAltR; Colour.textColourG = Colour.textColourAltG; Colour.textColourB = Colour.textColourAltB;
+                    } else {
+                        Colour.textColourR = Colour.textColourDefaultR; Colour.textColourG = Colour.textColourDefaultG; Colour.textColourB = Colour.textColourDefaultB;
+                    }
+
+                    for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                        renderer.getC3D().getMntmAxisLabel().setSelection(userSettings.isShowingAxisLabels());
+                    }
+                });
+                mntmAxisLabel.setText(I18n.C3D_AXIS_LABEL);
+                mntmAxisLabel.setSelection(WorkbenchManager.getUserSettingState().isShowingAxisLabels());
+            }
 
             {
                 // MARK CMenu LineMode
@@ -1852,6 +1873,14 @@ public class Composite3D extends ScalableComposite {
         this.showingAxis = showingAxis;
     }
 
+    public boolean isShowingAxisCentered() {
+        return showingAxisCentered;
+    }
+
+    public void setShowingAxisCentered(boolean showingAxisCentered) {
+        this.showingAxisCentered = showingAxisCentered;
+    }
+
     public boolean isShowingLabels() {
         return showingLabels;
     }
@@ -1910,6 +1939,10 @@ public class Composite3D extends ScalableComposite {
 
     public MenuItem getMntmAxis() {
         return mntmAxisPtr[0];
+    }
+
+    public MenuItem getMntmAxisCentered() {
+        return mntmAxisCenteredPtr[0];
     }
 
     public MenuItem getMntmAxisLabel() {
@@ -2454,6 +2487,7 @@ public class Composite3D extends ScalableComposite {
         setLineMode(tmpLineMode);
         setBlackEdges(state.isAlwaysBlackLines());
         setShowingAxis(state.isShowAxis());
+        setShowingAxisCentered(state.isShowAxisCentered());
         setAnaglyph3d(state.isAnaglyph3d());
         setRenderMode(tmpRenderMode);
         setShowingCondlineControlPoints(state.isCondlineControlPoints());
@@ -2482,6 +2516,7 @@ public class Composite3D extends ScalableComposite {
         getMntmControlPointVertices().setSelection(state.isCondlineControlPoints());
         getMntmStudLogo().setSelection(state.isStudLogo());
         getMntmAxis().setSelection(state.isShowAxis());
+        getMntmAxisCentered().setSelection(state.isShowAxisCentered());
         getMntmAxisLabel().setSelection(WorkbenchManager.getUserSettingState().isShowingAxisLabels());
         getMntmAnaglyph().setSelection(state.isAnaglyph3d());
         setRenderModeOnContextMenu(tmpRenderMode);

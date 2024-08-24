@@ -28,6 +28,7 @@ public class Composite3DState implements Serializable {
     private int renderMode = 0;
     private boolean showLabel = false;
     private boolean showAxis = false;
+    private boolean showAxisCentered = false;
     private boolean showOrigin = false;
     private boolean showGrid = false;
     private boolean showGrid3D = false;
@@ -119,6 +120,14 @@ public class Composite3DState implements Serializable {
 
     public void setShowAxis(boolean showAxis) {
         this.showAxis = showAxis;
+    }
+
+    public boolean isShowAxisCentered() {
+        return showAxisCentered;
+    }
+
+    public void setShowAxisCentered(boolean showAxisCentered) {
+        this.showAxisCentered = showAxisCentered;
     }
 
     public boolean isShowOrigin() {

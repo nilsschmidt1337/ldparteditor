@@ -3768,6 +3768,10 @@ public class MiscToolItem extends ToolItem {
                 c3d.getMntmStudLogo().setSelection(true);
                 c3d.getModifier().switchShowingLogo(true);
                 c3d.getModifier().setRenderMode(0);
+                c3d.getMntmAxis().setSelection(true);
+                c3d.getModifier().switchAxis(true);
+                c3d.getMntmAxisCentered().setSelection(true);
+                c3d.getModifier().switchAxisCentered(true);
             }
             if (state == 1) {
                 c3d.mntmRandomColoursPtr[0].setSelection(true);

@@ -167,7 +167,9 @@ public final class I18n {
     public static final String C3D_VERTEX_4 = C3D.getString(getProperty());
     public static final String C3D_VERTICES = C3D.getString(getProperty());
     public static final String C3D_WIREFRAME = C3D.getString(getProperty());
-    public static final String C3D_XYZ_AXIS = C3D.getString(getProperty());
+    public static final String C3D_XYZ_AXIS_CENTER = C3D.getString(getProperty());
+    public static final String C3D_XYZ_AXIS_MENU = C3D.getString(getProperty());
+    public static final String C3D_XYZ_AXIS_SHOW = C3D.getString(getProperty());
     public static final String CALIBRATE_BG_IMAGE = CALIBRATE.getString(getProperty());
     public static final String CALIBRATE_DRAW_LINE = CALIBRATE.getString(getProperty());
     public static final String CALIBRATE_LENGTH = CALIBRATE.getString(getProperty());

@@ -2071,16 +2071,28 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     switch (IconSize.getIconsize()) {
                     case 4, 5:
                         l = 1f;
-                        ox = .1f;
-                        oy = .11f;
+                        if (c3d.isShowingAxisCentered()) {
+                            ox = viewportWidth;
+                            oy = viewportHeight;
+                        } else {
+                            ox = .1f;
+                            oy = .11f;
+                        }
+
                         cone_height = .00030f;
                         cone_width = .00008f;
                         line_width = 6f;
                         break;
                     case 2, 3:
                         l = .75f;
-                        ox = .075f;
-                        oy = .085f;
+                        if (c3d.isShowingAxisCentered()) {
+                            ox = viewportWidth;
+                            oy = viewportHeight;
+                        } else {
+                            ox = .075f;
+                            oy = .085f;
+                        }
+
                         cone_height = .00023f;
                         cone_width = .00006f;
                         line_width = 4f;
@@ -2088,8 +2100,14 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     case 0, 1:
                     default:
                         l = .5f;
-                        ox = .05f;
-                        oy = .06f;
+                        if (c3d.isShowingAxisCentered()) {
+                            ox = viewportWidth;
+                            oy = viewportHeight;
+                        } else {
+                            ox = .05f;
+                            oy = .06f;
+                        }
+
                         cone_height = .00015f;
                         cone_width = .00004f;
                         line_width = 2f;

@@ -2418,6 +2418,7 @@ public class Editor3DWindow extends Editor3DDesign {
         st.setRenderMode(c3d.getRenderMode());
         st.setShowLabel(c3d.isShowingLabels());
         st.setShowAxis(c3d.isShowingAxis());
+        st.setShowAxisCentered(c3d.isShowingAxisCentered());
         st.setShowGrid(c3d.isGridShown());
         st.setShowGrid3D(c3d.isGridShown3D());
         st.setShowEmptySubfiles(c3d.isShowingEmptySubfiles());

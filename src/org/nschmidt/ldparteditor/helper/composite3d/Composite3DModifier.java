@@ -499,6 +499,10 @@ public class Composite3DModifier {
         c3d.setShowingAxis(selection);
     }
 
+    public void switchAxisCentered(boolean selection) {
+        c3d.setShowingAxisCentered(selection);
+    }
+
     public void switchLabel(boolean selection) {
         c3d.setShowingLabels(selection);
     }
