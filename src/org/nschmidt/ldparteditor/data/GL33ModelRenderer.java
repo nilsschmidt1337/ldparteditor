@@ -375,6 +375,17 @@ public class GL33ModelRenderer {
             // Skip render mode 5
             if (renderMode != 5) try {
                 staticLock.lock();
+                final boolean bfcMode = renderMode == 2 || renderMode == 3 || renderMode == 6;
+
+                if (bfcMode) {
+                    Colour.vertexSelectedTmpColourR = Colour.vertexSelectedBfcColourR;
+                    Colour.vertexSelectedTmpColourG = Colour.vertexSelectedBfcColourG;
+                    Colour.vertexSelectedTmpColourB = Colour.vertexSelectedBfcColourB;
+                } else {
+                    Colour.vertexSelectedTmpColourR = Colour.vertexSelectedColourR;
+                    Colour.vertexSelectedTmpColourG = Colour.vertexSelectedColourG;
+                    Colour.vertexSelectedTmpColourB = Colour.vertexSelectedColourB;
+                }
 
                 // First we have to get links to the sets from the model
                 final DatFile df = c3d.getLockableDatFileReference();
@@ -544,7 +555,8 @@ public class GL33ModelRenderer {
                 // CSG Selection
                 int csgSelectionVertexSize = 0;
                 final float[] tmpCsgSelectionData;
-                {
+                GDataCSG.selectionLock.lock();
+                try {
                     int csgSelectionIndex = 0;
                     Set<GData3> selection = GDataCSG.getSelectionData(df);
                     csgSelectionVertexSize += selection.size() * 6;
@@ -556,9 +568,11 @@ public class GL33ModelRenderer {
                         pointAt7(3, gd3.x1, gd3.y1, gd3.z1, tmpCsgSelectionData, csgSelectionIndex);
                         pointAt7(4, gd3.x3, gd3.y3, gd3.z3, tmpCsgSelectionData, csgSelectionIndex);
                         pointAt7(5, gd3.x2, gd3.y2, gd3.z2, tmpCsgSelectionData, csgSelectionIndex);
-                        colourise7(0, 6, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, tmpCsgSelectionData, csgSelectionIndex);
+                        colourise7(0, 6, Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 7f, tmpCsgSelectionData, csgSelectionIndex);
                         csgSelectionIndex += 6;
                     }
+                } finally {
+                    GDataCSG.selectionLock.unlock();
                 }
 
                 if (calculateCSG.compareAndSet(true, false)) {
@@ -593,7 +607,13 @@ public class GL33ModelRenderer {
                                 csgSolidVertexCount += size[1];
                                 csgTransVertexCount += size[2];
                             }
-                            GDataCSG.rebuildSelection(df);
+                            GDataCSG.selectionLock.lock();
+                            try {
+                                GDataCSG.rebuildSelection(df);
+                            } finally {
+                                GDataCSG.selectionLock.unlock();
+                            }
+
                             int csgIndex = 0;
                             int transparentCSGindex = csgSolidVertexCount;
                             float[] tmpCsgData = new float[csgDataSize];
@@ -1081,9 +1101,9 @@ public class GL33ModelRenderer {
                     final float r = Colour.vertexColourR;
                     final float g = Colour.vertexColourG;
                     final float b = Colour.vertexColourB;
-                    final float r2 = Colour.vertexSelectedColourR;
-                    final float g2 = Colour.vertexSelectedColourG;
-                    final float b2 = Colour.vertexSelectedColourB;
+                    final float r2 = Colour.vertexSelectedTmpColourR;
+                    final float g2 = Colour.vertexSelectedTmpColourG;
+                    final float b2 = Colour.vertexSelectedTmpColourB;
                     int i = 0;
 
                     if (smoothVertices) {
@@ -1183,7 +1203,7 @@ public class GL33ModelRenderer {
                                 Vertex v2 = verts.get(i);
                                 pointAt7(0, v1.x, v1.y, v1.z, selectionLineData, selectionLineIndex);
                                 pointAt7(1, v2.x, v2.y, v2.z, selectionLineData, selectionLineIndex);
-                                colourise7(0, 2, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, selectionLineData, selectionLineIndex);
+                                colourise7(0, 2, Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 7f, selectionLineData, selectionLineIndex);
                                 selectionLineIndex += 2;
                             }
                         }
@@ -1243,7 +1263,7 @@ public class GL33ModelRenderer {
                         case 2:
                             pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
                             pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
-                            colourise7(0, 2, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, selectionLineData, selectionLineIndex);
+                            colourise7(0, 2, Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 7f, selectionLineData, selectionLineIndex);
                             selectionLineIndex += 2;
                             break;
                         case 3:
@@ -1254,9 +1274,9 @@ public class GL33ModelRenderer {
                             pointAt7(4, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
                             pointAt7(5, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
                             if (((GData3) gd).isTriangle) {
-                                colourise7(0, 6, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, selectionLineData, selectionLineIndex);
+                                colourise7(0, 6, Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 7f, selectionLineData, selectionLineIndex);
                             } else {
-                                colourise7(0, 4, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, selectionLineData, selectionLineIndex);
+                                colourise7(0, 4, Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 7f, selectionLineData, selectionLineIndex);
                             }
                             selectionLineIndex += 6;
                             break;
@@ -1269,7 +1289,7 @@ public class GL33ModelRenderer {
                             pointAt7(5, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
                             pointAt7(6, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
                             pointAt7(7, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                            colourise7(0, 8, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, selectionLineData, selectionLineIndex);
+                            colourise7(0, 8, Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 7f, selectionLineData, selectionLineIndex);
                             selectionLineIndex += 8;
                             break;
                         case 5:
@@ -1279,7 +1299,7 @@ public class GL33ModelRenderer {
                             pointAt7(3, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
                             pointAt7(4, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
                             pointAt7(5, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
-                            colourise7(0, 2, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, selectionLineData, selectionLineIndex);
+                            colourise7(0, 2, Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 7f, selectionLineData, selectionLineIndex);
                             colourise7(2, 2, Colour.condlineSelectedColourR, Colour.condlineSelectedColourG, Colour.condlineSelectedColourB, 7f, selectionLineData, selectionLineIndex);
                             colourise7(4, 2, Colour.condlineSelectedColourR / 2f, Colour.condlineSelectedColourG / 2f, Colour.condlineSelectedColourB / 2f, 7f, selectionLineData, selectionLineIndex);
                             selectionLineIndex += 6;

@@ -912,7 +912,7 @@ public final class GData2 extends GData {
 
         GL33Helper.pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
         GL33Helper.pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
-        GL33Helper.colourise7(0, 2, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 7f, lineData, lineIndex);
 
         return 4;
     }

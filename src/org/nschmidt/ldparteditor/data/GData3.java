@@ -1600,7 +1600,7 @@ public final class GData3 extends GData {
 
         GL11.glLineWidth(View.lineWidthGL);
         if (selected) {
-            GL11.glColor4f(Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 1f);
+            GL11.glColor4f(Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 1f);
             GL11.glBegin(GL11.GL_LINES);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x2, y2, z2);
@@ -1838,13 +1838,13 @@ public final class GData3 extends GData {
 
         GL33Helper.pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
         GL33Helper.pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
-        GL33Helper.colourise7(0, 2, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 7f, lineData, lineIndex);
 
         lineIndex += 2;
 
         GL33Helper.pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
         GL33Helper.pointAt7(1, v[2].x, v[2].y, v[2].z, lineData, lineIndex);
-        GL33Helper.colourise7(0, 2, Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB, 7f, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 7f, lineData, lineIndex);
 
         lineIndex += 2;
 

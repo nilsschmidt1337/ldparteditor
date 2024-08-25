@@ -140,7 +140,8 @@ class PlatformWin32GLCanvas extends AbstractPlatformGLCanvas {
     public long create(GLCanvas canvas, GLData attribs, GLData effective) {
         Canvas dummycanvas = new Canvas(canvas.getParent(), checkStyle(canvas.getParent(), canvas.getStyle()));
         long context = 0L;
-        MemoryStack stack = MemoryStack.stackGet(); int ptr = stack.getPointer();
+        MemoryStack stack = MemoryStack.stackGet();
+        int ptr = stack.getPointer();
         try {
             context = create(canvas.handle, dummycanvas.handle, attribs, effective);
         } catch (SWTException e) {

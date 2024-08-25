@@ -80,6 +80,7 @@ public final class GDataCSG extends GData {
     final CSGType type;
 
     static volatile Lock staticLock = new ReentrantLock();
+    static volatile Lock selectionLock = new ReentrantLock();
 
     private static final ThreadsafeHashMap<DatFile, Map<String, CSG>> linkedCSG = new ThreadsafeHashMap<>();
     private static final ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>> idToGDataCSG = new ThreadsafeHashMap<>();
@@ -1051,7 +1052,7 @@ public final class GDataCSG extends GData {
     static synchronized void drawSelectionCSG(Composite3D c3d) {
         final Set<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(c3d.getLockableDatFileReference(), new HashSet<>());
         if (!selectedTriangles.isEmpty()) {
-            GL11.glColor3f(Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB);
+            GL11.glColor3f(Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB);
             GL11.glBegin(GL11.GL_LINES);
             for (GData3 tri : selectedTriangles) {
                 GL11.glVertex3f(tri.x1, tri.y1, tri.z1);
@@ -1159,15 +1160,24 @@ public final class GDataCSG extends GData {
 
     static synchronized void selectAll(DatFile df) {
         clearSelection(df);
-        Set<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
-        for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
-            final GDataCSG g = it.next();
-            if (g != null && g.canSelect()) {
-                continue;
+        GDataCSG.staticLock.lock();
+        try {
+            Set<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
+            for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
+                final GDataCSG g = it.next();
+                if (g != null && g.canSelect()) {
+                    continue;
+                }
+                it.remove();
             }
-            it.remove();
+            selectedBodyMap.get(df).addAll(newSelection);
+            for (GDataCSG csg : newSelection) {
+                csg.drawAndParse(null, df, false);
+            }
+            GDataCSG.rebuildSelection(df);
+        } finally {
+            GDataCSG.staticLock.unlock();
         }
-        selectedBodyMap.get(df).addAll(newSelection);
     }
 
     synchronized boolean canSelect() {

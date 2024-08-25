@@ -38,9 +38,9 @@ public enum EmptySubfileRenderer {
         // Prefer an in-line solution over extracted methods
         for (GData1 subfile : subs) {
             final boolean selected = vm.getSelectedSubfiles().contains(subfile);
-            final float r = selected ? Colour.vertexSelectedColourR : Colour.originColourR;
-            final float g = selected ? Colour.vertexSelectedColourG : Colour.originColourG;
-            final float b = selected ? Colour.vertexSelectedColourB : Colour.originColourB;
+            final float r = selected ? Colour.vertexSelectedTmpColourR : Colour.originColourR;
+            final float g = selected ? Colour.vertexSelectedTmpColourG : Colour.originColourG;
+            final float b = selected ? Colour.vertexSelectedTmpColourB : Colour.originColourB;
 
             Matrix4f m = subfile.getProductMatrix();
             if (mani.isModified() && selected) {

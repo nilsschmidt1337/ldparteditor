@@ -39,9 +39,17 @@ public enum Colour {
     public static volatile float vertexColourG = 0.565f;
     public static volatile float vertexColourB = 1f;
 
+    public static volatile float vertexSelectedTmpColourR = 0.75f;
+    public static volatile float vertexSelectedTmpColourG = 0.05f;
+    public static volatile float vertexSelectedTmpColourB = 0.05f;
+
     public static volatile float vertexSelectedColourR = 0.75f;
     public static volatile float vertexSelectedColourG = 0.05f;
     public static volatile float vertexSelectedColourB = 0.05f;
+
+    public static volatile float vertexSelectedBfcColourR = 0f;
+    public static volatile float vertexSelectedBfcColourG = 1f;
+    public static volatile float vertexSelectedBfcColourB = 1f;
 
     public static volatile float condlineSelectedColourR = 0.75f;
     public static volatile float condlineSelectedColourG = 0.35f;
@@ -154,11 +162,11 @@ public enum Colour {
     public static float textColourR = 0f;
     public static float textColourG = 0f;
     public static float textColourB = 0f;
-    
+
     public static float textColourAltR = 1.0f;
     public static float textColourAltG = 0.5019608f;
     public static float textColourAltB = 0f;
-    
+
     public static float textColourDefaultR = 0f;
     public static float textColourDefaultG = 0f;
     public static float textColourDefaultB = 0f;

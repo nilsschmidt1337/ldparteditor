@@ -153,6 +153,7 @@ public class UserSettingState implements Serializable {
     private float[] bfcUncertifiedColour = null;
     private float[] vertexColour = null;
     private float[] vertexSelectedColour = null;
+    private float[] vertexSelectedBfcColour = null;
     private float[] condlineSelectedColour = null;
     private float[] lineColour = null;
     private float[] meshlineColour = null;
@@ -707,6 +708,7 @@ public class UserSettingState implements Serializable {
 
         vertexColour = new float[] {Colour.vertexColourR,Colour.vertexColourG,Colour.vertexColourB};
         vertexSelectedColour = new float[] {Colour.vertexSelectedColourR,Colour.vertexSelectedColourG,Colour.vertexSelectedColourB};
+        vertexSelectedBfcColour = new float[] {Colour.vertexSelectedBfcColourR,Colour.vertexSelectedBfcColourG,Colour.vertexSelectedBfcColourB};
 
         condlineSelectedColour = new float[] {Colour.condlineSelectedColourR,Colour.condlineSelectedColourG,Colour.condlineSelectedColourB};
 
@@ -843,6 +845,15 @@ public class UserSettingState implements Serializable {
             Colour.vertexSelectedColourR = vertexSelectedColour[0];
             Colour.vertexSelectedColourG = vertexSelectedColour[1];
             Colour.vertexSelectedColourB = vertexSelectedColour[2];
+            Colour.vertexSelectedTmpColourR = Colour.vertexSelectedColourR;
+            Colour.vertexSelectedTmpColourG = Colour.vertexSelectedColourG;
+            Colour.vertexSelectedTmpColourB = Colour.vertexSelectedColourB;
+        }
+
+        if (vertexSelectedBfcColour != null) {
+            Colour.vertexSelectedBfcColourR = vertexSelectedBfcColour[0];
+            Colour.vertexSelectedBfcColourG = vertexSelectedBfcColour[1];
+            Colour.vertexSelectedBfcColourB = vertexSelectedBfcColour[2];
         }
 
         if (condlineSelectedColour != null) {

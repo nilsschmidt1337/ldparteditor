@@ -227,6 +227,7 @@ public final class I18n {
     public static final String COLOUR_RUBBERBAND_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_SELECTED_CONDLINE_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_SELECTED_MANIPULATOR_COLOUR = COLOUR.getString(getProperty());
+    public static final String COLOUR_SELECTED_VERTEX_BFC_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_SELECTED_VERTEX_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_SHOWN_CONDLINE_COLOUR = COLOUR.getString(getProperty());
     public static final String COLOUR_TEXT_COLOUR_1 = COLOUR.getString(getProperty());

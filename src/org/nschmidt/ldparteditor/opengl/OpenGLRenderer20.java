@@ -243,8 +243,20 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         final long start = System.currentTimeMillis();
         final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
 
+        final int renderMode = c3d.getRenderMode();
         final boolean negDet = c3d.hasNegDeterminant();
-        final boolean raytraceMode = c3d.getRenderMode() == 5;
+        final boolean raytraceMode = renderMode == 5;
+        final boolean bfcMode = renderMode == 2 || renderMode == 3 || renderMode == 6;
+
+        if (bfcMode) {
+            Colour.vertexSelectedTmpColourR = Colour.vertexSelectedBfcColourR;
+            Colour.vertexSelectedTmpColourG = Colour.vertexSelectedBfcColourG;
+            Colour.vertexSelectedTmpColourB = Colour.vertexSelectedBfcColourB;
+        } else {
+            Colour.vertexSelectedTmpColourR = Colour.vertexSelectedColourR;
+            Colour.vertexSelectedTmpColourG = Colour.vertexSelectedColourG;
+            Colour.vertexSelectedTmpColourB = Colour.vertexSelectedColourB;
+        }
 
         final GLCanvas canvas = c3d.getCanvas();
 
@@ -2300,10 +2312,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     // Draw arrows for cursor-on-border-scrolling
                     if (userSettings.isTranslatingViewByCursor() && c3d.hasMouse() && c3d.equals(Project.getFileToEdit().getLastSelectedComposite())) {
 
-                    	final float duration = Math.max(10f, Math.min(1000, System.currentTimeMillis() - start));
-                    	final float speed = 0.05f / duration / zoom;
+                        final float duration = Math.max(10f, Math.min(1000, System.currentTimeMillis() - start));
+                        final float speed = 0.05f / duration / zoom;
 
-                    	// TOP
+                        // TOP
                         GL11.glColor3f(Colour.textColourR, Colour.textColourG, Colour.textColourB);
                         if (Math.abs(bounds.width / 2f - mp.x) > 75f || mp.y > 25f) {
                             GL11.glColor3f(Colour.textColourR, Colour.textColourG, Colour.textColourB);
