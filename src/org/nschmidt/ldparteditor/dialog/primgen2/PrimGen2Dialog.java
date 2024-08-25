@@ -694,7 +694,10 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
             name = r + frac + t + sweep2 + ".dat"; //$NON-NLS-1$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Torus" + tt + sweep + " x " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+            // According to a user, mixed mode tori should have 4 digits, in both sections.
+            // "There are a number of mixed-mode prims in the library that don't follow that rule. Both official and unofficial. IMO they should have 4, in both sections."
+            sb.insert(0, "0 " + resolution + "Torus" + tt + sweep + " x " + (mixed ? decformat4f.format(segments * 1d / divisions) : removeTrailingZeros2(decformat4f.format(segments * 1d / divisions))) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
             sb.append("0 // Major Radius: " + major + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
             sb.append("0 // Tube(Minor) Radius: " + minor + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
