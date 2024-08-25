@@ -1976,6 +1976,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     }
 
     @Override
+    public void stop() {
+        // Stop the renderers.
+        modelRenderer.stop();
+        modelRendererLDrawStandard.stop();
+    }
+
+    @Override
     public void dispose() {
         // Properly de-allocate all resources once they've outlived their purpose
         modelRenderer.dispose();

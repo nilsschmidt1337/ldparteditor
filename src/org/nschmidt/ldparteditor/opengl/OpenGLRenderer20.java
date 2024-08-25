@@ -2485,6 +2485,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     }
 
     @Override
+    public void stop() {
+        // Do nothing.
+    }
+
+    @Override
     public void dispose() {
         GL20.glUseProgram(0);
         if (pGlossId != -1) {

@@ -2345,6 +2345,9 @@ public class Editor3DWindow extends Editor3DDesign {
         // NEVER DELETE THIS!
         final int s = renders.size();
         for (int i = 0; i < s; i++) {
+            renders.get(i).stop();
+        }
+        for (int i = 0; i < s; i++) {
             try {
                 GLCanvas canvas = canvasList.get(i);
                 OpenGLRenderer renderer = renders.get(i);

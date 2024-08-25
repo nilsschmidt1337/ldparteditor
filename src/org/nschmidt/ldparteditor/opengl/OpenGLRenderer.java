@@ -33,6 +33,7 @@ public abstract class OpenGLRenderer {
     protected final Composite3D c3d;
 
     public abstract Composite3D getC3D();
+    public abstract void stop();
     public abstract void dispose();
     public abstract void init();
     public abstract void drawScene();

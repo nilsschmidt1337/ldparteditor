@@ -1237,6 +1237,10 @@ public class GL33ModelRendererLDrawStandard {
         idCount.set(0);
     }
 
+    public void stop() {
+        isRunning.set(false);
+    }
+
     public void dispose() {
         isRunning.set(false);
         GL30.glDeleteVertexArrays(vao);

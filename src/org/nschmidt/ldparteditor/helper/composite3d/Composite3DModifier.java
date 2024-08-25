@@ -365,8 +365,9 @@ public class Composite3DModifier {
                 }
             }
 
-            GLCanvas canvas = c3d.getCanvas();
             OpenGLRenderer renderer = c3d.getRenderer();
+            renderer.stop();
+            GLCanvas canvas = c3d.getCanvas();
             if (!canvas.isCurrent()) {
                 canvas.setCurrent();
                 GL.setCapabilities(c3d.getCapabilities());
