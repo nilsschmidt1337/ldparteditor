@@ -2347,6 +2347,7 @@ public class Editor3DWindow extends Editor3DDesign {
         for (int i = 0; i < s; i++) {
             renders.get(i).stop();
         }
+        NLogger.debug(getClass(), "All render threads were stopped."); //$NON-NLS-1$
         for (int i = 0; i < s; i++) {
             try {
                 GLCanvas canvas = canvasList.get(i);
