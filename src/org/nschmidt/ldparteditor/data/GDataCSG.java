@@ -1194,15 +1194,25 @@ public final class GDataCSG extends GData {
     }
 
     static synchronized void selectAllWithSameColours(DatFile df, Set<GColour> allColours) {
-        Set<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
-        for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
-            final GDataCSG g = it.next();
-            if (g != null && g.canSelect() && allColours.contains(g.colour)) {
-                continue;
+        clearSelection(df);
+        GDataCSG.staticLock.lock();
+        try {
+            Set<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
+            for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
+                final GDataCSG g = it.next();
+                if (g != null && g.canSelect() && allColours.contains(g.colour)) {
+                    continue;
+                }
+                it.remove();
             }
-            it.remove();
+            selectedBodyMap.get(df).addAll(newSelection);
+            for (GDataCSG csg : newSelection) {
+                csg.drawAndParse(null, df, false);
+            }
+            GDataCSG.rebuildSelection(df);
+        } finally {
+            GDataCSG.staticLock.unlock();
         }
-        selectedBodyMap.get(df).addAll(newSelection);
     }
 
     public static synchronized void clearSelection(DatFile df) {
