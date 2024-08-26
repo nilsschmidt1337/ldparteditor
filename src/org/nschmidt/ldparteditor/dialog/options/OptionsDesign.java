@@ -656,7 +656,7 @@ class OptionsDesign extends ApplicationWindow {
                 Label lblDoubleClick = Theming.label(cmpContainer, I18n.rightToLeftStyle());
                 lblDoubleClick.setText(I18n.COLOUR_DOUBLE_CLICK);
 
-                final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, 67);
+                final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, 68);
                 this.trColourTreePtr[0] = tree;
                 treeColours = tree;
 

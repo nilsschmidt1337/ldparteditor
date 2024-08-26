@@ -672,7 +672,7 @@ public final class GDataCSG extends GData {
                     // Try to do a rebuild
                     final List<GDataCSG> csgData = new ArrayList<>();
                     final DatFile df = Inliner.datfile;
-                    GDataCSG.resetCSG(df, true);
+                    GDataCSG.resetCSG(df, false);
                     GData g = df.getDrawChainStart();
                     while ((g = g.next) != null) {
                         if (g instanceof GDataCSG gcsg) {
