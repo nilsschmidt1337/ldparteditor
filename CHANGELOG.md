@@ -1,3 +1,13 @@
+# 01 Sep 2024
+With the release of 1.8.87 you are able to...
+-  ...display the axes of coordinates in the center of the 3D screen (it is also used in the first 3D view for PartReview)
+-  ...set and see a different selection color than red in backface-culling modes.
+-  ...have 4 digits in the last section of a mixed-mode torus description (e.g. 1 x 2.0000 x 0.2500).
+
+The following critical issue is fixed:
+1. [OpenGL 3] Crash when adding a line, triangle, quad, condline, distance meter or protractor to an empty file.
+
+
 # 20 Aug 2024
 With the release of 1.8.86 you are able to...
 -  ...use the sphere mesh from LDView for CSG operations, too (!LPE CSG_ELLIPSOID).
