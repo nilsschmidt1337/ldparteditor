@@ -767,8 +767,10 @@ public enum DatParser {
                         NLogger.debug(DatParser.class, ex);
                     }
                 }
-                lines = PrimitiveReplacer.substitutePrimitives(shortFilename, lines, userSettings.getPrimitiveSubstitutionQuality());
-                if (!lines.isEmpty()) {
+
+                final List<String> primitiveLines = PrimitiveReplacer.substitutePrimitives(shortFilename, lines, userSettings.getPrimitiveSubstitutionQuality());
+                if (!primitiveLines.isEmpty()) {
+                    lines = primitiveLines;
                     isVirtual = true;
                     result.clear();
                     absoluteFilename = shortFilename;
