@@ -2493,8 +2493,12 @@ public class MiscToolItem extends ToolItem {
                                     }
 
                                     for (DatFile df : dfsToOpen) {
-                                        txt.openNewDatFileTab(df, false);
+                                        if (df != Project.getFileToEdit()) {
+                                            txt.openNewDatFileTab(df, false);
+                                        }
                                     }
+
+                                    txt.openNewDatFileTab(Project.getFileToEdit(), false);
 
                                     Editor3DWindow.getWindow().setReviewingAPart(true, dfsToOpen);
                                     if (dialog.isSaveAll()) {
