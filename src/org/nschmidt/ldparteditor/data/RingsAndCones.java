@@ -411,22 +411,13 @@ public enum RingsAndCones {
                     String sfs = MathHelper.roundBigDecimalToStringAlways(sf);
                     String radiusSuffix = "" + solutionR[i]; //$NON-NLS-1$
 
-                    String middle;
+                    final String middle;
                     if (rs.isUsingCones()) {
                         step = new BigDecimal(solutionR2[i + 1] - solutionR2[i]).divide(width, Threshold.MC).multiply(rs.getHeight());
                         middle = "con"; //$NON-NLS-1$
                         height = height.add(step);
                     } else {
                         middle = "ring"; //$NON-NLS-1$
-                        if (rs.isUsingHiRes()) {
-                            if (anglePrefix.length() + radiusSuffix.length() > 7) {
-                                middle = middle.substring(0, 3);
-                            }
-                        } else {
-                            if (anglePrefix.length() + radiusSuffix.length() > 4) {
-                                middle = middle.substring(0, 3);
-                            }
-                        }
                     }
 
 
@@ -564,7 +555,7 @@ public enum RingsAndCones {
         existanceMap.clear();
 
         Pattern coneP = Pattern.compile("\\d+\\-\\d+con\\d{1,2}\\.dat"); //$NON-NLS-1$
-        Pattern ringP = Pattern.compile("\\d+\\-\\d+ring{0,1}\\d{1,2}\\.dat"); //$NON-NLS-1$
+        Pattern ringP = Pattern.compile("\\d+\\-\\d+ring\\d{1,2}\\.dat"); //$NON-NLS-1$
 
         StringBuilder upper = new StringBuilder();
         StringBuilder lower = new StringBuilder();
