@@ -42,6 +42,12 @@ public enum Inspector {
         if (issues.isEmpty())
             return;
 
+        if (issues.size() == 1) {
+            final TreeItem singleIssue = issues.iterator().next();
+            scrollToIssue(singleIssue, cText);
+        }
+
+
         final VertexManager vm = datFile.getVertexManager();
 
         vm.clearSelection();
@@ -62,5 +68,15 @@ public enum Inspector {
         vm.setModifiedNoSync();
         vm.syncWithTextEditors(true);
         vm.updateUnsavedStatus();
+    }
+
+    private static void scrollToIssue(TreeItem ti, StyledText cText) {
+        if (ti.getData() != null) {
+            final int offset = (int) ti.getData();
+            if (offset >= 0) {
+                final int line = cText.getLineAtOffset(offset);
+                cText.setTopIndex(line);
+            }
+        }
     }
 }

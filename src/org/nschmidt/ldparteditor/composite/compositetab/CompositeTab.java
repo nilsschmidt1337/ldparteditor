@@ -1807,6 +1807,9 @@ public class CompositeTab extends CompositeTabDesign {
             final TreeItem[] selection = treeProblemsPtr[0].getSelection();
             final TreeItem sel;
             if (selection.length == 1 && (sel = selection[0]) != null) {
+                final Set<TreeItem> items = Set.of(sel);
+                Inspector.inspectTextIssues(compositeTextPtr[0], items, getState().getFileNameObj());
+
                 final Integer pos = (Integer) sel.getData();
                 if (pos != null) {
                     compositeTextPtr[0].setSelection(Math.max(0, pos));
