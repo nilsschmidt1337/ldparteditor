@@ -5,10 +5,12 @@ echo "current version $VERSION"
 echo "next    version $NEXT_VERSION"
 sed -i "s/$VERSION/$NEXT_VERSION/g" "build-linux.xml"
 sed -i "s/$VERSION/$NEXT_VERSION/g" "build-macos.xml"
+sed -i "s/$VERSION/$NEXT_VERSION/g" "build-macos-arm.xml"
 sed -i "s/$VERSION/$NEXT_VERSION/g" "build-windows.xml"
 sed -i "s/$VERSION/$NEXT_VERSION/g" "src/org/nschmidt/ldparteditor/i18n/Version.properties"
 git add build-linux.xml
 git add build-macos.xml
+git add build-macos-arm.xml
 git add build-windows.xml
 git add src/org/nschmidt/ldparteditor/i18n/Version.properties
 git commit -m "Updated version number to $NEXT_VERSION"
