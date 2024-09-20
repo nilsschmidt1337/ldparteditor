@@ -1,3 +1,14 @@
+# 20 Sep 2024
+With the release of 1.8.88 you are able to...
+-  ...double click on a text editor error/warning/hint to also select the object in the 3D editor.
+
+The following critical issues are fixed:
+1. Primitive substitution on subfiles from PartReview causes subfiles to be "empty".
+2. "Rings and Cones" uses old deprecated "rin" and "ri" ring primitives.
+3. The context menu entries on the error/warning/hint area are always enabled.
+4. After loading a part using the part review tool, the 3D view properly shows the part asked for, but the text window generally shows a subpart of it, presumably the last loaded one.
+
+
 # 01 Sep 2024
 With the release of 1.8.87 you are able to...
 -  ...display the axes of coordinates in the center of the 3D screen (it is also used in the first 3D view for PartReview)
