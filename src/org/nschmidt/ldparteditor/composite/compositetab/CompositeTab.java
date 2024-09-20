@@ -1802,6 +1802,12 @@ public class CompositeTab extends CompositeTabDesign {
             btnQuickFixPtr[0].setEnabled(enabled);
             btnQuickFixSamePtr[0].setEnabled(enabled);
             btnCopyIssuesPtr[0].setEnabled(enabled);
+
+            mntmInspectPtr[0].setEnabled(enabled);
+            mntmInspectSamePtr[0].setEnabled(enabled);
+            mntmQuickFixPtr[0].setEnabled(enabled);
+            mntmQuickFixSamePtr[0].setEnabled(enabled);
+            mntmCopyIssuesPtr[0].setEnabled(enabled);
         });
         treeProblemsPtr[0].addListener(SWT.MouseDoubleClick, e -> {
             final TreeItem[] selection = treeProblemsPtr[0].getSelection();
