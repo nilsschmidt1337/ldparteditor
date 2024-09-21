@@ -160,6 +160,7 @@ public class GL33ModelRenderer {
     private volatile Map<GData, Vertex[]> sharedVertexMap = new HashMap<>();
 
     private volatile boolean usesCSG = false;
+    private volatile boolean modifiedCSG = false;
 
     private volatile List<Matrix4f> stud1MatricesResult = new ArrayList<>();
     private volatile List<Matrix4f> stud2MatricesResult = new ArrayList<>();
@@ -599,6 +600,17 @@ public class GL33ModelRenderer {
                         try {
                             if (modified) GDataCSG.resetCSG(df, true);
                             // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
+                            if (modified != modifiedCSG) {
+                                // Recompile on status change from "modified" to "unchanged"
+                                GDataCSG.resetCSG(df, modified);
+                                GDataCSG.forceRecompile(df);
+                                for (GDataCSG csg : csgData2) {
+                                    csg.drawAndParse(c3d, df, false);
+                                    csg.cacheResult(df);
+                                }
+                            }
+
+                            modifiedCSG = modified;
                             for (GDataCSG csg : csgData2) {
                                 if (modified) csg.drawAndParse(c3d, df, false);
                                 csg.cacheResult(df);

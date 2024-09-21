@@ -140,16 +140,19 @@ public final class GDataCSG extends GData {
 
     public static synchronized void resetCSG(DatFile df, boolean useLowQuality) {
         df.setOptimizingCSG(true);
+        boolean hasSwitchedQuality = false;
         if (useLowQuality) {
+            hasSwitchedQuality = quality == 16;
             quality = 12;
         } else {
+            hasSwitchedQuality = quality == 12;
             quality = 16;
         }
         Set<GDataCSG> ref = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
         ref.removeAll(parsedData.putIfAbsent(df, new HashSet<>()));
         clearPolygonCache.putIfAbsent(df, true);
         fullClearPolygonCache.putIfAbsent(df, true);
-        deleteAndRecompile = !ref.isEmpty();
+        deleteAndRecompile = !ref.isEmpty() || hasSwitchedQuality;
         if (deleteAndRecompile) {
             globalExtruderConfig.put(df, new PathTruderSettings());
             registeredData.get(df).clear();
