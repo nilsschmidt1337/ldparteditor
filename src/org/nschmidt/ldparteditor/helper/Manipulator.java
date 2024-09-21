@@ -1068,32 +1068,32 @@ public class Manipulator {
                         zScale = true;
                         break;
                     case XY_TRANSLATE:
-                        if (zTranslate) return new GColour(-1, r, g, b, 1f);
+                        if (xTranslate || yTranslate || zTranslate) return new GColour(-1, r, g, b, 1f);
                         xTranslate = true;
                         yTranslate = true;
                         break;
                     case XY_SCALE:
-                        if (zScale) return new GColour(-1, r, g, b, 1f);
+                        if (xScale || yScale || zScale) return new GColour(-1, r, g, b, 1f);
                         xScale = true;
                         yScale = true;
                         break;
                     case XZ_TRANSLATE:
-                        if (yTranslate) return new GColour(-1, r, g, b, 1f);
+                        if (xTranslate || yTranslate || zTranslate) return new GColour(-1, r, g, b, 1f);
                         xTranslate = true;
                         zTranslate = true;
                         break;
                     case XZ_SCALE:
-                        if (yScale) return new GColour(-1, r, g, b, 1f);
+                        if (xScale || yScale || zScale) return new GColour(-1, r, g, b, 1f);
                         xScale = true;
                         zScale = true;
                         break;
                     case YZ_TRANSLATE:
-                        if (xTranslate) return new GColour(-1, r, g, b, 1f);
+                        if (xTranslate || yTranslate || zTranslate) return new GColour(-1, r, g, b, 1f);
                         yTranslate = true;
                         zTranslate = true;
                         break;
                     case YZ_SCALE:
-                        if (xScale) return new GColour(-1, r, g, b, 1f);
+                        if (xScale || yScale || zScale) return new GColour(-1, r, g, b, 1f);
                         yScale = true;
                         zScale = true;
                         break;
