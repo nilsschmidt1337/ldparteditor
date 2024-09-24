@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helper.compositetext;
 
+import static org.nschmidt.ldparteditor.helper.compositetext.Inliner.insertLineIdentifiers;
+
 import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -59,36 +61,7 @@ public enum UnInliner {
         String text2 = text;
         int c = cText.getCaretOffset();
 
-        // Set the identifiers for each line
-        text2 = "<L1>" + text2; //$NON-NLS-1$
-        if (text2.contains("\r\n")) { //$NON-NLS-1$ Windows line termination
-            text2 = text2.replace("\r\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (text2.contains("\n")) { //$NON-NLS-1$ Linux/Mac line termination
-            text2 = text2.replace("\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (!text2.endsWith("#!%")) { //$NON-NLS-1$
-            text2 = text2 + "#!%"; //$NON-NLS-1$
-        }
-        {
-            int state = 0;
-            int l = 1;
-            StringBuilder sb = new StringBuilder();
-            for (char ch : text2.toCharArray()) {
-                if (state == 0 && ch == '#') {
-                    state++;
-                } else if (state == 1 && ch == '!') {
-                    state++;
-                } else if (state == 2 && ch == '%') {
-                    state = 0;
-                    sb.append("</L" + l + "><L" + (l + 1) + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    l++;
-                } else {
-                    sb.append(ch);
-                }
-            }
-            text2 = sb.toString();
-        }
+        text2 = insertLineIdentifiers(text2);
 
         int foundLpeInline = 0;
 

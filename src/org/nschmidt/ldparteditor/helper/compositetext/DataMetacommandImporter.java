@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helper.compositetext;
 
+import static org.nschmidt.ldparteditor.helper.compositetext.Inliner.insertLineIdentifiers;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,10 +47,10 @@ public enum DataMetacommandImporter {
      * Imports PNG files into !DATA meta-commands
      */
     public static void importPng(StyledText cText, int lineNumber, DatFile datFile, Shell shell) {
-        
+
         if (datFile.isReadOnly())
             return;
-        
+
         // Now try to load the image
         FileDialog fd = new FileDialog(shell, SWT.OPEN);
         fd.setText(I18n.E3D_OPEN);
@@ -65,55 +67,26 @@ public enum DataMetacommandImporter {
         fd.setFilterExtensions(filterExt);
         String[] filterNames = {I18n.E3D_PORTABLE_NETWORK_GRAPHICS, I18n.E3D_ALL_FILES};
         fd.setFilterNames(filterNames);
-        
+
         String selected = fd.open();
-        
+
         if (selected == null) {
             return;
         }
-        
+
         final File selectedFile = new File(selected);
         long fileSize = selectedFile.length();
-        
+
         final int fileSizeLimit = WorkbenchManager.getUserSettingState().getDataFileSizeLimit() * 1_000;
         final boolean noSelection = fileSize == 0 || fileSize > fileSizeLimit;
-        
+
 
         String text = cText.getText();
         String text2 = text;
         int c = cText.getCaretOffset();
 
-        // Set the identifiers for each line
-        text2 = "<L1>" + text2; //$NON-NLS-1$
-        if (text2.contains("\r\n")) { //$NON-NLS-1$ Windows line termination
-            text2 = text2.replace("\r\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (text2.contains("\n")) { //$NON-NLS-1$ Linux/Mac line termination
-            text2 = text2.replace("\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (!text2.endsWith("#!%")) { //$NON-NLS-1$
-            text2 = text2 + "#!%"; //$NON-NLS-1$
-        }
-        {
-            int state = 0;
-            int l = 1;
-            StringBuilder sb = new StringBuilder();
-            for (char ch : text2.toCharArray()) {
-                if (state == 0 && ch == '#') {
-                    state++;
-                } else if (state == 1 && ch == '!') {
-                    state++;
-                } else if (state == 2 && ch == '%') {
-                    state = 0;
-                    sb.append("</L" + l + "><L" + (l + 1) + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    l++;
-                } else {
-                    sb.append(ch);
-                }
-            }
-            text2 = sb.toString();
-        }
-        
+        text2 = insertLineIdentifiers(text2);
+
         if (!noSelection) {
             NLogger.debug(DataMetacommandImporter.class, "Importing at line: {0}", lineNumber); //$NON-NLS-1$
             text2 = importPng(lineNumber, text2, selectedFile, shell);
@@ -127,12 +100,12 @@ public enum DataMetacommandImporter {
         } else {
             MessageBox messageBoxError = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK);
             messageBoxError.setText(I18n.DIALOG_WARNING);
-            
+
             Object[] messageArguments = {WorkbenchManager.getUserSettingState().getDataFileSizeLimit()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_DATA_ERROR_IMPORT);
-            
+
             messageBoxError.setMessage(formatter.format(messageArguments));
             messageBoxError.open();
         }
@@ -140,38 +113,38 @@ public enum DataMetacommandImporter {
 
     private static String importPng(int lineNumber, String text2, File selectedFile, Shell shell) {
         final StringBuilder sb = new StringBuilder();
-        
+
         sb.append("0 !DATA " + selectedFile.getName() + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
         try {
             final byte[] binary = Files.readAllBytes(selectedFile.toPath());
             final String encodedString = Base64.getEncoder().encodeToString(binary);
-            
+
             final int encodedStringLength = encodedString.length();
             final int chunks = 200;
             for (int i = 0; i < encodedStringLength; i += chunks) {
                 final String lineString = encodedString.substring(i, Math.min(encodedStringLength, i + chunks));
                 sb.append("0 !: " + lineString + "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            
+
             sb.append("<br>"); //$NON-NLS-1$
         } catch (IOException ioe) {
             NLogger.debug(DataMetacommandImporter.class, ioe);
             MessageBox messageBoxError = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
             messageBoxError.setText(I18n.DIALOG_ERROR);
-            
+
             Object[] messageArguments = {WorkbenchManager.getUserSettingState().getDataFileSizeLimit()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_DATA_ERROR_IMPORT);
-            
+
             messageBoxError.setMessage(formatter.format(messageArguments));
             messageBoxError.open();
         }
-        
+
         text2 = insertBeforeLine(lineNumber, sb.toString(), text2);
         return text2;
     }
-    
+
     private static String restoreLineTermination(String text) {
         text = text.replaceAll("<L[0-9]+><rm></L[0-9]+>", ""); //$NON-NLS-1$ //$NON-NLS-2$
         text = text.replaceAll("</L[0-9]+>", "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -180,7 +153,7 @@ public enum DataMetacommandImporter {
         if (tl > 3) text = text.substring(0, tl - 4);
         return text.replace("<br>", StringHelper.getLineDelimiter()); //$NON-NLS-1$
     }
-    
+
     private static String insertBeforeLine(int line, String textToInsert, String text) {
         return text.replaceFirst("<L" + line + ">", textToInsert + "<L" + line + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }

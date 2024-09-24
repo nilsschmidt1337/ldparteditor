@@ -140,36 +140,8 @@ public enum Inliner {
         String text2 = text;
         int c = cText.getCaretOffset();
 
-        // Set the identifiers for each line
-        text2 = "<L1>" + text2; //$NON-NLS-1$
-        if (text2.contains("\r\n")) { //$NON-NLS-1$ Windows line termination
-            text2 = text2.replace("\r\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (text2.contains("\n")) { //$NON-NLS-1$ Linux/Mac line termination
-            text2 = text2.replace("\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (!text2.endsWith("#!%")) { //$NON-NLS-1$
-            text2 = text2 + "#!%"; //$NON-NLS-1$
-        }
-        {
-            int state = 0;
-            int l = 1;
-            StringBuilder sb = new StringBuilder();
-            for (char ch : text2.toCharArray()) {
-                if (state == 0 && ch == '#') {
-                    state++;
-                } else if (state == 1 && ch == '!') {
-                    state++;
-                } else if (state == 2 && ch == '%') {
-                    state = 0;
-                    sb.append("</L" + l + "><L" + (l + 1) + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    l++;
-                } else {
-                    sb.append(ch);
-                }
-            }
-            text2 = sb.toString();
-        }
+        text2 = insertLineIdentifiers(text2);
+
         Inliner.datfile = datFile;
         for (Integer l : lineNumbers) {
             String line = getLine(l, text2);
@@ -258,36 +230,8 @@ public enum Inliner {
         String text2 = text;
         int c = cText.getCaretOffset();
 
-        // Set the identifiers for each line
-        text2 = "<L1>" + text2; //$NON-NLS-1$
-        if (text2.contains("\r\n")) { //$NON-NLS-1$ Windows line termination
-            text2 = text2.replace("\r\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (text2.contains("\n")) { //$NON-NLS-1$ Linux/Mac line termination
-            text2 = text2.replace("\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (!text2.endsWith("#!%")) { //$NON-NLS-1$
-            text2 = text2 + "#!%"; //$NON-NLS-1$
-        }
-        {
-            int state = 0;
-            int l = 1;
-            StringBuilder sb = new StringBuilder();
-            for (char ch : text2.toCharArray()) {
-                if (state == 0 && ch == '#') {
-                    state++;
-                } else if (state == 1 && ch == '!') {
-                    state++;
-                } else if (state == 2 && ch == '%') {
-                    state = 0;
-                    sb.append("</L" + l + "><L" + (l + 1) + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    l++;
-                } else {
-                    sb.append(ch);
-                }
-            }
-            text2 = sb.toString();
-        }
+        text2 = insertLineIdentifiers(text2);
+
         for (Integer l : lineNumbers) {
             bfcStatusTarget = bfcStatusToLine.get(l);
             String line = getLine(l, text2);
@@ -302,6 +246,53 @@ public enum Inliner {
             cText.setSelection(0);
         }
 
+    }
+
+    static String insertLineIdentifiers(String text2) {
+        // Set the identifiers for each line
+        text2 = "<L1>" + text2; //$NON-NLS-1$
+        if (text2.contains("\r\n")) { //$NON-NLS-1$ Windows line termination
+            text2 = text2.replace("\r\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (text2.contains("\n")) { //$NON-NLS-1$ Linux/Mac line termination
+            text2 = text2.replace("\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (!text2.endsWith("#!%")) { //$NON-NLS-1$
+            text2 = text2 + "#!%"; //$NON-NLS-1$
+        }
+
+        int state = 0;
+        int l = 1;
+
+        StringBuilder sb = new StringBuilder();
+        for (char ch : text2.toCharArray()) {
+            if (state == 0 && ch == '#') {
+                state++;
+            } else if (state == 1 && ch == '!') {
+                state++;
+            } else if (state == 2 && ch == '%') {
+                state = 0;
+                sb.append("</L" + l + "><L" + (l + 1) + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                l++;
+            } else {
+                if (state == 1) {
+                    sb.append('#');
+                    state = 0;
+                } else if (state == 2) {
+                    sb.append('#');
+                    sb.append('!');
+                    state = 0;
+                }
+
+                sb.append(ch);
+            }
+        }
+
+        text2 = sb.toString();
+
+        return text2;
     }
 
     static String setLine(int line, String textToSet, String text) {
