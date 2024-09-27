@@ -1,4 +1,12 @@
-# 20 Sep 2024
+### 27 Sep 2024
+With the release of 1.8.89 the following critical issues are fixed:
+1. Descriptions containing a hashtag # are modified by unrelated quick fixes.
+2. The movement type of the manipulator changes if, during the move, the mouse gets close enough to a plane move square.
+3. The CSG tree does not switch back to a higher quality if the manipulator was moved and nothing CSG releated was selected.
+4. The MacOS X ARM installer package was still indicating a 1.8.80 version, but the contents were newer.
+
+
+### 20 Sep 2024
 With the release of 1.8.88 you are able to...
 -  ...double click on a text editor error/warning/hint to also select the object in the 3D editor.
 
@@ -9,7 +17,7 @@ The following critical issues are fixed:
 4. After loading a part using the part review tool, the 3D view properly shows the part asked for, but the text window generally shows a subpart of it, presumably the last loaded one.
 
 
-# 01 Sep 2024
+### 01 Sep 2024
 With the release of 1.8.87 you are able to...
 -  ...display the axes of coordinates in the center of the 3D screen (it is also used in the first 3D view for PartReview)
 -  ...set and see a different selection color than red in backface-culling modes.
@@ -19,7 +27,7 @@ The following critical issue is fixed:
 1. [OpenGL 3] Crash when adding a line, triangle, quad, condline, distance meter or protractor to an empty file.
 
 
-# 20 Aug 2024
+### 20 Aug 2024
 With the release of 1.8.86 you are able to...
 -  ...use the sphere mesh from LDView for CSG operations, too (!LPE CSG_ELLIPSOID).
 
@@ -27,7 +35,7 @@ The following critical issue is fixed:
 1. !LPE CSG_UNION "consumed" a few triangles. Other triangle defects could still occur, but only with very complex union intersections.
 
 
-# 16 Aug 2024
+### 16 Aug 2024
 With the release of 1.8.85 you are able to...
 -  ...use primitive substitution (blue circle button at the upper left corner, ctrl-click to modify substitution quality).
 -  ...benefit from a 3D grid that shows 3D model intersections and has a lager size.
@@ -39,7 +47,7 @@ The following critical issues are fixed:
 2. (Linux/Mac) Case-sensitivity when following a reference from the text editor with a mouse click if the target file was already opened caused problems.
 
 
-# 28 Jul 2024
+### 28 Jul 2024
 With the release of 1.8.84 you are able to...
 -  ...visually identify which surfaces or lines belong to the model being edited or to a primitive/subpart (with the green "S" button in the upper left corner of the 3D editor).
 -  ...press a button to run Edger2 verbose with the current settings.
@@ -56,7 +64,7 @@ The following critical issues are fixed:
 3. Added a a missing border on text boxes which had a UI theme applied.
 
 
-# 19 Jul 2024
+### 19 Jul 2024
 With the release of 1.8.83 you are able to...
 -  ...change colour themes via "Tools..."->"Options..."->"Customise Colours:"->"Theme" (e.g. to dark mode/dracula theme) to make the software easier on the eyes.
 -  ...use "Swap X/Y/Z (for Selection)".
@@ -66,7 +74,7 @@ The following critical issue is fixed:
 1. Sometimes the text-editor remained read-only until the file was saved (e.g. after Edger2 runs).
 
 
-# 13 Jul 2024
+### 13 Jul 2024
 With the release of 1.8.82 you are able to...
 -  ..."un-inline" linked subfiles in the main part (with ctrl+click on the "Inline selection (Linked)" button).
 -  ...customise a key shortcut to activate links in the text editor (it was Ctrl/Cmd before, now it is Ctrl+Cmd+Shift).
@@ -78,7 +86,7 @@ The following critical issues are fixed:
 2. The path "parts/textures" was not used as a search path for PNG textures.
 
 
-# 04 Jul 2024
+### 04 Jul 2024
 With the release of 1.8.81 you are able to...
 -  ...ctrl-click a subpart or prim in the text editor to open it in the 3D editor and jump straight to it (cmd-click on Mac).
 -  ...use a faster way to move (G), rotate (R) and scale (S) (press G, S or R on the 3D view, press X, Y or Z to lock to an axis. Or ctrl-shift-x and so on to lock to a plane.).
@@ -94,7 +102,7 @@ The following critical issues are fixed:
 2. It was possible to assign a key twice (with a newly introduced shortcut).
 
 
-# 22 Jun 2024
+### 22 Jun 2024
 With the release of 1.8.80 you are able to...
 -  ...do simple math in the text editor (e.g. (-3+5)*2 and hit enter).
 -  ...do simple math in floating point number input fields.
@@ -107,7 +115,7 @@ The following critical issue is fixed:
 1. Undoing at the end of the file led to wrong line number.
 
 
-# 10 Jun 2024
+### 10 Jun 2024
 With the release of 1.8.79 you are able to...
 -  ...inline a selection without any comments (ctrl+click on inline button).
 -  ...decide if the right mouse click cancels the action to add a line/triangle/quad or not. Cancel is not the default anymore! ("Tools..."->"Options...").
@@ -119,7 +127,7 @@ The following critical issues are fixed:
 3. It was not possible to import empty STL files without an error ("File not found" was displayed).
 
 
-# 31 May 2024
+### 31 May 2024
 With the release of 1.8.78 you are able to...
 -  ...move a set of subfiles to the manipulator, using "Move a selected Subfile to the Manipulator" (only one subfile was supported before).
 -  ...customise Edger2 in the options ("Tools..."->"Options...") to include or not include unmatched edges by default.
@@ -130,7 +138,7 @@ The following critical issue is fixed:
 1. Rounding in the text editor did not update the vertex meta commands.
 
 
-# 26 Mar 2024
+### 26 Mar 2024
 With the release of 1.8.77 you are able to...
 -  ...benefit from improved accuracy of "Move the Manipulator to the Average Point of the Selection".
 
@@ -139,7 +147,7 @@ The following critical issues are fixed:
 2. Sometimes, the triangle to quad conversion tool didn't use the selected triangles, but another nearby one.
 
 
-# 15 Mar 2024
+### 15 Mar 2024
 With the release of 1.8.76 you are able to...
 -  ...be warned about "slashes" in subfile references and you can "Quick Fix" it.
 -  ..."Exclude Unmatched Edges" by default in Edger2.
@@ -148,7 +156,7 @@ The following critical issue is fixed, finally:
 1. The 3D manipulator orientation got polluted during rotation.
 
 
-# 04 Feb 2024
+### 04 Feb 2024
 With the release of 1.8.75 you are able to...
 -  ...export a reference card (cheat sheet) for LDPE ("?" button).
 -  ...lock the protractor angle between the opposite and adjacent side.
@@ -162,7 +170,7 @@ The following critical issues are fixed:
 3. The "Smooth Vertices" action had swapped labels for "Iterations:" and "Factor:".
 
 
-# 11 Dec 2023
+### 11 Dec 2023
 With the release of 1.8.74 you are able to...
 -  ...use a "stud" grid setting (Plate 1 x 1, Y = 8 LDU, XZ = 10 LDU half-stud).
 -  ...see an optional "x", "y", "z" on the coloured axes of the coordinate system (activate with "Tools..."->"Options..."->"Show Axis Labels", or with the 3D view context menu "View Actions"->"Axis Label").
@@ -174,7 +182,7 @@ The following critical issue is fixed:
 1. Creating/opening a project kept the "Part Review" active, when doing a review.
 
 
-# 01 Nov 2023
+### 01 Nov 2023
 With the release of 1.8.73 you are able to...
 -  ...align and distribute objects (isolated vertices, lines, triangles, quads and subfiles). It behaves differently if "Move Adjacent Data" is ON or OFF. ON keeps the objects connected together. OFF will seperate them.
 -  ...snap vertices and subfiles to the current grid.
@@ -186,7 +194,7 @@ The following critical issue is fixed:
 1. Wrong "Invalid number format" warning on "!LPE DISTANCE".
 
 
-# 07 Oct 2023
+### 07 Oct 2023
 With the release of 1.8.72 you are able to...
 -  ...use a shortcut for "Merge to Nearest Vertex" (Ctrl+N).
 -  ...see a hint for wrong comment lines with just one slash (with quick-fix option).
@@ -199,7 +207,7 @@ The following critical issues are fixed:
 2. A direct colour is not an invalid number (when it contains the letter "E").
 
 
-# 19 Sep 2023
+### 19 Sep 2023
 With the release of 1.8.71 you are able to...
 -  ...benefit from a slightly faster program start (technical details: JDK upgrade from version 17 to 21, LWJGL upgrade from version 3.2 to 3.3)
 -  ...use the !DATA meta command (currently limited to small PNGs of 42KB size)
@@ -211,7 +219,7 @@ The following critical issues are fixed:
 2. Selecting a line via click on the line number in the text editor and then showing the selection in the 3D view, selected the next line, too.
 
 
-# 19 Aug 2023
+### 19 Aug 2023
 With the release of 1.8.70 you are able to...
 -  ...show the error logfiles only ("Tools..." -> "Show Error Logs"). I removed and disabled the upload feature.
 -  ...get no error log entry for the case when a file could not be downloaded for part review from library.ldraw.org (there is still an error dialog, when this happens).
@@ -225,7 +233,7 @@ The following critical issues are fixed:
 5. A saved part file was not closed when the user wanted to open or create a new project and decided not keep the current files and views open.
 
 
-# 15 Jul 2023
+### 15 Jul 2023
 With the release of 1.8.69 you are able to...
 -  ...import STL files (via "Open Part File" -> choose "STL-File (*.stl)", instead of "LDraw Source File (*.dat)").
 
@@ -234,7 +242,7 @@ The following critical issues are fixed:
 2. "BFC INVERTNEXT" was invalid when the previous subfile was not found.
 
 
-# 04 Jun 2023
+### 04 Jun 2023
 With the release of 1.8.68 you are able to...
 -  ...lock/unlock the viewport rotation.
 -  ...see "Author:" and "Name:" formatted as bold and italic in the text editor.
