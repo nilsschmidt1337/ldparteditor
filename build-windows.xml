@@ -297,7 +297,7 @@
             <arg value="--input"/>
             <arg value="${binariesFolder}/${windowsFolder}" />
             <arg value="--app-version"/>
-            <arg value="1.8.89" />
+            <arg value="1.8.90" />
             <arg value="--runtime-image"/>
             <arg value="${binariesFolder}/jvm-image" />
             <arg value="--temp"/>
