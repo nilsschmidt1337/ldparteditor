@@ -146,7 +146,13 @@ public enum Inliner {
         for (Integer l : lineNumbers) {
             String line = getLine(l, text2);
             NLogger.debug(Inliner.class, "Inlining: {0}", line); //$NON-NLS-1$
-            text2 = Inliner.inline(l, line, text2, datFile, false);
+            try {
+                text2 = Inliner.inline(l, line, text2, datFile, false);
+            } catch (IllegalArgumentException | IndexOutOfBoundsException | IllegalStateException e) {
+                // To inline binary files shouldn't work!
+                logInlineError(line, e);
+                return;
+            }
         }
         Inliner.datfile = null;
         cText.setText(restoreLineTermination(text2));
@@ -236,7 +242,12 @@ public enum Inliner {
             bfcStatusTarget = bfcStatusToLine.get(l);
             String line = getLine(l, text2);
             NLogger.debug(Inliner.class, "Inlining: {0}", line); //$NON-NLS-1$
-            text2 = Inliner.inline(l, line, text2, datFile, true);
+            try {
+                text2 = Inliner.inline(l, line, text2, datFile, true);
+            } catch (IllegalArgumentException | IndexOutOfBoundsException | IllegalStateException e) {
+                logInlineError(line, e);
+                return;
+            }
         }
         cText.setText(restoreLineTermination(text2));
         int tl = cText.getText().length();
@@ -382,4 +393,8 @@ public enum Inliner {
         return source;
     }
 
+    private static void logInlineError(String line, Exception e) {
+        NLogger.error(Inliner.class, e);
+        NLogger.error(Inliner.class, e.getMessage() + ". On line: " + line); //$NON-NLS-1$
+    }
 }

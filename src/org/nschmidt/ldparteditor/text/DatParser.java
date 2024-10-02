@@ -104,7 +104,7 @@ public enum DatParser {
         int linetype = 0;
         final String[] dataSegments = WHITESPACE.split(line.trim());
         char c;
-        if (dataSegments.length < 1 || dataSegments[0].length() >  1 || !Character.isDigit(c = dataSegments[0].charAt(0))) {
+        if (dataSegments.length < 1 || dataSegments[0].length() != 1 || !Character.isDigit(c = dataSegments[0].charAt(0))) {
             result.add(new ParsingResult(I18n.DATPARSER_INVALID_TYPE, "[E0D] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             return new ArrayList<>(result);
         }
@@ -661,6 +661,7 @@ public enum DatParser {
             }
             sb.append(dataSegments[dataSegments.length - 1]);
             String shortFilename = sb.toString();
+            final File localFile = new File(shortFilename);
             boolean isLowercase = shortFilename.equals(shortFilename.toLowerCase(Locale.ENGLISH));
             boolean containsSlash = shortFilename.chars().anyMatch(c -> c == '/');
             if (containsSlash) {
@@ -775,6 +776,11 @@ public enum DatParser {
                     result.clear();
                     absoluteFilename = shortFilename;
                 }
+            }
+
+            if (!fileExists && fileToOpen == null && localFile.exists() && localFile.isFile() && localFile.canRead()) {
+                fileToOpen = localFile;
+                fileExists = true;
             }
 
             if (isVirtual) {

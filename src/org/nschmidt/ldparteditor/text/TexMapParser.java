@@ -455,6 +455,7 @@ public enum TexMapParser {
             }
             sb.append(dataSegments[dataSegments.length - 1]);
             String shortFilename = sb.toString();
+            final File localFile = new File(shortFilename);
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
             shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             if (alreadyParsed.contains(shortFilename)) {
@@ -525,6 +526,12 @@ public enum TexMapParser {
                 }
                 if (isVirtual) break;
             }
+
+            if (!fileExists && fileToOpen == null && localFile.exists() && localFile.isFile() && localFile.canRead()) {
+                fileToOpen = localFile;
+                fileExists = true;
+            }
+
             if (isVirtual) {
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
