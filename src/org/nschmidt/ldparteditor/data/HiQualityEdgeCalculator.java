@@ -145,33 +145,37 @@ public enum HiQualityEdgeCalculator {
                 int startIndex2 = index + 1;
 
                 for (int i = 0; i < 7; i++) {
-                    tagetIndices.add(index + 3);
-                    tagetIndices.add(index + 1);
-                    tagetIndices.add(index);
-                    tagetIndices.add(index + 2);
+                    addTriangleIndicies(tagetIndices,
+                        index + 3,
+                        index + 1,
+                        index,
+                        index + 2);
                     index += 2;
                 }
 
-                tagetIndices.add(index);
-                tagetIndices.add(startIndex1);
-                tagetIndices.add(startIndex2);
-                tagetIndices.add(index + 1);
+                addTriangleIndicies(tagetIndices,
+                    index,
+                    startIndex1,
+                    startIndex2,
+                    index + 1);
             } else {
                 int startIndex1 = index;
                 int startIndex2 = index + 1;
 
                 for (int i = 0; i < 7; i++) {
-                    tagetIndices.add(index + 3);
-                    tagetIndices.add(index + 2);
-                    tagetIndices.add(index);
-                    tagetIndices.add(index + 1);
+                    addTriangleIndicies(tagetIndices,
+                        index + 3,
+                        index + 2,
+                        index,
+                        index + 1);
                     index += 2;
                 }
 
-                tagetIndices.add(index);
-                tagetIndices.add(index + 1);
-                tagetIndices.add(startIndex2);
-                tagetIndices.add(startIndex1);
+                addTriangleIndicies(tagetIndices,
+                        index,
+                        index + 1,
+                        startIndex2,
+                        startIndex1);
             }
         }
 
@@ -181,6 +185,16 @@ public enum HiQualityEdgeCalculator {
         result[3] = copyData(dataTransparentCondlines, indicesTransparentCondlines);
 
         return result;
+    }
+
+    private static void addTriangleIndicies(List<Integer> indices, int index1, int index2, int index3, int index4) {
+        indices.add(index1);
+        indices.add(index2);
+        indices.add(index3);
+
+        indices.add(index3);
+        indices.add(index4);
+        indices.add(index1);
     }
 
     private static void addPoint(List<Float> data, Matrix4f matrix,

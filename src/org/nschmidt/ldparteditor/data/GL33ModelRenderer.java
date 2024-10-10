@@ -2451,7 +2451,7 @@ public class GL33ModelRenderer {
                 GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboCondlinesIndices);
                 GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
 
-                // A vertex consists of 6 floats, a quad of 4 vertices
+                // A vertex consists of 6 floats, a triangle of 3 vertices
                 final int indexCount = indices.length;
 
                 GL20.glEnableVertexAttribArray(0);
@@ -2464,7 +2464,7 @@ public class GL33ModelRenderer {
                 stack.glPushMatrix();
                 stack.glTranslatef(tr.x, tr.y, tr.z);
 
-                GL11.glDrawElements(GL11.GL_QUADS, indexCount, GL11.GL_UNSIGNED_INT, 0);
+                GL11.glDrawElements(GL11.GL_TRIANGLES, indexCount, GL11.GL_UNSIGNED_INT, 0);
 
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
                 GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -2488,7 +2488,7 @@ public class GL33ModelRenderer {
                 GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboCondlinesIndices);
                 GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
 
-                // A vertex consists of 18 floats, a quad of 4 vertices
+                // A vertex consists of 18 floats, a triangle of 3 vertices
                 final int indexCount = indices.length;
 
                 GL20.glEnableVertexAttribArray(0);
@@ -2510,7 +2510,7 @@ public class GL33ModelRenderer {
                 stack.glPushMatrix();
                 stack.glTranslatef(tr.x, tr.y, tr.z);
 
-                GL11.glDrawElements(GL11.GL_QUADS, indexCount, GL11.GL_UNSIGNED_INT, 0);
+                GL11.glDrawElements(GL11.GL_TRIANGLES, indexCount, GL11.GL_UNSIGNED_INT, 0);
 
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
                 GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);

@@ -62,7 +62,7 @@ public class HiQualityEdgeCalculatorTest {
         assertEquals(0, result[1].vertices().length);
         assertEquals(0, result[2].vertices().length);
         assertEquals(0, result[3].vertices().length);
-        assertEquals(32, result[0].indices().length);
+        assertEquals(48, result[0].indices().length);
         assertEquals(0, result[1].indices().length);
         assertEquals(0, result[2].indices().length);
         assertEquals(0, result[3].indices().length);
@@ -87,7 +87,7 @@ public class HiQualityEdgeCalculatorTest {
         assertEquals(0, result[2].vertices().length);
         assertEquals(0, result[3].vertices().length);
         assertEquals(0, result[0].indices().length);
-        assertEquals(32, result[1].indices().length);
+        assertEquals(48, result[1].indices().length);
         assertEquals(0, result[2].indices().length);
         assertEquals(0, result[3].indices().length);
     }
@@ -113,7 +113,7 @@ public class HiQualityEdgeCalculatorTest {
         assertEquals(0, result[1].vertices().length);
         assertEquals(0, result[2].vertices().length);
         assertEquals(0, result[3].vertices().length);
-        assertEquals(32, result[0].indices().length);
+        assertEquals(48, result[0].indices().length);
         assertEquals(0, result[1].indices().length);
         assertEquals(0, result[2].indices().length);
         assertEquals(0, result[3].indices().length);
@@ -139,7 +139,7 @@ public class HiQualityEdgeCalculatorTest {
         assertEquals(0, result[3].vertices().length);
         assertEquals(0, result[0].indices().length);
         assertEquals(0, result[1].indices().length);
-        assertEquals(32, result[2].indices().length);
+        assertEquals(48, result[2].indices().length);
         assertEquals(0, result[3].indices().length);
     }
 
@@ -161,7 +161,7 @@ public class HiQualityEdgeCalculatorTest {
         assertEquals(0, result[1].vertices().length);
         assertEquals(0, result[2].vertices().length);
         assertEquals(0, result[3].vertices().length);
-        assertEquals(32, result[0].indices().length);
+        assertEquals(48, result[0].indices().length);
         assertEquals(0, result[1].indices().length);
         assertEquals(0, result[2].indices().length);
         assertEquals(0, result[3].indices().length);
@@ -188,7 +188,7 @@ public class HiQualityEdgeCalculatorTest {
         assertEquals(0, result[0].indices().length);
         assertEquals(0, result[1].indices().length);
         assertEquals(0, result[2].indices().length);
-        assertEquals(32, result[3].indices().length);
+        assertEquals(48, result[3].indices().length);
     }
 
     @Test
@@ -214,7 +214,7 @@ public class HiQualityEdgeCalculatorTest {
         assertEquals(0, result[3].vertices().length);
         assertEquals(0, result[0].indices().length);
         assertEquals(0, result[1].indices().length);
-        assertEquals(32, result[2].indices().length);
+        assertEquals(48, result[2].indices().length);
         assertEquals(0, result[3].indices().length);
     }
 
