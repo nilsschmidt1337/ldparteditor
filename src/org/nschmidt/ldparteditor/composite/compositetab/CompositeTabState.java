@@ -73,7 +73,7 @@ public class CompositeTabState {
     }
 
     public void setFileNameObj(DatFile fileNameObj) {
-        filename = new File(fileNameObj.getNewName()).getName();
+        filename = fileNameObj.getShortNameMixedCase();
         filepath = fileNameObj.getNewName();
         getTab().setToolTipText(filepath);
         setFilenameWithStar(filename + "*"); //$NON-NLS-1$

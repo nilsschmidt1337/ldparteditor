@@ -2888,7 +2888,7 @@ public class Editor3DWindow extends Editor3DDesign {
             if (df3 == null) continue;
             openFiles.remove(df3);
             CTabItem tItem = new CTabItem(tabFolderOpenDatFilesPtr[0], SWT.NONE);
-            tItem.setText(df3.getShortName() + (Project.getUnsavedFiles().contains(df3) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
+            tItem.setText(df3.getShortNameMixedCase() + (Project.getUnsavedFiles().contains(df3) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
             tItem.setToolTipText(df3.getNewName());
             tItem.setData(df3);
             if (df3.equals(Project.getFileToEdit())) {
@@ -2899,7 +2899,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         for (DatFile df2 : openFiles) {
             CTabItem tItem = new CTabItem(tabFolderOpenDatFilesPtr[0], SWT.NONE);
-            tItem.setText(df2.getShortName() + (Project.getUnsavedFiles().contains(df2) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
+            tItem.setText(df2.getShortNameMixedCase() + (Project.getUnsavedFiles().contains(df2) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
             tItem.setToolTipText(df2.getNewName());
             tItem.setData(df2);
             if (df2.equals(Project.getFileToEdit())) {

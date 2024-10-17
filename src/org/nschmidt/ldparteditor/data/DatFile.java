@@ -1536,6 +1536,17 @@ public final class DatFile {
     public String getShortName() {
         String shortFilename = new File(newName).getName();
         shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
+        shortFilename = appendTypeInfoToShortName(shortFilename);
+        return shortFilename;
+    }
+
+    public String getShortNameMixedCase() {
+        String shortFilename = new File(newName).getName();
+        shortFilename = appendTypeInfoToShortName(shortFilename);
+        return shortFilename;
+    }
+
+    private String appendTypeInfoToShortName(String shortFilename) {
         shortFilename = shortFilename.replace("\\", File.separator); //$NON-NLS-1$
         if (type.equals(DatType.SUBPART)) {
             shortFilename = "S" + File.separator + shortFilename; //$NON-NLS-1$

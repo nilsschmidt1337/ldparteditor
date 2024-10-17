@@ -119,7 +119,7 @@ public enum GuiStatusManager {
 
             final DatFile df = c3d.getLockableDatFileReference();
             sb.append(" "); //$NON-NLS-1$
-            sb.append(df.getShortName());
+            sb.append(df.getShortNameMixedCase());
             sb.append(", "); //$NON-NLS-1$
             sb.append(I18n.PERSPECTIVE_ZOOM);
             sb.append(": "); //$NON-NLS-1$
@@ -352,7 +352,7 @@ public enum GuiStatusManager {
         updateSelection(sb, vm);
 
         sb.append(" "); //$NON-NLS-1$
-        sb.append(df.getShortName());
+        sb.append(df.getShortNameMixedCase());
         Editor3DWindow.getStatusLabel().setText(sb.toString());
         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
