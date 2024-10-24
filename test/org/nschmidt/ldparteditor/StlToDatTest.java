@@ -27,7 +27,7 @@ import org.nschmidt.ldparteditor.workbench.UserSettingState;
 
 @SuppressWarnings("java:S5960")
 public class StlToDatTest {
-    
+
     @Test
     public void testStlImportOfAsciiFile() {
         UserSettingState userSettings = createTestUserSettings();
@@ -35,7 +35,7 @@ public class StlToDatTest {
         String result = Stl2Dat.convertStlToDatFile(resPath, userSettings);
         assertEquals(EXPECTED_ASCII.replace("\r", "").replace("\n", "\r\n"), result); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
-    
+
     @Test
     public void testStlImportOfBinaryFile() {
         UserSettingState userSettings = createTestUserSettings();
@@ -43,15 +43,15 @@ public class StlToDatTest {
         String result = Stl2Dat.convertStlToDatFile(resPath, userSettings);
         assertEquals(EXPECTED_BINARY.replace("\r", "").replace("\n", "\r\n"), result); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
-    
+
     private UserSettingState createTestUserSettings() {
         UserSettingState userSettings = new UserSettingState();
         userSettings.setLdrawUserName("BlackBrick89"); //$NON-NLS-1$
         userSettings.setRealUserName("Nils Schmidt"); //$NON-NLS-1$
         return userSettings;
     }
-    
-    private String resourcePath(String fileName) {
+
+    public static String resourcePath(String fileName) {
         URL stlToTest = Thread.currentThread().getContextClassLoader().getResource(fileName);
         String resPath = "(none)"; //$NON-NLS-1$
         try {
@@ -59,10 +59,10 @@ public class StlToDatTest {
         } catch (URISyntaxException e) {
             fail("Resource " + fileName + " was not found."); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        
+
         return resPath;
     }
-    
+
     private static final String EXPECTED_ASCII = """
 0 STL-Import
 0 Name: stl.dat
@@ -193,7 +193,7 @@ public class StlToDatTest {
 3 16 -1000 0 0 0 -995 -105 0 -999 -52
 3 16 -1000 0 0 0 -999 -52 0 -1000 0
 """; //$NON-NLS-1$
-    
+
     private static final String EXPECTED_BINARY = """
 0 STL-Import
 0 Name: stl.dat
