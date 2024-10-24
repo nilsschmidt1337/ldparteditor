@@ -343,6 +343,8 @@
         <!-- Copy files required for testing -->
         <copy file="${testFolder}/stl2dat_ascii.stl" overwrite="true" todir="${targetFolder}"/>
         <copy file="${testFolder}/stl2dat_binary.stl" overwrite="true" todir="${targetFolder}"/>
+        <copy file="${testFolder}/3782.jpg-NetworkShortcut.lnk" overwrite="true" todir="${targetFolder}"/>
+        <copy file="${testFolder}/3782.jpg-Shortcut.lnk" overwrite="true" todir="${targetFolder}"/>
         
         <!-- Compile tests -->
         <javac
