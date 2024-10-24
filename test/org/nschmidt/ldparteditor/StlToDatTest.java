@@ -51,7 +51,7 @@ public class StlToDatTest {
         return userSettings;
     }
 
-    public static String resourcePath(String fileName) {
+    private String resourcePath(String fileName) {
         URL stlToTest = Thread.currentThread().getContextClassLoader().getResource(fileName);
         String resPath = "(none)"; //$NON-NLS-1$
         try {
