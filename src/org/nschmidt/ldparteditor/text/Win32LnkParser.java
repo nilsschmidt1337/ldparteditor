@@ -34,6 +34,26 @@ public enum Win32LnkParser {
         try (DataInputStream is = new DataInputStream(new FileInputStream(lnkFile))) {
             // FIXME Needs implementation!
 
+            // Read header size
+            final int headerSize = Integer.reverseBytes(is.readInt());
+            System.out.println(Integer.toHexString(headerSize));
+
+            // Read and skip the header
+            is.readNBytes(headerSize);
+
+            // Read and skip 4 bytes of LinkFlags
+            is.readInt();
+
+            // Read and skip 4 bytes of FileAttributesFlags
+            is.readInt();
+
+            // Read and skip 4 bytes of HotKeyFlags
+            is.readInt();
+
+            // Read and skip the LinkTargetIDList
+            final int idListSize = is.readUnsignedShort();
+            is.readNBytes(idListSize);
+
         } catch (IOException ex) {
             NLogger.debug(Win32LnkParser.class, ex);
         }
