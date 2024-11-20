@@ -21,6 +21,8 @@ public class Win32LnkParserTest {
             String resPath = resourcePath("3782.jpg-Shortcut.lnk"); //$NON-NLS-1$
 
             File result = Win32LnkParser.resolveLnkShortcut(new File(resPath));
+            // HasLinkTargetIDList is true
+            // HasLinkInfo is true
 
             assertTrue(result.getName().contains("3782.jpg")); //$NON-NLS-1$
         });

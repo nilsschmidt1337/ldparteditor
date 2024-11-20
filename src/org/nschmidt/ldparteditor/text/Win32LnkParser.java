@@ -19,6 +19,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.nschmidt.ldparteditor.logger.NLogger;
 
@@ -31,6 +32,8 @@ public enum Win32LnkParser {
      * @return the actual file.
      */
     public static File resolveLnkShortcut(File lnkFile) {
+        NLogger.debug(Win32LnkParser.class, "Resolving link of: {0}", lnkFile.getAbsolutePath()); //$NON-NLS-1$
+
         try (DataInputStream is = new DataInputStream(new FileInputStream(lnkFile))) {
             // FIXME Needs implementation!
 
@@ -121,35 +124,35 @@ public enum Win32LnkParser {
             NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_ENCRYPTED           : {0}", flag(header[21], 6)); //$NON-NLS-1$
 
             if (hasLinkTargetIDList) {
-                final int targetListSize = Integer.reverseBytes(is.readShort());
+                final long targetListSize = readUnsignedShort(is);
                 NLogger.debug(Win32LnkParser.class, "IDListSize: {0}", targetListSize); //$NON-NLS-1$
 
                 // Read the target info
-                final byte[] targetListInfo = is.readNBytes(Math.max(targetListSize - 4, 0));
+                final byte[] targetListInfo = is.readNBytes((int) Math.max(targetListSize, 0));
 
             }
 
             if (hasLinkInfo) {
-                final int linkInfoSize = is.readShort();
+                final long linkInfoSize = readUnsignedShort(is);
                 NLogger.debug(Win32LnkParser.class, "LinkInfoSize: {0}", linkInfoSize); //$NON-NLS-1$
 
                 // Read the link info
-                final byte[] linkInfo = is.readNBytes(linkInfoSize - 4);
+                final byte[] linkInfo = is.readNBytes((int) Math.max(linkInfoSize, 0));
             }
 
-            final StringBuilder sb2 = new StringBuilder();
 
             // StringData
             // name + relative path (thats the info we want!)
             if (hasName) {
-                final  int charCount = byteToInt(is.readByte()) << 8 + byteToInt(is.readByte());
-                System.out.println(charCount);
+                final StringBuilder sb2 = new StringBuilder();
+                final long charCount = readUnsignedShort(is);
                 for (int i = 0; i < charCount; i++) {
-                    //sb2.append((char) is.readByte());
+                    sb2.append((char) is.readByte());
                 }
+
+                NLogger.error(Win32LnkParser.class, "Name? :" + sb2.toString()); //$NON-NLS-1$
             }
 
-            NLogger.error(Win32LnkParser.class, sb2.toString());
 
             final StringBuilder sb3 = new StringBuilder();
 
@@ -171,6 +174,13 @@ public enum Win32LnkParser {
     }
 
     private static boolean flag(final byte b, int bitIndex) {
-        return (byteToInt(b) & (1 << bitIndex)) > 0;
+        return (byteToInt(b) & (1 << (7 - bitIndex))) > 0;
+    }
+
+    private static long readUnsignedShort(InputStream is) throws IOException {
+        final long bLower = is.read();
+        final long bUpper = is.read();
+        // this is lower endian
+        return bLower | (bUpper << 8);
     }
 }
