@@ -42,31 +42,31 @@ public enum Win32LnkParser {
             NLogger.debug(Win32LnkParser.class, "HeaderSize: {0}", Integer.toHexString(headerSize)); //$NON-NLS-1$
 
             // Read the header
-            final byte[] header = is.readNBytes(headerSize - 4);
+            final int[] header = readNBytes(is ,headerSize - 4);
 
             // CLSID
             final StringBuilder sb = new StringBuilder();
             sb.append("CLSID: "); //$NON-NLS-1$
-            sb.append(Integer.toHexString(byteToInt(header[3])));
-            sb.append(Integer.toHexString(byteToInt(header[2])));
-            sb.append(Integer.toHexString(byteToInt(header[1])));
-            sb.append(Integer.toHexString(byteToInt(header[0])));
+            sb.append(Integer.toHexString(header[3]));
+            sb.append(Integer.toHexString(header[2]));
+            sb.append(Integer.toHexString(header[1]));
+            sb.append(Integer.toHexString(header[0]));
             sb.append("-"); //$NON-NLS-1$
-            sb.append(Integer.toHexString(byteToInt(header[5])));
-            sb.append(Integer.toHexString(byteToInt(header[4])));
+            sb.append(Integer.toHexString(header[5]));
+            sb.append(Integer.toHexString(header[4]));
             sb.append("-"); //$NON-NLS-1$
-            sb.append(Integer.toHexString(byteToInt(header[7])));
-            sb.append(Integer.toHexString(byteToInt(header[6])));
+            sb.append(Integer.toHexString(header[7]));
+            sb.append(Integer.toHexString(header[6]));
             sb.append("-"); //$NON-NLS-1$
-            sb.append(Integer.toHexString(byteToInt(header[8])));
-            sb.append(Integer.toHexString(byteToInt(header[9])));
+            sb.append(Integer.toHexString(header[8]));
+            sb.append(Integer.toHexString(header[9]));
             sb.append("-"); //$NON-NLS-1$
-            sb.append(Integer.toHexString(byteToInt(header[10])));
-            sb.append(Integer.toHexString(byteToInt(header[11])));
-            sb.append(Integer.toHexString(byteToInt(header[12])));
-            sb.append(Integer.toHexString(byteToInt(header[13])));
-            sb.append(Integer.toHexString(byteToInt(header[14])));
-            sb.append(Integer.toHexString(byteToInt(header[15])));
+            sb.append(Integer.toHexString(header[10]));
+            sb.append(Integer.toHexString(header[11]));
+            sb.append(Integer.toHexString(header[12]));
+            sb.append(Integer.toHexString(header[13]));
+            sb.append(Integer.toHexString(header[14]));
+            sb.append(Integer.toHexString(header[15]));
             NLogger.debug(Win32LnkParser.class, sb.toString());
 
             // LinkFlags
@@ -81,7 +81,7 @@ public enum Win32LnkParser {
             NLogger.debug(Win32LnkParser.class, "HasWorkingDir        : {0}", flag(header[16], 4)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasArguments         : {0}", flag(header[16], 5)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasIconLocation      : {0}", flag(header[16], 6)); //$NON-NLS-1$
-            NLogger.debug(Win32LnkParser.class, "IsUnicode            : {0}", flag(header[16], 7)); //$NON-NLS-1$
+            NLogger.debug(Win32LnkParser.class, "IsUnicode            : {0}\n", flag(header[16], 7)); //$NON-NLS-1$
 
             NLogger.debug(Win32LnkParser.class, "ForceNoLinkInfo      : {0}", flag(header[17], 0)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasExpString         : {0}", flag(header[17], 1)); //$NON-NLS-1$
@@ -90,7 +90,7 @@ public enum Win32LnkParser {
             NLogger.debug(Win32LnkParser.class, "HasDarwinID          : {0}", flag(header[17], 4)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "RunAsUser            : {0}", flag(header[17], 5)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasExpIcon           : {0}", flag(header[17], 6)); //$NON-NLS-1$
-            NLogger.debug(Win32LnkParser.class, "NoPidlAlias          : {0}", flag(header[17], 7)); //$NON-NLS-1$
+            NLogger.debug(Win32LnkParser.class, "NoPidlAlias          : {0}\n", flag(header[17], 7)); //$NON-NLS-1$
 
             NLogger.debug(Win32LnkParser.class, "Unused2              : {0}", flag(header[18], 0)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "RunWithShimLayer     : {0}", flag(header[18], 1)); //$NON-NLS-1$
@@ -99,7 +99,7 @@ public enum Win32LnkParser {
             NLogger.debug(Win32LnkParser.class, "DisableLinkPathTracking     : {0}", flag(header[18], 4)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "DisableKnownFolderTracking  : {0}", flag(header[18], 5)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "DisableKnownFolderAlias     : {0}", flag(header[18], 6)); //$NON-NLS-1$
-            NLogger.debug(Win32LnkParser.class, "AllowLinkToLink             : {0}", flag(header[18], 7)); //$NON-NLS-1$
+            NLogger.debug(Win32LnkParser.class, "AllowLinkToLink             : {0}\n", flag(header[18], 7)); //$NON-NLS-1$
 
             NLogger.debug(Win32LnkParser.class, "UnaliasOnSave               : {0}", flag(header[19], 0)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "PreferEnvironmentPath       : {0}", flag(header[19], 1)); //$NON-NLS-1$
@@ -113,7 +113,7 @@ public enum Win32LnkParser {
             NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_DIRECTORY           : {0}", flag(header[20], 4)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_ARCHIVE             : {0}", flag(header[20], 5)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "Reserved2                          : {0}", flag(header[20], 6)); //$NON-NLS-1$
-            NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_NORMAL              : {0}", flag(header[20], 7)); //$NON-NLS-1$
+            NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_NORMAL              : {0}\n", flag(header[20], 7)); //$NON-NLS-1$
 
             NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_TEMPORARY           : {0}", flag(header[21], 0)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_SPARSE_FILE         : {0}", flag(header[21], 1)); //$NON-NLS-1$
@@ -121,7 +121,7 @@ public enum Win32LnkParser {
             NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_COMPRESSED          : {0}", flag(header[21], 3)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_OFFLINE             : {0}", flag(header[21], 4)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_NOT_CONTENT_INDEXED : {0}", flag(header[21], 5)); //$NON-NLS-1$
-            NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_ENCRYPTED           : {0}", flag(header[21], 6)); //$NON-NLS-1$
+            NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_ENCRYPTED           : {0}\n", flag(header[21], 6)); //$NON-NLS-1$
 
             if (hasLinkTargetIDList) {
                 final long targetListSize = readUnsignedShort(is);
@@ -169,12 +169,8 @@ public enum Win32LnkParser {
         return lnkFile;
     }
 
-    private static int byteToInt(final byte b) {
-        return b < 0 ?  128 - b : b;
-    }
-
-    private static boolean flag(final byte b, int bitIndex) {
-        return (byteToInt(b) & (1 << (7 - bitIndex))) > 0;
+    private static boolean flag(final int b, int bitIndex) {
+        return (b & (1 << bitIndex)) > 0;
     }
 
     private static long readUnsignedShort(InputStream is) throws IOException {
@@ -182,5 +178,14 @@ public enum Win32LnkParser {
         final long bUpper = is.read();
         // this is lower endian
         return bLower | (bUpper << 8);
+    }
+
+    private static int[] readNBytes(InputStream is, int n) throws IOException {
+        final int[] result = new int[n];
+        for (int i = 0; i < n; i++) {
+            result[i] = is.read();
+        }
+
+        return result;
     }
 }
