@@ -73,12 +73,14 @@ public enum Win32LnkParser {
             final boolean hasLinkTargetIDList = flag(header[16], 0);
             final boolean hasLinkInfo = flag(header[16], 1);
             final boolean hasName = flag(header[16], 2);
+            final boolean hasRelativePath = flag(header[16], 3);
+            final boolean hasWorkingDir = flag(header[16], 4);
 
             NLogger.debug(Win32LnkParser.class, "HasLinkTargetIDList  : {0}", hasLinkTargetIDList); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasLinkInfo          : {0}", hasLinkInfo); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasName              : {0}", hasName); //$NON-NLS-1$
-            NLogger.debug(Win32LnkParser.class, "HasRelativePath      : {0}", flag(header[16], 3)); //$NON-NLS-1$
-            NLogger.debug(Win32LnkParser.class, "HasWorkingDir        : {0}", flag(header[16], 4)); //$NON-NLS-1$
+            NLogger.debug(Win32LnkParser.class, "HasRelativePath      : {0}", hasRelativePath); //$NON-NLS-1$
+            NLogger.debug(Win32LnkParser.class, "HasWorkingDir        : {0}", hasWorkingDir); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasArguments         : {0}", flag(header[16], 5)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasIconLocation      : {0}", flag(header[16], 6)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "IsUnicode            : {0}\n", flag(header[16], 7)); //$NON-NLS-1$
@@ -128,40 +130,35 @@ public enum Win32LnkParser {
                 NLogger.debug(Win32LnkParser.class, "IDListSize: {0}", targetListSize); //$NON-NLS-1$
 
                 // Read the target info
-                final byte[] targetListInfo = is.readNBytes((int) Math.max(targetListSize, 0));
+                is.readNBytes((int) Math.max(targetListSize, 0));
 
             }
 
             if (hasLinkInfo) {
-                final long linkInfoSize = readUnsignedShort(is);
+                final long linkInfoSize = readUnsignedInt(is);
                 NLogger.debug(Win32LnkParser.class, "LinkInfoSize: {0}", linkInfoSize); //$NON-NLS-1$
 
-                // Read the link info
-                final byte[] linkInfo = is.readNBytes((int) Math.max(linkInfoSize, 0));
+                // Read the link info (-4 because the size was already part of the link info section)
+                is.readNBytes((int) Math.max(linkInfoSize-4, 0));
             }
 
 
             // StringData
-            // name + relative path (thats the info we want!)
             if (hasName) {
-                final StringBuilder sb2 = new StringBuilder();
-                final long charCount = readUnsignedShort(is);
-                for (int i = 0; i < charCount; i++) {
-                    sb2.append((char) is.readByte());
-                }
-
-                NLogger.error(Win32LnkParser.class, "Name? :" + sb2.toString()); //$NON-NLS-1$
+                final String name = readString(is);
+                NLogger.error(Win32LnkParser.class, "name? :" + name); //$NON-NLS-1$
             }
 
-
-            final StringBuilder sb3 = new StringBuilder();
-
-            while (is.available() > 0) {
-                sb3.append((char) is.readByte());
+            // workingDir + relative path (thats the info we want!)
+            if (hasRelativePath) {
+                final String relativePath = readString(is);
+                NLogger.error(Win32LnkParser.class, "relativePath? :" + relativePath); //$NON-NLS-1$
             }
 
-            NLogger.error(Win32LnkParser.class, sb3.toString());
-
+            if (hasWorkingDir) {
+                final String workingDir = readString(is);
+                NLogger.error(Win32LnkParser.class, "workingDir? :" + workingDir); //$NON-NLS-1$
+            }
         } catch (IOException ex) {
             NLogger.debug(Win32LnkParser.class, ex);
         }
@@ -169,8 +166,28 @@ public enum Win32LnkParser {
         return lnkFile;
     }
 
+    private static String readString(InputStream is) throws IOException {
+        final StringBuilder sb2 = new StringBuilder();
+        final long charCount = readUnsignedShort(is);
+        for (int i = 0; i < charCount; i++) {
+            sb2.append((char) readUnsignedShort(is));
+        }
+
+        // This is unicode or something else?
+        return sb2.toString();
+    }
+
     private static boolean flag(final int b, int bitIndex) {
         return (b & (1 << bitIndex)) > 0;
+    }
+
+    private static long readUnsignedInt(InputStream is) throws IOException {
+        final long bLowest = is.read();
+        final long bLower = is.read();
+        final long bUpper = is.read();
+        final long bUpmost = is.read();
+        // this is lower endian
+        return bLowest | (bLower << 8) | (bUpper << 16) | (bUpmost << 24);
     }
 
     private static long readUnsignedShort(InputStream is) throws IOException {
