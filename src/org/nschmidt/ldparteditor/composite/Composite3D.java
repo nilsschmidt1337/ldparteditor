@@ -113,6 +113,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolI
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
+import org.nschmidt.ldparteditor.text.Win32LnkParser;
 import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 import org.nschmidt.ldparteditor.widget.listener.Win32MouseWheelFilter;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
@@ -1308,6 +1309,8 @@ public class Composite3D extends ScalableComposite {
                     fileList = (String[]) event.data;
                     if (fileList != null) {
                         for (String f : fileList) {
+                            NLogger.debug(getClass(), f);
+                            f = Win32LnkParser.resolveLnkShortcut(f);
                             NLogger.debug(getClass(), f);
                             if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                 final File fileToOpen = new File(f);

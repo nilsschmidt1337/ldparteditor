@@ -90,6 +90,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveDatfileToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
+import org.nschmidt.ldparteditor.text.Win32LnkParser;
 import org.nschmidt.ldparteditor.workbench.EditorTextWindowState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -479,6 +480,8 @@ public class EditorTextWindow extends EditorTextDesign {
                         fileList = (String[]) event.data;
                         if (fileList != null) {
                             for (String f : fileList) {
+                                NLogger.debug(getClass(), f);
+                                f = Win32LnkParser.resolveLnkShortcut(f);
                                 NLogger.debug(getClass(), f);
                                 if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                     final File fileToOpen = new File(f);
@@ -1133,6 +1136,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     fileList = (String[]) event.data;
                     if (fileList != null) {
                         for (String f : fileList) {
+                            NLogger.debug(getClass(), f);
+                            f = Win32LnkParser.resolveLnkShortcut(f);
                             NLogger.debug(getClass(), f);
                             if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                 final File fileToOpen = new File(f);

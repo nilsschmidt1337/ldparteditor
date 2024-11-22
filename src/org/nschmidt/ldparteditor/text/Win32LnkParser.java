@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 import org.nschmidt.ldparteditor.logger.NLogger;
 
@@ -32,21 +33,25 @@ public enum Win32LnkParser {
 
     /**
      * Parses and resolves Windows *.lnk shortcut files
-     * @param lnkFile the shortcut file.
-     * @return the actual file.
+     * @param lnkPath the shortcut file path.
+     * @return the actual file path.
      */
-    public static File resolveLnkShortcut(File lnkFile) {
+    public static String resolveLnkShortcut(String lnkPath) {
+        if (!lnkPath.toLowerCase(Locale.ENGLISH).endsWith(".lnk")) { //$NON-NLS-1$
+            return lnkPath;
+        }
+
+        final File lnkFile = new File(lnkPath);
         NLogger.debug(Win32LnkParser.class, "Resolving link of: {0}", lnkFile.getAbsolutePath()); //$NON-NLS-1$
 
         try (DataInputStream is = new DataInputStream(new FileInputStream(lnkFile))) {
-            // FIXME Needs implementation!
 
             // Read header size
             final int headerSize = Integer.reverseBytes(is.readInt());
             NLogger.debug(Win32LnkParser.class, "HeaderSize: {0}", Integer.toHexString(headerSize)); //$NON-NLS-1$
 
             // Read the header
-            final int[] header = readNBytes(is ,headerSize - 4);
+            final int[] header = readNBytes(is, headerSize - 4);
 
             // CLSID
             final StringBuilder sb = new StringBuilder();
@@ -133,7 +138,7 @@ public enum Win32LnkParser {
 
             if (!isUnicode) {
                 NLogger.debug(Win32LnkParser.class, "File contains no unicode encoded paths."); //$NON-NLS-1$
-                return lnkFile;
+                return lnkPath;
             }
 
             if (hasLinkTargetIDList) {
@@ -142,7 +147,6 @@ public enum Win32LnkParser {
 
                 // Read and skip the target info
                 is.readNBytes((int) Math.max(targetListSize, 0));
-
             }
 
             if (hasLinkInfo) {
@@ -191,12 +195,12 @@ public enum Win32LnkParser {
 
             NLogger.debug(Win32LnkParser.class, "resultingPath?:" + resultingPath); //$NON-NLS-1$
 
-            return new File(resultingPath);
+            return resultingPath;
         } catch (IOException ex) {
             NLogger.debug(Win32LnkParser.class, ex);
         }
 
-        return lnkFile;
+        return lnkPath;
     }
 
     private static String readString(InputStream is) throws IOException {

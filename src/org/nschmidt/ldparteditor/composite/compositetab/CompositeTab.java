@@ -102,6 +102,7 @@ import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.Evaluator;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.SyntaxFormatter;
+import org.nschmidt.ldparteditor.text.Win32LnkParser;
 import org.nschmidt.ldparteditor.widget.TreeItem;
 import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -165,6 +166,8 @@ public class CompositeTab extends CompositeTabDesign {
                         fileList = (String[]) event.data;
                         if (fileList != null) {
                             for (String f : fileList) {
+                                NLogger.debug(getClass(), f);
+                                f = Win32LnkParser.resolveLnkShortcut(f);
                                 NLogger.debug(getClass(), f);
                                 if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                     final File fileToOpen = new File(f);

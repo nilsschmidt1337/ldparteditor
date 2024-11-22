@@ -51,6 +51,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
+import org.nschmidt.ldparteditor.text.Win32LnkParser;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.Theming;
 
@@ -435,6 +436,8 @@ public class Composite3DModifier {
                         fileList = (String[]) event.data;
                         if (fileList != null) {
                             for (String f : fileList) {
+                                NLogger.debug(getClass(), f);
+                                f = Win32LnkParser.resolveLnkShortcut(f);
                                 NLogger.debug(getClass(), f);
                                 if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                     final File fileToOpen = new File(f);
