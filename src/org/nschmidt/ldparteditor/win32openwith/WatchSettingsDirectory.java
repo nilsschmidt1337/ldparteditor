@@ -51,6 +51,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolI
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
+import org.nschmidt.ldparteditor.text.Win32LnkParser;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -179,7 +180,7 @@ class WatchSettingsDirectory {
                             }
 
                             if (shouldOpenFile) {
-                                final String path = pathToOpen;
+                                final String path = Win32LnkParser.resolveLnkShortcut(pathToOpen);
                                 CompletableFuture.runAsync(() -> {
                                    fileOpenLock.lock();
                                    try {
