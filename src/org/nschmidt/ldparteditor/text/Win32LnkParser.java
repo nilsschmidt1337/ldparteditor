@@ -26,6 +26,10 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 public enum Win32LnkParser {
     INSTANCE;
 
+    private static final String BACKSLASH = "\\"; //$NON-NLS-1$
+    private static final String CURRENT_DIR_PREFIX = ".\\"; //$NON-NLS-1$
+    private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
     /**
      * Parses and resolves Windows *.lnk shortcut files
      * @param lnkFile the shortcut file.
@@ -51,22 +55,23 @@ public enum Win32LnkParser {
             sb.append(Integer.toHexString(header[2]));
             sb.append(Integer.toHexString(header[1]));
             sb.append(Integer.toHexString(header[0]));
-            sb.append("-"); //$NON-NLS-1$
+            sb.append('-');
             sb.append(Integer.toHexString(header[5]));
             sb.append(Integer.toHexString(header[4]));
-            sb.append("-"); //$NON-NLS-1$
+            sb.append('-');
             sb.append(Integer.toHexString(header[7]));
             sb.append(Integer.toHexString(header[6]));
-            sb.append("-"); //$NON-NLS-1$
+            sb.append('-');
             sb.append(Integer.toHexString(header[8]));
             sb.append(Integer.toHexString(header[9]));
-            sb.append("-"); //$NON-NLS-1$
+            sb.append('-');
             sb.append(Integer.toHexString(header[10]));
             sb.append(Integer.toHexString(header[11]));
             sb.append(Integer.toHexString(header[12]));
             sb.append(Integer.toHexString(header[13]));
             sb.append(Integer.toHexString(header[14]));
             sb.append(Integer.toHexString(header[15]));
+            // should be: "CLSID: 02141-00-00-c00-0000046"
             NLogger.debug(Win32LnkParser.class, sb.toString());
 
             // LinkFlags
@@ -75,6 +80,7 @@ public enum Win32LnkParser {
             final boolean hasName = flag(header[16], 2);
             final boolean hasRelativePath = flag(header[16], 3);
             final boolean hasWorkingDir = flag(header[16], 4);
+            final boolean isUnicode = flag(header[16], 7);
 
             NLogger.debug(Win32LnkParser.class, "HasLinkTargetIDList  : {0}", hasLinkTargetIDList); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasLinkInfo          : {0}", hasLinkInfo); //$NON-NLS-1$
@@ -83,7 +89,7 @@ public enum Win32LnkParser {
             NLogger.debug(Win32LnkParser.class, "HasWorkingDir        : {0}", hasWorkingDir); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasArguments         : {0}", flag(header[16], 5)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasIconLocation      : {0}", flag(header[16], 6)); //$NON-NLS-1$
-            NLogger.debug(Win32LnkParser.class, "IsUnicode            : {0}\n", flag(header[16], 7)); //$NON-NLS-1$
+            NLogger.debug(Win32LnkParser.class, "IsUnicode            : {0}\n", isUnicode); //$NON-NLS-1$
 
             NLogger.debug(Win32LnkParser.class, "ForceNoLinkInfo      : {0}", flag(header[17], 0)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "HasExpString         : {0}", flag(header[17], 1)); //$NON-NLS-1$
@@ -125,11 +131,16 @@ public enum Win32LnkParser {
             NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_NOT_CONTENT_INDEXED : {0}", flag(header[21], 5)); //$NON-NLS-1$
             NLogger.debug(Win32LnkParser.class, "FILE_ATTRIBUTE_ENCRYPTED           : {0}\n", flag(header[21], 6)); //$NON-NLS-1$
 
+            if (!isUnicode) {
+                NLogger.debug(Win32LnkParser.class, "File contains no unicode encoded paths."); //$NON-NLS-1$
+                return lnkFile;
+            }
+
             if (hasLinkTargetIDList) {
                 final long targetListSize = readUnsignedShort(is);
                 NLogger.debug(Win32LnkParser.class, "IDListSize: {0}", targetListSize); //$NON-NLS-1$
 
-                // Read the target info
+                // Read and skip the target info
                 is.readNBytes((int) Math.max(targetListSize, 0));
 
             }
@@ -138,7 +149,7 @@ public enum Win32LnkParser {
                 final long linkInfoSize = readUnsignedInt(is);
                 NLogger.debug(Win32LnkParser.class, "LinkInfoSize: {0}", linkInfoSize); //$NON-NLS-1$
 
-                // Read the link info (-4 because the size was already part of the link info section)
+                // Read and skip the link info (-4 because the size was already part of the link info section)
                 is.readNBytes((int) Math.max(linkInfoSize-4, 0));
             }
 
@@ -146,19 +157,41 @@ public enum Win32LnkParser {
             // StringData
             if (hasName) {
                 final String name = readString(is);
-                NLogger.error(Win32LnkParser.class, "name? :" + name); //$NON-NLS-1$
+                NLogger.debug(Win32LnkParser.class, "name?         :" + name); //$NON-NLS-1$
             }
 
             // workingDir + relative path (thats the info we want!)
+            final String relativePathWithoutCurrentFolder;
             if (hasRelativePath) {
                 final String relativePath = readString(is);
-                NLogger.error(Win32LnkParser.class, "relativePath? :" + relativePath); //$NON-NLS-1$
+                NLogger.debug(Win32LnkParser.class, "relativePath? :" + relativePath); //$NON-NLS-1$
+
+                if (relativePath.startsWith(CURRENT_DIR_PREFIX)) {
+                    relativePathWithoutCurrentFolder = relativePath.substring(2);
+                } else {
+                    relativePathWithoutCurrentFolder = relativePath;
+                }
+            } else {
+                relativePathWithoutCurrentFolder = EMPTY_STRING;
             }
 
+            final String resultingPath;
             if (hasWorkingDir) {
                 final String workingDir = readString(is);
-                NLogger.error(Win32LnkParser.class, "workingDir? :" + workingDir); //$NON-NLS-1$
+                NLogger.debug(Win32LnkParser.class, "workingDir?   :" + workingDir); //$NON-NLS-1$
+
+                if (workingDir.endsWith(BACKSLASH)) {
+                    resultingPath = workingDir + relativePathWithoutCurrentFolder;
+                } else {
+                    resultingPath = workingDir + BACKSLASH + relativePathWithoutCurrentFolder;
+                }
+            } else {
+                resultingPath = EMPTY_STRING;
             }
+
+            NLogger.debug(Win32LnkParser.class, "resultingPath?:" + resultingPath); //$NON-NLS-1$
+
+            return new File(resultingPath);
         } catch (IOException ex) {
             NLogger.debug(Win32LnkParser.class, ex);
         }

@@ -25,6 +25,7 @@ public class Win32LnkParserTest {
             // HasLinkInfo is true
 
             assertTrue(result.getName().contains("3782.jpg")); //$NON-NLS-1$
+            assertTrue(result.getName().contains("G")); //$NON-NLS-1$
         });
     }
 
@@ -36,6 +37,7 @@ public class Win32LnkParserTest {
             File result = Win32LnkParser.resolveLnkShortcut(new File(resPath));
 
             assertTrue(result.getName().contains("3782.jpg")); //$NON-NLS-1$
+            assertTrue(result.getName().contains("192.168.9.222")); //$NON-NLS-1$
         });
     }
 
