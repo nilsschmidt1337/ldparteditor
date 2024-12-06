@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -39,10 +40,13 @@ import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.TransformationMode;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Manipulator;
+import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helper.math.HashBiMap;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
+import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 public class VM20Manipulator extends VM19ColourChanger {
@@ -322,7 +326,49 @@ public class VM20Manipulator extends VM19ColourChanger {
     *            adjacent to the current selection
     */
     public final void transformSelection(Matrix transformation, Vector3d newVertex, boolean moveAdjacentData) {
+        final boolean singleVertex = selectedVertices.size() == 1;
+
         transformSelection(transformation, newVertex, moveAdjacentData, true);
+
+        // This will create quads when a single vertex was moved and adjacent triangles can be combined into quads.
+        final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+        // render mode 7 = co-planarity mode
+        if (singleVertex && moveAdjacentData && c3d != null && c3d.getRenderMode() == 7) {
+
+            final Vertex v;
+            try {
+                v = selectedVertices.iterator().next();
+            } catch (NoSuchElementException nse) {
+                NLogger.debug(getClass(), nse);
+                return;
+            }
+
+            final VertexManager vm = (VertexManager) this;
+
+            Set<GData> surfs = vm.getLinkedSurfaces(v);
+            for (GData g : surfs) {
+                switch (g.type()) {
+                case 3:
+                    selectedData.add(g);
+                    selectedTriangles.add((GData3) g);
+                    break;
+                case 4:
+                    selectedData.add(g);
+                    selectedQuads.add((GData4) g);
+                    break;
+                default:
+                    break;
+                }
+            }
+
+            RectifierSettings rs = new RectifierSettings();
+            // selection scope
+            rs.setScope(1);
+            rs.setNoBorderedQuadToRectConversation(true);
+            rs.setNoRectConversationOnAdjacentCondlines(true);
+            vm.rectify(rs, true, true);
+            selectedVertices.add(v);
+        }
     }
 
     public final void transformSelection(Matrix transformation, Vector3d newVertex, boolean moveAdjacentData, boolean addHistory) {
