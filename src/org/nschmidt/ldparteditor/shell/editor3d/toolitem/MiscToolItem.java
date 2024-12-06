@@ -68,6 +68,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GData0;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.Matrix;
@@ -167,6 +168,10 @@ import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class MiscToolItem extends ToolItem {
+
+    private static final String FONT_HEIGHT = "0 !LPE Height (LDU) : "; //$NON-NLS-1$
+    private static final String FONT_SIZE = "0 !LPE Font size    : "; //$NON-NLS-1$
+    private static final String FONT_TITLE = "0 !LPE Font         : "; //$NON-NLS-1$
 
     /** The menu of the select features */
     private static Menu mnuSelect;
@@ -3181,6 +3186,21 @@ public class MiscToolItem extends ToolItem {
                             messageBox.setMessage(formatter.format(messageArguments));
                             messageBox.open();
                         }
+
+                        GData0 fontName = new GData0(FONT_TITLE + myFont.getFontName(), View.DUMMY_REFERENCE);
+                        GData0 fontSize = new GData0(FONT_SIZE + myFont.getSize(), View.DUMMY_REFERENCE);
+                        GData0 fontHeight = new GData0(FONT_HEIGHT + ts.getFontHeight().intValue() , View.DUMMY_REFERENCE);
+
+                        df.getDrawPerLineNoClone().put(lineNumber + 1, fontName);
+                        df.getDrawPerLineNoClone().put(lineNumber + 2, fontSize);
+                        df.getDrawPerLineNoClone().put(lineNumber + 3, fontHeight);
+                        lineNumber +=3;
+
+                        anchorData.setNext(fontName);
+                        fontName.setNext(fontSize);
+                        fontSize.setNext(fontHeight);
+
+                        anchorData = fontHeight;
 
                         for (GData gda3 : triangleSet) {
                             lineNumber++;
