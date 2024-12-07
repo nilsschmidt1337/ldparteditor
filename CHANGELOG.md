@@ -1,3 +1,15 @@
+### 07 Dec 2024
+With the release of 1.8.90 you are able to...
+-  ...drag and drop Windows file shortcuts to LDPE to open the linked *.dat file.
+-  ...reference subfiles by a full path (without having double spaces in the path).
+-  ...have a quad "auto-created" when you move one vertex enough to allow a flat quad (during "Coplanarity Heatmap" mode in the 3D editor).
+-  ...benefit from the fact that txt2dat writes the used font setting to the file.
+
+The following critical issues are fixed:
+1. Lower/upper case differences between the filename in the 3D editor and in the text editor tab.
+2. High-quality edges (type 2 and 5) were not displayed with OpenGL 3.3 on some graphic cards.
+
+
 ### 27 Sep 2024
 With the release of 1.8.89 the following critical issues are fixed:
 1. Descriptions containing a hashtag # are modified by unrelated quick fixes.
