@@ -451,7 +451,7 @@ public final class GData5 extends GData {
                 GL11.glPopMatrix();
 
             } else {
-                GL11.glLineWidth(View.lineWidthGL);
+                GraphicalDataTools.setLineWidth(View.lineWidthGL);
                 GL11.glColor4f(r, g, b, a);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glVertex3f(x1, y1, z1);
@@ -586,7 +586,7 @@ public final class GData5 extends GData {
                 GL11.glPopMatrix();
 
             } else {
-                GL11.glLineWidth(View.lineWidthGL);
+                GraphicalDataTools.setLineWidth(View.lineWidthGL);
                 GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glVertex3f(x1, y1, z1);
@@ -709,7 +709,7 @@ public final class GData5 extends GData {
             GL11.glPopMatrix();
 
         } else {
-            GL11.glLineWidth(View.lineWidthGL);
+            GraphicalDataTools.setLineWidth(View.lineWidthGL);
             if (result > -1e-20f) {
                 GL11.glColor4f(0f, 0f, 0f, 1f);
                 wasShown = true;
@@ -810,7 +810,7 @@ public final class GData5 extends GData {
                     b2 = this.b;
                 }
 
-                GL11.glLineWidth(View.lineWidthGL);
+                GraphicalDataTools.setLineWidth(View.lineWidthGL);
                 GL11.glColor4f(r2, g2, b2, 1f);
                 GL11.glBegin(GL11.GL_LINES);
                 GraphicalDataTools.setVertex(x1, y1, z1, this, true);

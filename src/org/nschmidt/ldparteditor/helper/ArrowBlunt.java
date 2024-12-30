@@ -21,6 +21,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
@@ -157,7 +158,7 @@ public class ArrowBlunt {
         GL11.glMultMatrixf(matrix);
         GL11.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
-        GL11.glLineWidth(lineWidth);
+        GraphicalDataTools.setLineWidth(lineWidth);
         GL11.glColor3f(r, g, b);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(0f, 0f, 0f);
@@ -202,7 +203,7 @@ public class ArrowBlunt {
         stack.glMultMatrixf(rotation);
         stack.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
-        GL11.glLineWidth(lineWidth);
+        GraphicalDataTools.setLineWidth(lineWidth);
 
         {
             float[] vertexData = new float[]{

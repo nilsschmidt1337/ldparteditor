@@ -1598,7 +1598,7 @@ public final class GData3 extends GData {
 
         GL11.glDisable(GL11.GL_LIGHTING);
 
-        GL11.glLineWidth(View.lineWidthGL);
+        GraphicalDataTools.setLineWidth(View.lineWidthGL);
         if (selected) {
             GL11.glColor4f(Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB, 1f);
             GL11.glBegin(GL11.GL_LINES);

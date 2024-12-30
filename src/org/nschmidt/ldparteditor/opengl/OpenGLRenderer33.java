@@ -19,8 +19,6 @@ import java.nio.FloatBuffer;
 import java.util.Iterator;
 
 import org.eclipse.swt.graphics.Rectangle;
-import org.lwjgl.opengl.swt.GLCanvas;
-import org.lwjgl.system.Callback;
 import org.eclipse.swt.widgets.Menu;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
@@ -29,6 +27,8 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLUtil;
+import org.lwjgl.opengl.swt.GLCanvas;
+import org.lwjgl.system.Callback;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GL33ModelRenderer;
 import org.nschmidt.ldparteditor.data.GL33ModelRendererLDrawStandard;
 import org.nschmidt.ldparteditor.data.GTexture;
+import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -640,7 +641,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 final ManipulatorAxisMode axis = window.getWorkingLayer();
 
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 final float size = 1_000_000f;
 
                 final float maniX = manipulator.getPosition().x;
@@ -716,7 +717,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
                     if (v != null) {
-                        GL11.glLineWidth(4f);
+                        GraphicalDataTools.setLineWidth(4f);
                         final int VAO = GL30.glGenVertexArrays();
                         final int VBO = GL15.glGenBuffers();
                         GL30.glBindVertexArray(VAO);
@@ -744,7 +745,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     if (v != null) {
                         Vertex v2 = dat.getNearestObjVertex2();
                         if (v2 != null) {
-                            GL11.glLineWidth(4f);
+                            GraphicalDataTools.setLineWidth(4f);
                             final int VAO = GL30.glGenVertexArrays();
                             final int VBO = GL15.glGenBuffers();
                             GL30.glBindVertexArray(VAO);
@@ -773,7 +774,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL30.glDeleteVertexArrays(VAO);
                             GL15.glDeleteBuffers(VBO);
                         } else {
-                            GL11.glLineWidth(4f);
+                            GraphicalDataTools.setLineWidth(4f);
                             final int VAO = GL30.glGenVertexArrays();
                             final int VBO = GL15.glGenBuffers();
                             GL30.glBindVertexArray(VAO);
@@ -806,7 +807,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             if (v3 != null) {
                                 Vertex v4 = dat.getObjVertex4();
                                 if (v4 != null) {
-                                    GL11.glLineWidth(4f);
+                                    GraphicalDataTools.setLineWidth(4f);
                                     final int VAO = GL30.glGenVertexArrays();
                                     final int VBO = GL15.glGenBuffers();
                                     GL30.glBindVertexArray(VAO);
@@ -833,7 +834,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 } else {
                                     v = dat.getObjVertex1();
                                     v2 = dat.getObjVertex2();
-                                    GL11.glLineWidth(4f);
+                                    GraphicalDataTools.setLineWidth(4f);
                                     final int VAO = GL30.glGenVertexArrays();
                                     final int VBO = GL15.glGenBuffers();
                                     GL30.glBindVertexArray(VAO);
@@ -867,7 +868,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL15.glDeleteBuffers(VBO);
                                 }
                             } else {
-                                GL11.glLineWidth(4f);
+                                GraphicalDataTools.setLineWidth(4f);
                                 final int VAO = GL30.glGenVertexArrays();
                                 final int VBO = GL15.glGenBuffers();
                                 GL30.glBindVertexArray(VAO);
@@ -893,7 +894,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 GL15.glDeleteBuffers(VBO);
                             }
                         } else {
-                            GL11.glLineWidth(4f);
+                            GraphicalDataTools.setLineWidth(4f);
                             final int VAO = GL30.glGenVertexArrays();
                             final int VBO = GL15.glGenBuffers();
                             GL30.glBindVertexArray(VAO);
@@ -926,7 +927,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             if (v3 != null) {
                                 Vertex v4 = dat.getObjVertex4();
                                 if (v4 != null) {
-                                    GL11.glLineWidth(4f);
+                                    GraphicalDataTools.setLineWidth(4f);
                                     final int VAO = GL30.glGenVertexArrays();
                                     final int VBO = GL15.glGenBuffers();
                                     GL30.glBindVertexArray(VAO);
@@ -949,7 +950,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 } else {
                                     v = dat.getObjVertex1();
                                     v2 = dat.getObjVertex2();
-                                    GL11.glLineWidth(4f);
+                                    GraphicalDataTools.setLineWidth(4f);
                                     final int VAO = GL30.glGenVertexArrays();
                                     final int VBO = GL15.glGenBuffers();
                                     GL30.glBindVertexArray(VAO);
@@ -979,7 +980,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL15.glDeleteBuffers(VBO);
                                 }
                             } else {
-                                GL11.glLineWidth(4f);
+                                GraphicalDataTools.setLineWidth(4f);
                                 final int VAO = GL30.glGenVertexArrays();
                                 final int VBO = GL15.glGenBuffers();
                                 GL30.glBindVertexArray(VAO);
@@ -1005,7 +1006,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 GL15.glDeleteBuffers(VBO);
                             }
                         } else {
-                            GL11.glLineWidth(4f);
+                            GraphicalDataTools.setLineWidth(4f);
                             final int VAO = GL30.glGenVertexArrays();
                             final int VBO = GL15.glGenBuffers();
                             GL30.glBindVertexArray(VAO);
@@ -1050,7 +1051,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 Vector4f selectionCorner3 = new Vector4f(selectionEndMODELVIEW.x - width.x, selectionEndMODELVIEW.y - width.y, selectionEndMODELVIEW.z - width.z, 1f);
                 Vector4f selectionCorner4 = new Vector4f(selectionEndMODELVIEW.x - height.x, selectionEndMODELVIEW.y - height.y, selectionEndMODELVIEW.z - height.z, 1f);
 
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
 
                 helper.drawLinesRGBgeneral(new float[]{
                         selectionCorner3.x, selectionCorner3.y, selectionCorner3.z,
@@ -1090,7 +1091,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 Vector4f selectionCorner1 = new Vector4f(selectionStartMODELVIEW.x + width.x, selectionStartMODELVIEW.y + width.y, selectionStartMODELVIEW.z + width.z, 1f);
                 Vector4f selectionCorner2 = new Vector4f(selectionStartMODELVIEW.x + height.x, selectionStartMODELVIEW.y + height.y, selectionStartMODELVIEW.z + height.z, 1f);
 
-                GL11.glLineWidth(3f);
+                GraphicalDataTools.setLineWidth(3f);
 
                 helper.drawLinesRGBgeneral(new float[]{
 
@@ -1123,7 +1124,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             // Display empty subfiles as boxes
             if (c3d.isShowingEmptySubfiles()) {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 float[] emptySubfileBoxes = EmptySubfileRenderer.calculateEmptySubfileBoxes(c3d.getLockableDatFileReference(), manipulator);
                 helper.drawLinesRGBgeneral(emptySubfileBoxes);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -1274,7 +1275,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 crosses[j] = Colour.originColourG; j++;
                 crosses[j] = Colour.originColourB;
 
-                GL11.glLineWidth(3f);
+                GraphicalDataTools.setLineWidth(3f);
                 helper.drawLinesRGBgeneral(crosses);
 
                 GL11.glDepthMask(false);
@@ -1318,13 +1319,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         gG = Colour.grid10ColourG;
                         gB = Colour.grid10ColourB;
                         zOffset = 1f;
-                        GL11.glLineWidth(2f);
+                        GraphicalDataTools.setLineWidth(2f);
                     } else {
                         gR = Colour.gridColourR;
                         gG = Colour.gridColourG;
                         gB = Colour.gridColourB;
                         zOffset = 0;
-                        GL11.glLineWidth(1f);
+                        GraphicalDataTools.setLineWidth(1f);
                     }
                     Vector4f gridCenter1 = new Vector4f();
                     Vector4f gridCenter2 = new Vector4f();
@@ -1411,7 +1412,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
             if (c3d.isOriginShown()) {
                 // Origin
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 helper.drawLinesRGBgeneral(new float[]{
                         viewportOriginAxis[0].x, viewportOriginAxis[0].y, viewportOriginAxis[0].z + zOffset,
                         Colour.originColourR, Colour.originColourG, Colour.originColourB,
@@ -1619,28 +1620,28 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         g = Colour.vertexSelectedColourG;
                         b = Colour.vertexSelectedColourB;
                     }
-                    GL11.glLineWidth(7f);
+                    GraphicalDataTools.setLineWidth(7f);
                     helper.drawLinesRGBgeneral(new float[]{
                             viewportWidth, viewportHeight, viewportOriginAxis[3].z,
                             r, g, b,
                             viewportWidth, -viewportHeight, viewportOriginAxis[3].z,
                             r, g, b
                     });
-                    GL11.glLineWidth(10f);
+                    GraphicalDataTools.setLineWidth(10f);
                     helper.drawLinesRGBgeneral(new float[]{
                             -viewportWidth, -viewportHeight, viewportOriginAxis[3].z,
                             r, g, b,
                             -viewportWidth, viewportHeight, viewportOriginAxis[3].z,
                             r, g, b,
                     });
-                    GL11.glLineWidth(5f);
+                    GraphicalDataTools.setLineWidth(5f);
                     helper.drawLinesRGBgeneral(new float[]{
                             -viewportWidth, viewportHeight, viewportOriginAxis[3].z,
                             r, g, b,
                             viewportWidth, viewportHeight, viewportOriginAxis[3].z,
                             r, g, b
                     });
-                    GL11.glLineWidth(10f);
+                    GraphicalDataTools.setLineWidth(10f);
                     helper.drawLinesRGBgeneral(new float[]{
                             -viewportWidth, -viewportHeight, viewportOriginAxis[3].z,
                             r, g, b,
@@ -1971,7 +1972,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             }
             step = step + gridSize;
         }
-        GL11.glLineWidth(drawn10th ? 2f : 1f);
+        GraphicalDataTools.setLineWidth(drawn10th ? 2f : 1f);
         helper.drawLinesRGBgeneral(grid);
     }
 

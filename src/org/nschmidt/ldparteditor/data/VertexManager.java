@@ -169,7 +169,7 @@ public final class VertexManager extends VM99Clipboard {
             Set<GData> alreadyMoved = new HashSet<>();
 
             SortedSet<Vertex> allVertices = new TreeSet<>(selectedVertices);
-            GL11.glLineWidth(2f);
+            GraphicalDataTools.setLineWidth(2f);
             if (c3d.isShowingVertices()) {
                 GL11.glBegin(GL11.GL_POINTS);
                 GL11.glColor3f(Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB);
@@ -532,7 +532,7 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glColor3f(Colour.vertexColourR, Colour.vertexColourG, Colour.vertexColourB);
             GL11.glEnd();
 
-            GL11.glLineWidth(2f);
+            GraphicalDataTools.setLineWidth(2f);
             GL11.glBegin(GL11.GL_LINES);
             GL11.glColor3f(Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB);
 
@@ -558,7 +558,7 @@ public final class VertexManager extends VM99Clipboard {
             Vector4f tr2 = new Vector4f(vm.m30, vm.m31, vm.m32 + 300f * c3d.getZoom(), 1f);
             Matrix4f.transform(ivm, tr2, tr2);
 
-            GL11.glLineWidth(2f);
+            GraphicalDataTools.setLineWidth(2f);
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glColor3f(Colour.meshlineColourR, Colour.meshlineColourG, Colour.meshlineColourB);
 
@@ -654,7 +654,7 @@ public final class VertexManager extends VM99Clipboard {
             Vertex[] dataVerts = new Vertex[4];
             int i = 0;
             if (!selectedLines.isEmpty()) {
-                GL11.glLineWidth(3f);
+                GraphicalDataTools.setLineWidth(3f);
                 boolean hasDistanceLine = false;
                 for (GData2 line : selectedLines) {
                     if (!line.isLine) {
@@ -706,7 +706,7 @@ public final class VertexManager extends VM99Clipboard {
                 }
             }
             if (!selectedCondlines.isEmpty()) {
-                GL11.glLineWidth(3f);
+                GraphicalDataTools.setLineWidth(3f);
                 GL11.glBegin(GL11.GL_LINES);
                 for (GData5 line : selectedCondlines) {
                     i = 0;
@@ -720,7 +720,7 @@ public final class VertexManager extends VM99Clipboard {
                     }
                 }
                 GL11.glEnd();
-                GL11.glLineWidth(4f);
+                GraphicalDataTools.setLineWidth(4f);
                 GL11.glBegin(GL11.GL_LINES);
                 for (GData5 line : selectedCondlines) {
                     i = 0;
@@ -741,7 +741,7 @@ public final class VertexManager extends VM99Clipboard {
                 GL11.glColor3f(Colour.vertexSelectedTmpColourR, Colour.vertexSelectedTmpColourG, Colour.vertexSelectedTmpColourB);
             }
             if (!selectedTriangles.isEmpty()) {
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 boolean hasProtractor = false;
                 for (GData3 tri : selectedTriangles) {
                     if (!tri.isTriangle) {
@@ -810,7 +810,7 @@ public final class VertexManager extends VM99Clipboard {
                 }
             }
             if (!selectedQuads.isEmpty()) {
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 GL11.glBegin(GL11.GL_LINES);
                 for (GData4 quad : selectedQuads) {
                     i = 0;
@@ -840,7 +840,7 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glPopMatrix();
 
             if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 if (!modifiedManipulator)
                     GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glDisable(GL11.GL_LIGHTING);

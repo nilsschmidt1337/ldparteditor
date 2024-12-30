@@ -2297,7 +2297,7 @@ public final class GData1 extends GData {
 
     private static void drawStudLogo1GL20() {
         final float Y = -4.04f;
-        GL11.glLineWidth(2f);
+        GraphicalDataTools.setLineWidth(2f);
         GL11.glColor4f(0f, 0f, 0f, 1f);
         // Letter L
         GL11.glBegin(GL11.GL_LINE_STRIP);
@@ -2483,7 +2483,7 @@ public final class GData1 extends GData {
 
     private static void drawStudLogo2GL20() {
         final float Y = -0.04f;
-        GL11.glLineWidth(2f);
+        GraphicalDataTools.setLineWidth(2f);
         GL11.glColor4f(0f, 0f, 0f, 1f);
         // Letter L
         GL11.glBegin(GL11.GL_LINE_STRIP);

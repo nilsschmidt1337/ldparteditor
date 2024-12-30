@@ -72,4 +72,30 @@ public enum GraphicalDataTools {
             GL11.glVertex3f(x, y, z);
         }
     }
+
+    /* FIXME #1125:
+    private static String vendor = null;
+    private static float maxWidth = 1f;
+    //*/
+
+    public static void setLineWidth(float width) {
+        /* FIXME #1125: Need to investigate the behavior with Intel dGPUs
+        if (vendor == null) {
+            vendor = GL11.glGetString(GL11.GL_VENDOR);
+        }
+
+        if ("Intel".equals(vendor)) {
+            if (width > maxWidth) {
+                System.out.println(width);
+                maxWidth = width;
+            }
+
+            GL11.glLineWidth(Math.clamp(width / maxWidth * 10f, 0, 10f));
+        } else {
+            GL11.glLineWidth(width);
+        }
+        //*/
+
+        GL11.glLineWidth(width);
+    }
 }

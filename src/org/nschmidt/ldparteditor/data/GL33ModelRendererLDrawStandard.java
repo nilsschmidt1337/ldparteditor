@@ -1347,7 +1347,7 @@ public class GL33ModelRendererLDrawStandard {
                 GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4l);
 
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-                GL11.glLineWidth(View.lineWidthGL);
+                GraphicalDataTools.setLineWidth(View.lineWidthGL);
 
                 Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
                 Matrix4f.transform(ivm, tr, tr);
@@ -1359,7 +1359,7 @@ public class GL33ModelRendererLDrawStandard {
 
             if (studlogo) {
 
-                GL11.glLineWidth(3f);
+                GraphicalDataTools.setLineWidth(3f);
 
                 stack.glPushMatrix();
 
@@ -1382,7 +1382,7 @@ public class GL33ModelRendererLDrawStandard {
 
                 stack.glPopMatrix();
 
-                GL11.glLineWidth(1f);
+                GraphicalDataTools.setLineWidth(1f);
             }
 
             mainShader.setFactor(1f);
@@ -1426,7 +1426,7 @@ public class GL33ModelRendererLDrawStandard {
             Matrix4f.transform(ivm, tr, tr);
             stack.glPushMatrix();
             stack.glTranslatef(tr.x, tr.y, tr.z);
-            GL11.glLineWidth(View.lineWidthGL);
+            GraphicalDataTools.setLineWidth(View.lineWidthGL);
             GL11.glDrawArrays(GL11.GL_LINES, 0, cls);
             stack.glPopMatrix();
             mainShader.use();

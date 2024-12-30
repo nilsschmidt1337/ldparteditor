@@ -22,6 +22,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData1;
+import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.helper.Manipulator;
@@ -304,7 +305,7 @@ public enum EmptySubfileRenderer {
         float[] emptySubfileBoxes = calculateEmptySubfileBoxes(df, mani);
         final int length = emptySubfileBoxes.length;
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glLineWidth(2f);
+        GraphicalDataTools.setLineWidth(2f);
         GL11.glBegin(GL11.GL_LINES);
         for (int i = 0; i < length; i += 12) {
             GL11.glColor3f(emptySubfileBoxes[i + 3], emptySubfileBoxes[i + 4], emptySubfileBoxes[i + 5]);

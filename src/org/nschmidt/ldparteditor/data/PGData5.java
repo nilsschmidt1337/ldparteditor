@@ -52,7 +52,7 @@ public final class PGData5 extends PGData implements Serializable {
     @Override
     public void drawBFCprimitiveGL20(int drawOnlyMode) {
         if (drawOnlyMode == 1) return;
-        GL11.glLineWidth(1f);
+        GraphicalDataTools.setLineWidth(1f);
         GL11.glColor4f(Colour.primitiveCondlineColourR, Colour.primitiveCondlineColourG, Colour.primitiveCondlineColourB, 1f);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(x1, y1, z1);
@@ -62,7 +62,7 @@ public final class PGData5 extends PGData implements Serializable {
     @Override
     public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 1) return;
-        GL11.glLineWidth(1f);
+        GraphicalDataTools.setLineWidth(1f);
         edgeData[3] = Colour.primitiveCondlineColourR;
         edgeData[4] = Colour.primitiveCondlineColourG;
         edgeData[5] = Colour.primitiveCondlineColourB;

@@ -18,17 +18,18 @@ package org.nschmidt.ldparteditor.opengl;
 import java.nio.FloatBuffer;
 
 import org.eclipse.swt.graphics.Rectangle;
-import org.lwjgl.opengl.swt.GLCanvas;
-import org.lwjgl.system.Callback;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GLUtil;
+import org.lwjgl.opengl.swt.GLCanvas;
+import org.lwjgl.system.Callback;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
+import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enumtype.Colour;
@@ -156,7 +157,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
         final Matrix4f rotation = cp.getRotation();
         final boolean hasSearchResults = !cp.getSearchResults().isEmpty();
 
-        GL11.glLineWidth(1f);
+        GraphicalDataTools.setLineWidth(1f);
 
         if (hasSearchResults) {
             if (cp.getSearchResults().get(0) != null) {

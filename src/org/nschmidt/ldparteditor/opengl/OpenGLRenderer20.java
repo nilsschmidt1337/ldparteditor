@@ -38,12 +38,12 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.swt.graphics.Rectangle;
-import org.lwjgl.opengl.swt.GLCanvas;
 import org.eclipse.swt.widgets.Menu;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.swt.GLCanvas;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -57,6 +57,7 @@ import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GTexture;
+import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -76,9 +77,9 @@ import org.nschmidt.ldparteditor.helper.Arrow;
 import org.nschmidt.ldparteditor.helper.ArrowBlunt;
 import org.nschmidt.ldparteditor.helper.BufferFactory;
 import org.nschmidt.ldparteditor.helper.Circle;
-import org.nschmidt.ldparteditor.helper.Square;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.Manipulator;
+import org.nschmidt.ldparteditor.helper.Square;
 import org.nschmidt.ldparteditor.helper.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helper.math.PowerRay;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -1612,7 +1613,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 final ManipulatorAxisMode axis = window.getWorkingLayer();
 
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 GL11.glBegin(GL11.GL_LINES);
 
                 final float size = 1_000_000f;
@@ -1669,7 +1670,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     DatFile dat = c3d.getLockableDatFileReference();
                     Vertex v = dat.getNearestObjVertex1();
                     if (v != null) {
-                        GL11.glLineWidth(4f);
+                        GraphicalDataTools.setLineWidth(4f);
                         GL11.glBegin(GL11.GL_LINES);
                         GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                         GL11.glVertex3f(v.x, v.y, v.z);
@@ -1683,7 +1684,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     if (v != null) {
                         Vertex v2 = dat.getNearestObjVertex2();
                         if (v2 != null) {
-                            GL11.glLineWidth(4f);
+                            GraphicalDataTools.setLineWidth(4f);
                             GL11.glBegin(GL11.GL_LINES);
                             GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                             GL11.glVertex3f(v.x, v.y, v.z);
@@ -1694,7 +1695,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             GL11.glVertex3f(v.x, v.y, v.z);
                             GL11.glEnd();
                         } else {
-                            GL11.glLineWidth(4f);
+                            GraphicalDataTools.setLineWidth(4f);
                             GL11.glBegin(GL11.GL_LINES);
                             GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                             GL11.glVertex3f(v.x, v.y, v.z);
@@ -1713,7 +1714,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             if (v3 != null) {
                                 Vertex v4 = dat.getObjVertex4();
                                 if (v4 != null) {
-                                    GL11.glLineWidth(4f);
+                                    GraphicalDataTools.setLineWidth(4f);
                                     GL11.glBegin(GL11.GL_LINES);
                                     GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                                     GL11.glVertex3f(v2.x, v2.y, v2.z);
@@ -1724,7 +1725,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 } else {
                                     v = dat.getObjVertex1();
                                     v2 = dat.getObjVertex2();
-                                    GL11.glLineWidth(4f);
+                                    GraphicalDataTools.setLineWidth(4f);
                                     GL11.glBegin(GL11.GL_LINES);
                                     GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                                     GL11.glVertex3f(v.x, v.y, v.z);
@@ -1738,7 +1739,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                     GL11.glEnd();
                                 }
                             } else {
-                                GL11.glLineWidth(4f);
+                                GraphicalDataTools.setLineWidth(4f);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                                 GL11.glVertex3f(v2.x, v2.y, v2.z);
@@ -1748,7 +1749,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 GL11.glEnd();
                             }
                         } else {
-                            GL11.glLineWidth(4f);
+                            GraphicalDataTools.setLineWidth(4f);
                             GL11.glBegin(GL11.GL_LINES);
                             GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                             GL11.glVertex3f(v.x, v.y, v.z);
@@ -1767,7 +1768,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                             if (v3 != null) {
                                 Vertex v4 = dat.getObjVertex4();
                                 if (v4 != null) {
-                                    GL11.glLineWidth(4f);
+                                    GraphicalDataTools.setLineWidth(4f);
                                     GL11.glBegin(GL11.GL_LINES);
                                     GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                                     GL11.glVertex3f(cur.x, cur.y, cur.z);
@@ -1776,7 +1777,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 } else {
                                     v = dat.getObjVertex1();
                                     v2 = dat.getObjVertex2();
-                                    GL11.glLineWidth(4f);
+                                    GraphicalDataTools.setLineWidth(4f);
                                     GL11.glBegin(GL11.GL_LINES);
                                     GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                                     GL11.glVertex3f(v.x, v.y, v.z);
@@ -1788,7 +1789,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                     GL11.glEnd();
                                 }
                             } else {
-                                GL11.glLineWidth(4f);
+                                GraphicalDataTools.setLineWidth(4f);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                                 GL11.glVertex3f(v2.x, v2.y, v2.z);
@@ -1798,7 +1799,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 GL11.glEnd();
                             }
                         } else {
-                            GL11.glLineWidth(4f);
+                            GraphicalDataTools.setLineWidth(4f);
                             GL11.glBegin(GL11.GL_LINES);
                             GL11.glColor3f(Colour.addObjectColourR, Colour.addObjectColourG, Colour.addObjectColourB);
                             GL11.glVertex3f(v.x, v.y, v.z);
@@ -1829,7 +1830,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 Vector4f selectionCorner3 = new Vector4f(selectionEndMODELVIEW.x - width.x, selectionEndMODELVIEW.y - width.y, selectionEndMODELVIEW.z - width.z, 1f);
                 Vector4f selectionCorner4 = new Vector4f(selectionEndMODELVIEW.x - height.x, selectionEndMODELVIEW.y - height.y, selectionEndMODELVIEW.z - height.z, 1f);
 
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glColor3f(Colour.cursor1ColourR, Colour.cursor1ColourG, Colour.cursor1ColourB);
                 GL11.glVertex3f(selectionCorner3.x, selectionCorner3.y, selectionCorner3.z);
@@ -1867,7 +1868,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 Vector4f selectionCorner1 = new Vector4f(selectionStartMODELVIEW.x + width.x, selectionStartMODELVIEW.y + width.y, selectionStartMODELVIEW.z + width.z, 1f);
                 Vector4f selectionCorner2 = new Vector4f(selectionStartMODELVIEW.x + height.x, selectionStartMODELVIEW.y + height.y, selectionStartMODELVIEW.z + height.z, 1f);
 
-                GL11.glLineWidth(3f);
+                GraphicalDataTools.setLineWidth(3f);
 
                 GL11.glColor3f(Colour.rubberBandColourR, Colour.rubberBandColourG, Colour.rubberBandColourB);
                 GL11.glBegin(GL11.GL_LINES);
@@ -1961,7 +1962,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 offsetZZ -= oz - oz % gridSize;
 
                 // Draw crosses where the manipulator is
-                GL11.glLineWidth(3f);
+                GraphicalDataTools.setLineWidth(3f);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glColor3f(Colour.originColourR, Colour.originColourG, Colour.originColourB);
                 final float maniX = manipulator.getPosition().x;
@@ -1985,12 +1986,12 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 GL11.glEnd();
 
                 GL11.glDepthMask(false);
-                GL11.glLineWidth(1f);
+                GraphicalDataTools.setLineWidth(1f);
                 drawGrid3D(gridSize, gridSize10, gridSize20,
                         offsetXX, offsetXY, offsetXZ,
                         offsetYX, offsetYY, offsetYZ,
                         offsetZX, offsetZY, offsetZZ, false, true);
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 drawGrid3D(gridSize, gridSize10, gridSize20,
                         offsetXX, offsetXY, offsetXZ,
                         offsetYX, offsetYY, offsetYZ,
@@ -1999,12 +2000,12 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
 
-                GL11.glLineWidth(1f);
+                GraphicalDataTools.setLineWidth(1f);
                 drawGrid3D(gridSize, gridSize10, gridSize20,
                         offsetXX, offsetXY, offsetXZ,
                         offsetYX, offsetYY, offsetYZ,
                         offsetZX, offsetZY, offsetZZ, false, false);
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 drawGrid3D(gridSize, gridSize10, gridSize20,
                         offsetXX, offsetXY, offsetXZ,
                         offsetYX, offsetYY, offsetYZ,
@@ -2022,11 +2023,11 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     if (r == 4) {
                         GL11.glColor3f(Colour.grid10ColourR, Colour.grid10ColourG, Colour.grid10ColourB);
                         zOffset = 1f;
-                        GL11.glLineWidth(2f);
+                        GraphicalDataTools.setLineWidth(2f);
                     } else {
                         GL11.glColor3f(Colour.gridColourR, Colour.gridColourG, Colour.gridColourB);
                         zOffset = 0;
-                        GL11.glLineWidth(1f);
+                        GraphicalDataTools.setLineWidth(1f);
                     }
                     GL11.glBegin(GL11.GL_LINES);
                     Vector4f gridCenter1 = new Vector4f();
@@ -2058,7 +2059,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
             if (c3d.isOriginShown()) {
                 // Origin
-                GL11.glLineWidth(2f);
+                GraphicalDataTools.setLineWidth(2f);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glColor3f(Colour.originColourR, Colour.originColourG, Colour.originColourB);
                 GL11.glVertex3f(viewportOriginAxis[0].x, viewportOriginAxis[0].y, viewportOriginAxis[0].z + zOffset);
@@ -2252,22 +2253,22 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     } else {
                         GL11.glColor3f(Colour.vertexSelectedColourR, Colour.vertexSelectedColourG, Colour.vertexSelectedColourB);
                     }
-                    GL11.glLineWidth(7f);
+                    GraphicalDataTools.setLineWidth(7f);
                     GL11.glBegin(GL11.GL_LINES);
                     GL11.glVertex3f(viewportWidth, viewportHeight, viewportOriginAxis[3].z);
                     GL11.glVertex3f(viewportWidth, -viewportHeight, viewportOriginAxis[3].z);
                     GL11.glEnd();
-                    GL11.glLineWidth(10f);
+                    GraphicalDataTools.setLineWidth(10f);
                     GL11.glBegin(GL11.GL_LINES);
                     GL11.glVertex3f(-viewportWidth, -viewportHeight, viewportOriginAxis[3].z);
                     GL11.glVertex3f(-viewportWidth, viewportHeight, viewportOriginAxis[3].z);
                     GL11.glEnd();
-                    GL11.glLineWidth(5f);
+                    GraphicalDataTools.setLineWidth(5f);
                     GL11.glBegin(GL11.GL_LINES);
                     GL11.glVertex3f(-viewportWidth, viewportHeight, viewportOriginAxis[3].z);
                     GL11.glVertex3f(viewportWidth, viewportHeight, viewportOriginAxis[3].z);
                     GL11.glEnd();
-                    GL11.glLineWidth(10f);
+                    GraphicalDataTools.setLineWidth(10f);
                     GL11.glBegin(GL11.GL_LINES);
                     GL11.glVertex3f(-viewportWidth, -viewportHeight, viewportOriginAxis[3].z);
                     GL11.glVertex3f(viewportWidth, -viewportHeight, viewportOriginAxis[3].z);

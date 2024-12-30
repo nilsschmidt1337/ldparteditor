@@ -319,7 +319,7 @@ public final class GData2 extends GData {
             GL11.glPopMatrix();
 
         } else {
-            GL11.glLineWidth(View.lineWidthGL);
+            GraphicalDataTools.setLineWidth(View.lineWidthGL);
             GL11.glColor4f(r, g, b, a);
             GL11.glBegin(GL11.GL_LINES);
             GL11.glVertex3f(x1, y1, z1);
@@ -425,7 +425,7 @@ public final class GData2 extends GData {
             GL11.glPopMatrix();
 
         } else {
-            GL11.glLineWidth(View.lineWidthGL);
+            GraphicalDataTools.setLineWidth(View.lineWidthGL);
             GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
             GL11.glBegin(GL11.GL_LINES);
             GL11.glVertex3f(x1, y1, z1);
@@ -509,7 +509,7 @@ public final class GData2 extends GData {
                 b2 = this.b;
             }
 
-            GL11.glLineWidth(View.lineWidthGL);
+            GraphicalDataTools.setLineWidth(View.lineWidthGL);
             GL11.glColor4f(r2, g2, b2, 1f);
             GL11.glBegin(GL11.GL_LINES);
             GraphicalDataTools.setVertex(x1, y1, z1, this, true);
@@ -709,7 +709,7 @@ public final class GData2 extends GData {
         final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
-        GL11.glLineWidth(View.lineWidthGL);
+        GraphicalDataTools.setLineWidth(View.lineWidthGL);
         GL11.glColor4f(r, g, b, 1f);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(x1, y1, z1);
