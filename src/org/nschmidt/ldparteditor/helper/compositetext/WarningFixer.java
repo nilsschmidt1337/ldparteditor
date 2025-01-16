@@ -332,25 +332,25 @@ enum WarningFixer {
                     // Skip comment and texmap lines
                     continue;
                 }
-                
+
                 if (dataSegments.length > 2 && "!LPE".equals(dataSegments[1]) && dataSegments[2].startsWith("CSG_")) { //$NON-NLS-1$ //$NON-NLS-2$
                     if ("CSG_UNION".equals(dataSegments[2]) || "CSG_DIFFERENCE".equals(dataSegments[2]) || "CSG_INTERSECTION".equals(dataSegments[2]) || "CSG_COMPILE".equals(dataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                         // Skip CSG actions
                         continue;
                     }
-                    
-                    isCSGbody = "CSG_EXTRUDE".equals(dataSegments[2]) || "CSG_QUAD".equals(dataSegments[2]) || "CSG_MESH".equals(dataSegments[2]) || "CSG_CUBOID".equals(dataSegments[2]) || "CSG_ELLIPSOID".equals(dataSegments[2]) || "CSG_CYLINDER".equals(dataSegments[2]) || "CSG_CONE".equals(dataSegments[2]) || "CSG_CIRCLE".equals(dataSegments[2]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-                    
+
+                    isCSGbody = "CSG_EXTRUDE".equals(dataSegments[2]) || "CSG_QUAD".equals(dataSegments[2]) || "CSG_MESH".equals(dataSegments[2]) || "CSG_CUBOID".equals(dataSegments[2]) || "CSG_ELLIPSOID".equals(dataSegments[2]) || "CSG_ELLIPSOID2".equals(dataSegments[2]) || "CSG_CYLINDER".equals(dataSegments[2]) || "CSG_CONE".equals(dataSegments[2]) || "CSG_CIRCLE".equals(dataSegments[2]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+
                     isCSGtransform = "CSG_TRANSFORM".equals(dataSegments[2]) ; //$NON-NLS-1$
                 }
             }
-            
+
             if (dataSegments.length == 6 && "0".equals(dataSegments[0]) && "!LPE".equals(dataSegments[1]) && "CONST".equals(dataSegments[2]) && "=".equals(dataSegments[4])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 if (variable.equals(dataSegments[3])) {
                     NLogger.debug(WarningFixer.class, "Same variable defined in line " + lineNumber); //$NON-NLS-1$
                     break;
                 }
-                
+
                 String expr = dataSegments[5];
                 if (expr.contains(variable)) {
                     int index = 0;
@@ -373,7 +373,7 @@ enum WarningFixer {
                             }
                         }
                     }
-                    
+
                     text = QuickFixer.setLine(lineNumber, "0 !LPE CONST " + dataSegments[3] + " = " + expr, text); //$NON-NLS-1$ //$NON-NLS-2$
                     continue;
                 }
@@ -396,14 +396,14 @@ enum WarningFixer {
                         sb.append('-');
                         sb.append(value);
                     }
-                    
+
                     doReplace = true;
                 } else {
                     sb.append(seg);
                 }
                 sb.append(' ');
             }
-            
+
             if (doReplace) {
                 sb.setLength(sb.length() - 1);
                 text = QuickFixer.setLine(lineNumber, sb.toString(), text);
@@ -412,8 +412,8 @@ enum WarningFixer {
         }
         return text;
     }
-    
-    
+
+
     private static List<String> getPair(String description) {
         final  List<String> result = new ArrayList<>();
         final int lenght = description.length();
@@ -421,8 +421,8 @@ enum WarningFixer {
         boolean collectToken = false;
         for (int i = 0; i < lenght; i++) {
             final char c = description.charAt(i);
-            
-            
+
+
             if (collectToken) {
                 if (c == ']') {
                     result.add(sb.toString());
@@ -432,11 +432,11 @@ enum WarningFixer {
                     sb.append(c);
                 }
             }
-            
+
             if (c == '[') {
                 collectToken = true;
             }
-        }        
+        }
         return result;
     }
 

@@ -970,7 +970,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         lblVertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
                         {
                             Combo cmbCsg = Theming.combo(cmpLpe, SWT.NONE);
-                            widgetUtil(cmbCsg).setItems("CUBOID ", "ELLIPSOID ", "QUAD ", "CYLINDER ", "CONE ", "CIRCLE ", "MESH ", "EXTRUDE "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                            widgetUtil(cmbCsg).setItems("CUBOID ", "ELLIPSOID ", "ELLIPSOID2 ", "QUAD ", "CYLINDER ", "CONE ", "CIRCLE ", "MESH ", "EXTRUDE "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
                             cmbCsg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                             cmbCsg.setText("CUBOID "); //$NON-NLS-1$
                             cmbCsg.select(0);

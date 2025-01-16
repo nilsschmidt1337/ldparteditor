@@ -21,6 +21,7 @@ public enum CSGType {
     INTERSECTION,
     CUBOID,
     ELLIPSOID,
+    ELLIPSOID2,
     QUAD,
     CYLINDER,
     CIRCLE,

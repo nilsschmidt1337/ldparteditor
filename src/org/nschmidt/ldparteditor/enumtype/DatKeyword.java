@@ -116,6 +116,7 @@ public enum DatKeyword {
         keywords.add("CSG_MESH"); //$NON-NLS-1$
         keywords.add("CSG_CUBOID"); //$NON-NLS-1$
         keywords.add("CSG_ELLIPSOID"); //$NON-NLS-1$
+        keywords.add("CSG_ELLIPSOID2"); //$NON-NLS-1$
         keywords.add("CSG_CYLINDER"); //$NON-NLS-1$
         keywords.add("CSG_CONE"); //$NON-NLS-1$
         keywords.add("CSG_QUAD"); //$NON-NLS-1$

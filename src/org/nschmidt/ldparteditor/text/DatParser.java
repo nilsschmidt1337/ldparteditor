@@ -420,6 +420,9 @@ public enum DatParser {
                 } else if (line.startsWith("CUBOID", 11)) { //$NON-NLS-1$
                     result.remove(0);
                     result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.CUBOID, line, parent)));
+                } else if (line.startsWith("ELLIPSOID2", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.ELLIPSOID2, line, parent)));
                 } else if (line.startsWith("ELLIPSOID", 11)) { //$NON-NLS-1$
                     result.remove(0);
                     result.add(0, new ParsingResult(new GDataCSG(datFile, CSGType.ELLIPSOID, line, parent)));

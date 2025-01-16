@@ -2165,6 +2165,9 @@ public final class GData1 extends GData {
                 case ELLIPSOID:
                     lineBuilder8.append("0 !LPE CSG_ELLIPSOID "); //$NON-NLS-1$
                     break;
+                case ELLIPSOID2:
+                    lineBuilder8.append("0 !LPE CSG_ELLIPSOID2 "); //$NON-NLS-1$
+                    break;
                 case CIRCLE:
                     lineBuilder8.append("0 !LPE CSG_CIRCLE "); //$NON-NLS-1$
                     break;
@@ -2200,7 +2203,7 @@ public final class GData1 extends GData {
                     lineBuilder8.append(dataSegments2[3] + this.id + " " + dataSegments2[4] + this.id + " " + dataSegments2[5] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
-                case EXTRUDE, QUAD, CUBOID, ELLIPSOID, CIRCLE, CYLINDER, MESH:
+                case EXTRUDE, QUAD, CUBOID, ELLIPSOID, ELLIPSOID2, CIRCLE, CYLINDER, MESH:
                     lineBuilder8.append(dataSegments2[3] + this.id + " " + dataSegments2[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;

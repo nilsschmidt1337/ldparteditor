@@ -51,6 +51,7 @@ import org.nschmidt.csg.CSGOptimizerTJunction;
 import org.nschmidt.csg.CSGOptimizerUnificator;
 import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
+import org.nschmidt.csg.CSGSphereOld;
 import org.nschmidt.csg.CSGType;
 import org.nschmidt.csg.IdAndPlane;
 import org.nschmidt.csg.Plane;
@@ -200,7 +201,7 @@ public final class GDataCSG extends GData {
             colour = null;
             matrix = null;
             break;
-        case QUAD, CIRCLE, ELLIPSOID, CUBOID, CYLINDER, MESH, EXTRUDE, CONE:
+        case QUAD, CIRCLE, ELLIPSOID, ELLIPSOID2, CUBOID, CYLINDER, MESH, EXTRUDE, CONE:
             if (dataSegments.length == 17) {
                 ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
                 GColour c = DatParser.validateColour(dataSegments[4], col16.getR(), col16.getG(), col16.getB(), 1f);
@@ -419,7 +420,7 @@ public final class GDataCSG extends GData {
                 tmpRegisteredData.add(this);
                 if (ref1 != null) {
                     switch (type) {
-                    case QUAD, CIRCLE, ELLIPSOID, CUBOID, CYLINDER, CONE, MESH, EXTRUDE:
+                    case QUAD, CIRCLE, ELLIPSOID, ELLIPSOID2, CUBOID, CYLINDER, CONE, MESH, EXTRUDE:
                         if (matrix != null) {
                             switch (type) {
                             case QUAD:
@@ -457,6 +458,18 @@ public final class GDataCSG extends GData {
                                 }
                                 dataCSG = csgSphere;
                                 tmpLinkedCSG.put(ref1, csgSphere);
+                                break;
+                            case ELLIPSOID2:
+                                CSGSphereOld sphereOld = new CSGSphereOld(quality, quality / 2);
+                                tmpIdToGDataCSG.put(sphereOld.id, this);
+                                CSG csgSphereOld = sphereOld.toCSG(df, colour);
+                                if (modified && isSelected(df)) {
+                                    csgSphereOld = transformWithManipulator(csgSphereOld, m, matrix);
+                                } else {
+                                    csgSphereOld = csgSphereOld.transformed(matrix);
+                                }
+                                dataCSG = csgSphereOld;
+                                tmpLinkedCSG.put(ref1, csgSphereOld);
                                 break;
                             case CUBOID:
                                 CSGCube cube = new CSGCube();
@@ -794,6 +807,11 @@ public final class GDataCSG extends GData {
                 t = " CSG_ELLIPSOID "; //$NON-NLS-1$
                 notChoosen = false;
             }
+        case ELLIPSOID2:
+            if (notChoosen) {
+                t = " CSG_ELLIPSOID2 "; //$NON-NLS-1$
+                notChoosen = false;
+            }
         case CUBOID:
             if (notChoosen) {
                 t = " CSG_CUBOID "; //$NON-NLS-1$
@@ -869,6 +887,11 @@ public final class GDataCSG extends GData {
         case ELLIPSOID:
             if (notChoosen) {
                 t = " CSG_ELLIPSOID "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case ELLIPSOID2:
+            if (notChoosen) {
+                t = " CSG_ELLIPSOID2 "; //$NON-NLS-1$
                 notChoosen = false;
             }
         case CUBOID:
@@ -963,6 +986,11 @@ public final class GDataCSG extends GData {
         case ELLIPSOID:
             if (notChoosen) {
                 t = " CSG_ELLIPSOID "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case ELLIPSOID2:
+            if (notChoosen) {
+                t = " CSG_ELLIPSOID2 "; //$NON-NLS-1$
                 notChoosen = false;
             }
         case CUBOID:
@@ -1284,6 +1312,11 @@ public final class GDataCSG extends GData {
         case ELLIPSOID:
             if (notChoosen) {
                 t = " CSG_ELLIPSOID "; //$NON-NLS-1$
+                notChoosen = false;
+            }
+        case ELLIPSOID2:
+            if (notChoosen) {
+                t = " CSG_ELLIPSOID2 "; //$NON-NLS-1$
                 notChoosen = false;
             }
         case CUBOID:
