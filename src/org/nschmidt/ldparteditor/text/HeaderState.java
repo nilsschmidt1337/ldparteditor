@@ -27,9 +27,10 @@ public class HeaderState {
     public static final int H07_OPTIONAL_CATEGORY = 7;
     public static final int H08_OPTIONAL_KEYWORDS = 8;
     public static final int H09_OPTIONAL_CMDLINE = 9;
-    public static final int H10_OPTIONAL_HISTORY = 10;
-    public static final int H11_OPTIONAL_COMMENT = 11;
-    public static final int H12_OPTIONAL_BFC2 = 12;
+    public static final int H10_OPTIONAL_PREVIEW = 10;
+    public static final int H11_OPTIONAL_HISTORY = 11;
+    public static final int H12_OPTIONAL_COMMENT = 12;
+    public static final int H13_OPTIONAL_BFC2 = 13;
 
     private boolean hasTITLE = false;
     private boolean hasNAME = false;
@@ -43,6 +44,7 @@ public class HeaderState {
     private boolean hasCATEGORY = false;
     private boolean hasKEYWORDS = false;
     private boolean hasCMDLINE = false;
+    private boolean hasPREVIEW = false;
     private boolean hasHISTORY = false;
     private boolean hasCOMMENT = false;
     private boolean hasBFC2 = false;
@@ -155,6 +157,14 @@ public class HeaderState {
 
     public void setHasCMDLINE(boolean hasCMDLINE) {
         this.hasCMDLINE = hasCMDLINE;
+    }
+
+    public boolean hasPREVIEW() {
+        return hasPREVIEW;
+    }
+
+    public void setHasPREVIEW(boolean hasPREVIEW) {
+        this.hasPREVIEW = hasPREVIEW;
     }
 
     public boolean hasHISTORY() {

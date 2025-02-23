@@ -306,6 +306,7 @@ public final class I18n {
     public static final String DATPARSER_DUPLICATED_FILENAME = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DUPLICATED_LICENSE = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DUPLICATED_LINES = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_DUPLICATED_PREVIEW = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DUPLICATED_TYPE = DATPARSER.getString(getProperty());
     public static final String DATPARSER_FILENAME_WHITESPACE = DATPARSER.getString(getProperty());
     public static final String DATPARSER_FILE_NOT_FOUND = DATPARSER.getString(getProperty());
@@ -338,6 +339,7 @@ public final class I18n {
     public static final String DATPARSER_MISPLACED_HISTORY = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MISPLACED_KEYWORD = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MISPLACED_LICENSE = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_MISPLACED_PREVIEW = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MISPLACED_TITLE = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MISPLACED_TYPE = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MLCAD_CLIP = DATPARSER.getString(getProperty());

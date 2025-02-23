@@ -450,10 +450,10 @@ public class DatHeaderManager {
                                 // I expect that this line is a valid Command Line
                                 if (normalizedLine.startsWith("0 !CMDLINE ")) { //$NON-NLS-1$
                                     h.setHasCMDLINE(true);
-                                    headerState = HeaderState.H10_OPTIONAL_HISTORY;
+                                    headerState = HeaderState.H10_OPTIONAL_PREVIEW;
                                     break;
                                 } else { // Its something else..
-                                    headerState = HeaderState.H10_OPTIONAL_HISTORY;
+                                    headerState = HeaderState.H10_OPTIONAL_PREVIEW;
                                 }
                             } else {
                                 // I don't expect that this line is a valid Command Line
@@ -466,14 +466,41 @@ public class DatHeaderManager {
                                             registerHeaderHint(lineNumber, "92", I18n.DATPARSER_MISPLACED_COMMAND_LINE, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setHasCMDLINE(true);
-                                        headerState = HeaderState.H10_OPTIONAL_HISTORY;
+                                        headerState = HeaderState.H10_OPTIONAL_PREVIEW;
                                     }
                                     break;
                                 }
                             }
 
-                            // HeaderState._10o_HISTORY TODO Needs better validation
-                            if (headerState == HeaderState.H10_OPTIONAL_HISTORY) {
+                            // HeaderState._10o_PREVIEW
+                            if (headerState == HeaderState.H10_OPTIONAL_PREVIEW) {
+                                // I expect that this line is a valid preview
+                                if (normalizedLine.startsWith("0 !PREVIEW ")) { //$NON-NLS-1$
+                                    h.setHasPREVIEW(true);
+                                    headerState = HeaderState.H11_OPTIONAL_HISTORY;
+                                    break;
+                                } else { // Its something else..
+                                    headerState = HeaderState.H11_OPTIONAL_HISTORY;
+                                }
+                            } else {
+                                // I don't expect that this line is a valid preview
+                                if (normalizedLine.startsWith("0 !PREVIEW ")) { //$NON-NLS-1$
+                                    // Its duplicated
+                                    if (h.hasPREVIEW()) {
+                                        registerHeaderHint(lineNumber, "93", I18n.DATPARSER_DUPLICATED_PREVIEW, registered, allHints); //$NON-NLS-1$
+                                    } else {
+                                        if (headerState > HeaderState.H10_OPTIONAL_PREVIEW) { // Its misplaced
+                                            registerHeaderHint(lineNumber, "94", I18n.DATPARSER_MISPLACED_PREVIEW, registered, allHints); //$NON-NLS-1$
+                                        }
+                                        h.setHasPREVIEW(true);
+                                        headerState = HeaderState.H11_OPTIONAL_HISTORY;
+                                    }
+                                    break;
+                                }
+                            }
+
+                            // HeaderState._11o_HISTORY TODO Needs better validation
+                            if (headerState == HeaderState.H11_OPTIONAL_HISTORY) {
                                 // I expect that this line is a valid History Entry
                                 if (normalizedLine.startsWith("0 !HISTORY ") && normalizedLine.length() > 20) { //$NON-NLS-1$
                                     if (h.hasHISTORY()) {
@@ -485,10 +512,10 @@ public class DatHeaderManager {
                                         h.setLastHistoryEntry(normalizedLine.substring(0, "0 !HISTORY YYYY-MM-DD".length())); //$NON-NLS-1$
                                     }
                                     h.setHasHISTORY(true);
-                                    headerState = HeaderState.H10_OPTIONAL_HISTORY;
+                                    headerState = HeaderState.H11_OPTIONAL_HISTORY;
                                     break;
                                 } else { // Its something else..
-                                    headerState = HeaderState.H11_OPTIONAL_COMMENT;
+                                    headerState = HeaderState.H12_OPTIONAL_COMMENT;
                                 }
                             } else {
                                 // I don't expect that this line is a valid History Entry
@@ -497,25 +524,25 @@ public class DatHeaderManager {
                                     if (h.hasHISTORY()) {
                                         registerHeaderHint(lineNumber, "A1", I18n.DATPARSER_SPLIT_HISTORY, registered, allHints); //$NON-NLS-1$
                                     } else {
-                                        if (headerState > HeaderState.H10_OPTIONAL_HISTORY) { // Its misplaced
+                                        if (headerState > HeaderState.H11_OPTIONAL_HISTORY) { // Its misplaced
                                             registerHeaderHint(lineNumber, "A2", I18n.DATPARSER_MISPLACED_HISTORY, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setHasHISTORY(true);
-                                        headerState = HeaderState.H10_OPTIONAL_HISTORY;
+                                        headerState = HeaderState.H11_OPTIONAL_HISTORY;
                                     }
                                     break;
                                 }
                             }
 
-                            // HeaderState._11o_COMMENT
-                            if (headerState == HeaderState.H11_OPTIONAL_COMMENT) {
+                            // HeaderState._12o_COMMENT
+                            if (headerState == HeaderState.H12_OPTIONAL_COMMENT) {
                                 // I expect that this line is a valid Comment
                                 if (normalizedLine.startsWith("0 // ")) { //$NON-NLS-1$
                                     h.setHasCOMMENT(true);
-                                    headerState = HeaderState.H11_OPTIONAL_COMMENT;
+                                    headerState = HeaderState.H12_OPTIONAL_COMMENT;
                                     break;
                                 } else {// Its something else..
-                                    headerState = HeaderState.H12_OPTIONAL_BFC2;
+                                    headerState = HeaderState.H13_OPTIONAL_BFC2;
                                 }
                             } else {
                                 // I don't expect that this line is a valid Comment
@@ -524,18 +551,18 @@ public class DatHeaderManager {
                                     if (h.hasCOMMENT()) {
                                         registerHeaderHint(lineNumber, "B1", I18n.DATPARSER_SPLIT_COMMMENT, registered, allHints); //$NON-NLS-1$
                                     } else {
-                                        if (headerState > HeaderState.H11_OPTIONAL_COMMENT) { // Its misplaced
+                                        if (headerState > HeaderState.H12_OPTIONAL_COMMENT) { // Its misplaced
                                             registerHeaderHint(lineNumber, "B2", I18n.DATPARSER_MISPLACED_COMMENT, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setHasCOMMENT(true);
-                                        headerState = HeaderState.H11_OPTIONAL_COMMENT;
+                                        headerState = HeaderState.H12_OPTIONAL_COMMENT;
                                     }
                                     break;
                                 }
                             }
 
-                            // HeaderState._12o_BFC2
-                            if (headerState == HeaderState.H12_OPTIONAL_BFC2) {
+                            // HeaderState._13o_BFC2
+                            if (headerState == HeaderState.H13_OPTIONAL_BFC2) {
                                 // I expect that this line is a valid BFC Statement
                                 if (normalizedLine.startsWith("0 BFC") && (normalizedLine.equals("0 BFC CW") //$NON-NLS-1$ //$NON-NLS-2$
                                         || normalizedLine.equals("0 BFC CCW") //$NON-NLS-1$
@@ -546,7 +573,7 @@ public class DatHeaderManager {
                                         || normalizedLine.equals("0 BFC NOCLIP") //$NON-NLS-1$
                                         || normalizedLine.equals("0 BFC INVERTNEXT"))) { //$NON-NLS-1$
                                     h.setHasBFC2(true);
-                                    headerState = HeaderState.H12_OPTIONAL_BFC2;
+                                    headerState = HeaderState.H13_OPTIONAL_BFC2;
                                     break;
                                 }
                             } else {
@@ -563,11 +590,11 @@ public class DatHeaderManager {
                                     if (h.hasBFC2()) {
                                         registerHeaderHint(lineNumber, "C1", I18n.DATPARSER_SPLIT_BFC, registered, allHints); //$NON-NLS-1$
                                     } else {
-                                        if (headerState > HeaderState.H12_OPTIONAL_BFC2) { // Its misplaced
+                                        if (headerState > HeaderState.H13_OPTIONAL_BFC2) { // Its misplaced
                                             registerHeaderHint(lineNumber, "C2", I18n.DATPARSER_MISPLACED_BFC, registered, allHints); //$NON-NLS-1$
                                         }
                                         h.setHasBFC2(true);
-                                        headerState = HeaderState.H12_OPTIONAL_BFC2;
+                                        headerState = HeaderState.H13_OPTIONAL_BFC2;
                                     }
                                     break;
                                 }
@@ -587,7 +614,7 @@ public class DatHeaderManager {
                             break;
                         }
                     }
-                    
+
                     if (gd != null) {
                         // Check on numbers with scientific notation
                         if (gd.type() > 0 && gd.type() < 6) {
@@ -613,7 +640,7 @@ public class DatHeaderManager {
                             }
                         }
                     }
-                    
+
                     // Check on wrong comment lines with just one slash
                     gd = firstEntry;
                     if (gd != null) {
@@ -623,7 +650,7 @@ public class DatHeaderManager {
                             lineNumber += 1;
                             int type = gd.type();
                             if (type == 0) {
-                                
+
                                 String trimmedLine = gd.toString().stripLeading();
                                 String[] dataSegments = trimmedLine.split("\\s+"); //$NON-NLS-1$
 
@@ -788,7 +815,7 @@ public class DatHeaderManager {
     private void registerHeaderHint(int lineNumber, String errno, String message, boolean[] registered, List<ParsingResult> allHints) {
         registerHint(lineNumber, errno, new Object[]{}, message, I18n.DATPARSER_HEADER_HINT, registered, allHints);
     }
-    
+
     private void registerFormatHint(int lineNumber, String errno, String message, boolean[] registered, List<ParsingResult> allHints) {
         registerHint(lineNumber, errno, new Object[]{}, message, I18n.DATPARSER_FORMAT_HINT, registered, allHints);
     }
