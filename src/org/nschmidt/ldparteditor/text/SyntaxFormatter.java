@@ -304,6 +304,24 @@ public class SyntaxFormatter {
         commentStyleRange.foreground = Theming.getCurrentTheme() == Theming.DEFAULT ? TextEditorColour.getLineCommentFont() : TextEditorColour.getTextForeground();
         styles.add(commentStyleRange);
 
+        // Format wrong BFC winding
+        if (textSegments.length > 2 && textSegments.length < 6 && "BFC".equals(textSegments[1]) && "CW".equals(textSegments[textSegments.length - 1])) { //$NON-NLS-1$ //$NON-NLS-2$
+            // 0 BFC CW
+            // 0 BFC CLIP CW
+            // 0 BFC CERTIFY CW
+            // 0 BFC CERTIFY CLIP CW (wrong meta from MLCAD!)
+            if (textSegments.length == 3 ||
+                textSegments.length == 4 && ("CLIP".equals(textSegments[2]) || "CERTIFY".equals(textSegments[2])) || //$NON-NLS-1$ //$NON-NLS-2$
+                textSegments.length == 5 && "CERTIFY".equals(textSegments[2]) && "CLIP".equals(textSegments[3])) { //$NON-NLS-1$ //$NON-NLS-2$
+                StyleRange bfcWindingWarningStyleRange = new StyleRange();
+                bfcWindingWarningStyleRange.start = offset;
+                bfcWindingWarningStyleRange.length = e.lineText.length();
+                setWarningStyle(bfcWindingWarningStyleRange);
+                styles.add(bfcWindingWarningStyleRange);
+                return;
+            }
+        }
+
         if (offset == 0)
             return; // We are on the first line. Do not highlight other KEYWORDS in these line
 

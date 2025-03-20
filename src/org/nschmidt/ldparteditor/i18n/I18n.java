@@ -297,6 +297,7 @@ public final class I18n {
     public static final String DATPARSER_CONCAVE_QUADRILATERAL = DATPARSER.getString(getProperty());
     public static final String DATPARSER_CONSTANT_AT = DATPARSER.getString(getProperty());
     public static final String DATPARSER_COPLANARITY = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_CW_WARNING = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DATA_ERROR = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DITHERED_COLOUR = DATPARSER.getString(getProperty());
     public static final String DATPARSER_DUPLICATED_AUTHOR = DATPARSER.getString(getProperty());
