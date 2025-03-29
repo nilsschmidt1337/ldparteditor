@@ -100,6 +100,10 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     @Override
     public void init() {
 
+        int renderMode = c3d.getRenderMode();
+        if (AddToolItem.isAddingCondlines())
+            renderMode = 6;
+
         if (shaderProgram.isDefault()) shaderProgram = new GLShader("renderer.vert", "renderer.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgram2.isDefault()) shaderProgram2 = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgram2D.isDefault()) shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -111,12 +115,12 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         shaderProgramCondline.use();
 
         GL20.glUniform1f(shaderProgramCondline.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
-        GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
+        GL20.glUniform1f(shaderProgramCondline.getUniformLocation("condlineMode"), renderMode == 6 ? 1f : 0f); //$NON-NLS-1$
 
         shaderProgramCondline2.use();
 
         GL20.glUniform1f(shaderProgramCondline2.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
-        GL20.glUniform1f(shaderProgramCondline2.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
+        GL20.glUniform1f(shaderProgramCondline2.getUniformLocation("condlineMode"), renderMode == 6 ? 1f : 0f); //$NON-NLS-1$
 
         stack.setShader(shaderProgram);
         shaderProgram.use();

@@ -57,6 +57,7 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer33;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.LineThicknessToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 
@@ -371,7 +372,7 @@ public class GL33ModelRenderer {
                 continue;
             }
 
-            final int renderMode = c3d.getRenderMode();
+            final int renderMode = AddToolItem.isAddingCondlines() ? 6 : c3d.getRenderMode();
 
             // Skip render mode 5
             if (renderMode != 5) try {
@@ -2337,6 +2338,7 @@ public class GL33ModelRenderer {
         final float zoom = c3d.getZoom();
         final boolean drawLines = View.lineWidthGL > 0.01f;
         final boolean studlogo = c3d.isShowingLogo();
+        final int renderMode = AddToolItem.isAddingCondlines() ? 6 : c3d.getRenderMode();
 
         if (c3d.isLightOn()) {
             mainShader.setFactor(.9f);
@@ -2477,7 +2479,7 @@ public class GL33ModelRenderer {
 
             // Draw condlines next
             GL20.glUniform1f(condlineShader2.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
-            GL20.glUniform1f(condlineShader2.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
+            GL20.glUniform1f(condlineShader2.getUniformLocation("condlineMode"), renderMode == 6 ? 1f : 0f); //$NON-NLS-1$
             GL20.glUniform1f(condlineShader2.getUniformLocation("alpha"), drawSolidMaterials ? 1f : 0.5f); //$NON-NLS-1$
 
             if (hiQualityCondlines.length > 0) {
@@ -2665,7 +2667,7 @@ public class GL33ModelRenderer {
                 stack.setShader(condlineShader);
 
                 GL20.glUniform1f(condlineShader.getUniformLocation("showAll"), c3d.getLineMode() == 1 ? 1f : 0f); //$NON-NLS-1$
-                GL20.glUniform1f(condlineShader.getUniformLocation("condlineMode"), c3d.getRenderMode() == 6 ? 1f : 0f); //$NON-NLS-1$
+                GL20.glUniform1f(condlineShader.getUniformLocation("condlineMode"), renderMode == 6 ? 1f : 0f); //$NON-NLS-1$
 
                 GL30.glBindVertexArray(vaoCondlines);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
