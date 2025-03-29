@@ -818,6 +818,8 @@ public class GL33ModelRenderer {
                     localVerticesSize += transformedVertices.size();
                 }
 
+                final boolean showingCondlineControlPoints = condlineMode || c3d.isShowingCondlineControlPoints();
+
                 // Only do "heavy" CPU condline computing with the special condline mode
                 // (if the condline was not shown before)
                 if (condlineMode) {
@@ -1128,7 +1130,7 @@ public class GL33ModelRenderer {
                             vertexData[i + 3] = r;
                             vertexData[i + 4] = g;
                             vertexData[i + 5] = b;
-                            if (c3d.isShowingCondlineControlPoints()) {
+                            if (showingCondlineControlPoints) {
                                 vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
                             } else {
                                 vertexData[i + 6] = hiddenVertices.contains(v) || pureCondlineControlPoints.contains(v) ? 0f : 7f;
@@ -1173,7 +1175,7 @@ public class GL33ModelRenderer {
                                 vertexData[i + 3] = r;
                                 vertexData[i + 4] = g;
                                 vertexData[i + 5] = b;
-                                if (c3d.isShowingCondlineControlPoints()) {
+                                if (showingCondlineControlPoints) {
                                     vertexData[i + 6] = hiddenVertices.contains(v) ? 0f : 7f;
                                 } else {
                                     vertexData[i + 6] = hiddenVertices.contains(v) || pureCondlineControlPoints.contains(v) ? 0f : 7f;

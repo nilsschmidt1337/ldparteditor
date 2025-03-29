@@ -66,7 +66,7 @@ public class AddToolItem extends ToolItem {
     private static boolean addingLines = false;
     private static boolean addingTriangles = false;
     private static boolean addingQuads = false;
-    private static boolean addingCondlines = false;
+    private static volatile boolean addingCondlines = false;
     private static boolean addingDistance = false;
     private static boolean addingProtractor = false;
     private static boolean addingSubfiles = false;

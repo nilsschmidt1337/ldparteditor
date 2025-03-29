@@ -47,6 +47,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helper.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.TransformationModeToolItem;
 
@@ -81,7 +82,7 @@ public final class VertexManager extends VM99Clipboard {
             CompletableFuture.runAsync( () -> {
                 final Set<Vertex> tmpHiddenVertices2 = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
                 tmpHiddenVertices2.addAll(hiddenVertices);
-                if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
+                if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6 || AddToolItem.isAddingCondlines()) {
                     if (!tmpHiddenVertices.isEmpty()) {
                         boolean pureControlPoint;
                         for (Map.Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.threadSafeEntrySet()) {
