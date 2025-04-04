@@ -89,6 +89,7 @@ class OptionsDesign extends ApplicationWindow {
     NButton[] btnDisableMAD3DPtr = new NButton[1];
     NButton[] btnDisableMADtextPtr = new NButton[1];
     NButton[] btnIncludeUnmatchedEdgesPtr = new NButton[1];
+    NButton[] btnEnableBorderedQuadToRectConversationPtr = new NButton[1];
     NButton[] btnCancelViaMousePtr = new NButton[1];
     NButton[] btnInvertInvertWheelZoomDirectionPtr = new NButton[1];
     NButton[] btnShowAxisLabelsPtr = new NButton[1];
@@ -227,6 +228,11 @@ class OptionsDesign extends ApplicationWindow {
                 this.btnIncludeUnmatchedEdgesPtr[0] = btnIncludeUnmatchedEdges;
                 btnIncludeUnmatchedEdges.setText(I18n.OPTIONS_INCLUDE_UNMATCHED_ED);
                 btnIncludeUnmatchedEdges.setSelection(userSettings.isIncludeUnmatchedEdgesByDefault());
+
+                NButton btnEnableBorderedQuadToRectConversation = new NButton(cmpContainer, SWT.CHECK);
+                this.btnEnableBorderedQuadToRectConversationPtr[0] = btnEnableBorderedQuadToRectConversation;
+                btnEnableBorderedQuadToRectConversation.setText(I18n.OPTIONS_ENABLE_QUAD_TO_RECT);
+                btnEnableBorderedQuadToRectConversation.setSelection(userSettings.isEnableBorderedQuadToRectConversationByDefault());
 
                 NButton btnCancelViaMouse = new NButton(cmpContainer, SWT.CHECK);
                 this.btnCancelViaMousePtr[0] = btnCancelViaMouse;

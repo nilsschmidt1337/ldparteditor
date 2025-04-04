@@ -1112,6 +1112,7 @@ public final class I18n {
     public static final String OPTIONS_COPLANARITY_WARNING = OPTIONS.getString(getProperty());
     public static final String OPTIONS_DATA_FILE_SIZE_LIMIT = OPTIONS.getString(getProperty());
     public static final String OPTIONS_DIRECTORY = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_ENABLE_QUAD_TO_RECT = OPTIONS.getString(getProperty());
     public static final String OPTIONS_INCLUDE_UNMATCHED_ED = OPTIONS.getString(getProperty());
     public static final String OPTIONS_KEY_COMBO_IN_USE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_LDRAW_FOLDER = OPTIONS.getString(getProperty());

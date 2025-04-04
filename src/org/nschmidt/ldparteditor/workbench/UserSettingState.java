@@ -272,6 +272,8 @@ public class UserSettingState implements Serializable {
 
     private int primitiveSubstitutionQuality = 56;
 
+    private boolean enableBorderedQuadToRectConversationByDefault = false;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -1571,5 +1573,13 @@ public class UserSettingState implements Serializable {
 
     public void setPrimitiveSubstitutionQuality(int primitiveSubstitutionQuality) {
         this.primitiveSubstitutionQuality = primitiveSubstitutionQuality;
+    }
+
+    public boolean isEnableBorderedQuadToRectConversationByDefault() {
+        return enableBorderedQuadToRectConversationByDefault;
+    }
+
+    public void setEnableBorderedQuadToRectConversationByDefault(boolean enableBorderedQuadToRectConversationByDefault) {
+        this.enableBorderedQuadToRectConversationByDefault = enableBorderedQuadToRectConversationByDefault;
     }
 }

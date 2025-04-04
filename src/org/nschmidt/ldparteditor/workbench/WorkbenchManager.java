@@ -166,6 +166,10 @@ public enum WorkbenchManager {
             MiscToolItem.includeUnmatchedEdgesByDefaultInEdger2();
         }
 
+        if (WorkbenchManager.userSettingState.isEnableBorderedQuadToRectConversationByDefault()) {
+            MiscToolItem.enableBorderedQuadToRectConversationByDefaultInRectifier();
+        }
+
         if (WorkbenchManager.userSettingState.getPartReview3dViewCount() <= 0) {
             WorkbenchManager.userSettingState.setPartReview3dViewCount(4);
         }

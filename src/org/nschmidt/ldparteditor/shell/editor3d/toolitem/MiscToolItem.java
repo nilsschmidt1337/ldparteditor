@@ -3697,6 +3697,10 @@ public class MiscToolItem extends ToolItem {
         es.setUnmatchedMode(0);
     }
 
+    public static void enableBorderedQuadToRectConversationByDefaultInRectifier() {
+        rs.setNoBorderedQuadToRectConversation(false);
+    }
+
     public static SelectorSettings loadSelectorSettings() {
         sels.setColour(mntmWithSameColourPtr[0].getSelection());
         sels.setType(mntmWithSameTypePtr[0].getSelection());
