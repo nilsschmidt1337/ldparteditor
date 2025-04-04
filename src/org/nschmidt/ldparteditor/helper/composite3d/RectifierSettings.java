@@ -23,7 +23,7 @@ public class RectifierSettings {
     private boolean colourise = false;
     private boolean noQuadConversation = false;
     private boolean noRectConversationOnAdjacentCondlines = true;
-    private boolean noBorderedQuadToRectConversation = false;
+    private boolean noBorderedQuadToRectConversation = true;
     private int scope = 0;
     public BigDecimal getMaximumAngle() {
         return maximumAngle;
