@@ -423,6 +423,7 @@ public final class I18n {
     public static final String E3D_ADD_COMMENT = E3D.getString(getProperty());
     public static final String E3D_ADD_CONDLINE = E3D.getString(getProperty());
     public static final String E3D_ADD_DISTANCE = E3D.getString(getProperty());
+    public static final String E3D_ADD_FREEZE_HINT = E3D.getString(getProperty());
     public static final String E3D_ADD_LINE = E3D.getString(getProperty());
     public static final String E3D_ADD_PROTRACTOR = E3D.getString(getProperty());
     public static final String E3D_ADD_QUAD = E3D.getString(getProperty());

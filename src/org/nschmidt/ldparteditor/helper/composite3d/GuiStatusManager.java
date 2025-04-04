@@ -177,23 +177,28 @@ public enum GuiStatusManager {
                 }
             }
 
-            if (AddToolItem.isAddingDistance()|| AddToolItem.isAddingLines()) {
-                Vector4f cur = c3d.getCursorSnapped3D();
-                Vertex v = c3d.getLockableDatFileReference().getNearestObjVertex1();
-                if (v != null) {
-                    float distLDU = Vector4f.sub(v.toVector4f(), cur, null).length() / 1000f;
-                    float distMM = distLDU * 0.4f;
-                    sb.append(" "); //$NON-NLS-1$
-                    sb.append(I18n.C3D_LENGTH);
-                    sb.append(" "); //$NON-NLS-1$
-                    sb.append(DF4F.format(distLDU));
-                    sb.append(" "); //$NON-NLS-1$
-                    sb.append(I18n.UNITS_LDU);
-                    sb.append(" | "); //$NON-NLS-1$
-                    sb.append(DF2F.format(distMM));
-                    sb.append(" "); //$NON-NLS-1$
-                    sb.append(I18n.UNITS_SECONDARY);
+            if (AddToolItem.isAddingSomething() && !AddToolItem.isAddingVertices() && !AddToolItem.isAddingSubfiles()) {
+                if (AddToolItem.isAddingDistance()|| AddToolItem.isAddingLines()) {
+                    Vector4f cur = c3d.getCursorSnapped3D();
+                    Vertex v = c3d.getLockableDatFileReference().getNearestObjVertex1();
+                    if (v != null) {
+                        float distLDU = Vector4f.sub(v.toVector4f(), cur, null).length() / 1000f;
+                        float distMM = distLDU * 0.4f;
+                        sb.append(" "); //$NON-NLS-1$
+                        sb.append(I18n.C3D_LENGTH);
+                        sb.append(" "); //$NON-NLS-1$
+                        sb.append(DF4F.format(distLDU));
+                        sb.append(" "); //$NON-NLS-1$
+                        sb.append(I18n.UNITS_LDU);
+                        sb.append(" | "); //$NON-NLS-1$
+                        sb.append(DF2F.format(distMM));
+                        sb.append(" "); //$NON-NLS-1$
+                        sb.append(I18n.UNITS_SECONDARY);
+                    }
                 }
+
+                sb.append(" "); //$NON-NLS-1$
+                sb.append(I18n.E3D_ADD_FREEZE_HINT);
             }
 
             showAndCheckImageCalibrationHint(sb, df);
