@@ -52,6 +52,7 @@ class RectifierDesign extends ThemedDialog {
     final Combo[] cmbColourisePtr = new Combo[1];
     final Combo[] cmbNoQuadConversationPtr = new Combo[1];
     final Combo[] cmbNoRectConversationOnAdjacentCondlinesPtr = new Combo[1];
+    final Combo[] cmbNoWarpedRectWithShearPtr = new Combo[1];
     final Combo[] cmbNoBorderedQuadToRectConversationPtr = new Combo[1];
 
     // Use final only for subclass/listener references!
@@ -120,6 +121,14 @@ class RectifierDesign extends ThemedDialog {
             cmbNoRectConversationOnAdjacentCondlines.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbNoRectConversationOnAdjacentCondlines.setText(cmbNoRectConversationOnAdjacentCondlines.getItem(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0));
             cmbNoRectConversationOnAdjacentCondlines.select(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0);
+        }
+        {
+            Combo cmbNoWarpeRectWithShear = Theming.combo(cmpContainer, SWT.READ_ONLY);
+            this.cmbNoWarpedRectWithShearPtr[0] = cmbNoWarpeRectWithShear;
+            widgetUtil(cmbNoWarpeRectWithShear).setItems(I18n.RECTIFIER_RECT_5, I18n.RECTIFIER_RECT_6);
+            cmbNoWarpeRectWithShear.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbNoWarpeRectWithShear.setText(cmbNoWarpeRectWithShear.getItem(rs.isNoDecimalsInRectPrims() ? 1 : 0));
+            cmbNoWarpeRectWithShear.select(rs.isNoDecimalsInRectPrims() ? 1 : 0);
         }
         Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;

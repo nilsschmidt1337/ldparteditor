@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.lwjgl.util.vector.Matrix4f;
+import org.nschmidt.ldparteditor.enumtype.Axis;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 import org.nschmidt.ldparteditor.enumtype.View;
@@ -540,6 +541,17 @@ class VM04Rectifier extends VM03Adjacency {
                                                 lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m31));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
                                                 lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m32));
+
+                                                final int lastDecimalPointInPosition = lineBuilder.lastIndexOf("."); //$NON-NLS-1$
+
+                                                final Axis x = determineAxis(accurateLocalMatrix.m00, accurateLocalMatrix.m10, accurateLocalMatrix.m20);
+                                                final Axis y = determineAxis(accurateLocalMatrix.m01, accurateLocalMatrix.m11, accurateLocalMatrix.m21);
+                                                final Axis z = determineAxis(accurateLocalMatrix.m02, accurateLocalMatrix.m12, accurateLocalMatrix.m22);
+
+                                                final boolean hasDifferentOrthogonalAxes =
+                                                        x != Axis.NONE && y != Axis.NONE && z != Axis.NONE &&
+                                                        x != y && y != z && x != z;
+
                                                 lineBuilder.append(" "); //$NON-NLS-1$
                                                 lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m00));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
@@ -558,6 +570,9 @@ class VM04Rectifier extends VM03Adjacency {
                                                 lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m12));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
                                                 lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m22));
+
+                                                if (rs.isNoDecimalsInRectPrims() && !hasDifferentOrthogonalAxes && lineBuilder.lastIndexOf(".") > lastDecimalPointInPosition) continue; //$NON-NLS-1$
+
                                                 lineBuilder.append(" "); //$NON-NLS-1$
                                                 lineBuilder.append(shortName);
 
@@ -1036,6 +1051,17 @@ class VM04Rectifier extends VM03Adjacency {
                                 lineBuilder.append(" "); //$NON-NLS-1$
                                 lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m32));
                                 lineBuilder.append(" "); //$NON-NLS-1$
+
+                                final int lastDecimalPointInPosition = lineBuilder.lastIndexOf("."); //$NON-NLS-1$
+
+                                final Axis x = determineAxis(accurateLocalMatrix.m00, accurateLocalMatrix.m10, accurateLocalMatrix.m20);
+                                final Axis y = determineAxis(accurateLocalMatrix.m01, accurateLocalMatrix.m11, accurateLocalMatrix.m21);
+                                final Axis z = determineAxis(accurateLocalMatrix.m02, accurateLocalMatrix.m12, accurateLocalMatrix.m22);
+
+                                final boolean hasDifferentOrthogonalAxes =
+                                        x != Axis.NONE && y != Axis.NONE && z != Axis.NONE &&
+                                        x != y && y != z && x != z;
+
                                 lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m00));
                                 lineBuilder.append(" "); //$NON-NLS-1$
                                 lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m10));
@@ -1053,6 +1079,9 @@ class VM04Rectifier extends VM03Adjacency {
                                 lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m12));
                                 lineBuilder.append(" "); //$NON-NLS-1$
                                 lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m22));
+
+                                if (rs.isNoDecimalsInRectPrims() && !hasDifferentOrthogonalAxes && lineBuilder.lastIndexOf(".") > lastDecimalPointInPosition) continue; //$NON-NLS-1$
+
                                 lineBuilder.append(" "); //$NON-NLS-1$
                                 lineBuilder.append(shortName);
 
@@ -1206,5 +1235,12 @@ class VM04Rectifier extends VM03Adjacency {
         tMatrix.m33 = 1f;
         det = tMatrix.determinant();
         return Math.abs(det) >= Threshold.SINGULARITY_DETERMINANT;
+    }
+
+    private Axis determineAxis(BigDecimal x, BigDecimal y, BigDecimal z) {
+        if (BigDecimal.ZERO.compareTo(y) == 0 && BigDecimal.ZERO.compareTo(z) == 0) return Axis.X;
+        if (BigDecimal.ZERO.compareTo(x) == 0 && BigDecimal.ZERO.compareTo(z) == 0) return Axis.Y;
+        if (BigDecimal.ZERO.compareTo(y) == 0 && BigDecimal.ZERO.compareTo(x) == 0) return Axis.Z;
+        return Axis.NONE;
     }
 }

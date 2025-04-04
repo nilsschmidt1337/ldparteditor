@@ -50,6 +50,7 @@ public class RectifierDialog extends RectifierDesign {
         cmbNoBorderedQuadToRectConversationPtr[0].addListener(SWT.Selection, event -> rs.setNoBorderedQuadToRectConversation(cmbNoBorderedQuadToRectConversationPtr[0].getSelectionIndex() == 1));
         cmbNoQuadConversationPtr[0].addListener(SWT.Selection, event -> rs.setNoQuadConversation(cmbNoQuadConversationPtr[0].getSelectionIndex() == 1));
         cmbNoRectConversationOnAdjacentCondlinesPtr[0].addListener(SWT.Selection, event -> rs.setNoRectConversationOnAdjacentCondlines(cmbNoRectConversationOnAdjacentCondlinesPtr[0].getSelectionIndex() == 1));
+        cmbNoWarpedRectWithShearPtr[0].addListener(SWT.Selection, event -> rs.setNoDecimalsInRectPrims(cmbNoWarpedRectWithShearPtr[0].getSelectionIndex() == 1));
         widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseRectifier(btnVerbosePtr[0].getSelection()));
         return super.open();
     }

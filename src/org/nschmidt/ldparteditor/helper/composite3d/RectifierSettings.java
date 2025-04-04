@@ -24,6 +24,7 @@ public class RectifierSettings {
     private boolean noQuadConversation = false;
     private boolean noRectConversationOnAdjacentCondlines = true;
     private boolean noBorderedQuadToRectConversation = true;
+    private boolean noDecimalsInRectPrims = true;
     private int scope = 0;
     public BigDecimal getMaximumAngle() {
         return maximumAngle;
@@ -60,5 +61,11 @@ public class RectifierSettings {
     }
     public void setScope(int scope) {
         this.scope = scope;
+    }
+    public boolean isNoDecimalsInRectPrims() {
+        return noDecimalsInRectPrims;
+    }
+    public void setNoDecimalsInRectPrims(boolean noDecimalsInRectPrims) {
+        this.noDecimalsInRectPrims = noDecimalsInRectPrims;
     }
 }

@@ -1295,6 +1295,8 @@ public final class I18n {
     public static final String RECTIFIER_RECT_2 = RECTIFIER.getString(getProperty());
     public static final String RECTIFIER_RECT_3 = RECTIFIER.getString(getProperty());
     public static final String RECTIFIER_RECT_4 = RECTIFIER.getString(getProperty());
+    public static final String RECTIFIER_RECT_5 = RECTIFIER.getString(getProperty());
+    public static final String RECTIFIER_RECT_6 = RECTIFIER.getString(getProperty());
     public static final String RECTIFIER_SCOPE_FILE = RECTIFIER.getString(getProperty());
     public static final String RECTIFIER_SCOPE_SELECTION = RECTIFIER.getString(getProperty());
     public static final String RECTIFIER_TITLE = RECTIFIER.getString(getProperty());
