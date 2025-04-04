@@ -1,7 +1,7 @@
 # LDPartEditor - The LDraw™ Part Editor
 "Create and edit [LDraw™](https://www.ldraw.org) Parts quick and easy."
 
-![](https://github.com/nilsschmidt1337/ldparteditor/workflows/Java%20CI/badge.svg?branch=master)
+[![Java CI](https://github.com/nilsschmidt1337/ldparteditor/actions/workflows/ant.yml/badge.svg)](https://github.com/nilsschmidt1337/ldparteditor/actions/workflows/ant.yml)
 
 ## How to build LDPartEditor
 
