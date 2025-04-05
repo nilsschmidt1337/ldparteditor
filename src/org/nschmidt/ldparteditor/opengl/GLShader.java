@@ -63,9 +63,17 @@ public class GLShader {
     }
 
     private int createAndCompile(final String path, final int type) {
+        final String vendor = GL11.glGetString(GL11.GL_VENDOR);
         final StringBuilder shaderSource = new StringBuilder();
+        final String effectivePath;
+        final boolean hasIntelGPU = "Intel".equals(vendor); //$NON-NLS-1$;
+        if (hasIntelGPU) {
+            effectivePath = path.replace(".", "-intel."); //$NON-NLS-1$ //$NON-NLS-2$
+        } else {
+            effectivePath = path;
+        }
 
-        try (BufferedReader shaderReader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream(path), StandardCharsets.UTF_8))) {
+        try (BufferedReader shaderReader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream(effectivePath), StandardCharsets.UTF_8))) {
             String line;
             while ((line = shaderReader.readLine()) != null) {
                 shaderSource.append(line).append("\n"); //$NON-NLS-1$
@@ -78,6 +86,15 @@ public class GLShader {
         final int shaderID = GL20.glCreateShader(type);
         GL20.glShaderSource(shaderID, shaderSource);
         GL20.glCompileShader(shaderID);
+
+        if (hasIntelGPU && NLogger.debugging) {
+            NLogger.debug(GLShader.class, "Renderer " + GL11.glGetString(GL11.GL_RENDERER)); //$NON-NLS-1$
+            NLogger.debug(GLShader.class, "Version " + GL11.glGetString(GL11.GL_VERSION)); //$NON-NLS-1$
+            NLogger.debug(GLShader.class, "Shading language version " + GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION)); //$NON-NLS-1$
+            NLogger.debug(GLShader.class, "Extensions " + GL11.glGetString(GL11.GL_EXTENSIONS)); //$NON-NLS-1$
+            NLogger.debug(GLShader.class, "Tried to compile shader " + path + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$
+            NLogger.debug(GLShader.class, "msg:  " + path + GL20.glGetShaderInfoLog(shaderID)); //$NON-NLS-1$
+        }
 
         if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
             NLogger.error(GLShader.class, "Could not compile shader " + path + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$

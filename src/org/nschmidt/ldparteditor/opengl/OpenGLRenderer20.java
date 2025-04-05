@@ -96,6 +96,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class OpenGLRenderer20 extends OpenGLRenderer {
 
+    private static final String INTEL_GPU_VENDOR = "Intel"; //$NON-NLS-1$
+
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer viewport = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer rotation = BufferUtils.createFloatBuffer(16);
@@ -219,6 +221,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 GL20.glAttachShader(pGlossId, fsGlossId);
                 GL20.glLinkProgram(pGlossId);
                 GL20.glValidateProgram(pGlossId);
+                debugShaderProgramLog(pGlossId);
                 baseImageLoc = GL20.glGetUniformLocation(pGlossId, "colorMap"); //$NON-NLS-1$
                 glossMapLoc = GL20.glGetUniformLocation(pGlossId, "glossMap"); //$NON-NLS-1$
                 cubeMapLoc = GL20.glGetUniformLocation(pGlossId, "cubeMap"); //$NON-NLS-1$
@@ -2516,11 +2519,27 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     }
 
     private int loadGlossFragmentShader() {
-        StringBuilder shaderSource = new StringBuilder();
+        return loadShader("gloss.frag", GL20.GL_FRAGMENT_SHADER, "fragment"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    private int loadGlossVertexShader() {
+        return loadShader("gloss.vert", GL20.GL_VERTEX_SHADER, "vertex"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    private int loadShader(final String path, final int shaderType, final String shaderTypeString) {
+        final String vendor = GL11.glGetString(GL11.GL_VENDOR);
+        final StringBuilder shaderSource = new StringBuilder();
+        final String effectivePath;
+        final boolean hasIntelGPU = INTEL_GPU_VENDOR.equals(vendor);
         int shaderID = 0;
+        if (hasIntelGPU) {
+            effectivePath = path.replace(".", "-intel."); //$NON-NLS-1$ //$NON-NLS-2$
+        } else {
+            effectivePath = path;
+        }
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream("gloss.frag"), StandardCharsets.UTF_8)); //$NON-NLS-1$
+            BufferedReader reader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream(effectivePath), StandardCharsets.UTF_8));
             String line;
             while ((line = reader.readLine()) != null) {
                 shaderSource.append(line).append("\n"); //$NON-NLS-1$
@@ -2531,44 +2550,32 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             return -1;
         }
 
-        shaderID = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
+        shaderID = GL20.glCreateShader(shaderType);
         GL20.glShaderSource(shaderID, shaderSource);
         GL20.glCompileShader(shaderID);
 
+        if (hasIntelGPU && NLogger.debugging) {
+            NLogger.debug(GLShader.class, "Renderer " + GL11.glGetString(GL11.GL_RENDERER)); //$NON-NLS-1$
+            NLogger.debug(GLShader.class, "Version " + GL11.glGetString(GL11.GL_VERSION)); //$NON-NLS-1$
+            NLogger.debug(GLShader.class, "Shading language version " + GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION)); //$NON-NLS-1$
+            NLogger.debug(GLShader.class, "Extensions " + GL11.glGetString(GL11.GL_EXTENSIONS)); //$NON-NLS-1$
+            NLogger.debug(GLShader.class, "Tried to compile shader, msg:  " + path + GL20.glGetShaderInfoLog(shaderID)); //$NON-NLS-1$
+        }
+
         if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-            NLogger.error(OpenGLRenderer20.class, new Exception("Could not compile fragment shader.")); //$NON-NLS-1$
+            NLogger.error(OpenGLRenderer20.class, new Exception("Could not compile " + shaderTypeString + " shader.")); //$NON-NLS-1$ //$NON-NLS-2$
             return -1;
         }
 
         return shaderID;
     }
 
-    private int loadGlossVertexShader() {
-        StringBuilder shaderSource = new StringBuilder();
-        int shaderID = 0;
-
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream("gloss.vert"), StandardCharsets.UTF_8)); //$NON-NLS-1$
-            String line;
-            while ((line = reader.readLine()) != null) {
-                shaderSource.append(line).append("\n"); //$NON-NLS-1$
-            }
-            reader.close();
-        } catch (IOException e) {
-            NLogger.error(OpenGLRenderer20.class, e);
-            return -1;
+    private void debugShaderProgramLog(int program) {
+        final String vendor = GL11.glGetString(GL11.GL_VENDOR);
+        final boolean hasIntelGPU = INTEL_GPU_VENDOR.equals(vendor);
+        if (hasIntelGPU && NLogger.debugging) {
+            NLogger.debug(GLShader.class, "Tried to compile shader program, " + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$
         }
-
-        shaderID = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
-        GL20.glShaderSource(shaderID, shaderSource);
-        GL20.glCompileShader(shaderID);
-
-        if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-            NLogger.error(OpenGLRenderer20.class, new Exception("Could not compile vertex shader.")); //$NON-NLS-1$
-            return -1;
-        }
-
-        return shaderID;
     }
 
     private Vector4f getScreenZFrom3D(float x, float y, float z, int w, int h, Matrix4f v) {
