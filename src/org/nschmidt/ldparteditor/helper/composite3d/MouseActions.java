@@ -1324,6 +1324,7 @@ public class MouseActions {
                 final SelectorSettings sels = MiscToolItem.loadSelectorSettings();
                 switch (WorkingTypeToolItem.getWorkingType()) {
                 case VERTICES:
+                    if (!sels.isVertices()) break;
                     vm.selectVertices(c3d, false, false);
                     vm.reSelectSubFiles();
                     break;

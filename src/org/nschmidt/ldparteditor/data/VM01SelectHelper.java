@@ -896,6 +896,9 @@ class VM01SelectHelper extends VM01Select {
     }
 
     public synchronized void selectLines(Composite3D c3d, SelectorSettings sels) {
+        if (!sels.isLines() && !sels.isCondlines()) {
+            return;
+        }
         final boolean noTrans = MiscToggleToolItem.hasNoTransparentSelection();
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
@@ -1348,6 +1351,9 @@ class VM01SelectHelper extends VM01Select {
     }
 
     public synchronized void selectFaces(Composite3D c3d, Event event, SelectorSettings sels) {
+        if (!sels.isQuads() && !sels.isTriangles()) {
+            return;
+        }
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
