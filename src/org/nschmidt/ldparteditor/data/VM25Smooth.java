@@ -74,29 +74,55 @@ class VM25Smooth extends VM24MeshReducer {
         }
     }
 
+    private final SortedMap<Vertex, Float> CONVEXITY_CACHE = new TreeMap<>();
+    private final SortedMap<Vertex, Integer> CONVEXITY_CACHE_HIT = new TreeMap<>();
+
     public float calculateConvexity(Vertex v) {
-        final Vertex[] neighbours = getNeighbourVertices(v);
-        final float neighboursCount = neighbours.length;
-        if (neighboursCount == 0) return 0;
-
-
-        Vector4f n4 = getVertexNormal(v);
-        Vector3f n = new Vector3f(n4.x, n4.y, n4.z);
-        if (n.lengthSquared() == 0) return 0;
-
-        float result = 0;
-
-        for (Vertex vertex : neighbours) {
-            Vector4f delta4 = Vector4f.sub(vertex.toVector4f(), v.toVector4f(), null);
-            if (delta4.lengthSquared() == 0f) continue;
-            Vector3f delta = new Vector3f(delta4.x, delta4.y, delta4.z);
-            delta.normalise();
-
-            result = result + Vector3f.dot(delta, n);
+        final int hitCount = CONVEXITY_CACHE_HIT.getOrDefault(v, 0);
+        final float convexity = CONVEXITY_CACHE.getOrDefault(v, -1f);
+        if (hitCount > 300) {
+            CONVEXITY_CACHE_HIT.clear();
+            CONVEXITY_CACHE.clear();
+            CONVEXITY_CACHE_HIT.put(v, 1);
+        } else {
+            CONVEXITY_CACHE_HIT.put(v, hitCount + 1);
         }
 
-        return (result / neighboursCount + 1f) / 2f;
+        if (convexity == -1) {
+            // This happens if a Vertex is transformed (OpenGl 3.3 renderer only)
+            if (v.toVector4fm() == null) return 0;
+            final Vertex[] neighbours = getNeighbourVertices(v);
+            final float neighboursCount = neighbours.length;
+            if (neighboursCount == 0) {
+                CONVEXITY_CACHE.put(v, 0f);
+                return 0;
+            }
 
+            Vector4f n4 = getVertexNormal(v);
+            Vector3f n = new Vector3f(n4.x, n4.y, n4.z);
+            if (n.lengthSquared() == 0) {
+                CONVEXITY_CACHE.put(v, 0f);
+                return 0;
+            }
+
+            float result = 0;
+
+            for (Vertex vertex : neighbours) {
+                Vector4f delta4 = Vector4f.sub(vertex.toVector4f(), v.toVector4f(), null);
+                if (delta4.lengthSquared() == 0f) continue;
+                Vector3f delta = new Vector3f(delta4.x, delta4.y, delta4.z);
+                delta.normalise();
+
+                result = result + Vector3f.dot(delta, n);
+            }
+
+            result = (result / neighboursCount + 1f) / 2f;
+            result = result * result;
+            CONVEXITY_CACHE.put(v, result);
+            return result;
+        } else {
+            return convexity;
+        }
     }
 
     private Vertex[] getNeighbourVertices(Vertex old) {

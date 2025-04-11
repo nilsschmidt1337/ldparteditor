@@ -1017,7 +1017,7 @@ public class GL33ModelRenderer {
                             switch (renderMode) {
                             case -1:
                                 continue;
-                            case 0, 1, 2, 3, 6, 7:
+                            case 0, 1, 2, 3, 6, 7, 8:
                                 localTriangleSize += 60;
                                 if (gd3.a < 1f) {
                                     transparentTriangleVertexCount += 6;
@@ -1059,7 +1059,7 @@ public class GL33ModelRenderer {
                         switch (renderMode) {
                         case -1:
                             continue;
-                        case 0, 1, 2, 3, 6, 7:
+                        case 0, 1, 2, 3, 6, 7, 8:
                             localTriangleSize += 120;
                             if (gd4.a < 1f) {
                                 transparentTriangleVertexCount += 12;
@@ -1558,7 +1558,57 @@ public class GL33ModelRenderer {
                                 pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                 pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
 
-                                colourise(0, 6, 0f, 0f, 1f, gd3.a, triangleData, tempIndex);
+                                if (tmpRenderMode == 7) {
+                                    colourise(0, 6, 0f, 0f, 1f, gd3.a, triangleData, tempIndex);
+                                } else {
+                                    float convexityA = vm.calculateConvexity(v[0]);
+                                    float convexityB = vm.calculateConvexity(v[1]);
+                                    float convexityC = vm.calculateConvexity(v[2]);
+
+                                    // Do an inline calculation of the colour here, to avoid the creation of new objects
+                                    float redA = 0f;
+                                    float greenA;
+                                    float blueA = 0f;
+
+                                    if (convexityA < .5) {
+                                        greenA = convexityA / .5f;
+                                        blueA = (1f - greenA);
+                                    } else {
+                                        redA = (convexityA - .5f) / .5f;
+                                        greenA = (1f - redA);
+                                    }
+
+                                    float redB = 0f;
+                                    float greenB;
+                                    float blueB = 0f;
+
+                                    if (convexityB < .5) {
+                                        greenB = convexityB / .5f;
+                                        blueB = (1f - greenB);
+                                    } else {
+                                        redB = (convexityB - .5f) / .5f;
+                                        greenB = (1f - redB);
+                                    }
+
+                                    float redC = 0f;
+                                    float greenC;
+                                    float blueC = 0f;
+
+                                    if (convexityC < .5) {
+                                        greenC = convexityC / .5f;
+                                        blueC = (1f - greenC);
+                                    } else {
+                                        redC = (convexityC - .5f) / .5f;
+                                        greenC = (1f - redC);
+                                    }
+
+                                    colourise(0, 1, redA, greenA, blueA, gd3.a, triangleData, tempIndex);
+                                    colourise(1, 1, redB, greenB, blueB, gd3.a, triangleData, tempIndex);
+                                    colourise(2, 1, redC, greenC, blueC, gd3.a, triangleData, tempIndex);
+                                    colourise(3, 1, redA, greenA, blueA, gd3.a, triangleData, tempIndex);
+                                    colourise(4, 1, redC, greenC, blueC, gd3.a, triangleData, tempIndex);
+                                    colourise(5, 1, redB, greenB, blueB, gd3.a, triangleData, tempIndex);
+                                }
 
                                 if (smoothShading) {
                                     normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
@@ -1982,25 +2032,96 @@ public class GL33ModelRenderer {
                             pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                             pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
 
-                            final double angle = gd4.calculateAngle();
-                            double delta = Threshold.coplanarityAngleError - Threshold.coplanarityAngleWarning;
-                            if (Math.abs(delta) < 0.0001) delta = 1.0;
-                            float f = angle >= Threshold.coplanarityAngleError ? 1f : angle < Threshold.coplanarityAngleWarning ? 0f :
-                                Math.min((float) ((angle - Threshold.coplanarityAngleWarning) / delta / 2.7 + .5), 1f);
+                            if (tmpRenderMode == 7) {
+                                final double angle = gd4.calculateAngle();
+                                double delta = Threshold.coplanarityAngleError - Threshold.coplanarityAngleWarning;
+                                if (Math.abs(delta) < 0.0001) delta = 1.0;
+                                float f = angle >= Threshold.coplanarityAngleError ? 1f : angle < Threshold.coplanarityAngleWarning ? 0f :
+                                    Math.min((float) ((angle - Threshold.coplanarityAngleWarning) / delta / 2.7 + .5), 1f);
 
-                            float r = 0f;
-                            float g;
-                            float b = 0f;
+                                float r = 0f;
+                                float g;
+                                float b = 0f;
 
-                            if (f < .5) {
-                                g = f / .5f;
-                                b = (1f - g);
+                                if (f < .5) {
+                                    g = f / .5f;
+                                    b = (1f - g);
+                                } else {
+                                    r = (f - .5f) / .5f;
+                                    g = (1f - r);
+                                }
+
+                                colourise(0, 12, r, g, b, gd4.a, triangleData, tempIndex);
                             } else {
-                                r = (f - .5f) / .5f;
-                                g = (1f - r);
-                            }
+                                float convexityA = vm.calculateConvexity(v[0]);
+                                float convexityB = vm.calculateConvexity(v[1]);
+                                float convexityC = vm.calculateConvexity(v[2]);
+                                float convexityD = vm.calculateConvexity(v[3]);
 
-                            colourise(0, 12, r, g, b, gd4.a, triangleData, tempIndex);
+                                // Do an inline calculation of the colour here, to avoid the creation of new objects
+
+                                float redA = 0f;
+                                float greenA;
+                                float blueA = 0f;
+
+                                if (convexityA < .5) {
+                                    greenA = convexityA / .5f;
+                                    blueA = (1f - greenA);
+                                } else {
+                                    redA = (convexityA - .5f) / .5f;
+                                    greenA = (1f - redA);
+                                }
+
+                                float redB = 0f;
+                                float greenB;
+                                float blueB = 0f;
+
+                                if (convexityB < .5) {
+                                    greenB = convexityB / .5f;
+                                    blueB = (1f - greenB);
+                                } else {
+                                    redB = (convexityB - .5f) / .5f;
+                                    greenB = (1f - redB);
+                                }
+
+                                float redC = 0f;
+                                float greenC;
+                                float blueC = 0f;
+
+                                if (convexityC < .5) {
+                                    greenC = convexityC / .5f;
+                                    blueC = (1f - greenC);
+                                } else {
+                                    redC = (convexityC - .5f) / .5f;
+                                    greenC = (1f - redC);
+                                }
+
+                                float redD = 0f;
+                                float greenD;
+                                float blueD = 0f;
+
+                                if (convexityD < .5) {
+                                    greenD = convexityD / .5f;
+                                    blueD = (1f - greenD);
+                                } else {
+                                    redD = (convexityD - .5f) / .5f;
+                                    greenD = (1f - redD);
+                                }
+
+                                colourise(0, 1, redA, greenA, blueA, gd4.a, triangleData, tempIndex);
+                                colourise(1, 1, redB, greenB, blueB, gd4.a, triangleData, tempIndex);
+                                colourise(2, 1, redC, greenC, blueC, gd4.a, triangleData, tempIndex);
+                                colourise(3, 1, redC, greenC, blueC, gd4.a, triangleData, tempIndex);
+                                colourise(4, 1, redD, greenD, blueD, gd4.a, triangleData, tempIndex);
+                                colourise(5, 1, redA, greenA, blueA, gd4.a, triangleData, tempIndex);
+
+                                colourise(6, 1, redA, greenA, blueA, gd4.a, triangleData, tempIndex);
+                                colourise(7, 1, redD, greenD, blueD, gd4.a, triangleData, tempIndex);
+                                colourise(8, 1, redC, greenC, blueC, gd4.a, triangleData, tempIndex);
+                                colourise(9, 1, redC, greenC, blueC, gd4.a, triangleData, tempIndex);
+                                colourise(10, 1, redB, greenB, blueB, gd4.a, triangleData, tempIndex);
+                                colourise(11, 1, redA, greenA, blueA, gd4.a, triangleData, tempIndex);
+                            }
 
                             if (smoothShading) {
                                 normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
