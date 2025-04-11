@@ -110,11 +110,25 @@ public class RenderModeToolItem extends ToolItem {
     }
 
     private void setRenderModeCoplanarityMode(SelectionEvent e) {
-        setRenderMode(7);
+        final int renderMode = getRenderMode();
+        if (renderMode == 7) {
+            setRenderMode(8);
+        } else {
+            setRenderMode(7);
+        }
     }
 
     private void setRenderModeWireframe(SelectionEvent e) {
         setRenderMode(-1);
+    }
+
+    private int getRenderMode() {
+        Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
+        if (c3d != null) {
+            return c3d.getRenderMode();
+        }
+
+        return -2;
     }
 
     private void setRenderMode(int mode) {

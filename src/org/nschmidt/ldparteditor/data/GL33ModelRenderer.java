@@ -1549,7 +1549,7 @@ public class GL33ModelRenderer {
                                 }
                                 continue;
                             }
-                            case 7:
+                            case 7, 8:
                             {
                                 pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                 pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
@@ -1966,7 +1966,7 @@ public class GL33ModelRenderer {
                             }
                             continue;
                         }
-                        case 7:
+                        case 7, 8:
                         {
                             pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                             pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);

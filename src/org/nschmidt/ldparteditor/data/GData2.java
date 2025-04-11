@@ -468,6 +468,11 @@ public final class GData2 extends GData {
     }
 
     @Override
+    public void drawGL20ConvexityHeatmap(Composite3D c3d) {
+        drawGL20(c3d);
+    }
+
+    @Override
     public void drawGL20Wireframe(Composite3D c3d) {
         // Implementation is not required.
     }

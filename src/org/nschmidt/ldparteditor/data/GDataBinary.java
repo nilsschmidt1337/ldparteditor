@@ -35,21 +35,21 @@ import de.matthiasmann.twl.util.PNGSizeDeterminer;
  */
 public final class GDataBinary extends GData {
 
-    private final DatFile df; 
-    
+    private final DatFile df;
+
     public GDataBinary(String text, DatFile df, GData1 parent) {
         super(parent);
         this.df = df;
         this.text = text;
         this.df.getBinaryData().addData(this);
     }
-    
+
     public byte[] loadBinary() {
         // 4 chars = 3 bytes  => 64.000 chars = 48.000 bytes
         final int maxLengthOfBase64String = WorkbenchManager.getUserSettingState().getDataFileSizeLimit() * 1_000 / 3 * 4;
         final Pattern whitespace = Pattern.compile("\\s+"); //$NON-NLS-1$
         final StringBuilder base64Sb = new StringBuilder();
-        
+
         GData gd = this.next;
         while (gd != null && base64Sb.length() <= maxLengthOfBase64String) {
             final String line = whitespace.matcher(gd.toString()).replaceAll(" ").trim(); //$NON-NLS-1$
@@ -59,12 +59,12 @@ public final class GDataBinary extends GData {
             } else if (line.length() > 0) {
                 break;
             }
-            
+
             gd = gd.next;
         }
-        
+
         final String encodedString = base64Sb.toString();
-        
+
         try {
             // Don't allow more than a constant amount of chars
             if (encodedString.length() <= maxLengthOfBase64String) {
@@ -74,18 +74,18 @@ public final class GDataBinary extends GData {
         } catch (IllegalArgumentException iae) {
             NLogger.debug(GDataBinary.class, iae);
         }
-        
+
         return new byte[0];
     }
-    
+
     /**
      * Malicious content can be attached to the end of the file after the IEND tag which typically marks the
-     * end of the image file. We don't want to read or store this! 
+     * end of the image file. We don't want to read or store this!
      * @param data the byte array to filter
      * @return the filtered array
      */
     private byte[] filterMaliciousContent(byte[] data) {
-        
+
         int dataLength = 0;
         try (InputStream in = new ByteArrayInputStream(data)) {
             dataLength = new PNGSizeDeterminer(in).size();
@@ -93,21 +93,21 @@ public final class GDataBinary extends GData {
             NLogger.debug(GDataBinary.class, ioe);
             return new byte[0];
         }
-        
+
         final byte[] resultData = new byte[dataLength + 12];
         System.arraycopy(data, 0, resultData, 0, dataLength);
-        
+
         // Add IEND tag (12 Bytes)
         resultData[dataLength + 0] = 0x00;
         resultData[dataLength + 1] = 0x00;
         resultData[dataLength + 2] = 0x00;
         resultData[dataLength + 3] = 0x00;
-        
+
         resultData[dataLength + 4] = 0x49;
         resultData[dataLength + 5] = 0x45;
         resultData[dataLength + 6] = 0x4E;
         resultData[dataLength + 7] = 0x44;
-        
+
         resultData[dataLength + 8] = (byte) 0xAE;
         resultData[dataLength + 9] = 0x42;
         resultData[dataLength + 10] = 0x60;
@@ -152,6 +152,11 @@ public final class GDataBinary extends GData {
 
     @Override
     public void drawGL20CoplanarityHeatmap(Composite3D c3d) {
+        // Implementation is not required.
+    }
+
+    @Override
+    public void drawGL20ConvexityHeatmap(Composite3D c3d) {
         // Implementation is not required.
     }
 

@@ -26,6 +26,8 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.dialog.smooth.SmoothDialog;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
 
@@ -72,6 +74,30 @@ class VM25Smooth extends VM24MeshReducer {
         }
     }
 
+    public float calculateConvexity(Vertex v) {
+        final Vertex[] neighbours = getNeighbourVertices(v);
+        final float neighboursCount = neighbours.length;
+        if (neighboursCount == 0) return 0;
+
+
+        Vector4f n4 = getVertexNormal(v);
+        Vector3f n = new Vector3f(n4.x, n4.y, n4.z);
+        if (n.lengthSquared() == 0) return 0;
+
+        float result = 0;
+
+        for (Vertex vertex : neighbours) {
+            Vector4f delta4 = Vector4f.sub(vertex.toVector4f(), v.toVector4f(), null);
+            if (delta4.lengthSquared() == 0f) continue;
+            Vector3f delta = new Vector3f(delta4.x, delta4.y, delta4.z);
+            delta.normalise();
+
+            result = result + Vector3f.dot(delta, n);
+        }
+
+        return (result / neighboursCount + 1f) / 2f;
+
+    }
 
     private Vertex[] getNeighbourVertices(Vertex old) {
 

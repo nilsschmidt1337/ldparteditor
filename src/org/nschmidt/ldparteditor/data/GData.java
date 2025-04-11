@@ -87,6 +87,8 @@ public abstract class GData implements Comparable<GData> {
 
     public abstract void drawGL20CoplanarityHeatmap(Composite3D c3d);
 
+    public abstract void drawGL20ConvexityHeatmap(Composite3D c3d);
+
     public abstract void drawGL20Wireframe(Composite3D c3d);
 
     public abstract void getBFCorientationMap(Map<GData,BFC> map);

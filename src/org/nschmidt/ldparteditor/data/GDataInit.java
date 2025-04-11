@@ -72,6 +72,11 @@ final class GDataInit extends GData {
     }
 
     @Override
+    public void drawGL20ConvexityHeatmap(Composite3D c3d) {
+        drawGL20(c3d);
+    }
+
+    @Override
     public void drawGL20Wireframe(Composite3D c3d) {
         drawGL20(c3d);
     }

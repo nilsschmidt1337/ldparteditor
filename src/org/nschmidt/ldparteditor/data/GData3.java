@@ -1252,6 +1252,96 @@ public final class GData3 extends GData {
     }
 
     @Override
+    public void drawGL20ConvexityHeatmap(Composite3D c3d) {
+        if (!visible)
+            return;
+        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
+            return;
+        if (!isTriangle) {
+            drawProtractorGL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
+            return;
+        }
+
+        final VertexManager vm = c3d.getVertexManager();
+        Vertex[] triangleVertices = vm.triangles.getOrDefault(this, new Vertex[0]);
+        if (triangleVertices.length == 0) return;
+        float convexityA = vm.calculateConvexity(triangleVertices[0]);
+        float convexityB = vm.calculateConvexity(triangleVertices[1]);
+        float convexityC = vm.calculateConvexity(triangleVertices[2]);
+
+        float redA = 0f;
+        float greenA;
+        float blueA = 0f;
+
+        if (convexityA < .5) {
+            greenA = convexityA / .5f;
+            blueA = (1f - greenA);
+        } else {
+            redA = (convexityA - .5f) / .5f;
+            greenA = (1f - redA);
+        }
+
+        float redB = 0f;
+        float greenB;
+        float blueB = 0f;
+
+        if (convexityB < .5) {
+            greenB = convexityB / .5f;
+            blueB = (1f - greenB);
+        } else {
+            redB = (convexityB - .5f) / .5f;
+            greenB = (1f - redB);
+        }
+
+        float redC = 0f;
+        float greenC;
+        float blueC = 0f;
+
+        if (convexityC < .5) {
+            greenC = convexityC / .5f;
+            blueC = (1f - greenC);
+        } else {
+            redC = (convexityC - .5f) / .5f;
+            greenC = (1f - redC);
+        }
+
+
+        GL11.glBegin(GL11.GL_TRIANGLES);
+        if (GData.globalNegativeDeterminant) {
+            GL11.glNormal3f(xn, yn, zn);
+            GL11.glColor4f(redA, greenA, blueA, a);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glColor4f(redC, greenC, blueC, a);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glColor4f(redB, greenB, blueB, a);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glNormal3f(-xn, -yn, -zn);
+            GL11.glColor4f(redA, greenA, blueA, a);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glColor4f(redB, greenB, blueB, a);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glColor4f(redC, greenC, blueC, a);
+            GL11.glVertex3f(x3, y3, z3);
+        } else {
+            GL11.glNormal3f(xn, yn, zn);
+            GL11.glColor4f(redA, greenA, blueA, a);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glColor4f(redB, greenB, blueB, a);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glColor4f(redC, greenC, blueC, a);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glNormal3f(-xn, -yn, -zn);
+            GL11.glColor4f(redA, greenA, blueA, a);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glColor4f(redC, greenC, blueC, a);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glColor4f(redB, greenB, blueB, a);
+            GL11.glVertex3f(x2, y2, z2);
+        }
+        GL11.glEnd();
+    }
+
+    @Override
     public void drawGL20Wireframe(Composite3D c3d) {
         // Implementation is not required.
     }
