@@ -1,3 +1,19 @@
+### 12 Apr 2025
+With the release of 1.8.91 you are able to...
+-  ...benefit from the fact that Rectifier "does not convert bordered rhombuses into rect primitives" by default.
+-  ...customise if Rectifier "does convert bordered rhombuses into rect primitives" by default.
+-  ...choose if Rectifier creates rect primitives with a shear or non-trivial rotation matrix.
+-  ...see a warning if the file is BFC CW certified instead of CCW.
+-  ...see a hint for "freezing the selection" when adding new objects.
+-  ...use the old sphere mesh for CSG operations, too (CSG_ELLIPSOID2).
+-  ...use a "Concave/Convex Heatmap" mode which visualises convexity between surfaces (type 3 and 4, double-click on heatmap button).
+-  ...see the !PREVIEW meta with syntax highlighting.
+
+The following critical issues are fixed:
+1. The selection filter logic was not consistent.
+2. [OpenGL 3.3] LDPE didn't switch to "special condline mode" when the user tried to add a condline.
+
+
 ### 07 Dec 2024
 With the release of 1.8.90 you are able to...
 -  ...drag and drop Windows file shortcuts to LDPE to open the linked *.dat file.
