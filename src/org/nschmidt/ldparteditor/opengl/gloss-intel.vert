@@ -12,10 +12,11 @@ uniform float noGlossMapSwitch;
 uniform float cubeMapSwitch;
 uniform float noLightSwitch;
 varying vec3 normal, position;
+varying vec4 colorResult;
 
 void main()
 {
-   gl_FrontColor = gl_Color;
+   colorResult = gl_Color;
 
    normal = normalize(gl_NormalMatrix * gl_Normal);
    if (normalSwitch == 0) normal = vec3(-normal.x, -normal.y, -normal.z);

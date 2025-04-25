@@ -12,6 +12,7 @@ uniform float noGlossMapSwitch;
 uniform float cubeMapSwitch;
 uniform float noLightSwitch;
 varying vec3 normal, position;
+varying vec4 colorResult;
 
 void MyFunction(in vec4 col);
 
@@ -144,7 +145,6 @@ void main (void)
        if (normalSwitch == 0.0) lightDir = vec3(-lightDir.x, -lightDir.y, -lightDir.z);
     }
     // ambient + diffuse
-    // lightAmbientDiffuse     += gl_FrontLightProduct[i].ambient*attenFactor;
     lightAmbientDiffuse     += gl_FrontLightProduct[i].diffuse * max(dot(normal, lightDir), 0.0) * attenFactor;
     // specular
     vec3 r      = normalize(reflect(-lightDir, normal));
@@ -172,9 +172,12 @@ void main (void)
 
 
   if (noTextureSwitch > 0.0) {
-    if (gl_FrontLightModelProduct.sceneColor.a < 1.0) {
+    if (colorResult.a < 1.0) {
           if (alphaSwitch < 1.0) {
-              gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
+              // This is the default case for transparent colors without a cubemap
+              gl_FragColor.r = lightAmbientDiffuse.r * colorResult.r + lightSpecular.r * reflectivity;
+              gl_FragColor.g = lightAmbientDiffuse.g * colorResult.g + lightSpecular.g * reflectivity;
+              gl_FragColor.b = lightAmbientDiffuse.b * colorResult.b + lightSpecular.b * reflectivity;
               gl_FragColor.a = 1.0;
           } else {
              discard;
@@ -182,10 +185,19 @@ void main (void)
        } else {
           if (alphaSwitch > 0.0) {
              if (cubeMapSwitch < 1.0) {
-               gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
+               // This is the default case for solid colors without a cubemap
+               gl_FragColor.r = lightAmbientDiffuse.r * colorResult.r + lightSpecular.r * reflectivity;
+               gl_FragColor.g = lightAmbientDiffuse.g * colorResult.g + lightSpecular.g * reflectivity;
+               gl_FragColor.b = lightAmbientDiffuse.b * colorResult.b + lightSpecular.b * reflectivity;
+               gl_FragColor.a = 1.0;
              } else {
+               // This is the case for solid materials with a cube map
                if (cubeMapSwitch == 2.0 && noLightSwitch > 0.0) lightSpecular *= .05;
-               MyFunction((gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular);
+               vec4 materialColor = vec4(1.0, 1.0, 1.0, 1.0);
+               materialColor.r = lightAmbientDiffuse.r * colorResult.r + lightSpecular.r * reflectivity;
+               materialColor.g = lightAmbientDiffuse.g * colorResult.g + lightSpecular.g * reflectivity;
+               materialColor.b = lightAmbientDiffuse.b * colorResult.b + lightSpecular.b * reflectivity;
+               MyFunction(materialColor);
              }
           } else {
               discard;
@@ -193,11 +205,13 @@ void main (void)
        }
   } else {
     if (texColor.a == 0.0) {
-       if (gl_FrontLightModelProduct.sceneColor.a < 1.0) {
+       if (colorResult.a < 1.0) {
           // OK
           if (alphaSwitch < 1.0) {
-              gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
-              gl_FragColor.a = 1.0;
+             gl_FragColor.r = lightAmbientDiffuse.r * colorResult.r + lightSpecular.r * reflectivity;
+             gl_FragColor.g = lightAmbientDiffuse.g * colorResult.g + lightSpecular.g * reflectivity;
+             gl_FragColor.b = lightAmbientDiffuse.b * colorResult.b + lightSpecular.b * reflectivity;
+             gl_FragColor.a = 1.0;
           } else {
              discard;
           }
@@ -205,21 +219,34 @@ void main (void)
           // OK
           if (alphaSwitch > 0.0) {
             if (cubeMapSwitch < 1.0) {
-              gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
+              gl_FragColor.r = lightAmbientDiffuse.r * colorResult.r + lightSpecular.r * reflectivity;
+              gl_FragColor.g = lightAmbientDiffuse.g * colorResult.g + lightSpecular.g * reflectivity;
+              gl_FragColor.b = lightAmbientDiffuse.b * colorResult.b + lightSpecular.b * reflectivity;
+              gl_FragColor.a = 1.0;
             } else {
               if (cubeMapSwitch == 2.0 && noLightSwitch > 0.0) lightSpecular *= .05;
-              MyFunction((gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular);
+              vec4 materialColor = vec4(1.0, 1.0, 1.0, 1.0);
+              materialColor.r = lightAmbientDiffuse.r * colorResult.r + lightSpecular.r * reflectivity;
+              materialColor.g = lightAmbientDiffuse.g * colorResult.g + lightSpecular.g * reflectivity;
+              materialColor.b = lightAmbientDiffuse.b * colorResult.b + lightSpecular.b * reflectivity;
+              MyFunction(materialColor);
             }
           } else {
               discard;
           }
        }
     } else if (texColor.a < 1.0) {
-       vec4 groundColor = gl_FragColor = (gl_FrontLightModelProduct.sceneColor + lightAmbientDiffuse) + lightSpecular * reflectivity;
-       float groundAlpha = gl_FrontLightModelProduct.sceneColor.a;
+       float groundAlpha = colorResult.a;
        if (groundAlpha >= 1.0) {
          if (alphaSwitch > 0.0) {
-            vec4 textureColor =  (gl_FrontLightModelProduct.sceneColor + lightTextureDiffuse) + lightTextureSpecular * reflectivity;
+            vec3 textureColor = vec3(1.0, 1.0, 1.0);
+            textureColor.r = lightTextureDiffuse.r * texColor.r + lightTextureSpecular.r * reflectivity;
+            textureColor.g = lightTextureDiffuse.g * texColor.g + lightTextureSpecular.g * reflectivity;
+            textureColor.b = lightTextureDiffuse.b * texColor.b + lightTextureSpecular.b * reflectivity;
+            vec3 groundColor = vec3(1.0, 1.0, 1.0);
+            groundColor.r = lightAmbientDiffuse.r * colorResult.r + lightSpecular.r * reflectivity;
+            groundColor.g = lightAmbientDiffuse.g * colorResult.g + lightSpecular.g * reflectivity;
+            groundColor.b = lightAmbientDiffuse.b * colorResult.b + lightSpecular.b * reflectivity;
             float oneMinusTexAlpha = 1.0 - texColor.a;
             gl_FragColor.r = textureColor.r * texColor.a + groundColor.r * oneMinusTexAlpha;
             gl_FragColor.g = textureColor.g * texColor.a + groundColor.g * oneMinusTexAlpha;
@@ -230,9 +257,16 @@ void main (void)
          }
        } else {
          if (alphaSwitch > 0.0) {
-discard;
+            discard;
          } else {
-            vec4 textureColor =  (gl_FrontLightModelProduct.sceneColor + lightTextureDiffuse) + lightTextureSpecular * reflectivity;
+            vec3 textureColor = vec3(1.0, 1.0, 1.0);
+            textureColor.r = lightTextureDiffuse.r * texColor.r + lightTextureSpecular.r * reflectivity;
+            textureColor.g = lightTextureDiffuse.g * texColor.g + lightTextureSpecular.g * reflectivity;
+            textureColor.b = lightTextureDiffuse.b * texColor.b + lightTextureSpecular.b * reflectivity;
+            vec3 groundColor = vec3(1.0, 1.0, 1.0);
+            groundColor.r = lightAmbientDiffuse.r * colorResult.r + lightSpecular.r * reflectivity;
+            groundColor.g = lightAmbientDiffuse.g * colorResult.g + lightSpecular.g * reflectivity;
+            groundColor.b = lightAmbientDiffuse.b * colorResult.b + lightSpecular.b * reflectivity;
             float oneMinusTexAlpha = 1.0 - texColor.a;
             gl_FragColor.r = textureColor.r * texColor.a + groundColor.r * oneMinusTexAlpha;
             gl_FragColor.g = textureColor.g * texColor.a + groundColor.g * oneMinusTexAlpha;
@@ -243,13 +277,12 @@ discard;
     } else {
        // OK
        if (alphaSwitch > 0.0) {
-           vec4 textureColor =  (gl_FrontLightModelProduct.sceneColor + lightTextureDiffuse) + lightTextureSpecular * reflectivity;
-           gl_FragColor.r = textureColor.r;
-           gl_FragColor.g = textureColor.g;
-           gl_FragColor.b = textureColor.b;
-           gl_FragColor.a = 1.0;
+         gl_FragColor.r = lightTextureDiffuse.r * texColor.r + lightTextureSpecular.r * reflectivity;
+         gl_FragColor.g = lightTextureDiffuse.g * texColor.g + lightTextureSpecular.g * reflectivity;
+         gl_FragColor.b = lightTextureDiffuse.b * texColor.b + lightTextureSpecular.b * reflectivity;
+         gl_FragColor.a = 1.0;
        } else {
-           discard;
+         discard;
        }
     }
   }
