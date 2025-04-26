@@ -616,7 +616,7 @@ public class DatHeaderManager {
                     }
 
                     if (gd != null) {
-                        // Check on numbers with scientific notation
+                        // Check on numbers with scientific notation and invalid line colours
                         if (gd.type() > 0 && gd.type() < 6) {
                             gd = gd.before;
                             lineNumber -= 1;
@@ -626,6 +626,7 @@ public class DatHeaderManager {
                             lineNumber += 1;
                             int type = gd.type();
                             if (type > 0 && type < 6) {
+                                // Scientific notation check
                                 String trimmedLine = gd.toString().trim();
                                 if (type == 1 && -1 != (index = trimmedLine.indexOf(((GData1) gd).shortName))) trimmedLine = trimmedLine.substring(0, index);
                                 String[] dataSegments = trimmedLine.split("\\s+"); //$NON-NLS-1$
@@ -636,6 +637,19 @@ public class DatHeaderManager {
                                         registerFormatHint(lineNumber, "FE", I18n.DATPARSER_INVALID_NUMBER_FORMAT, registered, allHints); //$NON-NLS-1$
                                         break;
                                     }
+                                }
+
+                                // Invalid line colour check
+                                if (gd instanceof GData1 g && g.colourNumber == 24) {
+                                    registerFormatHint(lineNumber, "C2", I18n.DATPARSER_INVALID_NONLINE_COLOUR, registered, allHints); //$NON-NLS-1$
+                                } else if (gd instanceof GData2 g && g.colourNumber != 24 && g.isLine) {
+                                    registerFormatHint(lineNumber, "C1", I18n.DATPARSER_INVALID_LINE_COLOUR, registered, allHints); //$NON-NLS-1$
+                                } else if (gd instanceof GData3 g && g.colourNumber == 24 && g.isTriangle) {
+                                    registerFormatHint(lineNumber, "C2", I18n.DATPARSER_INVALID_NONLINE_COLOUR, registered, allHints); //$NON-NLS-1$
+                                } else if (gd instanceof GData4 g && g.colourNumber == 24) {
+                                    registerFormatHint(lineNumber, "C2", I18n.DATPARSER_INVALID_NONLINE_COLOUR, registered, allHints); //$NON-NLS-1$
+                                } else if (gd instanceof GData5 g && g.colourNumber != 24) {
+                                    registerFormatHint(lineNumber, "C1", I18n.DATPARSER_INVALID_LINE_COLOUR, registered, allHints); //$NON-NLS-1$
                                 }
                             }
                         }

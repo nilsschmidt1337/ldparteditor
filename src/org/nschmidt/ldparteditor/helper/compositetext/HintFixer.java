@@ -156,6 +156,46 @@ enum HintFixer {
                 text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
             }
             break;
+        case 193: // Use colour 24 for lines
+            {
+                StringBuilder sb = new StringBuilder();
+                String trimmedLine = line.trim();
+                String[] dataSegments = trimmedLine.split("\\s+"); //$NON-NLS-1$
+                int segCount = 0;
+                for (String seg : dataSegments) {
+                    if (!seg.trim().equals("")) {  //$NON-NLS-1$
+                        segCount += 1;
+                        if (segCount == 2) {
+                            sb.append("24"); //$NON-NLS-1$
+                        } else {
+                            sb.append(seg);
+                        }
+                    }
+                    sb.append(" "); //$NON-NLS-1$
+                }
+                text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
+            }
+            break;
+        case 194: // Use colour 16 for non-lines
+            {
+                StringBuilder sb = new StringBuilder();
+                String trimmedLine = line.trim();
+                String[] dataSegments = trimmedLine.split("\\s+"); //$NON-NLS-1$
+                int segCount = 0;
+                for (String seg : dataSegments) {
+                    if (!seg.trim().equals("")) {  //$NON-NLS-1$
+                        segCount += 1;
+                        if (segCount == 2) {
+                            sb.append("16"); //$NON-NLS-1$
+                        } else {
+                            sb.append(seg);
+                        }
+                    }
+                    sb.append(" "); //$NON-NLS-1$
+                }
+                text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
+            }
+            break;
         case 254: // There are numbers with scientific notation
             {
                 StringBuilder sb = new StringBuilder();

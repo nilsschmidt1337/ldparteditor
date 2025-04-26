@@ -49,6 +49,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class SyntaxFormatter {
 
+    private static final String LINE_COLOUR_NUMBER = "24"; //$NON-NLS-1$
+
     private StyledText compositeText;
 
     private final Vector3d start = new Vector3d();
@@ -580,6 +582,10 @@ public class SyntaxFormatter {
         } else {
             // [ERROR] Check colour
             validateColour(styles.get(2), dataSegments[1]);
+            if (LINE_COLOUR_NUMBER.equals(dataSegments[1])) {
+                setHintStyle(styles.get(2));
+                styles.get(2).length += 1;
+            }
             // [ERROR] Check singularity
             Matrix3f tMatrix = new Matrix3f();
             boolean numberError = false;
@@ -825,6 +831,10 @@ public class SyntaxFormatter {
         } else {
             // [ERROR] Check colour
             validateColour(styles.get(2), dataSegments[1]);
+            if (!LINE_COLOUR_NUMBER.equals(dataSegments[1])) {
+                setHintStyle(styles.get(2));
+                styles.get(2).length += 1;
+            }
             // [ERROR] Check identical vertices
             boolean numberError = false;
             // Start vertex
@@ -961,6 +971,10 @@ public class SyntaxFormatter {
         } else {
             // [ERROR] Check colour
             validateColour(styles.get(2), dataSegments[1]);
+            if (LINE_COLOUR_NUMBER.equals(dataSegments[1])) {
+                setHintStyle(styles.get(2));
+                styles.get(2).length += 1;
+            }
             // [ERROR] Check identical vertices
             boolean numberError = false;
             // 1st vertex
@@ -1151,6 +1165,10 @@ public class SyntaxFormatter {
         } else {
             // [ERROR] Check colour
             validateColour(styles.get(2), dataSegments[1]);
+            if (LINE_COLOUR_NUMBER.equals(dataSegments[1])) {
+                setHintStyle(styles.get(2));
+                styles.get(2).length += 1;
+            }
             // [ERROR] Check hourglass, concave form, coplanarity & identical
             // vertices
             boolean numberError = false;
@@ -1413,6 +1431,10 @@ public class SyntaxFormatter {
         } else {
             // [ERROR] Check colour
             validateColour(styles.get(2), dataSegments[1]);
+            if (!LINE_COLOUR_NUMBER.equals(dataSegments[1])) {
+                setHintStyle(styles.get(2));
+                styles.get(2).length += 1;
+            }
             // [ERROR] Check identical vertices
             boolean numberError = false;
             // start vertex

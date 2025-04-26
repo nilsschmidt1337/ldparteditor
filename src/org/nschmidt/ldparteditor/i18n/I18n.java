@@ -324,6 +324,8 @@ public final class I18n {
     public static final String DATPARSER_INVALID_HEADER = DATPARSER.getString(getProperty());
     public static final String DATPARSER_INVALID_INVERT_NEXT = DATPARSER.getString(getProperty());
     public static final String DATPARSER_INVALID_INVERT_NEXT_FLAT = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_INVALID_LINE_COLOUR = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_INVALID_NONLINE_COLOUR = DATPARSER.getString(getProperty());
     public static final String DATPARSER_INVALID_NUMBER_FORMAT = DATPARSER.getString(getProperty());
     public static final String DATPARSER_INVALID_TEXMAP = DATPARSER.getString(getProperty());
     public static final String DATPARSER_INVALID_TYPE = DATPARSER.getString(getProperty());
