@@ -1,3 +1,12 @@
+### 27 Apr 2025
+With the release of 1.8.92 you are able to...
+-  ...see a hint about wrong colours for lines and condlines or other non-line objects with colour 24.
+
+The following critical issues are fixed:
+1. Warnings on BFC meta commands deactivated the meta command on the affecting line (e.g. a "0 BFC CERTIFY CW" on line 7).
+2. [OpenGL 2.0] The LDraw Standard Render Mode (with TEXMAP) did not work on Intel Arc dGPUs.
+
+
 ### 12 Apr 2025
 With the release of 1.8.91 you are able to...
 -  ...benefit from the fact that Rectifier "does not convert bordered rhombuses into rect primitives" by default.
