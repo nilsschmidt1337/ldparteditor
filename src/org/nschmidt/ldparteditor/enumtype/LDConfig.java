@@ -251,7 +251,9 @@ public enum LDConfig {
                            }
                        } else {
                            GColour colour = new GColour(index, r, g, b, 1f);
-                           if (line.contains(" MATERIAL")) { //$NON-NLS-1$
+                           if (line.contains(" MATERIAL") && line.contains(" FABRIC")) { //$NON-NLS-1$ //$NON-NLS-2$
+                               // Do nothing with fabric material at this moment
+                           } else if (line.contains(" MATERIAL")) { //$NON-NLS-1$
                                try {
 
                                    Matcher m2 = pFraction.matcher(line);
