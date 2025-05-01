@@ -42,9 +42,6 @@ import org.nschmidt.ldparteditor.widget.NButton;
 public class ManipulatorToolItem extends ToolItem {
 
     private static final NButton[] btnManipulatorToOriginPtr = new NButton[1];
-    private static final NButton[] btnManipulatorXReversePtr = new NButton[1];
-    private static final NButton[] btnManipulatorYReversePtr = new NButton[1];
-    private static final NButton[] btnManipulatorZReversePtr = new NButton[1];
     private static final NButton[] btnManipulatorToWorldPtr = new NButton[1];
     private static final NButton[] btnManipulatorCameraToPosPtr = new NButton[1];
     private static final NButton[] btnManipulatorToAveragePtr = new NButton[1];
@@ -56,16 +53,9 @@ public class ManipulatorToolItem extends ToolItem {
     private static final NButton[] btnManipulatorToVertexNormalPtr = new NButton[1];
     private static final NButton[] btnManipulatorToEdgeNormalPtr = new NButton[1];
     private static final NButton[] btnManipulatorToSurfaceNormalPtr = new NButton[1];
-    private static final NButton[] btnManipulatorAdjustRotationCenterPtr = new NButton[1];
     private static final NButton[] btnManipulatorToVertexPositionPtr = new NButton[1];
-    private static final NButton[] btnManipulatorSwitchXYPtr = new NButton[1];
-    private static final NButton[] btnManipulatorSwitchXZPtr = new NButton[1];
-    private static final NButton[] btnManipulatorSwitchYZPtr = new NButton[1];
 
     private static final MenuItem[] mntmManipulatorToOriginPtr = new MenuItem[1];
-    private static final MenuItem[] mntmManipulatorXReversePtr = new MenuItem[1];
-    private static final MenuItem[] mntmManipulatorYReversePtr = new MenuItem[1];
-    private static final MenuItem[] mntmManipulatorZReversePtr = new MenuItem[1];
     private static final MenuItem[] mntmManipulatorToWorldPtr = new MenuItem[1];
     private static final MenuItem[] mntmManipulatorCameraToPosPtr = new MenuItem[1];
     private static final MenuItem[] mntmManipulatorToAveragePtr = new MenuItem[1];
@@ -79,9 +69,6 @@ public class ManipulatorToolItem extends ToolItem {
     private static final MenuItem[] mntmManipulatorToSurfaceNormalPtr = new MenuItem[1];
     private static final MenuItem[] mntmManipulatorAdjustRotationCenterPtr = new MenuItem[1];
     private static final MenuItem[] mntmManipulatorToVertexPositionPtr = new MenuItem[1];
-    private static final MenuItem[] mntmManipulatorSwitchXYPtr = new MenuItem[1];
-    private static final MenuItem[] mntmManipulatorSwitchXZPtr = new MenuItem[1];
-    private static final MenuItem[] mntmManipulatorSwitchYZPtr = new MenuItem[1];
 
     public static ToolItem create(Composite target, ToolItem toolItem, int style, boolean isHorizontal, boolean isDropDown) {
         if (isDropDown) {
@@ -110,41 +97,6 @@ public class ManipulatorToolItem extends ToolItem {
         btnManipulatorToWorldPtr[0] = btnManipulatorToWorld;
         btnManipulatorToWorld.setToolTipText(I18n.E3D_MANIPULATOR_TO_WORLD);
         btnManipulatorToWorld.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_toWorld.png")); //$NON-NLS-1$
-
-        NButton btnManipulatorAdjustRotationCenter = new NButton(manipulatorToolItem, Cocoa.getStyle());
-        btnManipulatorAdjustRotationCenterPtr[0] = btnManipulatorAdjustRotationCenter;
-        btnManipulatorAdjustRotationCenter.setToolTipText(I18n.E3D_ADJUST_ROTATION_CENTER);
-        btnManipulatorAdjustRotationCenter.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
-
-        NButton btnManipulatorXReverse = new NButton(manipulatorToolItem, Cocoa.getStyle());
-        btnManipulatorXReversePtr[0] = btnManipulatorXReverse;
-        btnManipulatorXReverse.setToolTipText(I18n.E3D_REVERSE_X);
-        btnManipulatorXReverse.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_Xinv.png")); //$NON-NLS-1$
-
-        NButton btnManipulatorYReverse = new NButton(manipulatorToolItem, Cocoa.getStyle());
-        btnManipulatorYReversePtr[0] = btnManipulatorYReverse;
-        btnManipulatorYReverse.setToolTipText(I18n.E3D_REVERSE_Y);
-        btnManipulatorYReverse.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_Yinv.png")); //$NON-NLS-1$
-
-        NButton btnManipulatorZReverse = new NButton(manipulatorToolItem, Cocoa.getStyle());
-        btnManipulatorZReversePtr[0] = btnManipulatorZReverse;
-        btnManipulatorZReverse.setToolTipText(I18n.E3D_REVERSE_Z);
-        btnManipulatorZReverse.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_Zinv.png")); //$NON-NLS-1$
-
-        NButton btnManipulatorSwitchXY = new NButton(manipulatorToolItem, Cocoa.getStyle());
-        btnManipulatorSwitchXYPtr[0] = btnManipulatorSwitchXY;
-        btnManipulatorSwitchXY.setToolTipText(I18n.E3D_SWAP_XY);
-        btnManipulatorSwitchXY.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_XswapY.png")); //$NON-NLS-1$
-
-        NButton btnManipulatorSwitchXZ = new NButton(manipulatorToolItem, Cocoa.getStyle());
-        btnManipulatorSwitchXZPtr[0] = btnManipulatorSwitchXZ;
-        btnManipulatorSwitchXZ.setToolTipText(I18n.E3D_SWAP_XZ);
-        btnManipulatorSwitchXZ.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_XswapZ.png")); //$NON-NLS-1$
-
-        NButton btnManipulatorSwitchYZ = new NButton(manipulatorToolItem, Cocoa.getStyle());
-        btnManipulatorSwitchYZPtr[0] = btnManipulatorSwitchYZ;
-        btnManipulatorSwitchYZ.setToolTipText(I18n.E3D_SWAP_YZ);
-        btnManipulatorSwitchYZ.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_YswapZ.png")); //$NON-NLS-1$
 
         NButton btnManipulatorCameraToPos = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorCameraToPosPtr[0] = btnManipulatorCameraToPos;
@@ -236,40 +188,6 @@ public class ManipulatorToolItem extends ToolItem {
 
         new MenuItem(mnuManipulator, SWT.SEPARATOR);
 
-        MenuItem mntmManipulatorXReverse = new MenuItem(mnuManipulator, SWT.PUSH);
-        mntmManipulatorXReversePtr[0] = mntmManipulatorXReverse;
-        mntmManipulatorXReverse.setText(I18n.E3D_REVERSE_X);
-        mntmManipulatorXReverse.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
-
-        MenuItem mntmManipulatorYReverse = new MenuItem(mnuManipulator, SWT.PUSH);
-        mntmManipulatorYReversePtr[0] = mntmManipulatorYReverse;
-        mntmManipulatorYReverse.setText(I18n.E3D_REVERSE_Y);
-        mntmManipulatorYReverse.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
-
-        MenuItem mntmManipulatorZReverse = new MenuItem(mnuManipulator, SWT.PUSH);
-        mntmManipulatorZReversePtr[0] = mntmManipulatorZReverse;
-        mntmManipulatorZReverse.setText(I18n.E3D_REVERSE_Z);
-        mntmManipulatorZReverse.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
-
-        new MenuItem(mnuManipulator, SWT.SEPARATOR);
-
-        MenuItem mntmManipulatorSwitchXY = new MenuItem(mnuManipulator, SWT.PUSH);
-        mntmManipulatorSwitchXYPtr[0] = mntmManipulatorSwitchXY;
-        mntmManipulatorSwitchXY.setText(I18n.E3D_SWAP_XY);
-        mntmManipulatorSwitchXY.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
-
-        MenuItem mntmManipulatorSwitchXZ = new MenuItem(mnuManipulator, SWT.PUSH);
-        mntmManipulatorSwitchXZPtr[0] = mntmManipulatorSwitchXZ;
-        mntmManipulatorSwitchXZ.setText(I18n.E3D_SWAP_XZ);
-        mntmManipulatorSwitchXZ.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
-
-        MenuItem mntmManipulatorSwitchYZ = new MenuItem(mnuManipulator, SWT.PUSH);
-        mntmManipulatorSwitchYZPtr[0] = mntmManipulatorSwitchYZ;
-        mntmManipulatorSwitchYZ.setText(I18n.E3D_SWAP_YZ);
-        mntmManipulatorSwitchYZ.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
-
-        new MenuItem(mnuManipulator, SWT.SEPARATOR);
-
         MenuItem mntmManipulatorCameraToPos = new MenuItem(mnuManipulator, SWT.PUSH);
         mntmManipulatorCameraToPosPtr[0] = mntmManipulatorCameraToPos;
         mntmManipulatorCameraToPos.setText(I18n.E3D_CAM_TO_MANIPULATOR);
@@ -336,12 +254,6 @@ public class ManipulatorToolItem extends ToolItem {
     private static void addListeners() {
         if (btnManipulatorToOriginPtr[0] != null) widgetUtil(btnManipulatorToOriginPtr[0]).addSelectionListener(e -> mntmManipulatorToOrigin());
         if (btnManipulatorToWorldPtr[0] != null) widgetUtil(btnManipulatorToWorldPtr[0]).addSelectionListener(e -> mntmManipulatorToWorld());
-        if (btnManipulatorXReversePtr[0] != null) widgetUtil(btnManipulatorXReversePtr[0]).addSelectionListener(e -> mntmManipulatorXReverse());
-        if (btnManipulatorYReversePtr[0] != null) widgetUtil(btnManipulatorYReversePtr[0]).addSelectionListener(e -> mntmManipulatorYReverse());
-        if (btnManipulatorZReversePtr[0] != null) widgetUtil(btnManipulatorZReversePtr[0]).addSelectionListener(e -> mntmManipulatorZReverse());
-        if (btnManipulatorSwitchXYPtr[0] != null) widgetUtil(btnManipulatorSwitchXYPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchXY());
-        if (btnManipulatorSwitchXZPtr[0] != null) widgetUtil(btnManipulatorSwitchXZPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchXZ());
-        if (btnManipulatorSwitchYZPtr[0] != null) widgetUtil(btnManipulatorSwitchYZPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchYZ());
         if (btnManipulatorCameraToPosPtr[0] != null) widgetUtil(btnManipulatorCameraToPosPtr[0]).addSelectionListener(e -> mntmManipulatorCameraToPos());
         if (btnManipulatorToAveragePtr[0] != null) widgetUtil(btnManipulatorToAveragePtr[0]).addSelectionListener(e -> mntmManipulatorToAverage());
         if (btnManipulatorToSubfilePtr[0] != null) widgetUtil(btnManipulatorToSubfilePtr[0]).addSelectionListener(e -> mntmManipulatorToSubfile());
@@ -352,16 +264,9 @@ public class ManipulatorToolItem extends ToolItem {
         if (btnManipulatorToVertexNormalPtr[0] != null) widgetUtil(btnManipulatorToVertexNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToVertexNormal());
         if (btnManipulatorToEdgeNormalPtr[0] != null) widgetUtil(btnManipulatorToEdgeNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToEdgeNormal());
         if (btnManipulatorToSurfaceNormalPtr[0] != null) widgetUtil(btnManipulatorToSurfaceNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToSurfaceNormal());
-        if (btnManipulatorAdjustRotationCenterPtr[0] != null) widgetUtil(btnManipulatorAdjustRotationCenterPtr[0]).addSelectionListener(e -> mntmManipulatorAdjustRotationCenter());
         if (btnManipulatorToVertexPositionPtr[0] != null) widgetUtil(btnManipulatorToVertexPositionPtr[0]).addSelectionListener(e -> mntmManipulatorToVertexPosition());
         if (mntmManipulatorToOriginPtr[0] != null) widgetUtil(mntmManipulatorToOriginPtr[0]).addSelectionListener(e -> mntmManipulatorToOrigin());
         if (mntmManipulatorToWorldPtr[0] != null) widgetUtil(mntmManipulatorToWorldPtr[0]).addSelectionListener(e -> mntmManipulatorToWorld());
-        if (mntmManipulatorXReversePtr[0] != null) widgetUtil(mntmManipulatorXReversePtr[0]).addSelectionListener(e -> mntmManipulatorXReverse());
-        if (mntmManipulatorYReversePtr[0] != null) widgetUtil(mntmManipulatorYReversePtr[0]).addSelectionListener(e -> mntmManipulatorYReverse());
-        if (mntmManipulatorZReversePtr[0] != null) widgetUtil(mntmManipulatorZReversePtr[0]).addSelectionListener(e -> mntmManipulatorZReverse());
-        if (mntmManipulatorSwitchXYPtr[0] != null) widgetUtil(mntmManipulatorSwitchXYPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchXY());
-        if (mntmManipulatorSwitchXZPtr[0] != null) widgetUtil(mntmManipulatorSwitchXZPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchXZ());
-        if (mntmManipulatorSwitchYZPtr[0] != null) widgetUtil(mntmManipulatorSwitchYZPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchYZ());
         if (mntmManipulatorCameraToPosPtr[0] != null) widgetUtil(mntmManipulatorCameraToPosPtr[0]).addSelectionListener(e -> mntmManipulatorCameraToPos());
         if (mntmManipulatorToAveragePtr[0] != null) widgetUtil(mntmManipulatorToAveragePtr[0]).addSelectionListener(e -> mntmManipulatorToAverage());
         if (mntmManipulatorToSubfilePtr[0] != null) widgetUtil(mntmManipulatorToSubfilePtr[0]).addSelectionListener(e -> mntmManipulatorToSubfile());
