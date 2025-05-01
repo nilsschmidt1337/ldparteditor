@@ -36,7 +36,6 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public class MiscToggleToolItem extends ToolItem {
 
     private static final NButton[] btnMoveAdjacentDataPtr = new NButton[1];
-    private static final NButton[] btnNoTransparentSelectionPtr = new NButton[1];
     private static final NButton[] btnPrimitiveSubstitutionPtr = new NButton[1];
     private static final NButton[] btnBFCTogglePtr = new NButton[1];
 
@@ -94,11 +93,6 @@ public class MiscToggleToolItem extends ToolItem {
         btnAdjacentMove.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
         btnAdjacentMove.setSelection(WorkbenchManager.getUserSettingState().isMovingAdjacentData());
 
-        NButton btnTransSelection = new NButton(miscToggleToolItem, SWT.TOGGLE | Cocoa.getStyle());
-        btnNoTransparentSelectionPtr[0] = btnTransSelection;
-        btnTransSelection.setToolTipText(I18n.E3D_TOGGLE_TRANSPARENT);
-        btnTransSelection.setImage(ResourceManager.getImage("icon16_notrans.png")); //$NON-NLS-1$
-
         NButton btnPrimitiveSubstitution = new NButton(miscToggleToolItem, SWT.TOGGLE | Cocoa.getStyle());
         btnPrimitiveSubstitutionPtr[0] = btnPrimitiveSubstitution;
         btnPrimitiveSubstitution.setToolTipText(I18n.E3D_TOGGLE_PRIMITIVE_SUBSTITUTION + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
@@ -117,14 +111,6 @@ public class MiscToggleToolItem extends ToolItem {
             clickSingleBtn(btnMoveAdjacentDataPtr[0]);
             setMovingAdjacentData(btnMoveAdjacentDataPtr[0].getSelection());
             GuiStatusManager.updateStatus();
-            regainFocus();
-        });
-        widgetUtil(btnNoTransparentSelectionPtr[0]).addSelectionListener(e -> {
-            setNoTransparentSelection(btnNoTransparentSelectionPtr[0].getSelection());
-            // Recompile
-            Editor3DWindow.getWindow().compileAll(true);
-            // Re-initialise the renderer
-            Editor3DWindow.getWindow().initAllRenderers();
             regainFocus();
         });
         widgetUtil(btnPrimitiveSubstitutionPtr[0]).addSelectionListener(e -> {
