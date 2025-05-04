@@ -78,7 +78,6 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveDatfileToolItem;
-import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.PerspectiveToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.RenderModeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.SyncToolItem;
@@ -344,7 +343,6 @@ class Editor3DDesign extends ApplicationWindow {
 
         Set<String> missingItemsToCreate = new HashSet<>();
         missingItemsToCreate.add("SYNC_AND_RECENT_FILES"); //$NON-NLS-1$
-        missingItemsToCreate.add("PROJECT_MANAGEMENT"); //$NON-NLS-1$
         missingItemsToCreate.add("OPEN_SAVE_DATFILE"); //$NON-NLS-1$
         missingItemsToCreate.add("SHOW_AND_HIDE"); //$NON-NLS-1$
         missingItemsToCreate.add("MISC_TOGGLE"); //$NON-NLS-1$
@@ -368,10 +366,6 @@ class Editor3DDesign extends ApplicationWindow {
             String obj = s.getKey();
             if (obj.equals("SYNC_AND_RECENT_FILES")) { //$NON-NLS-1$
                 lastToolItem = createToolItemSync(s.getDrawLocation(), s.getDrawMode()); // SYNC_AND_RECENT_FILES
-                missingItemsToCreate.remove(obj);
-            }
-            if (obj.equals("PROJECT_MANAGEMENT")) { //$NON-NLS-1$
-                lastToolItem = createToolItemNewOpenSave(s.getDrawLocation(), s.getDrawMode()); // PROJECT_MANAGEMENT
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("OPEN_SAVE_DATFILE")) { //$NON-NLS-1$
@@ -445,7 +439,6 @@ class Editor3DDesign extends ApplicationWindow {
         }
 
         if (missingItemsToCreate.contains("SYNC_AND_RECENT_FILES")) lastToolItem = createToolItemSync(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL); // SYNC_AND_RECENT_FILES //$NON-NLS-1$
-        if (missingItemsToCreate.contains("PROJECT_MANAGEMENT")) lastToolItem = createToolItemNewOpenSave(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL); // PROJECT_MANAGEMENT //$NON-NLS-1$
         if (missingItemsToCreate.contains("CHANGE_PERSPECTIVE")) lastToolItem = createToolItemPerspective(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL); // CHANGE_PERSPECTIVE //$NON-NLS-1$
         if (missingItemsToCreate.contains("RENDER_MODE")) lastToolItem = createToolItemRenderMode(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL); // RENDER_MODE //$NON-NLS-1$
         if (missingItemsToCreate.contains("MANIPULATOR_ACTIONS")) lastToolItem = createToolItemManipulatorActions(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, lastToolItem); // MANIPULATOR_ACTIONS //$NON-NLS-1$
@@ -1682,10 +1675,6 @@ class Editor3DDesign extends ApplicationWindow {
 
     private ToolItem createToolItemNewOpenDat(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         return new NewOpenSaveDatfileToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
-    }
-
-    private ToolItem createToolItemNewOpenSave(ToolItemDrawLocation location, ToolItemDrawMode mode) {
-        return new NewOpenSaveProjectToolItem(areaFromLocation(location), Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
     }
 
     private ToolItem createToolItemSync(ToolItemDrawLocation location, ToolItemDrawMode mode) {

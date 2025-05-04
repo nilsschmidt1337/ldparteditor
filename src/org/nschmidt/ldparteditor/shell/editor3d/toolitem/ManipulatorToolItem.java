@@ -50,10 +50,8 @@ public class ManipulatorToolItem extends ToolItem {
     private static final NButton[] btnManipulatorToVertexPtr = new NButton[1];
     private static final NButton[] btnManipulatorToEdgePtr = new NButton[1];
     private static final NButton[] btnManipulatorToSurfacePtr = new NButton[1];
-    private static final NButton[] btnManipulatorToVertexNormalPtr = new NButton[1];
     private static final NButton[] btnManipulatorToEdgeNormalPtr = new NButton[1];
     private static final NButton[] btnManipulatorToSurfaceNormalPtr = new NButton[1];
-    private static final NButton[] btnManipulatorToVertexPositionPtr = new NButton[1];
 
     private static final MenuItem[] mntmManipulatorToOriginPtr = new MenuItem[1];
     private static final MenuItem[] mntmManipulatorToWorldPtr = new MenuItem[1];
@@ -133,16 +131,6 @@ public class ManipulatorToolItem extends ToolItem {
         btnManipulatorToSurfacePtr[0] = btnManipulatorToSurface;
         btnManipulatorToSurface.setToolTipText(I18n.E3D_MANIPULATOR_TO_FACE);
         btnManipulatorToSurface.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tonearestface.png")); //$NON-NLS-1$
-
-        NButton btnManipulatorToVertexNormal = new NButton(manipulatorToolItem, Cocoa.getStyle());
-        btnManipulatorToVertexNormalPtr[0] = btnManipulatorToVertexNormal;
-        btnManipulatorToVertexNormal.setToolTipText(I18n.E3D_MANIPULATOR_TO_VERTEX_N);
-        btnManipulatorToVertexNormal.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tonearestvertexN.png")); //$NON-NLS-1$
-
-        NButton btnManipulatorToVertexPosition = new NButton(manipulatorToolItem, Cocoa.getStyle());
-        btnManipulatorToVertexPositionPtr[0] = btnManipulatorToVertexPosition;
-        btnManipulatorToVertexPosition.setToolTipText(I18n.E3D_MANIPULATOR_TO_VERTEX_P);
-        btnManipulatorToVertexPosition.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
 
         NButton btnManipulatorToEdgeNormal = new NButton(manipulatorToolItem, Cocoa.getStyle());
         btnManipulatorToEdgeNormalPtr[0] = btnManipulatorToEdgeNormal;
@@ -261,10 +249,8 @@ public class ManipulatorToolItem extends ToolItem {
         if (btnManipulatorToVertexPtr[0] != null) widgetUtil(btnManipulatorToVertexPtr[0]).addSelectionListener(e -> mntmManipulatorToVertex());
         if (btnManipulatorToEdgePtr[0] != null) widgetUtil(btnManipulatorToEdgePtr[0]).addSelectionListener(e -> mntmManipulatorToEdge());
         if (btnManipulatorToSurfacePtr[0] != null) widgetUtil(btnManipulatorToSurfacePtr[0]).addSelectionListener(e -> mntmManipulatorToSurface());
-        if (btnManipulatorToVertexNormalPtr[0] != null) widgetUtil(btnManipulatorToVertexNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToVertexNormal());
         if (btnManipulatorToEdgeNormalPtr[0] != null) widgetUtil(btnManipulatorToEdgeNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToEdgeNormal());
         if (btnManipulatorToSurfaceNormalPtr[0] != null) widgetUtil(btnManipulatorToSurfaceNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToSurfaceNormal());
-        if (btnManipulatorToVertexPositionPtr[0] != null) widgetUtil(btnManipulatorToVertexPositionPtr[0]).addSelectionListener(e -> mntmManipulatorToVertexPosition());
         if (mntmManipulatorToOriginPtr[0] != null) widgetUtil(mntmManipulatorToOriginPtr[0]).addSelectionListener(e -> mntmManipulatorToOrigin());
         if (mntmManipulatorToWorldPtr[0] != null) widgetUtil(mntmManipulatorToWorldPtr[0]).addSelectionListener(e -> mntmManipulatorToWorld());
         if (mntmManipulatorCameraToPosPtr[0] != null) widgetUtil(mntmManipulatorCameraToPosPtr[0]).addSelectionListener(e -> mntmManipulatorCameraToPos());
