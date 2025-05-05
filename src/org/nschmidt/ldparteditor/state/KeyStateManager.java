@@ -681,6 +681,7 @@ public class KeyStateManager {
                         break;
                     case ADD_COMMENTS:
                         AddToolItem.setAddState(0);
+                        pressedKeyCodes.remove(keyCode);
                         break;
                     case ADD_DISTANCE:
                         AddToolItem.setAddState(6);

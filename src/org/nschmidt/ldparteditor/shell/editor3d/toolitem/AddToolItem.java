@@ -24,7 +24,6 @@ import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.composite.Composite3D;
@@ -136,11 +135,7 @@ public class AddToolItem extends ToolItem {
 
     private static void addListeners() {
         widgetUtil(btnAddCommentPtr[0]).addSelectionListener(e -> {
-            if (!metaWindow.isOpened()) {
-                metaWindow.run();
-            } else {
-                metaWindow.open();
-            }
+            openMetaWindow();
         });
         widgetUtil(btnAddVertexPtr[0]).addSelectionListener(e -> {
             resetAddState();
@@ -424,6 +419,14 @@ public class AddToolItem extends ToolItem {
         });
     }
 
+    private static void openMetaWindow() {
+        if (!metaWindow.isOpened()) {
+            metaWindow.run();
+        } else {
+            metaWindow.open();
+        }
+    }
+
     public static boolean isAddingSomething() {
         return addingSomething;
     }
@@ -579,7 +582,7 @@ public class AddToolItem extends ToolItem {
         }
         switch (type) {
         case 0:
-            btnAddCommentPtr[0].notifyListeners(SWT.Selection, new Event());
+            openMetaWindow();
             break;
         case 1:
             setAddingVertices(!isAddingVertices());
