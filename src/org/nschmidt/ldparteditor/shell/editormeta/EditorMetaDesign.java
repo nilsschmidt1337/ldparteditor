@@ -19,7 +19,9 @@ import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.jface.window.ApplicationWindow;
@@ -446,6 +448,18 @@ class EditorMetaDesign extends ApplicationWindow {
                         evCmdlineTxtPtr[0] = txtCmdline;
                     }
 
+                    String realName = ""; //$NON-NLS-1$
+                    if (userSettings.getRealUserName() != null) {
+                        realName = userSettings.getRealUserName();
+                    }
+
+                    String ldrawName = ""; //$NON-NLS-1$
+                    if (userSettings.getLdrawUserName() != null) {
+                        ldrawName = userSettings.getLdrawUserName();
+                    }
+
+                    final String todaysDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //$NON-NLS-1$
+
                     {
                         Composite cmpHistory1 = Theming.composite(grpMeta, SWT.NONE);
                         cmpHistory1.setLayout(new GridLayout(6, false));
@@ -455,6 +469,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtHistory11 = Theming.text(cmpHistory1, SWT.SEARCH);
                         txtHistory11.setMessage(I18n.META_HISTORY_1);
+                        txtHistory11.setText(todaysDate);
                         evHistory11TxtPtr[0] = txtHistory11;
 
                         Label lblHistory12 = Theming.label(cmpHistory1, SWT.NONE);
@@ -462,6 +477,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtHistory12 = Theming.text(cmpHistory1, SWT.SEARCH);
                         txtHistory12.setMessage(I18n.META_HISTORY_2);
+                        txtHistory12.setText(ldrawName);
                         evHistory12TxtPtr[0] = txtHistory12;
 
                         Label lblHistory13 = Theming.label(cmpHistory1, SWT.NONE);
@@ -481,6 +497,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtHistory21 = Theming.text(cmpHistory2, SWT.SEARCH);
                         txtHistory21.setMessage(I18n.META_HISTORY_1);
+                        txtHistory21.setText(todaysDate);
                         evHistory21TxtPtr[0] = txtHistory21;
 
                         Label lblHistory22 = Theming.label(cmpHistory2, SWT.NONE);
@@ -488,6 +505,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtHistory22 = Theming.text(cmpHistory2, SWT.SEARCH);
                         txtHistory22.setMessage(I18n.META_HISTORY_3);
+                        txtHistory22.setText(realName);
                         evHistory22TxtPtr[0] = txtHistory22;
 
                         Label lblHistory23 = Theming.label(cmpHistory2, SWT.NONE);
