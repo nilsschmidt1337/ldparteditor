@@ -1836,6 +1836,7 @@ public final class GData3 extends GData {
     }
 
     private void drawNumberGL33(String number, float ox, float oy, float oz, float zoom) {
+        final int[] vaoVbo = PGData3.beginDrawTextGL33();
         final int length =  number.length();
         float ox2 = 0f;
         for (int i = 0; i < length; i++) {
@@ -1888,10 +1889,12 @@ public final class GData3 extends GData {
                 break;
             }
             for (PGData3 tri : tris) {
-                tri.drawTextGL33(ox + ox2, oy, oz + 100000f, zoom);
+                tri.drawTextGL33(ox + ox2, oy, oz + 100000f, zoom, vaoVbo);
             }
             ox2 = ox2 - .01f * zoom;
         }
+
+        PGData3.endDrawTextGL33(vaoVbo);
     }
 
     public double getProtractorAngle() {

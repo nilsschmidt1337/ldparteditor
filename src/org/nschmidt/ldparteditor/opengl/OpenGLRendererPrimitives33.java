@@ -259,7 +259,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
             Matrix4f.transform(rotation, yAxis, yAxis);
             Matrix4f.transform(rotation, zAxis, zAxis);
 
-            PGData3.beginDrawTextGL33(shaderProgram2D);
+            final int[] vaoVbo = PGData3.beginDrawTextGL33(shaderProgram2D);
             stack.setShader(shaderProgram2D);
 
             view = shaderProgram2D.getUniformLocation("view" ); //$NON-NLS-1$
@@ -275,17 +275,17 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
             stack.glScalef(-1f, 1f, 1f);
 
             for (PGData3 tri : FontLetters.X) {
-                tri.drawTextGL33(-xAxis.x, xAxis.y, 0f);
+                tri.drawTextGL33(-xAxis.x, xAxis.y, 0f, vaoVbo);
             }
 
             for (PGData3 tri : FontLetters.Y) {
-                tri.drawTextGL33(-yAxis.x, yAxis.y, 0f);
+                tri.drawTextGL33(-yAxis.x, yAxis.y, 0f, vaoVbo);
             }
 
             for (PGData3 tri : FontLetters.Z) {
-                tri.drawTextGL33(-zAxis.x, zAxis.y, 0f);
+                tri.drawTextGL33(-zAxis.x, zAxis.y, 0f, vaoVbo);
             }
-            PGData3.endDrawTextGL33(shaderProgram);
+            PGData3.endDrawTextGL33(shaderProgram, vaoVbo);
             stack.setShader(shaderProgram);
             stack.glPopMatrix();
         }
