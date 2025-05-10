@@ -1495,7 +1495,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     if (userSettings.isShowingAxisLabels()) {
                         GL11.glDisable(GL11.GL_CULL_FACE);
                         GL11.glDisable(GL11.GL_DEPTH_TEST);
-                        PGData3.beginDrawTextGL33(shaderProgram2D);
+                        final int[] vaoVbo = PGData3.beginDrawTextGL33(shaderProgram2D);
                         stack.setShader(shaderProgram2D);
                         final float length20th = l / 20f;
 
@@ -1532,32 +1532,32 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             stack.glLoadIdentity();
                             stack.glTranslatef(manipulatorPos.x, manipulatorPos.y, 0f);
                             for (PGData3 tri : FontLetters.X) {
-                                tri.drawTextGL33(manipulatorXAxis.x, manipulatorXAxis.y, viewportOriginAxis[0].z);
+                                tri.drawTextGL33(manipulatorXAxis.x, manipulatorXAxis.y, viewportOriginAxis[0].z, vaoVbo);
                             }
 
                             for (PGData3 tri : FontLetters.Y) {
-                                tri.drawTextGL33(manipulatorYAxis.x, manipulatorYAxis.y, viewportOriginAxis[0].z);
+                                tri.drawTextGL33(manipulatorYAxis.x, manipulatorYAxis.y, viewportOriginAxis[0].z, vaoVbo);
                             }
 
                             for (PGData3 tri : FontLetters.Z) {
-                                tri.drawTextGL33(manipulatorZAxis.x, manipulatorZAxis.y, viewportOriginAxis[0].z);
+                                tri.drawTextGL33(manipulatorZAxis.x, manipulatorZAxis.y, viewportOriginAxis[0].z, vaoVbo);
                             }
                         }
 
                         stack.glLoadIdentity();
                         stack.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
                         for (PGData3 tri : FontLetters.X) {
-                            tri.drawTextGL33(xAxis.x, xAxis.y, viewportOriginAxis[0].z);
+                            tri.drawTextGL33(xAxis.x, xAxis.y, viewportOriginAxis[0].z, vaoVbo);
                         }
 
                         for (PGData3 tri : FontLetters.Y) {
-                            tri.drawTextGL33(yAxis.x, yAxis.y, viewportOriginAxis[0].z);
+                            tri.drawTextGL33(yAxis.x, yAxis.y, viewportOriginAxis[0].z, vaoVbo);
                         }
 
                         for (PGData3 tri : FontLetters.Z) {
-                            tri.drawTextGL33(zAxis.x, zAxis.y, viewportOriginAxis[0].z);
+                            tri.drawTextGL33(zAxis.x, zAxis.y, viewportOriginAxis[0].z, vaoVbo);
                         }
-                        PGData3.endDrawTextGL33(shaderProgram2);
+                        PGData3.endDrawTextGL33(shaderProgram2, vaoVbo);
                         stack.setShader(shaderProgram2);
                         GL11.glEnable(GL11.GL_CULL_FACE);
                         GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -1565,45 +1565,45 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 if (c3d.isShowingLabels() && c3d.isClassicPerspective()) {
-                    PGData3.beginDrawTextGL33(shaderProgram2D);
+                    final int[] vaoVbo = PGData3.beginDrawTextGL33(shaderProgram2D);
                     stack.setShader(shaderProgram2D);
                     stack.glLoadIdentity();
                     switch (c3d.getPerspectiveIndex()) {
                     case FRONT:
                         for (PGData3 tri : FontLetters.FRONT) {
-                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
+                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z, vaoVbo);
                         }
                         break;
                     case BACK:
                         for (PGData3 tri : FontLetters.BACK) {
-                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
+                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z, vaoVbo);
                         }
                         break;
                     case TOP:
                         for (PGData3 tri : FontLetters.TOP) {
-                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
+                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z, vaoVbo);
                         }
                         break;
                     case BOTTOM:
                         for (PGData3 tri : FontLetters.BOTTOM) {
-                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
+                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z, vaoVbo);
                         }
                         break;
                     case LEFT:
                         for (PGData3 tri : FontLetters.LEFT) {
-                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
+                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z, vaoVbo);
                         }
                         break;
                     case RIGHT:
                         for (PGData3 tri : FontLetters.RIGHT) {
-                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z);
+                            tri.drawTextGL33(viewportWidth, viewportHeight, viewportOriginAxis[0].z, vaoVbo);
                         }
                         break;
                     case TWO_THIRDS:
                     default:
                         break;
                     }
-                    PGData3.endDrawTextGL33(shaderProgram2);
+                    PGData3.endDrawTextGL33(shaderProgram2, vaoVbo);
                     stack.setShader(shaderProgram2);
                 }
                 if (Project.getFileToEdit().equals(c3d.getLockableDatFileReference())) {

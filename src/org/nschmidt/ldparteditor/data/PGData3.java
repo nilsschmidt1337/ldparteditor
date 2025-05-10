@@ -18,7 +18,9 @@ package org.nschmidt.ldparteditor.data;
 import java.io.Serializable;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GL33HelperPrimitives;
@@ -381,29 +383,44 @@ public final class PGData3 extends PGData implements Serializable {
         GL11.glEnd();
     }
 
-    public static void beginDrawTextGL33(GLShader shader) {
+    public static int[] beginDrawTextGL33(GLShader shader) {
         shader.use();
         final int colour = shader.getUniformLocation("color"); //$NON-NLS-1$
         GL20.glUniform3f(colour, Colour.textColourR, Colour.textColourG, Colour.textColourB);
+        return beginDrawTextGL33();
     }
 
-    public void drawTextGL33(float x, float y, float z) {
+    public static int[] beginDrawTextGL33() {
+        int vaoGeneral = GL30.glGenVertexArrays();
+        int vboGeneral = GL15.glGenBuffers();
+        return new int[] {vaoGeneral, vboGeneral};
+    }
+
+    public void drawTextGL33(float x, float y, float z, int[] vaoVbo) {
         GL33Helper.drawTriangleGeneralSlow(new float[]{
             -x1 + x, y1 + y, z1 + z,
             -x3 + x, y3 + y, z3 + z,
             -x2 + x, y2 + y, z2 + z
-        });
+        }, vaoVbo);
     }
 
-    void drawTextGL33(float x, float y, float z, float scale) {
+    void drawTextGL33(float x, float y, float z, float scale, int[] vaoVbo) {
         GL33Helper.drawTriangleGeneralSlow(new float[] {
             -x1 * scale + x, y1 * scale + y, z1 * scale + z,
             -x3 * scale + x, y3 * scale + y, z3 * scale + z,
             -x2 * scale + x, y2 * scale + y, z2 * scale + z
-        });
+        }, vaoVbo);
     }
 
-    public static void endDrawTextGL33(GLShader shader) {
+    public static void endDrawTextGL33(int[] vaoVbo) {
+        final int vaoGeneral = vaoVbo[0];
+        final int vboGeneral = vaoVbo[1];
+        GL30.glDeleteVertexArrays(vaoGeneral);
+        GL15.glDeleteBuffers(vboGeneral);
+    }
+
+    public static void endDrawTextGL33(GLShader shader, int[] vaoVbo) {
+        endDrawTextGL33(vaoVbo);
         shader.use();
     }
 
