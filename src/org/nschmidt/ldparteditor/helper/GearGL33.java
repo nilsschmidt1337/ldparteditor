@@ -24,6 +24,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 
@@ -169,8 +170,11 @@ public class GearGL33 {
 
         final int colour = shader.getUniformLocation("color"); //$NON-NLS-1$
         GL20.glUniform3f(colour, r, g, b);
+        final int VAO = GL30.glGenVertexArrays();
         final int VBO = GL15.glGenBuffers();
         final int EBO = GL15.glGenBuffers();
+
+        GL30.glBindVertexArray(VAO);
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, bvertices, GL15.GL_STREAM_DRAW);
@@ -185,6 +189,8 @@ public class GearGL33 {
 
         GL11.glDrawElements(GL11.GL_TRIANGLES, bindices.capacity(), GL11.GL_UNSIGNED_INT, 0);
 
+        GL30.glBindVertexArray(0);
+        GL30.glDeleteVertexArrays(VAO);
         GL15.glDeleteBuffers(VBO);
         GL15.glDeleteBuffers(EBO);
 

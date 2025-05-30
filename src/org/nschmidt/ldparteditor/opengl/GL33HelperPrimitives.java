@@ -120,6 +120,7 @@ public enum GL33HelperPrimitives {
     }
 
     public static void drawTrianglesIndexedRGBtriangle(float[] vertices, int[] indices) {
+        GL30.glBindVertexArray(vao);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTriangle);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, vertices);
 
@@ -138,6 +139,7 @@ public enum GL33HelperPrimitives {
     }
 
     public static void drawTrianglesIndexedRGBquad(float[] vertices, int[] indices) {
+        GL30.glBindVertexArray(vao);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboQuad);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0 , vertices);
 
@@ -156,6 +158,7 @@ public enum GL33HelperPrimitives {
     }
 
     public static void drawLinesRGBline(float[] vertices) {
+        GL30.glBindVertexArray(vao);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLine);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, vertices);
 

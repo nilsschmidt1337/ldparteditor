@@ -34,7 +34,15 @@ public class GL33Helper {
     private int vboGeneral = -1;
     private int eboGeneral = -1;
 
+    private String vendor = null;
+    private boolean isIntel = false;
+
     void createVBO() {
+        if (vendor == null) {
+            vendor = GL11.glGetString(GL11.GL_VENDOR);
+            isIntel = "Intel".equals(vendor); //$NON-NLS-1$
+        }
+
         vaoGeneral = GL30.glGenVertexArrays();
         vboGeneral = GL15.glGenBuffers();
         eboGeneral = GL15.glGenBuffers();
@@ -68,8 +76,9 @@ public class GL33Helper {
     }
 
     void drawLinesRGBgeneral(float[] vertices) {
+        int vbo = isIntel ? GL15.glGenBuffers() : vboGeneral;
         GL30.glBindVertexArray(vaoGeneral);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGeneral);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
 
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
@@ -81,6 +90,11 @@ public class GL33Helper {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         GL11.glDrawArrays(GL11.GL_LINES, 0, vertices.length);
+
+        if (isIntel) {
+            GL30.glBindVertexArray(0);
+            GL15.glDeleteBuffers(vbo);
+        }
     }
 
     public static void drawLinesRGBgeneralSlow(float[] vertices) {
