@@ -72,8 +72,8 @@ public class PerspectiveCalculator {
      *
      * @param perspective
      *            the perspective value from {@linkplain Perspective}.
-     * 
-     * @return true, if the perspective was set 
+     *
+     * @return true, if the perspective was set
      */
     public boolean setPerspective(Perspective perspective) {
         if (rotationLock) return false;
@@ -132,12 +132,110 @@ public class PerspectiveCalculator {
             c3d.getRotation().load(fb);
         }
         break;
-        case TWO_THIRDS: {
-            NLogger.debug(PerspectiveCalculator.class, "[Two thirds view]"); //$NON-NLS-1$
+        case TWO_THIRDS: { // OK
+            NLogger.debug(PerspectiveCalculator.class, "[Two thirds view FRONT_TOP_LEFT]"); //$NON-NLS-1$
             float[] rpf = new float[] {
                     -0.7071f, 0.5f, 0.5f, 0,
                     0, 0.7071f, -0.7071f, 0,
                     -0.7071f, -0.5f, -0.5f, 0,
+                    0, 0, 0, 1 };
+            FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+            fb.put(rpf);
+            fb.flip();
+            c3d.getRotation().load(fb);
+            c3d.setClassicPerspective(false); // Two-thirds has no axes!
+        }
+        break;
+        case TWO_THIRDS_FRONT_TOP_RIGHT: { // OK
+            NLogger.debug(PerspectiveCalculator.class, "[Two thirds view FRONT_TOP_RIGHT]"); //$NON-NLS-1$
+            float[] rpf = new float[] {
+                    -0.7071f, -0.5f, -0.5f, 0,
+                    0, 0.7071f, -0.7071f, 0,
+                    0.7071f, -0.5f, -0.5f, 0,
+                    0, 0, 0, 1 };
+            FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+            fb.put(rpf);
+            fb.flip();
+            c3d.getRotation().load(fb);
+            c3d.setClassicPerspective(false); // Two-thirds has no axes!
+        }
+        break;
+        case TWO_THIRDS_BACK_TOP_RIGHT: { // OK
+            NLogger.debug(PerspectiveCalculator.class, "[Two thirds view BACK_TOP_RIGHT]"); //$NON-NLS-1$
+            float[] rpf = new float[] {
+                    0.7071f, -0.5f, -0.5f, 0,
+                    0, 0.7071f, -0.7071f, 0,
+                    0.7071f, 0.5f, 0.5f, 0,
+                    0, 0, 0, 1 };
+            FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+            fb.put(rpf);
+            fb.flip();
+            c3d.getRotation().load(fb);
+            c3d.setClassicPerspective(false); // Two-thirds has no axes!
+        }
+        break;
+        case TWO_THIRDS_BACK_TOP_LEFT: { // OK
+            NLogger.debug(PerspectiveCalculator.class, "[Two thirds view BACK_TOP_LEFT]"); //$NON-NLS-1$
+            float[] rpf = new float[] {
+                    0.7071f, 0.5f, 0.5f, 0,
+                    0, 0.7071f, -0.7071f, 0,
+                    -0.7071f, 0.5f, 0.5f, 0,
+                    0, 0, 0, 1 };
+            FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+            fb.put(rpf);
+            fb.flip();
+            c3d.getRotation().load(fb);
+            c3d.setClassicPerspective(false); // Two-thirds has no axes!
+        }
+        break;
+        case TWO_THIRDS_BACK_BOTTOM_LEFT: { // OK
+            NLogger.debug(PerspectiveCalculator.class, "[Two thirds view BACK_BOTTOM_LEFT]"); //$NON-NLS-1$
+            float[] rpf = new float[] {
+                    0.7071f, 0.5f, -0.5f, 0,
+                    -0, 0.7071f, 0.7071f, 0,
+                    0.7071f, -0.5f, 0.5f, 0,
+                    0, 0, 0, 1 };
+            FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+            fb.put(rpf);
+            fb.flip();
+            c3d.getRotation().load(fb);
+            c3d.setClassicPerspective(false); // Two-thirds has no axes!
+        }
+        break;
+        case TWO_THIRDS_BACK_BOTTOM_RIGHT: {
+            NLogger.debug(PerspectiveCalculator.class, "[Two thirds view BACK_BOTTOM_RIGHT]"); //$NON-NLS-1$
+            float[] rpf = new float[] {
+                    0.7071f, -0.5f, 0.5f, 0,
+                    -0, 0.7071f, 0.7071f, 0,
+                    -0.7071f, -0.5f, 0.5f, 0,
+                    0, 0, 0, 1 };
+            FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+            fb.put(rpf);
+            fb.flip();
+            c3d.getRotation().load(fb);
+            c3d.setClassicPerspective(false); // Two-thirds has no axes!
+        }
+        break;
+        case TWO_THIRDS_FRONT_BOTTOM_RIGHT: { // OK
+            NLogger.debug(PerspectiveCalculator.class, "[Two thirds view FRONT_BOTTOM_RIGHT]"); //$NON-NLS-1$
+            float[] rpf = new float[] {
+                    -0.7071f, -0.5f, 0.5f, 0,
+                    -0, 0.7071f, 0.7071f, 0,
+                    -0.7071f, 0.5f, -0.5f, 0,
+                    0, 0, 0, 1 };
+            FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+            fb.put(rpf);
+            fb.flip();
+            c3d.getRotation().load(fb);
+            c3d.setClassicPerspective(false); // Two-thirds has no axes!
+        }
+        break;
+        case TWO_THIRDS_FRONT_BOTTOM_LEFT: { // OK
+            NLogger.debug(PerspectiveCalculator.class, "[Two thirds view FRONT_BOTTOM_LEFT]"); //$NON-NLS-1$
+            float[] rpf = new float[] {
+                    -0.7071f, 0.5f, -0.5f, 0,
+                    -0, 0.7071f, 0.7071f, 0,
+                    0.7071f, 0.5f, -0.5f, 0,
                     0, 0, 0, 1 };
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
             fb.put(rpf);
@@ -215,7 +313,7 @@ public class PerspectiveCalculator {
         if (gridSize > 10f) {
             gridSize = gridSize / 2f;
         } // gridSize < 10f can't happen
-        
+
         gridSize = gridSize * 10f * c3d.getGridScale();
         int mx = (int) (c3d.getBounds().width / gridSize + 4) / 2;
         int my = (int) (c3d.getBounds().height / gridSize + 4) / 2;
@@ -453,7 +551,7 @@ public class PerspectiveCalculator {
     public void setZoomExponent(float zoomExponent) {
         this.zoomExponent = zoomExponent;
     }
-    
+
     public boolean hasRotationLock() {
         return rotationLock;
     }

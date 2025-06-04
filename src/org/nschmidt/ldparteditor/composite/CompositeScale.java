@@ -148,7 +148,7 @@ public class CompositeScale extends ScalableComposite {
                 case BOTTOM:
                     offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
                     break;
-                case TWO_THIRDS:
+                case TWO_THIRDS, TWO_THIRDS_FRONT_TOP_RIGHT, TWO_THIRDS_BACK_TOP_RIGHT, TWO_THIRDS_BACK_TOP_LEFT, TWO_THIRDS_BACK_BOTTOM_LEFT, TWO_THIRDS_BACK_BOTTOM_RIGHT, TWO_THIRDS_FRONT_BOTTOM_RIGHT, TWO_THIRDS_FRONT_BOTTOM_LEFT:
                     throw new AssertionError();
                 }
 
@@ -306,7 +306,7 @@ public class CompositeScale extends ScalableComposite {
                 case BOTTOM:
                     offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU);
                     break;
-                case TWO_THIRDS:
+                case TWO_THIRDS, TWO_THIRDS_FRONT_TOP_RIGHT, TWO_THIRDS_BACK_TOP_RIGHT, TWO_THIRDS_BACK_TOP_LEFT, TWO_THIRDS_BACK_BOTTOM_LEFT, TWO_THIRDS_BACK_BOTTOM_RIGHT, TWO_THIRDS_FRONT_BOTTOM_RIGHT, TWO_THIRDS_FRONT_BOTTOM_LEFT:
                     throw new AssertionError();
                 }
 

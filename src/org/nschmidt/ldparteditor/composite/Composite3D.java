@@ -667,7 +667,15 @@ public class Composite3D extends ScalableComposite {
                 }
 
                 WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
-                perspective.setPerspective(Perspective.TWO_THIRDS);
+
+                if (isClassicPerspective()) {
+                    perspective.setPerspective(Perspective.TWO_THIRDS);
+                    setPerspectiveOnContextMenu(Perspective.TWO_THIRDS);
+                } else {
+                    final Perspective newPerspective = Perspective.toggleTwoThirds(viewportPerspective);
+                    perspective.setPerspective(newPerspective);
+                    setPerspectiveOnContextMenu(newPerspective);
+                }
             });
             mntmTwoThirds.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
             mntmTwoThirds.setText(I18n.PERSPECTIVE_TWO_THIRDS);
@@ -1372,7 +1380,7 @@ public class Composite3D extends ScalableComposite {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                     w.getTabFolder().setSelection(t);
-                    ((CompositeTab) t).getControl().getShell().forceActive();
+                    t.getControl().getShell().forceActive();
                     if (w.isSeperateWindow()) {
                         w.open();
                     }
@@ -2188,7 +2196,7 @@ public class Composite3D extends ScalableComposite {
                     if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
 
                         w.getTabFolder().setSelection(t);
-                        ((CompositeTab) t).getControl().getShell().forceActive();
+                        t.getControl().getShell().forceActive();
 
                         Display.getDefault().asyncExec(() -> {
                             final VertexManager vm = df.getVertexManager();
@@ -2325,7 +2333,7 @@ public class Composite3D extends ScalableComposite {
             for (final CTabItem t : win.getTabFolder().getItems()) {
                 if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                     win.getTabFolder().setSelection(t);
-                    ((CompositeTab) t).getControl().getShell().forceActive();
+                    t.getControl().getShell().forceActive();
                     Display.getDefault().asyncExec(() -> {
 
                         if (setTopIndex) {

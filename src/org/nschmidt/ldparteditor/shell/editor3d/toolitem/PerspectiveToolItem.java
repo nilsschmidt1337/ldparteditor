@@ -128,8 +128,20 @@ public class PerspectiveToolItem extends ToolItem {
     private static void changePerspective(Perspective perspective) {
         Composite3D c3d = getCurrentCoposite3d();
         if (c3d != null) {
-            c3d.getPerspectiveCalculator().setPerspective(perspective);
-            c3d.setPerspectiveOnContextMenu(perspective);
+
+            if (perspective == Perspective.TWO_THIRDS) {
+                if (c3d.isClassicPerspective()) {
+                    c3d.getPerspectiveCalculator().setPerspective(Perspective.TWO_THIRDS);
+                    c3d.setPerspectiveOnContextMenu(Perspective.TWO_THIRDS);
+                } else {
+                    final Perspective newPerspective = Perspective.toggleTwoThirds(c3d.getPerspectiveIndex());
+                    c3d.getPerspectiveCalculator().setPerspective(newPerspective);
+                    c3d.setPerspectiveOnContextMenu(newPerspective);
+                }
+            } else {
+                c3d.getPerspectiveCalculator().setPerspective(perspective);
+                c3d.setPerspectiveOnContextMenu(perspective);
+            }
         }
 
         regainFocus();

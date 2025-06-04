@@ -966,8 +966,14 @@ public class KeyStateManager {
                         c3d.setPerspectiveOnContextMenu(Perspective.BOTTOM);
                         break;
                     case PERSPECTIVE_TWO_THIRDS:
-                        c3d.getPerspectiveCalculator().setPerspective(Perspective.TWO_THIRDS);
-                        c3d.setPerspectiveOnContextMenu(Perspective.TWO_THIRDS);
+                        if (c3d.isClassicPerspective()) {
+                            c3d.getPerspectiveCalculator().setPerspective(Perspective.TWO_THIRDS);
+                            c3d.setPerspectiveOnContextMenu(Perspective.TWO_THIRDS);
+                        } else {
+                            final Perspective newPerspective = Perspective.toggleTwoThirds(c3d.getPerspectiveIndex());
+                            c3d.getPerspectiveCalculator().setPerspective(newPerspective);
+                            c3d.setPerspectiveOnContextMenu(newPerspective);
+                        }
                         break;
                     case RENDERMODE_NO_BACKFACE_CULLING:
                         c3d.setRenderMode(0);
