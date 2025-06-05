@@ -866,15 +866,23 @@ public enum DatParser {
                     }
                 }
             }
-            if (parent.equals(View.DUMMY_REFERENCE) && result.size() == 1) {
-                GData1 g1 = (GData1) result.get(0).getGraphicalData();
-                if (g1 != null) {
-                    if (g1.firstRef.isRecursive()) {
-                        result.add(new ParsingResult(I18n.DATPARSER_RECURSIVE, "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
+            if (parent.equals(View.DUMMY_REFERENCE)) {
+                boolean movedToNotFound = true;
+                if (result.size() == 1) {
+                    GData1 g1 = (GData1) result.get(0).getGraphicalData();
+                    if (g1 != null) {
+                        if (g1.firstRef.isRecursive()) {
+                            result.add(new ParsingResult(I18n.DATPARSER_RECURSIVE, "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
+                        }
+                        if (g1.firstRef.isMovedTo()) {
+                            result.add(new ParsingResult(I18n.DATPARSER_MOVED_TO, "[E2A] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
+                            movedToNotFound = false;
+                        }
                     }
-                    if (g1.firstRef.isMovedTo()) {
-                        result.add(new ParsingResult(I18n.DATPARSER_MOVED_TO, "[E2A] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                    }
+                }
+
+                if (errorCheckOnly && movedToNotFound && lines != null && !lines.isEmpty() && lines.get(0).startsWith(GData1.MOVED_TO)) {
+                    result.add(new ParsingResult(I18n.DATPARSER_MOVED_TO, "[E2A] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }
             }
             alreadyParsed.remove(shortFilename);

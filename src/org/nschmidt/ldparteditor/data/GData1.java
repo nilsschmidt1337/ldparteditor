@@ -51,6 +51,8 @@ import org.nschmidt.ldparteditor.text.TexMapParser;
 
 public final class GData1 extends GData {
 
+    public static final String MOVED_TO = "0 ~Moved to"; //$NON-NLS-1$
+
     private static Set<String> filesWithLogo1 = new HashSet<>();
     private static Set<String> filesWithLogo2 = new HashSet<>();
 
@@ -300,7 +302,7 @@ public final class GData1 extends GData {
             }
 
             GData description = myGData.next;
-            if (description != null && description.type() == 0 && ((GData0) description).text.trim().startsWith("0 ~Moved to")) { //$NON-NLS-1$
+            if (description != null && description.type() == 0 && ((GData0) description).text.trim().startsWith(MOVED_TO)) {
                 this.firstRef.setMovedTo(true);
             }
 
@@ -2942,7 +2944,7 @@ public final class GData1 extends GData {
     private String getSolvedMoveTo(GColour col, int depth) {
         GData description = myGData.next;
         if (description.type() == 0) {
-            if (((GData0) description).text.trim().startsWith("0 ~Moved to")) { //$NON-NLS-1$
+            if (((GData0) description).text.trim().startsWith(MOVED_TO)) {
                 GData data2draw = myGData;
                 GData1 nextReference = null;
                 while ((data2draw = data2draw.next) != null) {
