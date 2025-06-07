@@ -1,3 +1,15 @@
+### 07 Jun 2025
+With the release of 1.8.93 you are able to...
+-  ...show two-thirds views from other angles (click on "Two-Thirds" multiple times).
+-  ...see the user name and current date displayed as default in the dialog for meta commands.
+-  ...use the new MATERIAL FABRIC colours.
+
+The following critical issues are fixed:
+1. The keyboard shortcut for showing the "Add comment / meta data" dialog did not work anymore.
+2. The detection of "~Moved to" files did not always work.
+3. [OpenGL 3.3] Flickering lines on Intel Arc dGPUs.
+
+
 ### 27 Apr 2025
 With the release of 1.8.92 you are able to...
 -  ...see a hint about wrong colours for lines and condlines or other non-line objects with colour 24.
