@@ -15,8 +15,13 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helper.math.rtree;
 
+import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.data.GData4;
+
 public class BoundingBox {
 
+    // TODO: Check if we need BigDecimal here.
     private float minX = 0f;
     private float minY = 0f;
     private float minZ = 0f;
@@ -35,5 +40,68 @@ public class BoundingBox {
         return !((minX > o.maxX || maxX < o.minX) ||
                  (minY > o.maxY || maxY < o.minY) ||
                  (minZ > o.maxZ || maxZ < o.minZ));
+    }
+
+    public void insert(BoundingBox o) {
+        minX = Math.min(minX, o.minX);
+        minY = Math.min(minY, o.minY);
+        minZ = Math.min(minZ, o.minZ);
+
+        maxX = Math.max(maxX, o.maxX);
+        maxY = Math.max(maxY, o.maxY);
+        maxZ = Math.max(maxZ, o.maxZ);
+    }
+
+
+    public void insert(GData geometry) {
+        if (geometry instanceof GData3 triangle) {
+            insert(triangle);
+        } else if (geometry instanceof GData4 quad) {
+            insert(quad);
+        } else {
+            throw new IllegalArgumentException("Type " + geometry.type() + " is not supported!"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+    }
+
+    private void insert(GData3 triangle) {
+        insertX(triangle.x1);
+        insertY(triangle.y1);
+        insertZ(triangle.z1);
+        insertX(triangle.x2);
+        insertY(triangle.y2);
+        insertZ(triangle.z2);
+        insertX(triangle.x3);
+        insertY(triangle.y3);
+        insertZ(triangle.z3);
+    }
+
+    private void insert(GData4 quad) {
+        insertX(quad.x1);
+        insertY(quad.y1);
+        insertZ(quad.z1);
+        insertX(quad.x2);
+        insertY(quad.y2);
+        insertZ(quad.z2);
+        insertX(quad.x3);
+        insertY(quad.y3);
+        insertZ(quad.z3);
+        insertX(quad.x4);
+        insertY(quad.y4);
+        insertZ(quad.z4);
+    }
+
+    private void insertX(float x) {
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+    }
+
+    private void insertY(float y) {
+        minY = Math.min(minY, y);
+        maxY = Math.max(maxY, y);
+    }
+
+    private void insertZ(float z) {
+        minZ = Math.min(minZ, z);
+        maxZ = Math.max(maxZ, z);
     }
 }
