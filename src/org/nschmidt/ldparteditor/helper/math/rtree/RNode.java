@@ -15,8 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helper.math.rtree;
 
-import java.util.List;
-
 import org.nschmidt.ldparteditor.data.GData;
 
 
@@ -24,7 +22,10 @@ import org.nschmidt.ldparteditor.data.GData;
 public class RNode {
 
     private BoundingBox bb;
-    private List<RNode> children;
+    private final RNode[] children = new RNode[2];
     private GData geometry;
 
+    public boolean isLeaf() {
+        return geometry != null && children[0] == null && children[1] == null;
+    }
 }
