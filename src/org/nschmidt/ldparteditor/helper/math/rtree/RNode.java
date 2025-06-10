@@ -28,4 +28,14 @@ public class RNode {
     public boolean isLeaf() {
         return geometry != null && children[0] == null && children[1] == null;
     }
+
+    public boolean isClear() {
+        return geometry == null && children[0] == null && children[1] == null;
+    }
+
+    public void insertGeometry(GData geometry) {
+        this.geometry = geometry;
+        bb = new BoundingBox();
+        bb.insert(geometry);
+    }
 }

@@ -22,6 +22,10 @@ public class RTree {
     private final RNode root = new RNode();
 
     public void add(GData geometry) {
-
+        // Trivial case for an empty tree.
+        if (root.isClear()) {
+            root.insertGeometry(geometry);
+            return;
+        }
     }
 }

@@ -15,6 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helper.math.rtree;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
+import java.util.Objects;
+
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
@@ -30,6 +35,41 @@ public class BoundingBox {
     private float maxY = 0f;
     private float maxZ = 0f;
 
+    public BoundingBox() {}
+
+    public BoundingBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        this.minX = minX;
+        this.minY = minY;
+        this.minZ = minZ;
+        this.maxX = maxX;
+        this.maxY = maxY;
+        this.maxZ = maxZ;
+    }
+
+    public float area() {
+        // Calculate the area of this box
+        final float dX = maxX - minX;
+        final float dY = maxY - minY;
+        final float dZ = maxZ - minZ;
+        return 2f * (dX * dY + dX * dZ + dY * dZ);
+    }
+
+    public BoundingBox intersection(BoundingBox o) {
+        if (!this.intersects(o)) {
+            return new BoundingBox();
+        }
+
+        float iMinX = max(minX, o.minX);
+        float iMinY = max(minY, o.minY);
+        float iMinZ = max(minZ, o.minZ);
+
+        float iMaxX = min(maxX, o.maxX);
+        float iMaxY = min(maxY, o.maxY);
+        float iMaxZ = min(maxZ, o.maxZ);
+
+        return new BoundingBox(iMinX, iMinY, iMinZ, iMaxX, iMaxY, iMaxZ);
+    }
+
     public boolean contains(float x, float y, float z) {
         return x >= minX && x <= maxX
             && x >= minY && x <= maxY
@@ -43,15 +83,14 @@ public class BoundingBox {
     }
 
     public void insert(BoundingBox o) {
-        minX = Math.min(minX, o.minX);
-        minY = Math.min(minY, o.minY);
-        minZ = Math.min(minZ, o.minZ);
+        minX = min(minX, o.minX);
+        minY = min(minY, o.minY);
+        minZ = min(minZ, o.minZ);
 
-        maxX = Math.max(maxX, o.maxX);
-        maxY = Math.max(maxY, o.maxY);
-        maxZ = Math.max(maxZ, o.maxZ);
+        maxX = max(maxX, o.maxX);
+        maxY = max(maxY, o.maxY);
+        maxZ = max(maxZ, o.maxZ);
     }
-
 
     public void insert(GData geometry) {
         if (geometry instanceof GData3 triangle) {
@@ -61,6 +100,26 @@ public class BoundingBox {
         } else {
             throw new IllegalArgumentException("Type " + geometry.type() + " is not supported!"); //$NON-NLS-1$ //$NON-NLS-2$
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maxX, maxY, maxZ, minX, minY, minZ);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof BoundingBox))
+            return false;
+        BoundingBox other = (BoundingBox) obj;
+        return Float.floatToIntBits(maxX) == Float.floatToIntBits(other.maxX)
+                && Float.floatToIntBits(maxY) == Float.floatToIntBits(other.maxY)
+                && Float.floatToIntBits(maxZ) == Float.floatToIntBits(other.maxZ)
+                && Float.floatToIntBits(minX) == Float.floatToIntBits(other.minX)
+                && Float.floatToIntBits(minY) == Float.floatToIntBits(other.minY)
+                && Float.floatToIntBits(minZ) == Float.floatToIntBits(other.minZ);
     }
 
     private void insert(GData3 triangle) {
@@ -91,17 +150,17 @@ public class BoundingBox {
     }
 
     private void insertX(float x) {
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
+        minX = min(minX, x);
+        maxX = max(maxX, x);
     }
 
     private void insertY(float y) {
-        minY = Math.min(minY, y);
-        maxY = Math.max(maxY, y);
+        minY = min(minY, y);
+        maxY = max(maxY, y);
     }
 
     private void insertZ(float z) {
-        minZ = Math.min(minZ, z);
-        maxZ = Math.max(maxZ, z);
+        minZ = min(minZ, z);
+        maxZ = max(maxZ, z);
     }
 }
