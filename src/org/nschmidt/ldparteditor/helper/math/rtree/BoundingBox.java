@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.helper.math.rtree;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.nschmidt.ldparteditor.data.GData;
@@ -104,6 +105,11 @@ public class BoundingBox {
 
     public BoundingBox copy() {
         return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    @Override
+    public String toString() {
+        return "BoundingBox [min=" + List.of(minX, minY, minZ) + ", max=" + List.of(maxX, maxY, maxZ) + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     @Override

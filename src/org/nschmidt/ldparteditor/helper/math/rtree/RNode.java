@@ -21,8 +21,9 @@ import org.nschmidt.ldparteditor.data.GData;
 
 public class RNode {
 
-    private BoundingBox bb;
-    private final RNode[] children = new RNode[2];
+    BoundingBox bb;
+    RNode parent = null;
+    final RNode[] children = new RNode[2];
     private GData geometry;
 
     public boolean isLeaf() {
@@ -47,5 +48,16 @@ public class RNode {
             node.geometry = geometry;
             this.geometry = null;
         }
+    }
+
+    public void backpropagate(GData geometry) {
+        bb.insert(geometry);
+        if (parent != null) {
+            parent.backpropagate(geometry);
+        }
+    }
+
+    public boolean pointsToLeaves() {
+        return children[0].isLeaf() && children[1].isLeaf();
     }
 }

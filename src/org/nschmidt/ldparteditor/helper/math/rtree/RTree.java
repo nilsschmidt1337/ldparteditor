@@ -87,7 +87,39 @@ public class RTree {
             return;
         }
 
+        final BoundingBox bb = new BoundingBox();
+        bb.insert(geometry);
+
+        add(geometry, bb, root);
+
         size += 1;
+    }
+
+    private void add(GData geometry, BoundingBox bb, RNode node) {
+        // CS2: Choose N if it is a leaf
+        if (node.isLeaf()) {
+            // Insert it here
+            node.split();
+            node.backpropagate(geometry);
+            RNode newNode = new RNode();
+            newNode.insertGeometry(geometry);
+            newNode.parent = node;
+            node.children[1] = newNode;
+            return;
+        }
+
+        // CS2: If the child-pointers in N point to leaves
+        if (node.pointsToLeaves()) {
+            // choose the entry in N whose rectangle needs least
+            // overlap enlargement to include the new data rectangle.
+            final float overlapA = node.children[0].bb.intersection(bb).areaHalf();
+            final float overlapB = node.children[1].bb.intersection(bb).areaHalf();
+            if (overlapA < overlapB) {
+                add(geometry, bb, node.children[0]);
+            } else {
+                add(geometry, bb, node.children[1]);
+            }
+        }
     }
 
     public int getSize() {
