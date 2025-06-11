@@ -119,6 +119,23 @@ public class RTree {
             } else {
                 add(geometry, bb, node.children[1]);
             }
+
+            return;
+        }
+
+        // CS2: If the child-pointers in N do not point to leaves
+        // choose the entry in N whose rectangle needs least
+        // area enlargement to include the new data rectangle.
+        final BoundingBox boundingBoxA = bb.copy();
+        final BoundingBox boundingBoxB = bb.copy();
+        boundingBoxA.insert(node.children[0].bb);
+        boundingBoxB.insert(node.children[1].bb);
+        final float areaIncreaseA =  boundingBoxA.areaHalf() - node.children[0].bb.areaHalf();
+        final float areaIncreaseB =  boundingBoxB.areaHalf() - node.children[1].bb.areaHalf();
+        if (areaIncreaseA < areaIncreaseB) {
+            add(geometry, bb, node.children[0]);
+        } else {
+            add(geometry, bb, node.children[1]);
         }
     }
 

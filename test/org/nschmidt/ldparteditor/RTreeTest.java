@@ -81,4 +81,28 @@ public class RTreeTest {
 
         assertEquals(3, cut.getSize());
     }
+
+    @Test
+    public void testRTreeWith4Triangles() {
+        final DatFile df = new DatFile(TEST);
+        final BigDecimal one = BigDecimal.ONE;
+        final BigDecimal zero = BigDecimal.ZERO;
+        final GData1 parent = new GData1(0, 0, 0, 0, 0,
+            View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
+            View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
+
+        final GData3 tri1 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, zero, one, zero, zero, one, one, zero, parent, df, true);
+        final GData3 tri2 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, zero, one, zero, zero, one, zero, one, parent, df, true);
+        final GData3 tri3 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, zero, one, one, zero, one, zero, one, parent, df, true);
+        final GData3 tri4 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, zero, one, one, zero, one, one, one, parent, df, true);
+
+        final RTree cut = new RTree();
+
+        cut.add(tri1);
+        cut.add(tri2);
+        cut.add(tri3);
+        cut.add(tri4);
+
+        assertEquals(4, cut.getSize());
+    }
 }
