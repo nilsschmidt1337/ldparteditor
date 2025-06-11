@@ -143,4 +143,51 @@ public class RTreeTest {
         assertEquals(3, result.size());
         assertEquals(5, cut.size());
     }
+
+    @Test
+    public void testRTreeWithTwoOverlappingTrianglesAndDoRayCasting() {
+        final DatFile df = new DatFile(TEST);
+        final BigDecimal two = BigDecimal.valueOf(2L);
+        final BigDecimal one = BigDecimal.ONE;
+        final BigDecimal zero = BigDecimal.ZERO;
+        final GData1 parent = new GData1(0, 0, 0, 0, 0,
+            View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
+            View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
+
+        final GData3 tri1 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, zero, two, zero, zero, zero, two, zero, parent, df, true);
+        final GData3 tri2 = new GData3(0, 0, 0, 0, 0.5f, one, one, one, one, one, zero, one, zero, one, parent, df, true);
+
+        final RTree cut = new RTree();
+
+        cut.add(tri1);
+        cut.add(tri2);
+
+        Set<GData> result = cut.searchForIntersections(tri1);
+
+        assertTrue(result.contains(tri2));
+        assertEquals(1, result.size());
+        assertEquals(2, cut.size());
+    }
+
+    @Test
+    public void testRTreeWithTwoDisjunctTrianglesAndDoRayCasting() {
+        final DatFile df = new DatFile(TEST);
+        final BigDecimal one = BigDecimal.ONE;
+        final BigDecimal zero = BigDecimal.ZERO;
+        final GData1 parent = new GData1(0, 0, 0, 0, 0,
+            View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
+            View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
+
+        final GData3 tri1 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, zero, one, zero, zero, zero, one, zero, parent, df, true);
+        final GData3 tri2 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, one, one, zero, one, zero, one, one, parent, df, true);
+
+        final RTree cut = new RTree();
+
+        cut.add(tri1);
+        cut.add(tri2);
+
+        Set<GData> result = cut.searchForIntersections(tri1);
+
+        assertTrue(result.isEmpty());
+    }
 }

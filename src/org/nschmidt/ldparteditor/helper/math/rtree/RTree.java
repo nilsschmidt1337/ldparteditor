@@ -15,11 +15,15 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helper.math.rtree;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.data.GData4;
 
 public class RTree {
 
@@ -150,6 +154,42 @@ public class RTree {
         final List<GData> resultList = new LinkedList<>();
         root.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList);
         return resultList;
+    }
+
+    public Set<GData> searchForIntersections(GData geometry) {
+        if (geometry instanceof GData3 triangle) {
+            return searchForIntersections(triangle);
+        } else if (geometry instanceof GData4 quad) {
+            return searchForIntersections(quad);
+        }
+
+        return Set.of();
+    }
+
+    private Set<GData> searchForIntersections(GData3 triangle) {
+        final Set<GData> result = new HashSet<>();
+        final List<GData> resultAB = searchGeometryDataOnSegment(triangle.x1, triangle.y1, triangle.z1, triangle.x2, triangle.y2, triangle.z2);
+        final List<GData> resultBC = searchGeometryDataOnSegment(triangle.x2, triangle.y2, triangle.z2, triangle.x3, triangle.y3, triangle.z3);
+        final List<GData> resultCA = searchGeometryDataOnSegment(triangle.x3, triangle.y3, triangle.z3, triangle.x1, triangle.y1, triangle.z1);
+        result.addAll(resultAB);
+        result.addAll(resultBC);
+        result.addAll(resultCA);
+        result.remove(triangle);
+        return result;
+    }
+
+    private Set<GData> searchForIntersections(GData4 quad) {
+        final Set<GData> result = new HashSet<>();
+        final List<GData> resultAB = searchGeometryDataOnSegment(quad.x1, quad.y1, quad.z1, quad.x2, quad.y2, quad.z2);
+        final List<GData> resultBC = searchGeometryDataOnSegment(quad.x2, quad.y2, quad.z2, quad.x3, quad.y3, quad.z3);
+        final List<GData> resultCD = searchGeometryDataOnSegment(quad.x3, quad.y3, quad.z3, quad.x4, quad.y4, quad.z4);
+        final List<GData> resultDA = searchGeometryDataOnSegment(quad.x4, quad.y4, quad.z4, quad.x1, quad.y1, quad.z1);
+        result.addAll(resultAB);
+        result.addAll(resultBC);
+        result.addAll(resultCD);
+        result.addAll(resultDA);
+        result.remove(quad);
+        return result;
     }
 
     public int size() {
