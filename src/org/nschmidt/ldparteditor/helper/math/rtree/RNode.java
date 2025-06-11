@@ -23,8 +23,6 @@ import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.helper.math.PowerRay;
 
-
-
 public class RNode {
 
     private static final PowerRay POWER_RAY = new PowerRay();
@@ -86,13 +84,13 @@ public class RNode {
     }
 
     private List<GData> testRayTriangle(Vector4f rayOrigin, float[] rayDirection, GData3 triangle, List<GData> resultList) {
-        float[] triangleData = new float[] {
+        final float[] triangleData = new float[] {
                 triangle.x1, triangle.y1, triangle.z1,
                 triangle.x2, triangle.y2, triangle.z2,
                 triangle.x3, triangle.y3, triangle.z3
         };
 
-        float[] result = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, triangleData);
+        final float[] result = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, triangleData);
 
         if (result.length > 5) {
             float t = result[5];
@@ -105,8 +103,38 @@ public class RNode {
     }
 
     private List<GData> testRayQuad(Vector4f rayOrigin, float[] rayDirection, GData4 quad, List<GData> resultList) {
-        // TODO: Check GData intersection!
-        resultList.add(geometry);
+        final float[] quadDataA = new float[] {
+                quad.x1, quad.y1, quad.z1,
+                quad.x2, quad.y2, quad.z2,
+                quad.x3, quad.y3, quad.z3
+        };
+
+        final float[] resultA = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, quadDataA);
+
+        if (resultA.length > 5) {
+            float t = resultA[5];
+            if (t >= 0 && t <= 1f) {
+                resultList.add(geometry);
+                return resultList;
+            }
+        }
+
+        final float[] quadDataB = new float[] {
+                quad.x3, quad.y3, quad.z3,
+                quad.x4, quad.y4, quad.z4,
+                quad.x1, quad.y1, quad.z1
+        };
+
+        final float[] resultB = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, quadDataB);
+
+        if (resultB.length > 5) {
+            float t = resultB[5];
+            if (t >= 0 && t <= 1f) {
+                resultList.add(geometry);
+                return resultList;
+            }
+        }
+
         return resultList;
     }
 }
