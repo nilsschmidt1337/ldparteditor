@@ -38,4 +38,14 @@ public class RNode {
         bb = new BoundingBox();
         bb.insert(geometry);
     }
+
+    public void split() {
+        if (isLeaf()) {
+            final RNode node = new RNode();
+            children[0] = node;
+            node.bb = bb.copy();
+            node.geometry = geometry;
+            this.geometry = null;
+        }
+    }
 }
