@@ -102,6 +102,10 @@ public class BoundingBox {
         }
     }
 
+    public BoundingBox copy() {
+        return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(maxX, maxY, maxZ, minX, minY, minZ);

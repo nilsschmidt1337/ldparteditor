@@ -38,4 +38,13 @@ public class RTreeTest {
 
         assertEquals(22f, area, 0f);
     }
+
+    @Test
+    public void testBoundingBoxCopy() {
+        final BoundingBox cut = new BoundingBox(
+                -3, -2, -1, 1, 2, 3);
+        final BoundingBox clone = cut.copy();
+
+        assertEquals(cut, clone);
+    }
 }
