@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
@@ -134,12 +133,14 @@ public class RTreeTest {
         cut.add(quad);
 
         // That is a line segment from [.5|.5|.5] to [.5|.5|-1.5]
-        final Vector4f origin = new Vector4f(.5f, .5f, .5f, 1f);
-        final float[] segment = new float[] {0f, 0f, -2f};
+        final float[] start = new float[] {.5f, .5f, .5f};
+        final float[] end = new float[] {.5f, .5f, -1.5f};
 
-        List<GData> result = cut.retrieveGeometryDataOnRay(origin, segment);
+        List<GData> result = cut.searchGeometryDataOnSegment(
+                start[0], start[1], start[2],
+                end[0], end[1], end[2]);
 
-        assertEquals(5, result.size());
+        assertEquals(3, result.size());
         assertEquals(5, cut.size());
     }
 }

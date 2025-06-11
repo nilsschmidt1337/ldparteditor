@@ -143,7 +143,10 @@ public class RTree {
         }
     }
 
-    public List<GData> retrieveGeometryDataOnRay(Vector4f rayOrigin, float[] rayDirection) {
+    public List<GData> searchGeometryDataOnSegment(float startX, float startY, float startZ, float endX, float endY, float endZ) {
+        final Vector4f rayOrigin = new Vector4f(startX, startY, startZ, 1f);
+        final float[] rayDirection = new float[] {endX - startX, endY - startY, endZ - startZ};
+
         final List<GData> resultList = new LinkedList<>();
         root.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList);
         return resultList;
