@@ -21,10 +21,13 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
+import org.nschmidt.ldparteditor.helper.math.PowerRay;
 
 
 
 public class RNode {
+
+    private static final PowerRay POWER_RAY = new PowerRay();
 
     BoundingBox bb;
     RNode parent = null;
@@ -83,8 +86,21 @@ public class RNode {
     }
 
     private List<GData> testRayTriangle(Vector4f rayOrigin, float[] rayDirection, GData3 triangle, List<GData> resultList) {
-        // TODO: Check GData intersection!
-        resultList.add(geometry);
+        float[] triangleData = new float[] {
+                triangle.x1, triangle.y1, triangle.z1,
+                triangle.x2, triangle.y2, triangle.z2,
+                triangle.x3, triangle.y3, triangle.z3
+        };
+
+        float[] result = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, triangleData);
+
+        if (result.length > 5) {
+            float t = result[5];
+            if (t >= 0 && t <= 1f) {
+                resultList.add(geometry);
+            }
+        }
+
         return resultList;
     }
 
