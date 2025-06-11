@@ -77,11 +77,20 @@ public class RTree {
 
     private RNode root = new RNode();
 
+    private int size = 0;
+
     public void add(GData geometry) {
         // Trivial case for an empty tree.
         if (root.isClear()) {
             root.insertGeometry(geometry);
+            size += 1;
             return;
         }
+
+        size += 1;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
