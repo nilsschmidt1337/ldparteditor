@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.enumtype.View;
@@ -79,7 +81,7 @@ public class RTreeTest {
         cut.add(tri2);
         cut.add(tri3);
 
-        assertEquals(3, cut.getSize());
+        assertEquals(3, cut.size());
     }
 
     @Test
@@ -103,6 +105,35 @@ public class RTreeTest {
         cut.add(tri3);
         cut.add(tri4);
 
-        assertEquals(4, cut.getSize());
+        assertEquals(4, cut.size());
+    }
+
+    @Test
+    public void testRTreeWith4TrianglesAndDoRayCasting() {
+        final DatFile df = new DatFile(TEST);
+        final BigDecimal one = BigDecimal.ONE;
+        final BigDecimal zero = BigDecimal.ZERO;
+        final GData1 parent = new GData1(0, 0, 0, 0, 0,
+            View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
+            View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
+
+        final GData3 tri1 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, zero, one, zero, zero, one, one, zero, parent, df, true);
+        final GData3 tri2 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, zero, one, zero, zero, one, zero, one, parent, df, true);
+        final GData3 tri3 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, zero, one, one, zero, one, zero, one, parent, df, true);
+        final GData3 tri4 = new GData3(0, 0, 0, 0, 0.5f, zero, zero, zero, one, one, zero, one, one, one, parent, df, true);
+
+        final RTree cut = new RTree();
+
+        cut.add(tri1);
+        cut.add(tri2);
+        cut.add(tri3);
+        cut.add(tri4);
+
+        final Vector4f origin = new Vector4f(.5f, .5f, .5f, 1f);
+        final float[] direction = new float[] {0f, 0f, -1f};
+
+        List<GData> result = cut.retrieveGeometryDataOnRay(origin, direction);
+
+        assertEquals(4, result.size());
     }
 }

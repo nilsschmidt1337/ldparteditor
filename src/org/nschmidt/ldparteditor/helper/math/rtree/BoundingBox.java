@@ -21,6 +21,7 @@ import static java.lang.Math.min;
 import java.util.List;
 import java.util.Objects;
 
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
@@ -105,6 +106,88 @@ public class BoundingBox {
 
     public BoundingBox copy() {
         return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    public boolean isIntersecting(Vector4f rayOrigin, float[] rayDirection) {
+        float t1 = 0f;
+        float t2 = 0f;
+        float tnear = Float.NEGATIVE_INFINITY;
+        float tfar = Float.POSITIVE_INFINITY;
+        float temp = 0f;
+
+        final float rox = rayOrigin.x;
+        final float rdx = rayDirection[0];
+        if(rdx == 0){
+            if(rox < minX || rox > maxX)
+                return false;
+        } else {
+            t1 = (minX - rox) / rdx;
+            t2 = (maxX - rox) / rdx;
+            if (t1 > t2) {
+                temp = t1;
+                t1 = t2;
+                t2 = temp;
+            }
+
+            if (t1 > tnear)
+                tnear = t1;
+            if (t2 < tfar)
+                tfar = t2;
+            if (tnear > tfar)
+                return false;
+            if (tfar < 0)
+                return false;
+        }
+
+        final float roy = rayOrigin.y;
+        final float rdy = rayDirection[1];
+        if(rdy == 0){
+            if(roy < minY || roy > maxY)
+                return false;
+        } else {
+            t1 = (minY - roy) / rdy;
+            t2 = (maxY - roy) / rdy;
+            if (t1 > t2) {
+                temp = t1;
+                t1 = t2;
+                t2 = temp;
+            }
+
+            if (t1 > tnear)
+                tnear = t1;
+            if (t2 < tfar)
+                tfar = t2;
+            if (tnear > tfar)
+                return false;
+            if (tfar < 0)
+                return false;
+        }
+
+        final float roz = rayOrigin.z;
+        final float rdz = rayDirection[2];
+        if(rdz == 0){
+            if(roz < minZ || roz > maxZ)
+                return false;
+        } else {
+            t1 = (minZ - roz) / rdz;
+            t2 = (maxZ - roz) / rdz;
+            if (t1 > t2) {
+                temp = t1;
+                t1 = t2;
+                t2 = temp;
+            }
+
+            if (t1 > tnear)
+                tnear = t1;
+            if (t2 < tfar)
+                tfar = t2;
+            if (tnear > tfar)
+                return false;
+            if (tfar < 0)
+                return false;
+        }
+
+        return true;
     }
 
     @Override

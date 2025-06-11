@@ -15,6 +15,10 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helper.math.rtree;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
 
 public class RTree {
@@ -139,7 +143,13 @@ public class RTree {
         }
     }
 
-    public int getSize() {
+    public List<GData> retrieveGeometryDataOnRay(Vector4f rayOrigin, float[] rayDirection) {
+        final List<GData> resultList = new LinkedList<>();
+        root.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList);
+        return resultList;
+    }
+
+    public int size() {
         return size;
     }
 }

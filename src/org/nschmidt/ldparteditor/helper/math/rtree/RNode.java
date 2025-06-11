@@ -15,7 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helper.math.rtree;
 
+import java.util.List;
+
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GData3;
+import org.nschmidt.ldparteditor.data.GData4;
 
 
 
@@ -59,5 +64,33 @@ public class RNode {
 
     public boolean pointsToLeaves() {
         return children[0].isLeaf() && children[1].isLeaf();
+    }
+
+    public List<GData> retrieveGeometryDataOnRay(Vector4f rayOrigin, float[] rayDirection, List<GData> resultList) {
+        if (isLeaf()) {
+            if (geometry instanceof GData3 triangle) {
+                return testRayTriangle(rayOrigin, rayDirection, triangle, resultList);
+            } else if (geometry instanceof GData4 quad) {
+                return testRayQuad(rayOrigin, rayDirection, quad, resultList);
+            }
+        } else if (bb.isIntersecting(rayOrigin, rayDirection)) {
+            for (RNode c : children) {
+                c.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList);
+            }
+        }
+
+        return resultList;
+    }
+
+    private List<GData> testRayTriangle(Vector4f rayOrigin, float[] rayDirection, GData3 triangle, List<GData> resultList) {
+        // TODO: Check GData intersection!
+        resultList.add(geometry);
+        return resultList;
+    }
+
+    private List<GData> testRayQuad(Vector4f rayOrigin, float[] rayDirection, GData4 quad, List<GData> resultList) {
+        // TODO: Check GData intersection!
+        resultList.add(geometry);
+        return resultList;
     }
 }
