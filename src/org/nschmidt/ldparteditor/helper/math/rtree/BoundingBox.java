@@ -46,12 +46,12 @@ public class BoundingBox {
         this.maxZ = maxZ;
     }
 
-    public float area() {
-        // Calculate the area of this box
+    public float areaHalf() {
+        // Calculate the 1/2 area of this box
         final float dX = maxX - minX;
         final float dY = maxY - minY;
         final float dZ = maxZ - minZ;
-        return 2f * (dX * dY + dX * dZ + dY * dZ);
+        return dX * dY + dX * dZ + dY * dZ;
     }
 
     public BoundingBox intersection(BoundingBox o) {

@@ -23,10 +23,10 @@ public class RTreeTest {
 
         final BoundingBox resultAB = cutA.intersection(cutB);
         final BoundingBox resultBA = cutB.intersection(cutA);
-        final float area = resultAB.area();
+        final float area = resultAB.areaHalf();
 
         assertEquals(resultAB, resultBA);
-        assertEquals(6f, area, 0f);
+        assertEquals(3f, area, 0f);
     }
 
     @Test
@@ -34,9 +34,9 @@ public class RTreeTest {
         final BoundingBox cut = new BoundingBox(
                 0, 0, 0, 1, 2, 3);
 
-        final float area = cut.area();
+        final float area = cut.areaHalf();
 
-        assertEquals(22f, area, 0f);
+        assertEquals(11f, area, 0f);
     }
 
     @Test
