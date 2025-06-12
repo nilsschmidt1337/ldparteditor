@@ -1,6 +1,7 @@
 package org.nschmidt.ldparteditor;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
@@ -16,6 +18,7 @@ import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.helper.math.rtree.BoundingBox;
+import org.nschmidt.ldparteditor.helper.math.rtree.RNode;
 import org.nschmidt.ldparteditor.helper.math.rtree.RTree;
 
 @SuppressWarnings("java:S5960")
@@ -61,6 +64,24 @@ public class RTreeTest {
         final BoundingBox clone = cut.copy();
 
         assertEquals(cut, clone);
+    }
+
+    @Test
+    public void testParallelSegmentIntersection() {
+        boolean result = RNode.hasSegmentIntersection(new Vector4f(0f, 0f, 0f, 0f), new float[] {1f, 0f, 0f}, 0f, 1f, 0f, 1f, 1f, 0f);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testZeroSizedSegmentIntersection() {
+        boolean result = RNode.hasSegmentIntersection(new Vector4f(0f, 0f, 0f, 0f), new float[] {1f, 0f, 0f}, 0f, 0f, 0f, 0f, 0f, 0f);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testZeroSizedRaySegmentIntersection() {
+        boolean result = RNode.hasSegmentIntersection(new Vector4f(0f, 0f, 0f, 0f), new float[] {0f, 0f, 0f}, 0f, 0f, 0f, 0f, 0f, 0f);
+        assertFalse(result);
     }
 
     @Test
@@ -110,7 +131,7 @@ public class RTreeTest {
     }
 
     @Test
-    public void testRTreeWith4TrianglesAndOneQuadAndDoRayCasting() {
+    public void testRTreeWith4TrianglesAndOneQuadAndDoIntersectionTest() {
         final DatFile df = new DatFile(TEST);
         final BigDecimal one = BigDecimal.ONE;
         final BigDecimal zero = BigDecimal.ZERO;
@@ -145,7 +166,7 @@ public class RTreeTest {
     }
 
     @Test
-    public void testRTreeWithTwoOverlappingTrianglesAndDoRayCasting() {
+    public void testRTreeWithTwoOverlappingTrianglesAndDoIntersectionTest() {
         final DatFile df = new DatFile(TEST);
         final BigDecimal two = BigDecimal.valueOf(2L);
         final BigDecimal one = BigDecimal.ONE;
@@ -162,15 +183,20 @@ public class RTreeTest {
         cut.add(tri1);
         cut.add(tri2);
 
-        Set<GData> result = cut.searchForIntersections(tri1);
+        Set<GData> result1 = cut.searchForIntersections(tri1);
+        Set<GData> result2 = cut.searchForIntersections(tri2);
 
-        assertTrue(result.contains(tri2));
-        assertEquals(1, result.size());
+        assertTrue(result1.contains(tri2));
+        assertEquals(1, result1.size());
+
+        assertTrue(result2.contains(tri1));
+        assertEquals(1, result2.size());
+
         assertEquals(2, cut.size());
     }
 
     @Test
-    public void testRTreeWithTwoDisjunctTrianglesAndDoRayCasting() {
+    public void testRTreeWithTwoDisjunctTrianglesAndDoIntersectionTest() {
         final DatFile df = new DatFile(TEST);
         final BigDecimal one = BigDecimal.ONE;
         final BigDecimal zero = BigDecimal.ZERO;
@@ -192,7 +218,7 @@ public class RTreeTest {
     }
 
     @Test
-    public void testRTreeWithTwoOverlappingTrianglesOnSamePlaneAndDoRayCasting() {
+    public void testRTreeWithTwoOverlappingTrianglesOnSamePlaneAndDoIntersectionTest() {
         final DatFile df = new DatFile(TEST);
         final GData1 parent = new GData1(0, 0, 0, 0, 0,
             View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
@@ -213,6 +239,36 @@ public class RTreeTest {
 
         assertTrue(result.contains(outerTriangle));
         assertEquals(1, result.size());
+        assertEquals(2, cut.size());
+    }
+
+    @Test
+    public void testRTreeWithTwoPartiallyOverlappingTrianglesOnSamePlaneAndDoIntersectionTest() {
+        final DatFile df = new DatFile(TEST);
+        final GData1 parent = new GData1(0, 0, 0, 0, 0,
+            View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
+            View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
+
+        // Triangles:
+        // 3 16 7.32 -29.42 0 2.31 -26.06 0 8.22 -20.5 0
+        // 3 16 4.81 -29.52 0 3.16 -28.17 0 9.67 -26.26 0
+        final GData3 tri1 = new GData3(0, 0, 0, 0, 0.5f, d(7.32), d(-29.42), d(0), d(2.31), d(-26.06), d(0), d(8.22), d(-20.5), d(0), parent, df, true);
+        final GData3 tri2 = new GData3(0, 0, 0, 0, 0.5f, d(4.81), d(-29.52), d(0), d(3.16), d(-28.17), d(0), d(9.67), d(-26.26), d(0), parent, df, true);
+
+        final RTree cut = new RTree();
+
+        cut.add(tri1);
+        cut.add(tri2);
+
+        Set<GData> result1 = cut.searchForIntersections(tri1);
+        Set<GData> result2 = cut.searchForIntersections(tri2);
+
+        assertTrue(result1.contains(tri2));
+        assertEquals(1, result1.size());
+
+        assertTrue(result2.contains(tri1));
+        assertEquals(1, result2.size());
+
         assertEquals(2, cut.size());
     }
 

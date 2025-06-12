@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.helper.math.rtree;
 
 import java.util.List;
 
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData3;
@@ -196,10 +197,59 @@ public class RNode {
         return resultList;
     }
 
-    private boolean hasSegmentIntersection(Vector4f rayOrigin, float[] rayDirection,
+    public static boolean hasSegmentIntersection(Vector4f rayOrigin, float[] rayDirection,
             float x1, float y1, float z1,
             float x2, float y2, float z2) {
-        // TODO Needs implementation!
-        return false;
+
+        Vector3f seg1 = new Vector3f(rayOrigin.x, rayOrigin.y, rayOrigin.z);
+        Vector3f seg2 = new Vector3f(rayOrigin.x + rayDirection[0], rayOrigin.y + rayDirection[1], rayOrigin.z + rayDirection[2]);
+        Vector3f seg3 = new Vector3f(x1, y1, z1);
+        Vector3f seg4 = new Vector3f(x2, y2, z2);
+
+        Vector3f p1 = seg1;
+        Vector3f p2 = seg3;
+        Vector3f v1 = Vector3f.sub(seg2, seg1, new Vector3f());
+        Vector3f v2 = Vector3f.sub(seg4, seg3, new Vector3f());
+        Vector3f v21 = Vector3f.sub(p2, p1, new Vector3f());
+
+        float dv22 = Vector3f.dot(v2, v2);
+        float dv11 = Vector3f.dot(v1, v1);
+        float dv21 = Vector3f.dot(v2, v1);
+        float dv21_1 = Vector3f.dot(v21, v1);
+        float dv21_2 = Vector3f.dot(v21, v2);
+        float diskr = dv21 * dv21 - dv22 * dv11;
+
+        float s;
+        float t;
+
+        // Check for parallel segments
+        if (Math.abs(diskr) < TOLERANCE) {
+            if (Math.abs(dv21) < TOLERANCE) {
+                return false;
+            }
+
+            s = 0f;
+            t = (dv11 * s - dv21_1) / dv21;
+        } else {
+            s = (dv21_2 * dv21 - dv22 * dv21_1) / diskr;
+            t = (-dv21_1 * dv21 + dv11 * dv21_2) / diskr;
+        }
+
+        s = Math.clamp(s, 0f, 1f);
+        t = Math.clamp(t, 0f, 1f);
+
+        Vector3f pA = lin(v1, s, p1);
+        Vector3f pB = lin(v2, t, p2);
+
+        Vector3f delta = Vector3f.sub(pA, pB, new Vector3f());
+        boolean result = delta.length() < TOLERANCE;
+        return result;
+    }
+
+    private static Vector3f lin(Vector3f a, float x, Vector3f b) {
+        return new Vector3f(
+                a.x * x + b.x,
+                a.y * x + b.y,
+                a.z * x + b.z);
     }
 }
