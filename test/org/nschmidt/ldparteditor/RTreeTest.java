@@ -140,7 +140,7 @@ public class RTreeTest {
                 start[0], start[1], start[2],
                 end[0], end[1], end[2]);
 
-        assertEquals(3, result.size());
+        assertEquals(4, result.size());
         assertEquals(5, cut.size());
     }
 
@@ -189,5 +189,34 @@ public class RTreeTest {
         Set<GData> result = cut.searchForIntersections(tri1);
 
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testRTreeWithTwoOverlappingTrianglesOnSamePlaneAndDoRayCasting() {
+        final DatFile df = new DatFile(TEST);
+        final GData1 parent = new GData1(0, 0, 0, 0, 0,
+            View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
+            View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
+
+        // Triangles:
+        // 3 16 12.44 -25.75 0 .39 -20.2 0 16.72 -5.46 0
+        // 3 16 10.53 -21.31 0 6.1 -18.62 0 13.39 -11.17 0
+        final GData3 outerTriangle = new GData3(0, 0, 0, 0, 0.5f, d(12.44), d(-25.75), d(0), d(.39), d(-20.2), d(0), d(16.72), d(-5.46), d(0), parent, df, true);
+        final GData3 innerTriangle = new GData3(0, 0, 0, 0, 0.5f, d(10.53), d(-21.31), d(0), d(6.1), d(-18.62), d(0), d(13.39), d(-11.17), d(0), parent, df, true);
+
+        final RTree cut = new RTree();
+
+        cut.add(outerTriangle);
+        cut.add(innerTriangle);
+
+        Set<GData> result = cut.searchForIntersections(innerTriangle);
+
+        assertTrue(result.contains(outerTriangle));
+        assertEquals(1, result.size());
+        assertEquals(2, cut.size());
+    }
+
+    private BigDecimal d(double value) {
+        return BigDecimal.valueOf(value);
     }
 }

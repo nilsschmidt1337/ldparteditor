@@ -21,11 +21,13 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.PowerRay;
 
 public class RNode {
 
     private static final PowerRay POWER_RAY = new PowerRay();
+    private static final double TOLERANCE = 0.00001d;
 
     BoundingBox bb;
     RNode parent = null;
@@ -96,10 +98,39 @@ public class RNode {
             float t = result[5];
             if (t >= 0 && t <= 1f) {
                 resultList.add(geometry);
+                return resultList;
             }
         }
 
+        // Check if the line segment is inside of the triangle
+        if (pointInsideTriangle(triangleData, rayOrigin.x, rayOrigin.y, rayOrigin.z)
+         || pointInsideTriangle(triangleData, rayOrigin.x + rayDirection[0], rayOrigin.y + rayDirection[1], rayOrigin.z + rayDirection[2])) {
+            resultList.add(geometry);
+            return resultList;
+        }
+
+        if (hasSegmentIntersection(rayOrigin, rayDirection,
+                triangle.x1, triangle.y1, triangle.z1,
+                triangle.x2, triangle.y2, triangle.z2)
+         || hasSegmentIntersection(rayOrigin, rayDirection,
+                 triangle.x2, triangle.y2, triangle.z2,
+                 triangle.x3, triangle.y3, triangle.z3)
+         || hasSegmentIntersection(rayOrigin, rayDirection,
+                 triangle.x3, triangle.y3, triangle.z3,
+                 triangle.x1, triangle.y1, triangle.z1)) {
+            resultList.add(geometry);
+        }
+
         return resultList;
+    }
+
+    private boolean pointInsideTriangle(float[] tri, float x, float y, float z) {
+        final Vector4f nearestPoint = MathHelper.getNearestPointToTriangle(tri[0], tri[1], tri[2], tri[3], tri[4], tri[5], tri[6], tri[7], tri[8], x, y, z);
+        final Vector4f referencePoint = new Vector4f(x, y, z, 1f);
+        Vector4f.sub(referencePoint, nearestPoint, referencePoint);
+        final float dist = referencePoint.lengthSquared();
+        final boolean result = dist < TOLERANCE;
+        return result;
     }
 
     private List<GData> testRayQuad(Vector4f rayOrigin, float[] rayDirection, GData4 quad, List<GData> resultList) {
@@ -119,6 +150,12 @@ public class RNode {
             }
         }
 
+        if (pointInsideTriangle(quadDataA, rayOrigin.x, rayOrigin.y, rayOrigin.z)
+         || pointInsideTriangle(quadDataA, rayOrigin.x + rayDirection[0], rayOrigin.y + rayDirection[1], rayOrigin.z + rayDirection[2])) {
+            resultList.add(geometry);
+            return resultList;
+        }
+
         final float[] quadDataB = new float[] {
                 quad.x3, quad.y3, quad.z3,
                 quad.x4, quad.y4, quad.z4,
@@ -135,6 +172,34 @@ public class RNode {
             }
         }
 
+        if (pointInsideTriangle(quadDataB, rayOrigin.x, rayOrigin.y, rayOrigin.z)
+         || pointInsideTriangle(quadDataB, rayOrigin.x + rayDirection[0], rayOrigin.y + rayDirection[1], rayOrigin.z + rayDirection[2])) {
+            resultList.add(geometry);
+            return resultList;
+        }
+
+        if (hasSegmentIntersection(rayOrigin, rayDirection,
+                quad.x1, quad.y1, quad.z1,
+                quad.x2, quad.y2, quad.z2)
+         || hasSegmentIntersection(rayOrigin, rayDirection,
+                 quad.x2, quad.y2, quad.z2,
+                 quad.x3, quad.y3, quad.z3)
+         || hasSegmentIntersection(rayOrigin, rayDirection,
+                 quad.x3, quad.y3, quad.z3,
+                 quad.x4, quad.y4, quad.z4)
+         || hasSegmentIntersection(rayOrigin, rayDirection,
+                 quad.x4, quad.y4, quad.z4,
+                 quad.x1, quad.y1, quad.z1)) {
+            resultList.add(geometry);
+        }
+
         return resultList;
+    }
+
+    private boolean hasSegmentIntersection(Vector4f rayOrigin, float[] rayDirection,
+            float x1, float y1, float z1,
+            float x2, float y2, float z2) {
+        // TODO Needs implementation!
+        return false;
     }
 }
