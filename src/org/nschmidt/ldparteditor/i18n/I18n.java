@@ -1139,9 +1139,9 @@ public final class I18n {
     public static final String OPTIONS_UNOFFICIAL_WHERE = OPTIONS.getString(getProperty());
     public static final String OVERLAP_HINT = OVERLAP.getString(getProperty());
     public static final String OVERLAP_SCOPE_FILE = OVERLAP.getString(getProperty());
-    public static final String OVERLAP_SCOPE_SELECTION = OVERLAP.getString(getProperty());
+    public static final String OVERLAP_SCOPE_SELECTION_A = OVERLAP.getString(getProperty());
+    public static final String OVERLAP_SCOPE_SELECTION_B = OVERLAP.getString(getProperty());
     public static final String OVERLAP_TITLE = OVERLAP.getString(getProperty());
-    public static final String OVERLAP_VERBOSE = OVERLAP.getString(getProperty());
     public static final String OVERLAP_VERBOSE_MSG = OVERLAP.getString(getProperty());
     public static final String PARTREVIEW_ALREADY = PARTREVIEW.getString(getProperty());
     public static final String PARTREVIEW_CHECK = PARTREVIEW.getString(getProperty());

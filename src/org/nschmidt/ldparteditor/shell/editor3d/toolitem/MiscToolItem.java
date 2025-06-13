@@ -3110,9 +3110,12 @@ public class MiscToolItem extends ToolItem {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 DatFile df = c3d.getLockableDatFileReference();
-                if (df.equals(Project.getFileToEdit()) && !df.isReadOnly()) {
+                if (df.equals(Project.getFileToEdit())) {
                     if (new OverlapDialog(Editor3DWindow.getWindow().getShell(), os).open() == IDialogConstants.OK_ID) {
-                        // FIXME Needs implementation!
+                        VertexManager vm = df.getVertexManager();
+                        vm.addSnapshot();
+                        vm.skipSyncTimer();
+                        vm.findOverlaps(os);
                     }
                     regainFocus();
                     return;

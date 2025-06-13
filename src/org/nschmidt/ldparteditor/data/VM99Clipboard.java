@@ -56,7 +56,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-class VM99Clipboard extends VM29LineSurfaceIntersector {
+class VM99Clipboard extends VM30OverlappingSurfacesFinder {
 
     private static final List<GData> CLIPBOARD = new ArrayList<>();
     private static final Set<GData> CLIPBOARD_InvNext = Collections.newSetFromMap(new ThreadsafeHashMap<>());

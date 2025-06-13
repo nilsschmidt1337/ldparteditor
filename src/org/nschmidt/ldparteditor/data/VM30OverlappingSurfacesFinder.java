@@ -13,35 +13,36 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.dialog.overlap;
+package org.nschmidt.ldparteditor.data;
+
+import java.text.MessageFormat;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.MessageBox;
+import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.helper.composite3d.OverlapSettings;
+import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 
-/**
- *
- * <p>
- * Note: This class should be instantiated, it defines all listeners and part of
- * the business logic. It overrides the {@code open()} method to invoke the
- * listener definitions ;)
- */
-public class OverlapDialog extends OverlapDesign {
+class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
 
-    /**
-     * Create the dialog.
-     *
-     * @param parentShell
-     */
-    public OverlapDialog(Shell parentShell, OverlapSettings os) {
-        super(parentShell, os);
+    protected VM30OverlappingSurfacesFinder(DatFile linkedDatFile) {
+        super(linkedDatFile);
     }
 
-    @Override
-    public int open() {
-        super.create();
-        // MARK All final listeners will be configured here..
-        cmbScopePtr[0].addListener(SWT.Selection, event -> os.setScope(cmbScopePtr[0].getSelectionIndex()));
-        return super.open();
+    public void findOverlaps(OverlapSettings os) {
+        // FIXME Needs implementation!
+
+        // Step 1: Create the RTree and add all (selected) surfaces to it
+        int overlapCount = 0;
+
+        MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+        messageBox.setText(I18n.DIALOG_INFO);
+        Object[] messageArguments = {overlapCount};
+        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+        formatter.setLocale(MyLanguage.getLocale());
+        formatter.applyPattern(I18n.OVERLAP_VERBOSE_MSG);
+        messageBox.setMessage(formatter.format(messageArguments));
+        messageBox.open();
     }
 }

@@ -16,7 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helper.composite3d;
 
 public class OverlapSettings {
-    private int scope = 1;
+    private int scope = 0;
     public int getScope() {
         return scope;
     }

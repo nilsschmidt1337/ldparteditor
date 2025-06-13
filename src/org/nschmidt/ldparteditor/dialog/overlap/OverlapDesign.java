@@ -29,15 +29,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.dialog.ThemedDialog;
 import org.nschmidt.ldparteditor.helper.composite3d.OverlapSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.Theming;
-import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 class OverlapDesign extends ThemedDialog {
 
     final OverlapSettings os;
     final Combo[] cmbScopePtr = new Combo[1];
-    final NButton[] btnVerbosePtr = new NButton[1];
 
     OverlapDesign(Shell parentShell, OverlapSettings os) {
         super(parentShell);
@@ -67,16 +64,10 @@ class OverlapDesign extends ThemedDialog {
 
         Combo cmbScope = Theming.combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
-        widgetUtil(cmbScope).setItems(I18n.OVERLAP_SCOPE_FILE, I18n.OVERLAP_SCOPE_SELECTION);
+        widgetUtil(cmbScope).setItems(I18n.OVERLAP_SCOPE_FILE, I18n.OVERLAP_SCOPE_SELECTION_A, I18n.OVERLAP_SCOPE_SELECTION_B);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(os.getScope()));
         cmbScope.select(os.getScope());
-
-        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
-        this.btnVerbosePtr[0] = btnVerbose;
-        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        btnVerbose.setText(I18n.OVERLAP_VERBOSE);
-        btnVerbose.setSelection(WorkbenchManager.getUserSettingState().isVerboseOverlap());
 
         cmpContainer.pack();
         return cmpContainer;
