@@ -84,6 +84,7 @@ import org.nschmidt.ldparteditor.dialog.lines2pattern.Lines2PatternDialog;
 import org.nschmidt.ldparteditor.dialog.logupload.LogDisplayDialog;
 import org.nschmidt.ldparteditor.dialog.meshreducer.MeshReducerDialog;
 import org.nschmidt.ldparteditor.dialog.options.OptionsDialog;
+import org.nschmidt.ldparteditor.dialog.overlap.OverlapDialog;
 import org.nschmidt.ldparteditor.dialog.partreview.PartReviewDialog;
 import org.nschmidt.ldparteditor.dialog.pathtruder.PathTruderDialog;
 import org.nschmidt.ldparteditor.dialog.primgen2.PrimGen2Dialog;
@@ -132,6 +133,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helper.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.IsecalcSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.MeshReducerSettings;
+import org.nschmidt.ldparteditor.helper.composite3d.OverlapSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.RingsAndConesSettings;
@@ -271,6 +273,7 @@ public class MiscToolItem extends ToolItem {
     private static final MenuItem[] mntmSymSplitterPtr = new MenuItem[1];
     private static final MenuItem[] mntmUnificatorPtr = new MenuItem[1];
     private static final MenuItem[] mntmRingsAndConesPtr = new MenuItem[1];
+    private static final MenuItem[] mntmOverlappingSurfacesFinderPtr = new MenuItem[1];
     private static final MenuItem[] mntmTJunctionFinderPtr = new MenuItem[1];
     private static final MenuItem[] mntmMeshReducerPtr = new MenuItem[1];
 
@@ -314,6 +317,7 @@ public class MiscToolItem extends ToolItem {
     private static TJunctionSettings tjs = new TJunctionSettings();
     private static MeshReducerSettings ms = new MeshReducerSettings();
     private static SlantingMatrixProjectorSettings mps = new SlantingMatrixProjectorSettings();
+    private static OverlapSettings os = new OverlapSettings();
 
     public MiscToolItem(Composite parent, int style, boolean isHorizontal) {
         super(parent, style, isHorizontal);
@@ -820,6 +824,10 @@ public class MiscToolItem extends ToolItem {
         MenuItem mntmRingsAndCones = new MenuItem(mnuTools, SWT.PUSH);
         MiscToolItem.mntmRingsAndConesPtr[0] = mntmRingsAndCones;
         mntmRingsAndCones.setText(I18n.E3D_RINGS_AND_CONES);
+
+        MenuItem mntmOverlappingSurfacesFinder = new MenuItem(mnuTools, SWT.PUSH);
+        MiscToolItem.mntmOverlappingSurfacesFinderPtr[0] = mntmOverlappingSurfacesFinder;
+        mntmOverlappingSurfacesFinder.setText(I18n.E3D_OVERLAPPING_SURFACES_FINDER);
 
         MenuItem mntmTJunctionFinder = new MenuItem(mnuTools, SWT.PUSH);
         MiscToolItem.mntmTJunctionFinderPtr[0] = mntmTJunctionFinder;
@@ -3090,6 +3098,21 @@ public class MiscToolItem extends ToolItem {
                         vm.addSnapshot();
                         vm.skipSyncTimer();
                         vm.fixTjunctions(tjs);
+                    }
+                    regainFocus();
+                    return;
+                }
+            }
+            regainFocus();
+        });
+
+        widgetUtil(mntmOverlappingSurfacesFinderPtr[0]).addSelectionListener(e -> {
+            for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                Composite3D c3d = renderer.getC3D();
+                DatFile df = c3d.getLockableDatFileReference();
+                if (df.equals(Project.getFileToEdit()) && !df.isReadOnly()) {
+                    if (new OverlapDialog(Editor3DWindow.getWindow().getShell(), os).open() == IDialogConstants.OK_ID) {
+                        // FIXME Needs implementation!
                     }
                     regainFocus();
                     return;

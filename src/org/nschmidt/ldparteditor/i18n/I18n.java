@@ -71,6 +71,7 @@ public final class I18n {
     private static final ResourceBundle MESHREDUCE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.MeshReducer", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle INTERSECTOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Intersector", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle ISECALC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Isecalc", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle OVERLAP = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Overlap", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle LINES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.LinesPattern", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle OPTIONS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Options", MyLanguage.getLocale()); //$NON-NLS-1$
     private static final ResourceBundle PARTREVIEW = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PartReview", MyLanguage.getLocale()); //$NON-NLS-1$
@@ -619,6 +620,7 @@ public final class I18n {
     public static final String E3D_OPEN_PNG_IMAGE = E3D.getString(getProperty());
     public static final String E3D_OPTIONS = E3D.getString(getProperty());
     public static final String E3D_ORIGIN = E3D.getString(getProperty());
+    public static final String E3D_OVERLAPPING_SURFACES_FINDER = E3D.getString(getProperty());
     public static final String E3D_PALETTE = E3D.getString(getProperty());
     public static final String E3D_PALETTE_LOAD = E3D.getString(getProperty());
     public static final String E3D_PALETTE_RESET = E3D.getString(getProperty());
@@ -1135,6 +1137,12 @@ public final class I18n {
     public static final String OPTIONS_TRANSLATE_BY_CURSOR = OPTIONS.getString(getProperty());
     public static final String OPTIONS_UNOFFICIAL_FOLDER = OPTIONS.getString(getProperty());
     public static final String OPTIONS_UNOFFICIAL_WHERE = OPTIONS.getString(getProperty());
+    public static final String OVERLAP_HINT = OVERLAP.getString(getProperty());
+    public static final String OVERLAP_SCOPE_FILE = OVERLAP.getString(getProperty());
+    public static final String OVERLAP_SCOPE_SELECTION = OVERLAP.getString(getProperty());
+    public static final String OVERLAP_TITLE = OVERLAP.getString(getProperty());
+    public static final String OVERLAP_VERBOSE = OVERLAP.getString(getProperty());
+    public static final String OVERLAP_VERBOSE_MSG = OVERLAP.getString(getProperty());
     public static final String PARTREVIEW_ALREADY = PARTREVIEW.getString(getProperty());
     public static final String PARTREVIEW_CHECK = PARTREVIEW.getString(getProperty());
     public static final String PARTREVIEW_ENTER_PART_NAME = PARTREVIEW.getString(getProperty());

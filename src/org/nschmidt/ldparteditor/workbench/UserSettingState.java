@@ -250,6 +250,7 @@ public class UserSettingState implements Serializable {
     private boolean verboseYTruder = false;
     private boolean verboseSymSplitter = false;
     private boolean verboseUnificator = false;
+    private boolean verboseOverlap = false;
 
     private int dataFileSizeLimit = 45;
 
@@ -1481,6 +1482,14 @@ public class UserSettingState implements Serializable {
 
     public void setVerboseUnificator(boolean verboseUnificator) {
         this.verboseUnificator = verboseUnificator;
+    }
+
+    public boolean isVerboseOverlap() {
+        return verboseOverlap;
+    }
+
+    public void setVerboseOverlap(boolean verboseOverlap) {
+        this.verboseOverlap = verboseOverlap;
     }
 
     public void setLineScaleFactor(float lineScaleFactor) {
