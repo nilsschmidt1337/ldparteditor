@@ -16,12 +16,14 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helper.math.rtree;
 
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
+import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.PowerRay;
 
@@ -70,27 +72,28 @@ public class RNode {
         return children[0].isLeaf() && children[1].isLeaf();
     }
 
-    public List<GData> retrieveGeometryDataOnRay(Vector4f rayOrigin, float[] rayDirection, List<GData> resultList) {
+    public List<GData> retrieveGeometryDataOnRay(Vector4f rayOrigin, float[] rayDirection, List<GData> resultList, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         if (isLeaf()) {
             if (geometry instanceof GData3 triangle) {
-                return testRayTriangle(rayOrigin, rayDirection, triangle, resultList);
+                return testRayTriangle(rayOrigin, rayDirection, triangle, resultList, triangles);
             } else if (geometry instanceof GData4 quad) {
-                return testRayQuad(rayOrigin, rayDirection, quad, resultList);
+                return testRayQuad(rayOrigin, rayDirection, quad, resultList, quads);
             }
         } else if (bb.isIntersecting(rayOrigin, rayDirection)) {
             for (RNode c : children) {
-                c.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList);
+                c.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList, triangles, quads);
             }
         }
 
         return resultList;
     }
 
-    private List<GData> testRayTriangle(Vector4f rayOrigin, float[] rayDirection, GData3 triangle, List<GData> resultList) {
+    private List<GData> testRayTriangle(Vector4f rayOrigin, float[] rayDirection, GData3 triangle, List<GData> resultList, Map<GData3, Vertex[]> triangles) {
+        final Vertex[] v = triangles.get(triangle);
         final float[] triangleData = new float[] {
-                triangle.x1, triangle.y1, triangle.z1,
-                triangle.x2, triangle.y2, triangle.z2,
-                triangle.x3, triangle.y3, triangle.z3
+                v[0].x, v[0].y, v[0].z,
+                v[1].x, v[1].y, v[1].z,
+                v[2].x, v[2].y, v[2].z
         };
 
         final float[] result = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, triangleData);
@@ -111,14 +114,14 @@ public class RNode {
         }
 
         if (hasSegmentIntersection(rayOrigin, rayDirection,
-                triangle.x1, triangle.y1, triangle.z1,
-                triangle.x2, triangle.y2, triangle.z2)
+                v[0].x, v[0].y, v[0].z,
+                v[1].x, v[1].y, v[1].z)
          || hasSegmentIntersection(rayOrigin, rayDirection,
-                 triangle.x2, triangle.y2, triangle.z2,
-                 triangle.x3, triangle.y3, triangle.z3)
+                 v[1].x, v[1].y, v[1].z,
+                 v[2].x, v[2].y, v[2].z)
          || hasSegmentIntersection(rayOrigin, rayDirection,
-                 triangle.x3, triangle.y3, triangle.z3,
-                 triangle.x1, triangle.y1, triangle.z1)) {
+                 v[2].x, v[2].y, v[2].z,
+                 v[0].x, v[0].y, v[0].z)) {
             resultList.add(geometry);
         }
 
@@ -134,11 +137,12 @@ public class RNode {
         return result;
     }
 
-    private List<GData> testRayQuad(Vector4f rayOrigin, float[] rayDirection, GData4 quad, List<GData> resultList) {
+    private List<GData> testRayQuad(Vector4f rayOrigin, float[] rayDirection, GData4 quad, List<GData> resultList, Map<GData4, Vertex[]> quads) {
+        final Vertex[] v = quads.get(quad);
         final float[] quadDataA = new float[] {
-                quad.x1, quad.y1, quad.z1,
-                quad.x2, quad.y2, quad.z2,
-                quad.x3, quad.y3, quad.z3
+                v[0].x, v[0].y, v[0].z,
+                v[1].x, v[1].y, v[1].z,
+                v[2].x, v[2].y, v[2].z
         };
 
         final float[] resultA = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, quadDataA);
@@ -158,9 +162,9 @@ public class RNode {
         }
 
         final float[] quadDataB = new float[] {
-                quad.x3, quad.y3, quad.z3,
-                quad.x4, quad.y4, quad.z4,
-                quad.x1, quad.y1, quad.z1
+                v[2].x, v[2].y, v[2].z,
+                v[3].x, v[3].y, v[3].z,
+                v[0].x, v[0].y, v[0].z
         };
 
         final float[] resultB = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, quadDataB);
@@ -180,17 +184,17 @@ public class RNode {
         }
 
         if (hasSegmentIntersection(rayOrigin, rayDirection,
-                quad.x1, quad.y1, quad.z1,
-                quad.x2, quad.y2, quad.z2)
+                v[0].x, v[0].y, v[0].z,
+                v[1].x, v[1].y, v[1].z)
          || hasSegmentIntersection(rayOrigin, rayDirection,
-                 quad.x2, quad.y2, quad.z2,
-                 quad.x3, quad.y3, quad.z3)
+                 v[1].x, v[1].y, v[1].z,
+                 v[2].x, v[2].y, v[2].z)
          || hasSegmentIntersection(rayOrigin, rayDirection,
-                 quad.x3, quad.y3, quad.z3,
-                 quad.x4, quad.y4, quad.z4)
+                 v[2].x, v[2].y, v[2].z,
+                 v[3].x, v[3].y, v[3].z)
          || hasSegmentIntersection(rayOrigin, rayDirection,
-                 quad.x4, quad.y4, quad.z4,
-                 quad.x1, quad.y1, quad.z1)) {
+                 v[3].x, v[3].y, v[3].z,
+                 v[0].x, v[0].y, v[0].z)) {
             resultList.add(geometry);
         }
 

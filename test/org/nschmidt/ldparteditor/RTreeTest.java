@@ -99,9 +99,9 @@ public class RTreeTest {
 
         final RTree cut = new RTree();
 
-        cut.add(tri1);
-        cut.add(tri2);
-        cut.add(tri3);
+        cut.add(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri2, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri3, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
         assertEquals(3, cut.size());
     }
@@ -122,10 +122,10 @@ public class RTreeTest {
 
         final RTree cut = new RTree();
 
-        cut.add(tri1);
-        cut.add(tri2);
-        cut.add(tri3);
-        cut.add(tri4);
+        cut.add(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri2, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri3, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri4, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
         assertEquals(4, cut.size());
     }
@@ -147,11 +147,11 @@ public class RTreeTest {
 
         final RTree cut = new RTree();
 
-        cut.add(tri1);
-        cut.add(tri2);
-        cut.add(tri3);
-        cut.add(tri4);
-        cut.add(quad);
+        cut.add(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri2, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri3, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri4, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(quad, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
         // That is a line segment from [.5|.5|.5] to [.5|.5|-1.5]
         final float[] start = new float[] {.5f, .5f, .5f};
@@ -159,7 +159,8 @@ public class RTreeTest {
 
         List<GData> result = cut.searchGeometryDataOnSegment(
                 start[0], start[1], start[2],
-                end[0], end[1], end[2]);
+                end[0], end[1], end[2],
+                df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
         assertEquals(4, result.size());
         assertEquals(5, cut.size());
@@ -180,11 +181,11 @@ public class RTreeTest {
 
         final RTree cut = new RTree();
 
-        cut.add(tri1);
-        cut.add(tri2);
+        cut.add(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri2, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
-        Set<GData> result1 = cut.searchForIntersections(tri1);
-        Set<GData> result2 = cut.searchForIntersections(tri2);
+        Set<GData> result1 = cut.searchForIntersections(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        Set<GData> result2 = cut.searchForIntersections(tri2, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
         assertTrue(result1.contains(tri2));
         assertEquals(1, result1.size());
@@ -209,10 +210,10 @@ public class RTreeTest {
 
         final RTree cut = new RTree();
 
-        cut.add(tri1);
-        cut.add(tri2);
+        cut.add(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri2, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
-        Set<GData> result = cut.searchForIntersections(tri1);
+        Set<GData> result = cut.searchForIntersections(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
         assertTrue(result.isEmpty());
     }
@@ -232,10 +233,10 @@ public class RTreeTest {
 
         final RTree cut = new RTree();
 
-        cut.add(outerTriangle);
-        cut.add(innerTriangle);
+        cut.add(outerTriangle, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(innerTriangle, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
-        Set<GData> result = cut.searchForIntersections(innerTriangle);
+        Set<GData> result = cut.searchForIntersections(innerTriangle, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
         assertTrue(result.contains(outerTriangle));
         assertEquals(1, result.size());
@@ -257,11 +258,11 @@ public class RTreeTest {
 
         final RTree cut = new RTree();
 
-        cut.add(tri1);
-        cut.add(tri2);
+        cut.add(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri2, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
-        Set<GData> result1 = cut.searchForIntersections(tri1);
-        Set<GData> result2 = cut.searchForIntersections(tri2);
+        Set<GData> result1 = cut.searchForIntersections(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        Set<GData> result2 = cut.searchForIntersections(tri2, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
         assertTrue(result1.contains(tri2));
         assertEquals(1, result1.size());

@@ -16,14 +16,17 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helper.math.rtree;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
+import org.nschmidt.ldparteditor.data.Vertex;
 
 public class RTree {
 
@@ -87,7 +90,7 @@ public class RTree {
 
     private int size = 0;
 
-    public void add(GData geometry) {
+    public void add(GData geometry, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         // Trivial case for an empty tree.
         if (root.isClear()) {
             root.insertGeometry(geometry);
@@ -147,48 +150,80 @@ public class RTree {
         }
     }
 
-    public List<GData> searchGeometryDataOnSegment(float startX, float startY, float startZ, float endX, float endY, float endZ) {
+    public List<GData> searchGeometryDataOnSegment(float startX, float startY, float startZ, float endX, float endY, float endZ, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         final Vector4f rayOrigin = new Vector4f(startX, startY, startZ, 1f);
         final float[] rayDirection = new float[] {endX - startX, endY - startY, endZ - startZ};
 
         final List<GData> resultList = new LinkedList<>();
-        root.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList);
+        root.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList, triangles, quads);
         return resultList;
     }
 
-    public Set<GData> searchForIntersections(GData geometry) {
+    public Set<GData> searchForIntersections(GData geometry, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         if (geometry instanceof GData3 triangle) {
-            return searchForIntersections(triangle);
+            return searchForIntersections(triangle, triangles, quads);
         } else if (geometry instanceof GData4 quad) {
-            return searchForIntersections(quad);
+            return searchForIntersections(quad, triangles, quads);
         }
 
         return Set.of();
     }
 
-    private Set<GData> searchForIntersections(GData3 triangle) {
+    private Set<GData> searchForIntersections(GData3 triangle, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
+        final Vertex[] v = triangles.get(triangle);
         final Set<GData> result = new HashSet<>();
-        final List<GData> resultAB = searchGeometryDataOnSegment(triangle.x1, triangle.y1, triangle.z1, triangle.x2, triangle.y2, triangle.z2);
-        final List<GData> resultBC = searchGeometryDataOnSegment(triangle.x2, triangle.y2, triangle.z2, triangle.x3, triangle.y3, triangle.z3);
-        final List<GData> resultCA = searchGeometryDataOnSegment(triangle.x3, triangle.y3, triangle.z3, triangle.x1, triangle.y1, triangle.z1);
+        final List<GData> resultAB = searchGeometryDataOnSegment(v[0].x, v[0].y, v[0].z, v[1].x, v[1].y, v[1].z, triangles, quads);
+        final List<GData> resultBC = searchGeometryDataOnSegment(v[1].x, v[1].y, v[1].z, v[2].x, v[2].y, v[2].z, triangles, quads);
+        final List<GData> resultCA = searchGeometryDataOnSegment(v[2].x, v[2].y, v[2].z, v[0].x, v[0].y, v[0].z, triangles, quads);
         result.addAll(resultAB);
         result.addAll(resultBC);
         result.addAll(resultCA);
         result.remove(triangle);
+
+        // TODO Is this BB check required?
+        final BoundingBox bb = new BoundingBox();
+        bb.insert(triangle);
+
+        for (Iterator<GData> it = result.iterator(); it.hasNext();) {
+            GData g = it.next();
+            BoundingBox obb = new BoundingBox();
+            obb.insert(g);
+
+            if (!obb.intersects(bb)) {
+                it.remove();
+            }
+        }
+
         return result;
     }
 
-    private Set<GData> searchForIntersections(GData4 quad) {
+    private Set<GData> searchForIntersections(GData4 quad, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
+        final Vertex[] v = quads.get(quad);
         final Set<GData> result = new HashSet<>();
-        final List<GData> resultAB = searchGeometryDataOnSegment(quad.x1, quad.y1, quad.z1, quad.x2, quad.y2, quad.z2);
-        final List<GData> resultBC = searchGeometryDataOnSegment(quad.x2, quad.y2, quad.z2, quad.x3, quad.y3, quad.z3);
-        final List<GData> resultCD = searchGeometryDataOnSegment(quad.x3, quad.y3, quad.z3, quad.x4, quad.y4, quad.z4);
-        final List<GData> resultDA = searchGeometryDataOnSegment(quad.x4, quad.y4, quad.z4, quad.x1, quad.y1, quad.z1);
+        final List<GData> resultAB = searchGeometryDataOnSegment(v[0].x, v[0].y, v[0].z, v[1].x, v[1].y, v[1].z, triangles, quads);
+        final List<GData> resultBC = searchGeometryDataOnSegment(v[1].x, v[1].y, v[1].z, v[2].x, v[2].y, v[2].z, triangles, quads);
+        final List<GData> resultCD = searchGeometryDataOnSegment(v[2].x, v[2].y, v[2].z, v[3].x, v[3].y, v[3].z, triangles, quads);
+        final List<GData> resultDA = searchGeometryDataOnSegment(v[3].x, v[3].y, v[3].z, v[0].x, v[0].y, v[0].z, triangles, quads);
         result.addAll(resultAB);
         result.addAll(resultBC);
         result.addAll(resultCD);
         result.addAll(resultDA);
         result.remove(quad);
+
+        // TODO Is this BB check required?
+        final BoundingBox bb = new BoundingBox();
+        bb.insert(quad);
+
+        for (Iterator<GData> it = result.iterator(); it.hasNext();) {
+            GData g = it.next();
+            BoundingBox obb = new BoundingBox();
+            obb.insert(g);
+
+            if (!obb.intersects(bb)) {
+                it.remove();
+            }
+        }
+
         return result;
     }
 

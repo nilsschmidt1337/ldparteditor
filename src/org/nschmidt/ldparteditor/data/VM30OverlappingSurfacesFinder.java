@@ -69,11 +69,11 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
         }
 
         for(GData3 triangle : trianglesForTree) {
-            tree.add(triangle);
+            tree.add(triangle, triangles, quads);
         }
 
         for(GData4 quad : quadsForTree) {
-            tree.add(quad);
+            tree.add(quad, triangles, quads);
         }
 
         // Step 2: Clear the selection
@@ -81,11 +81,11 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
 
         // Step 3: Find overlaps
         for (GData3 triangle : trianglesToCheck) {
-            processOverlaps(tree.searchForIntersections(triangle), triangle);
+            processOverlaps(tree.searchForIntersections(triangle, triangles, quads), triangle);
         }
 
         for (GData4 quad : quadsToCheck) {
-            processOverlaps(tree.searchForIntersections(quad), quad);
+            processOverlaps(tree.searchForIntersections(quad, triangles, quads), quad);
         }
 
         MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
@@ -103,11 +103,17 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
 
             // FIXME Needs implementation!
 
+            boolean overlapWithoutAdjacency = false;
             for (GData overlap : overlaps) {
-                addToSelection(overlap);
+                if (!hasSameEdge(overlap, geometry)) {
+                    addToSelection(overlap);
+                    overlapWithoutAdjacency = true;
+                }
             }
 
-            addToSelection(geometry);
+            if (overlapWithoutAdjacency) {
+                addToSelection(geometry);
+            }
         }
     }
 
