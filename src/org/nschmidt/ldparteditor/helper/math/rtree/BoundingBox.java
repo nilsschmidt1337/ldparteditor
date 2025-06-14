@@ -19,12 +19,14 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
+import org.nschmidt.ldparteditor.data.Vertex;
 
 public class BoundingBox {
 
@@ -94,11 +96,11 @@ public class BoundingBox {
         maxZ = max(maxZ, o.maxZ);
     }
 
-    public void insert(GData geometry) {
+    public void insert(GData geometry, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         if (geometry instanceof GData3 triangle) {
-            insert(triangle);
+            insert(triangle, triangles);
         } else if (geometry instanceof GData4 quad) {
-            insert(quad);
+            insert(quad, quads);
         } else {
             throw new IllegalArgumentException("Type " + geometry.type() + " is not supported!"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -215,31 +217,20 @@ public class BoundingBox {
                 && Float.floatToIntBits(minZ) == Float.floatToIntBits(other.minZ);
     }
 
-    private void insert(GData3 triangle) {
-        insertX(triangle.x1);
-        insertY(triangle.y1);
-        insertZ(triangle.z1);
-        insertX(triangle.x2);
-        insertY(triangle.y2);
-        insertZ(triangle.z2);
-        insertX(triangle.x3);
-        insertY(triangle.y3);
-        insertZ(triangle.z3);
+    private void insert(GData3 triangle, Map<GData3, Vertex[]> triangles) {
+        for (Vertex v : triangles.get(triangle)) {
+            insertX(v.x);
+            insertY(v.y);
+            insertZ(v.z);
+        }
     }
 
-    private void insert(GData4 quad) {
-        insertX(quad.x1);
-        insertY(quad.y1);
-        insertZ(quad.z1);
-        insertX(quad.x2);
-        insertY(quad.y2);
-        insertZ(quad.z2);
-        insertX(quad.x3);
-        insertY(quad.y3);
-        insertZ(quad.z3);
-        insertX(quad.x4);
-        insertY(quad.y4);
-        insertZ(quad.z4);
+    private void insert(GData4 quad, Map<GData4, Vertex[]> quads) {
+        for (Vertex v : quads.get(quad)) {
+            insertX(v.x);
+            insertY(v.y);
+            insertZ(v.z);
+        }
     }
 
     private void insertX(float x) {

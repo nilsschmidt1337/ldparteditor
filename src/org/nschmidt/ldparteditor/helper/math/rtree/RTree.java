@@ -93,27 +93,27 @@ public class RTree {
     public void add(GData geometry, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         // Trivial case for an empty tree.
         if (root.isClear()) {
-            root.insertGeometry(geometry);
+            root.insertGeometry(geometry, triangles, quads);
             size += 1;
             return;
         }
 
         final BoundingBox bb = new BoundingBox();
-        bb.insert(geometry);
+        bb.insert(geometry, triangles, quads);
 
-        add(geometry, bb, root);
+        add(geometry, bb, root, triangles, quads);
 
         size += 1;
     }
 
-    private void add(GData geometry, BoundingBox bb, RNode node) {
+    private void add(GData geometry, BoundingBox bb, RNode node, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         // CS2: Choose N if it is a leaf
         if (node.isLeaf()) {
             // Insert it here
             node.split();
-            node.backpropagate(geometry);
+            node.backpropagate(geometry, triangles, quads);
             RNode newNode = new RNode();
-            newNode.insertGeometry(geometry);
+            newNode.insertGeometry(geometry, triangles, quads);
             newNode.parent = node;
             node.children[1] = newNode;
             return;
@@ -126,9 +126,9 @@ public class RTree {
             final float overlapA = node.children[0].bb.intersection(bb).areaHalf();
             final float overlapB = node.children[1].bb.intersection(bb).areaHalf();
             if (overlapA < overlapB) {
-                add(geometry, bb, node.children[0]);
+                add(geometry, bb, node.children[0], triangles, quads);
             } else {
-                add(geometry, bb, node.children[1]);
+                add(geometry, bb, node.children[1], triangles, quads);
             }
 
             return;
@@ -144,9 +144,9 @@ public class RTree {
         final float areaIncreaseA =  boundingBoxA.areaHalf() - node.children[0].bb.areaHalf();
         final float areaIncreaseB =  boundingBoxB.areaHalf() - node.children[1].bb.areaHalf();
         if (areaIncreaseA < areaIncreaseB) {
-            add(geometry, bb, node.children[0]);
+            add(geometry, bb, node.children[0], triangles, quads);
         } else {
-            add(geometry, bb, node.children[1]);
+            add(geometry, bb, node.children[1], triangles, quads);
         }
     }
 
@@ -182,12 +182,12 @@ public class RTree {
 
         // TODO Is this BB check required?
         final BoundingBox bb = new BoundingBox();
-        bb.insert(triangle);
+        bb.insert(triangle, triangles, quads);
 
         for (Iterator<GData> it = result.iterator(); it.hasNext();) {
             GData g = it.next();
             BoundingBox obb = new BoundingBox();
-            obb.insert(g);
+            obb.insert(g, triangles, quads);
 
             if (!obb.intersects(bb)) {
                 it.remove();
@@ -212,12 +212,12 @@ public class RTree {
 
         // TODO Is this BB check required?
         final BoundingBox bb = new BoundingBox();
-        bb.insert(quad);
+        bb.insert(quad, triangles, quads);
 
         for (Iterator<GData> it = result.iterator(); it.hasNext();) {
             GData g = it.next();
             BoundingBox obb = new BoundingBox();
-            obb.insert(g);
+            obb.insert(g, triangles, quads);
 
             if (!obb.intersects(bb)) {
                 it.remove();

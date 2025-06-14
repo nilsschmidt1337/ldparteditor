@@ -45,10 +45,10 @@ public class RNode {
         return geometry == null && children[0] == null && children[1] == null;
     }
 
-    public void insertGeometry(GData geometry) {
+    public void insertGeometry(GData geometry, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         this.geometry = geometry;
         bb = new BoundingBox();
-        bb.insert(geometry);
+        bb.insert(geometry, triangles, quads);
     }
 
     public void split() {
@@ -61,10 +61,10 @@ public class RNode {
         }
     }
 
-    public void backpropagate(GData geometry) {
-        bb.insert(geometry);
+    public void backpropagate(GData geometry, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
+        bb.insert(geometry, triangles, quads);
         if (parent != null) {
-            parent.backpropagate(geometry);
+            parent.backpropagate(geometry, triangles, quads);
         }
     }
 
