@@ -102,6 +102,7 @@ public class RNode {
         if (result.length > 5) {
             float t = result[5];
             if (t >= 0 && t <= 1f) {
+                // TODO Check if intersection point is a corner from the surface
                 resultList.add(geometry);
                 return resultList;
             }
@@ -160,6 +161,7 @@ public class RNode {
         if (resultA.length > 5) {
             float t = resultA[5];
             if (t >= 0 && t <= 1f) {
+                // TODO Check if intersection point is a corner from the surface
                 resultList.add(geometry);
                 return resultList;
             }
@@ -182,6 +184,7 @@ public class RNode {
         if (resultB.length > 5) {
             float t = resultB[5];
             if (t >= 0 && t <= 1f) {
+                // TODO Check if intersection point is a corner from the surface
                 resultList.add(geometry);
                 return resultList;
             }
