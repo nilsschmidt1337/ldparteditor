@@ -111,7 +111,16 @@ public class BoundingBox {
     }
 
     public boolean isIntersecting(Vector4f rayOrigin, float[] rayDirection) {
-        return isIntersecting2(rayOrigin, rayDirection) || isIntersecting2(rayOrigin, new float[] {-rayDirection[0], -rayDirection[1], -rayDirection[2]});
+        // Is This normalisation really necessary?
+        final Vector4f rayDir = new Vector4f(rayDirection[0], rayDirection[1], rayDirection[2], 0f);
+
+        if (rayDir.lengthSquared() == 0f) {
+            return false;
+        }
+
+        rayDir.normalise();
+
+        return isIntersecting2(rayOrigin, new float[] {rayDir.x, rayDir.y, rayDir.z}) || isIntersecting2(rayOrigin, new float[] {-rayDir.x, -rayDir.y, -rayDir.z});
     }
 
 

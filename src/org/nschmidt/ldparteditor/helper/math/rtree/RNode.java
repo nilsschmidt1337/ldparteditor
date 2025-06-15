@@ -57,6 +57,7 @@ public class RNode {
             children[0] = node;
             node.bb = bb.copy();
             node.geometry = geometry;
+            node.parent = this;
             this.geometry = null;
         }
     }
