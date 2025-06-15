@@ -273,6 +273,33 @@ public class RTreeTest {
         assertEquals(2, cut.size());
     }
 
+    @Test
+    public void testRTreeWithTwoTrianglesWithCommonPointTest() {
+        final DatFile df = new DatFile(TEST);
+        final GData1 parent = new GData1(0, 0, 0, 0, 0,
+            View.ID, View.ACCURATE_ID, List.of(), TEST, TEST, 0, false,
+            View.ID, View.ACCURATE_ID, df, null, false, false, Set.of(), null);
+
+        // Triangles:
+        // 3 16 .03 -17.51 0 -4.48 -17.67 0 2.42 -11.47 0
+        // 3 16 2.62 -17.84 0 -1.49 -19.4 0 .03 -17.51 0
+        final GData3 tri1 = new GData3(0, 0, 0, 0, 0.5f, d(.03), d(-17.51), d(0), d(-4.48), d(-17.67), d(0), d(2.42), d(-11.47), d(0), parent, df, true);
+        final GData3 tri2 = new GData3(15, 1f, 1f, 1f, 0.5f, d(2.62), d(-17.84), d(0), d(-1.49), d(-19.4), d(0), d(.03), d(-17.51), d(0), parent, df, true);
+
+        final RTree cut = new RTree();
+
+        cut.add(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        cut.add(tri2, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+
+        Set<GData> result1 = cut.searchForIntersections(tri1, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+        Set<GData> result2 = cut.searchForIntersections(tri2, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+
+        assertTrue(result1.isEmpty());
+        assertTrue(result2.isEmpty());
+
+        assertEquals(2, cut.size());
+    }
+
     private BigDecimal d(double value) {
         return BigDecimal.valueOf(value);
     }

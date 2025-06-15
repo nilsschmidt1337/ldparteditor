@@ -135,6 +135,15 @@ public class RNode {
         Vector4f.sub(referencePoint, nearestPoint, referencePoint);
         final float dist = referencePoint.lengthSquared();
         final boolean result = dist < TOLERANCE;
+        if (result) {
+            // Check if the point is a corner of the triangle
+            if ((Math.abs(x - tri[0]) < TOLERANCE && Math.abs(y - tri[1]) < TOLERANCE && Math.abs(z - tri[2]) < TOLERANCE)
+             || (Math.abs(x - tri[3]) < TOLERANCE && Math.abs(y - tri[4]) < TOLERANCE && Math.abs(z - tri[5]) < TOLERANCE)
+             || (Math.abs(x - tri[6]) < TOLERANCE && Math.abs(y - tri[7]) < TOLERANCE && Math.abs(z - tri[8]) < TOLERANCE)) {
+                return false;
+            }
+        }
+
         return result;
     }
 
@@ -248,6 +257,10 @@ public class RNode {
 
         Vector3f delta = Vector3f.sub(pA, pB, new Vector3f());
         boolean result = delta.length() < TOLERANCE;
+        if (result && (Math.abs(s) < TOLERANCE || Math.abs(1f - s) < TOLERANCE) && (Math.abs(t) < TOLERANCE || Math.abs(1f - t) < TOLERANCE)) {
+            // Segments are overlapping at their start and end points.
+            return false;
+        }
         return result;
     }
 
