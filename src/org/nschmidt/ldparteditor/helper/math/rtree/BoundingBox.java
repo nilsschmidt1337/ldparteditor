@@ -76,8 +76,8 @@ public class BoundingBox {
 
     public boolean contains(float x, float y, float z) {
         return x >= minX && x <= maxX
-            && x >= minY && x <= maxY
-            && x >= minZ && x <= maxZ;
+            && y >= minY && y <= maxY
+            && z >= minZ && z <= maxZ;
     }
 
     public boolean intersects(BoundingBox o) {
@@ -111,6 +111,11 @@ public class BoundingBox {
     }
 
     public boolean isIntersecting(Vector4f rayOrigin, float[] rayDirection) {
+        return isIntersecting2(rayOrigin, rayDirection) || isIntersecting2(rayOrigin, new float[] {-rayDirection[0], -rayDirection[1], -rayDirection[2]});
+    }
+
+
+    private boolean isIntersecting2(Vector4f rayOrigin, float[] rayDirection) {
         float t1 = 0f;
         float t2 = 0f;
         float tnear = Float.NEGATIVE_INFINITY;
