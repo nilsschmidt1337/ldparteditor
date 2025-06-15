@@ -157,10 +157,13 @@ public class RTreeTest {
         final float[] start = new float[] {.5f, .5f, .5f};
         final float[] end = new float[] {.5f, .5f, -1.5f};
 
+        final BoundingBox bb = new BoundingBox();
+        bb.insert(tri4, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+
         List<GData> result = cut.searchGeometryDataOnSegment(
                 start[0], start[1], start[2],
                 end[0], end[1], end[2],
-                df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+                bb, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
         assertEquals(4, result.size());
         assertEquals(5, cut.size());

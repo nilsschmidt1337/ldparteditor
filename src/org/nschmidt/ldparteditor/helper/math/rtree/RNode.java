@@ -73,16 +73,24 @@ public class RNode {
         return children[0].isLeaf() && children[1].isLeaf();
     }
 
-    public List<GData> retrieveGeometryDataOnRay(Vector4f rayOrigin, float[] rayDirection, List<GData> resultList, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
+    public List<GData> retrieveGeometryDataOnRay(Vector4f rayOrigin, float[] rayDirection, List<GData> resultList, BoundingBox bb, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         if (isLeaf()) {
             if (geometry instanceof GData3 triangle) {
-                return testRayTriangle(rayOrigin, rayDirection, triangle, resultList, triangles);
+                final BoundingBox b = new BoundingBox();
+                b.insert(triangle, triangles, quads);
+                if (b.intersects(bb)) {
+                    return testRayTriangle(rayOrigin, rayDirection, triangle, resultList, triangles);
+                }
             } else if (geometry instanceof GData4 quad) {
-                return testRayQuad(rayOrigin, rayDirection, quad, resultList, quads);
+                final BoundingBox b = new BoundingBox();
+                b.insert(quad, triangles, quads);
+                if (b.intersects(bb)) {
+                    return testRayQuad(rayOrigin, rayDirection, quad, resultList, quads);
+                }
             }
         } else if (bb.isIntersecting(rayOrigin, rayDirection)) {
             for (RNode c : children) {
-                c.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList, triangles, quads);
+                c.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList, bb, triangles, quads);
             }
         }
 
