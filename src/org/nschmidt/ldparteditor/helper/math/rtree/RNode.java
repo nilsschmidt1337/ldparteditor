@@ -29,7 +29,6 @@ import org.nschmidt.ldparteditor.helper.math.PowerRay;
 
 public class RNode {
 
-    private static final PowerRay POWER_RAY = new PowerRay();
     private static final double TOLERANCE = 0.00001d;
 
     BoundingBox bb;
@@ -73,31 +72,31 @@ public class RNode {
         return children[0].isLeaf() && children[1].isLeaf();
     }
 
-    public List<GData> retrieveGeometryDataOnRay(Vector4f rayOrigin, float[] rayDirection, List<GData> resultList, BoundingBox bb, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
+    public List<GData> retrieveGeometryDataOnRay(Vector4f rayOrigin, float[] rayDirection, List<GData> resultList, BoundingBox bb, PowerRay powerRay, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         if (isLeaf()) {
             if (geometry instanceof GData3 triangle) {
                 final BoundingBox b = new BoundingBox();
                 b.insert(triangle, triangles, quads);
                 if (b.intersects(bb)) {
-                    return testRayTriangle(rayOrigin, rayDirection, triangle, resultList, triangles);
+                    return testRayTriangle(rayOrigin, rayDirection, triangle, resultList, powerRay, triangles);
                 }
             } else if (geometry instanceof GData4 quad) {
                 final BoundingBox b = new BoundingBox();
                 b.insert(quad, triangles, quads);
                 if (b.intersects(bb)) {
-                    return testRayQuad(rayOrigin, rayDirection, quad, resultList, quads);
+                    return testRayQuad(rayOrigin, rayDirection, quad, resultList, powerRay, quads);
                 }
             }
         } else if (bb.isIntersecting(rayOrigin, rayDirection)) {
             for (RNode c : children) {
-                c.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList, bb, triangles, quads);
+                c.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList, bb, powerRay, triangles, quads);
             }
         }
 
         return resultList;
     }
 
-    private List<GData> testRayTriangle(Vector4f rayOrigin, float[] rayDirection, GData3 triangle, List<GData> resultList, Map<GData3, Vertex[]> triangles) {
+    private List<GData> testRayTriangle(Vector4f rayOrigin, float[] rayDirection, GData3 triangle, List<GData> resultList, PowerRay powerRay, Map<GData3, Vertex[]> triangles) {
         final Vertex[] v = triangles.get(triangle);
         final float[] triangleData = new float[] {
                 v[0].x, v[0].y, v[0].z,
@@ -105,7 +104,7 @@ public class RNode {
                 v[2].x, v[2].y, v[2].z
         };
 
-        final float[] result = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, triangleData);
+        final float[] result = powerRay.triangleIntersect(rayOrigin, rayDirection, triangleData);
 
         if (result.length > 5) {
             float t = result[5];
@@ -157,7 +156,7 @@ public class RNode {
         return result;
     }
 
-    private List<GData> testRayQuad(Vector4f rayOrigin, float[] rayDirection, GData4 quad, List<GData> resultList, Map<GData4, Vertex[]> quads) {
+    private List<GData> testRayQuad(Vector4f rayOrigin, float[] rayDirection, GData4 quad, List<GData> resultList, PowerRay powerRay, Map<GData4, Vertex[]> quads) {
         final Vertex[] v = quads.get(quad);
         final float[] quadDataA = new float[] {
                 v[0].x, v[0].y, v[0].z,
@@ -165,7 +164,7 @@ public class RNode {
                 v[2].x, v[2].y, v[2].z
         };
 
-        final float[] resultA = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, quadDataA);
+        final float[] resultA = powerRay.triangleIntersect(rayOrigin, rayDirection, quadDataA);
 
         if (resultA.length > 5) {
             float t = resultA[5];
@@ -189,7 +188,7 @@ public class RNode {
                 v[0].x, v[0].y, v[0].z
         };
 
-        final float[] resultB = POWER_RAY.triangleIntersect(rayOrigin, rayDirection, quadDataB);
+        final float[] resultB = powerRay.triangleIntersect(rayOrigin, rayDirection, quadDataB);
 
         if (resultB.length > 5) {
             float t = resultB[5];

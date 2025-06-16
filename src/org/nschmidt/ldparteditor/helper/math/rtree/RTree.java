@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helper.math.rtree;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +26,7 @@ import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.helper.math.PowerRay;
 
 public class RTree {
 
@@ -150,35 +150,36 @@ public class RTree {
         }
     }
 
-    public List<GData> searchGeometryDataOnSegment(float startX, float startY, float startZ, float endX, float endY, float endZ, BoundingBox bb, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
+    public List<GData> searchGeometryDataOnSegment(float startX, float startY, float startZ, float endX, float endY, float endZ, BoundingBox bb, PowerRay powerRay, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         final Vector4f rayOrigin = new Vector4f(startX, startY, startZ, 1f);
         final float[] rayDirection = new float[] {endX - startX, endY - startY, endZ - startZ};
 
         final List<GData> resultList = new LinkedList<>();
-        root.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList, bb, triangles, quads);
+        root.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList, bb, powerRay, triangles, quads);
         return resultList;
     }
 
     public Set<GData> searchForIntersections(GData geometry, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
+        final PowerRay powerRay = new PowerRay();
         if (geometry instanceof GData3 triangle) {
-            return searchForIntersections(triangle, triangles, quads);
+            return searchForIntersections(triangle, powerRay, triangles, quads);
         } else if (geometry instanceof GData4 quad) {
-            return searchForIntersections(quad, triangles, quads);
+            return searchForIntersections(quad, powerRay, triangles, quads);
         }
 
         return Set.of();
     }
 
-    private Set<GData> searchForIntersections(GData3 triangle, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
+    private Set<GData> searchForIntersections(GData3 triangle, PowerRay powerRay, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         // Check on the BB before doing more complex tests
         final BoundingBox bb = new BoundingBox();
         bb.insert(triangle, triangles, quads);
 
         final Vertex[] v = triangles.get(triangle);
         final Set<GData> result = new HashSet<>();
-        final List<GData> resultAB = searchGeometryDataOnSegment(v[0].x, v[0].y, v[0].z, v[1].x, v[1].y, v[1].z, bb, triangles, quads);
-        final List<GData> resultBC = searchGeometryDataOnSegment(v[1].x, v[1].y, v[1].z, v[2].x, v[2].y, v[2].z, bb, triangles, quads);
-        final List<GData> resultCA = searchGeometryDataOnSegment(v[2].x, v[2].y, v[2].z, v[0].x, v[0].y, v[0].z, bb, triangles, quads);
+        final List<GData> resultAB = searchGeometryDataOnSegment(v[0].x, v[0].y, v[0].z, v[1].x, v[1].y, v[1].z, bb, powerRay, triangles, quads);
+        final List<GData> resultBC = searchGeometryDataOnSegment(v[1].x, v[1].y, v[1].z, v[2].x, v[2].y, v[2].z, bb, powerRay, triangles, quads);
+        final List<GData> resultCA = searchGeometryDataOnSegment(v[2].x, v[2].y, v[2].z, v[0].x, v[0].y, v[0].z, bb, powerRay, triangles, quads);
         result.addAll(resultAB);
         result.addAll(resultBC);
         result.addAll(resultCA);
@@ -187,17 +188,17 @@ public class RTree {
         return result;
     }
 
-    private Set<GData> searchForIntersections(GData4 quad, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
+    private Set<GData> searchForIntersections(GData4 quad, PowerRay powerRay, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         // Check on the BB before doing more complex tests
         final BoundingBox bb = new BoundingBox();
         bb.insert(quad, triangles, quads);
 
         final Vertex[] v = quads.get(quad);
         final Set<GData> result = new HashSet<>();
-        final List<GData> resultAB = searchGeometryDataOnSegment(v[0].x, v[0].y, v[0].z, v[1].x, v[1].y, v[1].z, bb, triangles, quads);
-        final List<GData> resultBC = searchGeometryDataOnSegment(v[1].x, v[1].y, v[1].z, v[2].x, v[2].y, v[2].z, bb, triangles, quads);
-        final List<GData> resultCD = searchGeometryDataOnSegment(v[2].x, v[2].y, v[2].z, v[3].x, v[3].y, v[3].z, bb, triangles, quads);
-        final List<GData> resultDA = searchGeometryDataOnSegment(v[3].x, v[3].y, v[3].z, v[0].x, v[0].y, v[0].z, bb, triangles, quads);
+        final List<GData> resultAB = searchGeometryDataOnSegment(v[0].x, v[0].y, v[0].z, v[1].x, v[1].y, v[1].z, bb, powerRay, triangles, quads);
+        final List<GData> resultBC = searchGeometryDataOnSegment(v[1].x, v[1].y, v[1].z, v[2].x, v[2].y, v[2].z, bb, powerRay, triangles, quads);
+        final List<GData> resultCD = searchGeometryDataOnSegment(v[2].x, v[2].y, v[2].z, v[3].x, v[3].y, v[3].z, bb, powerRay, triangles, quads);
+        final List<GData> resultDA = searchGeometryDataOnSegment(v[3].x, v[3].y, v[3].z, v[0].x, v[0].y, v[0].z, bb, powerRay, triangles, quads);
         result.addAll(resultAB);
         result.addAll(resultBC);
         result.addAll(resultCD);

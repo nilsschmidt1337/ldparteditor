@@ -16,6 +16,7 @@ import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.enumtype.View;
+import org.nschmidt.ldparteditor.helper.math.PowerRay;
 import org.nschmidt.ldparteditor.helper.math.Vector3d;
 import org.nschmidt.ldparteditor.helper.math.rtree.BoundingBox;
 import org.nschmidt.ldparteditor.helper.math.rtree.RNode;
@@ -163,7 +164,7 @@ public class RTreeTest {
         List<GData> result = cut.searchGeometryDataOnSegment(
                 start[0], start[1], start[2],
                 end[0], end[1], end[2],
-                bb, df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
+                bb, new PowerRay(), df.getVertexManager().getTriangles(), df.getVertexManager().getQuads());
 
         assertEquals(4, result.size());
         assertEquals(5, cut.size());
