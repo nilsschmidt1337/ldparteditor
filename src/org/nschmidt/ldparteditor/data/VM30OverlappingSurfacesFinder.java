@@ -80,13 +80,14 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
         clearSelection2();
 
         // Step 3: Find overlaps
-        for (GData3 triangle : trianglesToCheck) {
-            processOverlaps(tree.searchForIntersections(triangle, triangles, quads), triangle);
-        }
 
-        for (GData4 quad : quadsToCheck) {
+        trianglesToCheck.parallelStream().forEach(triangle -> {
+            processOverlaps(tree.searchForIntersections(triangle, triangles, quads), triangle);
+        });
+
+        quadsToCheck.parallelStream().forEach(quad -> {
             processOverlaps(tree.searchForIntersections(quad, triangles, quads), quad);
-        }
+        });
 
         MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
         messageBox.setText(I18n.DIALOG_INFO);
@@ -117,7 +118,7 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
         }
     }
 
-    private void addToSelection(GData geometry) {
+    private synchronized void addToSelection(GData geometry) {
         selectedData.add(geometry);
         if (geometry instanceof GData3 triangle) {
             selectedTriangles.add(triangle);
