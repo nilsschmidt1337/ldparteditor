@@ -153,9 +153,18 @@ public class RTree {
     public List<GData> searchGeometryDataOnSegment(float startX, float startY, float startZ, float endX, float endY, float endZ, BoundingBox bb, PowerRay powerRay, Map<GData3, Vertex[]> triangles, Map<GData4, Vertex[]> quads) {
         final Vector4f rayOrigin = new Vector4f(startX, startY, startZ, 1f);
         final float[] rayDirection = new float[] {endX - startX, endY - startY, endZ - startZ};
+        final Vector4f rayDir = new Vector4f(rayDirection[0], rayDirection[1], rayDirection[2], 0f);
+
+        if (rayDir.lengthSquared() == 0f) {
+            return List.of();
+        }
+
+        rayDir.normalise();
+
+        final float[] rayDirectionNormalized = new float[] {rayDir.x, rayDir.y, rayDir.z};
 
         final List<GData> resultList = new LinkedList<>();
-        root.retrieveGeometryDataOnRay(rayOrigin, rayDirection, resultList, bb, powerRay, triangles, quads);
+        root.retrieveGeometryDataOnRay(rayOrigin, rayDirection, rayDirectionNormalized, resultList, bb, powerRay, triangles, quads);
         return resultList;
     }
 

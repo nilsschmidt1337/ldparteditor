@@ -110,17 +110,8 @@ public class BoundingBox {
         return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
-    public boolean isIntersecting(Vector4f rayOrigin, float[] rayDirection) {
-        // Is This normalisation really necessary?
-        final Vector4f rayDir = new Vector4f(rayDirection[0], rayDirection[1], rayDirection[2], 0f);
-
-        if (rayDir.lengthSquared() == 0f) {
-            return false;
-        }
-
-        rayDir.normalise();
-
-        return isIntersecting2(rayOrigin, new float[] {rayDir.x, rayDir.y, rayDir.z}) || isIntersecting2(rayOrigin, new float[] {-rayDir.x, -rayDir.y, -rayDir.z});
+    public boolean isIntersecting(Vector4f rayOrigin, float[] rayDirectionNormalized) {
+        return isIntersecting2(rayOrigin, rayDirectionNormalized) || isIntersecting2(rayOrigin, new float[] {-rayDirectionNormalized[0], -rayDirectionNormalized[1], -rayDirectionNormalized[2]});
     }
 
 
