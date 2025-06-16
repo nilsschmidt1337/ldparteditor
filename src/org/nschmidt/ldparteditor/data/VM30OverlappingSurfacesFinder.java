@@ -49,18 +49,21 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
         final Set<GData3> trianglesToCheck;
         final Set<GData4> quadsToCheck;
 
-        if (os.getScope() == 1) {
+        final Set<GData3> trianglesToFilter = new HashSet<>();
+        final Set<GData4> quadsToFilter = new HashSet<>();
 
-            // TODO Check against surfaces from the whole file and filter on the selection!
+        final boolean filterOnSelection = os.getScope() == 1;
+
+        if (filterOnSelection) {
+            // Check against surfaces from the whole file and filter on the selection!
+            trianglesToFilter.addAll(selectedTriangles);
+            quadsToFilter.addAll(selectedQuads);
 
             // Add surfaces from the whole file
             trianglesForTree = triangles.keySet();
             quadsForTree = quads.keySet();
-            // And selected surfaces to check
-            trianglesToCheck = new HashSet<>();
-            quadsToCheck = new HashSet<>();
-            trianglesToCheck.addAll(selectedTriangles);
-            quadsToCheck.addAll(selectedQuads);
+            trianglesToCheck = triangles.keySet();
+            quadsToCheck = quads.keySet();
         } else if (os.getScope() == 2) {
             // Only add selected surfaces
             trianglesForTree = new HashSet<>();
@@ -105,7 +108,7 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
                                 if (monitor.isCanceled()) return;
                             }
 
-                            processOverlaps(tree.searchForIntersections(triangle, triangles, quads), triangle);
+                            processOverlaps(tree.searchForIntersections(triangle, triangles, quads), triangle, filterOnSelection, trianglesToFilter, quadsToFilter);
 
                             synchronized (monitor) {
                                 monitor.worked(1);
@@ -117,7 +120,7 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
                                 if (monitor.isCanceled()) return;
                             }
 
-                            processOverlaps(tree.searchForIntersections(quad, triangles, quads), quad);
+                            processOverlaps(tree.searchForIntersections(quad, triangles, quads), quad, filterOnSelection, trianglesToFilter, quadsToFilter);
 
                             synchronized (monitor) {
                                 monitor.worked(1);
@@ -147,14 +150,18 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
         messageBox.open();
     }
 
-    private void processOverlaps(Set<GData> overlaps, GData geometry) {
+    private void processOverlaps(Set<GData> overlaps, GData geometry, boolean filterOnSelection, Set<GData3> trianglesToFilter, Set<GData4> quadsToFilter) {
         if (!overlaps.isEmpty()) {
 
             boolean overlapWithoutAdjacency = false;
             for (GData overlap : overlaps) {
                 if (!hasSameEdge(overlap, geometry)) {
-                    addToSelection(overlap);
-                    overlapWithoutAdjacency = true;
+                    if (!filterOnSelection || (
+                            trianglesToFilter.contains(overlap) || trianglesToFilter.contains(geometry)
+                         || quadsToFilter.contains(overlap) || quadsToFilter.contains(geometry))) {
+                        addToSelection(overlap);
+                        overlapWithoutAdjacency = true;
+                    }
                 }
             }
 
