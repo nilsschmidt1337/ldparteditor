@@ -1,3 +1,8 @@
+### 16 Jun 2025
+With the release of 1.8.94 you are able to...
+-  ...detect overlapping surfaces (with the new OverlappingSurfacesFinder tool).
+
+
 ### 07 Jun 2025
 With the release of 1.8.93 you are able to...
 -  ...show two-thirds views from other angles (click on "Two-Thirds" multiple times).
