@@ -15,16 +15,22 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
+import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.composite3d.OverlapSettings;
 import org.nschmidt.ldparteditor.helper.math.rtree.RTree;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 
 class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
@@ -44,6 +50,9 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
         final Set<GData4> quadsToCheck;
 
         if (os.getScope() == 1) {
+
+            // TODO Check against surfaces from the whole file and filter on the selection!
+
             // Add surfaces from the whole file
             trianglesForTree = triangles.keySet();
             quadsForTree = quads.keySet();
@@ -80,14 +89,53 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
         clearSelection2();
 
         // Step 3: Find overlaps
+        try
+        {
+            new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
+            {
+                @Override
+                public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+                {
+                    try
+                    {
+                        monitor.beginTask(I18n.E3D_OVERLAPPING_SURFACES_FINDER, trianglesToCheck.size() + quadsToCheck.size());
 
-        trianglesToCheck.parallelStream().forEach(triangle -> {
-            processOverlaps(tree.searchForIntersections(triangle, triangles, quads), triangle);
-        });
+                        trianglesToCheck.parallelStream().forEach(triangle -> {
+                            synchronized (monitor) {
+                                if (monitor.isCanceled()) return;
+                            }
 
-        quadsToCheck.parallelStream().forEach(quad -> {
-            processOverlaps(tree.searchForIntersections(quad, triangles, quads), quad);
-        });
+                            processOverlaps(tree.searchForIntersections(triangle, triangles, quads), triangle);
+
+                            synchronized (monitor) {
+                                monitor.worked(1);
+                            }
+                        });
+
+                        quadsToCheck.parallelStream().forEach(quad -> {
+                            synchronized (monitor) {
+                                if (monitor.isCanceled()) return;
+                            }
+
+                            processOverlaps(tree.searchForIntersections(quad, triangles, quads), quad);
+
+                            synchronized (monitor) {
+                                monitor.worked(1);
+                            }
+                        });
+                    } catch (Exception ex) {
+                        NLogger.error(getClass(), ex);
+                    } finally {
+                        monitor.done();
+                    }
+                }
+            });
+        } catch (InvocationTargetException ite) {
+            NLogger.error(VM30OverlappingSurfacesFinder.class, ite);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
+        }
 
         MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
         messageBox.setText(I18n.DIALOG_INFO);
@@ -101,8 +149,6 @@ class VM30OverlappingSurfacesFinder extends VM29LineSurfaceIntersector {
 
     private void processOverlaps(Set<GData> overlaps, GData geometry) {
         if (!overlaps.isEmpty()) {
-
-            // FIXME Needs implementation!
 
             boolean overlapWithoutAdjacency = false;
             for (GData overlap : overlaps) {
