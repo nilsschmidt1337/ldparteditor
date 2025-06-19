@@ -26,10 +26,12 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.dialog.smooth.SmoothDialog;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.enumtype.View;
 
 class VM25Smooth extends VM24MeshReducer {
 
@@ -91,9 +93,10 @@ class VM25Smooth extends VM24MeshReducer {
         if (convexity == -1) {
             // This happens if a Vertex is transformed (OpenGl 3.3 renderer only)
             if (v.toVector4fm() == null) return 0;
-            final Vertex[] neighbours = getNeighbourVertices(v);
-            final float neighboursCount = neighbours.length;
-            if (neighboursCount == 0) {
+
+            final Set<GData> surfaces = getLinkedSurfaces(v);
+            final float surfacesCount = surfaces.size();
+            if (surfacesCount == 0) {
                 CONVEXITY_CACHE.put(v, 0f);
                 return 0;
             }
@@ -105,24 +108,57 @@ class VM25Smooth extends VM24MeshReducer {
                 return 0;
             }
 
-            float result = 0;
+            float result = -1;
 
-            for (Vertex vertex : neighbours) {
-                Vector4f delta4 = Vector4f.sub(vertex.toVector4f(), v.toVector4f(), null);
-                if (delta4.lengthSquared() == 0f) continue;
-                Vector3f delta = new Vector3f(delta4.x, delta4.y, delta4.z);
-                delta.normalise();
-
+            for (GData surface : surfaces) {
+                Vector3f delta = getSurfaceNormal(surface);
                 result = result + Vector3f.dot(delta, n);
             }
 
-            result = (result / neighboursCount + 1f) / 2f;
+            result = (result / surfacesCount + 1f) / 2f;
             result = result * result;
             CONVEXITY_CACHE.put(v, result);
             return result;
         } else {
             return convexity;
         }
+    }
+
+    private Vector3f getSurfaceNormal(GData surface) {
+        final Vector4f untransformedNormal;
+        final Matrix4f matrix;
+        final Vector3f transformedNormal;
+        if (surface instanceof GData3 triangle) {
+            untransformedNormal = new Vector4f(triangle.xn, triangle.yn, triangle.zn, 1f);
+            matrix = triangle.parent.productMatrix;
+
+        } else if (surface instanceof GData4 quad) {
+            untransformedNormal = new Vector4f(quad.xn, quad.yn, quad.zn, 1f);
+            matrix = quad.parent.productMatrix;
+
+        } else {
+            untransformedNormal = new Vector4f();
+            matrix = View.ID;
+        }
+
+        final boolean hasNegativeDeterminant = matrix.determinant() < 0f;
+
+        Matrix4f.transform(matrix, untransformedNormal, untransformedNormal);
+
+        transformedNormal = new Vector3f(untransformedNormal.x, untransformedNormal.y, untransformedNormal.z);
+        Vector3f.add(transformedNormal, new Vector3f(-matrix.m30, -matrix.m31, -matrix.m32), transformedNormal);
+
+        if (transformedNormal.lengthSquared() == 0) {
+            return new Vector3f();
+        }
+
+        transformedNormal.normalise();
+
+        if (hasNegativeDeterminant) {
+            // transformedNormal.negate();
+        }
+
+        return transformedNormal;
     }
 
     private Vertex[] getNeighbourVertices(Vertex old) {
