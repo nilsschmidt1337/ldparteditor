@@ -1,3 +1,11 @@
+### 25 Jul 2025
+With the release of 1.8.95 you are able to...
+-  ...see a hint if the part type does not match to its name.
+
+The following critical issues are fixed:
+1. A recurring subpart reference loop can cause the program to crash or hang.
+
+
 ### 16 Jun 2025
 With the release of 1.8.94 you are able to...
 -  ...detect overlapping surfaces (with the new OverlappingSurfacesFinder tool).
