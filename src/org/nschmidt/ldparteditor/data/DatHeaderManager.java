@@ -83,6 +83,7 @@ public class DatHeaderManager {
 
                     final List<ParsingResult> allHints = new ArrayList<>();
                     int headerState = HeaderState.H00_TITLE;
+                    String shortName = ""; //$NON-NLS-1$
                     final HeaderState h = new HeaderState();
 
                     GData gd = (GData) newEntry[0];
@@ -151,6 +152,7 @@ public class DatHeaderManager {
                                 if (normalizedLine.startsWith("0 Name: ") && normalizedLine.length() > 12 && normalizedLine.endsWith(".dat")) { //$NON-NLS-1$ //$NON-NLS-2$
                                     h.setLineNAME(lineNumber);
                                     h.setHasNAME(true);
+                                    shortName = normalizedLine.substring(8).trim();
                                     headerState = HeaderState.H02_AUTHOR;
                                     break;
                                 } else { // Its something else..
@@ -244,11 +246,19 @@ public class DatHeaderManager {
                                     h.setHasUNOFFICIAL(true);
                                     h.setHasUPDATE(false);
                                     headerState = HeaderState.H04_LICENSE;
-                                    if (isPart) df.setType(DatType.PART);
-                                    if (isSubPart) df.setType(DatType.SUBPART);
-                                    if (isPrimitive) df.setType(DatType.PRIMITIVE);
-                                    if (isPrimitive48) df.setType(DatType.PRIMITIVE48);
-                                    if (isPrimitive8) df.setType(DatType.PRIMITIVE8);
+                                    if (isPart || isSubPart || isPrimitive || isPrimitive48 || isPrimitive8) {
+                                        if (isPart) df.setType(DatType.PART);
+                                        if (isSubPart) df.setType(DatType.SUBPART);
+                                        if (isPrimitive) df.setType(DatType.PRIMITIVE);
+                                        if (isPrimitive48) df.setType(DatType.PRIMITIVE48);
+                                        if (isPrimitive8) df.setType(DatType.PRIMITIVE8);
+
+                                        final DatType detectedType = detectFileTypeFromName(shortName);
+                                        if (detectedType != df.getType()) {
+                                            df.setType(detectedType);
+                                            registerHeaderHint(lineNumber, "33", I18n.DATPARSER_NOT_MATCHING_TYPE, registered, allHints); //$NON-NLS-1$
+                                        }
+                                    }
                                     break;
                                 } else if ("0 !LDRAW_ORG".equals(normalizedLine)) { //$NON-NLS-1$
                                     h.setLineTYPE(lineNumber);
@@ -854,5 +864,17 @@ public class DatHeaderManager {
             }
         }
         return false;
+    }
+
+    private DatType detectFileTypeFromName(String name) {
+        if (name.startsWith("s/") || name.startsWith("S/") || name.startsWith("s\\") || name.startsWith("S\\")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            return DatType.SUBPART;
+        } else if (name.startsWith("48/") || name.startsWith("48\\")) { //$NON-NLS-1$ //$NON-NLS-2$
+            return DatType.PRIMITIVE48;
+        } else if (name.startsWith("8/") || name.startsWith("8\\")) { //$NON-NLS-1$ //$NON-NLS-2$
+            return DatType.PRIMITIVE8;
+        }
+
+        return DatType.PART;
     }
 }

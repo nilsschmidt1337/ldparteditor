@@ -107,6 +107,21 @@ enum HintFixer {
                 }
             }
             break;
+        case 51: // The type seems odd
+            if (h.hasTYPE() && h.getLineTYPE() > -1) {
+                l = h.getLineTYPE();
+                if (type == DatType.SUBPART)
+                    text = QuickFixer.setLine(l, "0 !LDRAW_ORG Unofficial_Subpart", text); //$NON-NLS-1$
+                else if (type == DatType.PRIMITIVE)
+                    text = QuickFixer.setLine(l, "0 !LDRAW_ORG Unofficial_Primitive", text); //$NON-NLS-1$
+                else if (type == DatType.PRIMITIVE8)
+                    text = QuickFixer.setLine(l, "0 !LDRAW_ORG Unofficial_8_Primitive", text); //$NON-NLS-1$
+                else if (type == DatType.PRIMITIVE48)
+                    text = QuickFixer.setLine(l, "0 !LDRAW_ORG Unofficial_48_Primitive", text); //$NON-NLS-1$
+                else
+                    text = QuickFixer.setLine(l, "0 !LDRAW_ORG Unofficial_Part", text); //$NON-NLS-1$
+            }
+            break;
         case 64: // The license information is missing
             if (h.hasTITLE())
                 l = h.getLineTITLE();

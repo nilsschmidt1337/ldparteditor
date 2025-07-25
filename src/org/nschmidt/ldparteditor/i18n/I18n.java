@@ -354,6 +354,7 @@ public final class I18n {
     public static final String DATPARSER_MOVED_TO = DATPARSER.getString(getProperty());
     public static final String DATPARSER_MULTIPLE_BFC = DATPARSER.getString(getProperty());
     public static final String DATPARSER_NEAR_COPLANARITY = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_NOT_MATCHING_TYPE = DATPARSER.getString(getProperty());
     public static final String DATPARSER_RECURSIVE = DATPARSER.getString(getProperty());
     public static final String DATPARSER_SINGULAR_MATRIX = DATPARSER.getString(getProperty());
     public static final String DATPARSER_SLASH = DATPARSER.getString(getProperty());
