@@ -680,6 +680,7 @@ public enum DatParser {
                 result.add(new ParsingResult(I18n.DATPARSER_RECURSIVE, "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 if (!View.DUMMY_REFERENCE.equals(parent))
                     parent.firstRef.setRecursive(true);
+                return result;
             } else {
                 alreadyParsed.add(shortFilename);
             }
