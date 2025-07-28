@@ -253,8 +253,10 @@ public class DatHeaderManager {
                                         if (isPrimitive48) df.setType(DatType.PRIMITIVE48);
                                         if (isPrimitive8) df.setType(DatType.PRIMITIVE8);
 
-                                        final DatType detectedType = detectFileTypeFromName(shortName);
-                                        if (detectedType != df.getType()) {
+                                        final DatType declaredType = df.getType();
+                                        final DatType detectedType = detectFileTypeFromName(shortName, df.getNewName());
+                                        if (detectedType != DatType.NONE && detectedType != declaredType
+                                         || detectedType == DatType.NONE && !(declaredType == DatType.PART || declaredType == DatType.PRIMITIVE)) {
                                             df.setType(detectedType);
                                             registerHeaderHint(lineNumber, "33", I18n.DATPARSER_NOT_MATCHING_TYPE, registered, allHints); //$NON-NLS-1$
                                         }
@@ -866,15 +868,17 @@ public class DatHeaderManager {
         return false;
     }
 
-    private DatType detectFileTypeFromName(String name) {
+    private DatType detectFileTypeFromName(String name, String path) {
         if (name.startsWith("s/") || name.startsWith("S/") || name.startsWith("s\\") || name.startsWith("S\\")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             return DatType.SUBPART;
         } else if (name.startsWith("48/") || name.startsWith("48\\")) { //$NON-NLS-1$ //$NON-NLS-2$
             return DatType.PRIMITIVE48;
         } else if (name.startsWith("8/") || name.startsWith("8\\")) { //$NON-NLS-1$ //$NON-NLS-2$
             return DatType.PRIMITIVE8;
+        } else if (path.contains("/p/") || path.contains("/P/") || path.contains("\\p\\") || path.contains("\\P\\")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            return DatType.PRIMITIVE;
         }
 
-        return DatType.PART;
+        return DatType.NONE;
     }
 }
