@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Pattern;
 
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Display;
@@ -868,6 +869,8 @@ public class DatHeaderManager {
         return false;
     }
 
+    private static final Pattern SUBFILE_NAME = Pattern.compile(".+s\\d+\\.dat"); //$NON-NLS-1$
+
     private DatType detectFileTypeFromName(String name, String path) {
         if (name.startsWith("s/") || name.startsWith("S/") || name.startsWith("s\\") || name.startsWith("S\\")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             return DatType.SUBPART;
@@ -877,6 +880,10 @@ public class DatHeaderManager {
             return DatType.PRIMITIVE8;
         } else if (path.contains("/p/") || path.contains("/P/") || path.contains("\\p\\") || path.contains("\\P\\")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             return DatType.PRIMITIVE;
+        }
+
+        if (SUBFILE_NAME.matcher(name).find()) {
+            return DatType.SUBPART;
         }
 
         return DatType.NONE;
