@@ -325,7 +325,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         evTypeUnofficialBtnPtr[0] = btnUnofficial;
 
                         Combo cmbType = Theming.combo(cmpType, SWT.NONE);
-                        widgetUtil(cmbType).setItems("Part", "Subpart", "Primitive", "8_Primitive", "48_Primitive", "Shortcut", "Part Alias", "Part Physical_Colour",  "Part Physical_Colour Alias", "Part Flexible_Section", "Shortcut Alias", "Shortcut Physical_Colour",  "Shortcut Physical_Colour Alias"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
+                        widgetUtil(cmbType).setItems("Part", "Subpart", "Primitive", "8_Primitive", "48_Primitive", "Shortcut", "Part Alias", "Part Flexible_Section", "Shortcut Alias"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
                         cmbType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbType.setText("Part"); //$NON-NLS-1$
                         cmbType.select(0);

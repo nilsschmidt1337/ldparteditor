@@ -229,10 +229,7 @@ public class DatHeaderManager {
                                         || "0 !LDRAW_ORG Unofficial_Part Flexible_Section".equals(normalizedLine) //$NON-NLS-1$
                                         || "0 !LDRAW_ORG Unofficial_Shortcut".equals(normalizedLine) //$NON-NLS-1$
                                         || "0 !LDRAW_ORG Unofficial_Shortcut Alias".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LDRAW_ORG Unofficial_Shortcut Physical_Colour Alias".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LDRAW_ORG Unofficial_Part Alias".equals(normalizedLine) //$NON-NLS-1$
-                                        || "0 !LDRAW_ORG Unofficial_Part Physical_Colour".equals(normalizedLine); //$NON-NLS-1$
+                                        || "0 !LDRAW_ORG Unofficial_Part Alias".equals(normalizedLine); //$NON-NLS-1$
                                 final boolean isSubPart = "0 !LDRAW_ORG Unofficial_Subpart".equals(normalizedLine); //$NON-NLS-1$
                                 final boolean isPrimitive = "0 !LDRAW_ORG Unofficial_Primitive".equals(normalizedLine); //$NON-NLS-1$
                                 final boolean isPrimitive48 = "0 !LDRAW_ORG Unofficial_48_Primitive".equals(normalizedLine); //$NON-NLS-1$
