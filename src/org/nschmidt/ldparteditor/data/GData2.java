@@ -438,6 +438,112 @@ public final class GData2 extends GData {
     }
 
     @Override
+    public void drawGL20RandomSubfileColours(Composite3D c3d) {
+        if (!visible) {
+            return;
+        }
+        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f) {
+            return;
+        }
+        switch (c3d.getLineMode()) {
+        case 3, 4:
+            return;
+        default:
+            break;
+        }
+
+        if (GL11.glGetBoolean(GL11.GL_LIGHTING)) GL11.glDisable(GL11.GL_LIGHTING);
+
+        if (!isLine) {
+            drawDistanceGL20(c3d, x1p, y1p, z1p, x2p, y2p, z2p);
+            if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+                GL11.glEnable(GL11.GL_LIGHTING);
+            return;
+        }
+
+        final float rndRed = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 0);
+        final float rndGreen = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 1);
+        final float rndBlue = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 2);
+
+        if (c3d.getZoom() > View.edgeThreshold) {
+
+            GL11.glPushMatrix();
+
+            GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
+            GL11.glScalef(lGeom[20][0], lGeom[20][1], lGeom[20][2]);
+
+            if (GData.globalNegativeDeterminant) {
+
+                GL20Primitives.sphereInv.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+
+                GL11.glBegin(GL11.GL_QUAD_STRIP);
+                GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
+                GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
+                GL11.glVertex3f(lGeom[3][0], lGeom[3][1], lGeom[3][2]);
+                GL11.glVertex3f(lGeom[2][0], lGeom[2][1], lGeom[2][2]);
+                GL11.glVertex3f(lGeom[5][0], lGeom[5][1], lGeom[5][2]);
+                GL11.glVertex3f(lGeom[4][0], lGeom[4][1], lGeom[4][2]);
+                GL11.glVertex3f(lGeom[7][0], lGeom[7][1], lGeom[7][2]);
+                GL11.glVertex3f(lGeom[6][0], lGeom[6][1], lGeom[6][2]);
+                GL11.glVertex3f(lGeom[9][0], lGeom[9][1], lGeom[9][2]);
+                GL11.glVertex3f(lGeom[8][0], lGeom[8][1], lGeom[8][2]);
+                GL11.glVertex3f(lGeom[11][0], lGeom[11][1], lGeom[11][2]);
+                GL11.glVertex3f(lGeom[10][0], lGeom[10][1], lGeom[10][2]);
+                GL11.glVertex3f(lGeom[13][0], lGeom[13][1], lGeom[13][2]);
+                GL11.glVertex3f(lGeom[12][0], lGeom[12][1], lGeom[12][2]);
+                GL11.glVertex3f(lGeom[15][0], lGeom[15][1], lGeom[15][2]);
+                GL11.glVertex3f(lGeom[14][0], lGeom[14][1], lGeom[14][2]);
+                GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
+                GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
+                GL11.glEnd();
+
+                GL20Primitives.sphereInv.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+
+            } else {
+
+                GL20Primitives.sphere.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+
+                GL11.glBegin(GL11.GL_QUAD_STRIP);
+                GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
+                GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
+                GL11.glVertex3f(lGeom[2][0], lGeom[2][1], lGeom[2][2]);
+                GL11.glVertex3f(lGeom[3][0], lGeom[3][1], lGeom[3][2]);
+                GL11.glVertex3f(lGeom[4][0], lGeom[4][1], lGeom[4][2]);
+                GL11.glVertex3f(lGeom[5][0], lGeom[5][1], lGeom[5][2]);
+                GL11.glVertex3f(lGeom[6][0], lGeom[6][1], lGeom[6][2]);
+                GL11.glVertex3f(lGeom[7][0], lGeom[7][1], lGeom[7][2]);
+                GL11.glVertex3f(lGeom[8][0], lGeom[8][1], lGeom[8][2]);
+                GL11.glVertex3f(lGeom[9][0], lGeom[9][1], lGeom[9][2]);
+                GL11.glVertex3f(lGeom[10][0], lGeom[10][1], lGeom[10][2]);
+                GL11.glVertex3f(lGeom[11][0], lGeom[11][1], lGeom[11][2]);
+                GL11.glVertex3f(lGeom[12][0], lGeom[12][1], lGeom[12][2]);
+                GL11.glVertex3f(lGeom[13][0], lGeom[13][1], lGeom[13][2]);
+                GL11.glVertex3f(lGeom[14][0], lGeom[14][1], lGeom[14][2]);
+                GL11.glVertex3f(lGeom[15][0], lGeom[15][1], lGeom[15][2]);
+                GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
+                GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
+                GL11.glEnd();
+
+                GL20Primitives.sphere.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+
+            }
+
+            GL11.glPopMatrix();
+
+        } else {
+            GraphicalDataTools.setLineWidth(View.lineWidthGL);
+            GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
+            GL11.glBegin(GL11.GL_LINES);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glEnd();
+        }
+
+        if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
+            GL11.glEnable(GL11.GL_LIGHTING);
+    }
+
+    @Override
     public void drawGL20BFC(Composite3D c3d) {
         drawGL20(c3d);
     }

@@ -126,6 +126,11 @@ public final class GDataBinary extends GData {
     }
 
     @Override
+    public void drawGL20RandomSubfileColours(Composite3D c3d) {
+        // Implementation is not required.
+    }
+
+    @Override
     public void drawGL20BFC(Composite3D c3d) {
         // Implementation is not required.
     }

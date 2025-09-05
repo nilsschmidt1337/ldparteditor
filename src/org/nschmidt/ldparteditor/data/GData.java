@@ -73,6 +73,8 @@ public abstract class GData implements Comparable<GData> {
 
     public abstract void drawGL20RandomColours(Composite3D c3d);
 
+    public abstract void drawGL20RandomSubfileColours(Composite3D c3d);
+
     public abstract void drawGL20BFC(Composite3D c3d);
 
     public abstract void drawGL20BFCuncertified(Composite3D c3d);

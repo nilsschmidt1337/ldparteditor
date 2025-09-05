@@ -86,7 +86,12 @@ public class RenderModeToolItem extends ToolItem {
     }
 
     private void setRenderModeRandomColours(SelectionEvent e) {
-        setRenderMode(1);
+        final int renderMode = getRenderMode();
+        if (renderMode == 1) {
+            setRenderMode(9);
+        } else {
+            setRenderMode(1);
+        }
     }
 
     private void setRenderModeGreenRed(SelectionEvent e) {

@@ -1069,7 +1069,12 @@ public class Composite3D extends ScalableComposite {
             widgetUtil(mntmRandomColours).addSelectionListener(e -> {
                 WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3dModifier.setRenderMode(1);
+                final int randomColourRenderMode = getRenderMode();
+                if (randomColourRenderMode == 1) {
+                    c3dModifier.setRenderMode(9);
+                } else {
+                    c3dModifier.setRenderMode(1);
+                }
                 getRenderer().disposeAllTextures();
             });
             mntmRandomColours.setText(I18n.C3D_RANDOM_COLOURS);
@@ -1139,7 +1144,12 @@ public class Composite3D extends ScalableComposite {
             widgetUtil(mntmCoplanarityHeatmapMode).addSelectionListener(e -> {
                 WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3dModifier.setRenderMode(7);
+                final int coplanarRenderMode = getRenderMode();
+                if (coplanarRenderMode == 7) {
+                    c3dModifier.setRenderMode(8);
+                } else {
+                    c3dModifier.setRenderMode(7);
+                }
                 getRenderer().disposeAllTextures();
             });
             mntmCoplanarityHeatmapMode.setText(I18n.C3D_COPLANARITY_MODE);
@@ -2566,13 +2576,13 @@ public class Composite3D extends ScalableComposite {
 
     public void setRenderModeOnContextMenu(int renderMode) {
         getMntmNoBFC().setSelection(renderMode == 0);
-        getMntmRandomColours().setSelection(renderMode == 1);
+        getMntmRandomColours().setSelection(renderMode == 1 || renderMode == 9);
         getMntmBFCFrontBack().setSelection(renderMode == 2);
         getMntmBFCBack().setSelection(renderMode == 3);
         getMntmBFCReal().setSelection(renderMode == 4);
         getMntmBFCTextured().setSelection(renderMode == 5);
         getMntmCondlineMode().setSelection(renderMode == 6);
-        getMntmCoplanarityHeatmapMode().setSelection(renderMode == 7);
+        getMntmCoplanarityHeatmapMode().setSelection(renderMode == 7 || renderMode == 8);
         getMntmWireframeMode().setSelection(renderMode == -1);
     }
 

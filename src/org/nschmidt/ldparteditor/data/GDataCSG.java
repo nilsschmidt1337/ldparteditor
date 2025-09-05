@@ -625,6 +625,11 @@ public final class GDataCSG extends GData {
     }
 
     @Override
+    public synchronized void drawGL20RandomSubfileColours(Composite3D c3d) {
+        drawAndParse(c3d);
+    }
+
+    @Override
     public synchronized void drawGL20BFC(Composite3D c3d) {
         drawAndParse(c3d);
     }

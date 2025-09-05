@@ -291,6 +291,12 @@ public final class DatFile {
                 data2draw.drawGL20ConvexityHeatmap(c3d);
             }
             break;
+        case 9: // Random Subfile Colours
+            data2draw.drawGL20RandomSubfileColours(c3d);
+            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                data2draw.drawGL20RandomSubfileColours(c3d);
+            }
+            break;
         default:
             break;
         }

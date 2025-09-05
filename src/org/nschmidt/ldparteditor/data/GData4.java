@@ -27,6 +27,7 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.enumtype.Colour;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.Threshold;
+import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helper.math.ThreadsafeSortedMap;
@@ -323,6 +324,44 @@ public final class GData4 extends GData {
         final float rndRed = MathHelper.randomFloat(id, 0);
         final float rndGreen = MathHelper.randomFloat(id, 1);
         final float rndBlue = MathHelper.randomFloat(id, 2);
+        GL11.glBegin(GL11.GL_QUADS);
+        if (GData.globalNegativeDeterminant) {
+            GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
+            GL11.glNormal3f(xn, yn, zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x4, y4, z4);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glNormal3f(-xn, -yn, -zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x4, y4, z4);
+        } else {
+            GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
+            GL11.glNormal3f(-xn, -yn, -zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x4, y4, z4);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glNormal3f(xn, yn, zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x4, y4, z4);
+        }
+        GL11.glEnd();
+    }
+
+    @Override
+    public void drawGL20RandomSubfileColours(Composite3D c3d) {
+        if (!visible)
+            return;
+        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
+            return;
+        final float rndRed = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 0);
+        final float rndGreen = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 1);
+        final float rndBlue = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 2);
         GL11.glBegin(GL11.GL_QUADS);
         if (GData.globalNegativeDeterminant) {
             GL11.glColor4f(rndRed, rndGreen, rndBlue, a);

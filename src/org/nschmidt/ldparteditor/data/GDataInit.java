@@ -42,6 +42,11 @@ final class GDataInit extends GData {
     }
 
     @Override
+    public void drawGL20RandomSubfileColours(Composite3D c3d) {
+        drawGL20(c3d);
+    }
+
+    @Override
     public void drawGL20BFC(Composite3D c3d) {
         drawGL20(c3d);
     }

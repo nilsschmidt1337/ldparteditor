@@ -341,6 +341,44 @@ public final class GData3 extends GData {
     }
 
     @Override
+    public void drawGL20RandomSubfileColours(Composite3D c3d) {
+        if (!visible)
+            return;
+        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
+            return;
+        if (!isTriangle) {
+            drawProtractorGL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
+            return;
+        }
+        final float tR = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 0);
+        final float tG = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 1);
+        final float tB = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 2);
+        GL11.glBegin(GL11.GL_TRIANGLES);
+        if (GData.globalNegativeDeterminant) {
+            GL11.glColor4f(tR, tG, tB, a);
+            GL11.glNormal3f(xn, yn, zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glNormal3f(-xn, -yn, -zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x3, y3, z3);
+        } else {
+            GL11.glColor4f(tR, tG, tB, a);
+            GL11.glNormal3f(xn, yn, zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glNormal3f(-xn, -yn, -zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x2, y2, z2);
+        }
+        GL11.glEnd();
+    }
+
+    @Override
     public void drawGL20BFC(Composite3D c3d) {
         if (!visible)
             return;

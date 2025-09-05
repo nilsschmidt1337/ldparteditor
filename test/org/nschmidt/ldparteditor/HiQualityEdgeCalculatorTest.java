@@ -28,7 +28,7 @@ public class HiQualityEdgeCalculatorTest {
     public void testEmptyData() {
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(), false, false, false, false);
+                Set.of(), false, false, false, false, false);
         assertEmptyResult(result);
     }
 
@@ -56,7 +56,7 @@ public class HiQualityEdgeCalculatorTest {
         final GDataAndWinding w = new GDataAndWinding(edge, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(), false, false, false, false);
+                Set.of(), false, false, false, false, false);
         assertEquals(4, result.length);
         assertEquals(96, result[0].vertices().length);
         assertEquals(0, result[1].vertices().length);
@@ -80,7 +80,7 @@ public class HiQualityEdgeCalculatorTest {
         final GDataAndWinding w = new GDataAndWinding(edge, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(), false, false, false, false);
+                Set.of(), false, false, false, false, false);
         assertEquals(4, result.length);
         assertEquals(0, result[0].vertices().length);
         assertEquals(96, result[1].vertices().length);
@@ -104,7 +104,7 @@ public class HiQualityEdgeCalculatorTest {
         final GDataAndWinding w = new GDataAndWinding(edge, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(), false, false, false, true);
+                Set.of(), false, false, false, true, false);
         assertEquals(4, result.length);
         assertEquals(96, result[0].vertices().length);
         assertNotEquals(-1f, result[0].vertices()[3], 0.001f);
@@ -131,7 +131,7 @@ public class HiQualityEdgeCalculatorTest {
         final GDataAndWinding w = new GDataAndWinding(condline, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(), false, false, false, false);
+                Set.of(), false, false, false, false, false);
         assertEquals(4, result.length);
         assertEquals(0, result[0].vertices().length);
         assertEquals(0, result[1].vertices().length);
@@ -155,7 +155,7 @@ public class HiQualityEdgeCalculatorTest {
         final GDataAndWinding w = new GDataAndWinding(condline, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(), false, false, true, false);
+                Set.of(), false, false, true, false, false);
         assertEquals(4, result.length);
         assertEquals(96, result[0].vertices().length);
         assertEquals(0, result[1].vertices().length);
@@ -179,7 +179,7 @@ public class HiQualityEdgeCalculatorTest {
         final GDataAndWinding w = new GDataAndWinding(condline, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(), false, false, false, false);
+                Set.of(), false, false, false, false, false);
         assertEquals(4, result.length);
         assertEquals(0, result[0].vertices().length);
         assertEquals(0, result[1].vertices().length);
@@ -203,7 +203,7 @@ public class HiQualityEdgeCalculatorTest {
         final GDataAndWinding w = new GDataAndWinding(condline, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(), false, false, false, true);
+                Set.of(), false, false, false, true, false);
         assertEquals(4, result.length);
         assertEquals(0, result[0].vertices().length);
         assertEquals(0, result[1].vertices().length);
@@ -238,7 +238,7 @@ public class HiQualityEdgeCalculatorTest {
         final GDataAndWinding w = new GDataAndWinding(edge, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(edge), false, false, false, false);
+                Set.of(edge), false, false, false, false, false);
         assertEquals(4, result.length);
         assertEmptyResult(result);
     }
@@ -255,7 +255,7 @@ public class HiQualityEdgeCalculatorTest {
         final GDataAndWinding w = new GDataAndWinding(edge, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(), true, false, false, false);
+                Set.of(), true, false, false, false, false);
         assertEmptyResult(result);
     }
 
@@ -272,7 +272,7 @@ public class HiQualityEdgeCalculatorTest {
         final GDataAndWinding w = new GDataAndWinding(condline, BFC.CCW, false, false, 0);
         EdgeData[] result = HiQualityEdgeCalculator.hiQualityEdgeData(List.of(w),
                 fList(), iList(), fList(), iList(), fList(), iList(), fList(), iList(),
-                Set.of(), false, true, false, false);
+                Set.of(), false, true, false, false, false);
         assertEmptyResult(result);
     }
 }

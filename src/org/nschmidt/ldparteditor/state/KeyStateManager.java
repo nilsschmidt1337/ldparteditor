@@ -980,8 +980,14 @@ public class KeyStateManager {
                         c3d.setRenderModeOnContextMenu(0);
                         break;
                     case RENDERMODE_RANDOM_COLOURS:
-                        c3d.setRenderMode(1);
-                        c3d.setRenderModeOnContextMenu(1);
+                        final int randomColourRenderMode = c3d.getRenderMode();
+                        if (randomColourRenderMode == 1) {
+                            c3d.setRenderMode(9);
+                            c3d.setRenderModeOnContextMenu(9);
+                        } else {
+                            c3d.setRenderMode(1);
+                            c3d.setRenderModeOnContextMenu(1);
+                        }
                         break;
                     case RENDERMODE_GREEN_FRONTFACES_RED_BACKFACES:
                         c3d.setRenderMode(2);
@@ -1004,8 +1010,14 @@ public class KeyStateManager {
                         c3d.setRenderModeOnContextMenu(6);
                         break;
                     case RENDERMODE_COPLANARITY_HEATMAP:
-                        c3d.setRenderMode(7);
-                        c3d.setRenderModeOnContextMenu(7);
+                        final int coplanarRenderMode = c3d.getRenderMode();
+                        if (coplanarRenderMode == 7) {
+                            c3d.setRenderMode(8);
+                            c3d.setRenderModeOnContextMenu(8);
+                        } else {
+                            c3d.setRenderMode(7);
+                            c3d.setRenderModeOnContextMenu(7);
+                        }
                         break;
                     case RENDERMODE_WIREFRAME:
                         c3d.setRenderMode(-1);

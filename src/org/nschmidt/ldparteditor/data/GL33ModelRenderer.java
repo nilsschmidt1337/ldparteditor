@@ -1017,7 +1017,7 @@ public class GL33ModelRenderer {
                             switch (renderMode) {
                             case -1:
                                 continue;
-                            case 0, 1, 2, 3, 6, 7, 8:
+                            case 0, 1, 2, 3, 6, 7, 8, 9:
                                 localTriangleSize += 60;
                                 if (gd3.a < 1f) {
                                     transparentTriangleVertexCount += 6;
@@ -1059,7 +1059,7 @@ public class GL33ModelRenderer {
                         switch (renderMode) {
                         case -1:
                             continue;
-                        case 0, 1, 2, 3, 6, 7, 8:
+                        case 0, 1, 2, 3, 6, 7, 8, 9:
                             localTriangleSize += 120;
                             if (gd4.a < 1f) {
                                 transparentTriangleVertexCount += 12;
@@ -1253,7 +1253,7 @@ public class GL33ModelRenderer {
                     EdgeData[] edgeData = HiQualityEdgeCalculator.hiQualityEdgeData(dataInOrder,
                             dataLinesList, indicesLines, dataTransparentLines, indicesTransparentLines,
                             dataCondlinesList, indicesCondlines, dataTransparentCondlines, indicesTransparentCondlines,
-                            hiddenSet, hideLines, hideCondlines, condlineMode, renderMode == 1);
+                            hiddenSet, hideLines, hideCondlines, condlineMode, renderMode == 1, renderMode == 9);
                     hiQualityEdgeData[0] = edgeData[0].vertices();
                     hiQualityEdgeData[1] = edgeData[1].vertices();
                     hiQualityEdgeData[2] = edgeData[2].vertices();
@@ -1338,12 +1338,18 @@ public class GL33ModelRenderer {
                             if (hiQualityEdges) continue;
                             pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
                             pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
-                            if (renderMode != 1) {
+                            if (renderMode != 1 && renderMode != 9) {
                                 colourise7(0, 2, gd2.r, gd2.g, gd2.b, 7f, lineData, lineIndex);
-                            } else {
+                            } else if (renderMode == 1) {
                                 final float r = MathHelper.randomFloat(gd2.id, 0);
                                 final float g = MathHelper.randomFloat(gd2.id, 1);
                                 final float b = MathHelper.randomFloat(gd2.id, 2);
+                                colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+                            } else if (renderMode == 9) {
+                                final int id = gd2.parent == View.DUMMY_REFERENCE ? gd2.id : gd2.parent.firstRef.id;
+                                final float r = MathHelper.randomFloat(id, 0);
+                                final float g = MathHelper.randomFloat(id, 1);
+                                final float b = MathHelper.randomFloat(id, 2);
                                 colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
                             }
                             lineIndex += 2;
@@ -1456,11 +1462,22 @@ public class GL33ModelRenderer {
                                 }
                                 continue;
                             }
-                            case 1:
+                            case 1, 9:
                             {
-                                final float r = MathHelper.randomFloat(gd3.id, 0);
-                                final float g = MathHelper.randomFloat(gd3.id, 1);
-                                final float b = MathHelper.randomFloat(gd3.id, 2);
+                                final float r;
+                                final float g;
+                                final float b;
+                                if (tmpRenderMode == 1) {
+                                    r = MathHelper.randomFloat(gd3.id, 0);
+                                    g = MathHelper.randomFloat(gd3.id, 1);
+                                    b = MathHelper.randomFloat(gd3.id, 2);
+                                } else {
+                                    final int id = gd3.parent == View.DUMMY_REFERENCE ? gd3.id : gd3.parent.firstRef.id;
+                                    r = MathHelper.randomFloat(id, 0);
+                                    g = MathHelper.randomFloat(id, 1);
+                                    b = MathHelper.randomFloat(id, 2);
+                                }
+
                                 pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                 pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                 pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
@@ -1901,11 +1918,22 @@ public class GL33ModelRenderer {
                             }
                             continue;
                         }
-                        case 1:
+                        case 1, 9:
                         {
-                            final float r = MathHelper.randomFloat(gd4.id, 0);
-                            final float g = MathHelper.randomFloat(gd4.id, 1);
-                            final float b = MathHelper.randomFloat(gd4.id, 2);
+                            final float r;
+                            final float g;
+                            final float b;
+                            if (tmpRenderMode == 1) {
+                                r = MathHelper.randomFloat(gd4.id, 0);
+                                g = MathHelper.randomFloat(gd4.id, 1);
+                                b = MathHelper.randomFloat(gd4.id, 2);
+                            } else {
+                                final int id = gd4.parent == View.DUMMY_REFERENCE ? gd4.id : gd4.parent.firstRef.id;
+                                r = MathHelper.randomFloat(id, 0);
+                                g = MathHelper.randomFloat(id, 1);
+                                b = MathHelper.randomFloat(id, 2);
+                            }
+
                             pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                             pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                             pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
@@ -2341,12 +2369,18 @@ public class GL33ModelRenderer {
                                 colourise15(0, 2, Colour.condlineHiddenColourR, Colour.condlineHiddenColourG, Colour.condlineHiddenColourB, condlineData, condlineIndex);
                             }
                         } else {
-                            if (renderMode != 1) {
+                            if (renderMode != 1 && renderMode != 9) {
                                 colourise15(0, 2, gd5.r, gd5.g, gd5.b, condlineData, condlineIndex);
-                            } else {
+                            } else if (renderMode == 1) {
                                 final float r = MathHelper.randomFloat(gd5.id, 0);
                                 final float g = MathHelper.randomFloat(gd5.id, 1);
                                 final float b = MathHelper.randomFloat(gd5.id, 2);
+                                colourise15(0, 2, r, g, b, condlineData, condlineIndex);
+                            } else if (renderMode == 9) {
+                                final int id = gd5.parent == View.DUMMY_REFERENCE ? gd5.id : gd5.parent.firstRef.id;
+                                final float r = MathHelper.randomFloat(id, 0);
+                                final float g = MathHelper.randomFloat(id, 1);
+                                final float b = MathHelper.randomFloat(id, 2);
                                 colourise15(0, 2, r, g, b, condlineData, condlineIndex);
                             }
                         }

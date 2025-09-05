@@ -83,6 +83,11 @@ public final class GDataBFC extends GData {
     }
 
     @Override
+    public void drawGL20RandomSubfileColours(Composite3D c3d) {
+        drawGL20RandomColours(c3d);
+    }
+
+    @Override
     public void drawGL20BFC(Composite3D c3d) {
         switch (type) {
         case CCW:

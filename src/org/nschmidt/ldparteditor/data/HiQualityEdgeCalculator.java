@@ -6,6 +6,7 @@ import java.util.Set;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.enumtype.Colour;
+import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.EdgeData;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
 
@@ -13,7 +14,7 @@ public enum HiQualityEdgeCalculator {
     INSTANCE;
 
     public static EdgeData[] hiQualityEdgeData(List<GDataAndWinding> dataInOrder, List<Float> dataLines, List<Integer> indicesLines, List<Float> dataTransparentLines, List<Integer> indicesTransparentLines, List<Float> dataCondlines, List<Integer> indicesCondlines, List<Float> dataTransparentCondlines, List<Integer> indicesTransparentCondlines, Set<GData> hiddenSet, boolean hideLines,
-            boolean hideCondlines, boolean condlineMode, boolean randomColours) {
+            boolean hideCondlines, boolean condlineMode, boolean randomColours, boolean randomSubfileColours) {
         EdgeData[] result = new EdgeData[4];
         // [0] hi-quality solid lines
         // [1] hi-quality transparent lines
@@ -116,10 +117,17 @@ public enum HiQualityEdgeCalculator {
                     }
 
                     if (randomColours) {
-                        int id = gd.hashCode();
-                        r = MathHelper.randomFloat(id, 0);
-                        g = MathHelper.randomFloat(id, 1);
-                        b = MathHelper.randomFloat(id, 2);
+                        if (randomSubfileColours) {
+                            int id = gd.parent == View.DUMMY_REFERENCE ? gd.hashCode() : gd.parent.firstRef.hashCode();
+                            r = MathHelper.randomFloat(id, 0);
+                            g = MathHelper.randomFloat(id, 1);
+                            b = MathHelper.randomFloat(id, 2);
+                        } else {
+                            int id = gd.hashCode();
+                            r = MathHelper.randomFloat(id, 0);
+                            g = MathHelper.randomFloat(id, 1);
+                            b = MathHelper.randomFloat(id, 2);
+                        }
                     } else {
                         r = gd5.r;
                         g = gd5.g;
