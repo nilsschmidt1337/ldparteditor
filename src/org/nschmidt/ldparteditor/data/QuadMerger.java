@@ -28,7 +28,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
 
 /**
- * Splits selected quads into triangles
+ * Merges selected triangles into quads
  */
 public enum QuadMerger {
     INSTANCE;
