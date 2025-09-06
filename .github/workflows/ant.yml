@@ -85,6 +85,8 @@ jobs:
         report_paths: '**/report/TEST-*.xml'
         fail_on_failure: true
         require_passed_tests: true
+    - name: Set GDK_BACKEND env variable to x11
+      run: sh set_gdk_backend.sh
     - name: Archive linux installer for gtk3-x64
       uses: actions/upload-artifact@v4
       id: artifact-upload-step2
