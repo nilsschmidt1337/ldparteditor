@@ -364,6 +364,7 @@ public final class I18n {
     public static final String DATPARSER_SPLIT_HISTORY = DATPARSER.getString(getProperty());
     public static final String DATPARSER_SPLIT_KEYWORD = DATPARSER.getString(getProperty());
     public static final String DATPARSER_SYNTAX_ERROR = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_TILDE_MISSING = DATPARSER.getString(getProperty());
     public static final String DATPARSER_TODO = DATPARSER.getString(getProperty());
     public static final String DATPARSER_UNKNOWN_LINE_TYPE = DATPARSER.getString(getProperty());
     public static final String DATPARSER_UNOFFICIAL_META_COMMAND = DATPARSER.getString(getProperty());

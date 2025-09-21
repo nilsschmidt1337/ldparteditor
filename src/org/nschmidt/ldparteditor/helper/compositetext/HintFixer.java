@@ -211,6 +211,21 @@ enum HintFixer {
                 text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
             }
             break;
+        case 211: // Missing tilde in description
+        {
+            String trimmedLine = line.trim();
+
+            while (trimmedLine.startsWith("0 ~~")) { //$NON-NLS-1$
+                trimmedLine = "0 ~" + trimmedLine.substring(4); //$NON-NLS-1$
+            }
+
+            if (trimmedLine.startsWith("0 ") && !trimmedLine.startsWith("0 ~")) { //$NON-NLS-1$ //$NON-NLS-2$
+                trimmedLine = "0 ~" + trimmedLine.substring(2); //$NON-NLS-1$
+            }
+
+            text = QuickFixer.setLine(lineNumber + 1, trimmedLine, text);
+        }
+        break;
         case 254: // There are numbers with scientific notation
             {
                 StringBuilder sb = new StringBuilder();

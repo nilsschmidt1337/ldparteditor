@@ -114,6 +114,7 @@ public class DatHeaderManager {
                     final GData firstEntry = gd.next;
                     int lineNumber = 0;
                     boolean[] registered = new boolean[]{false};
+                    if (firstEntry != null) h.setDescription(firstEntry.toString());
                     while ((gd = gd.next) != null) {
 
                         lineNumber += 1;
@@ -257,6 +258,11 @@ public class DatHeaderManager {
                                          || detectedType == DatType.NONE && !(declaredType == DatType.PART || declaredType == DatType.PRIMITIVE)) {
                                             df.setType(detectedType);
                                             registerHeaderHint(lineNumber, "33", I18n.DATPARSER_NOT_MATCHING_TYPE, registered, allHints); //$NON-NLS-1$
+                                        }
+
+                                        final String description = h.getDescription();
+                                        if (description != null && isSubPart && firstEntry.type() == 0 && description.startsWith("0 ") && (!description.startsWith("0 ~") || description.startsWith("0 ~~"))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                            registerHeaderHint(1, "D3", I18n.DATPARSER_TILDE_MISSING, registered, allHints); //$NON-NLS-1$
                                         }
                                     }
                                     break;

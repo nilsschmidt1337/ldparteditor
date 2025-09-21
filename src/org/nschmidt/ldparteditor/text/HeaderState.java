@@ -70,6 +70,7 @@ public class HeaderState {
 
     private int state = 0;
     private String lastHistoryEntry = null;
+    private String description = null;
 
     public boolean hasTITLE() {
         return hasTITLE;
@@ -349,6 +350,14 @@ public class HeaderState {
 
     public void setLastHistoryEntry(String lastHistoryEntry) {
         this.lastHistoryEntry = lastHistoryEntry;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public HeaderState createClone() {
