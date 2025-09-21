@@ -2458,7 +2458,7 @@ public class Composite3D extends ScalableComposite {
         case 0: // No BFC
             mntmNoBFCPtr[0].setSelection(true);
             break;
-        case 1: // Random Colours
+        case 1, 9: // Random Colours
             mntmRandomColoursPtr[0].setSelection(true);
             break;
         case 2: // Front-Backface BFC
@@ -2476,7 +2476,7 @@ public class Composite3D extends ScalableComposite {
         case 6: // Special mode for "Add condlines"
             mntmCondlineModePtr[0].setSelection(true);
             break;
-        case 7: // Special mode for coplanar quads
+        case 7, 8: // Special mode for coplanar quads
             mntmCoplanarityHeatmapModePtr[0].setSelection(true);
             break;
         default:

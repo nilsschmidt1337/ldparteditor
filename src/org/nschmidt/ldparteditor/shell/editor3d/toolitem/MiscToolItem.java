@@ -3829,7 +3829,7 @@ public class MiscToolItem extends ToolItem {
             }
             if (state == 1) {
                 c3d.mntmRandomColoursPtr[0].setSelection(true);
-                c3d.getModifier().setRenderMode(1);
+                c3d.getModifier().setRenderMode(9);
             }
             if (state == 2) {
                 c3d.mntmCondlineModePtr[0].setSelection(true);
