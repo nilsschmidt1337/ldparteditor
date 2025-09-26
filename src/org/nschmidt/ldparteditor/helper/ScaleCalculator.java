@@ -21,18 +21,24 @@ import java.lang.reflect.Method;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.lwjgl.system.Platform;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public enum ScaleCalculator {
     INSTANCE;
-    
+
     @SuppressWarnings("java:S3011")
     public static double getViewportScaleFactor(final Composite cmp) {
         // When it is not possible to calculate the scale factor then
         // use the old value to allow a manual override.
         final double oldFactor = WorkbenchManager.getUserSettingState().getViewportScaleFactor();
-        
+
+        // Under Linux don't calculate this automatically.
+        if (Platform.get() == Platform.LINUX) {
+            return oldFactor;
+        }
+
         // I know that accessing a package private method "computeSizeInPixels" is against
         // the best practices (only use a public API), but I need this hack.
         Method packagePrivateMethod;
@@ -46,7 +52,7 @@ public enum ScaleCalculator {
             NLogger.error(ScaleCalculator.class, e);
             return oldFactor;
         }
-        
+
 
         final Point sizeInPixels;
         try {
@@ -56,9 +62,9 @@ public enum ScaleCalculator {
             NLogger.error(ScaleCalculator.class, e);
             return oldFactor;
         }
-        
+
         final Point sizeScaled = cmp.computeSize(-1,-1, false);
-        
+
         double scaledSize = sizeScaled.x;
         double pixelSize = sizeInPixels.x;
         if (sizeScaled.x == 0) {
@@ -69,7 +75,7 @@ public enum ScaleCalculator {
                 pixelSize = sizeInPixels.y;
             }
         }
-        
+
         return Math.max(pixelSize / scaledSize, 1.0);
     }
 }
