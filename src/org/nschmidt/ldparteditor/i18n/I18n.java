@@ -736,6 +736,7 @@ public final class I18n {
     public static final String E3D_SUBFILE_FROM_SELECTION_QUESTION = E3D.getString(getProperty());
     public static final String E3D_SUBFILE_FROM_SELECTION_QUESTION_CUT = E3D.getString(getProperty());
     public static final String E3D_SUBFILE_TO_MANIPULATOR = E3D.getString(getProperty());
+    public static final String E3D_SUBFILE_TYPE = E3D.getString(getProperty());
     public static final String E3D_SWAP_COORDINATES = E3D.getString(getProperty());
     public static final String E3D_SWAP_WINDING = E3D.getString(getProperty());
     public static final String E3D_SWAP_XY = E3D.getString(getProperty());

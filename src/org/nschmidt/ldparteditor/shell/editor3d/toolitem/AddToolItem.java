@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
@@ -37,6 +38,7 @@ import org.nschmidt.ldparteditor.data.GDataBFC;
 import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.dialog.subfile.SubfileDialog;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.Task;
@@ -258,6 +260,31 @@ public class AddToolItem extends ToolItem {
                                             folderPrefix = "8\\"; //$NON-NLS-1$
                                         } else if (path.endsWith(File.separator + "P") || path.endsWith(File.separator + "p")) { //$NON-NLS-1$ //$NON-NLS-2$
                                             typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
+                                        }
+
+                                        if ("".equals(typeSuffix)) { //$NON-NLS-1$
+                                            final SubfileDialog dialog = new SubfileDialog(Editor3DWindow.getWindow().getShell());
+                                            if (dialog.open() == IDialogConstants.OK_ID) {
+                                                switch (dialog.getSelectedType()) {
+                                                case "Unofficial_Subpart":  //$NON-NLS-1$
+                                                    typeSuffix = "Unofficial_Subpart"; //$NON-NLS-1$
+                                                    folderPrefix = "s\\"; //$NON-NLS-1$
+                                                    subfilePrefix = "~"; //$NON-NLS-1$
+                                                break;
+                                                case "Unofficial_48_Primitive":  //$NON-NLS-1$
+                                                    typeSuffix = "Unofficial_48_Primitive"; //$NON-NLS-1$
+                                                    folderPrefix = "48\\"; //$NON-NLS-1$
+                                                break;
+                                                case "Unofficial_8_Primitive":  //$NON-NLS-1$
+                                                    typeSuffix = "Unofficial_8_Primitive"; //$NON-NLS-1$
+                                                    folderPrefix = "8\\"; //$NON-NLS-1$
+                                                break;
+                                                case "Unofficial_Primitive":  //$NON-NLS-1$
+                                                    typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
+                                                break;
+                                                default:
+                                                }
+                                            }
                                         }
 
                                         r.println("0 " + subfilePrefix); //$NON-NLS-1$
