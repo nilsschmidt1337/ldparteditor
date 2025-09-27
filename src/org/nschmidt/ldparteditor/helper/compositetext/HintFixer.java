@@ -122,6 +122,37 @@ enum HintFixer {
                     text = QuickFixer.setLine(l, "0 !LDRAW_ORG Unofficial_Part", text); //$NON-NLS-1$
             }
             break;
+        case 52: // The name seems odd
+            if (h.hasTYPE() && h.hasNAME() && h.getLineNAME() > -1 && h.getLineTYPE() > -1) {
+                l = h.getLineTYPE();
+                final String typeLine = QuickFixer.getLine(l - 1, text);
+                l = h.getLineNAME();
+                final String nameLine = QuickFixer.getLine(l - 1, text);
+                final String name = nameLine.substring(8).trim();
+                final String cleanName;
+                if (name.startsWith("48\\") || name.startsWith("48/")) { //$NON-NLS-1$ //$NON-NLS-2$
+                    cleanName = name.substring(3);
+                } else if (name.startsWith("8\\") || name.startsWith("8/") //$NON-NLS-1$ //$NON-NLS-2$
+                        || name.startsWith("S\\") || name.startsWith("S/") //$NON-NLS-1$ //$NON-NLS-2$
+                        || name.startsWith("s\\") || name.startsWith("s/")) { //$NON-NLS-1$ //$NON-NLS-2$
+                    cleanName = name.substring(2);
+                } else {
+                    cleanName = name;
+                }
+
+                if ("0 !LDRAW_ORG Unofficial_Subpart".equals(typeLine)) { //$NON-NLS-1$
+                    text = QuickFixer.setLine(l, "0 Name: s\\" + cleanName, text); //$NON-NLS-1$
+                } else if ("0 !LDRAW_ORG Unofficial_Primitive".equals(typeLine)) { //$NON-NLS-1$
+                    text = QuickFixer.setLine(l, "0 Name: " + cleanName, text); //$NON-NLS-1$
+                } else if ("0 !LDRAW_ORG Unofficial_8_Primitive".equals(typeLine)) { //$NON-NLS-1$
+                    text = QuickFixer.setLine(l, "0 Name: 8\\" + cleanName, text); //$NON-NLS-1$
+                } else if ("0 !LDRAW_ORG Unofficial_48_Primitive".equals(typeLine)) { //$NON-NLS-1$
+                    text = QuickFixer.setLine(l, "0 Name: 48\\" + cleanName, text); //$NON-NLS-1$
+                } else {
+                    text = QuickFixer.setLine(l, "0 Name: " + cleanName, text); //$NON-NLS-1$
+                }
+            }
+            break;
         case 64: // The license information is missing
             if (h.hasTITLE())
                 l = h.getLineTITLE();
@@ -129,7 +160,7 @@ enum HintFixer {
                 l = h.getLineNAME();
             if (h.hasAUTHOR())
                 l = h.getLineAUTHOR();
-            if (h.hasTYPE())
+            if (h.hasTYPE() && h.getLineTYPE() > -1)
                 l = h.getLineTYPE();
             String license = WorkbenchManager.getUserSettingState().getLicense();
             if (license == null || license.isEmpty()) {
@@ -145,7 +176,7 @@ enum HintFixer {
                 l = h.getLineNAME();
             if (h.hasAUTHOR())
                 l = h.getLineAUTHOR();
-            if (h.hasTYPE())
+            if (h.hasTYPE() && h.getLineTYPE() > -1)
                 l = h.getLineTYPE();
             if (h.hasLICENSE())
                 l = h.getLineLICENSE();

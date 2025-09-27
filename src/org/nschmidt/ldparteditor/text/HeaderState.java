@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.text;
 
+import org.nschmidt.ldparteditor.data.DatType;
+
 public class HeaderState {
 
     public static final int H00_TITLE = 0;
@@ -71,6 +73,7 @@ public class HeaderState {
     private int state = 0;
     private String lastHistoryEntry = null;
     private String description = null;
+    private DatType declaredType = DatType.PART;
 
     public boolean hasTITLE() {
         return hasTITLE;
@@ -376,6 +379,7 @@ public class HeaderState {
         h.hasHISTORY = hasHISTORY;
         h.hasCOMMENT = hasCOMMENT;
         h.hasBFC2 = hasBFC2;
+        h.hasLICENSE = hasLICENSE;
         h.lineTITLE = lineTITLE;
         h.lineNAME = lineNAME;
         h.lineAUTHOR = lineAUTHOR;
@@ -396,6 +400,8 @@ public class HeaderState {
         h.lineBFC2end = lineBFC2end;
         h.state = state;
         h.lastHistoryEntry = lastHistoryEntry;
+        h.description = description;
+        h.declaredType = declaredType;
         return h;
     }
 
@@ -405,5 +411,13 @@ public class HeaderState {
 
     public void setHasLICENSE(boolean hasLICENSE) {
         this.hasLICENSE = hasLICENSE;
+    }
+
+    public DatType getDeclaredType() {
+        return declaredType;
+    }
+
+    public void setDeclaredType(DatType declaredType) {
+        this.declaredType = declaredType;
     }
 }

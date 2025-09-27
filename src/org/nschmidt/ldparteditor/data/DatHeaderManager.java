@@ -258,6 +258,10 @@ public class DatHeaderManager {
                                          || detectedType == DatType.NONE && !(declaredType == DatType.PART || declaredType == DatType.PRIMITIVE)) {
                                             df.setType(detectedType);
                                             registerHeaderHint(lineNumber, "33", I18n.DATPARSER_NOT_MATCHING_TYPE, registered, allHints); //$NON-NLS-1$
+
+                                            if (h.hasNAME() && detectedType != DatType.PRIMITIVE) {
+                                                registerHeaderHint(h.getLineNAME(), "34", I18n.DATPARSER_NOT_MATCHING_NAME, registered, allHints); //$NON-NLS-1$
+                                            }
                                         }
 
                                         final String description = h.getDescription();
