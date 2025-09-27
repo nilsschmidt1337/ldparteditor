@@ -64,6 +64,7 @@ import org.nschmidt.ldparteditor.dialog.sort.SortDialog;
 import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropTransfer;
 import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropType;
 import org.nschmidt.ldparteditor.enumtype.Axis;
+import org.nschmidt.ldparteditor.enumtype.HeaderUpdate;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.TransformationMode;
@@ -352,7 +353,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     }
                 } else if (result == SWT.YES) {
                     if (df.isVirtual()) {
-                        saveAs(df, new File(df.getNewName()).getName(), null);
+                        saveAs(df, new File(df.getNewName()).getName(), null, HeaderUpdate.NO_HEADER_UPDATE);
                     } else if (df.save()) {
                         NewOpenSaveProjectToolItem.addRecentFile(df);
                         ((CompositeTab) tabFolderPtr[0].getSelection()).getTextComposite().setText(df.getText());
@@ -598,7 +599,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                     if (df.isVirtual()) {
                         final Editor3DWindow win = Editor3DWindow.getWindow();
-                        if (saveAs(df, new File(df.getNewName()).getName(), null)) {
+                        if (saveAs(df, new File(df.getNewName()).getName(), null, HeaderUpdate.NO_HEADER_UPDATE)) {
                             Project.removeUnsavedFile(df);
                             Project.removeOpenedFile(df);
                             if (!win.closeDatfile(df)) {
@@ -624,9 +625,9 @@ public class EditorTextWindow extends EditorTextDesign {
             if (tabFolderPtr[0].getSelection() != null) {
                 final DatFile df = ((CompositeTab) tabFolderPtr[0].getSelection()).getState().getFileNameObj();
                 if (df.isVirtual()) {
-                    saveAs(df, new File(df.getNewName()).getName(), null);
+                    saveAs(df, new File(df.getNewName()).getName(), null, HeaderUpdate.UPDATE_HEADER);
                 } else {
-                    saveAs(df, null, null);
+                    saveAs(df, null, null, HeaderUpdate.UPDATE_HEADER);
                 }
             }
         });
@@ -1249,7 +1250,7 @@ public class EditorTextWindow extends EditorTextDesign {
         }
     }
 
-    public boolean saveAs(DatFile dfToSave, String name, String filePath) {
+    public boolean saveAs(DatFile dfToSave, String name, String filePath, HeaderUpdate updateHeader) {
         FileDialog fd = new FileDialog(btnSaveAsPtr[0].getShell(), SWT.SAVE);
         fd.setText(I18n.E3D_SAVE_DAT_FILE_AS);
         fd.setOverwrite(true);
@@ -1315,7 +1316,7 @@ public class EditorTextWindow extends EditorTextDesign {
                         sw.setScopeToAll();
                     }
 
-                    dfToSave.saveAs(selected);
+                    dfToSave.saveAs(selected, updateHeader);
 
                     if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
                         DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, selected, false);

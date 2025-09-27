@@ -72,6 +72,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialog.round.RoundDialog;
 import org.nschmidt.ldparteditor.dnd.PrimitiveDragAndDropTransfer;
 import org.nschmidt.ldparteditor.enumtype.Font;
+import org.nschmidt.ldparteditor.enumtype.HeaderUpdate;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.TextEditorColour;
 import org.nschmidt.ldparteditor.enumtype.TextTask;
@@ -1055,7 +1056,7 @@ public class CompositeTab extends CompositeTabDesign {
                     if (!df.isReadOnly()) {
                         final Shell sh3 = compositeTextPtr[0].getDisplay().getActiveShell();
                         if (df.isVirtual()) {
-                            if (NewOpenSaveDatfileToolItem.saveAs(Editor3DWindow.getWindow(), df)) {
+                            if (NewOpenSaveDatfileToolItem.saveAs(Editor3DWindow.getWindow(), df, HeaderUpdate.NO_HEADER_UPDATE)) {
                                 Project.removeUnsavedFile(df);
                                 Project.removeOpenedFile(df);
                                 if (!Editor3DWindow.getWindow().closeDatfile(df)) {

@@ -34,6 +34,7 @@ import org.nschmidt.ldparteditor.composite.ToolItem;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.LibraryManager;
+import org.nschmidt.ldparteditor.enumtype.HeaderUpdate;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.OpenInWhat;
 import org.nschmidt.ldparteditor.enumtype.Task;
@@ -206,7 +207,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().equals(View.DUMMY_DATFILE)) {
                 final DatFile df = Project.getFileToEdit();
                 if (df.isVirtual()) {
-                    if (saveAs(win, df)) {
+                    if (saveAs(win, df, HeaderUpdate.NO_HEADER_UPDATE)) {
                         Project.removeUnsavedFile(df);
                         Project.removeOpenedFile(df);
                         if (!win.closeDatfile(df)) {
@@ -234,13 +235,13 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
         });
 
         widgetUtil(btnSaveAsDatPtr[0]).addSelectionListener(e -> {
-            saveAs(win, Project.getFileToEdit());
+            saveAs(win, Project.getFileToEdit(), HeaderUpdate.UPDATE_HEADER);
             win.updateTreeUnsavedEntries();
             win.regainFocus();
         });
     }
 
-    public static boolean saveAs(Editor3DWindow win, DatFile fileToEdit) {
+    public static boolean saveAs(Editor3DWindow win, DatFile fileToEdit, HeaderUpdate updateHeader) {
         if (fileToEdit != null && !fileToEdit.equals(View.DUMMY_DATFILE)) {
             final DatFile df2 = fileToEdit;
 
@@ -294,7 +295,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                             }
                         }
 
-                        df2.saveAs(selected);
+                        df2.saveAs(selected, updateHeader);
 
                         DatFile df = win.openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, selected, false);
                         if (df != null) {

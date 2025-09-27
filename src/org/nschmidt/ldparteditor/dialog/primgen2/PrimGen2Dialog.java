@@ -37,6 +37,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enumtype.HeaderUpdate;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.Perspective;
 import org.nschmidt.ldparteditor.enumtype.TextTask;
@@ -398,7 +399,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             w = EditorTextWindow.createNewWindowIfRequired(df);
         }
 
-        final boolean doClose = w.saveAs(df, name, filePath);
+        final boolean doClose = w.saveAs(df, name, filePath, HeaderUpdate.NO_HEADER_UPDATE);
         w.closeTabWithDatfile(df);
 
         if (doClose) {

@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.composite.ToolItem;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.LibraryManager;
+import org.nschmidt.ldparteditor.enumtype.HeaderUpdate;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helper.compositetext.ProjectActions;
@@ -120,7 +121,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                     if (win.getPartsTree().getSelection()[0].getData() instanceof DatFile df) {
                         if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                             if (df.isVirtual()) {
-                                if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                                if (NewOpenSaveDatfileToolItem.saveAs(win, df, HeaderUpdate.NO_HEADER_UPDATE)) {
                                     Project.removeUnsavedFile(df);
                                     Project.removeOpenedFile(df);
                                     if (!win.closeDatfile(df)) {
@@ -147,7 +148,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                         for (DatFile df : dfs) {
                             if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                                 if (df.isVirtual()) {
-                                    if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                                    if (NewOpenSaveDatfileToolItem.saveAs(win, df, HeaderUpdate.NO_HEADER_UPDATE)) {
                                         Project.removeUnsavedFile(df);
                                         Project.removeOpenedFile(df);
                                         if (!win.closeDatfile(df)) {
@@ -213,7 +214,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                 for (DatFile df : dfs) {
                     if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                         if (df.isVirtual()) {
-                            if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                            if (NewOpenSaveDatfileToolItem.saveAs(win, df, HeaderUpdate.NO_HEADER_UPDATE)) {
                                 Project.removeUnsavedFile(df);
                                 Project.removeOpenedFile(df);
                                 if (!win.closeDatfile(df)) {
@@ -273,7 +274,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
             if (onlyPartReviewFiles && !df.isFromPartReview()) continue;
             if (!df.isReadOnly()) {
                 if (df.isVirtual()) {
-                    if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                    if (NewOpenSaveDatfileToolItem.saveAs(win, df, HeaderUpdate.NO_HEADER_UPDATE)) {
                         Project.removeUnsavedFile(df);
                         Project.removeOpenedFile(df);
                         if (!win.closeDatfile(df)) {

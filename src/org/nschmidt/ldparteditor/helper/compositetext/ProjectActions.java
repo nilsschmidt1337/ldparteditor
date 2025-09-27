@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.dialog.newproject.NewProjectDialog;
+import org.nschmidt.ldparteditor.enumtype.HeaderUpdate;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -107,7 +108,7 @@ public enum ProjectActions {
                         Project.removeOpenedFile(df);
                     } else if (result == SWT.YES) {
                         if (df.isVirtual()) {
-                            if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                            if (NewOpenSaveDatfileToolItem.saveAs(win, df, HeaderUpdate.NO_HEADER_UPDATE)) {
                                 Project.removeUnsavedFile(df);
                                 Project.removeOpenedFile(df);
                                 if (!win.closeDatfile(df)) {
@@ -137,7 +138,7 @@ public enum ProjectActions {
 
                 int result = messageBoxOpenFiles.open();
                 Project.setKeepingItOpen(false);
-                
+
                 if (result == SWT.NO) {
                     Set<EditorTextWindow> ow = new HashSet<>(Project.getOpenTextWindows());
                     for (EditorTextWindow w : ow) {
@@ -147,14 +148,14 @@ public enum ProjectActions {
                             w.closeAllTabs();
                         }
                     }
-                    
+
                     Editor3DWindow.getWindow().closeAllComposite3D();
-                    
+
                     // Remove all opened files, unless they are unsaved
                     Project.getOpenedFiles().removeIf(df -> !Project.getUnsavedFiles().contains(df));
                     Editor3DWindow.getWindow().closeAllTabs();
                     Project.setFileToEdit(View.DUMMY_DATFILE);
-                    
+
                     // We may clear all old project informations
                     Project.clearProjectTree();
                 } else if (result == SWT.YES) {

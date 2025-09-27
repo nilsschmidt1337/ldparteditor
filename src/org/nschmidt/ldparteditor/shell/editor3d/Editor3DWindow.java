@@ -108,6 +108,7 @@ import org.nschmidt.ldparteditor.dialog.copy.CopyDialog;
 import org.nschmidt.ldparteditor.dialog.newproject.NewProjectDialog;
 import org.nschmidt.ldparteditor.dnd.OpenedFilesTabDragAndDropTransfer;
 import org.nschmidt.ldparteditor.dnd.OpenedFilesTabDragAndDropType;
+import org.nschmidt.ldparteditor.enumtype.HeaderUpdate;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enumtype.MouseButton;
@@ -4015,7 +4016,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 result2 = true;
             } else if (result == SWT.YES) {
                 if (df.isVirtual()) {
-                    if (NewOpenSaveDatfileToolItem.saveAs(this, df)) {
+                    if (NewOpenSaveDatfileToolItem.saveAs(this, df, HeaderUpdate.NO_HEADER_UPDATE)) {
                         Project.removeUnsavedFile(df);
                         Project.removeOpenedFile(df);
                     }

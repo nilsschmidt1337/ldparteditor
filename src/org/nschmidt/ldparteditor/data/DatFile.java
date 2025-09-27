@@ -50,6 +50,7 @@ import org.nschmidt.ldparteditor.data.colour.GCChrome;
 import org.nschmidt.ldparteditor.data.colour.GCMatteMetal;
 import org.nschmidt.ldparteditor.data.colour.GCMetal;
 import org.nschmidt.ldparteditor.enumtype.Axis;
+import org.nschmidt.ldparteditor.enumtype.HeaderUpdate;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
@@ -1711,7 +1712,7 @@ public final class DatFile {
         }
     }
 
-    public boolean saveAs(String newName) {
+    public boolean saveAs(String newName, HeaderUpdate updateHader) {
         text = getText();
         File newFile = new File(newName);
         if (newFile.exists()) {
@@ -1740,7 +1741,7 @@ public final class DatFile {
                 lines.add(""); //$NON-NLS-1$
 
             // Write the new "0 Name: "
-            if (lines.size() > 1) {
+            if (updateHader == HeaderUpdate.UPDATE_HEADER && lines.size() > 1) {
                 final Pattern whitespace = Pattern.compile("\\s+"); //$NON-NLS-1$
                 final int maxDetectionLines = Math.min(10, lines.size());
 

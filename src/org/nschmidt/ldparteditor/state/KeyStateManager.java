@@ -38,6 +38,7 @@ import org.nschmidt.ldparteditor.composite.ScalableComposite;
 import org.nschmidt.ldparteditor.composite.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enumtype.HeaderUpdate;
 import org.nschmidt.ldparteditor.enumtype.LDConfig;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
@@ -783,7 +784,7 @@ public class KeyStateManager {
                     case SAVE:
                         if (!df.isReadOnly()) {
                             if (df.isVirtual()) {
-                                if (NewOpenSaveDatfileToolItem.saveAs(win, df)) {
+                                if (NewOpenSaveDatfileToolItem.saveAs(win, df, HeaderUpdate.NO_HEADER_UPDATE)) {
                                     Project.removeUnsavedFile(df);
                                     Project.removeOpenedFile(df);
                                     if (!win.closeDatfile(df)) {
