@@ -1,3 +1,18 @@
+### 28 Sep 2025
+With the release of 1.8.96 you are able to...
+-  ...use a new random colour mode at subfile level, just click the random colour mode button again (it is also the new default for the PartReview tool).
+-  ...see a hint if the header description misses a tilde "~" on subparts.
+-  ...use a quick-fix option to adjust the name from the header based on the part type.
+-  ...(not able to choose) Physical_Colour anymore. It was removed as a part type qualifier (deprecated since 2019).
+
+The following critical issues are fixed:
+1. The hint for the part type mismatch was not correct for normal primitives.
+2. The quick-fix option for the part type mismatch did not detect "...s01.dat" names as a subfile.
+3. "Create a subpart" did not default to the subpart type or offered a choice when no type can be determined from the target path.
+4. PrimGen2's "Save As..." button modified the file header.
+5. [Linux] Automatic calculation of the viewport scale factor did not work and needs to be disabled.
+
+
 ### 25 Jul 2025
 With the release of 1.8.95 you are able to...
 -  ...see a hint if the part type does not match to its name.
