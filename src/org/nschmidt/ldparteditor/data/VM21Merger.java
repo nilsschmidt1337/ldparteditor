@@ -250,7 +250,8 @@ public class VM21Merger extends VM20Manipulator {
                 for (Vertex vertex2 : originVerts) {
                     selectedVertices.clear();
                     selectedVertices.add(vertex2);
-                    Vertex minVertex = new Vertex(0f, 0f, 0f);
+                    Vertex origin = new Vertex(0f, 0f, 0f);
+                    Vertex minVertex = origin;
                     Vector4f next = vertex2.toVector4fm();
                     for (Vertex vertex : allVerticesMinusSelection) {
                         Vector4f sub = Vector4f.sub(next, vertex.toVector4fm(), null);
@@ -264,13 +265,15 @@ public class VM21Merger extends VM20Manipulator {
                                     break;
                                 }
                             }
-                            
+
                             if (dontMerge) continue;
-                            
+
                             minVertex = vertex;
                             minDist = d2;
                         }
                     }
+
+                    if (minVertex == origin) return;
                     newVertex = new Vector3d(minVertex);
                     Merger.mergeTo(new Vertex(newVertex), this, linkedDatFile, false);
                 }
