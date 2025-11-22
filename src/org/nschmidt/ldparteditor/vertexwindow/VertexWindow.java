@@ -268,6 +268,7 @@ public class VertexWindow extends ApplicationWindow {
                 spnX.setMaximum(new BigDecimal(1000000));
                 spnX.setMinimum(new BigDecimal(-1000000));
                 spnX.setValue(selectedVertex.xp);
+                spnX.setUseGlobalSnapValues(true);
             }
 
             {
@@ -281,6 +282,7 @@ public class VertexWindow extends ApplicationWindow {
                 spnY.setMaximum(new BigDecimal(1000000));
                 spnY.setMinimum(new BigDecimal(-1000000));
                 spnY.setValue(selectedVertex.yp);
+                spnY.setUseGlobalSnapValues(true);
             }
 
             {
@@ -294,6 +296,7 @@ public class VertexWindow extends ApplicationWindow {
                 spnZ.setMaximum(new BigDecimal(1000000));
                 spnZ.setMinimum(new BigDecimal(-1000000));
                 spnZ.setValue(selectedVertex.zp);
+                spnZ.setUseGlobalSnapValues(true);
             }
 
             {

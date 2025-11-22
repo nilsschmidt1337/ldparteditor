@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
+import org.nschmidt.ldparteditor.helper.Manipulator;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
@@ -64,6 +65,8 @@ public class BigDecimalSpinner extends Composite {
     private volatile boolean forceUpdate = false;
     private volatile boolean selectAll = true;
     private volatile boolean invalidInput = false;
+
+    private boolean useGlobalSnapValues = false;
 
     public BigDecimalSpinner(final Composite parent, int style, String numberFormat) {
         super(parent, style);
@@ -118,6 +121,10 @@ public class BigDecimalSpinner extends Composite {
         dwn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(org.eclipse.swt.events.MouseEvent e) {
+                if (isUseGlobalSnapValues()) {
+                    largeIncrement = Manipulator.getSnap()[0];
+                }
+
                 setValue(value.subtract(largeIncrement));
             }
         });
@@ -134,6 +141,11 @@ public class BigDecimalSpinner extends Composite {
                 }
                 p = p.getParent();
             }
+
+            if (isUseGlobalSnapValues()) {
+                smallIncrement = Manipulator.getSnap()[0];
+            }
+
             if (e.count > 0) {
                 setValue(value.add(smallIncrement));
             } else {
@@ -292,6 +304,10 @@ public class BigDecimalSpinner extends Composite {
         up.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(org.eclipse.swt.events.MouseEvent e) {
+                if (isUseGlobalSnapValues()) {
+                    largeIncrement = Manipulator.getSnap()[0];
+                }
+
                 setValue(value.add(largeIncrement));
             }
         });
@@ -368,5 +384,13 @@ public class BigDecimalSpinner extends Composite {
 
     public void setLargeIncrement(BigDecimal largeIncrement) {
         this.largeIncrement = largeIncrement;
+    }
+
+    public boolean isUseGlobalSnapValues() {
+        return useGlobalSnapValues;
+    }
+
+    public void setUseGlobalSnapValues(boolean useGlobalSnapValues) {
+        this.useGlobalSnapValues = useGlobalSnapValues;
     }
 }
