@@ -100,6 +100,8 @@ public class DuplicateManager {
                             StringBuilder normalized = new StringBuilder();
                             int i = 0;
                             for (String string : dataSegments) {
+                                string = MathHelper.roundDecimalStringAlways(string);
+                                dataSegments[i] = string;
                                 if (i != 1) {
                                     normalized.append(string);
                                     normalized.append(" "); //$NON-NLS-1$
@@ -108,6 +110,9 @@ public class DuplicateManager {
                             }
                             normalizedLine = normalized.toString().trim();
                         } else {
+                            for (int i = 0; i < dataSegments.length; i++) {
+                                dataSegments[i] = MathHelper.roundDecimalStringAlways(dataSegments[i]);
+                            }
                             normalizedLine = trimmedLine;
                         }
 
