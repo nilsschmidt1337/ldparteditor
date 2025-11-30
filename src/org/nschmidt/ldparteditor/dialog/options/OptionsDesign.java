@@ -547,6 +547,7 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SELECT_ALL_WITH_SAME_COLOURS, Task.SELECT_ALL_WITH_SAME_COLOURS, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SELECT_CONNECTED, Task.SELECT_CONNECTED, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SELECT_NONE, Task.SELECT_NONE, true);
+                registerTask(trtmEditor3D, I18n.KEYBOARD_HIDE_SELECTION, Task.HIDE, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SELECT_OPTION_WITH_SAME_COLOURS, Task.SELECT_OPTION_WITH_SAME_COLOURS, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SELECT_TOUCHING, Task.SELECT_TOUCHING, true);
                 registerTask(trtmEditor3D, I18n.KEYBOARD_SHOW_GRID, Task.SHOW_GRID, true);
@@ -585,12 +586,14 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtmEditorText, I18n.KEYBOARD_ESC_2, TextTask.EDITORTEXT_ESC, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_INLINE, TextTask.EDITORTEXT_INLINE, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_QUICK_FIX, TextTask.EDITORTEXT_QUICKFIX, true);
-                registerTask(trtmEditorText, I18n.KEYBOARD_REDO, TextTask.EDITORTEXT_REDO, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_REPLACE_VERTEX, TextTask.EDITORTEXT_REPLACE_VERTEX, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_ROUND, TextTask.EDITORTEXT_ROUND, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_SAVE, TextTask.EDITORTEXT_SAVE, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_SELECT_ALL, TextTask.EDITORTEXT_SELECTALL, true);
+                registerTask(trtmEditorText, I18n.KEYBOARD_HIDE_SELECTION, TextTask.EDITORTEXT_HIDE, true);
+                registerTask(trtmEditorText, I18n.KEYBOARD_SHOW_SELECTION, TextTask.EDITORTEXT_SHOW, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_UNDO, TextTask.EDITORTEXT_UNDO, true);
+                registerTask(trtmEditorText, I18n.KEYBOARD_REDO, TextTask.EDITORTEXT_REDO, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_FIND_REPLACE, TextTask.EDITORTEXT_FIND, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_INSERT_HISTORY, TextTask.EDITORTEXT_INSERT_HISTORY, true);
                 registerTask(trtmEditorText, I18n.KEYBOARD_INSERT_KEYWORD, TextTask.EDITORTEXT_INSERT_KEYWORD, true);

@@ -156,5 +156,7 @@ public enum Task {
     TRIANGLE_TO_QUAD,
     QUAD_TO_TRIANGLE,
 
-    EDGER2
+    EDGER2,
+
+    HIDE
 }

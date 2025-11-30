@@ -915,6 +915,7 @@ public final class I18n {
     public static final String KEYBOARD_FIND_REPLACE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_FLIP_ROTATE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_FOLLOW_SUBFILE_LINKS = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_HIDE_SELECTION = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_INLINE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_INSERT_HISTORY = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_INSERT_KEYWORD = KEYBOARD.getString(getProperty());
@@ -991,6 +992,7 @@ public final class I18n {
     public static final String KEYBOARD_SHOW_GRID = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SHOW_GRID_3D = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SHOW_RULER = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_SHOW_SELECTION = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SIZE_DECREASE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SIZE_INCREASE = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_SPLIT = KEYBOARD.getString(getProperty());

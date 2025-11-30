@@ -396,13 +396,13 @@ class EditorTextDesign extends ApplicationWindow {
         {
             NButton btnHide = new NButton(toolItemHideUnhide, Cocoa.getStyle());
             this.btnHidePtr[0] = btnHide;
-            btnHide.setToolTipText(I18n.EDITORTEXT_HIDE);
+            KeyStateManager.addTooltipText(btnHide, I18n.EDITORTEXT_HIDE, TextTask.EDITORTEXT_HIDE);
             btnHide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
         }
         {
             NButton btnShow = new NButton(toolItemHideUnhide, Cocoa.getStyle());
             this.btnShowPtr[0] = btnShow;
-            btnShow.setToolTipText(I18n.EDITORTEXT_SHOW);
+            KeyStateManager.addTooltipText(btnShow, I18n.EDITORTEXT_SHOW, TextTask.EDITORTEXT_SHOW);
             btnShow.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
         }
         ToolItem toolItemUndoRedo = new ToolItem(toolBar, Cocoa.getStyle(), true);

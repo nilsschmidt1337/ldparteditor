@@ -1313,6 +1313,16 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                     break;
                 }
+                case EDITORTEXT_HIDE:
+                {
+                    hideSelection();
+                    break;
+                }
+                case EDITORTEXT_SHOW:
+                {
+                    showSelection();
+                    break;
+                }
                 default:
                     break;
                 }

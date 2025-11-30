@@ -63,6 +63,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ColourToolItem;
+import org.nschmidt.ldparteditor.shell.editor3d.toolitem.HideUnhideToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.InsertAtCursorPositionToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorScopeToolItem;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.ManipulatorToolItem;
@@ -279,6 +280,9 @@ public class KeyStateManager {
 
             addTask(TextTask.EDITORTEXT_FOLLOW_LINK, SWT.COMMAND, SWT.SHIFT);
 
+            addTask(TextTask.EDITORTEXT_HIDE, SWT.ALT, 'h');
+            addTask(TextTask.EDITORTEXT_SHOW, SWT.ALT, 's');
+
             addTask(Task.CLOSE_VIEW, 'q');
 
             addTask(Task.PERSPECTIVE_TOP, SWT.COMMAND, SWT.KEYPAD_5);
@@ -321,6 +325,8 @@ public class KeyStateManager {
             addTask(Task.QUAD_TO_TRIANGLE, SWT.SHIFT, 't');
 
             addTask(Task.EDGER2, SWT.SHIFT, 'e');
+
+            addTask(Task.HIDE, SWT.ALT, 'h');
         } else {
 
             reservedKeyCodes.add(SWT.ARROW_UP + CTRL_STRING);
@@ -436,6 +442,9 @@ public class KeyStateManager {
 
             addTask(TextTask.EDITORTEXT_FOLLOW_LINK, SWT.CTRL, SWT.SHIFT);
 
+            addTask(TextTask.EDITORTEXT_HIDE, SWT.ALT, 'h');
+            addTask(TextTask.EDITORTEXT_SHOW, SWT.ALT, 's');
+
             addTask(Task.CLOSE_VIEW, 'q');
 
             addTask(Task.PERSPECTIVE_TOP, SWT.CTRL, SWT.KEYPAD_5);
@@ -478,6 +487,8 @@ public class KeyStateManager {
             addTask(Task.QUAD_TO_TRIANGLE, SWT.SHIFT, 't');
 
             addTask(Task.EDGER2, SWT.SHIFT, 'e');
+
+            addTask(Task.HIDE, SWT.ALT, 'h');
         }
 
         backupTaskMap.putAll(taskMap);
@@ -1243,6 +1254,9 @@ public class KeyStateManager {
                     case EDGER2:
                         MiscToolItem.edger2();
                         pressedKeyCodes.clear();
+                        break;
+                    case HIDE:
+                        HideUnhideToolItem.hideSelection();
                         break;
                     }
                 }

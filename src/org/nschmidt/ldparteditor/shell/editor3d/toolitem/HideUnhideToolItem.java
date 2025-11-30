@@ -22,12 +22,14 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 import org.nschmidt.ldparteditor.composite.ToolItem;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widget.NButton;
 
 public class HideUnhideToolItem extends ToolItem {
@@ -40,7 +42,7 @@ public class HideUnhideToolItem extends ToolItem {
 
         NButton btnHide = new NButton(this, Cocoa.getStyle());
         this.btnHidePtr[0] = btnHide;
-        btnHide.setToolTipText(I18n.E3D_HIDE);
+        KeyStateManager.addTooltipText(btnHide, I18n.E3D_HIDE, Task.HIDE);
         btnHide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
 
         NButton btnUnhide = new NButton(this, Cocoa.getStyle());
@@ -53,21 +55,7 @@ public class HideUnhideToolItem extends ToolItem {
 
     private void addListeners() {
         widgetUtil(btnHidePtr[0]).addSelectionListener(e -> {
-            if (Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedData().isEmpty()) {
-                Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().getVertexManager().hideSelection();
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    for (CTabItem t : w.getTabFolder().getItems()) {
-                        if (Project.getFileToEdit().equals(((CompositeTab) t).getState().getFileNameObj())) {
-                            StyledText st = ((CompositeTab) t).getTextComposite();
-                            st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
-                        }
-                    }
-                }
-                Project.getFileToEdit().addHistory();
-            }
-
-            Editor3DWindow.getWindow().regainFocus();
+            hideSelection();
         });
         widgetUtil(btnShowAllPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
@@ -86,5 +74,23 @@ public class HideUnhideToolItem extends ToolItem {
 
             Editor3DWindow.getWindow().regainFocus();
         });
+    }
+
+    public static void hideSelection() {
+        if (Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedData().isEmpty()) {
+            Project.getFileToEdit().getVertexManager().addSnapshot();
+            Project.getFileToEdit().getVertexManager().hideSelection();
+            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                for (CTabItem t : w.getTabFolder().getItems()) {
+                    if (Project.getFileToEdit().equals(((CompositeTab) t).getState().getFileNameObj())) {
+                        StyledText st = ((CompositeTab) t).getTextComposite();
+                        st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+                    }
+                }
+            }
+            Project.getFileToEdit().addHistory();
+        }
+
+        Editor3DWindow.getWindow().regainFocus();
     }
 }
