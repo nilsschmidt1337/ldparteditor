@@ -1,0 +1,12 @@
+0 Duplicated Line Test
+0 Name: new.dat
+0 Author: Nils Schmidt [BlackBrick89]
+0 !LDRAW_ORG Unofficial_Subpart
+0 !LICENSE Licensed under CC BY 4.0 : see CAreadme.txt
+
+0 BFC CERTIFY CCW
+
+1 16 0 53 0 0.68 0 0 0 -6 0 0 0 0.68 48\1-4con52.dat
+1 16 0 53 0 .68 0 0 0 -6 0 0 0 .68 48\1-4con52.dat
+2 24 12.54 7.99 1.24 14.47 0.42 13.87
+2 24 12.54 7.99 1.24 14.47 .42 13.87

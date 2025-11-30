@@ -284,7 +284,7 @@ public enum ZipFileExporter {
                                             .collect(Collectors.joining("\r\n")); //$NON-NLS-1$
                 final String filePath = untransformedFile.getName();
                 NLogger.debug(ZipFileExporter.class, d.getShortName() + ' ' + d.getType() + '\n' + filePath);
-                if (!filePath.startsWith(WorkbenchManager.getUserSettingState().getUnofficialFolderPath())
+                if (filePath != null && !filePath.startsWith(WorkbenchManager.getUserSettingState().getUnofficialFolderPath())
                    && !filePath.startsWith(WorkbenchManager.getUserSettingState().getLdrawFolderPath())) {
                     NLogger.debug(ZipFileExporter.class, fileSource);
                     result.add(new LDrawFile(new File(d.getNewName()).getName(), d.getType(), fileSource));

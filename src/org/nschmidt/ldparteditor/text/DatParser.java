@@ -821,25 +821,26 @@ public enum DatParser {
                         }
                     }
                 }
-            } else if (!fileExists) {
-                result.add(new ParsingResult(I18n.DATPARSER_FILE_NOT_FOUND, "[E01] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             } else {
-                absoluteFilename = fileToOpen.getAbsolutePath();
                 String line = null;
                 lines = new ArrayList<>(4096);
-                try (UTF8BufferedReader reader = new UTF8BufferedReader(absoluteFilename)) {
-                    while (true) {
-                        line = reader.readLine();
-                        if (line == null) {
-                            break;
+                if (fileExists) {
+                    absoluteFilename = fileToOpen.getAbsolutePath();
+                    try (UTF8BufferedReader reader = new UTF8BufferedReader(absoluteFilename)) {
+                        while (true) {
+                            line = reader.readLine();
+                            if (line == null) {
+                                break;
+                            }
+                            lines.add(line);
                         }
-                        lines.add(line);
+                    } catch (FileNotFoundException | LDParsingException ex) {
+                        NLogger.debug(DatParser.class, ex);
                     }
-                } catch (FileNotFoundException | LDParsingException ex) {
-                    NLogger.debug(DatParser.class, ex);
                 }
 
                 if (result.isEmpty()) {
+
                     if (!errorCheckOnly) {
 
                         Matrix tMatrixP = new Matrix(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
@@ -850,6 +851,10 @@ public enum DatParser {
 
                         result.add(new ParsingResult(new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, tMatrixP, lines, absoluteFilename, sb
                                 .toString(), depth, det < 0, destMatrix, destMatrixP, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent)));
+                    }
+
+                    if (!fileExists) {
+                        result.add(new ParsingResult(I18n.DATPARSER_FILE_NOT_FOUND, "[E01] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     }
 
                     // Avoid scaling of flat files
@@ -865,6 +870,8 @@ public enum DatParser {
                             result.addAll(datFile.getVertexManager().checkForFlatScaling((GData1) g1));
                         }
                     }
+                } else if (!fileExists) {
+                    result.add(new ParsingResult(I18n.DATPARSER_FILE_NOT_FOUND, "[E01] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }
             }
             if (parent.equals(View.DUMMY_REFERENCE)) {
