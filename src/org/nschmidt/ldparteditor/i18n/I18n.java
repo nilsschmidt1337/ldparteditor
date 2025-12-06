@@ -1214,6 +1214,7 @@ public final class I18n {
     public static final String PRIMGEN_QUARTER = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_RING = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_SAVE_AS = PRIMGEN.getString(getProperty());
+    public static final String PRIMGEN_SAVE_AS_CONTINUE = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_SEGMENTS = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_SIXTEEN = PRIMGEN.getString(getProperty());
     public static final String PRIMGEN_SIZE = PRIMGEN.getString(getProperty());

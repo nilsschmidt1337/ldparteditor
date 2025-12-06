@@ -86,6 +86,7 @@ class PrimGen2Design extends ThemedDialog {
     final Combo[] cmbWindingPtr = new Combo[1];
 
     final NButton[] btnSaveAsPtr = new NButton[1];
+    final NButton[] btnSaveAsAndContinuePtr = new NButton[1];
     final Button[] btnOkPtr = new Button[1];
     final Button[] btnCancelPtr = new Button[1];
 
@@ -280,13 +281,19 @@ class PrimGen2Design extends ThemedDialog {
 
         {
             Label lblDummy = Theming.label(cmpContainer, SWT.NONE);
-            lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 6, 1));
+            lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 5, 1));
         }
 
         NButton btnSaveAs = new NButton(cmpContainer, SWT.NONE);
         this.btnSaveAsPtr[0] = btnSaveAs;
         btnSaveAs.setText(I18n.PRIMGEN_SAVE_AS);
-        btnSaveAs.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+        btnSaveAs.setImage(ResourceManager.getImage("icon16_close.png")); //$NON-NLS-1$
+        btnSaveAs.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+        NButton btnSaveAsAndContinue = new NButton(cmpContainer, SWT.NONE);
+        this.btnSaveAsAndContinuePtr[0] = btnSaveAsAndContinue;
+        btnSaveAsAndContinue.setText(I18n.PRIMGEN_SAVE_AS_CONTINUE);
+        btnSaveAsAndContinue.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
         {
             Label lblDummy = Theming.label(cmpContainer, SWT.NONE);

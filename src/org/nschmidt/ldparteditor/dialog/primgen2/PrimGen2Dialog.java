@@ -259,13 +259,17 @@ public class PrimGen2Dialog extends PrimGen2Design {
         btnCancelPtr[0].removeListener(SWT.Selection, btnCancelPtr[0].getListeners(SWT.Selection)[0]);
 
         widgetUtil(btnOkPtr[0]).addSelectionListener(e ->
-            savePrimitive(Project.getProjectPath() + File.separator + "p" + File.separator + resPrefix + name) //$NON-NLS-1$
+            savePrimitive(Project.getProjectPath() + File.separator + "p" + File.separator + resPrefix + name, false) //$NON-NLS-1$
         );
 
         widgetUtil(btnCancelPtr[0]).addSelectionListener(e -> getShell().close());
 
         widgetUtil(btnSaveAsPtr[0]).addSelectionListener(e ->
-            savePrimitive(null)
+            savePrimitive(null, false)
+        );
+
+        widgetUtil(btnSaveAsAndContinuePtr[0]).addSelectionListener(e ->
+            savePrimitive(null, true)
         );
 
         widgetUtil(btnTopPtr[0]).addSelectionListener(e -> {
@@ -381,7 +385,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return result;
     }
 
-    private void savePrimitive(final String filePath) {
+    private void savePrimitive(final String filePath, boolean andContinue) {
         EditorTextWindow w = null;
         for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
             if (w2.getTabFolder().getItems().length == 0) {
@@ -402,7 +406,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         final boolean doClose = w.saveAs(df, name, filePath, HeaderUpdate.NO_HEADER_UPDATE);
         w.closeTabWithDatfile(df);
 
-        if (doClose) {
+        if (doClose && !andContinue) {
             ok = true;
             getShell().close();
         }
