@@ -1,3 +1,15 @@
+### 07 Dec 2025
+With the release of 1.8.97 you are able to...
+-  ...use increments from the snapping configuration on the "vertex data" window.
+-  ...use new shortcut keys for "Hide" and "Show" (Alt+H, Alt+S).
+-  ...benefit from the fact that the "Save As..." button of PrimGen2 doesn't close the window, so that you can easily generate a family of similar primitives.
+
+The following critical issues are fixed:
+1. "Merge to Nearest Vertex" merged a vertex to the origin (0|0|0) if no nearest vertex was found.
+2. It was impossible to use translation and scaling for type 1 lines when the file was not found.
+3. The duplicate check did not handle missing zeros.
+
+
 ### 28 Sep 2025
 With the release of 1.8.96 you are able to...
 -  ...use a new random colour mode at subfile level, just click the random colour mode button again (it is also the new default for the PartReview tool).
