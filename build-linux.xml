@@ -215,7 +215,7 @@
             destdir="${targetFolder}"
             includeantruntime="false"
             encoding="utf8"
-            debug="on" source="21" target="21" >
+            debug="on" source="25" target="25" >
             <classpath refid="master-classpath"/>
          </javac>
         
@@ -354,7 +354,7 @@
            destdir="${targetFolder}"
            includeantruntime="false"
            encoding="utf8"
-           debug="on" source="21" target="21" >
+           debug="on" source="25" target="25" >
            <classpath refid="master-classpath"/>
            <classpath path="${targetFolder}" />
         </javac>

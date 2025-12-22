@@ -26,11 +26,11 @@ jobs:
       with:
         path: ./dependencies
         key: swt-jface-lwjgl3zip-tools-windows-v5
-    - name: Set up JDK 21
+    - name: Set up JDK 25
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: 21
+        java-version: 25
     - name: Build with Ant
       run: ant -noinput -buildfile build-windows.xml
     - name: Publish Test Report
@@ -71,11 +71,11 @@ jobs:
       with:
         path: ./dependencies
         key: swt-jface-lwjgl3zip-tools-linux-v5
-    - name: Set up JDK 21
+    - name: Set up JDK 25
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: 21
+        java-version: 25
     - name: Build with Ant
       run: ant -noinput -buildfile build-linux.xml
     - name: Publish Test Report
@@ -118,11 +118,11 @@ jobs:
       with:
         path: ./dependencies
         key: swt-jface-lwjgl3zip-tools-macos-arm-v5
-    - name: Set up JDK 21
+    - name: Set up JDK 25
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: 21
+        java-version: 25
     - name: Build with Ant
       run: ant -noinput -buildfile build-macos-arm.xml
     - name: Publish Test Report
@@ -163,11 +163,11 @@ jobs:
       with:
         path: ./dependencies
         key: swt-jface-lwjgl3zip-tools-macos-v5
-    - name: Set up JDK 21
+    - name: Set up JDK 25
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: 21
+        java-version: 25
     - name: Build with Ant
       run: ant -noinput -buildfile build-macos.xml
     - name: Publish Test Report
