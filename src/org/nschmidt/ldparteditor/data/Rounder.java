@@ -22,6 +22,7 @@ import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composite.compositetab.CompositeTabState;
 import org.nschmidt.ldparteditor.helper.compositetext.Text2SelectionConverter;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.MiscToggleToolItem;
 import org.nschmidt.ldparteditor.shell.editortext.EditorTextWindow;
@@ -51,7 +52,7 @@ public enum Rounder {
         final int currentCaretLine = st.getLineAtOffset(st.getCaretOffset());
         // then detect the character delta to restore it later
         final int characterDelta = st.getCaretOffset() - st.getOffsetAtLine(currentCaretLine);
-        
+
         // Check here if single vertex replacing (ALT+SHIFT+R) is active
         // If so, round only this vertex!
 
@@ -97,10 +98,19 @@ public enum Rounder {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {
                     // We need to update the text now, otherwise the caret selection can't be restored.
-                    st.setText(datFile.getText());
-                    st.setSelection(st.getOffsetAtLine(currentCaretLine) + Math.min(st.getLine(currentCaretLine).length(), characterDelta));
-                    ((CompositeTab) t).parseForErrorAndHints();
-                    ((CompositeTab) t).getTextComposite().redraw();
+                    CompositeTab tab = (CompositeTab) t;
+                    StyledText textComposite = tab.getTextComposite();
+                    final int safeCaretLine = Math.min(currentCaretLine, textComposite.getLineCount() - 1);
+                    tab.getState().setSync(true);
+                    textComposite.setText(datFile.getText());
+                    try {
+                        textComposite.setSelection(textComposite.getOffsetAtLine(safeCaretLine) + Math.min(textComposite.getLine(safeCaretLine).length(), characterDelta));
+                    } catch (IllegalArgumentException iae) {
+                        NLogger.debug(Rounder.class, iae);
+                    }
+                    tab.getState().setSync(false);
+                    tab.parseForErrorAndHints();
+                    textComposite.redraw();
                     break;
                 }
             }
