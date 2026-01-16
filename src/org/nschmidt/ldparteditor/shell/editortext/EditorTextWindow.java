@@ -44,6 +44,7 @@ import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
@@ -93,6 +94,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolI
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.text.Win32LnkParser;
 import org.nschmidt.ldparteditor.workbench.EditorTextWindowState;
+import org.nschmidt.ldparteditor.workbench.WindowState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -167,15 +169,21 @@ public class EditorTextWindow extends EditorTextDesign {
         sh.setText(Version.getApplicationName() + " " + Version.getVersion()); //$NON-NLS-1$
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         sh.setMinimumSize(640, 480);
-        sh.setBounds(this.editorTextWindowState.getWindowState().getSizeAndPosition());
-        if (this.editorTextWindowState.getWindowState().isCentered()) {
+        WindowState ws = this.editorTextWindowState.getWindowState();
+        if (ws.getWidth() == 0 && ws.getHeight() == 0) {
+            ws.setWidth(1024);
+            ws.setHeight(768);
+        }
+
+        sh.setBounds(new Rectangle(ws.getX(), ws.getY(), ws.getWidth(), ws.getHeight()));
+        if (ws.isCentered()) {
             ShellHelper.centerShellOnPrimaryScreen(sh);
         }
         // Maximize has to be called asynchronously
         sh.getDisplay().asyncExec(() -> {
             try {
                 if (!sh.isDisposed()) {
-                    sh.setMaximized(editorTextWindowState.getWindowState().isMaximized());
+                    sh.setMaximized(ws.isMaximized());
                     sh.forceActive();
                 }
             } catch (SWTException consumed) {
@@ -381,7 +389,11 @@ public class EditorTextWindow extends EditorTextDesign {
         EditorTextWindowState stateText = WorkbenchManager.getEditorTextWindowState();
         stateText.getWindowState().setCentered(false);
         stateText.getWindowState().setMaximized(getShell().getMaximized());
-        stateText.getWindowState().setSizeAndPosition(getShell().getBounds());
+        Rectangle bounds = getShell().getBounds();
+        stateText.getWindowState().setX(bounds.x);
+        stateText.getWindowState().setY(bounds.y);
+        stateText.getWindowState().setWidth(bounds.width);
+        stateText.getWindowState().setHeight(bounds.height);
         setReturnCode(CANCEL);
         close();
     }

@@ -43,7 +43,7 @@ public class SerialKiller extends ObjectInputStream {
             "org.nschmidt.ldparteditor.enumtype.Perspective", //$NON-NLS-1$
             "java.lang.Enum", //$NON-NLS-1$
             "org.nschmidt.ldparteditor.workbench.WindowState", //$NON-NLS-1$
-            "org.eclipse.swt.graphics.Rectangle", //$NON-NLS-1$
+            "org.eclipse.swt.graphics.Rectangle", //$NON-NLS-1$ Needed because of compatibility reasons for configurations prior v1.8.89
             "org.nschmidt.ldparteditor.workbench.EditorTextWindowState", //$NON-NLS-1$
             "org.nschmidt.ldparteditor.workbench.UserSettingState", //$NON-NLS-1$
             "\\[F", //$NON-NLS-1$

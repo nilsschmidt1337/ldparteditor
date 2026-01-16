@@ -65,6 +65,7 @@ import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.lwjgl.opengl.swt.GLCanvas;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -153,6 +154,7 @@ import org.nschmidt.ldparteditor.widget.TreeItem;
 import org.nschmidt.ldparteditor.win32openwith.TryToOpen;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
+import org.nschmidt.ldparteditor.workbench.WindowState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -304,13 +306,20 @@ public class Editor3DWindow extends Editor3DDesign {
 
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         sh.setMinimumSize(640, 480);
-        sh.setBounds(WorkbenchManager.getEditor3DWindowState().getWindowState().getSizeAndPosition());
-        if (WorkbenchManager.getEditor3DWindowState().getWindowState().isCentered()) {
+
+        WindowState ws = WorkbenchManager.getEditor3DWindowState().getWindowState();
+        if (ws.getWidth() == 0 && ws.getHeight() == 0) {
+            ws.setWidth(1024);
+            ws.setHeight(768);
+        }
+
+        sh.setBounds(new Rectangle(ws.getX(), ws.getY(), ws.getWidth(), ws.getHeight()));
+        if (ws.isCentered()) {
             ShellHelper.centerShellOnPrimaryScreen(sh);
         }
         // Maximize / tab creation on text editor has to be called asynchronously
         sh.getDisplay().asyncExec(() -> {
-            sh.setMaximized(WorkbenchManager.getEditor3DWindowState().getWindowState().isMaximized());
+            sh.setMaximized(ws.isMaximized());
 
             if (!WorkbenchManager.getUserSettingState().hasSeparateTextWindow()) {
                 for (EditorTextWindow w : Project.getOpenTextWindows()) {

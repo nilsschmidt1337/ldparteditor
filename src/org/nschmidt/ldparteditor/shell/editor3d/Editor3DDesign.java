@@ -1562,7 +1562,8 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                 }
 
-                int width = windowState.getWindowState().getSizeAndPosition().width;
+                int width = windowState.getWindowState().getWidth();
+                if (width == 0) width = 1024;
                 int[] sashSize = windowState.getLeftSashWidth();
                 if (sashSize == null) {
                     sashFormCmpMain.setWeights(width / 3, width - width / 3);
@@ -1597,7 +1598,8 @@ class Editor3DDesign extends ApplicationWindow {
 
         if (containerTop instanceof SashForm sashform) {
             this.editorSashForm[0] = sashform;
-            int width = windowState.getWindowState().getSizeAndPosition().width;
+            int width = windowState.getWindowState().getWidth();
+            if (width == 0) width = 1024;
             int[] sashSize = windowState.getEditorSashWeights();
             if (sashSize == null) {
                 sashform.setWeights(width / 2, width / 2);

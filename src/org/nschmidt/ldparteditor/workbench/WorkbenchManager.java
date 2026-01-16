@@ -67,13 +67,19 @@ public enum WorkbenchManager {
         WindowState windowStateOf3dEditor = editor3DWindowState.getWindowState();
         windowStateOf3dEditor.setCentered(true);
         windowStateOf3dEditor.setMaximized(false);
-        windowStateOf3dEditor.setSizeAndPosition(new Rectangle(0, 0, 1024, 768));
+        windowStateOf3dEditor.setX(0);
+        windowStateOf3dEditor.setY(0);
+        windowStateOf3dEditor.setWidth(1024);
+        windowStateOf3dEditor.setHeight(768);
         editorTextWindowState = new EditorTextWindowState();
         editorTextWindowState.setWindowState(new WindowState());
         WindowState windowStateOfTextEditor = editorTextWindowState.getWindowState();
         windowStateOfTextEditor.setCentered(true);
         windowStateOfTextEditor.setMaximized(false);
-        windowStateOfTextEditor.setSizeAndPosition(new Rectangle(0, 0, 1024, 768));
+        windowStateOfTextEditor.setX(0);
+        windowStateOfTextEditor.setY(0);
+        windowStateOfTextEditor.setWidth(1024);
+        windowStateOfTextEditor.setHeight(768);
         saveWorkbench(WorkbenchManager.SETTINGS_GZ);
     }
 
@@ -216,7 +222,11 @@ public enum WorkbenchManager {
                 Editor3DWindowState state3D = WorkbenchManager.getEditor3DWindowState();
                 state3D.getWindowState().setCentered(false);
                 state3D.getWindowState().setMaximized(win3D.getShell().getMaximized());
-                state3D.getWindowState().setSizeAndPosition(win3D.getShell().getBounds());
+                Rectangle bounds = win3D.getShell().getBounds();
+                state3D.getWindowState().setX(bounds.x);
+                state3D.getWindowState().setY(bounds.y);
+                state3D.getWindowState().setWidth(bounds.width);
+                state3D.getWindowState().setHeight(bounds.height);
                 settingsFileStream.writeObject(state3D);
             }
             settingsFileStream.writeObject(WorkbenchManager.editorTextWindowState);

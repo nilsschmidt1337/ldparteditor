@@ -17,8 +17,6 @@ package org.nschmidt.ldparteditor.workbench;
 
 import java.io.Serializable;
 
-import org.eclipse.swt.graphics.Rectangle;
-
 /**
  * This class represents the state of a window in general
  *
@@ -28,11 +26,26 @@ public class WindowState implements Serializable {
 
     /** V1.00 */
     private static final long serialVersionUID = 1L;
+
     /**
-     * The position of the upper left corner and size from the application
+     * The x position of the upper left corner from the application
      * window (in pixels)
      */
-    private Rectangle sizeAndPosition;
+    private int x;
+    /**
+     * The y position of the upper left corner from the application
+     * window (in pixels)
+     */
+    private int y;
+    /**
+     * The width from the application window (in pixels)
+     */
+    private int width;
+    /**
+     * The height from the application window (in pixels)
+     */
+    private int height;
+
     /** The indicator which is set to true when the window is maximized */
     private boolean maximized;
     /** Centered when open */
@@ -41,18 +54,67 @@ public class WindowState implements Serializable {
     /**
      * @return The size and the current position of the window
      */
-    public Rectangle getSizeAndPosition() {
-        return sizeAndPosition;
+    public int getX() {
+        return x;
     }
 
     /**
-     * Sets the size and the new window position of the window
+     * Sets the new window position of the window (x axis)
      *
      * @param sizeAndPosition
      */
-    public void setSizeAndPosition(Rectangle sizeAndPosition) {
-        this.sizeAndPosition = sizeAndPosition;
+    public void setX(int x) {
+        this.x = x;
     }
+
+    /**
+     * @return The size and the current position of the window
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Sets the new window position of the window (y axis)
+     *
+     * @param sizeAndPosition
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    /**
+     * @return The width of the window
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * Sets the new width of the window
+     *
+     * @param width
+     */
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    /**
+     * @return The height of the window
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Sets the new height of the window
+     *
+     * @param height
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
 
     /**
      * @return true if the window is maximized
@@ -83,5 +145,4 @@ public class WindowState implements Serializable {
     public void setCentered(boolean centered) {
         this.centered = centered;
     }
-
 }
