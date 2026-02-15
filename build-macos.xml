@@ -134,7 +134,6 @@
         </pathconvert>
         
         <unzip src="${swt.macosx.zipfile}" dest="${dependenciesFolder}/${macosxFolder}"/>
-        <unzip src="${dependenciesFolder}/${macosxFolder}/swt.jar" dest="${dependenciesFolder}/${macosxFolder}"/>
         <unzip src="${dependenciesFolder}/lwjgl3.4.1.zip" dest="${libsFolder}"/>
         
         <copy todir="${sourceFolder}" >
