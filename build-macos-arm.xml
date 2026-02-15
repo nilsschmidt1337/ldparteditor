@@ -134,7 +134,6 @@
         </pathconvert>
         
         <unzip src="${swt.macosx.zipfile}" dest="${dependenciesFolder}/${macosxFolder}"/>
-        <unzip src="${dependenciesFolder}/${macosxFolder}/swt.jar" dest="${dependenciesFolder}/${macosxFolder}"/>
         <unzip src="${dependenciesFolder}/lwjgl3.4.1-macosx-arm.zip" dest="${libsFolder}"/>
         
         <copy todir="${sourceFolder}" >
@@ -232,6 +231,8 @@
                 <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
                 <!-- Modified Classpath -->
                 <attribute name="Class-Path" value=". plugin/"/>
+                <attribute name="SWT-OS" value="macosx"/>
+                <attribute name="SWT-Arch" value="aarch64"/>
             </manifest>
             <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
