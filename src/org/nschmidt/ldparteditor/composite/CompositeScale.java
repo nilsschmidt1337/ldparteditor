@@ -94,7 +94,7 @@ public class CompositeScale extends ScalableComposite {
                 return;
             Rectangle rect = canvasHorizontal.getBounds();
             // Create the image to fill the canvas
-            Image image = new Image(Display.getCurrent(), rect);
+            Image image = new Image(Display.getCurrent(), rect.width, rect.height);
             // Set up the offscreen gc
             GC gc = new GC(image);
             // Draw the background
@@ -254,7 +254,7 @@ public class CompositeScale extends ScalableComposite {
                 return;
             Rectangle rect = canvasVertical.getBounds();
             // Create the image to fill the canvas
-            Image image = new Image(Display.getCurrent(), rect);
+            Image image = new Image(Display.getCurrent(), rect.width, rect.height);
             // Set up the offscreen gc
             GC gc = new GC(image);
             // Draw the background

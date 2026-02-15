@@ -41,7 +41,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Rectangle;
 
-import org.eclipse.swt.internal.DPIUtil;
 import org.eclipse.swt.internal.gtk.GDK;
 import org.eclipse.swt.internal.gtk.GTK;
 import org.eclipse.swt.internal.gtk3.GTK3;
@@ -74,13 +73,13 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
             data.majorVersion = 3;
             data.minorVersion = 3;
 		}
-		
+
 		// Validate context attributes
 		validateAttributes(data);
 
 		// make sure our canvas has resources assigned
 		GTK.gtk_widget_realize(canvas.handle);
-		
+
 		// grab handles to our window/display
 		long window = GTK3.gtk_widget_get_window(canvas.handle);
 		long xDisplay = gdk_x11_display_get_xdisplay(window);
@@ -88,7 +87,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 		// generate a list of config options for our frame buffer from the supplied data
         IntBuffer attribList = BufferUtils.createIntBuffer(64);
         populateFBConfigAttribs(data, attribList);
-        
+
         // ask for matching frame buffer configs
 		PointerBuffer fbCfg = glXChooseFBConfig(xDisplay, 0, attribList);
 		if (fbCfg == null || !fbCfg.hasRemaining()) {
@@ -98,10 +97,10 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 
 		// convert our fbconfig to a visualinfo so we can apply it to the widget
 		XVisualInfo viz = glXGetVisualFromFBConfig(xDisplay, fbCfg.get(0));
-		
+
 		// grab our default screen for the default display
 		long screen = GDK.gdk_screen_get_default();
-		
+
 		// ask the screen for a GdkVisual that matches the given info
 		long gdkvisual = GDK.gdk_x11_screen_lookup_visual(screen, (int) viz.visualid());
 
@@ -118,11 +117,11 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 
 		// create the new window - this gives us a glxdrawable too
 		canvas.glWindow = GTK3.gdk_window_new(window, winAttrs, GDK.GDK_WA_VISUAL);
-		
+
 		// sets the user data as the widget that owns the window - historical
 		// see: https://developer.gnome.org/gdk3/stable/gdk3-Windows.html#gdk-window-set-user-data
 		GDK.gdk_window_set_user_data(canvas.glWindow, canvas.handle);
-		
+
 		// get the X id of the new window and call to show it
 		canvas.xWindow = GDK.gdk_x11_window_get_xid(canvas.glWindow);
 		GDK.gdk_window_show(canvas.glWindow);
@@ -142,7 +141,8 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 		Listener listener = event -> {
 			switch (event.type) {
 			case SWT.Resize:
-				Rectangle clientArea = DPIUtil.autoScaleUp(canvas.getClientArea());
+				// Rectangle clientArea = DPIUtil.autoScaleUp(canvas.getClientArea());
+				Rectangle clientArea = canvas.getClientArea();
 				GDK.gdk_window_move(canvas.glWindow, clientArea.x, clientArea.y);
 				GDK.gdk_window_resize(canvas.glWindow, clientArea.width, clientArea.height);
 				break;
@@ -153,7 +153,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
 		};
 		canvas.addListener(SWT.Resize, listener);
 		canvas.addListener(SWT.Dispose, listener);
-		
+
 		// Done!  Return our context.
 		return context;
 	}
@@ -163,10 +163,10 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
         if (data.greenSize > 0) attribList.put(GLX_GREEN_SIZE).put(data.greenSize);
         if (data.blueSize > 0) attribList.put(GLX_BLUE_SIZE).put(data.blueSize);
         if (data.alphaSize > 0) attribList.put(GLX_ALPHA_SIZE).put(data.alphaSize);
-        
+
         if (data.depthSize > 0) attribList.put(GLX_DEPTH_SIZE).put(data.depthSize);
         if (data.stencilSize > 0) attribList.put(GLX_STENCIL_SIZE).put(data.stencilSize);
-        
+
         if (data.doubleBuffer) attribList.put(GLX_DOUBLEBUFFER).put(1);
         if (data.stereo) attribList.put(GLX_STEREO).put(1);
         if (data.sRGB) attribList.put(GLX_FRAMEBUFFER_SRGB_CAPABLE_EXT).put(1);
@@ -175,7 +175,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
         if (data.accumGreenSize > 0) attribList.put(GLX_ACCUM_GREEN_SIZE).put(data.accumGreenSize);
         if (data.accumBlueSize > 0) attribList.put(GLX_ACCUM_BLUE_SIZE).put(data.accumBlueSize);
         if (data.accumAlphaSize > 0) attribList.put(GLX_ACCUM_ALPHA_SIZE).put(data.accumAlphaSize);
-        
+
         if (data.samples > 0) {
         	attribList.put(GLX_SAMPLE_BUFFERS_ARB).put(1);
         	attribList.put(GLX_SAMPLES_ARB).put(data.samples);
@@ -183,16 +183,16 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
                 attribList.put(GLX_COLOR_SAMPLES_NV).put(data.colorSamplesNV);
             }
         }
-        
+
         attribList.put(0);
         attribList.flip();
 	}
-	
+
 	private void populateContextAttribs(GLData data, IntBuffer attribList, GLXCapabilities caps) {
 		attribList.put(GLX_CONTEXT_MAJOR_VERSION_ARB).put(data.majorVersion);
 		attribList.put(GLX_CONTEXT_MINOR_VERSION_ARB).put(data.minorVersion);
-		
-		
+
+
         int profile = 0;
         if (data.api == API.GL) {
             if (data.profile == Profile.COMPATIBILITY) {
@@ -242,7 +242,7 @@ class PlatformLinuxGLCanvas extends AbstractPlatformGLCanvas {
             }
         }
         if (contextFlags > 0) attribList.put(GLX_CONTEXT_FLAGS_ARB).put(contextFlags);
-        
+
         // Release behavior
         if (data.contextReleaseBehavior != null) {
             if (!caps.GLX_ARB_context_flush_control) {
