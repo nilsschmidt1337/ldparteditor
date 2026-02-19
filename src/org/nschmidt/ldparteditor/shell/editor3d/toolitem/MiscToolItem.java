@@ -3271,7 +3271,7 @@ public class MiscToolItem extends ToolItem {
                 winState.setLeftSashWeights(((SashForm) Editor3DWindow.getSashForm().getChildren()[0]).getWeights());
                 Editor3DWindow.getWindow();
                 winState.setLeftSashWidth(Editor3DWindow.getSashForm().getWeights());
-                winState.setPrimitiveZoom(Editor3DWindow.getWindow().getCompositePrimitive().getZoom());
+                winState.setPrimitiveZoom(Editor3DWindow.getWindow().getCompositePrimitive().getZoomLevel());
                 winState.setPrimitiveZoomExponent(Editor3DWindow.getWindow().getCompositePrimitive().getZoomExponent());
                 winState.setPrimitiveViewport(Editor3DWindow.getWindow().getCompositePrimitive().getViewport2());
 

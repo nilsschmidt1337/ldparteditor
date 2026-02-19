@@ -123,7 +123,7 @@ public enum GuiStatusManager {
             sb.append(", "); //$NON-NLS-1$
             sb.append(I18n.PERSPECTIVE_ZOOM);
             sb.append(": "); //$NON-NLS-1$
-            sb.append(DF2F.format(Math.round(c3d.getZoom() * 10000000) / 100f));
+            sb.append(DF2F.format(Math.round(c3d.getZoomLevel() * 10000000) / 100f));
             sb.append("% ["); //$NON-NLS-1$
             BigDecimal[] cursor3D = c3d.getCursorSnapped3Dprecise();
             sb.append(DF4F.format(cursor3D[0].multiply(View.unitFactor)));

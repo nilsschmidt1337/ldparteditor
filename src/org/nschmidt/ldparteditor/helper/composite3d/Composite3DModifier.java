@@ -526,18 +526,18 @@ public class Composite3DModifier {
         c3d.getTranslation().load(id);
         Rectangle b = c3d.getBounds();
         if (maxX > maxY) {
-            c3d.setZoom(b.width / (maxX * 4f * View.PIXEL_PER_LDU));
+            c3d.setZoomLevel(b.width / (maxX * 4f * View.PIXEL_PER_LDU));
         } else {
-            c3d.setZoom(b.height / (maxY * 4f * View.PIXEL_PER_LDU));
+            c3d.setZoomLevel(b.height / (maxY * 4f * View.PIXEL_PER_LDU));
         }
-        pc.setZoomExponent((float) (Math.log10(c3d.getZoom()) + 3f) * 10f);
+        pc.setZoomExponent((float) (Math.log10(c3d.getZoomLevel()) + 3f) * 10f);
 
-        if (pc.getZoomExponent() > 20 || Float.isInfinite(c3d.getZoom()) || Float.isInfinite(pc.getZoomExponent()) || Float.isNaN(c3d.getZoom()) || Float.isNaN(pc.getZoomExponent())) {
+        if (pc.getZoomExponent() > 20 || Float.isInfinite(c3d.getZoomLevel()) || Float.isInfinite(pc.getZoomExponent()) || Float.isNaN(c3d.getZoomLevel()) || Float.isNaN(pc.getZoomExponent())) {
             pc.setZoomExponent(-20f);
-            c3d.setZoom((float) Math.pow(10.0d, -20f / 10 - 3));
+            c3d.setZoomLevel((float) Math.pow(10.0d, -20f / 10 - 3));
         }
 
-        c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
+        c3d.setViewportPixelPerLDU(c3d.getZoomLevel() * View.PIXEL_PER_LDU);
         GuiStatusManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
         pc.initializeViewportPerspective();
@@ -549,9 +549,9 @@ public class Composite3DModifier {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d2 = renderer.getC3D();
                 if (c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
-                    c3d2.setZoom(c3d.getZoom());
+                    c3d2.setZoomLevel(c3d.getZoomLevel());
                     c3d2.getPerspectiveCalculator().setZoomExponent(c3d.getPerspectiveCalculator().getZoomExponent());
-                    c3d2.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
+                    c3d2.setViewportPixelPerLDU(c3d.getZoomLevel() * View.PIXEL_PER_LDU);
                     ((ScalableComposite) c3d2.getParent()).redrawScales();
                     c3d2.getPerspectiveCalculator().initializeViewportPerspective();
                 }

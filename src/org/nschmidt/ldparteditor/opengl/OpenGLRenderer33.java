@@ -216,7 +216,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             float viewportHeight = bounds.height / View.PIXEL_PER_LDU / 2.0f;
             {
                 final FloatBuffer projectionBuf = BufferUtils.createFloatBuffer(16);
-                GLMatrixStack.glOrtho(viewportWidth, -viewportWidth, viewportHeight, -viewportHeight, -c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom()).store(projectionBuf);
+                GLMatrixStack.glOrtho(viewportWidth, -viewportWidth, viewportHeight, -viewportHeight, -c3d.getzNear() * c3d.getZoomLevel(), c3d.getzFar() * c3d.getZoomLevel()).store(projectionBuf);
                 projectionBuf.position(0);
                 shaderProgram2D.use();
                 int projection = shaderProgram2D.getUniformLocation("projection" ); //$NON-NLS-1$
@@ -238,7 +238,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             Matrix4f viewportTransform = new Matrix4f();
             Matrix4f.setIdentity(viewportTransform);
 
-            final float zoom = c3d.getZoom();
+            final float zoom = c3d.getZoomLevel();
             Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewportTransform, viewportTransform);
             Matrix4f viewportRotation = c3d.getRotation();
             viewportRotation.store(rotBuf);

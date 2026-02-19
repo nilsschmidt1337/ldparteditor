@@ -428,7 +428,7 @@ public class CompositePrimitive extends Composite {
     /**
      * @return the view zoom level exponent
      */
-    public float getZoom() {
+    public float getZoomLevel() {
         return zoom;
     }
 
@@ -438,7 +438,7 @@ public class CompositePrimitive extends Composite {
      * @param zoom
      *            value between -10.0 and 10.0
      */
-    public void setZoom(float zoom) {
+    public void setZoomLevel(float zoom) {
         this.zoom = zoom;
     }
 
@@ -506,7 +506,7 @@ public class CompositePrimitive extends Composite {
         if (zoomExponent > 20) {
             zoomExponent = 20;
         }
-        setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
+        setZoomLevel((float) Math.pow(10.0d, zoomExponent / 10 - 3));
         this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
         adjustTranslate();
     }
@@ -519,7 +519,7 @@ public class CompositePrimitive extends Composite {
         if (zoomExponent < 3) {
             zoomExponent = 3;
         }
-        setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
+        setZoomLevel((float) Math.pow(10.0d, zoomExponent / 10 - 3));
         this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
         adjustTranslate();
     }

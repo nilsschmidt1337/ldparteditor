@@ -105,7 +105,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
         Matrix4f viewportTransform = new Matrix4f();
         Matrix4f.setIdentity(viewportTransform);
 
-        float zoom = cp.getZoom();
+        float zoom = cp.getZoomLevel();
         Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewportTransform, viewportTransform);
         Matrix4f viewportTranslation = cp.getTranslation();
         Matrix4f.mul(viewportTransform, viewportTranslation, viewportTransform);
@@ -120,7 +120,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
         final FloatBuffer projectionBuf = BufferUtils.createFloatBuffer(16);
         final float viewport_width = bounds.width / View.PIXEL_PER_LDU;
         final float viewport_height = bounds.height / View.PIXEL_PER_LDU;
-        GLMatrixStack.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom()).store(projectionBuf);
+        GLMatrixStack.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoomLevel(), 1000001f * cp.getZoomLevel()).store(projectionBuf);
         projectionBuf.position(0);
 
         int view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$

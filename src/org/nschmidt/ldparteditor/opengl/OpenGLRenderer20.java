@@ -302,7 +302,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             GL11.glLoadIdentity();
             float viewportWidth = bounds.width / View.PIXEL_PER_LDU / 2.0f;
             float viewportHeight = bounds.height / View.PIXEL_PER_LDU / 2.0f;
-            GL11.glOrtho(viewportWidth, -viewportWidth, viewportHeight, -viewportHeight, -c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom());
+            GL11.glOrtho(viewportWidth, -viewportWidth, viewportHeight, -viewportHeight, -c3d.getzNear() * c3d.getZoomLevel(), c3d.getzFar() * c3d.getZoomLevel());
 
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glLoadIdentity();
@@ -310,7 +310,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             Matrix4f viewportTransform = new Matrix4f();
             Matrix4f.setIdentity(viewportTransform);
 
-            final float zoom = c3d.getZoom();
+            final float zoom = c3d.getZoomLevel();
             Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewportTransform, viewportTransform);
             Matrix4f viewportRotation = c3d.getRotation();
             viewportRotation.store(rotation);

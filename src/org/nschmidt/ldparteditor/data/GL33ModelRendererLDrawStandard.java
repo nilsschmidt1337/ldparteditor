@@ -1269,7 +1269,7 @@ public class GL33ModelRendererLDrawStandard {
             return;
         }
 
-        final float zoom = c3d.getZoom();
+        final float zoom = c3d.getZoomLevel();
         final boolean drawLines = View.lineWidthGL > 0.01f;
         final boolean studlogo = c3d.isShowingLogo();
 

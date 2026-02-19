@@ -66,7 +66,7 @@ public class GLShader {
         final String vendor = GL11.glGetString(GL11.GL_VENDOR);
         final StringBuilder shaderSource = new StringBuilder();
         final String effectivePath;
-        final boolean hasIntelGPU = "Intel".equals(vendor); //$NON-NLS-1$;
+        final boolean hasIntelGPU = "Intel".equals(vendor); //$NON-NLS-1$
         if (hasIntelGPU) {
             effectivePath = path.replace(".", "-intel."); //$NON-NLS-1$ //$NON-NLS-2$
         } else {

@@ -350,7 +350,7 @@ public final class GData5 extends GData {
         }
 
         float result;
-        float zoom = c3d.getZoom();
+        float zoom = c3d.getZoomLevel();
         switch (c3d.getLineMode()) {
         case 1:
             result = 1f;
@@ -487,7 +487,7 @@ public final class GData5 extends GData {
 
         float result;
         int lineMode = c3d.getLineMode();
-        float zoom = c3d.getZoom();
+        float zoom = c3d.getZoomLevel();
 
         switch (lineMode) {
         case 1:
@@ -621,7 +621,7 @@ public final class GData5 extends GData {
 
         float result;
         int lineMode = c3d.getLineMode();
-        float zoom = c3d.getZoom();
+        float zoom = c3d.getZoomLevel();
 
         switch (lineMode) {
         case 1:
@@ -745,7 +745,7 @@ public final class GData5 extends GData {
             return;
         }
 
-        final float zoom = c3d.getZoom();
+        final float zoom = c3d.getZoomLevel();
 
         final Matrix4f m2 = GData.CACHE_viewByProjection.get(parent);
         if (m2 == null) {
@@ -899,7 +899,7 @@ public final class GData5 extends GData {
                 return;
 
             float result;
-            float zoom = c3d.getZoom();
+            float zoom = c3d.getZoomLevel();
             switch (c3d.getLineMode()) {
             case 1:
                 result = 1f;

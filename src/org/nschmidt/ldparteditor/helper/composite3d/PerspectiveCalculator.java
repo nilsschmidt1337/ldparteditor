@@ -288,7 +288,7 @@ public class PerspectiveCalculator {
     private void calculateOrigin(Matrix4f realViewport) {
         Rectangle bounds = c3d.getBounds();
         final float width = (float) bounds.width / (float) bounds.height;
-        zEff = (float) ((c3d.getzFar() + c3d.getzNear()) / -2.0 * c3d.getZoom());
+        zEff = (float) ((c3d.getzFar() + c3d.getzNear()) / -2.0 * c3d.getZoomLevel());
         Vector3f[] axes = c3d.getViewportOriginAxis();
         offset.set(0, 0, 0, 1f);
         Matrix4f.transform(realViewport, offset, offset);
@@ -303,7 +303,7 @@ public class PerspectiveCalculator {
      */
     private void calculateGrid() {
 
-        float gridSize = c3d.getZoom() * View.PIXEL_PER_LDU;
+        float gridSize = c3d.getZoomLevel() * View.PIXEL_PER_LDU;
         while (gridSize > 10f) {
             gridSize = gridSize / 10f;
         }
@@ -327,7 +327,7 @@ public class PerspectiveCalculator {
         grid[2].set(0f, -gridSize);
         // Multiplicants
         grid[3].set(mx, my);
-        c3d.setGridSize((float) (Math.round(gridSize / c3d.getZoom() * 100.0) / 100_000.0d));
+        c3d.setGridSize((float) (Math.round(gridSize / c3d.getZoomLevel() * 100.0) / 100_000.0d));
         gridSize = gridSize * 10f;
         int mx10 = (int) (c3d.getBounds().width / gridSize + 4) / 2;
         int my10 = (int) (c3d.getBounds().height / gridSize + 4) / 2;
@@ -346,7 +346,7 @@ public class PerspectiveCalculator {
     public Matrix4f getRealViewport() {
         Matrix4f viewportTransform = new Matrix4f();
         Matrix4f.setIdentity(viewportTransform);
-        float zoom = c3d.getZoom();
+        float zoom = c3d.getZoomLevel();
         Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewportTransform, viewportTransform);
         Matrix4f viewportRotation = c3d.getRotation();
         Matrix4f.mul(viewportRotation, viewportTransform, viewportTransform);
@@ -462,7 +462,7 @@ public class PerspectiveCalculator {
             GL11.glLoadIdentity();
             float viewportWidth = bounds.width / View.PIXEL_PER_LDU / 2.0f;
             float viewportHeight = bounds.height / View.PIXEL_PER_LDU / 2.0f;
-            GL11.glOrtho(-viewportWidth, viewportWidth, -viewportHeight, viewportHeight, c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom());
+            GL11.glOrtho(-viewportWidth, viewportWidth, -viewportHeight, viewportHeight, c3d.getzNear() * c3d.getZoomLevel(), c3d.getzFar() * c3d.getZoomLevel());
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glLoadIdentity();
         }
@@ -479,8 +479,8 @@ public class PerspectiveCalculator {
         if (zoomExponent > 20) {
             zoomExponent = 20;
         }
-        c3d.setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
-        c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
+        c3d.setZoomLevel((float) Math.pow(10.0d, zoomExponent / 10 - 3));
+        c3d.setViewportPixelPerLDU(c3d.getZoomLevel() * View.PIXEL_PER_LDU);
         GuiStatusManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
         initializeViewportPerspective();
@@ -497,8 +497,8 @@ public class PerspectiveCalculator {
         if (zoomExponent < -40) {
             zoomExponent = -40;
         }
-        c3d.setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
-        c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
+        c3d.setZoomLevel((float) Math.pow(10.0d, zoomExponent / 10 - 3));
+        c3d.setViewportPixelPerLDU(c3d.getZoomLevel() * View.PIXEL_PER_LDU);
         GuiStatusManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
         initializeViewportPerspective();
@@ -509,8 +509,8 @@ public class PerspectiveCalculator {
         if (c3d.isDoingSelection())
             return;
         zoomExponent = -20;
-        c3d.setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
-        c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
+        c3d.setZoomLevel((float) Math.pow(10.0d, zoomExponent / 10 - 3));
+        c3d.setViewportPixelPerLDU(c3d.getZoomLevel() * View.PIXEL_PER_LDU);
         c3d.getTranslation().setIdentity();
         GuiStatusManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
@@ -576,9 +576,9 @@ public class PerspectiveCalculator {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d2 = renderer.getC3D();
                 if (c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
-                    c3d2.setZoom(c3d.getZoom());
+                    c3d2.setZoomLevel(c3d.getZoomLevel());
                     c3d2.getPerspectiveCalculator().setZoomExponent(c3d.getPerspectiveCalculator().getZoomExponent());
-                    c3d2.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
+                    c3d2.setViewportPixelPerLDU(c3d.getZoomLevel() * View.PIXEL_PER_LDU);
                     ((ScalableComposite) c3d2.getParent()).redrawScales();
                     c3d2.getPerspectiveCalculator().initializeViewportPerspective();
                 }

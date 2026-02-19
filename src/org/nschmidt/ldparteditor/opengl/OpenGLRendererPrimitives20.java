@@ -114,7 +114,7 @@ public class OpenGLRendererPrimitives20 implements OpenGLRendererPrimitives {
         GL11.glLoadIdentity();
         float viewportWidth = bounds.width / View.PIXEL_PER_LDU;
         float viewportHeight = bounds.height / View.PIXEL_PER_LDU;
-        GL11.glOrtho(0f, viewportWidth, viewportHeight, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
+        GL11.glOrtho(0f, viewportWidth, viewportHeight, 0f, -1000000f * cp.getZoomLevel(), 1000001f * cp.getZoomLevel());
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
@@ -122,7 +122,7 @@ public class OpenGLRendererPrimitives20 implements OpenGLRendererPrimitives {
         Matrix4f viewportTransform = new Matrix4f();
         Matrix4f.setIdentity(viewportTransform);
 
-        float zoom = cp.getZoom();
+        float zoom = cp.getZoomLevel();
         Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewportTransform, viewportTransform);
         Matrix4f viewportTranslation = cp.getTranslation();
         Matrix4f.mul(viewportTransform, viewportTranslation, viewportTransform);

@@ -738,7 +738,7 @@ public class GL33ModelRenderer {
                 final boolean condlineMode = renderMode == 6;
                 final boolean hideCondlines = !condlineMode && lineMode > 1;
                 final boolean hideLines = !condlineMode && lineMode > 2;
-                final float zoom = c3d.getZoom();
+                final float zoom = c3d.getZoomLevel();
                 final Matrix4f viewport = c3d.getViewport();
                 final Manipulator manipulator = c3d.getManipulator();
                 final Matrix4f transform = manipulator.getTempTransformation4f();
@@ -2492,7 +2492,7 @@ public class GL33ModelRenderer {
             return;
         }
 
-        final float zoom = c3d.getZoom();
+        final float zoom = c3d.getZoomLevel();
         final boolean drawLines = View.lineWidthGL > 0.01f;
         final boolean studlogo = c3d.isShowingLogo();
         final int renderMode = AddToolItem.isAddingCondlines() ? 6 : c3d.getRenderMode();

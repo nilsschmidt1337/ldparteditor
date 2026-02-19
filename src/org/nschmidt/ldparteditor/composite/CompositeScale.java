@@ -108,7 +108,7 @@ public class CompositeScale extends ScalableComposite {
                 float width = rect.width;
                 float halfwidth = width / 2f;
                 float offset = 0;
-                float viewportPixelPerLDU = c3d.getZoom() * View.PIXEL_PER_LDU;
+                float viewportPixelPerLDU = c3d.getZoomLevel() * View.PIXEL_PER_LDU;
                 while (viewportPixelPerLDU > 10) {
                     viewportPixelPerLDU = viewportPixelPerLDU / 10f;
                 }
@@ -129,30 +129,30 @@ public class CompositeScale extends ScalableComposite {
                 // MARK Ruler Perspective Horizontal
                 switch (c3d.getPerspectiveIndex()) {
                 case FRONT:
-                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
+                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoomLevel() * View.PIXEL_PER_LDU) - 2f;
                     break;
                 case BACK:
-                    offset = (int) -(c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
+                    offset = (int) -(c3d.getTranslation().m30 * c3d.getZoomLevel() * View.PIXEL_PER_LDU) - 2f;
                     factor = -1;
                     break;
                 case LEFT:
-                    offset = (int) -(c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
+                    offset = (int) -(c3d.getTranslation().m32 * c3d.getZoomLevel() * View.PIXEL_PER_LDU) - 2f;
                     factor = -1;
                     break;
                 case RIGHT:
-                    offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
+                    offset = (int) (c3d.getTranslation().m32 * c3d.getZoomLevel() * View.PIXEL_PER_LDU) - 2f;
                     break;
                 case TOP:
-                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
+                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoomLevel() * View.PIXEL_PER_LDU) - 2f;
                     break;
                 case BOTTOM:
-                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
+                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoomLevel() * View.PIXEL_PER_LDU) - 2f;
                     break;
                 case TWO_THIRDS, TWO_THIRDS_FRONT_TOP_RIGHT, TWO_THIRDS_BACK_TOP_RIGHT, TWO_THIRDS_BACK_TOP_LEFT, TWO_THIRDS_BACK_BOTTOM_LEFT, TWO_THIRDS_BACK_BOTTOM_RIGHT, TWO_THIRDS_FRONT_BOTTOM_RIGHT, TWO_THIRDS_FRONT_BOTTOM_LEFT:
                     throw new AssertionError();
                 }
 
-                float scaleFactor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unitFactor.floatValue();
+                float scaleFactor = factor / (View.PIXEL_PER_LDU * c3d.getZoomLevel() * 1000f) * View.unitFactor.floatValue();
 
                 if (offset < -halfwidth) {
                     // "Positive"
@@ -268,7 +268,7 @@ public class CompositeScale extends ScalableComposite {
                 float height = rect.height;
                 float halfheight = height / 2f;
                 float offset = 0;
-                float viewportPixelPerLDU = c3d.getZoom() * View.PIXEL_PER_LDU;
+                float viewportPixelPerLDU = c3d.getZoomLevel() * View.PIXEL_PER_LDU;
                 while (viewportPixelPerLDU > 10) {
                     viewportPixelPerLDU = viewportPixelPerLDU / 10f;
                 }
@@ -288,29 +288,29 @@ public class CompositeScale extends ScalableComposite {
                 // MARK Ruler Perspective Vertical
                 switch (c3d.getPerspectiveIndex()) {
                 case FRONT:
-                    offset = (int) (c3d.getTranslation().m31 * c3d.getZoom() * View.PIXEL_PER_LDU);
+                    offset = (int) (c3d.getTranslation().m31 * c3d.getZoomLevel() * View.PIXEL_PER_LDU);
                     break;
                 case BACK:
-                    offset = (int) (c3d.getTranslation().m31 * c3d.getZoom() * View.PIXEL_PER_LDU);
+                    offset = (int) (c3d.getTranslation().m31 * c3d.getZoomLevel() * View.PIXEL_PER_LDU);
                     break;
                 case LEFT:
-                    offset = (int) (c3d.getTranslation().m31 * c3d.getZoom() * View.PIXEL_PER_LDU);
+                    offset = (int) (c3d.getTranslation().m31 * c3d.getZoomLevel() * View.PIXEL_PER_LDU);
                     break;
                 case RIGHT:
-                    offset = (int) (c3d.getTranslation().m31 * c3d.getZoom() * View.PIXEL_PER_LDU);
+                    offset = (int) (c3d.getTranslation().m31 * c3d.getZoomLevel() * View.PIXEL_PER_LDU);
                     break;
                 case TOP:
-                    offset = (int) -(c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU);
+                    offset = (int) -(c3d.getTranslation().m32 * c3d.getZoomLevel() * View.PIXEL_PER_LDU);
                     factor = -1;
                     break;
                 case BOTTOM:
-                    offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU);
+                    offset = (int) (c3d.getTranslation().m32 * c3d.getZoomLevel() * View.PIXEL_PER_LDU);
                     break;
                 case TWO_THIRDS, TWO_THIRDS_FRONT_TOP_RIGHT, TWO_THIRDS_BACK_TOP_RIGHT, TWO_THIRDS_BACK_TOP_LEFT, TWO_THIRDS_BACK_BOTTOM_LEFT, TWO_THIRDS_BACK_BOTTOM_RIGHT, TWO_THIRDS_FRONT_BOTTOM_RIGHT, TWO_THIRDS_FRONT_BOTTOM_LEFT:
                     throw new AssertionError();
                 }
 
-                float scaleFactor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unitFactor.floatValue();
+                float scaleFactor = factor / (View.PIXEL_PER_LDU * c3d.getZoomLevel() * 1000f) * View.unitFactor.floatValue();
 
                 if (offset < -halfheight) {
                     // "Positive"

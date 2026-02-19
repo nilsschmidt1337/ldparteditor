@@ -2386,7 +2386,7 @@ public class Editor3DWindow extends Editor3DDesign {
         }
         winState.setLeftSashWeights(((SashForm) getSashForm().getChildren()[0]).getWeights());
         winState.setLeftSashWidth(getSashForm().getWeights());
-        winState.setPrimitiveZoom(cmpPrimitivesPtr[0].getZoom());
+        winState.setPrimitiveZoom(cmpPrimitivesPtr[0].getZoomLevel());
         winState.setPrimitiveZoomExponent(cmpPrimitivesPtr[0].getZoomExponent());
         winState.setPrimitiveViewport(cmpPrimitivesPtr[0].getViewport2());
 

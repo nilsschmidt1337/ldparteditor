@@ -96,7 +96,7 @@ class VM01SelectHelper extends VM01Select {
             Matrix4f.transform(ovrInverse2, zAxis4f, zAxis4f);
             selectionDepth = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
             selectionDepth.w = 1f;
-            final float discr = 1f / c3d.getZoom();
+            final float discr = 1f / c3d.getZoomLevel();
 
             final long complexity = c3d.isShowingHiddenVertices() ? vertexLinkedToPositionInFile.size() : vertexLinkedToPositionInFile.size() * ((long) triangles.size() + (long) quads.size());
             if (complexity < View.NUM_CORES * 100L) {
@@ -369,7 +369,7 @@ class VM01SelectHelper extends VM01Select {
         }
         if (addSomething) {
             SortedSet<Vertex> nearVertices = new TreeSet<>();
-            float zoom = c3d.getZoom() * 1000f;
+            float zoom = c3d.getZoomLevel() * 1000f;
             NLogger.debug(getClass(), zoom);
             final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
             List<Vector4f> vertsOnScreen = new ArrayList<>(selectedVertices.size());
@@ -514,7 +514,7 @@ class VM01SelectHelper extends VM01Select {
             Matrix4f.transform(ovrInverse2, zAxis4f, zAxis4f);
             selectionDepth = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
             selectionDepth.w = 1f;
-            final float discr = 1f / c3d.getZoom();
+            final float discr = 1f / c3d.getZoomLevel();
 
             final long complexity = c3d.isShowingHiddenVertices() ? vertexLinkedToPositionInFile.size() : vertexLinkedToPositionInFile.size() * ((long) triangles.size() + (long) quads.size());
             if (complexity < View.NUM_CORES * 100L) {
@@ -970,7 +970,7 @@ class VM01SelectHelper extends VM01Select {
                 // Line from Ray
                 // x(t) = s + dt
 
-                float discr = 1f / c3d.getZoom();
+                float discr = 1f / c3d.getZoomLevel();
 
                 float[] s = new float[3];
                 s[0] = selectionStart.x;
@@ -1204,7 +1204,7 @@ class VM01SelectHelper extends VM01Select {
                 // Line from Ray
                 // x(t) = s + dt
 
-                float discr = 1f / c3d.getZoom();
+                float discr = 1f / c3d.getZoomLevel();
 
                 float[] s = new float[3];
                 s[0] = selectionStart.x;

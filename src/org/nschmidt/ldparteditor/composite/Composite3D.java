@@ -1439,7 +1439,7 @@ public class Composite3D extends ScalableComposite {
     /**
      * @return the view zoom level exponent
      */
-    public float getZoom() {
+    public float getZoomLevel() {
         return zoom;
     }
 
@@ -1449,7 +1449,7 @@ public class Composite3D extends ScalableComposite {
      * @param zoom
      *            value between -10.0 and 10.0
      */
-    public void setZoom(float zoom) {
+    public void setZoomLevel(float zoom) {
         this.zoom = zoom;
     }
 

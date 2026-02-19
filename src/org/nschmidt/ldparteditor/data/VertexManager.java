@@ -136,7 +136,7 @@ public final class VertexManager extends VM99Clipboard {
 
         if (c3d.isShowingVertices()) {
 
-            Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * c3d.getZoom(), 1f);
+            Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * c3d.getZoomLevel(), 1f);
             Matrix4f.transform(ivm, tr, tr);
             GL11.glDisable(GL11.GL_LIGHTING);
             if (c3d.isShowingHiddenVertices()) {
@@ -556,7 +556,7 @@ public final class VertexManager extends VM99Clipboard {
 
         final boolean drawWireframe = c3d.getRenderMode() == -1;
         if (c3d.isMeshLines() || drawWireframe) {
-            Vector4f tr2 = new Vector4f(vm.m30, vm.m31, vm.m32 + 300f * c3d.getZoom(), 1f);
+            Vector4f tr2 = new Vector4f(vm.m30, vm.m31, vm.m32 + 300f * c3d.getZoomLevel(), 1f);
             Matrix4f.transform(ivm, tr2, tr2);
 
             GraphicalDataTools.setLineWidth(2f);
@@ -642,7 +642,7 @@ public final class VertexManager extends VM99Clipboard {
 
             GL11.glPushMatrix();
 
-            Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * c3d.getZoom(), 1f);
+            Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * c3d.getZoomLevel(), 1f);
             Matrix4f.transform(ivm, tr, tr);
 
             GL11.glTranslatef(tr.x, tr.y, tr.z);

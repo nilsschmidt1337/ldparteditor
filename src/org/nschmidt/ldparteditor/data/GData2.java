@@ -253,7 +253,7 @@ public final class GData2 extends GData {
             return;
         }
 
-        if (c3d.getZoom() > View.edgeThreshold) {
+        if (c3d.getZoomLevel() > View.edgeThreshold) {
 
             GL11.glPushMatrix();
 
@@ -359,7 +359,7 @@ public final class GData2 extends GData {
         final float rndGreen = MathHelper.randomFloat(id, 1);
         final float rndBlue = MathHelper.randomFloat(id, 2);
 
-        if (c3d.getZoom() > View.edgeThreshold) {
+        if (c3d.getZoomLevel() > View.edgeThreshold) {
 
             GL11.glPushMatrix();
 
@@ -465,7 +465,7 @@ public final class GData2 extends GData {
         final float rndGreen = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 1);
         final float rndBlue = MathHelper.randomFloat(parent == View.DUMMY_REFERENCE ? id : parent.firstRef.id, 2);
 
-        if (c3d.getZoom() > View.edgeThreshold) {
+        if (c3d.getZoomLevel() > View.edgeThreshold) {
 
             GL11.glPushMatrix();
 
@@ -819,7 +819,7 @@ public final class GData2 extends GData {
     void drawDistanceGL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c) {
         final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
-        final float zoom = 1f / c3d.getZoom();
+        final float zoom = 1f / c3d.getZoomLevel();
         GraphicalDataTools.setLineWidth(View.lineWidthGL);
         GL11.glColor4f(r, g, b, 1f);
         GL11.glBegin(GL11.GL_LINES);
@@ -1032,7 +1032,7 @@ public final class GData2 extends GData {
         GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
         final int[] vaoVbo = PGData3.beginDrawTextGL33();
         final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
-        final float zoom = 1f / c3d.getZoom();
+        final float zoom = 1f / c3d.getZoomLevel();
         final Vector4f textOrigin = new Vector4f((x1 + x2) / 2f, (y1 + y2) / 2f, (z1 + z2) / 2f, 1f);
         final Vector4f lineOrigin = new Vector4f(x1, y1, z1, 1f);
         Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
