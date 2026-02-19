@@ -47,14 +47,14 @@ public class NewProjectDialog extends NewProjectDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        txtProjectNamePtr[0].addListener(SWT.Modify, e -> {
+        txtProjectNamePtr[0].addListener(SWT.Modify, _ -> {
             String txt = txtProjectNamePtr[0].getText().toLowerCase();
             btnOkPtr[0].setEnabled(FileHelper.isFilenameValid(txt) && !txt.equals("48") && !txt.equalsIgnoreCase("parts") && !txt.equalsIgnoreCase("s") && !txt.equalsIgnoreCase("p")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             projectName = txtProjectNamePtr[0].getText();
         });
         final boolean[] firstchoose = new boolean[1];
         firstchoose[0] = true;
-        widgetUtil(btnBrowseProjectPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseProjectPathPtr[0]).addSelectionListener(_ -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
             String authorFolder = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();
 
@@ -93,7 +93,7 @@ public class NewProjectDialog extends NewProjectDesign {
                 projectPath = authorFolder;
             }
         });
-        widgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnOkPtr[0]).addSelectionListener(_ -> {
             Project.setTempProjectName(projectName);
             Project.setTempProjectPath(projectPath + File.separator + projectName);
         });

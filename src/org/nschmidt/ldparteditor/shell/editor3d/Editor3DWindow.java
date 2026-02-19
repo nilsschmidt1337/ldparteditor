@@ -390,15 +390,15 @@ public class Editor3DWindow extends Editor3DDesign {
                 VertexWindow.placeVertexWindow();
             }
         });
-        sh.addListener(SWT.Move, event ->
+        sh.addListener(SWT.Move, _ ->
             VertexWindow.placeVertexWindow()
         );
-        sh.addListener(SWT.Resize, event ->
+        sh.addListener(SWT.Resize, _ ->
             VertexWindow.placeVertexWindow()
         );
-        widgetUtil(tabFolderSettingsPtr[0]).addSelectionListener(e ->  regainFocus());
+        widgetUtil(tabFolderSettingsPtr[0]).addSelectionListener(_ ->  regainFocus());
 
-        WidgetSelectionListener sa = e -> {
+        WidgetSelectionListener sa = _ -> {
             int[] w = leftSash[0].getWeights();
             if (w[0] == 800 && w[1] == 100 && w[2] == 100) {
                 leftSash[0].setWeights(33, 33, 33);
@@ -412,7 +412,7 @@ public class Editor3DWindow extends Editor3DDesign {
         widgetUtil(btnShowUpper3Ptr[0]).addSelectionListener(sa);
         widgetUtil(btnShowUpper4Ptr[0]).addSelectionListener(sa);
 
-        widgetUtil(btnShowMiddlePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnShowMiddlePtr[0]).addSelectionListener(_ -> {
             int[] w = leftSash[0].getWeights();
             if (w[0] == 100 && w[1] == 800 && w[2] == 100) {
                 leftSash[0].setWeights(33, 33, 33);
@@ -421,11 +421,11 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        widgetUtil(btnSameHeightPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnSameHeightPtr[0]).addSelectionListener(_ ->
             leftSash[0].setWeights(33, 33, 33)
         );
 
-        widgetUtil(btnShowLowerPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnShowLowerPtr[0]).addSelectionListener(_ -> {
             int[] w = leftSash[0].getWeights();
             if (w[0] == 100 && w[1] == 100 && w[2] == 800) {
                 leftSash[0].setWeights(33, 33, 33);
@@ -434,7 +434,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (btnShowLeftPtr[0] != null) widgetUtil(btnShowLeftPtr[0]).addSelectionListener(e -> {
+        if (btnShowLeftPtr[0] != null) widgetUtil(btnShowLeftPtr[0]).addSelectionListener(_ -> {
             final SashForm sf = splitSash[0];
             int[] w = sf.getWeights();
             if (w[1] * 9 > w[0]) {
@@ -444,7 +444,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (btnShowRightPtr[0] != null) widgetUtil(btnShowRightPtr[0]).addSelectionListener(e -> {
+        if (btnShowRightPtr[0] != null) widgetUtil(btnShowRightPtr[0]).addSelectionListener(_ -> {
             final SashForm sf = splitSash[0];
             int[] w = sf.getWeights();
             if (w[0] * 9 > w[1]) {
@@ -454,7 +454,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (btnSameWidthPtr[0] != null) widgetUtil(btnSameWidthPtr[0]).addSelectionListener(e -> splitSash[0].setWeights(50, 50));
+        if (btnSameWidthPtr[0] != null) widgetUtil(btnSameWidthPtr[0]).addSelectionListener(_ -> splitSash[0].setWeights(50, 50));
 
         if (splitSash[0] != null) splitSash[0].getChildren()[0].addControlListener(new ControlListener() {
             @Override
@@ -471,7 +471,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        widgetUtil(btnStudPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnStudPtr[0]).addSelectionListener(_ -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getStudMoveSnap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getStudRotateSnap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getStudScaleSnap();
@@ -483,7 +483,7 @@ public class Editor3DWindow extends Editor3DDesign {
             Manipulator.setSnap(new BigDecimal(8), BigDecimal.TEN, r, s);
             regainFocus();
         });
-        widgetUtil(btnCoarsePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCoarsePtr[0]).addSelectionListener(_ -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getCoarseMoveSnap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getCoarseRotateSnap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getCoarseScaleSnap();
@@ -495,7 +495,7 @@ public class Editor3DWindow extends Editor3DDesign {
             Manipulator.setSnap(m, m, r, s);
             regainFocus();
         });
-        widgetUtil(btnMediumPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMediumPtr[0]).addSelectionListener(_ -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getMediumMoveSnap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getMediumRotateSnap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getMediumScaleSnap();
@@ -507,7 +507,7 @@ public class Editor3DWindow extends Editor3DDesign {
             Manipulator.setSnap(m, m, r, s);
             regainFocus();
         });
-        widgetUtil(btnFinePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnFinePtr[0]).addSelectionListener(_ -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getFineMoveSnap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getFineRotateSnap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getFineScaleSnap();
@@ -540,7 +540,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmGridStudDefault.setEnabled(true);
                 mntmGridStudDefault.setText(I18n.E3D_GRID_STUD_DEFAULT);
 
-                widgetUtil(mntmGridStudDefaultPtr[0]).addSelectionListener(e -> {
+                widgetUtil(mntmGridStudDefaultPtr[0]).addSelectionListener(_ -> {
                     WorkbenchManager.getUserSettingState().setStudMoveSnap(BigDecimal.TEN);
                     WorkbenchManager.getUserSettingState().setStudRotateSnap(new BigDecimal("90")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setStudScaleSnap(BigDecimal.ONE);
@@ -590,7 +590,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmGridCoarseDefault.setEnabled(true);
                 mntmGridCoarseDefault.setText(I18n.E3D_GRID_COARSE_DEFAULT);
 
-                widgetUtil(mntmGridCoarseDefaultPtr[0]).addSelectionListener(e -> {
+                widgetUtil(mntmGridCoarseDefaultPtr[0]).addSelectionListener(_ -> {
                     WorkbenchManager.getUserSettingState().setCoarseMoveSnap(new BigDecimal("1")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setCoarseRotateSnap(new BigDecimal("90")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setCoarseScaleSnap(new BigDecimal("2")); //$NON-NLS-1$
@@ -640,7 +640,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmGridMediumDefault.setEnabled(true);
                 mntmGridMediumDefault.setText(I18n.E3D_GRID_MEDIUM_DEFAULT);
 
-                widgetUtil(mntmGridMediumDefaultPtr[0]).addSelectionListener(e -> {
+                widgetUtil(mntmGridMediumDefaultPtr[0]).addSelectionListener(_ -> {
                     WorkbenchManager.getUserSettingState().setMediumMoveSnap(new BigDecimal("0.01")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setMediumRotateSnap(new BigDecimal("11.25")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setMediumScaleSnap(new BigDecimal("1.1")); //$NON-NLS-1$
@@ -690,7 +690,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmGridFineDefault.setEnabled(true);
                 mntmGridFineDefault.setText(I18n.E3D_GRID_FINE_DEFAULT);
 
-                widgetUtil(mntmGridFineDefaultPtr[0]).addSelectionListener(e -> {
+                widgetUtil(mntmGridFineDefaultPtr[0]).addSelectionListener(_ -> {
                     WorkbenchManager.getUserSettingState().setFineMoveSnap(new BigDecimal("0.0001")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setFineRotateSnap(BigDecimal.ONE);
                     WorkbenchManager.getUserSettingState().setFineScaleSnap(new BigDecimal("1.001")); //$NON-NLS-1$
@@ -817,7 +817,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         spnScaleInitialPtr[0].addValueChangeListener(spn -> Manipulator.setInitialScale(spn.getValue()));
 
-        widgetUtil(btnPreviousSelectionPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPreviousSelectionPtr[0]).addSelectionListener(_ -> {
             updatingSelectionTab = true;
             NLogger.debug(getClass(), "Previous Selection..."); //$NON-NLS-1$
             final DatFile df = Project.getFileToEdit();
@@ -1001,7 +1001,7 @@ public class Editor3DWindow extends Editor3DDesign {
             updatingSelectionTab = false;
             regainFocus();
         });
-        widgetUtil(btnNextSelectionPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnNextSelectionPtr[0]).addSelectionListener(_ -> {
             updatingSelectionTab = true;
             NLogger.debug(getClass(), "Next Selection..."); //$NON-NLS-1$
             final DatFile df = Project.getFileToEdit();
@@ -1183,7 +1183,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        final DecimalValueChangeAdapter va = spn -> {
+        final DecimalValueChangeAdapter va = _ -> {
             if (updatingSelectionTab || Project.getFileToEdit() == null) return;
             Project.getFileToEdit().getVertexManager().addSnapshot();
             final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
@@ -1259,7 +1259,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        spnSelectionLengthMMPtr[0].addValueChangeListener(spn ->
+        spnSelectionLengthMMPtr[0].addValueChangeListener(_ ->
             spnSelectionLengthPtr[0].setValue(spnSelectionLengthMMPtr[0].getValue().divide(GData2.MILLIMETRE_PER_LDU))
         );
 
@@ -1346,13 +1346,13 @@ public class Editor3DWindow extends Editor3DDesign {
         spnSelectionY4Ptr[0].addValueChangeListener(va);
         spnSelectionZ4Ptr[0].addValueChangeListener(va);
 
-        widgetUtil(btnMoveAdjacentData2Ptr[0]).addSelectionListener(e -> regainFocus());
-        widgetUtil(btnOpenInTextEditorPtr[0]).addSelectionListener(e -> actionOpenInTextEditor());
-        widgetUtil(btnOpenIn3DEditorPtr[0]).addSelectionListener(e -> actionOpenIn3DEditor());
-        widgetUtil(btnRevertPtr[0]).addSelectionListener(e -> actionRevert());
-        widgetUtil(btnClosePtr[0]).addSelectionListener(e -> actionClose());
-        widgetUtil(btnRenamePtr[0]).addSelectionListener(e -> actionRename());
-        widgetUtil(btnCopyToUnofficialPtr[0]).addSelectionListener(e -> actionCopyToUnofficial());
+        widgetUtil(btnMoveAdjacentData2Ptr[0]).addSelectionListener(_ -> regainFocus());
+        widgetUtil(btnOpenInTextEditorPtr[0]).addSelectionListener(_ -> actionOpenInTextEditor());
+        widgetUtil(btnOpenIn3DEditorPtr[0]).addSelectionListener(_ -> actionOpenIn3DEditor());
+        widgetUtil(btnRevertPtr[0]).addSelectionListener(_ -> actionRevert());
+        widgetUtil(btnClosePtr[0]).addSelectionListener(_ -> actionClose());
+        widgetUtil(btnRenamePtr[0]).addSelectionListener(_ -> actionRename());
+        widgetUtil(btnCopyToUnofficialPtr[0]).addSelectionListener(_ -> actionCopyToUnofficial());
 
         treeParts[0].addMenuDetectListener(new MenuDetectListener() {
             @Override
@@ -1412,12 +1412,12 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmCopyToUnofficial.setEnabled(enabled && isNotUnofficial);
                 mntmCopyToUnofficial.setText(I18n.E3D_COPY_TO_UNOFFICIAL_LIBRARY);
 
-                widgetUtil(mntmOpenInTextEditorPtr[0]).addSelectionListener(e1 -> actionOpenInTextEditor());
-                widgetUtil(mntmOpenIn3DEditorPtr[0]).addSelectionListener(e1 -> actionOpenIn3DEditor());
-                widgetUtil(mntmRevertPtr[0]).addSelectionListener(e1 -> actionRevert());
-                widgetUtil(mntmClosePtr[0]).addSelectionListener(e1 -> actionClose());
-                widgetUtil(mntmRenamePtr[0]).addSelectionListener(e1 -> actionRename());
-                widgetUtil(mntmCopyToUnofficialPtr[0]).addSelectionListener(e1 -> actionCopyToUnofficial());
+                widgetUtil(mntmOpenInTextEditorPtr[0]).addSelectionListener(_ -> actionOpenInTextEditor());
+                widgetUtil(mntmOpenIn3DEditorPtr[0]).addSelectionListener(_ -> actionOpenIn3DEditor());
+                widgetUtil(mntmRevertPtr[0]).addSelectionListener(_ -> actionRevert());
+                widgetUtil(mntmClosePtr[0]).addSelectionListener(_ -> actionClose());
+                widgetUtil(mntmRenamePtr[0]).addSelectionListener(_ -> actionRename());
+                widgetUtil(mntmCopyToUnofficialPtr[0]).addSelectionListener(_ -> actionCopyToUnofficial());
 
                 java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
                 final int x = (int) b.getX();
@@ -1430,7 +1430,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        treeParts[0].addSelectionListener(e -> {
+        treeParts[0].addSelectionListener(_ -> {
             final boolean enabled = treeParts[0].getSelectionCount() > 0  && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile;
             final boolean writable = enabled && !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly();
             final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null && !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItemUnofficialPtr[0]);
@@ -1442,7 +1442,7 @@ public class Editor3DWindow extends Editor3DDesign {
             btnCopyToUnofficialPtr[0].setEnabled(enabled && isNotUnofficial);
         });
 
-        treeParts[0].addListener(SWT.MouseDoubleClick, event -> {
+        treeParts[0].addListener(SWT.MouseDoubleClick, _ -> {
             if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null) {
                 treeParts[0].getSelection()[0].setVisible(!treeParts[0].getSelection()[0].isVisible());
                 TreeItem sel = treeParts[0].getSelection()[0];
@@ -1453,12 +1453,12 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        txtSearchPtr[0].addModifyListener(e -> search(txtSearchPtr[0].getText()));
-        widgetUtil(btnResetSearchPtr[0]).addSelectionListener(e -> {
+        txtSearchPtr[0].addModifyListener(_ -> search(txtSearchPtr[0].getText()));
+        widgetUtil(btnResetSearchPtr[0]).addSelectionListener(_ -> {
             txtSearchPtr[0].setText(""); //$NON-NLS-1$
             txtSearchPtr[0].setFocus();
         });
-        txtPrimitiveSearchPtr[0].addModifyListener(e -> {
+        txtPrimitiveSearchPtr[0].addModifyListener(_ -> {
             if (getCompositePrimitive().stopDraw()) {
                 txtPrimitiveSearchPtr[0].setText(""); //$NON-NLS-1$
                 return;
@@ -1495,21 +1495,21 @@ public class Editor3DWindow extends Editor3DDesign {
             Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
             getCompositePrimitive().getOpenGL().drawScene(-1, -1);
         });
-        widgetUtil(btnResetPrimitiveSearchPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnResetPrimitiveSearchPtr[0]).addSelectionListener(_ -> {
             txtPrimitiveSearchPtr[0].setText(""); //$NON-NLS-1$
             txtPrimitiveSearchPtr[0].setFocus();
         });
-        widgetUtil(btnZoomInPrimitivesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnZoomInPrimitivesPtr[0]).addSelectionListener(_ -> {
             getCompositePrimitive().zoomIn();
             getCompositePrimitive().getOpenGL().drawScene(-1, -1);
         });
-        widgetUtil(btnZoomOutPrimitivesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnZoomOutPrimitivesPtr[0]).addSelectionListener(_ -> {
             getCompositePrimitive().zoomOut();
             getCompositePrimitive().getOpenGL().drawScene(-1, -1);
         });
 
         // MARK Background PNG
-        widgetUtil(btnPngFocusPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPngFocusPtr[0]).addSelectionListener(_ -> {
             Composite3D c3d = null;
             for (OpenGLRenderer renderer : renders) {
                 c3d = renderer.getC3D();
@@ -1588,7 +1588,7 @@ public class Editor3DWindow extends Editor3DDesign {
             vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
             regainFocus();
         });
-        widgetUtil(btnCalibratePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCalibratePtr[0]).addSelectionListener(_ -> {
            calibratePngPicture = btnCalibratePtr[0].getSelection();
            if (calibratePngPicture) {
                final DatFile df = Project.getFileToEdit();
@@ -1606,7 +1606,7 @@ public class Editor3DWindow extends Editor3DDesign {
                }
            }
         });
-        widgetUtil(btnPngImagePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPngImagePtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
@@ -1665,7 +1665,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        widgetUtil(btnPngNextPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPngNextPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 DatFile df = c3d.getLockableDatFileReference();
@@ -1698,7 +1698,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        widgetUtil(btnPngPreviousPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPngPreviousPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 DatFile df = c3d.getLockableDatFileReference();
@@ -2121,7 +2121,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        widgetUtil(tabFolderOpenDatFilesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(tabFolderOpenDatFilesPtr[0]).addSelectionListener(_ -> {
 
             if (Editor3DWindow.getNoSyncDeadlock().compareAndSet(false, true)) {
                 if (tabFolderOpenDatFilesPtr[0].getData() != null) {
@@ -2169,7 +2169,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        widgetUtil(btnSyncTabsPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setSyncingTabs(btnSyncTabsPtr[0].getSelection()));
+        widgetUtil(btnSyncTabsPtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setSyncingTabs(btnSyncTabsPtr[0].getSelection()));
 
         int operations = DND.DROP_MOVE;
         final int[] sourceIndex = new int[] {0};
@@ -3021,7 +3021,7 @@ public class Editor3DWindow extends Editor3DDesign {
             NButton btnEndPartReview = new NButton(cmpSyncAndReviewPtr[0], SWT.NONE);
             btnEndPartReview.setText(I18n.E3D_END_PART_REVIEW);
             btnEndPartReview.setData(partsForReview);
-            widgetUtil(btnEndPartReview).addSelectionListener(e -> endReviewingAPart());
+            widgetUtil(btnEndPartReview).addSelectionListener(_ -> endReviewingAPart());
         } else {
             // Close all review files
             partsForReview = (Set<DatFile>) cmpSyncAndReviewPtr[0].getChildren()[1].getData();

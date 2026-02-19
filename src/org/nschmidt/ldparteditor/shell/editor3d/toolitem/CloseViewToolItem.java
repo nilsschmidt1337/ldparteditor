@@ -37,7 +37,7 @@ public class CloseViewToolItem extends ToolItem {
         KeyStateManager.addTooltipText(btnCloseView, I18n.E3D_CLOSE_VIEW, Task.CLOSE_VIEW);
         btnCloseView.setImage(ResourceManager.getImage("icon16_closeview.png")); //$NON-NLS-1$
 
-        widgetUtil(btnCloseView).addSelectionListener(e -> {
+        widgetUtil(btnCloseView).addSelectionListener(_ -> {
             Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.getModifier().closeView();

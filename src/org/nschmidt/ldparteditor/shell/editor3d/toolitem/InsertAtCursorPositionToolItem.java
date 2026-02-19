@@ -62,7 +62,7 @@ public class InsertAtCursorPositionToolItem extends ToolItem {
     }
 
     private static void addListeners() {
-        widgetUtil(btnInsertAtCursorPositionPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnInsertAtCursorPositionPtr[0]).addSelectionListener(_ -> {
             setInsertingAtCursorPosition(btnInsertAtCursorPositionPtr[0].getSelection());
             Editor3DWindow.getWindow().regainFocus();
         });

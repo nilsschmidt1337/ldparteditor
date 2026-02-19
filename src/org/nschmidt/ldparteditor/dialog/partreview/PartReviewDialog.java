@@ -38,7 +38,7 @@ public class PartReviewDialog extends PartReviewDesign {
         super.create();
         saveAll = false;
         // MARK All final listeners will be configured here..
-        txtFilePtr[0].addModifyListener(e -> {
+        txtFilePtr[0].addModifyListener(_ -> {
             fileName = txtFilePtr[0].getText();
             String formattedFileName = fileName;
             if (formattedFileName.endsWith(".dat")) formattedFileName = formattedFileName.substring(0, formattedFileName.length() - 4); //$NON-NLS-1$
@@ -53,15 +53,15 @@ public class PartReviewDialog extends PartReviewDesign {
             btnStoreLocallyPtr[0].setText(formatter.format(messageArguments));
             btnStoreLocallyPtr[0].getParent().layout();
         });
-        widgetUtil(btnStoreLocallyPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnStoreLocallyPtr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setPartReviewStoreLocalFiles(btnStoreLocallyPtr[0].getSelection());
             btnSaveAllPtr[0].setEnabled(WorkbenchManager.getUserSettingState().isPartReviewStoreLocalFiles());
         });
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerbosePartReview(btnVerbosePtr[0].getSelection()));
-        this.spnViewCountPtr[0].addValueChangeListener(spn ->
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerbosePartReview(btnVerbosePtr[0].getSelection()));
+        this.spnViewCountPtr[0].addValueChangeListener(_ ->
             WorkbenchManager.getUserSettingState().setPartReview3dViewCount(spnViewCountPtr[0].getValue())
         );
-        widgetUtil(btnSaveAllPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSaveAllPtr[0]).addSelectionListener(_ -> {
             saveAll = true;
             setReturnCode(OK);
             close();

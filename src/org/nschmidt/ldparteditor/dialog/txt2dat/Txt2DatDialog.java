@@ -50,7 +50,7 @@ public class Txt2DatDialog extends Txt2DatDesign {
         spnFlatnessPtr[0].addValueChangeListener(spn -> ts.setFlatness(spn.getValue()));
         spnMarginPercentagePtr[0].addValueChangeListener(spn -> ts.setMarginPercentage(spn.getValue()));
         spnFontHeightPtr[0].addValueChangeListener(spn -> ts.setFontHeight(spn.getValue()));
-        widgetUtil(btnChooseFontPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnChooseFontPtr[0]).addSelectionListener(_ -> {
             final FontDialog fd = new FontDialog(getShell());
             final FontData data = ts.getFontData();
             fd.setFontList(new FontData[]{data});
@@ -62,9 +62,9 @@ public class Txt2DatDialog extends Txt2DatDesign {
             ts.setReload(true);
             getShell().close();
         });
-        txtTextPtr[0].addModifyListener(e -> ts.setText(txtTextPtr[0].getText()));
-        cmbModePtr[0].addListener(SWT.Selection, event -> ts.setMode(cmbModePtr[0].getSelectionIndex()));
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseTxt2Dat(btnVerbosePtr[0].getSelection()));
+        txtTextPtr[0].addModifyListener(_ -> ts.setText(txtTextPtr[0].getText()));
+        cmbModePtr[0].addListener(SWT.Selection, _ -> ts.setMode(cmbModePtr[0].getSelectionIndex()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerboseTxt2Dat(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 

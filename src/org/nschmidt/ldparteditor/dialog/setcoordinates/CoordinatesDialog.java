@@ -75,7 +75,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        widgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLocalPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
             btnLocalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.LOCAL) {
@@ -85,7 +85,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
             }
             updateXYZ();
         });
-        widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnGlobalPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.GLOBAL) {
@@ -95,25 +95,25 @@ public class CoordinatesDialog extends CoordinatesDesign {
             }
             updateXYZ();
         });
-        widgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> x = cbXaxisPtr[0].getSelection());
-        widgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> y = cbYaxisPtr[0].getSelection());
-        widgetUtil(cbZaxisPtr[0]).addSelectionListener(e -> z = cbZaxisPtr[0].getSelection());
-        spnXPtr[0].addValueChangeListener(spn -> {
+        widgetUtil(cbXaxisPtr[0]).addSelectionListener(_ -> x = cbXaxisPtr[0].getSelection());
+        widgetUtil(cbYaxisPtr[0]).addSelectionListener(_ -> y = cbYaxisPtr[0].getSelection());
+        widgetUtil(cbZaxisPtr[0]).addSelectionListener(_ -> z = cbZaxisPtr[0].getSelection());
+        spnXPtr[0].addValueChangeListener(_ -> {
             vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue());
             cbXaxisPtr[0].setSelection(true);
             x = true;
         });
-        spnYPtr[0].addValueChangeListener(spn -> {
+        spnYPtr[0].addValueChangeListener(_ -> {
             vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue());
             cbYaxisPtr[0].setSelection(true);
             y = true;
         });
-        spnZPtr[0].addValueChangeListener(spn -> {
+        spnZPtr[0].addValueChangeListener(_ -> {
             vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue());
             cbZaxisPtr[0].setSelection(true);
             z = true;
         });
-        widgetUtil(btnManipulatorPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnManipulatorPtr[0]).addSelectionListener(_ -> {
             if (transformationMode == ManipulatorScope.GLOBAL) {
                 vertex = new Vertex(m.xp, m.yp, m.zp);
             } else {
@@ -121,7 +121,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
             }
             updateXYZ();
         });
-        widgetUtil(btnClipboardPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnClipboardPtr[0]).addSelectionListener(_ -> {
             if (transformationMode == ManipulatorScope.GLOBAL) {
                 vertex = new Vertex(c.xp, c.yp, c.zp);
             } else {
@@ -129,13 +129,13 @@ public class CoordinatesDialog extends CoordinatesDesign {
             }
             updateXYZ();
         });
-        widgetUtil(btnSetManipulatorPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSetManipulatorPtr[0]).addSelectionListener(_ -> {
             mani.getPosition().set(vertex.x, vertex.y, vertex.z, 1f);
             mani.setAccuratePosition(vertex.xp, vertex.yp, vertex.zp);
             setReturnCode(CANCEL);
             close();
         });
-        widgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCopyPtr[0]).addSelectionListener(_ -> {
             creatingCopy = true;
             setReturnCode(OK);
             close();

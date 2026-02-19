@@ -63,22 +63,22 @@ public class CalibrateDialog extends CalibrateDesign {
         super.create();
         getShell().setText(I18n.CALIBRATE_BG_IMAGE);
         // MARK All final listeners will be configured here..
-        widgetUtil(btnLDUPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLDUPtr[0]).addSelectionListener(_ -> {
             if (update) return;
             uncheckAllUnits();
             btnLDUPtr[0].setSelection(true);
         });
-        widgetUtil(btnMMPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMMPtr[0]).addSelectionListener(_ -> {
             if (update) return;
             uncheckAllUnits();
             btnMMPtr[0].setSelection(true);
         });
-        widgetUtil(btnInchPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnInchPtr[0]).addSelectionListener(_ -> {
             if (update) return;
             uncheckAllUnits();
             btnInchPtr[0].setSelection(true);
         });
-        widgetUtil(btnStudPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnStudPtr[0]).addSelectionListener(_ -> {
             if (update) return;
             uncheckAllUnits();
         });

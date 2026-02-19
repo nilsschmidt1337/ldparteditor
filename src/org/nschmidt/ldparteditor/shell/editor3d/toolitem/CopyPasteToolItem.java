@@ -51,7 +51,7 @@ public class CopyPasteToolItem extends ToolItem {
         btnDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
         KeyStateManager.addTooltipText(btnDelete, I18n.COPYNPASTE_DELETE, Task.DELETE);
 
-        widgetUtil(btnDelete).addSelectionListener(e -> {
+        widgetUtil(btnDelete).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().delete(MiscToggleToolItem.isMovingAdjacentData(), true);
@@ -59,7 +59,7 @@ public class CopyPasteToolItem extends ToolItem {
 
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnCopy).addSelectionListener(e -> {
+        widgetUtil(btnCopy).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().copy();
@@ -67,7 +67,7 @@ public class CopyPasteToolItem extends ToolItem {
 
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnCut).addSelectionListener(e -> {
+        widgetUtil(btnCut).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().copy();
@@ -76,7 +76,7 @@ public class CopyPasteToolItem extends ToolItem {
 
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnPaste).addSelectionListener(e -> {
+        widgetUtil(btnPaste).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().paste(MiscToolItem.loadSelectorSettings());

@@ -117,20 +117,20 @@ public class VertexWindow extends ApplicationWindow {
                 // Implementation is not required.
             }
         });
-        spnXPtr[0].addValueChangeListener(spn -> changeVertex());
-        spnYPtr[0].addValueChangeListener(spn -> changeVertex());
-        spnZPtr[0].addValueChangeListener(spn -> changeVertex());
-        widgetUtil(btnPastePtr[0]).addSelectionListener(e -> {
+        spnXPtr[0].addValueChangeListener(_ -> changeVertex());
+        spnYPtr[0].addValueChangeListener(_ -> changeVertex());
+        spnZPtr[0].addValueChangeListener(_ -> changeVertex());
+        widgetUtil(btnPastePtr[0]).addSelectionListener(_ -> {
             final Vertex clipboardVertex = VertexManager.getSingleVertexFromClipboard();
             if (clipboardVertex != null) {
                 updateVertex(clipboardVertex);
                 changeVertex();
             }
         });
-        widgetUtil(btnCopyPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnCopyPtr[0]).addSelectionListener(_ ->
             VertexManager.copySingleVertexIntoClipboard(selectedVertex)
         );
-        widgetUtil(btnMergePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMergePtr[0]).addSelectionListener(_ -> {
             final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
             if (lastHoveredC3d == null) return;
             final DatFile df = lastHoveredC3d.getLockableDatFileReference();

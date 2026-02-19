@@ -43,7 +43,7 @@ public class TJunctionDialog extends TJunctionDesign {
         super.create();
 
         // MARK All final listeners will be configured here..
-        cmbScopePtr[0].addListener(SWT.Selection, event -> ts.setMode(cmbScopePtr[0].getSelectionIndex()));
+        cmbScopePtr[0].addListener(SWT.Selection, _ -> ts.setMode(cmbScopePtr[0].getSelectionIndex()));
         return super.open();
     }
 

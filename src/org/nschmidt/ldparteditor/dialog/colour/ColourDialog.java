@@ -49,7 +49,7 @@ public class ColourDialog extends ColourDesign {
         this.setShellStyle(SWT.APPLICATION_MODAL | SWT.SHELL_TRIM ^ SWT.MIN);
         this.create();
         // MARK All final listeners will be configured here..
-        widgetUtil(btnColourChoose[0]).addSelectionListener(e -> {
+        widgetUtil(btnColourChoose[0]).addSelectionListener(_ -> {
             ColorDialog dlg = new ColorDialog(getShell());
             // Change the title bar text
             dlg.setText(I18n.COLOURDIALOG_CHOOSE_DIRECT_COLOUR);
@@ -60,11 +60,11 @@ public class ColourDialog extends ColourDesign {
                 me.close();
             }
         });
-        widgetUtil(btnColourTable[0]).addSelectionListener(e -> {
+        widgetUtil(btnColourTable[0]).addSelectionListener(_ -> {
             new ColourTableDialog(getShell(), refCol).run();
             me.close();
         });
-        if (randomColours) widgetUtil(btnRandomColours[0]).addSelectionListener(e -> {
+        if (randomColours) widgetUtil(btnRandomColours[0]).addSelectionListener(_ -> {
             refCol[0] = Colour.RANDOM_COLOUR;
             me.close();
         });

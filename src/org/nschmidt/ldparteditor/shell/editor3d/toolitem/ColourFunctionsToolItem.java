@@ -85,7 +85,7 @@ public class ColourFunctionsToolItem extends ToolItem {
             e.gc.fillRectangle(x, y, w, h);
             e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
         });
-        widgetUtil(btnLastUsedColour).addSelectionListener(e -> {
+        widgetUtil(btnLastUsedColour).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 GColour col1 = LDConfig.getColour16();
@@ -106,7 +106,7 @@ public class ColourFunctionsToolItem extends ToolItem {
     }
 
     private static void addListeners() {
-        widgetUtil(btnPipettePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPipettePtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 VertexManager vm = Project.getFileToEdit().getVertexManager();
                 vm.addSnapshot();
@@ -130,7 +130,7 @@ public class ColourFunctionsToolItem extends ToolItem {
                         e1.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                     }
                 });
-                widgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e1 -> {
+                widgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(_ -> {
                     if (Project.getFileToEdit() != null) {
                         int num1 = gColour2.getColourNumber();
                         if (!LDConfig.hasColour(num1)) {
@@ -168,7 +168,7 @@ public class ColourFunctionsToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(btnDecolourPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnDecolourPtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 VertexManager vm = Project.getFileToEdit().getVertexManager();
                 vm.addSnapshot();

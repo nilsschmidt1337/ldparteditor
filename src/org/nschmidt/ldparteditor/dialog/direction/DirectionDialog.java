@@ -72,7 +72,7 @@ public class DirectionDialog extends DirectionDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        widgetUtil(btnMXPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMXPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             BigDecimal[] axis = mani.getAccurateXaxis();
@@ -80,7 +80,7 @@ public class DirectionDialog extends DirectionDesign {
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        widgetUtil(btnMYPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMYPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             BigDecimal[] axis = mani.getAccurateYaxis();
@@ -88,7 +88,7 @@ public class DirectionDialog extends DirectionDesign {
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        widgetUtil(btnMZPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMZPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             BigDecimal[] axis = mani.getAccurateZaxis();
@@ -96,7 +96,7 @@ public class DirectionDialog extends DirectionDesign {
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        widgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLocalPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
             btnLocalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.LOCAL) {
@@ -107,7 +107,7 @@ public class DirectionDialog extends DirectionDesign {
             }
             updateValues();
         });
-        widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnGlobalPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.GLOBAL) {
@@ -118,37 +118,37 @@ public class DirectionDialog extends DirectionDesign {
             }
             updateValues();
         });
-        spnXPtr[0].addValueChangeListener(spn -> {
+        spnXPtr[0].addValueChangeListener(_ -> {
             if (stopCalculations) return;
             cart = new double[]{spnXPtr[0].getValue().doubleValue(), spnYPtr[0].getValue().doubleValue(), spnZPtr[0].getValue().doubleValue()};
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        spnYPtr[0].addValueChangeListener(spn -> {
+        spnYPtr[0].addValueChangeListener(_ -> {
             if (stopCalculations) return;
             cart = new double[]{spnXPtr[0].getValue().doubleValue(), spnYPtr[0].getValue().doubleValue(), spnZPtr[0].getValue().doubleValue()};
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        spnZPtr[0].addValueChangeListener(spn -> {
+        spnZPtr[0].addValueChangeListener(_ -> {
             if (stopCalculations) return;
             cart = new double[]{spnXPtr[0].getValue().doubleValue(), spnYPtr[0].getValue().doubleValue(), spnZPtr[0].getValue().doubleValue()};
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        spnRhoPtr[0].addValueChangeListener(spn -> {
+        spnRhoPtr[0].addValueChangeListener(_ -> {
             if (stopCalculations) return;
             sphe = new double[]{spnRhoPtr[0].getValue().doubleValue(), spnThetaPtr[0].getValue().doubleValue(), spnPhiPtr[0].getValue().doubleValue()};
             cart = sphericalToCartesian(sphe);
             updateValues();
         });
-        spnThetaPtr[0].addValueChangeListener(spn -> {
+        spnThetaPtr[0].addValueChangeListener(_ -> {
             if (stopCalculations) return;
             sphe = new double[]{spnRhoPtr[0].getValue().doubleValue(), spnThetaPtr[0].getValue().doubleValue(), spnPhiPtr[0].getValue().doubleValue()};
             cart = sphericalToCartesian(sphe);
             updateValues();
         });
-        spnPhiPtr[0].addValueChangeListener(spn -> {
+        spnPhiPtr[0].addValueChangeListener(_ -> {
             if (stopCalculations) return;
             sphe = new double[]{spnRhoPtr[0].getValue().doubleValue(), spnThetaPtr[0].getValue().doubleValue(), spnPhiPtr[0].getValue().doubleValue()};
             cart = sphericalToCartesian(sphe);

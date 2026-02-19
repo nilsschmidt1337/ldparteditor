@@ -53,7 +53,7 @@ public class SwapCoordinatesDialog extends SwapCoordinatesDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        widgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLocalPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
             btnLocalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.LOCAL) {
@@ -61,7 +61,7 @@ public class SwapCoordinatesDialog extends SwapCoordinatesDesign {
                 TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
             }
         });
-        widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnGlobalPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.GLOBAL) {
@@ -69,28 +69,28 @@ public class SwapCoordinatesDialog extends SwapCoordinatesDesign {
                 TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
             }
         });
-        widgetUtil(btnSwapXYPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSwapXYPtr[0]).addSelectionListener(_ -> {
             if (!btnSwapXYPtr[0].getSelection()) return;
             btnSwapXYPtr[0].setSelection(true);
             btnSwapXZPtr[0].setSelection(false);
             btnSwapYZPtr[0].setSelection(false);
             axisMode = ManipulatorAxisMode.XY;
         });
-        widgetUtil(btnSwapXZPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSwapXZPtr[0]).addSelectionListener(_ -> {
             if (!btnSwapXZPtr[0].getSelection()) return;
             btnSwapXYPtr[0].setSelection(false);
             btnSwapXZPtr[0].setSelection(true);
             btnSwapYZPtr[0].setSelection(false);
             axisMode = ManipulatorAxisMode.XZ;
         });
-        widgetUtil(btnSwapYZPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSwapYZPtr[0]).addSelectionListener(_ -> {
             if (!btnSwapYZPtr[0].getSelection()) return;
             btnSwapXYPtr[0].setSelection(false);
             btnSwapXZPtr[0].setSelection(false);
             btnSwapYZPtr[0].setSelection(true);
             axisMode = ManipulatorAxisMode.YZ;
         });
-        widgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCopyPtr[0]).addSelectionListener(_ -> {
             creatingCopy = true;
             setReturnCode(OK);
             close();

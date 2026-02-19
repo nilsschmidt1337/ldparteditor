@@ -43,7 +43,7 @@ public class SnapshotDialog extends SnapshotDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        cmbSnapshotPtr[0].addListener(SWT.Selection, event -> {
+        cmbSnapshotPtr[0].addListener(SWT.Selection, _ -> {
             final int index = cmbSnapshotPtr[0].getSelectionIndex();
             if (index > -1) {
                 selection[0] = snapshots.get(snapshots.size() - index - 1);

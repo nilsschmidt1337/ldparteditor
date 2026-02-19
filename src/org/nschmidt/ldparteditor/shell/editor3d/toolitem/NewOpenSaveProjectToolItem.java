@@ -85,7 +85,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
 
     private static void addListeners() {
         final Editor3DWindow win = Editor3DWindow.getWindow();
-        widgetUtil(btnNewPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnNewPtr[0]).addSelectionListener(_ -> {
             if (ProjectActions.createNewProject(win, false)) {
                 addRecentFile(Project.getProjectPath());
             }
@@ -93,7 +93,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
             win.updateTreeUnsavedEntries();
             win.regainFocus();
         });
-        widgetUtil(btnOpenPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnOpenPtr[0]).addSelectionListener(_ -> {
             if (ProjectActions.openProject(null)) {
                 addRecentFile(Project.getProjectPath());
                 Project.setLastVisitedPath(Project.getProjectPath());
@@ -238,9 +238,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                 }
             }
         });
-        widgetUtil(btnSaveAllPtr[0]).addSelectionListener(e -> {
-            saveAll(false);
-        });
+        widgetUtil(btnSaveAllPtr[0]).addSelectionListener(_ -> saveAll(false));
     }
 
     private static void addRecentFile(String projectPath) {

@@ -42,7 +42,7 @@ public class SlicerProDialog extends SlicerProDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseSlicerPro(btnVerbosePtr[0].getSelection()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerboseSlicerPro(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 

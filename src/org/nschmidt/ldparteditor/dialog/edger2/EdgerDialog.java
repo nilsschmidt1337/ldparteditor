@@ -48,11 +48,11 @@ public class EdgerDialog extends EdgerDesign {
         spnAfPtr[0].addValueChangeListener(spn -> es.setAf(spn.getValue()));
         spnAePtr[0].addValueChangeListener(spn -> es.setAe(spn.getValue()));
         spnVequPtr[0].addValueChangeListener(spn -> es.setEqualDistance(spn.getValue()));
-        widgetUtil(cmbBPtr[0]).addSelectionListener(e -> es.setExtendedRange(cmbBPtr[0].getSelectionIndex() == 1));
-        widgetUtil(cmbCPtr[0]).addSelectionListener(e -> es.setCondlineOnQuads(cmbCPtr[0].getSelectionIndex() == 1));
-        widgetUtil(cmbUPtr[0]).addSelectionListener(e -> es.setUnmatchedMode(cmbUPtr[0].getSelectionIndex()));
-        widgetUtil(cmbScopePtr[0]).addSelectionListener(e -> es.setScope(cmbScopePtr[0].getSelectionIndex()));
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseEdger2(btnVerbosePtr[0].getSelection()));
+        widgetUtil(cmbBPtr[0]).addSelectionListener(_ -> es.setExtendedRange(cmbBPtr[0].getSelectionIndex() == 1));
+        widgetUtil(cmbCPtr[0]).addSelectionListener(_ -> es.setCondlineOnQuads(cmbCPtr[0].getSelectionIndex() == 1));
+        widgetUtil(cmbUPtr[0]).addSelectionListener(_ -> es.setUnmatchedMode(cmbUPtr[0].getSelectionIndex()));
+        widgetUtil(cmbScopePtr[0]).addSelectionListener(_ -> es.setScope(cmbScopePtr[0].getSelectionIndex()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerboseEdger2(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

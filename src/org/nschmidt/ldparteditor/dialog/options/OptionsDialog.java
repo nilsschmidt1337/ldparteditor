@@ -55,20 +55,20 @@ public class OptionsDialog extends OptionsDesign {
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         final UserSettingState userSettingState = WorkbenchManager.getUserSettingState();
 
-        widgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnOkPtr[0]).addSelectionListener(_ -> {
             closingProcedure();
             me.close();
         });
 
-        widgetUtil(btnAllowInvalidShapesPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btnAllowInvalidShapesPtr[0].getSelection()));
-        widgetUtil(btnTranslateViewByCursorPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setTranslatingViewByCursor( btnTranslateViewByCursorPtr[0].getSelection()));
-        widgetUtil(btnDisableMAD3DPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btnDisableMAD3DPtr[0].getSelection()));
-        widgetUtil(btnDisableMADtextPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMADtext(btnDisableMADtextPtr[0].getSelection()));
-        widgetUtil(btnIncludeUnmatchedEdgesPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setIncludeUnmatchedEdgesByDefault(btnIncludeUnmatchedEdgesPtr[0].getSelection()));
-        widgetUtil(btnEnableBorderedQuadToRectConversationPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setEnableBorderedQuadToRectConversationByDefault(btnEnableBorderedQuadToRectConversationPtr[0].getSelection()));
-        widgetUtil(btnCancelViaMousePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setCancelAddViaMouse(btnCancelViaMousePtr[0].getSelection()));
-        widgetUtil(btnInvertInvertWheelZoomDirectionPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btnInvertInvertWheelZoomDirectionPtr[0].getSelection()));
-        widgetUtil(btnShowAxisLabelsPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnAllowInvalidShapesPtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btnAllowInvalidShapesPtr[0].getSelection()));
+        widgetUtil(btnTranslateViewByCursorPtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setTranslatingViewByCursor( btnTranslateViewByCursorPtr[0].getSelection()));
+        widgetUtil(btnDisableMAD3DPtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btnDisableMAD3DPtr[0].getSelection()));
+        widgetUtil(btnDisableMADtextPtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setDisableMADtext(btnDisableMADtextPtr[0].getSelection()));
+        widgetUtil(btnIncludeUnmatchedEdgesPtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setIncludeUnmatchedEdgesByDefault(btnIncludeUnmatchedEdgesPtr[0].getSelection()));
+        widgetUtil(btnEnableBorderedQuadToRectConversationPtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setEnableBorderedQuadToRectConversationByDefault(btnEnableBorderedQuadToRectConversationPtr[0].getSelection()));
+        widgetUtil(btnCancelViaMousePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setCancelAddViaMouse(btnCancelViaMousePtr[0].getSelection()));
+        widgetUtil(btnInvertInvertWheelZoomDirectionPtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btnInvertInvertWheelZoomDirectionPtr[0].getSelection()));
+        widgetUtil(btnShowAxisLabelsPtr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setShowingAxisLabels(btnShowAxisLabelsPtr[0].getSelection());
 
             if (WorkbenchManager.getUserSettingState().isShowingAxisLabels()) {
@@ -82,7 +82,7 @@ public class OptionsDialog extends OptionsDesign {
             }
         });
 
-        widgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(_ -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to the last selected path
@@ -105,7 +105,7 @@ public class OptionsDialog extends OptionsDesign {
                 userSettingState.setLdrawFolderPath(ldrawPath);
             }
         });
-        widgetUtil(btnBrowseAuthoringPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseAuthoringPathPtr[0]).addSelectionListener(_ -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to the last selected path
@@ -128,7 +128,7 @@ public class OptionsDialog extends OptionsDesign {
                 userSettingState.setAuthoringFolderPath(partAuthoringPath);
             }
         });
-        widgetUtil(btnBrowseUnofficialPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseUnofficialPathPtr[0]).addSelectionListener(_ -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to the last selected path
@@ -151,56 +151,56 @@ public class OptionsDialog extends OptionsDesign {
                 userSettingState.setUnofficialFolderPath(unofficialPath);
             }
         });
-        txtLdrawUserNamePtr[0].addListener(SWT.Modify, e -> {
+        txtLdrawUserNamePtr[0].addListener(SWT.Modify, _ -> {
             String ldrawUserName = txtLdrawUserNamePtr[0].getText();
             userSettingState.setLdrawUserName(ldrawUserName);
         });
-        txtRealNamePtr[0].addListener(SWT.Modify, e -> {
+        txtRealNamePtr[0].addListener(SWT.Modify, _ -> {
             String realName = txtRealNamePtr[0].getText();
             userSettingState.setRealUserName(realName);
         });
-        cmbLicensePtr[0].addListener(SWT.Modify, e -> {
+        cmbLicensePtr[0].addListener(SWT.Modify, _ -> {
             String license = cmbLicensePtr[0].getText();
             userSettingState.setLicense(license);
         });
-        cmbLocalePtr[0].addListener(SWT.Modify, e -> {
+        cmbLocalePtr[0].addListener(SWT.Modify, _ -> {
             if (localeMap.containsKey(cmbLocalePtr[0].getText())) {
                 Locale locale = localeMap.get(cmbLocalePtr[0].getText());
                 userSettingState.setLocale(locale);
                 MyLanguage.setLocale(locale);
             }
         });
-        cmbTextWinArrPtr[0].addListener(SWT.Modify, e -> {
+        cmbTextWinArrPtr[0].addListener(SWT.Modify, _ -> {
             final int index = cmbTextWinArrPtr[0].getSelectionIndex();
             if (index != -1) {
                 userSettingState.setTextWinArr(index);
             }
         });
-        spnCoplanarityWarningPtr[0].addValueChangeListener(spn -> {
+        spnCoplanarityWarningPtr[0].addValueChangeListener(_ -> {
             final double angle = spnCoplanarityWarningPtr[0].getValue().doubleValue();
             Threshold.coplanarityAngleWarning = angle;
             userSettingState.setCoplanarityAngleWarning(angle);
         });
-        spnCoplanarityErrorPtr[0].addValueChangeListener(spn -> {
+        spnCoplanarityErrorPtr[0].addValueChangeListener(_ -> {
             final double angle = spnCoplanarityErrorPtr[0].getValue().doubleValue();
             Threshold.coplanarityAngleError = angle;
             userSettingState.setCoplanarityAngleError(angle);
         });
-        spnDataFileSizeLimitPtr[0].addValueChangeListener(spn -> {
+        spnDataFileSizeLimitPtr[0].addValueChangeListener(_ -> {
             final int sizeLimitInKiloBytes = spnDataFileSizeLimitPtr[0].getValue();
             userSettingState.setDataFileSizeLimit(sizeLimitInKiloBytes);
         });
-        spnViewportScalePtr[0].addValueChangeListener(spn -> {
+        spnViewportScalePtr[0].addValueChangeListener(_ -> {
             final double scaleFactor = spnViewportScalePtr[0].getValue().doubleValue();
             userSettingState.setViewportScaleFactor(scaleFactor);
         });
-        cmbMouseButtonLayoutPtr[0].addListener(SWT.Modify, e -> {
+        cmbMouseButtonLayoutPtr[0].addListener(SWT.Modify, _ -> {
             final int index = cmbMouseButtonLayoutPtr[0].getSelectionIndex();
             if (index != -1) {
                 userSettingState.setMouseButtonLayout(index);
             }
         });
-        cmbThemePtr[0].addListener(SWT.Modify, e -> {
+        cmbThemePtr[0].addListener(SWT.Modify, _ -> {
             // This needs to be done twice to have an effect on the UI.
             updateTheme();
             updateTheme();

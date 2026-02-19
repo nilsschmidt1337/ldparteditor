@@ -96,28 +96,28 @@ public class PerspectiveToolItem extends ToolItem {
     }
 
     private static void addListeners() {
-        widgetUtil(btnPerspectiveFrontPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnPerspectiveFrontPtr[0]).addSelectionListener(_ ->
             changePerspective(Perspective.FRONT)
         );
-        widgetUtil(btnPerspectiveBackPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnPerspectiveBackPtr[0]).addSelectionListener(_ ->
             changePerspective(Perspective.BACK)
         );
-        widgetUtil(btnPerspectiveLeftPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnPerspectiveLeftPtr[0]).addSelectionListener(_ ->
             changePerspective(Perspective.LEFT)
         );
-        widgetUtil(btnPerspectiveRightPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnPerspectiveRightPtr[0]).addSelectionListener(_ ->
             changePerspective(Perspective.RIGHT)
         );
-        widgetUtil(btnPerspectiveTopPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnPerspectiveTopPtr[0]).addSelectionListener(_ ->
             changePerspective(Perspective.TOP)
         );
-        widgetUtil(btnPerspectiveBottomPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnPerspectiveBottomPtr[0]).addSelectionListener(_ ->
             changePerspective(Perspective.BOTTOM)
         );
-        widgetUtil(btnPerspectiveTwoThirdsPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnPerspectiveTwoThirdsPtr[0]).addSelectionListener(_ ->
             changePerspective(Perspective.TWO_THIRDS)
         );
-        widgetUtil(btnPerspectiveLockPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPerspectiveLockPtr[0]).addSelectionListener(_ -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.getPerspectiveCalculator().setRotationLock(btnPerspectiveLockPtr[0].getSelection());

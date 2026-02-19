@@ -45,14 +45,14 @@ public class SymSplitterDialog extends SymSplitterDesign {
         super.create();
         // MARK All final listeners will be configured here..
         spnOffsetPtr[0].addValueChangeListener(spn -> ss.setOffset(spn.getValue()));
-        cmbScopePtr[0].addListener(SWT.Selection, event -> ss.setScope(cmbScopePtr[0].getSelectionIndex()));
-        cmbSplitPlanePtr[0].addListener(SWT.Selection, event -> ss.setSplitPlane(cmbSplitPlanePtr[0].getSelectionIndex()));
-        cmbHidePtr[0].addListener(SWT.Selection, event -> ss.setHideLevel(cmbHidePtr[0].getSelectionIndex()));
-        cmbColourisePtr[0].addListener(SWT.Selection, event -> ss.setColourise(cmbColourisePtr[0].getSelectionIndex() == 1));
-        cmbCutAcrossPtr[0].addListener(SWT.Selection, event -> ss.setCutAcross(cmbCutAcrossPtr[0].getSelectionIndex() == 1));
-        cmbValidatePtr[0].addListener(SWT.Selection, event -> ss.setValidate(cmbValidatePtr[0].getSelectionIndex() == 1));
+        cmbScopePtr[0].addListener(SWT.Selection, _ -> ss.setScope(cmbScopePtr[0].getSelectionIndex()));
+        cmbSplitPlanePtr[0].addListener(SWT.Selection, _ -> ss.setSplitPlane(cmbSplitPlanePtr[0].getSelectionIndex()));
+        cmbHidePtr[0].addListener(SWT.Selection, _ -> ss.setHideLevel(cmbHidePtr[0].getSelectionIndex()));
+        cmbColourisePtr[0].addListener(SWT.Selection, _ -> ss.setColourise(cmbColourisePtr[0].getSelectionIndex() == 1));
+        cmbCutAcrossPtr[0].addListener(SWT.Selection, _ -> ss.setCutAcross(cmbCutAcrossPtr[0].getSelectionIndex() == 1));
+        cmbValidatePtr[0].addListener(SWT.Selection, _ -> ss.setValidate(cmbValidatePtr[0].getSelectionIndex() == 1));
         spnPrecisionPtr[0].addValueChangeListener(spn -> ss.setPrecision(spn.getValue()));
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseSymSplitter(btnVerbosePtr[0].getSelection()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerboseSymSplitter(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

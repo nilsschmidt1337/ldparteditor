@@ -119,7 +119,7 @@ class SlantingMatrixProjectorDesign extends ThemedDialog {
                 cbSetOrigin.setText(I18n.SLANT_SET_ORIGIN);
                 cbSetOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
-                widgetUtil(cbSetOrigin).addSelectionListener(e -> {
+                widgetUtil(cbSetOrigin).addSelectionListener(_ -> {
                     mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
                     updateMatrix();
                 });
@@ -134,7 +134,7 @@ class SlantingMatrixProjectorDesign extends ThemedDialog {
                 cbSetOrigin.setText(I18n.SLANT_SET_ORIGIN);
                 cbSetOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
-                widgetUtil(cbSetOrigin).addSelectionListener(e -> {
+                widgetUtil(cbSetOrigin).addSelectionListener(_ -> {
                     mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
                     updateMatrix();
                 });
@@ -146,7 +146,7 @@ class SlantingMatrixProjectorDesign extends ThemedDialog {
                 cbResetSubfileOrientation.setSelection(mps.isResettingSubfileTransformation());
 
 
-                widgetUtil(cbResetSubfileOrientation).addSelectionListener(e -> mps.setResettingSubfileTransformation(!mps.isResettingSubfileTransformation()));
+                widgetUtil(cbResetSubfileOrientation).addSelectionListener(_ -> mps.setResettingSubfileTransformation(!mps.isResettingSubfileTransformation()));
             }
             break;
         case INIT:
@@ -190,7 +190,7 @@ class SlantingMatrixProjectorDesign extends ThemedDialog {
         btnCopyMatrixToClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
         btnCopyMatrixToClipboard.setText(I18n.SLANT_COPY_TO_CLIPBOARD);
 
-        widgetUtil(btnCopyMatrixToClipboard).addSelectionListener(e -> {
+        widgetUtil(btnCopyMatrixToClipboard).addSelectionListener(_ -> {
             final Matrix m1 = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
             final StringBuilder cbString = new StringBuilder();
             cbString.append("1 16 "); //$NON-NLS-1$

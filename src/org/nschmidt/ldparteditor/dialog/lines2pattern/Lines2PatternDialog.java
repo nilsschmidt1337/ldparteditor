@@ -42,7 +42,7 @@ public class Lines2PatternDialog extends Lines2PatternDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseLines2Pattern(btnVerbosePtr[0].getSelection()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerboseLines2Pattern(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

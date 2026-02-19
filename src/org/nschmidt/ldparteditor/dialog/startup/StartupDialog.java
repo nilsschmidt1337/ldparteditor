@@ -81,7 +81,7 @@ public class StartupDialog extends StartupDesign {
         super.create();
         btnOkPtr[0].setEnabled(false);
         // MARK All final listeners will be configured here..
-        widgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(_ -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to null
@@ -128,7 +128,7 @@ public class StartupDialog extends StartupDesign {
                 updateOkButtonEnabledState();
             }
         });
-        widgetUtil(btnBrowseAuthoringPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseAuthoringPathPtr[0]).addSelectionListener(_ -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to null
@@ -152,7 +152,7 @@ public class StartupDialog extends StartupDesign {
                 updateOkButtonEnabledState();
             }
         });
-        widgetUtil(btnBrowseUnofficialPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseUnofficialPathPtr[0]).addSelectionListener(_ -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to null
@@ -176,24 +176,24 @@ public class StartupDialog extends StartupDesign {
                 updateOkButtonEnabledState();
             }
         });
-        txtLdrawUserNamePtr[0].addListener(SWT.Modify, e -> {
+        txtLdrawUserNamePtr[0].addListener(SWT.Modify, _ -> {
             ldrawUserName = txtLdrawUserNamePtr[0].getText();
             updateOkButtonEnabledState();
         });
-        txtRealNamePtr[0].addListener(SWT.Modify, e -> {
+        txtRealNamePtr[0].addListener(SWT.Modify, _ -> {
             realName = txtRealNamePtr[0].getText();
             updateOkButtonEnabledState();
         });
-        cmbLicensePtr[0].addListener(SWT.Modify, e -> {
+        cmbLicensePtr[0].addListener(SWT.Modify, _ -> {
             license = cmbLicensePtr[0].getText();
             updateOkButtonEnabledState();
         });
-        cmbLocalePtr[0].addListener(SWT.Modify, e -> {
+        cmbLocalePtr[0].addListener(SWT.Modify, _ -> {
             if (localeMap.containsKey(cmbLocalePtr[0].getText())) {
                 locale = localeMap.get(cmbLocalePtr[0].getText());
             }
         });
-        btnOkPtr[0].addListener(SWT.Selection, event -> {
+        btnOkPtr[0].addListener(SWT.Selection, _ -> {
             UserSettingState userSettingState = new UserSettingState();
             userSettingState.setAuthoringFolderPath(partAuthoringPath);
             userSettingState.setLdrawFolderPath(ldrawPath);

@@ -72,40 +72,40 @@ public class RotateDialog extends RotateDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        widgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLocalPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
             btnLocalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.LOCAL;
             TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE);
         });
-        widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnGlobalPtr[0]).addSelectionListener(_ -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
             TransformationModeToolItem.setWorkingAction(WorkingMode.MOVE_GLOBAL);
         });
-        widgetUtil(rbXaxisPtr[0]).addSelectionListener(e -> {
+        widgetUtil(rbXaxisPtr[0]).addSelectionListener(_ -> {
             if (rbXaxisPtr[0].getSelection()) {
                 x = true;
                 y = false;
                 z = false;
             }
         });
-        widgetUtil(rbYaxisPtr[0]).addSelectionListener(e -> {
+        widgetUtil(rbYaxisPtr[0]).addSelectionListener(_ -> {
             if (rbYaxisPtr[0].getSelection()) {
                 x = false;
                 y = true;
                 z = false;
             }
         });
-        widgetUtil(rbZaxisPtr[0]).addSelectionListener(e -> {
+        widgetUtil(rbZaxisPtr[0]).addSelectionListener(_ -> {
             if (rbZaxisPtr[0].getSelection()) {
                 x = false;
                 y = false;
                 z = true;
             }
         });
-        spnXPtr[0].addValueChangeListener(spn -> {
+        spnXPtr[0].addValueChangeListener(_ -> {
             setAngles(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
             rbXaxisPtr[0].setSelection(true);
             rbYaxisPtr[0].setSelection(false);
@@ -114,7 +114,7 @@ public class RotateDialog extends RotateDesign {
             y = false;
             z = false;
         });
-        spnYPtr[0].addValueChangeListener(spn -> {
+        spnYPtr[0].addValueChangeListener(_ -> {
             setAngles(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
             rbXaxisPtr[0].setSelection(false);
             rbYaxisPtr[0].setSelection(true);
@@ -123,7 +123,7 @@ public class RotateDialog extends RotateDesign {
             y = true;
             z = false;
         });
-        spnZPtr[0].addValueChangeListener(spn -> {
+        spnZPtr[0].addValueChangeListener(_ -> {
             setAngles(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
             rbXaxisPtr[0].setSelection(false);
             rbYaxisPtr[0].setSelection(false);
@@ -132,20 +132,20 @@ public class RotateDialog extends RotateDesign {
             y = false;
             z = true;
         });
-        spnPXPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
-        spnPYPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
-        spnPZPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
-        widgetUtil(btnPivotManipulatorPtr[0]).addSelectionListener(e -> {
+        spnPXPtr[0].addValueChangeListener(_ -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
+        spnPYPtr[0].addValueChangeListener(_ -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
+        spnPZPtr[0].addValueChangeListener(_ -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
+        widgetUtil(btnPivotManipulatorPtr[0]).addSelectionListener(_ -> {
             spnPXPtr[0].setValue(m.xp);
             spnPYPtr[0].setValue(m.yp);
             spnPZPtr[0].setValue(m.zp);
         });
-        widgetUtil(btnPivotClipboardPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPivotClipboardPtr[0]).addSelectionListener(_ -> {
             spnPXPtr[0].setValue(c.xp);
             spnPYPtr[0].setValue(c.yp);
             spnPZPtr[0].setValue(c.zp);
         });
-        widgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCopyPtr[0]).addSelectionListener(_ -> {
             creatingCopy = true;
             setReturnCode(OK);
             close();

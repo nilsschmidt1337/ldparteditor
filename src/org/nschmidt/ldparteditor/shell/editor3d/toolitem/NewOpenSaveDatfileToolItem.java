@@ -98,7 +98,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
 
     private void addListeners() {
         final Editor3DWindow win = Editor3DWindow.getWindow();
-        widgetUtil(btnLastOpenPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLastOpenPtr[0]).addSelectionListener(_ -> {
 
             Menu lastOpenedMenu = new Menu(win.getPartsTree().getTree());
             btnLastOpenPtr[0].setMenu(lastOpenedMenu);
@@ -113,7 +113,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                         MenuItem mntmItem1 = new MenuItem(lastOpenedMenu, I18n.noBiDirectionalTextStyle());
                         mntmItem1.setEnabled(true);
                         mntmItem1.setText(path);
-                        widgetUtil(mntmItem1).addSelectionListener(e11 -> {
+                        widgetUtil(mntmItem1).addSelectionListener(_ -> {
                             File f11 = new File(path);
                             if (f11.exists() && f11.isFile() && f11.canRead()) {
                                 DatFile df = win.openDatFile(OpenInWhat.EDITOR_3D, path, false);
@@ -148,7 +148,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
                         formatter.applyPattern(I18n.E3D_LAST_PROJECT);
 
                         mntmItem2.setText(formatter.format(messageArguments));
-                        widgetUtil(mntmItem2).addSelectionListener(e12 -> {
+                        widgetUtil(mntmItem2).addSelectionListener(_ -> {
                             File f12 = new File(path);
                             if (f12.exists() && f12.isDirectory() && f12.canRead() && ProjectActions.openProject(path)) {
                                 Project.create(false);
@@ -199,11 +199,9 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
             win.regainFocus();
         });
 
-        widgetUtil(btnOpenDatPtr[0]).addSelectionListener(e -> {
-            open(btnOpenDatPtr[0].getShell(), null);
-        });
+        widgetUtil(btnOpenDatPtr[0]).addSelectionListener(_ -> open(btnOpenDatPtr[0].getShell(), null));
 
-        widgetUtil(btnSaveDatPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSaveDatPtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().equals(View.DUMMY_DATFILE)) {
                 final DatFile df = Project.getFileToEdit();
                 if (df.isVirtual()) {
@@ -234,7 +232,7 @@ public class NewOpenSaveDatfileToolItem extends ToolItem {
             win.regainFocus();
         });
 
-        widgetUtil(btnSaveAsDatPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSaveAsDatPtr[0]).addSelectionListener(_ -> {
             saveAs(win, Project.getFileToEdit(), HeaderUpdate.UPDATE_HEADER);
             win.updateTreeUnsavedEntries();
             win.regainFocus();

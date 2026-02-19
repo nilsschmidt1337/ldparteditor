@@ -42,9 +42,9 @@ public class VertexDialog extends VertexDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spnXPtr[0].addValueChangeListener(spn -> vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
-        spnYPtr[0].addValueChangeListener(spn -> vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
-        spnZPtr[0].addValueChangeListener(spn -> vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
+        spnXPtr[0].addValueChangeListener(_ -> vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
+        spnYPtr[0].addValueChangeListener(_ -> vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
+        spnZPtr[0].addValueChangeListener(_ -> vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
         return super.open();
     }
 

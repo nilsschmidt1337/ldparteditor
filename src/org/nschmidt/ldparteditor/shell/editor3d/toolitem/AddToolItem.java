@@ -136,17 +136,15 @@ public class AddToolItem extends ToolItem {
     }
 
     private static void addListeners() {
-        widgetUtil(btnAddCommentPtr[0]).addSelectionListener(e -> {
-            openMetaWindow();
-        });
-        widgetUtil(btnAddVertexPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnAddCommentPtr[0]).addSelectionListener(_ -> openMetaWindow());
+        widgetUtil(btnAddVertexPtr[0]).addSelectionListener(_ -> {
             resetAddState();
             clickSingleBtn(btnAddVertexPtr[0]);
             setAddingVertices(btnAddVertexPtr[0].getSelection());
             setAddingSomething(isAddingVertices());
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnAddPrimitivePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnAddPrimitivePtr[0]).addSelectionListener(_ -> {
 
             resetAddState();
             setAddingSubfiles(btnAddPrimitivePtr[0].getSelection());
@@ -402,42 +400,42 @@ public class AddToolItem extends ToolItem {
             setAddingSomething(isAddingSubfiles());
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnAddLinePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnAddLinePtr[0]).addSelectionListener(_ -> {
             resetAddState();
             setAddingLines(btnAddLinePtr[0].getSelection());
             setAddingSomething(isAddingLines());
             clickSingleBtn(btnAddLinePtr[0]);
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnAddTrianglePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnAddTrianglePtr[0]).addSelectionListener(_ -> {
             resetAddState();
             setAddingTriangles(btnAddTrianglePtr[0].getSelection());
             setAddingSomething(isAddingTriangles());
             clickSingleBtn(btnAddTrianglePtr[0]);
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnAddQuadPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnAddQuadPtr[0]).addSelectionListener(_ -> {
             resetAddState();
             setAddingQuads(btnAddQuadPtr[0].getSelection());
             setAddingSomething(isAddingQuads());
             clickSingleBtn(btnAddQuadPtr[0]);
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnAddCondlinePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnAddCondlinePtr[0]).addSelectionListener(_ -> {
             resetAddState();
             setAddingCondlines(btnAddCondlinePtr[0].getSelection());
             setAddingSomething(isAddingCondlines());
             clickSingleBtn(btnAddCondlinePtr[0]);
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnAddDistancePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnAddDistancePtr[0]).addSelectionListener(_ -> {
             resetAddState();
             setAddingDistance(btnAddDistancePtr[0].getSelection());
             setAddingSomething(isAddingDistance());
             clickSingleBtn(btnAddDistancePtr[0]);
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnAddProtractorPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnAddProtractorPtr[0]).addSelectionListener(_ -> {
             resetAddState();
             setAddingProtractor(btnAddProtractorPtr[0].getSelection());
             setAddingSomething(isAddingProtractor());

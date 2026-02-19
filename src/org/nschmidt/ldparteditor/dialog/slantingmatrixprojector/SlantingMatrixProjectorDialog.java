@@ -45,7 +45,7 @@ public class SlantingMatrixProjectorDialog extends SlantingMatrixProjectorDesign
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseSlantingMatrixProjector(btnVerbosePtr[0].getSelection()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerboseSlantingMatrixProjector(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

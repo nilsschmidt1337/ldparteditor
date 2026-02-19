@@ -44,8 +44,8 @@ public class IsecalcDialog extends IsecalcDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        cmbScopePtr[0].addListener(SWT.Selection, event -> is.setScope(cmbScopePtr[0].getSelectionIndex()));
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseIsecalc(btnVerbosePtr[0].getSelection()));
+        cmbScopePtr[0].addListener(SWT.Selection, _ -> is.setScope(cmbScopePtr[0].getSelectionIndex()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerboseIsecalc(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

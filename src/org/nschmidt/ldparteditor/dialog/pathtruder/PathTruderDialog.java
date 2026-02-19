@@ -53,9 +53,9 @@ public class PathTruderDialog extends PathTruderDesign {
         spnTransCurvePtr[0].addValueChangeListener(spn -> ps.setTransitionCurveControl(spn.getValue()));
         spnTransitionsPtr[0].addValueChangeListener(spn -> ps.setTransitionCount(spn.getValue()));
         spnMaxPathSegmentLengthPtr[0].addValueChangeListener(spn -> ps.setMaxPathSegmentLength(spn.getValue()));
-        cmbBfcInvertPtr[0].addListener(SWT.Selection, event -> ps.setInverted(cmbBfcInvertPtr[0].getSelectionIndex() == 1));
-        cmbShapeCompensationPtr[0].addListener(SWT.Selection, event -> ps.setCompensation(cmbShapeCompensationPtr[0].getSelectionIndex() == 1));
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerbosePathTruder(btnVerbosePtr[0].getSelection()));
+        cmbBfcInvertPtr[0].addListener(SWT.Selection, _ -> ps.setInverted(cmbBfcInvertPtr[0].getSelectionIndex() == 1));
+        cmbShapeCompensationPtr[0].addListener(SWT.Selection, _ -> ps.setCompensation(cmbShapeCompensationPtr[0].getSelectionIndex() == 1));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerbosePathTruder(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 

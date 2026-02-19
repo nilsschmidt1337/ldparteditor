@@ -183,7 +183,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     0f, false, isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(), false, df);
         });
 
-        txtDataPtr[0].addExtendedModifyListener(event -> {
+        txtDataPtr[0].addExtendedModifyListener(_ -> {
             df.disposeData();
             df.setText(txtDataPtr[0].getText());
             df.parseForData(false);
@@ -236,7 +236,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        widgetUtil(mntmDeletePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDeletePtr[0]).addSelectionListener(_ -> {
             final int x = txtDataPtr[0].getSelection().x;
             if (txtDataPtr[0].getSelection().y == x) {
                 final int start = txtDataPtr[0].getOffsetAtLine(txtDataPtr[0].getLineAtOffset(x));
@@ -251,33 +251,33 @@ public class PrimGen2Dialog extends PrimGen2Design {
             txtDataPtr[0].setSelection(new Point(x, x));
             txtDataPtr[0].forceFocus();
         });
-        widgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> txtDataPtr[0].copy());
-        widgetUtil(mntmCutPtr[0]).addSelectionListener(e -> txtDataPtr[0].cut());
-        widgetUtil(mntmPastePtr[0]).addSelectionListener(e -> txtDataPtr[0].paste());
+        widgetUtil(mntmCopyPtr[0]).addSelectionListener(_ -> txtDataPtr[0].copy());
+        widgetUtil(mntmCutPtr[0]).addSelectionListener(_ -> txtDataPtr[0].cut());
+        widgetUtil(mntmPastePtr[0]).addSelectionListener(_ -> txtDataPtr[0].paste());
 
         btnOkPtr[0].removeListener(SWT.Selection, btnOkPtr[0].getListeners(SWT.Selection)[0]);
         btnCancelPtr[0].removeListener(SWT.Selection, btnCancelPtr[0].getListeners(SWT.Selection)[0]);
 
-        widgetUtil(btnOkPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnOkPtr[0]).addSelectionListener(_ ->
             savePrimitive(Project.getProjectPath() + File.separator + "p" + File.separator + resPrefix + name, false) //$NON-NLS-1$
         );
 
-        widgetUtil(btnCancelPtr[0]).addSelectionListener(e -> getShell().close());
+        widgetUtil(btnCancelPtr[0]).addSelectionListener(_ -> getShell().close());
 
-        widgetUtil(btnSaveAsPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnSaveAsPtr[0]).addSelectionListener(_ ->
             savePrimitive(null, false)
         );
 
-        widgetUtil(btnSaveAsAndContinuePtr[0]).addSelectionListener(e ->
+        widgetUtil(btnSaveAsAndContinuePtr[0]).addSelectionListener(_ ->
             savePrimitive(null, true)
         );
 
-        widgetUtil(btnTopPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnTopPtr[0]).addSelectionListener(_ -> {
             c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
             Display.getCurrent().asyncExec(c3d.getRenderer()::drawScene);
         });
 
-        widgetUtil(cmbTypePtr[0]).addSelectionListener(e -> {
+        widgetUtil(cmbTypePtr[0]).addSelectionListener(_ -> {
 
             doUpdate = true;
 

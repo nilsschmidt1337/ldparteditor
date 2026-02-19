@@ -43,7 +43,7 @@ public class UndoRedoToolItem extends ToolItem {
             btnSnapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
             btnSnapshot.setToolTipText(I18n.E3D_SNAPSHOT);
 
-            widgetUtil(btnSnapshot).addSelectionListener(e -> {
+            widgetUtil(btnSnapshot).addSelectionListener(_ -> {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().addHistory();
@@ -55,7 +55,7 @@ public class UndoRedoToolItem extends ToolItem {
         btnRedo.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_redo.png")); //$NON-NLS-1$
         KeyStateManager.addTooltipText(btnRedo, I18n.E3D_REDO, Task.REDO);
 
-        widgetUtil(btnUndo).addSelectionListener(e -> {
+        widgetUtil(btnUndo).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().undo(false);
@@ -64,7 +64,7 @@ public class UndoRedoToolItem extends ToolItem {
             Editor3DWindow.getWindow().regainFocus();
         });
 
-        widgetUtil(btnRedo).addSelectionListener(e -> {
+        widgetUtil(btnRedo).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().redo(false);

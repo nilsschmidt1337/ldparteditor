@@ -1330,7 +1330,7 @@ class VM00Base {
         }
         final GData0 vertexTag = new GData0("0 !LPE VERTEX " + bigDecimalToString(vertex.xp) + " " + bigDecimalToString(vertex.yp) + " " + bigDecimalToString(vertex.zp), View.DUMMY_REFERENCE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
         getManifestationLock().lock();
-        Set<VertexManifestation> manifestations = vertexLinkedToPositionInFile.computeIfAbsent(vertex, v -> Collections.newSetFromMap(new ThreadsafeHashMap<>()));
+        Set<VertexManifestation> manifestations = vertexLinkedToPositionInFile.computeIfAbsent(vertex, _ -> Collections.newSetFromMap(new ThreadsafeHashMap<>()));
         manifestations.add(new VertexManifestation(0, vertexTag));
         getManifestationLock().unlock();
         lineLinkedToVertices.put(vertexTag, Collections.newSetFromMap(new ThreadsafeHashMap<>()));

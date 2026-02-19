@@ -78,23 +78,23 @@ public class NButton extends Canvas {
         }
 
         if (isRadio) {
-            List<NButton> groups = radioGroups.computeIfAbsent(parent, c -> new ArrayList<>());
+            List<NButton> groups = radioGroups.computeIfAbsent(parent, _ -> new ArrayList<>());
             groups.add(this);
         }
 
         super.addPaintListener(this::paint);
 
         addListener(SWT.MouseDown, this::mouseDown);
-        addListener(SWT.MouseUp, event -> {
+        addListener(SWT.MouseUp, _ -> {
             pressed = false;
             redraw();
         });
-        addListener(SWT.MouseEnter, event -> {
+        addListener(SWT.MouseEnter, _ -> {
             pressed = false;
             hovered = true;
             redraw();
         });
-        addListener(SWT.MouseExit, event -> {
+        addListener(SWT.MouseExit, _ -> {
             pressed = false;
             hovered = false;
             redraw();

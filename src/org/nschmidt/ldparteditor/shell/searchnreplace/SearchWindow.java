@@ -57,9 +57,9 @@ public class SearchWindow extends SearchDesign {
         sh.setMinimumSize(super.getInitialSize());
 
         // MARK All final listeners will be configured here..
-        widgetUtil(btnFindPtr[0]).addSelectionListener(e -> find());
+        widgetUtil(btnFindPtr[0]).addSelectionListener(_ -> find());
 
-        txtFindPtr[0].addModifyListener(e -> {
+        txtFindPtr[0].addModifyListener(_ -> {
             setDisabledButtonStatus();
 
             if (btnFindPtr[0].isEnabled() && cbIncrementalPtr[0].getSelection()) {
@@ -111,9 +111,9 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        widgetUtil(btnReplacePtr[0]).addSelectionListener(e -> replace());
-        widgetUtil(btnReplaceAllPtr[0]).addSelectionListener(e -> replaceAll());
-        widgetUtil(btnFindAndReplacePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnReplacePtr[0]).addSelectionListener(_ -> replace());
+        widgetUtil(btnReplaceAllPtr[0]).addSelectionListener(_ -> replaceAll());
+        widgetUtil(btnFindAndReplacePtr[0]).addSelectionListener(_ -> {
             replace();
             find();
             replace();
@@ -130,7 +130,7 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        widgetUtil(rbSelectedLinesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(rbSelectedLinesPtr[0]).addSelectionListener(_ -> {
             try {
                 if (rbSelectedLinesPtr[0].getSelection()) {
                     scopeAll = false;
@@ -220,7 +220,7 @@ public class SearchWindow extends SearchDesign {
                     if (textComposite.getSelectionRange().x == 0  && textComposite.getSelectionRange().y == 0 && text.startsWith(criteria)) {
                         textComposite.setSelectionRange(0, len);
                         textComposite.showSelection();
-                        
+
                         result = true;
                     } else {
 
@@ -231,7 +231,7 @@ public class SearchWindow extends SearchDesign {
                         } else {
                             index = text.indexOf(criteria, textComposite.getSelectionRange().x + len);
                         }
-                        
+
                         if (index != -1) {
                             if (!scopeAll && index > selectionEnd) {
                                 textComposite.setSelectionRange(selectionStart, 0);
@@ -247,7 +247,7 @@ public class SearchWindow extends SearchDesign {
                             } else {
                                 textComposite.setSelectionRange(selectionStart, 0);
                             }
-                            
+
                             result = false;
                         }
                     }
@@ -271,7 +271,7 @@ public class SearchWindow extends SearchDesign {
                         } else {
                             textComposite.setSelectionRange(selectionEnd, 0);
                         }
-                        
+
                         result = false;
                     }
                 }
@@ -281,7 +281,7 @@ public class SearchWindow extends SearchDesign {
         } else {
             result = false;
         }
-        
+
         return result;
     }
 
@@ -340,7 +340,7 @@ public class SearchWindow extends SearchDesign {
         if (scopeAll) {
             textComposite.setSelectionRange(0, 0);
         }
-        
+
         if (btnFindPtr[0].isEnabled()) {
             int delta = txtReplacePtr[0].getText().length() - txtFindPtr[0].getText().length();
             while (find()) {
@@ -350,7 +350,7 @@ public class SearchWindow extends SearchDesign {
                 selectionEnd += delta;
             }
         }
-        
+
         rbForwardPtr[0].setSelection(forward);
     }
 

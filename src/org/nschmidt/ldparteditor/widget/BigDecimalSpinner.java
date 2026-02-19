@@ -153,7 +153,7 @@ public class BigDecimalSpinner extends Composite {
             }
         });
 
-        txt.addListener(SWT.MouseDown, e -> {
+        txt.addListener(SWT.MouseDown, _ -> {
             if (selectAll) {
                 txtVal[0].selectAll();
                 selectAll = false;
@@ -199,7 +199,7 @@ public class BigDecimalSpinner extends Composite {
                 }
             }
         });
-        txt.addModifyListener(e -> {
+        txt.addModifyListener(_ -> {
 
             if (invalidInput) {
                 invalidInput = false;

@@ -413,7 +413,7 @@ public class Composite3DModifier {
                 btnOpenIn3DEditor.setLayoutData(gd);
                 btnOpenIn3DEditor.setData(Project.getFileToEdit());
 
-                widgetUtil(btnOpenIn3DEditor).addSelectionListener(e -> {
+                widgetUtil(btnOpenIn3DEditor).addSelectionListener(_ -> {
                     DatFile df = (DatFile) btnOpenIn3DEditor.getData();
                     if (df == null) {
                         df = View.DUMMY_DATFILE;

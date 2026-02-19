@@ -44,7 +44,7 @@ public class SelectionDialog<T> extends SelectionDesign<T> {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        treePtr[0].addSelectionListener(ev -> {
+        treePtr[0].addSelectionListener(_ -> {
             selection = (T) treePtr[0].getSelection()[0].getData();
             NLogger.debug(SelectionDialog.class, "Selected data: {0}", selection); //$NON-NLS-1$
         });

@@ -553,7 +553,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        if (btnShowLeftPtr[0] != null) widgetUtil(btnShowLeftPtr[0]).addSelectionListener(e -> {
+        if (btnShowLeftPtr[0] != null) widgetUtil(btnShowLeftPtr[0]).addSelectionListener(_ -> {
             final SashForm sf = Editor3DWindow.getWindow().getSplitSashForm();
             int[] w = sf.getWeights();
             if (w[1] * 9 > w[0]) {
@@ -563,7 +563,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        if (btnShowRightPtr[0] != null) widgetUtil(btnShowRightPtr[0]).addSelectionListener(e -> {
+        if (btnShowRightPtr[0] != null) widgetUtil(btnShowRightPtr[0]).addSelectionListener(_ -> {
             final SashForm sf = Editor3DWindow.getWindow().getSplitSashForm();
             int[] w = sf.getWeights();
             if (w[0] * 9 > w[1]) {
@@ -573,7 +573,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        if (btnSameWidthPtr[0] != null) widgetUtil(btnSameWidthPtr[0]).addSelectionListener(e -> Editor3DWindow.getWindow().getSplitSashForm().setWeights(50, 50));
+        if (btnSameWidthPtr[0] != null) widgetUtil(btnSameWidthPtr[0]).addSelectionListener(_ -> Editor3DWindow.getWindow().getSplitSashForm().setWeights(50, 50));
 
         widgetUtil(btnNewPtr[0]).addSelectionListener(e -> {
             final boolean isDraft = Cocoa.checkCtrlOrCmdPressed(e.stateMask);
@@ -592,7 +592,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
-        widgetUtil(btnOpenPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnOpenPtr[0]).addSelectionListener(_ -> {
             Shell sh = getShell();
             if (sh == null) {
                 sh = Editor3DWindow.getWindow().getShell();
@@ -600,7 +600,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
             NewOpenSaveDatfileToolItem.open(sh, this);
         });
-        widgetUtil(btnSavePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSavePtr[0]).addSelectionListener(_ -> {
             final CompositeTab ct = (CompositeTab) tabFolderPtr[0].getSelection();
             if (ct != null) {
                 CompositeTabState state = ct.getState();
@@ -633,7 +633,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 ct.getTextComposite().forceFocus();
             }
         });
-        widgetUtil(btnSaveAsPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSaveAsPtr[0]).addSelectionListener(_ -> {
             if (tabFolderPtr[0].getSelection() != null) {
                 final DatFile df = ((CompositeTab) tabFolderPtr[0].getSelection()).getState().getFileNameObj();
                 if (df.isVirtual()) {
@@ -643,12 +643,12 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
-        widgetUtil(btnCutPtr[0]).addSelectionListener(e -> tabFolderPtr[0].cut());
-        widgetUtil(btnCopyPtr[0]).addSelectionListener(e -> tabFolderPtr[0].copy());
-        widgetUtil(btnPastePtr[0]).addSelectionListener(e -> tabFolderPtr[0].paste());
-        widgetUtil(btnDeletePtr[0]).addSelectionListener(e -> tabFolderPtr[0].delete());
+        widgetUtil(btnCutPtr[0]).addSelectionListener(_ -> tabFolderPtr[0].cut());
+        widgetUtil(btnCopyPtr[0]).addSelectionListener(_ -> tabFolderPtr[0].copy());
+        widgetUtil(btnPastePtr[0]).addSelectionListener(_ -> tabFolderPtr[0].paste());
+        widgetUtil(btnDeletePtr[0]).addSelectionListener(_ -> tabFolderPtr[0].delete());
 
-        widgetUtil(btnUndoPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnUndoPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -658,7 +658,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnRedoPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnRedoPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -669,7 +669,7 @@ public class EditorTextWindow extends EditorTextDesign {
         });
 
         if (NLogger.debugging) {
-            widgetUtil(btnAddHistoryPtr[0]).addSelectionListener(e -> {
+            widgetUtil(btnAddHistoryPtr[0]).addSelectionListener(_ -> {
                 CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
                 if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                     if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -680,7 +680,7 @@ public class EditorTextWindow extends EditorTextDesign {
             });
         }
 
-        widgetUtil(btnSyncEditPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSyncEditPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -741,7 +741,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnInlineDeepPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnInlineDeepPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -768,7 +768,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnAnnotatePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnAnnotatePtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -792,7 +792,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnTexmapPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnTexmapPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -816,7 +816,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnShowSelectionIn3DPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnShowSelectionIn3DPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -839,7 +839,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnOpenIn3DPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnOpenIn3DPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -850,7 +850,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnFindAndReplacePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnFindAndReplacePtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null) {
                 SearchWindow win = Editor3DWindow.getWindow().getSearchWindow();
@@ -864,7 +864,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnSortPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSortPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -886,7 +886,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnSplitQuadPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSplitQuadPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -907,7 +907,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnMergeQuadPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMergeQuadPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -979,7 +979,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 st.forceFocus();
             }
         });
-        widgetUtil(btnBFCswapPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBFCswapPtr[0]).addSelectionListener(_ -> {
 
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null) {
@@ -1003,7 +1003,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 st.forceFocus();
             }
         });
-        widgetUtil(btnCompileSubfilePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCompileSubfilePtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -1038,21 +1038,21 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnShowErrorsPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnShowErrorsPtr[0]).addSelectionListener(_ -> {
             CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selection != null) {
                 selection.toggleErrorTabVisibility();
             }
         });
 
-        widgetUtil(btnHidePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnHidePtr[0]).addSelectionListener(_ -> {
             CompositeTab selectedTab = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selectedTab != null) {
                 selectedTab.hideSelection();
             }
         });
 
-        widgetUtil(btnShowPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnShowPtr[0]).addSelectionListener(_ -> {
             CompositeTab selectedTab = (CompositeTab) tabFolderPtr[0].getSelection();
             if (selectedTab != null) {
                 selectedTab.showSelection();
@@ -1104,7 +1104,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 EditorTextWindow.dragFolderOrigin = tabFolderPtr[0];
             }
         });
-        widgetUtil(tabFolderPtr[0]).addSelectionListener(e -> ((CompositeTab) tabFolderPtr[0].getSelection()).getTextComposite().forceFocus());
+        widgetUtil(tabFolderPtr[0]).addSelectionListener(_ -> ((CompositeTab) tabFolderPtr[0].getSelection()).getTextComposite().forceFocus());
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
 
         final DragSource source = new DragSource(tabFolderPtr[0], operations);
@@ -1223,18 +1223,18 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        widgetUtil(btnMovePlusXPtr[0]).addSelectionListener(e ->    moveOrRotate(TransformationMode.TRANSLATE, false, Axis.X));
-        widgetUtil(btnMoveMinusXPtr[0]).addSelectionListener(e ->   moveOrRotate(TransformationMode.TRANSLATE, true, Axis.X));
-        widgetUtil(btnMovePlusYPtr[0]).addSelectionListener(e ->    moveOrRotate(TransformationMode.TRANSLATE, false, Axis.Y));
-        widgetUtil(btnMoveMinusYPtr[0]).addSelectionListener(e ->   moveOrRotate(TransformationMode.TRANSLATE, true, Axis.Y));
-        widgetUtil(btnMovePlusZPtr[0]).addSelectionListener(e ->    moveOrRotate(TransformationMode.TRANSLATE, false, Axis.Z));
-        widgetUtil(btnMoveMinusZPtr[0]).addSelectionListener(e ->   moveOrRotate(TransformationMode.TRANSLATE, true, Axis.Z));
-        widgetUtil(btnRotatePlusXPtr[0]).addSelectionListener(e ->  moveOrRotate(TransformationMode.ROTATE, false, Axis.X));
-        widgetUtil(btnRotateMinusXPtr[0]).addSelectionListener(e -> moveOrRotate(TransformationMode.ROTATE, true, Axis.X));
-        widgetUtil(btnRotatePlusYPtr[0]).addSelectionListener(e ->  moveOrRotate(TransformationMode.ROTATE, false, Axis.Y));
-        widgetUtil(btnRotateMinusYPtr[0]).addSelectionListener(e -> moveOrRotate(TransformationMode.ROTATE, true, Axis.Y));
-        widgetUtil(btnRotatePlusZPtr[0]).addSelectionListener(e ->  moveOrRotate(TransformationMode.ROTATE, false, Axis.Z));
-        widgetUtil(btnRotateMinusZPtr[0]).addSelectionListener(e -> moveOrRotate(TransformationMode.ROTATE, true, Axis.Z));
+        widgetUtil(btnMovePlusXPtr[0]).addSelectionListener(_ ->    moveOrRotate(TransformationMode.TRANSLATE, false, Axis.X));
+        widgetUtil(btnMoveMinusXPtr[0]).addSelectionListener(_ ->   moveOrRotate(TransformationMode.TRANSLATE, true, Axis.X));
+        widgetUtil(btnMovePlusYPtr[0]).addSelectionListener(_ ->    moveOrRotate(TransformationMode.TRANSLATE, false, Axis.Y));
+        widgetUtil(btnMoveMinusYPtr[0]).addSelectionListener(_ ->   moveOrRotate(TransformationMode.TRANSLATE, true, Axis.Y));
+        widgetUtil(btnMovePlusZPtr[0]).addSelectionListener(_ ->    moveOrRotate(TransformationMode.TRANSLATE, false, Axis.Z));
+        widgetUtil(btnMoveMinusZPtr[0]).addSelectionListener(_ ->   moveOrRotate(TransformationMode.TRANSLATE, true, Axis.Z));
+        widgetUtil(btnRotatePlusXPtr[0]).addSelectionListener(_ ->  moveOrRotate(TransformationMode.ROTATE, false, Axis.X));
+        widgetUtil(btnRotateMinusXPtr[0]).addSelectionListener(_ -> moveOrRotate(TransformationMode.ROTATE, true, Axis.X));
+        widgetUtil(btnRotatePlusYPtr[0]).addSelectionListener(_ ->  moveOrRotate(TransformationMode.ROTATE, false, Axis.Y));
+        widgetUtil(btnRotateMinusYPtr[0]).addSelectionListener(_ -> moveOrRotate(TransformationMode.ROTATE, true, Axis.Y));
+        widgetUtil(btnRotatePlusZPtr[0]).addSelectionListener(_ ->  moveOrRotate(TransformationMode.ROTATE, false, Axis.Z));
+        widgetUtil(btnRotateMinusZPtr[0]).addSelectionListener(_ -> moveOrRotate(TransformationMode.ROTATE, true, Axis.Z));
     }
 
     private void moveOrRotate(TransformationMode mode, boolean invert, Axis axis) {

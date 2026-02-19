@@ -101,11 +101,11 @@ public class TransformationModeToolItem extends ToolItem {
     }
 
     private static void addListeners() {
-        widgetUtil(btnSelectPtr[0]).addSelectionListener(e -> switchWorkingAction(btnSelectPtr, WorkingMode.SELECT));
-        widgetUtil(btnMovePtr[0]).addSelectionListener(e -> switchWorkingAction(btnMovePtr, WorkingMode.MOVE));
-        widgetUtil(btnRotatePtr[0]).addSelectionListener(e -> switchWorkingAction(btnRotatePtr, WorkingMode.ROTATE));
-        widgetUtil(btnScalePtr[0]).addSelectionListener(e -> switchWorkingAction(btnScalePtr, WorkingMode.SCALE));
-        widgetUtil(btnCombinedPtr[0]).addSelectionListener(e -> switchWorkingAction(btnCombinedPtr, WorkingMode.COMBINED));
+        widgetUtil(btnSelectPtr[0]).addSelectionListener(_ -> switchWorkingAction(btnSelectPtr, WorkingMode.SELECT));
+        widgetUtil(btnMovePtr[0]).addSelectionListener(_ -> switchWorkingAction(btnMovePtr, WorkingMode.MOVE));
+        widgetUtil(btnRotatePtr[0]).addSelectionListener(_ -> switchWorkingAction(btnRotatePtr, WorkingMode.ROTATE));
+        widgetUtil(btnScalePtr[0]).addSelectionListener(_ -> switchWorkingAction(btnScalePtr, WorkingMode.SCALE));
+        widgetUtil(btnCombinedPtr[0]).addSelectionListener(_ -> switchWorkingAction(btnCombinedPtr, WorkingMode.COMBINED));
     }
 
     private static void switchWorkingAction(NButton[] ptr, WorkingMode workingMode) {

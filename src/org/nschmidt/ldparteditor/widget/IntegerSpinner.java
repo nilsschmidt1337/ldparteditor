@@ -117,7 +117,7 @@ public class IntegerSpinner extends Composite {
             }
         });
 
-        txt.addListener(SWT.MouseDown, e -> {
+        txt.addListener(SWT.MouseDown, _ -> {
             if (selectAll) {
                 txtValPtr[0].selectAll();
                 selectAll = false;
@@ -145,7 +145,7 @@ public class IntegerSpinner extends Composite {
         });
 
         final int[] oldValue = new int[] { 0 };
-        txt.addModifyListener(e -> {
+        txt.addModifyListener(_ -> {
             if (invalidInput) {
                 invalidInput = false;
                 return;

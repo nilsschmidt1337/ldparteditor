@@ -92,7 +92,7 @@ public class LineThicknessToolItem extends ToolItem {
     }
 
     private static void addListeners() {
-        widgetUtil(btnToggleLinesOpenGLPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnToggleLinesOpenGLPtr[0]).addSelectionListener(_ -> {
             hiQualityEdges = !btnToggleLinesOpenGLPtr[0].getSelection();
             WorkbenchManager.getUserSettingState().setDrawLinesOpenGL(!hiQualityEdges);
             if (btnToggleLinesOpenGLPtr[0].getSelection()) {

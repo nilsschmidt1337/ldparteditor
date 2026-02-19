@@ -58,12 +58,12 @@ public class ManipulatorScopeToolItem extends ToolItem {
     }
 
     private static void addListeners() {
-        widgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLocalPtr[0]).addSelectionListener(_ -> {
             clickRadioBtn(btnLocalPtr[0]);
             transformationScope = ManipulatorScope.LOCAL;
             Editor3DWindow.getWindow().regainFocus();
         });
-        widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnGlobalPtr[0]).addSelectionListener(_ -> {
             clickRadioBtn(btnGlobalPtr[0]);
             transformationScope = ManipulatorScope.GLOBAL;
             Editor3DWindow.getWindow().regainFocus();

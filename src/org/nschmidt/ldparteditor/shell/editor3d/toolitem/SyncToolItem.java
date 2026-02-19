@@ -58,7 +58,7 @@ public class SyncToolItem extends ToolItem {
     }
 
     private static void addListeners() {
-        widgetUtil(btnSyncPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSyncPtr[0]).addSelectionListener(_ -> {
             final Editor3DWindow win = Editor3DWindow.getWindow();
             win.resetSearch();
             int[][] stats = new int[15][3];

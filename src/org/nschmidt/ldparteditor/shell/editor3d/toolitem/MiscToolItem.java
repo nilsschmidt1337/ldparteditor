@@ -386,7 +386,7 @@ public class MiscToolItem extends ToolItem {
         btnSelect.setToolTipText(I18n.E3D_ADVANCED_SELECT);
         btnSelect.setText(I18n.E3D_ADVANCED_SELECT);
         MiscToolItem.mnuSelect = new Menu(miscToolItem.getShell(), SWT.POP_UP);
-        widgetUtil(btnSelect).addSelectionListener(e -> {
+        widgetUtil(btnSelect).addSelectionListener(_ -> {
             showSelectMenu();
             Editor3DWindow.getWindow().regainFocus();
         });
@@ -532,7 +532,7 @@ public class MiscToolItem extends ToolItem {
         btnMergeNSplit.setToolTipText(I18n.E3D_MERGE_SPLIT);
         btnMergeNSplit.setText(I18n.E3D_MERGE_SPLIT);
         final Menu mnuMerge = new Menu(miscToolItem.getShell(), SWT.POP_UP);
-        widgetUtil(btnMergeNSplit).addSelectionListener(e -> {
+        widgetUtil(btnMergeNSplit).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             MiscToolItem.mntmSnapToGridPtr[0].setEnabled(c3d != null && c3d.isClassicPerspective());
             MiscToolItem.mntmAlignAndDistributePtr[0].setEnabled(c3d != null && c3d.isClassicPerspective());
@@ -722,7 +722,7 @@ public class MiscToolItem extends ToolItem {
         btnToolsActions.setText(I18n.E3D_TOOLS);
         btnToolsActions.setToolTipText(I18n.E3D_TOOLS_OPTIONS);
         final Menu mnuTools = new Menu(miscToolItem.getShell(), SWT.POP_UP);
-        widgetUtil(btnToolsActions).addSelectionListener(e -> {
+        widgetUtil(btnToolsActions).addSelectionListener(_ -> {
             Point loc = btnToolsActions.getLocation();
             Rectangle rect = btnToolsActions.getBounds();
             Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
@@ -734,12 +734,12 @@ public class MiscToolItem extends ToolItem {
         final NButton btnEdger2 = new NButton(miscToolItem, Cocoa.getStyle());
         btnEdger2.setText(I18n.E3D_EDGER_2);
         KeyStateManager.addTooltipText(btnEdger2, I18n.EDGER_CURRENT_VERBOSE_RUN, Task.EDGER2);
-        widgetUtil(btnEdger2).addSelectionListener(e -> edger2());
+        widgetUtil(btnEdger2).addSelectionListener(_ -> edger2());
 
         final NButton btnInfographic = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
         btnInfographic.setText(I18n.INFOGRAPHIC_HELP_BUTTON_TITLE);
         btnInfographic.setToolTipText(I18n.INFOGRAPHIC_HELP_TOOLTIP);
-        widgetUtil(btnInfographic).addSelectionListener(e -> {
+        widgetUtil(btnInfographic).addSelectionListener(_ -> {
             if (new InfographicDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.OK_ID) {
                 FileDialog fd = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
                 fd.setText(I18n.INFOGRAPHIC_HELP_SAVE_AS_PDF);
@@ -969,7 +969,7 @@ public class MiscToolItem extends ToolItem {
 
     private static void addListeners() {
 
-        widgetUtil(mntmSelectAllPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectAllPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -984,7 +984,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        widgetUtil(mntmSelectAllVisiblePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectAllVisiblePtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -999,7 +999,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        widgetUtil(mntmSelectAllWithColoursPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectAllWithColoursPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -1014,7 +1014,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        widgetUtil(mntmSelectAllVisibleWithColoursPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectAllVisibleWithColoursPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -1029,7 +1029,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        widgetUtil(mntmSelectNonePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectNonePtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -1043,7 +1043,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        widgetUtil(mntmSelectInversePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectInversePtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -1059,7 +1059,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmWithSameColourPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmWithSameColourPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 mntmSelectEverythingPtr[0].setEnabled(
                         mntmWithHiddenDataPtr[0].getSelection() ||
@@ -1073,7 +1073,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmWithSameTypePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmWithSameTypePtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 mntmSelectEverythingPtr[0].setEnabled(
                         mntmWithHiddenDataPtr[0].getSelection() ||
@@ -1087,7 +1087,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmWithSameOrientationPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmWithSameOrientationPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 mntmSelectEverythingPtr[0].setEnabled(
                         mntmWithHiddenDataPtr[0].getSelection() ||
@@ -1119,7 +1119,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmWithAccuracyPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmWithAccuracyPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 mntmSelectEverythingPtr[0].setEnabled(
                         mntmWithHiddenDataPtr[0].getSelection() ||
@@ -1149,7 +1149,7 @@ public class MiscToolItem extends ToolItem {
             });
             regainFocus();
         });
-        widgetUtil(mntmWithHiddenDataPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmWithHiddenDataPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 mntmSelectEverythingPtr[0].setEnabled(
                         mntmWithHiddenDataPtr[0].getSelection() ||
@@ -1162,15 +1162,15 @@ public class MiscToolItem extends ToolItem {
             });
             regainFocus();
         });
-        widgetUtil(mntmWithWholeSubfilesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmWithWholeSubfilesPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(MiscToolItem::showSelectMenu);
             regainFocus();
         });
-        widgetUtil(mntmWithAdjacencyPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmWithAdjacencyPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(MiscToolItem::showSelectMenu);
             regainFocus();
         });
-        widgetUtil(mntmExceptSubfilesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmExceptSubfilesPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 mntmSelectEverythingPtr[0].setEnabled(
                         mntmWithHiddenDataPtr[0].getSelection() ||
@@ -1184,18 +1184,18 @@ public class MiscToolItem extends ToolItem {
             });
             regainFocus();
         });
-        widgetUtil(mntmStopAtEdgesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmStopAtEdgesPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(MiscToolItem::showSelectMenu);
             regainFocus();
         });
-        widgetUtil(mntmSAllTypesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSAllTypesPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 activateAllTypes();
                 showSelectMenu();
             });
             regainFocus();
         });
-        widgetUtil(mntmSNothingPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSNothingPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 mntmSVerticesPtr[0].setSelection(false);
                 mntmSLinesPtr[0].setSelection(false);
@@ -1206,28 +1206,28 @@ public class MiscToolItem extends ToolItem {
             });
             regainFocus();
         });
-        widgetUtil(mntmSTrianglesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSTrianglesPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(MiscToolItem::showSelectMenu);
             regainFocus();
         });
-        widgetUtil(mntmSQuadsPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSQuadsPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(MiscToolItem::showSelectMenu);
             regainFocus();
         });
-        widgetUtil(mntmSCLinesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSCLinesPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(MiscToolItem::showSelectMenu);
             regainFocus();
         });
-        widgetUtil(mntmSVerticesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSVerticesPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(MiscToolItem::showSelectMenu);
             regainFocus();
         });
-        widgetUtil(mntmSLinesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSLinesPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(MiscToolItem::showSelectMenu);
             regainFocus();
         });
 
-        widgetUtil(mntmSelectEverythingPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectEverythingPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -1244,7 +1244,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSelectConnectedPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectConnectedPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -1261,7 +1261,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSelectTouchingPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectTouchingPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -1278,7 +1278,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSelectIsolatedVerticesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectIsolatedVerticesPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                     Composite3D c3d = renderer.getC3D();
@@ -1295,7 +1295,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSplitPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSplitPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                     Composite3D c3d = renderer.getC3D();
@@ -1311,7 +1311,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSplitNTimesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSplitNTimesPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                     Composite3D c3d = renderer.getC3D();
@@ -1345,7 +1345,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSmoothPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSmoothPtr[0]).addSelectionListener(_ -> {
             Display.getCurrent().asyncExec(() -> {
                 for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                     Composite3D c3d = renderer.getC3D();
@@ -1365,7 +1365,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmMergeToAveragePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmMergeToAveragePtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -1378,7 +1378,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        widgetUtil(mntmMergeToLastSelectedPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmMergeToLastSelectedPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -1391,7 +1391,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        widgetUtil(mntmMergeToNearestVertexPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmMergeToNearestVertexPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -1404,7 +1404,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        widgetUtil(mntmMergeToNearestEdgePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmMergeToNearestEdgePtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -1417,7 +1417,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        widgetUtil(mntmMergeToNearestEdgeSplitPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmMergeToNearestEdgeSplitPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -1430,7 +1430,7 @@ public class MiscToolItem extends ToolItem {
             }
             regainFocus();
         });
-        widgetUtil(mntmMergeToNearestFacePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmMergeToNearestFacePtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -1444,7 +1444,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmMergeToNearestFaceDirPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmMergeToNearestFaceDirPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -1465,7 +1465,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmAlignLeftEdgesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmAlignLeftEdgesPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1490,7 +1490,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmAlignHorizontalCentersPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmAlignHorizontalCentersPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1509,7 +1509,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmAlignRightEdgesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmAlignRightEdgesPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1534,7 +1534,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmAlignTopEdgesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmAlignTopEdgesPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1556,7 +1556,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmAlignVerticalCentersPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmAlignVerticalCentersPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1575,7 +1575,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmAlignBottomEdgesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmAlignBottomEdgesPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1597,7 +1597,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmDistributeLeftEdgesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDistributeLeftEdgesPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1622,7 +1622,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmDistributeHorizontalCentersPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDistributeHorizontalCentersPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1641,7 +1641,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmDistributeRightEdgesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDistributeRightEdgesPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1666,7 +1666,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmDistributeTopEdgesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDistributeTopEdgesPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1688,7 +1688,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmDistributeVerticalCentersPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDistributeVerticalCentersPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1707,7 +1707,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmDistributeBottomEdgesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDistributeBottomEdgesPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1729,7 +1729,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmDistributeVerticallyPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDistributeVerticallyPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1748,7 +1748,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmDistributeHorizontallyPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDistributeHorizontallyPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final Perspective perspective = c3d.getPerspectiveIndex();
@@ -1767,7 +1767,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSnapToGridPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSnapToGridPtr[0]).addSelectionListener(_ -> {
             final Composite3D c3d = Editor3DWindow.getWindow().getCurrentCoposite3d();
             if (c3d != null && c3d.isClassicPerspective()) {
                 final boolean snapOnX;
@@ -1866,7 +1866,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSelectSingleVertexPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectSingleVertexPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -2024,7 +2024,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSwapXYZPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSwapXYZPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2101,7 +2101,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmTranslatePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmTranslatePtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())
@@ -2141,7 +2141,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmRotatePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmRotatePtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2203,7 +2203,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmScalePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmScalePtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2587,7 +2587,7 @@ public class MiscToolItem extends ToolItem {
             }
         });
 
-        widgetUtil(btnSplitQuadPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSplitQuadPtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().splitQuads(true);
@@ -2595,7 +2595,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(btnMergeQuadPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMergeQuadPtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 RectifierSettings rectifierSettings = new RectifierSettings();
@@ -2618,21 +2618,21 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(btnCondlineToLinePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCondlineToLinePtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().condlineToLine();
             }
             regainFocus();
         });
 
-        widgetUtil(btnLineToCondlinePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLineToCondlinePtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().lineToCondline();
             }
             regainFocus();
         });
 
-        widgetUtil(btnMoveOnLinePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMoveOnLinePtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Set<Vertex> verts = Project.getFileToEdit().getVertexManager().getSelectedVertices();
@@ -2647,7 +2647,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(btnCompileSubfilePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCompileSubfilePtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 SubfileCompiler.compile(Project.getFileToEdit(), false, false);
@@ -2655,14 +2655,14 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(btnShowSelectionInTextEditorPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnShowSelectionInTextEditorPtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Composite3D.showSelectionInTextEditor(Project.getFileToEdit(), true);
             }
             regainFocus();
         });
 
-        widgetUtil(btnBFCswapPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBFCswapPtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().backupHideShowState();
@@ -2685,7 +2685,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmEdger2Ptr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmEdger2Ptr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2733,12 +2733,12 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmPrimGen2Ptr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmPrimGen2Ptr[0]).addSelectionListener(_ -> {
             new PrimGen2Dialog(Editor3DWindow.getWindow().getShell()).open();
             regainFocus();
         });
 
-        widgetUtil(mntmRectifierPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmRectifierPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2774,7 +2774,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmIsecalcPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmIsecalcPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2801,7 +2801,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSlicerProPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSlicerProPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2832,7 +2832,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmIntersectorPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmIntersectorPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2867,7 +2867,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSlantingMatrixProjectorPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSlantingMatrixProjectorPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2911,7 +2911,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmLines2PatternPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmLines2PatternPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2939,7 +2939,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmPathTruderPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmPathTruderPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2969,7 +2969,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmYTruderPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmYTruderPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -2999,7 +2999,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSymSplitterPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSymSplitterPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3040,7 +3040,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmUnificatorPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmUnificatorPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3072,7 +3072,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmRingsAndConesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmRingsAndConesPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3088,7 +3088,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmTJunctionFinderPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmTJunctionFinderPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 DatFile df = c3d.getLockableDatFileReference();
@@ -3106,7 +3106,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmOverlappingSurfacesFinderPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmOverlappingSurfacesFinderPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 DatFile df = c3d.getLockableDatFileReference();
@@ -3124,7 +3124,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmMeshReducerPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmMeshReducerPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 DatFile df = c3d.getLockableDatFileReference();
@@ -3142,7 +3142,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmTxt2DatPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmTxt2DatPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -3248,7 +3248,7 @@ public class MiscToolItem extends ToolItem {
 
         // MARK Options
 
-        widgetUtil(mntmUserConfigSavePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmUserConfigSavePtr[0]).addSelectionListener(_ -> {
             FileDialog fd = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
             fd.setText(I18n.E3D_USER_CONFIG_SELECT_SAVE);
             fd.setOverwrite(true);
@@ -3289,7 +3289,7 @@ public class MiscToolItem extends ToolItem {
             }
         });
 
-        widgetUtil(mntmUserConfigLoadPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmUserConfigLoadPtr[0]).addSelectionListener(_ -> {
 
             FileDialog fd = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.OPEN);
             fd.setText(I18n.E3D_USER_CONFIG_SELECT_LOAD);
@@ -3340,7 +3340,7 @@ public class MiscToolItem extends ToolItem {
             }
         });
 
-        widgetUtil(mntmResetSettingsOnRestartPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmResetSettingsOnRestartPtr[0]).addSelectionListener(_ -> {
             MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             messageBox.setText(I18n.DIALOG_WARNING);
             messageBox.setMessage(I18n.E3D_DELETE_CONFIG);
@@ -3353,7 +3353,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmOptionsPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmOptionsPtr[0]).addSelectionListener(_ -> {
             OptionsDialog dialog = new OptionsDialog(Editor3DWindow.getWindow().getShell());
             dialog.run();
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
@@ -3362,7 +3362,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSelectAnotherLDConfigPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSelectAnotherLDConfigPtr[0]).addSelectionListener(_ -> {
             FileDialog fd = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.OPEN);
             fd.setText(I18n.E3D_OPEN_LDCONFIG);
             fd.setFilterPath(WorkbenchManager.getUserSettingState().getLdrawFolderPath());
@@ -3377,17 +3377,17 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmDownloadLDConfigPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDownloadLDConfigPtr[0]).addSelectionListener(_ -> {
             LDConfigUtils.downloadLDConfig();
             regainFocus();
         });
 
-        widgetUtil(mntmDownloadCategoriesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDownloadCategoriesPtr[0]).addSelectionListener(_ -> {
             CategoriesUtils.downloadCategories();
             regainFocus();
         });
 
-        widgetUtil(mntmSavePalettePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSavePalettePtr[0]).addSelectionListener(_ -> {
 
             FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
 
@@ -3427,7 +3427,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmLoadPalettePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmLoadPalettePtr[0]).addSelectionListener(_ -> {
 
             FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.OPEN);
 
@@ -3478,7 +3478,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSetPaletteSizePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSetPaletteSizePtr[0]).addSelectionListener(_ -> {
 
             final List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
 
@@ -3526,7 +3526,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmResetPalettePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmResetPalettePtr[0]).addSelectionListener(_ -> {
 
             final List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
             colours.clear();
@@ -3544,7 +3544,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmShowLogsPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmShowLogsPtr[0]).addSelectionListener(_ -> {
 
             String source = ""; //$NON-NLS-1$
 
@@ -3599,12 +3599,12 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmAntiAliasingPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmAntiAliasingPtr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setAntiAliasing(mntmAntiAliasingPtr[0].getSelection());
             regainFocus();
         });
 
-        widgetUtil(mntmOpenGL33EnginePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmOpenGL33EnginePtr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setOpenGL33Engine(mntmOpenGL33EnginePtr[0].getSelection());
             // When the OpenGL 3.3 engine is activated, then switch to low quality edges by default:
             if (WorkbenchManager.getUserSettingState().isOpenGL33Engine()) {
@@ -3620,21 +3620,21 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        if (NLogger.debugging) widgetUtil(mntmVulkanEnginePtr[0]).addSelectionListener(e -> {
+        if (NLogger.debugging) widgetUtil(mntmVulkanEnginePtr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setVulkanEngine(mntmVulkanEnginePtr[0].getSelection());
             WorkbenchManager.getUserSettingState().setOpenGL33Engine(false);
             mntmOpenGL33EnginePtr[0].setSelection(false);
             regainFocus();
         });
 
-        widgetUtil(mntmSyncLpeInlinePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSyncLpeInlinePtr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().getSyncWithLpeInline().set(mntmSyncLpeInlinePtr[0].getSelection());
             regainFocus();
         });
 
         // MARK Merge, split...
 
-        widgetUtil(mntmFlipPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmFlipPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -3648,7 +3648,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSubdivideCatmullClarkPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSubdivideCatmullClarkPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -3662,7 +3662,7 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmSubdivideLoopPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmSubdivideLoopPtr[0]).addSelectionListener(_ -> {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -3676,27 +3676,27 @@ public class MiscToolItem extends ToolItem {
             regainFocus();
         });
 
-        widgetUtil(mntmIconSize1Ptr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmIconSize1Ptr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setIconSize(-1);
             regainFocus();
         });
-        widgetUtil(mntmIconSize2Ptr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmIconSize2Ptr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setIconSize(0);
             regainFocus();
         });
-        widgetUtil(mntmIconSize3Ptr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmIconSize3Ptr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setIconSize(1);
             regainFocus();
         });
-        widgetUtil(mntmIconSize4Ptr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmIconSize4Ptr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setIconSize(2);
             regainFocus();
         });
-        widgetUtil(mntmIconSize5Ptr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmIconSize5Ptr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setIconSize(3);
             regainFocus();
         });
-        widgetUtil(mntmIconSize6Ptr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmIconSize6Ptr[0]).addSelectionListener(_ -> {
             WorkbenchManager.getUserSettingState().setIconSize(4);
             regainFocus();
         });

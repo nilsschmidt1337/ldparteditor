@@ -113,13 +113,13 @@ public class MiscToggleToolItem extends ToolItem {
     }
 
     private static void addListeners() {
-        widgetUtil(btnMoveAdjacentDataPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMoveAdjacentDataPtr[0]).addSelectionListener(_ -> {
             clickSingleBtn(btnMoveAdjacentDataPtr[0]);
             setMovingAdjacentData(btnMoveAdjacentDataPtr[0].getSelection());
             GuiStatusManager.updateStatus();
             regainFocus();
         });
-        widgetUtil(btnNoTransparentSelectionPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnNoTransparentSelectionPtr[0]).addSelectionListener(_ -> {
             setNoTransparentSelection(btnNoTransparentSelectionPtr[0].getSelection());
             // Recompile
             Editor3DWindow.getWindow().compileAll(true);
@@ -161,7 +161,7 @@ public class MiscToggleToolItem extends ToolItem {
             Editor3DWindow.getWindow().initAllRenderers();
             regainFocus();
         });
-        widgetUtil(btnBFCTogglePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBFCTogglePtr[0]).addSelectionListener(_ -> {
             setBfcToggle(btnBFCTogglePtr[0].getSelection());
             regainFocus();
         });

@@ -42,7 +42,7 @@ public class MeshReducerDialog extends MeshReducerDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        cmbScopePtr[0].addListener(SWT.Selection, event -> ms.setMode(cmbScopePtr[0].getSelectionIndex()));
+        cmbScopePtr[0].addListener(SWT.Selection, _ -> ms.setMode(cmbScopePtr[0].getSelectionIndex()));
         return super.open();
     }
 }

@@ -905,9 +905,7 @@ public class CompositeTab extends CompositeTabDesign {
             }
         });
         final CompositeTab me = this;
-        compositeTextPtr[0].addListener(SWT.KeyUp, event -> {
-            disableLinks();
-        });
+        compositeTextPtr[0].addListener(SWT.KeyUp, _ -> disableLinks());
         compositeTextPtr[0].addListener(SWT.KeyDown, event -> {
 
             final DatFile df = tabState.getFileNameObj();
@@ -1520,7 +1518,7 @@ public class CompositeTab extends CompositeTabDesign {
                 event.doit = false;
             }
         });
-        final WidgetSelectionListener quickFix = e -> {
+        final WidgetSelectionListener quickFix = _ -> {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = tabState.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
@@ -1568,7 +1566,7 @@ public class CompositeTab extends CompositeTabDesign {
                 QuickFixer.fixTextIssues(compositeTextPtr[0], items, getState().getFileNameObj());
             }
         };
-        final WidgetSelectionListener quickFixSame = e -> {
+        final WidgetSelectionListener quickFixSame = _ -> {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = tabState.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
@@ -1662,7 +1660,7 @@ public class CompositeTab extends CompositeTabDesign {
                 QuickFixer.fixTextIssues(compositeTextPtr[0], items, getState().getFileNameObj());
             }
         };
-        final WidgetSelectionListener inspect = e -> {
+        final WidgetSelectionListener inspect = _ -> {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = tabState.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
@@ -1710,7 +1708,7 @@ public class CompositeTab extends CompositeTabDesign {
                 Inspector.inspectTextIssues(compositeTextPtr[0], items, getState().getFileNameObj());
             }
         };
-        final WidgetSelectionListener inspectSame = e -> {
+        final WidgetSelectionListener inspectSame = _ -> {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = tabState.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
@@ -1806,10 +1804,10 @@ public class CompositeTab extends CompositeTabDesign {
         widgetUtil(mntmInspectSamePtr[0]).addSelectionListener(inspectSame);
         widgetUtil(btnInspectPtr[0]).addSelectionListener(inspect);
         widgetUtil(btnInspectSamePtr[0]).addSelectionListener(inspectSame);
-        widgetUtil(mntmCopyIssuesPtr[0]).addSelectionListener(e -> copySelectedIssuesToClipboard());
-        widgetUtil(btnCopyIssuesPtr[0]).addSelectionListener(e -> copySelectedIssuesToClipboard());
+        widgetUtil(mntmCopyIssuesPtr[0]).addSelectionListener(_ -> copySelectedIssuesToClipboard());
+        widgetUtil(btnCopyIssuesPtr[0]).addSelectionListener(_ -> copySelectedIssuesToClipboard());
 
-        treeProblemsPtr[0].addSelectionListener(e -> {
+        treeProblemsPtr[0].addSelectionListener(_ -> {
             boolean enabled = treeProblemsPtr[0].getSelectionCount() == 1 && treeProblemsPtr[0].getSelection()[0] != null;
             btnInspectPtr[0].setEnabled(enabled);
             btnInspectSamePtr[0].setEnabled(enabled);
@@ -1823,7 +1821,7 @@ public class CompositeTab extends CompositeTabDesign {
             mntmQuickFixSamePtr[0].setEnabled(enabled);
             mntmCopyIssuesPtr[0].setEnabled(enabled);
         });
-        treeProblemsPtr[0].addListener(SWT.MouseDoubleClick, e -> {
+        treeProblemsPtr[0].addListener(SWT.MouseDoubleClick, _ -> {
             final TreeItem[] selection = treeProblemsPtr[0].getSelection();
             final TreeItem sel;
             if (selection.length == 1 && (sel = selection[0]) != null) {
@@ -1987,18 +1985,18 @@ public class CompositeTab extends CompositeTabDesign {
                 e.gc.drawLine(width - 1, 0, width - 1, height);
             }
         });
-        widgetUtil(compositeTextPtr[0].getVerticalBar()).addSelectionListener(e -> {
+        widgetUtil(compositeTextPtr[0].getVerticalBar()).addSelectionListener(_ -> {
             if (!isDisposed()) {
                 canvasLineNumberAreaPtr[0].redraw();
                 getDisplay().update();
             }
         });
-        widgetUtil(mntmDeletePtr[0]).addSelectionListener(e -> tabState.folder[0].delete());
-        widgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> tabState.folder[0].copy());
-        widgetUtil(mntmCutPtr[0]).addSelectionListener(e -> tabState.folder[0].cut());
-        widgetUtil(mntmPastePtr[0]).addSelectionListener(e -> tabState.folder[0].paste());
+        widgetUtil(mntmDeletePtr[0]).addSelectionListener(_ -> tabState.folder[0].delete());
+        widgetUtil(mntmCopyPtr[0]).addSelectionListener(_ -> tabState.folder[0].copy());
+        widgetUtil(mntmCutPtr[0]).addSelectionListener(_ -> tabState.folder[0].cut());
+        widgetUtil(mntmPastePtr[0]).addSelectionListener(_ -> tabState.folder[0].paste());
 
-        widgetUtil(mntmImportPngDataPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmImportPngDataPtr[0]).addSelectionListener(_ -> {
             if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
@@ -2012,7 +2010,7 @@ public class CompositeTab extends CompositeTabDesign {
             toLine++;
             DataMetacommandImporter.importPng(st, toLine, df, tabState.window[0].getShell());
         });
-        widgetUtil(mntmExportPngDataPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmExportPngDataPtr[0]).addSelectionListener(_ -> {
             final DatFile df = tabState.getFileNameObj();
             final StyledText st = getTextComposite();
             int s1 = st.getSelectionRange().x;
@@ -2024,7 +2022,7 @@ public class CompositeTab extends CompositeTabDesign {
             DataMetacommandExporter.export(fromLine, toLine, df, tabState.window[0].getShell());
         });
 
-        widgetUtil(mntmDrawSelectionPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDrawSelectionPtr[0]).addSelectionListener(_ -> {
             if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
@@ -2048,7 +2046,7 @@ public class CompositeTab extends CompositeTabDesign {
             st.forceFocus();
         });
 
-        widgetUtil(mntmDrawUntilSelectionPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDrawUntilSelectionPtr[0]).addSelectionListener(_ -> {
             if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
@@ -2071,10 +2069,10 @@ public class CompositeTab extends CompositeTabDesign {
             st.forceFocus();
         });
 
-        widgetUtil(mntmHideSelectionPtr[0]).addSelectionListener(e -> hideSelection());
-        widgetUtil(mntmShowSelectionPtr[0]).addSelectionListener(e -> showSelection());
+        widgetUtil(mntmHideSelectionPtr[0]).addSelectionListener(_ -> hideSelection());
+        widgetUtil(mntmShowSelectionPtr[0]).addSelectionListener(_ -> showSelection());
 
-        widgetUtil(mntmShowAllPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmShowAllPtr[0]).addSelectionListener(_ -> {
             if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }

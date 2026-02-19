@@ -210,7 +210,7 @@ public class ManipulatorToolItem extends ToolItem {
         final NButton btnManipulatorActions = new NButton(toolItem, SWT.ARROW | SWT.DOWN);
         btnManipulatorActions.setToolTipText(I18n.E3D_MODIFY_MANIPULATOR);
         final Menu mnuManipulator = new Menu(Editor3DWindow.getWindow().getShell(), SWT.POP_UP);
-        widgetUtil(btnManipulatorActions).addSelectionListener(e -> {
+        widgetUtil(btnManipulatorActions).addSelectionListener(_ -> {
             Point loc = btnManipulatorActions.getLocation();
             Rectangle rect = btnManipulatorActions.getBounds();
             Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
@@ -334,46 +334,46 @@ public class ManipulatorToolItem extends ToolItem {
     }
 
     private static void addListeners() {
-        if (btnManipulatorToOriginPtr[0] != null) widgetUtil(btnManipulatorToOriginPtr[0]).addSelectionListener(e -> mntmManipulatorToOrigin());
-        if (btnManipulatorToWorldPtr[0] != null) widgetUtil(btnManipulatorToWorldPtr[0]).addSelectionListener(e -> mntmManipulatorToWorld());
-        if (btnManipulatorXReversePtr[0] != null) widgetUtil(btnManipulatorXReversePtr[0]).addSelectionListener(e -> mntmManipulatorXReverse());
-        if (btnManipulatorYReversePtr[0] != null) widgetUtil(btnManipulatorYReversePtr[0]).addSelectionListener(e -> mntmManipulatorYReverse());
-        if (btnManipulatorZReversePtr[0] != null) widgetUtil(btnManipulatorZReversePtr[0]).addSelectionListener(e -> mntmManipulatorZReverse());
-        if (btnManipulatorSwitchXYPtr[0] != null) widgetUtil(btnManipulatorSwitchXYPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchXY());
-        if (btnManipulatorSwitchXZPtr[0] != null) widgetUtil(btnManipulatorSwitchXZPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchXZ());
-        if (btnManipulatorSwitchYZPtr[0] != null) widgetUtil(btnManipulatorSwitchYZPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchYZ());
-        if (btnManipulatorCameraToPosPtr[0] != null) widgetUtil(btnManipulatorCameraToPosPtr[0]).addSelectionListener(e -> mntmManipulatorCameraToPos());
-        if (btnManipulatorToAveragePtr[0] != null) widgetUtil(btnManipulatorToAveragePtr[0]).addSelectionListener(e -> mntmManipulatorToAverage());
-        if (btnManipulatorToSubfilePtr[0] != null) widgetUtil(btnManipulatorToSubfilePtr[0]).addSelectionListener(e -> mntmManipulatorToSubfile());
+        if (btnManipulatorToOriginPtr[0] != null) widgetUtil(btnManipulatorToOriginPtr[0]).addSelectionListener(_ -> mntmManipulatorToOrigin());
+        if (btnManipulatorToWorldPtr[0] != null) widgetUtil(btnManipulatorToWorldPtr[0]).addSelectionListener(_ -> mntmManipulatorToWorld());
+        if (btnManipulatorXReversePtr[0] != null) widgetUtil(btnManipulatorXReversePtr[0]).addSelectionListener(_ -> mntmManipulatorXReverse());
+        if (btnManipulatorYReversePtr[0] != null) widgetUtil(btnManipulatorYReversePtr[0]).addSelectionListener(_ -> mntmManipulatorYReverse());
+        if (btnManipulatorZReversePtr[0] != null) widgetUtil(btnManipulatorZReversePtr[0]).addSelectionListener(_ -> mntmManipulatorZReverse());
+        if (btnManipulatorSwitchXYPtr[0] != null) widgetUtil(btnManipulatorSwitchXYPtr[0]).addSelectionListener(_ -> mntmManipulatorSwitchXY());
+        if (btnManipulatorSwitchXZPtr[0] != null) widgetUtil(btnManipulatorSwitchXZPtr[0]).addSelectionListener(_ -> mntmManipulatorSwitchXZ());
+        if (btnManipulatorSwitchYZPtr[0] != null) widgetUtil(btnManipulatorSwitchYZPtr[0]).addSelectionListener(_ -> mntmManipulatorSwitchYZ());
+        if (btnManipulatorCameraToPosPtr[0] != null) widgetUtil(btnManipulatorCameraToPosPtr[0]).addSelectionListener(_ -> mntmManipulatorCameraToPos());
+        if (btnManipulatorToAveragePtr[0] != null) widgetUtil(btnManipulatorToAveragePtr[0]).addSelectionListener(_ -> mntmManipulatorToAverage());
+        if (btnManipulatorToSubfilePtr[0] != null) widgetUtil(btnManipulatorToSubfilePtr[0]).addSelectionListener(_ -> mntmManipulatorToSubfile());
         if (btnManipulatorSubfileToPtr[0] != null) widgetUtil(btnManipulatorSubfileToPtr[0]).addSelectionListener(e -> mntmManipulatorSubfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask)));
-        if (btnManipulatorToVertexPtr[0] != null) widgetUtil(btnManipulatorToVertexPtr[0]).addSelectionListener(e -> mntmManipulatorToVertex());
-        if (btnManipulatorToEdgePtr[0] != null) widgetUtil(btnManipulatorToEdgePtr[0]).addSelectionListener(e -> mntmManipulatorToEdge());
-        if (btnManipulatorToSurfacePtr[0] != null) widgetUtil(btnManipulatorToSurfacePtr[0]).addSelectionListener(e -> mntmManipulatorToSurface());
-        if (btnManipulatorToVertexNormalPtr[0] != null) widgetUtil(btnManipulatorToVertexNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToVertexNormal());
-        if (btnManipulatorToEdgeNormalPtr[0] != null) widgetUtil(btnManipulatorToEdgeNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToEdgeNormal());
-        if (btnManipulatorToSurfaceNormalPtr[0] != null) widgetUtil(btnManipulatorToSurfaceNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToSurfaceNormal());
-        if (btnManipulatorAdjustRotationCenterPtr[0] != null) widgetUtil(btnManipulatorAdjustRotationCenterPtr[0]).addSelectionListener(e -> mntmManipulatorAdjustRotationCenter());
-        if (btnManipulatorToVertexPositionPtr[0] != null) widgetUtil(btnManipulatorToVertexPositionPtr[0]).addSelectionListener(e -> mntmManipulatorToVertexPosition());
-        if (mntmManipulatorToOriginPtr[0] != null) widgetUtil(mntmManipulatorToOriginPtr[0]).addSelectionListener(e -> mntmManipulatorToOrigin());
-        if (mntmManipulatorToWorldPtr[0] != null) widgetUtil(mntmManipulatorToWorldPtr[0]).addSelectionListener(e -> mntmManipulatorToWorld());
-        if (mntmManipulatorXReversePtr[0] != null) widgetUtil(mntmManipulatorXReversePtr[0]).addSelectionListener(e -> mntmManipulatorXReverse());
-        if (mntmManipulatorYReversePtr[0] != null) widgetUtil(mntmManipulatorYReversePtr[0]).addSelectionListener(e -> mntmManipulatorYReverse());
-        if (mntmManipulatorZReversePtr[0] != null) widgetUtil(mntmManipulatorZReversePtr[0]).addSelectionListener(e -> mntmManipulatorZReverse());
-        if (mntmManipulatorSwitchXYPtr[0] != null) widgetUtil(mntmManipulatorSwitchXYPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchXY());
-        if (mntmManipulatorSwitchXZPtr[0] != null) widgetUtil(mntmManipulatorSwitchXZPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchXZ());
-        if (mntmManipulatorSwitchYZPtr[0] != null) widgetUtil(mntmManipulatorSwitchYZPtr[0]).addSelectionListener(e -> mntmManipulatorSwitchYZ());
-        if (mntmManipulatorCameraToPosPtr[0] != null) widgetUtil(mntmManipulatorCameraToPosPtr[0]).addSelectionListener(e -> mntmManipulatorCameraToPos());
-        if (mntmManipulatorToAveragePtr[0] != null) widgetUtil(mntmManipulatorToAveragePtr[0]).addSelectionListener(e -> mntmManipulatorToAverage());
-        if (mntmManipulatorToSubfilePtr[0] != null) widgetUtil(mntmManipulatorToSubfilePtr[0]).addSelectionListener(e -> mntmManipulatorToSubfile());
+        if (btnManipulatorToVertexPtr[0] != null) widgetUtil(btnManipulatorToVertexPtr[0]).addSelectionListener(_ -> mntmManipulatorToVertex());
+        if (btnManipulatorToEdgePtr[0] != null) widgetUtil(btnManipulatorToEdgePtr[0]).addSelectionListener(_ -> mntmManipulatorToEdge());
+        if (btnManipulatorToSurfacePtr[0] != null) widgetUtil(btnManipulatorToSurfacePtr[0]).addSelectionListener(_ -> mntmManipulatorToSurface());
+        if (btnManipulatorToVertexNormalPtr[0] != null) widgetUtil(btnManipulatorToVertexNormalPtr[0]).addSelectionListener(_ -> mntmManipulatorToVertexNormal());
+        if (btnManipulatorToEdgeNormalPtr[0] != null) widgetUtil(btnManipulatorToEdgeNormalPtr[0]).addSelectionListener(_ -> mntmManipulatorToEdgeNormal());
+        if (btnManipulatorToSurfaceNormalPtr[0] != null) widgetUtil(btnManipulatorToSurfaceNormalPtr[0]).addSelectionListener(_ -> mntmManipulatorToSurfaceNormal());
+        if (btnManipulatorAdjustRotationCenterPtr[0] != null) widgetUtil(btnManipulatorAdjustRotationCenterPtr[0]).addSelectionListener(_ -> mntmManipulatorAdjustRotationCenter());
+        if (btnManipulatorToVertexPositionPtr[0] != null) widgetUtil(btnManipulatorToVertexPositionPtr[0]).addSelectionListener(_ -> mntmManipulatorToVertexPosition());
+        if (mntmManipulatorToOriginPtr[0] != null) widgetUtil(mntmManipulatorToOriginPtr[0]).addSelectionListener(_ -> mntmManipulatorToOrigin());
+        if (mntmManipulatorToWorldPtr[0] != null) widgetUtil(mntmManipulatorToWorldPtr[0]).addSelectionListener(_ -> mntmManipulatorToWorld());
+        if (mntmManipulatorXReversePtr[0] != null) widgetUtil(mntmManipulatorXReversePtr[0]).addSelectionListener(_ -> mntmManipulatorXReverse());
+        if (mntmManipulatorYReversePtr[0] != null) widgetUtil(mntmManipulatorYReversePtr[0]).addSelectionListener(_ -> mntmManipulatorYReverse());
+        if (mntmManipulatorZReversePtr[0] != null) widgetUtil(mntmManipulatorZReversePtr[0]).addSelectionListener(_ -> mntmManipulatorZReverse());
+        if (mntmManipulatorSwitchXYPtr[0] != null) widgetUtil(mntmManipulatorSwitchXYPtr[0]).addSelectionListener(_ -> mntmManipulatorSwitchXY());
+        if (mntmManipulatorSwitchXZPtr[0] != null) widgetUtil(mntmManipulatorSwitchXZPtr[0]).addSelectionListener(_ -> mntmManipulatorSwitchXZ());
+        if (mntmManipulatorSwitchYZPtr[0] != null) widgetUtil(mntmManipulatorSwitchYZPtr[0]).addSelectionListener(_ -> mntmManipulatorSwitchYZ());
+        if (mntmManipulatorCameraToPosPtr[0] != null) widgetUtil(mntmManipulatorCameraToPosPtr[0]).addSelectionListener(_ -> mntmManipulatorCameraToPos());
+        if (mntmManipulatorToAveragePtr[0] != null) widgetUtil(mntmManipulatorToAveragePtr[0]).addSelectionListener(_ -> mntmManipulatorToAverage());
+        if (mntmManipulatorToSubfilePtr[0] != null) widgetUtil(mntmManipulatorToSubfilePtr[0]).addSelectionListener(_ -> mntmManipulatorToSubfile());
         if (mntmManipulatorSubfileToPtr[0] != null) widgetUtil(mntmManipulatorSubfileToPtr[0]).addSelectionListener(e -> mntmManipulatorSubfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask)));
-        if (mntmManipulatorToVertexPtr[0] != null) widgetUtil(mntmManipulatorToVertexPtr[0]).addSelectionListener(e -> mntmManipulatorToVertex());
-        if (mntmManipulatorToEdgePtr[0] != null) widgetUtil(mntmManipulatorToEdgePtr[0]).addSelectionListener(e -> mntmManipulatorToEdge());
-        if (mntmManipulatorToSurfacePtr[0] != null) widgetUtil(mntmManipulatorToSurfacePtr[0]).addSelectionListener(e -> mntmManipulatorToSurface());
-        if (mntmManipulatorToVertexNormalPtr[0] != null) widgetUtil(mntmManipulatorToVertexNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToVertexNormal());
-        if (mntmManipulatorToEdgeNormalPtr[0] != null) widgetUtil(mntmManipulatorToEdgeNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToEdgeNormal());
-        if (mntmManipulatorToSurfaceNormalPtr[0] != null) widgetUtil(mntmManipulatorToSurfaceNormalPtr[0]).addSelectionListener(e -> mntmManipulatorToSurfaceNormal());
-        if (mntmManipulatorAdjustRotationCenterPtr[0] != null) widgetUtil(mntmManipulatorAdjustRotationCenterPtr[0]).addSelectionListener(e -> mntmManipulatorAdjustRotationCenter());
-        if (mntmManipulatorToVertexPositionPtr[0] != null) widgetUtil(mntmManipulatorToVertexPositionPtr[0]).addSelectionListener(e -> mntmManipulatorToVertexPosition());
+        if (mntmManipulatorToVertexPtr[0] != null) widgetUtil(mntmManipulatorToVertexPtr[0]).addSelectionListener(_ -> mntmManipulatorToVertex());
+        if (mntmManipulatorToEdgePtr[0] != null) widgetUtil(mntmManipulatorToEdgePtr[0]).addSelectionListener(_ -> mntmManipulatorToEdge());
+        if (mntmManipulatorToSurfacePtr[0] != null) widgetUtil(mntmManipulatorToSurfacePtr[0]).addSelectionListener(_ -> mntmManipulatorToSurface());
+        if (mntmManipulatorToVertexNormalPtr[0] != null) widgetUtil(mntmManipulatorToVertexNormalPtr[0]).addSelectionListener(_ -> mntmManipulatorToVertexNormal());
+        if (mntmManipulatorToEdgeNormalPtr[0] != null) widgetUtil(mntmManipulatorToEdgeNormalPtr[0]).addSelectionListener(_ -> mntmManipulatorToEdgeNormal());
+        if (mntmManipulatorToSurfaceNormalPtr[0] != null) widgetUtil(mntmManipulatorToSurfaceNormalPtr[0]).addSelectionListener(_ -> mntmManipulatorToSurfaceNormal());
+        if (mntmManipulatorAdjustRotationCenterPtr[0] != null) widgetUtil(mntmManipulatorAdjustRotationCenterPtr[0]).addSelectionListener(_ -> mntmManipulatorAdjustRotationCenter());
+        if (mntmManipulatorToVertexPositionPtr[0] != null) widgetUtil(mntmManipulatorToVertexPositionPtr[0]).addSelectionListener(_ -> mntmManipulatorToVertexPosition());
     }
 
     public static void mntmManipulatorToOrigin() {

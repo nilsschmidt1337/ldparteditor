@@ -39,15 +39,15 @@ public class OverwriteDialog extends OverwriteDesign {
         super.create();
         getShell().setText(I18n.DIALOG_REPLACE_TITLE);
         // MARK All final listeners will be configured here..
-        widgetUtil(getButton(IDialogConstants.YES_ID)).addSelectionListener(e -> {
+        widgetUtil(getButton(IDialogConstants.YES_ID)).addSelectionListener(_ -> {
             setReturnCode(IDialogConstants.YES_ID);
             close();
         });
-        widgetUtil(getButton(IDialogConstants.NO_ID)).addSelectionListener(e -> {
+        widgetUtil(getButton(IDialogConstants.NO_ID)).addSelectionListener(_ -> {
             setReturnCode(IDialogConstants.NO_ID);
             close();
         });
-        widgetUtil(getButton(IDialogConstants.SKIP_ID)).addSelectionListener(e -> {
+        widgetUtil(getButton(IDialogConstants.SKIP_ID)).addSelectionListener(_ -> {
             setReturnCode(IDialogConstants.SKIP_ID);
             close();
         });

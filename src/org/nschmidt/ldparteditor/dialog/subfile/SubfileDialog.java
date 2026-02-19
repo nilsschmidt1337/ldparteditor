@@ -40,7 +40,7 @@ public class SubfileDialog extends SubfileDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        cmbSubfileTypePtr[0].addListener(SWT.Selection, event -> selectedType = cmbSubfileTypePtr[0].getText());
+        cmbSubfileTypePtr[0].addListener(SWT.Selection, _ -> selectedType = cmbSubfileTypePtr[0].getText());
         return super.open();
     }
 

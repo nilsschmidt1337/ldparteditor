@@ -45,10 +45,10 @@ public class UnificatorDialog extends UnificatorDesign {
         super.create();
         // MARK All final listeners will be configured here..
         spnVertexThresholdPtr[0].addValueChangeListener(spn -> us.setVertexThreshold(spn.getValue()));
-        cmbScopePtr[0].addListener(SWT.Selection, event -> us.setScope(cmbScopePtr[0].getSelectionIndex()));
-        cmbWhatToUnifyPtr[0].addListener(SWT.Selection, event -> us.setSnapOn(cmbWhatToUnifyPtr[0].getSelectionIndex()));
+        cmbScopePtr[0].addListener(SWT.Selection, _ -> us.setScope(cmbScopePtr[0].getSelectionIndex()));
+        cmbWhatToUnifyPtr[0].addListener(SWT.Selection, _ -> us.setSnapOn(cmbWhatToUnifyPtr[0].getSelectionIndex()));
         spnSubfileThresholdPtr[0].addValueChangeListener(spn -> us.setSubvertexThreshold(spn.getValue()));
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseUnificator(btnVerbosePtr[0].getSelection()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerboseUnificator(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 

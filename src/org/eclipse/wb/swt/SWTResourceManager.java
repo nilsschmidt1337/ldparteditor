@@ -125,7 +125,7 @@ public enum SWTResourceManager {
      */
     public static Font getFont(String name, int height, int style) {
         String fontName = name + '|' + height + '|' + style;
-        return mFontMap.computeIfAbsent(fontName, f -> {
+        return mFontMap.computeIfAbsent(fontName, _ -> {
             final FontData fontData = new FontData(name, height, style);
             return new Font(Display.getCurrent(), fontData);
         });

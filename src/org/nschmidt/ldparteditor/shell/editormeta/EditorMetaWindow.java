@@ -85,7 +85,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        widgetUtil(btnCreatePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCreatePtr[0]).addSelectionListener(_ -> {
             String textToCompile = lblLineToInsertPtr[0].getText();
             final DatFile df = Project.getFileToEdit();
             if (df != null) {
@@ -106,8 +106,8 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        widgetUtil(evDescriptionBtnPtr[0]).addSelectionListener(e -> updateDescription());
-        evDescriptionTxtPtr[0].addModifyListener(e -> updateDescription());
+        widgetUtil(evDescriptionBtnPtr[0]).addSelectionListener(_ -> updateDescription());
+        evDescriptionTxtPtr[0].addModifyListener(_ -> updateDescription());
         evDescriptionTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -115,7 +115,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evNameTxtPtr[0].addModifyListener(e -> updateName());
+        evNameTxtPtr[0].addModifyListener(_ -> updateName());
         evNameTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -123,14 +123,14 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evAuthorRealNameTxtPtr[0].addModifyListener(e -> updateAuthor());
+        evAuthorRealNameTxtPtr[0].addModifyListener(_ -> updateAuthor());
         evAuthorRealNameTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateAuthor();
             }
         });
-        evAuthorUserNameTxtPtr[0].addModifyListener(e -> updateAuthor());
+        evAuthorUserNameTxtPtr[0].addModifyListener(_ -> updateAuthor());
         evAuthorUserNameTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -138,24 +138,24 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evTypeUpdateTxtPtr[0].addModifyListener(e -> updateType());
+        evTypeUpdateTxtPtr[0].addModifyListener(_ -> updateType());
         evTypeUpdateTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateType();
             }
         });
-        evTypeTypeCmbPtr[0].addModifyListener(e -> updateType());
+        evTypeTypeCmbPtr[0].addModifyListener(_ -> updateType());
         evTypeTypeCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateType();
             }
         });
-        widgetUtil(evTypeUnofficialBtnPtr[0]).addSelectionListener(e -> updateType());
-        widgetUtil(evTypeUpdateBtnPtr[0]).addSelectionListener(e -> updateType());
+        widgetUtil(evTypeUnofficialBtnPtr[0]).addSelectionListener(_ -> updateType());
+        widgetUtil(evTypeUpdateBtnPtr[0]).addSelectionListener(_ -> updateType());
 
-        evLicenseCmbPtr[0].addModifyListener(e -> updateLicense());
+        evLicenseCmbPtr[0].addModifyListener(_ -> updateLicense());
         evLicenseCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -163,7 +163,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evHelpTxtPtr[0].addModifyListener(e -> updateHelp());
+        evHelpTxtPtr[0].addModifyListener(_ -> updateHelp());
         evHelpTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -171,7 +171,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evBfcHeaderCmbPtr[0].addModifyListener(e -> updateBfcHeader());
+        evBfcHeaderCmbPtr[0].addModifyListener(_ -> updateBfcHeader());
         evBfcHeaderCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -179,7 +179,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evCategoryCmbPtr[0].addModifyListener(e -> updateCategory());
+        evCategoryCmbPtr[0].addModifyListener(_ -> updateCategory());
         evCategoryCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -187,7 +187,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evKeywordsTxtPtr[0].addModifyListener(e -> updateKeywords());
+        evKeywordsTxtPtr[0].addModifyListener(_ -> updateKeywords());
         evKeywordsTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -195,7 +195,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evCmdlineTxtPtr[0].addModifyListener(e -> updateCmdline());
+        evCmdlineTxtPtr[0].addModifyListener(_ -> updateCmdline());
         evCmdlineTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -203,42 +203,42 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evHistory11TxtPtr[0].addModifyListener(e -> updateHistory1());
+        evHistory11TxtPtr[0].addModifyListener(_ -> updateHistory1());
         evHistory11TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory1();
             }
         });
-        evHistory12TxtPtr[0].addModifyListener(e -> updateHistory1());
+        evHistory12TxtPtr[0].addModifyListener(_ -> updateHistory1());
         evHistory12TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory1();
             }
         });
-        evHistory13TxtPtr[0].addModifyListener(e -> updateHistory1());
+        evHistory13TxtPtr[0].addModifyListener(_ -> updateHistory1());
         evHistory13TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory1();
             }
         });
-        evHistory21TxtPtr[0].addModifyListener(e -> updateHistory2());
+        evHistory21TxtPtr[0].addModifyListener(_ -> updateHistory2());
         evHistory21TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory2();
             }
         });
-        evHistory22TxtPtr[0].addModifyListener(e -> updateHistory2());
+        evHistory22TxtPtr[0].addModifyListener(_ -> updateHistory2());
         evHistory22TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory2();
             }
         });
-        evHistory23TxtPtr[0].addModifyListener(e -> updateHistory2());
+        evHistory23TxtPtr[0].addModifyListener(_ -> updateHistory2());
         evHistory23TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -246,16 +246,16 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evCommentTxtPtr[0].addModifyListener(e -> updateComment());
+        evCommentTxtPtr[0].addModifyListener(_ -> updateComment());
         evCommentTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateComment();
             }
         });
-        widgetUtil(evCommentBtnPtr[0]).addSelectionListener(e -> updateComment());
+        widgetUtil(evCommentBtnPtr[0]).addSelectionListener(_ -> updateComment());
 
-        evBfcCmbPtr[0].addModifyListener(e -> updateBfc());
+        evBfcCmbPtr[0].addModifyListener(_ -> updateBfc());
         evBfcCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -270,7 +270,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                     updateTexmapPlanar();
                 }
             };
-            final ModifyListener m = e -> updateTexmapPlanar();
+            final ModifyListener m = _ -> updateTexmapPlanar();
             evTexmapPlanarCmbPtr[0].addFocusListener(a);
             evTexmapPlanarCmbPtr[0].addModifyListener(m);
             evTexmapPlanar1TxtPtr[0].addFocusListener(a);
@@ -294,7 +294,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             evTexmapPlanar10TxtPtr[0].addFocusListener(a);
             evTexmapPlanar10TxtPtr[0].addModifyListener(m);
 
-            widgetUtil(evTexmapPlanarBtnPtr[0]).addSelectionListener(e -> {
+            widgetUtil(evTexmapPlanarBtnPtr[0]).addSelectionListener(_ -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
@@ -332,7 +332,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                     updateTexmapCylindrical();
                 }
             };
-            final ModifyListener m = e -> updateTexmapCylindrical();
+            final ModifyListener m = _ -> updateTexmapCylindrical();
             evTexmapCyliCmbPtr[0].addFocusListener(a);
             evTexmapCyliCmbPtr[0].addModifyListener(m);
             evTexmapCyli1TxtPtr[0].addFocusListener(a);
@@ -358,7 +358,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             evTexmapCyli11TxtPtr[0].addFocusListener(a);
             evTexmapCyli11TxtPtr[0].addModifyListener(m);
 
-            widgetUtil(evTexmapCyliBtnPtr[0]).addSelectionListener(e -> {
+            widgetUtil(evTexmapCyliBtnPtr[0]).addSelectionListener(_ -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
@@ -396,7 +396,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                     updateTexmapSpherical();
                 }
             };
-            final ModifyListener m = e -> updateTexmapSpherical();
+            final ModifyListener m = _ -> updateTexmapSpherical();
             evTexmapSphereCmbPtr[0].addFocusListener(a);
             evTexmapSphereCmbPtr[0].addModifyListener(m);
             evTexmapSphere1TxtPtr[0].addFocusListener(a);
@@ -424,7 +424,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             evTexmapSphere12TxtPtr[0].addFocusListener(a);
             evTexmapSphere12TxtPtr[0].addModifyListener(m);
 
-            widgetUtil(evTexmapSphereBtnPtr[0]).addSelectionListener(e -> {
+            widgetUtil(evTexmapSphereBtnPtr[0]).addSelectionListener(_ -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
@@ -455,7 +455,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
         }
 
-        widgetUtil(evTexmapFallbackBtnPtr[0]).addSelectionListener(e -> {
+        widgetUtil(evTexmapFallbackBtnPtr[0]).addSelectionListener(_ -> {
             lblLineToInsertPtr[0].setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
             lblLineToInsertPtr[0].getParent().layout();
         });
@@ -467,9 +467,9 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evTexmapMetaTxtPtr[0].addModifyListener(e -> updateTexmapMeta());
+        evTexmapMetaTxtPtr[0].addModifyListener(_ -> updateTexmapMeta());
 
-        widgetUtil(evTexmapEndBtnPtr[0]).addSelectionListener(e -> {
+        widgetUtil(evTexmapEndBtnPtr[0]).addSelectionListener(_ -> {
             lblLineToInsertPtr[0].setText("0 !TEXMAP END"); //$NON-NLS-1$
             lblLineToInsertPtr[0].getParent().layout();
         });
@@ -481,7 +481,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evTodoTxtPtr[0].addModifyListener(e -> updateLpeTODO());
+        evTodoTxtPtr[0].addModifyListener(_ -> updateLpeTODO());
 
         evConst1TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -490,7 +490,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evConst1TxtPtr[0].addModifyListener(e -> updateLpeConst());
+        evConst1TxtPtr[0].addModifyListener(_ -> updateLpeConst());
 
         evConst2TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -499,7 +499,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evConst2TxtPtr[0].addModifyListener(e -> updateLpeConst());
+        evConst2TxtPtr[0].addModifyListener(_ -> updateLpeConst());
 
         {
             final org.eclipse.swt.events.FocusAdapter a = new org.eclipse.swt.events.FocusAdapter() {
@@ -509,7 +509,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
 
-            final ModifyListener m = e -> updateLpeVertex();
+            final ModifyListener m = _ -> updateLpeVertex();
 
             evVertex1TxtPtr[0].addFocusListener(a);
             evVertex1TxtPtr[0].addModifyListener(m);
@@ -527,7 +527,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
 
-            final ModifyListener m = e -> updateCSGdef();
+            final ModifyListener m = _ -> updateCSGdef();
 
             evCsgBodyCmbPtr[0].addFocusListener(a);
             evCsgBodyCmbPtr[0].addModifyListener(m);
@@ -570,7 +570,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
 
-            final ModifyListener m = e -> updateCSGtrans();
+            final ModifyListener m = _ -> updateCSGtrans();
 
             evCsgTrans1TxtPtr[0].addFocusListener(a);
             evCsgTrans1TxtPtr[0].addModifyListener(m);
@@ -613,7 +613,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
 
-            final ModifyListener m = e -> updateCSGextrude();
+            final ModifyListener m = _ -> updateCSGextrude();
 
             evCsgEx1TxtPtr[0].addFocusListener(a);
             evCsgEx1TxtPtr[0].addModifyListener(m);
@@ -639,7 +639,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
 
-            final ModifyListener m = e -> updateCSGaction();
+            final ModifyListener m = _ -> updateCSGaction();
 
             evCsgActionCmbPtr[0].addFocusListener(a);
             evCsgActionCmbPtr[0].addModifyListener(m);
@@ -659,7 +659,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evCsgQualityTxtPtr[0].addModifyListener(e -> updateCSGquality());
+        evCsgQualityTxtPtr[0].addModifyListener(_ -> updateCSGquality());
 
         evCsgEpsilonTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -668,7 +668,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evCsgEpsilonTxtPtr[0].addModifyListener(e -> updateCSGepsilon());
+        evCsgEpsilonTxtPtr[0].addModifyListener(_ -> updateCSGepsilon());
 
         evCsgTJunctionEpsilonTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -677,7 +677,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evCsgTJunctionEpsilonTxtPtr[0].addModifyListener(e -> updateCSGtjunctionEpsilon());
+        evCsgTJunctionEpsilonTxtPtr[0].addModifyListener(_ -> updateCSGtjunctionEpsilon());
 
         evCsgEdgeCollapseEpsilonTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -686,7 +686,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evCsgEdgeCollapseEpsilonTxtPtr[0].addModifyListener(e -> updateCSGedgeCollapseEpsilon());
+        evCsgEdgeCollapseEpsilonTxtPtr[0].addModifyListener(_ -> updateCSGedgeCollapseEpsilon());
 
         evCsgUnifyEpsilonTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -695,9 +695,9 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evCsgUnifyEpsilonTxtPtr[0].addModifyListener(e -> updateCSGunifyEpsilon());
+        evCsgUnifyEpsilonTxtPtr[0].addModifyListener(_ -> updateCSGunifyEpsilon());
 
-        widgetUtil(evCsgDontOptimizeBtnPtr[0]).addSelectionListener(e -> updateCSGdontOptimize());
+        widgetUtil(evCsgDontOptimizeBtnPtr[0]).addSelectionListener(_ -> updateCSGdontOptimize());
 
         evCsgCompileTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -706,7 +706,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        evCsgCompileTxtPtr[0].addModifyListener(e -> updateCSGcompile());
+        evCsgCompileTxtPtr[0].addModifyListener(_ -> updateCSGcompile());
 
         {
             final org.eclipse.swt.events.FocusAdapter a = new org.eclipse.swt.events.FocusAdapter() {
@@ -716,7 +716,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
 
-            final ModifyListener m = e -> updateCSGaction();
+            final ModifyListener m = _ -> updateCSGaction();
 
             evCsgActionCmbPtr[0].addFocusListener(a);
             evCsgActionCmbPtr[0].addModifyListener(m);
@@ -736,8 +736,8 @@ public class EditorMetaWindow extends EditorMetaDesign {
                     updatePNGdef();
                 }
             };
-            final ModifyListener m = e -> updatePNGdef();
-            widgetUtil(evPngBtnPtr[0]).addSelectionListener(e -> updatePNGdef());
+            final ModifyListener m = _ -> updatePNGdef();
+            widgetUtil(evPngBtnPtr[0]).addSelectionListener(_ -> updatePNGdef());
             evPng1TxtPtr[0].addFocusListener(a);
             evPng1TxtPtr[0].addModifyListener(m);
             evPng2TxtPtr[0].addFocusListener(a);
@@ -757,7 +757,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             evPng9TxtPtr[0].addFocusListener(a);
             evPng9TxtPtr[0].addModifyListener(m);
 
-            widgetUtil(evPngBtnPtr[0]).addSelectionListener(e -> {
+            widgetUtil(evPngBtnPtr[0]).addSelectionListener(_ -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);

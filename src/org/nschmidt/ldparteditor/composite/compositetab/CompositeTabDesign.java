@@ -128,7 +128,7 @@ class CompositeTabDesign extends CTabItem {
             this.canvasLineNumberAreaPtr[0] = canvasLineNumberArea;
             canvasLineNumberArea.setBackground(Theming.getBgColor());
             canvasLineNumberArea.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
-            this.canvasLineNumberAreaPtr[0].addDisposeListener(e -> canvasLineNumberAreaPtr[0].getCursor().dispose());
+            this.canvasLineNumberAreaPtr[0].addDisposeListener(_ -> canvasLineNumberAreaPtr[0].getCursor().dispose());
 
             GridData gdCanvasLineNumberArea = new GridData(SWT.LEFT, SWT.FILL, false, true);
             canvasLineNumberArea.setLayoutData(gdCanvasLineNumberArea);

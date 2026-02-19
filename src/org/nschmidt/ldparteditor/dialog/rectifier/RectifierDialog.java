@@ -45,13 +45,13 @@ public class RectifierDialog extends RectifierDesign {
         super.create();
         // MARK All final listeners will be configured here..
         spnAnglePtr[0].addValueChangeListener(spn -> rs.setMaximumAngle(spn.getValue()));
-        cmbScopePtr[0].addListener(SWT.Selection, event -> rs.setScope(cmbScopePtr[0].getSelectionIndex()));
-        cmbColourisePtr[0].addListener(SWT.Selection, event -> rs.setColourise(cmbColourisePtr[0].getSelectionIndex() == 1));
-        cmbNoBorderedQuadToRectConversationPtr[0].addListener(SWT.Selection, event -> rs.setNoBorderedQuadToRectConversation(cmbNoBorderedQuadToRectConversationPtr[0].getSelectionIndex() == 1));
-        cmbNoQuadConversationPtr[0].addListener(SWT.Selection, event -> rs.setNoQuadConversation(cmbNoQuadConversationPtr[0].getSelectionIndex() == 1));
-        cmbNoRectConversationOnAdjacentCondlinesPtr[0].addListener(SWT.Selection, event -> rs.setNoRectConversationOnAdjacentCondlines(cmbNoRectConversationOnAdjacentCondlinesPtr[0].getSelectionIndex() == 1));
-        cmbNoWarpedRectWithShearPtr[0].addListener(SWT.Selection, event -> rs.setNoDecimalsInRectPrims(cmbNoWarpedRectWithShearPtr[0].getSelectionIndex() == 1));
-        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setVerboseRectifier(btnVerbosePtr[0].getSelection()));
+        cmbScopePtr[0].addListener(SWT.Selection, _ -> rs.setScope(cmbScopePtr[0].getSelectionIndex()));
+        cmbColourisePtr[0].addListener(SWT.Selection, _ -> rs.setColourise(cmbColourisePtr[0].getSelectionIndex() == 1));
+        cmbNoBorderedQuadToRectConversationPtr[0].addListener(SWT.Selection, _ -> rs.setNoBorderedQuadToRectConversation(cmbNoBorderedQuadToRectConversationPtr[0].getSelectionIndex() == 1));
+        cmbNoQuadConversationPtr[0].addListener(SWT.Selection, _ -> rs.setNoQuadConversation(cmbNoQuadConversationPtr[0].getSelectionIndex() == 1));
+        cmbNoRectConversationOnAdjacentCondlinesPtr[0].addListener(SWT.Selection, _ -> rs.setNoRectConversationOnAdjacentCondlines(cmbNoRectConversationOnAdjacentCondlinesPtr[0].getSelectionIndex() == 1));
+        cmbNoWarpedRectWithShearPtr[0].addListener(SWT.Selection, _ -> rs.setNoDecimalsInRectPrims(cmbNoWarpedRectWithShearPtr[0].getSelectionIndex() == 1));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerboseRectifier(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

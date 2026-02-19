@@ -197,7 +197,7 @@ class ColourDesign extends ApplicationWindow {
 
         btnCol.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
-        widgetUtil(btnCol).addSelectionListener(e -> {
+        widgetUtil(btnCol).addSelectionListener(_ -> {
             refCol[0] = (GColour) btnCol.getData();
             me.close();
         });

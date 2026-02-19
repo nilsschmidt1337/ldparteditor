@@ -52,7 +52,7 @@ class VM02Add extends VM01SelectHelper {
             vertex = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         }
         getManifestationLock().lock();
-        Set<VertexManifestation> manifestations = vertexLinkedToPositionInFile.computeIfAbsent(vertex, v -> Collections.newSetFromMap(new ThreadsafeHashMap<>()));
+        Set<VertexManifestation> manifestations = vertexLinkedToPositionInFile.computeIfAbsent(vertex, _ -> Collections.newSetFromMap(new ThreadsafeHashMap<>()));
         manifestations.add(new VertexManifestation(0, vertexTag));
         getManifestationLock().unlock();
         lineLinkedToVertices.put(vertexTag, Collections.newSetFromMap(new ThreadsafeHashMap<>()));
@@ -62,17 +62,17 @@ class VM02Add extends VM01SelectHelper {
     }
 
     public synchronized GData0 addSubfileVertex(Vertex vertex, GData0 vertexTag, GData1 subfile) {
-        int vertexCount = vertexCountInSubfile.computeIfAbsent(subfile, s -> 0);
+        int vertexCount = vertexCountInSubfile.computeIfAbsent(subfile, _ -> 0);
         vertexCount--;
         getManifestationLock().lock();
-        Set<VertexManifestation> manifestations = vertexLinkedToPositionInFile.computeIfAbsent(vertex, v -> Collections.newSetFromMap(new ThreadsafeHashMap<>()));
+        Set<VertexManifestation> manifestations = vertexLinkedToPositionInFile.computeIfAbsent(vertex, _ -> Collections.newSetFromMap(new ThreadsafeHashMap<>()));
         manifestations.add(new VertexManifestation(0, vertexTag));
         getManifestationLock().unlock();
-        Set<VertexInfo> vertexinfos = lineLinkedToVertices.computeIfAbsent(subfile, s -> Collections.newSetFromMap(new ThreadsafeHashMap<>()));
+        Set<VertexInfo> vertexinfos = lineLinkedToVertices.computeIfAbsent(subfile, _ -> Collections.newSetFromMap(new ThreadsafeHashMap<>()));
         vertexinfos.add(new VertexInfo(vertex, vertexCount, vertexTag));
         declaredVertices.put(vertexTag, new Vertex[] { vertex });
         vertexCountInSubfile.put(subfile, vertexCount);
-        Set<GData1> subfiles = vertexLinkedToSubfile.computeIfAbsent(vertex, v -> Collections.newSetFromMap(new ThreadsafeHashMap<>()));
+        Set<GData1> subfiles = vertexLinkedToSubfile.computeIfAbsent(vertex, _ -> Collections.newSetFromMap(new ThreadsafeHashMap<>()));
         subfiles.add(subfile);
         return vertexTag;
     }

@@ -41,10 +41,10 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spnHeightPtr[0].addValueChangeListener(spn -> rs.setHeight(spnHeightPtr[0].getValue()));
-        spnRadi1Ptr[0].addValueChangeListener(spn -> rs.setRadius1(spnRadi1Ptr[0].getValue()));
-        spnRadi2Ptr[0].addValueChangeListener(spn -> rs.setRadius2(spnRadi2Ptr[0].getValue()));
-        cmbAnglePtr[0].addListener(SWT.Selection, event -> {
+        spnHeightPtr[0].addValueChangeListener(_ -> rs.setHeight(spnHeightPtr[0].getValue()));
+        spnRadi1Ptr[0].addValueChangeListener(_ -> rs.setRadius1(spnRadi1Ptr[0].getValue()));
+        spnRadi2Ptr[0].addValueChangeListener(_ -> rs.setRadius2(spnRadi2Ptr[0].getValue()));
+        cmbAnglePtr[0].addListener(SWT.Selection, _ -> {
             int si = cmbAnglePtr[0].getSelectionIndex();
             rs.setAngle(si);
             if (!rs.isUsingHiRes()) {
@@ -69,9 +69,9 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
                 }
             }
         });
-        cmbExistingOnlyPtr[0].addListener(SWT.Selection, event -> rs.setUsingExistingPrimitives(cmbExistingOnlyPtr[0].getSelectionIndex() == 0));
-        cmbCreateWhatPtr[0].addListener(SWT.Selection, event -> rs.setCreatingNothingOnNoSolution(cmbCreateWhatPtr[0].getSelectionIndex() == 0));
-        this.cmbShapePtr[0].addListener(SWT.Selection, event -> {
+        cmbExistingOnlyPtr[0].addListener(SWT.Selection, _ -> rs.setUsingExistingPrimitives(cmbExistingOnlyPtr[0].getSelectionIndex() == 0));
+        cmbCreateWhatPtr[0].addListener(SWT.Selection, _ -> rs.setCreatingNothingOnNoSolution(cmbCreateWhatPtr[0].getSelectionIndex() == 0));
+        this.cmbShapePtr[0].addListener(SWT.Selection, _ -> {
             rs.setUsingCones(cmbShapePtr[0].getSelectionIndex() == 1 || cmbShapePtr[0].getSelectionIndex() == 3);
             rs.setUsingHiRes(cmbShapePtr[0].getSelectionIndex() > 1);
             int si = cmbAnglePtr[0].getSelectionIndex();

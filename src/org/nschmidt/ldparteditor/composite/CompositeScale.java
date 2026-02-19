@@ -72,7 +72,7 @@ public class CompositeScale extends ScalableComposite {
         btnOpenContextMenu.setImage(ResourceManager.getImage("icon16_contextMenu.png")); //$NON-NLS-1$
         btnOpenContextMenu.setBounds(0, 0, 20, 20);
 
-        widgetUtil(btnOpenContextMenu).addSelectionListener(e -> {
+        widgetUtil(btnOpenContextMenu).addSelectionListener(_ -> {
             PointerInfo a = MouseInfo.getPointerInfo();
             java.awt.Point b = a.getLocation();
             int x = (int) b.getX();

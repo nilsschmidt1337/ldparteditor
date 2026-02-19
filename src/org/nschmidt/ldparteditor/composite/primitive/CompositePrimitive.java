@@ -219,11 +219,11 @@ public class CompositePrimitive extends Composite {
         });
 
         GL.setCapabilities(capabilities);
-        canvas.addDisposeListener(e ->
+        canvas.addDisposeListener(_ ->
             canvas.getCursor().dispose()
         );
         // MARK Resize
-        canvas.addListener(SWT.Resize, event -> {
+        canvas.addListener(SWT.Resize, _ -> {
             canvas.setCurrent();
             GL.setCapabilities(capabilities);
             Display.getCurrent().timerExec(500, () ->
@@ -321,7 +321,7 @@ public class CompositePrimitive extends Composite {
 
         canvas.addListener(SWT.MouseEnter, this::mouseUp);
         canvas.addListener(SWT.MouseUp, this::mouseUp);
-        canvas.addListener(SWT.Paint, event -> openGL.drawScene(-1, -1));
+        canvas.addListener(SWT.Paint, _ -> openGL.drawScene(-1, -1));
         canvas.addListener(SWT.MouseVerticalWheel, event -> {
 
             if (Cocoa.checkCtrlOrCmdPressed(event.stateMask)) {
@@ -601,19 +601,19 @@ public class CompositePrimitive extends Composite {
         if (primitiveRulesInAppDirectory.exists() && primitiveRulesInAppDirectory.isFile()) {
             return primitiveRulesInAppDirectory;
         }
-        
+
         // Linux
         final File primitiveRulesInOptDirectory = new File(LINUX_PRIMITIVE_RULES_LOCATION);
         if (primitiveRulesInOptDirectory.exists() && primitiveRulesInOptDirectory.isFile()) {
             return primitiveRulesInOptDirectory;
         }
-        
+
         // Mac OS
         final File primitiveRulesInApplicationsDirectory = new File(MACOS_PRIMITIVE_RULES_LOCATION);
         if (primitiveRulesInApplicationsDirectory.exists() && primitiveRulesInApplicationsDirectory.isFile()) {
             return primitiveRulesInApplicationsDirectory;
         }
-        
+
         return new File("primitive_rules.txt"); //$NON-NLS-1$
     }
 
@@ -924,7 +924,7 @@ public class CompositePrimitive extends Composite {
                             NLogger.error(CompositePrimitive.class, e);
                         }
                     }
-                    
+
                     List<String> searchPaths = new ArrayList<>();
                     String ldrawPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
                     if (ldrawPath != null) {

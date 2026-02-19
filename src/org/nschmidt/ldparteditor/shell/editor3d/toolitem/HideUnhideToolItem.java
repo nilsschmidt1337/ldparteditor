@@ -54,10 +54,8 @@ public class HideUnhideToolItem extends ToolItem {
     }
 
     private void addListeners() {
-        widgetUtil(btnHidePtr[0]).addSelectionListener(e -> {
-            hideSelection();
-        });
-        widgetUtil(btnShowAllPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnHidePtr[0]).addSelectionListener(_ -> hideSelection());
+        widgetUtil(btnShowAllPtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().showAll();

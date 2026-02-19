@@ -95,7 +95,7 @@ public class ColourToolItem extends ToolItem {
                 e.gc.drawImage(ResourceManager.getImage(ICON16_HALFTRANS_PNG), 0, 0, imgSize, imgSize, x, y, w, h);
             }
         });
-        widgetUtil(getLastUsedColourBtn()).addSelectionListener(e -> {
+        widgetUtil(getLastUsedColourBtn()).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 setLastUsedColour(gColour2[0]);
                 int num1 = gColour2[0].getColourNumber();
@@ -179,7 +179,7 @@ public class ColourToolItem extends ToolItem {
     }
 
     static void initPaletteEvent() {
-        widgetUtil(btnPalettePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPalettePtr[0]).addSelectionListener(_ -> {
             if (Project.getFileToEdit() != null) {
                 final GColour[] gColour2 = new GColour[1];
                 new ColourDialog(Editor3DWindow.getWindow().getShell(), gColour2, true).run();
@@ -212,7 +212,7 @@ public class ColourToolItem extends ToolItem {
                             e1.gc.drawImage(ResourceManager.getImage(ICON16_HALFTRANS_PNG), 0, 0, imgSize, imgSize, x, y, w, h);
                         }
                     });
-                    widgetUtil(getLastUsedColourBtn()).addSelectionListener(e1 -> {
+                    widgetUtil(getLastUsedColourBtn()).addSelectionListener(_ -> {
                         if (Project.getFileToEdit() != null) {
                             int num1 = gColour2[0].getColourNumber();
                             if (!LDConfig.hasColour(num1)) {
@@ -359,7 +359,7 @@ public class ColourToolItem extends ToolItem {
                         e1.gc.drawImage(ResourceManager.getImage(ICON16_HALFTRANS_PNG), 0, 0, imgSize, imgSize, x, y, w, h);
                     }
                 });
-                widgetUtil(getLastUsedColourBtn()).addSelectionListener(e1 -> {
+                widgetUtil(getLastUsedColourBtn()).addSelectionListener(_ -> {
                     if (Project.getFileToEdit() != null) {
                         setLastUsedColour(gColour2[0]);
                         int num1 = gColour2[0].getColourNumber();

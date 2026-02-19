@@ -689,7 +689,7 @@ class EditorTextDesign extends ApplicationWindow {
     }
 
     protected void initPaletteEvent() {
-        widgetUtil(btnPalettePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPalettePtr[0]).addSelectionListener(_ -> {
             final GColour[] gColour2 = new GColour[1];
             new ColourDialog(btnPalettePtr[0].getShell(), gColour2, true).run();
             if (gColour2[0] != null) {
