@@ -157,7 +157,7 @@ public class BigDecimalSpinner extends Composite {
             if (selectAll) {
                 txtVal[0].selectAll();
                 selectAll = false;
-                new Thread( () -> {
+                Thread.ofVirtual().start( () -> {
                     focus = true;
                     while (focus && !txtVal[0].isDisposed()) {
                         try {
@@ -176,7 +176,7 @@ public class BigDecimalSpinner extends Composite {
                         });
                     }
                     selectAll = true;
-                }).start();
+                });
             }
         });
 
@@ -188,7 +188,7 @@ public class BigDecimalSpinner extends Composite {
                     try {
                         BigDecimal val = new BigDecimal(txtVal[0].getText());
                         NLogger.debug(getClass(), "parsed {0}", val); //$NON-NLS-1$
-                    } catch (NumberFormatException ex) {
+                    } catch (NumberFormatException _) {
                         final String evaluatedResult = Evaluator.evalQuick(txtVal[0].getText());
                         NLogger.debug(getClass(), "evaluated {0}", evaluatedResult); //$NON-NLS-1$
                         if (!txtVal[0].getText().equals(evaluatedResult)) {
@@ -253,7 +253,7 @@ public class BigDecimalSpinner extends Composite {
                     formatter.applyPattern(I18n.SPINNER_VALUE_BETWEEN_MIN_MAX);
                     lblWarn[0].setToolTipText(formatter.format(messageArguments));
                 }
-            } catch (ParseException ex) {
+            } catch (ParseException _) {
                 lblWarn[0].setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                 lblWarn[0].setToolTipText(I18n.SPINNER_VALID_NUMBER_PLEASE);
                 if (!invalidInput) {
@@ -262,7 +262,7 @@ public class BigDecimalSpinner extends Composite {
             }
             result = text;
 
-            new Thread(() -> {
+            Thread.ofVirtual().start(() -> {
                 final int id = counter.getAndIncrement() + 1;
                 focus = true;
                 while (focus && counter.compareAndSet(id, id) && !forceUpdate && !txtVal[0].isDisposed()) {
@@ -293,7 +293,7 @@ public class BigDecimalSpinner extends Composite {
                         NLogger.debug(getClass(), swte2);
                     }
                 });
-            }).start();
+            });
 
             txtVal[0].setSelection(caret);
         });

@@ -121,7 +121,7 @@ public class IntegerSpinner extends Composite {
             if (selectAll) {
                 txtValPtr[0].selectAll();
                 selectAll = false;
-                new Thread( () -> {
+                Thread.ofVirtual().start( () -> {
                     focus = true;
                     while (focus && !txtValPtr[0].isDisposed()) {
                         try {
@@ -140,7 +140,7 @@ public class IntegerSpinner extends Composite {
                         });
                     }
                     selectAll = true;
-                }).start();
+                });
             }
         });
 
@@ -171,7 +171,7 @@ public class IntegerSpinner extends Composite {
                     oldValue[0] = value;
                     text = numberFormat0f.format(value);
                 }
-            } catch (ParseException ex) {
+            } catch (ParseException _) {
                 if (!invalidInput) {
                     text = numberFormat0f.format(value);
                 }
@@ -179,7 +179,7 @@ public class IntegerSpinner extends Composite {
 
             result = text;
 
-            new Thread( () -> {
+            Thread.ofVirtual().start( () -> {
                 final int id = counter.getAndIncrement() + 1;
                 focus = true;
                 while (focus && counter.compareAndSet(id, id) && !forceUpdate && !txtValPtr[0].isDisposed()) {
@@ -210,7 +210,7 @@ public class IntegerSpinner extends Composite {
                         NLogger.debug(getClass(), swte2);
                     }
                 });
-            }).start();
+            });
 
             txtValPtr[0].setSelection(caret);
         });
