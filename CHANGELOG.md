@@ -1,3 +1,11 @@
+### 20 Feb 2026
+With the release of 1.9.01 you are able to...
+-  ...benefit from a little performance improvement because of the new integrated "Java 25" runtime.
+
+The following critical issue is fixed:
+1. Rounding didn't update text editor when vertex selected in 3D editor in rare cases.
+
+
 ### 07 Dec 2025
 With the release of 1.8.97 you are able to...
 -  ...use increments from the snapping configuration on the "vertex data" window.
