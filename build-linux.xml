@@ -257,13 +257,6 @@
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
         </jar>
         
-         <!-- Copy so files for Linux with GTK3 (64-bit) -->
-        <copy todir="${binariesFolder}/${linuxGtk3Folder}" overwrite="true">
-          <fileset dir="${dependenciesFolder}/${linuxGtk3Folder}">
-            <include name="**/*.so"/>
-          </fileset>
-        </copy>
-        
         <!-- Copy resource files for Linux with GTK3 (64-bit) -->
         <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="NOTICE.md" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
