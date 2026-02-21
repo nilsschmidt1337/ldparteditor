@@ -55,9 +55,9 @@
         
         <!-- JARs from org.eclipse and com.ibm -->
         <get-and-checksum
-            file="swt-4.22-gtk-linux-x86_64.zip"
+            file="swt-4.38-gtk-linux-x86_64.zip"
             destdir="${dependenciesFolder}"
-            checksum="2c90167452d335cdae5d7557a02297a379da23ee"
+            checksum="255fac7548a26aa476cd29147e85812b12963ddc"
             dir="buildfiles-v2/swt-lib" />
         <get-and-checksum
             file="org.eclipse.core.commands_3.10.100.v20210722-1426.jar"
@@ -134,7 +134,6 @@
         </pathconvert>
         
         <unzip src="${swt.linux.gtk3.zipfile}" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
-        <unzip src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
         <unzip src="${dependenciesFolder}/lwjgl3.3.3.zip" dest="${libsFolder}"/>
         
         <copy todir="${sourceFolder}" >
@@ -232,6 +231,8 @@
                 <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
                 <!-- Modified Classpath -->
                 <attribute name="Class-Path" value=". plugin/"/>
+                <attribute name="SWT-OS" value="linux"/>
+                <attribute name="SWT-Arch" value="x86_64"/>
             </manifest>
             <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
@@ -265,7 +266,7 @@
         
         <!-- Copy resource files for Linux with GTK3 (64-bit) -->
         <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
-		<copy file="NOTICE.md" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="NOTICE.md" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         
