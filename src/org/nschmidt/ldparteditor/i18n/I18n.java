@@ -1381,6 +1381,7 @@ public final class I18n {
     public static final String SLANT_VERBOSE = SLANT.getString(getProperty());
     public static final String SLANT_VERBOSE_MSG = SLANT.getString(getProperty());
     public static final String SLICERPRO_HINT = SLICERPRO.getString(getProperty());
+    public static final String SLICERPRO_RECTIFIER = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_TITLE = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_VERBOSE = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_VERBOSE_MSG = SLICERPRO.getString(getProperty());

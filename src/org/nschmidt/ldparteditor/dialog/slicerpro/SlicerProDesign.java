@@ -24,24 +24,32 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.dialog.ThemedDialog;
+import org.nschmidt.ldparteditor.helper.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
- * The rounding precision dialog
+ * The SlicerPro dialog
  * <p>
  * Note: This class should not be instantiated, it defines the gui layout and no
  * business logic.
  */
 class SlicerProDesign extends ThemedDialog {
 
+    private static final String SLICER_PRO_IMAGE = "slicerpro.png"; //$NON-NLS-1$
+
+    final SlicerProSettings sps;
+
     // Use final only for subclass/listener references!
     final NButton[] btnVerbosePtr = new NButton[1];
+    final NButton[] btnRectifierPtr = new NButton[1];
 
-    SlicerProDesign(Shell parentShell) {
+    SlicerProDesign(Shell parentShell, SlicerProSettings sps) {
         super(parentShell);
+        this.sps = sps;
     }
 
     /**
@@ -53,6 +61,7 @@ class SlicerProDesign extends ThemedDialog {
     protected Control createDialogArea(Composite parent) {
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
+        gridLayout.numColumns = 2;
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
@@ -60,10 +69,27 @@ class SlicerProDesign extends ThemedDialog {
         lblSpecify.setText(I18n.SLICERPRO_TITLE);
 
         Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+
+        NButton btnSlicerProImg = new NButton(cmpContainer, SWT.NONE);
+        btnSlicerProImg.setImage(ResourceManager.getImage(SLICER_PRO_IMAGE));
+        btnSlicerProImg.setEnabled(false);
+        btnSlicerProImg.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
 
         Label lblHowto = Theming.label(cmpContainer, SWT.NONE);
         lblHowto.setText(I18n.SLICERPRO_HINT);
+
+        // A spacer
+        Theming.label(cmpContainer, SWT.NONE);
+
+        NButton btnRectifier = new NButton(cmpContainer, SWT.CHECK);
+        this.btnRectifierPtr[0] = btnRectifier;
+        btnRectifier.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnRectifier.setText(I18n.SLICERPRO_RECTIFIER);
+        btnRectifier.setSelection(sps.isUseRectifier());
+
+        // Another spacer
+        Theming.label(cmpContainer, SWT.NONE);
 
         NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
         this.btnVerbosePtr[0] = btnVerbose;

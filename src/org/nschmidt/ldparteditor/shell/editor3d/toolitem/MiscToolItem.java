@@ -139,6 +139,7 @@ import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.SlantingMatrixProjectorSettings;
+import org.nschmidt.ldparteditor.helper.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.TJunctionSettings;
 import org.nschmidt.ldparteditor.helper.composite3d.Txt2DatSettings;
@@ -318,6 +319,7 @@ public class MiscToolItem extends ToolItem {
     private static MeshReducerSettings ms = new MeshReducerSettings();
     private static SlantingMatrixProjectorSettings mps = new SlantingMatrixProjectorSettings();
     private static OverlapSettings os = new OverlapSettings();
+    private static SlicerProSettings sps = new SlicerProSettings();
 
     public MiscToolItem(Composite parent, int style, boolean isHorizontal) {
         super(parent, style, isHorizontal);
@@ -2160,7 +2162,7 @@ public class MiscToolItem extends ToolItem {
                                         start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
                                         start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
                                         start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
-                                    } catch (NumberFormatException nfe) {
+                                    } catch (NumberFormatException _) {
                                         numberError = true;
                                     }
                                 } else {
@@ -2222,7 +2224,7 @@ public class MiscToolItem extends ToolItem {
                                         start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
                                         start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
                                         start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
-                                    } catch (NumberFormatException nfe) {
+                                    } catch (NumberFormatException _) {
                                         numberError = true;
                                     }
                                 } else {
@@ -2806,10 +2808,10 @@ public class MiscToolItem extends ToolItem {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                    if (new SlicerProDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.OK_ID) {
+                    if (new SlicerProDialog(Editor3DWindow.getWindow().getShell(), sps).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
                         vm.skipSyncTimer();
-                        final int[] result = vm.slicerpro();
+                        final int[] result = vm.slicerpro(sps);
                         if (WorkbenchManager.getUserSettingState().isVerboseSlicerPro()) {
                             final int createdTriangleCount = result[0];
                             final int createdQuadCount = result[1];
@@ -3416,7 +3418,7 @@ public class MiscToolItem extends ToolItem {
                         x += 2;
                     }
                     r.flush();
-                } catch (Exception ex) {
+                } catch (Exception _) {
                     MessageBox messageBoxError = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
                     messageBoxError.setText(I18n.DIALOG_ERROR);
                     messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);

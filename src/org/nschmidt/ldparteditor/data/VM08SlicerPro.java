@@ -38,6 +38,7 @@ import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.LDPartEditorException;
 import org.nschmidt.ldparteditor.helper.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helper.composite3d.RectifierSettings;
+import org.nschmidt.ldparteditor.helper.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.helper.math.Rational;
 import org.nschmidt.ldparteditor.helper.math.RationalMatrix;
@@ -55,7 +56,7 @@ class VM08SlicerPro extends VM07PathTruder {
         super(linkedDatFile);
     }
 
-    public int[] slicerpro() {
+    public int[] slicerpro(SlicerProSettings sps) {
         if (linkedDatFile.isReadOnly()) return new int[] {0, 0, 0, 0};
         Composite3D c3d =  linkedDatFile.getLastSelectedComposite();
         NLogger.debug(getClass(), "SlicerPro2 - (C) Nils Schmidt 2015"); //$NON-NLS-1$
@@ -374,11 +375,18 @@ class VM08SlicerPro extends VM07PathTruder {
             NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
             roundSelection(6, 10, true, false, true, true, true);
 
-            NLogger.debug(getClass(), "Rectify."); //$NON-NLS-1$
-            RectifierSettings rs = new RectifierSettings();
-            rs.setScope(1);
-            rs.setNoBorderedQuadToRectConversation(true);
-            final int[] result = rectify(rs, false, false);
+            final int[] result;
+
+            if (sps.isUseRectifier()) {
+                NLogger.debug(getClass(), "Rectify."); //$NON-NLS-1$
+                RectifierSettings rs = new RectifierSettings();
+                rs.setScope(1);
+                rs.setNoBorderedQuadToRectConversation(true);
+                result = rectify(rs, false, false);
+            } else {
+                NLogger.debug(getClass(), "Skipped the Rectifier run."); //$NON-NLS-1$
+                result = new int[] {0};
+            }
 
             clearSelection();
             setModified(true, true);
@@ -390,7 +398,7 @@ class VM08SlicerPro extends VM07PathTruder {
         } else {
             NLogger.debug(getClass(), "No 3D view selected. Cancel process."); //$NON-NLS-1$
         }
-        
+
         return new int[] {0, 0, 0, 0};
     }
 

@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.dialog.slicerpro;
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.helper.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -33,9 +34,10 @@ public class SlicerProDialog extends SlicerProDesign {
      * Create the dialog.
      *
      * @param parentShell
+     * @param sps
      */
-    public SlicerProDialog(Shell parentShell) {
-        super(parentShell);
+    public SlicerProDialog(Shell parentShell, SlicerProSettings sps) {
+        super(parentShell, sps);
     }
 
     @Override
@@ -43,6 +45,7 @@ public class SlicerProDialog extends SlicerProDesign {
         super.create();
         // MARK All final listeners will be configured here..
         widgetUtil(btnVerbosePtr[0]).addSelectionListener(_ -> WorkbenchManager.getUserSettingState().setVerboseSlicerPro(btnVerbosePtr[0].getSelection()));
+        widgetUtil(btnRectifierPtr[0]).addSelectionListener(_ -> sps.setUseRectifier(btnRectifierPtr[0].getSelection()));
         return super.open();
     }
 
