@@ -257,6 +257,36 @@ public class Editor3DWindow extends Editor3DDesign {
                 intervall[0] = 10;
             }
         });
+
+        Display.getCurrent().asyncExec(new Runnable() {
+            private boolean isFirstRun = true;
+
+            @Override
+            public void run() {
+                int minutes = WorkbenchManager.getUserSettingState().getAutosaveIntervalInMinutes();
+                boolean autosaveActive = minutes > 0;
+                minutes = Math.max(1, minutes);
+
+                if (isFirstRun) {
+                    isFirstRun = false;
+                    NLogger.debug(Editor3DWindow.class, "Initialized auto-save to run every {0} minute(s).", minutes); //$NON-NLS-1$
+                    // Add a 42 second delay to compensate the first initialization.
+                    Display.getCurrent().timerExec(60_000 * minutes + 42_000, this);
+                    return;
+                }
+
+                if (autosaveActive) {
+                    NLogger.debug(Editor3DWindow.class, "Perform auto-save"); //$NON-NLS-1$
+                    NewOpenSaveProjectToolItem.saveAll(false, true);
+
+                    updateTabs();
+                } else {
+                    NLogger.debug(Editor3DWindow.class, "Auto-save is inactive."); //$NON-NLS-1$
+                }
+
+                Display.getCurrent().timerExec(60_000 * minutes, this);
+            }
+        });
     }
 
     /**

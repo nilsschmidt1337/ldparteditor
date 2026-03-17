@@ -2517,7 +2517,7 @@ public class MiscToolItem extends ToolItem {
 
                                     Editor3DWindow.getWindow().setReviewingAPart(true, dfsToOpen);
                                     if (dialog.isSaveAll()) {
-                                        NewOpenSaveProjectToolItem.saveAll(true);
+                                        NewOpenSaveProjectToolItem.saveAll(true, false);
                                     } else {
                                         regainFocus();
                                     }

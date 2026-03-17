@@ -1114,6 +1114,7 @@ public final class I18n {
     public static final String OPTIONS_AUTHORING_FOLDER = OPTIONS.getString(getProperty());
     public static final String OPTIONS_AUTHORING_WHERE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_AUTHOR_DATA = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_AUTOSAVE_INTERVAL = OPTIONS.getString(getProperty());
     public static final String OPTIONS_BROWSE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_CANCEL_VIA_MOUSE = OPTIONS.getString(getProperty());
     public static final String OPTIONS_CHOOSE_LOCALE = OPTIONS.getString(getProperty());

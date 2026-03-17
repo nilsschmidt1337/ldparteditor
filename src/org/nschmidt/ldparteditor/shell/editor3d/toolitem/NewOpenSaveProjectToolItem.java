@@ -238,7 +238,7 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                 }
             }
         });
-        widgetUtil(btnSaveAllPtr[0]).addSelectionListener(_ -> saveAll(false));
+        widgetUtil(btnSaveAllPtr[0]).addSelectionListener(_ -> saveAll(false, false));
     }
 
     private static void addRecentFile(String projectPath) {
@@ -265,11 +265,11 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
         addRecentFile(new File(dat.getNewName()).getAbsolutePath());
     }
 
-    public static void saveAll(boolean onlyPartReviewFiles) {
+    public static void saveAll(boolean onlyPartReviewFiles, boolean excludePartReviewFilesAndProject) {
         final Editor3DWindow win = Editor3DWindow.getWindow();
         Set<DatFile> dfs = new HashSet<>(Project.getUnsavedFiles());
         for (DatFile df : dfs) {
-            if (onlyPartReviewFiles && !df.isFromPartReview()) continue;
+            if (excludePartReviewFilesAndProject && df.isFromPartReview() || onlyPartReviewFiles && !df.isFromPartReview()) continue;
             if (!df.isReadOnly()) {
                 if (df.isVirtual()) {
                     if (NewOpenSaveDatfileToolItem.saveAs(win, df, HeaderUpdate.NO_HEADER_UPDATE)) {
@@ -292,10 +292,10 @@ public class NewOpenSaveProjectToolItem extends ToolItem {
                 }
             }
         }
-        if (Project.isDefaultProject() && ProjectActions.createNewProject(win, true)) {
+        if (Project.isDefaultProject() && !excludePartReviewFilesAndProject && ProjectActions.createNewProject(win, true)) {
             addRecentFile(Project.getProjectPath());
         }
         win.updateTreeUnsavedEntries();
-        win.regainFocus();
+        if (!excludePartReviewFilesAndProject) win.regainFocus();
     }
 }

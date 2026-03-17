@@ -110,6 +110,7 @@ class OptionsDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spnCoplanarityWarningPtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnCoplanarityErrorPtr = new BigDecimalSpinner[1];
     final IntegerSpinner[] spnDataFileSizeLimitPtr = new IntegerSpinner[1];
+    final IntegerSpinner[] spnAutosaveIntervalPtr = new IntegerSpinner[1];
     final BigDecimalSpinner[] spnViewportScalePtr = new BigDecimalSpinner[1];
     final Map<String, Locale> localeMap = new HashMap<>();
     final Combo[] cmbThemePtr = new Combo[1];
@@ -300,6 +301,22 @@ class OptionsDesign extends ApplicationWindow {
                 spnDataFileSizeLimit.setMinimum(45);
                 spnDataFileSizeLimit.setValue(userSettings.getDataFileSizeLimit());
                 spnDataFileSizeLimit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+                {
+                    Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                }
+
+                Label lblAutosaveInterval = Theming.label(cmpContainer, SWT.NONE);
+                lblAutosaveInterval.setText(I18n.OPTIONS_AUTOSAVE_INTERVAL);
+                lblAutosaveInterval.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+                IntegerSpinner spnAutosaveInterval = new IntegerSpinner(cmpContainer, Cocoa.getStyle());
+                this.spnAutosaveIntervalPtr[0] = spnAutosaveInterval;
+                spnAutosaveInterval.setMaximum(10);
+                spnAutosaveInterval.setMinimum(0);
+                spnAutosaveInterval.setValue(userSettings.getAutosaveIntervalInMinutes());
+                spnAutosaveInterval.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 {
                     Label lblSeparator = Theming.label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);

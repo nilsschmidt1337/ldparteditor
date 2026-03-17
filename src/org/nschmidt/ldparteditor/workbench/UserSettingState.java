@@ -274,6 +274,8 @@ public class UserSettingState implements Serializable {
 
     private boolean enableBorderedQuadToRectConversationByDefault = false;
 
+    private int autosaveIntervalInMinutes = 0;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -1581,5 +1583,13 @@ public class UserSettingState implements Serializable {
 
     public void setEnableBorderedQuadToRectConversationByDefault(boolean enableBorderedQuadToRectConversationByDefault) {
         this.enableBorderedQuadToRectConversationByDefault = enableBorderedQuadToRectConversationByDefault;
+    }
+
+    public int getAutosaveIntervalInMinutes() {
+        return autosaveIntervalInMinutes;
+    }
+
+    public void setAutosaveIntervalInMinutes(int autosaveIntervalInMinutes) {
+        this.autosaveIntervalInMinutes = autosaveIntervalInMinutes;
     }
 }

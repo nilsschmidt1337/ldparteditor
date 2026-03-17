@@ -190,6 +190,10 @@ public class OptionsDialog extends OptionsDesign {
             final int sizeLimitInKiloBytes = spnDataFileSizeLimitPtr[0].getValue();
             userSettingState.setDataFileSizeLimit(sizeLimitInKiloBytes);
         });
+        spnAutosaveIntervalPtr[0].addValueChangeListener(_ -> {
+            final int autosaveIntervalInMinutes = spnAutosaveIntervalPtr[0].getValue();
+            userSettingState.setAutosaveIntervalInMinutes(autosaveIntervalInMinutes);
+        });
         spnViewportScalePtr[0].addValueChangeListener(_ -> {
             final double scaleFactor = spnViewportScalePtr[0].getValue().doubleValue();
             userSettingState.setViewportScaleFactor(scaleFactor);

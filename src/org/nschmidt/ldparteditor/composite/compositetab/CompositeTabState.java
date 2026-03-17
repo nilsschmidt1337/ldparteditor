@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 
 import org.eclipse.jface.window.ApplicationWindow;
+import org.eclipse.swt.graphics.Point;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.enumtype.MyLanguage;
 import org.nschmidt.ldparteditor.enumtype.View;
@@ -73,6 +74,10 @@ public class CompositeTabState {
     }
 
     public void setFileNameObj(DatFile fileNameObj) {
+        final Point selection = getTab().getTextComposite().getSelection();
+        final int x = selection.x;
+        final int y = selection.y;
+
         filename = fileNameObj.getShortNameMixedCase();
         filepath = fileNameObj.getNewName();
         getTab().setToolTipText(filepath);
@@ -140,6 +145,13 @@ public class CompositeTabState {
                 NLogger.error(getClass(), e);
             }
         }
+
+        try {
+            getTab().getTextComposite().setSelection(x, y);
+        } catch (IllegalArgumentException iae) {
+            NLogger.debug(CompositeTabState.class, iae);
+        }
+
         getTab().getTextComposite().forceFocus();
     }
 
