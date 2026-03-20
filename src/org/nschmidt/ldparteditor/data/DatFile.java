@@ -374,17 +374,43 @@ public final class DatFile {
         final boolean modified = vertices.isModified();
         if (modified || Project.getUnsavedFiles().contains(this)) {
             if (modified) {
-                StringBuilder sb = new StringBuilder();
-                GData data2draw = drawChainAnchor;
-                while ((data2draw = data2draw.getNext()) != null && data2draw.getNext() != null) {
-                    sb.append(data2draw.toString());
-                    sb.append(StringHelper.getLineDelimiter());
-                }
-                if (data2draw == null) {
-                    vertices.setModified(false, true);
-                } else {
-                    sb.append(data2draw.toString());
-                    text = sb.toString();
+                int totalLineCount = 0;
+                int writtenLineCount = 0;
+                int oldWrittenLineCount = -1;
+                int oldTotalLineCount = -1;
+
+                // Make sure we don't retry this forever
+                while (writtenLineCount != oldWrittenLineCount || oldTotalLineCount != totalLineCount) {
+                    oldWrittenLineCount = writtenLineCount;
+                    oldTotalLineCount = totalLineCount;
+                    totalLineCount = drawPerLine.size();
+                    writtenLineCount = 0;
+
+                    StringBuilder sb = new StringBuilder();
+                    GData data2draw = drawChainAnchor;
+                    while ((data2draw = data2draw.getNext()) != null && data2draw.getNext() != null) {
+                        sb.append(data2draw.toString());
+                        sb.append(StringHelper.getLineDelimiter());
+                        writtenLineCount++;
+                        if (writtenLineCount > totalLineCount) break;
+                        // during auto-save, we don't really know if data2draw is going to be the real instance of that single line
+                        // in the *.dat file. Let's hope that this problem is just a theoretical issue :|
+                    }
+                    if (data2draw == null) {
+                        vertices.setModified(false, true);
+                        break;
+                    } else {
+                        sb.append(data2draw.toString());
+                        writtenLineCount++;
+
+                        // Make sure that exactly as much lines are written as they are declared in drawPerLine
+                        if (writtenLineCount == totalLineCount) {
+                            text = sb.toString();
+                            break;
+                        } else {
+                            NLogger.error(DatFile.class, "[WARNING] Attempt to write " + totalLineCount + ", but only " + writtenLineCount + " were written."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        }
+                    }
                 }
             }
             final GData descriptionline = drawChainAnchor.getNext();
