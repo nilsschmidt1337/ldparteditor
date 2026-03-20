@@ -62,6 +62,7 @@ public class AddToolItem extends ToolItem {
 
     private static final EditorMetaWindow metaWindow = new EditorMetaWindow();
 
+    private static volatile boolean lockedReset = false;
     private static boolean addingSomething = false;
     private static boolean addingVertices = false;
     private static boolean addingLines = false;
@@ -528,6 +529,9 @@ public class AddToolItem extends ToolItem {
     }
 
     public static void disableAddAction() {
+        // Lock only the possibility to disable during auto-save
+        if (lockedReset) return;
+
         addingSomething = false;
         addingVertices = false;
         addingLines = false;
@@ -654,5 +658,13 @@ public class AddToolItem extends ToolItem {
         default:
             break;
         }
+    }
+
+    public static void lockResetAddAction() {
+        lockedReset = true;
+    }
+
+    public static void unlockResetAddAction() {
+        lockedReset = false;
     }
 }

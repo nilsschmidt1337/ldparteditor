@@ -276,10 +276,16 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
 
                 if (autosaveActive) {
-                    NLogger.debug(Editor3DWindow.class, "Perform auto-save"); //$NON-NLS-1$
-                    NewOpenSaveProjectToolItem.saveAll(false, true);
+                    try {
+                        // Lock the possibility to disable the "add action"
+                        AddToolItem.lockResetAddAction();
+                        NLogger.debug(Editor3DWindow.class, "Perform auto-save"); //$NON-NLS-1$
+                        NewOpenSaveProjectToolItem.saveAll(false, true);
 
-                    updateTabs();
+                        updateTabs();
+                    } finally {
+                        AddToolItem.unlockResetAddAction();
+                    }
                 } else {
                     NLogger.debug(Editor3DWindow.class, "Auto-save is inactive."); //$NON-NLS-1$
                 }
