@@ -1,3 +1,9 @@
+### 21 Mar 2026
+With the release of 1.9.02 you are able to...
+-  ...toggle the default Rectifier post-processing for SlicerPro.
+-  ...use the new "Auto-Save" feature. It is disabled by default. I do not recommend to enable this, because of the current side-effects of this new feature (e.g. it clears the current selection in the 3D view on save. You'll find it under "Tools... -> Options... ->Interval for auto-save [minutes]").
+
+
 ### 20 Feb 2026
 With the release of 1.9.01 you are able to...
 -  ...benefit from a little performance improvement because of the new integrated "Java 25" runtime.
