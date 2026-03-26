@@ -20,14 +20,14 @@ jobs:
       run: 7z x wix311-binaries.zip -o".\target\wix" -aoa
     - name: Add WiX to Path
       run: echo "$HOME/target/wix" >> $GITHUB_PATH
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
     - name: Get dependent binaries from cache
-      uses: actions/cache@v4
+      uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 #v5.0.4
       with:
         path: ./dependencies
         key: swt-jface-lwjgl3zip-tools-windows-v5
     - name: Set up JDK 25
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 #v5.2.0
       with:
         distribution: 'zulu'
         java-version: 25
@@ -41,7 +41,7 @@ jobs:
         fail_on_failure: true
         require_passed_tests: true
     - name: Archive windows installer for win32-x64
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       id: artifact-upload-step1
       with:
         name: LDPartEditor_win32_x64
@@ -55,7 +55,7 @@ jobs:
     - name: Calculate SHA
       run: (certutil -hashfile LDPartEditor_win32_x64.zip SHA256 | findstr /V ":") > LDPartEditor_win32_x64_sha256_checksum.txt
     - name: Archive checksum
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
         name: LDPartEditor_win32_x64_sha256_checksum
         path: LDPartEditor_win32_x64_sha256_checksum.txt
@@ -65,14 +65,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
     - name: Get dependent binaries from cache
-      uses: actions/cache@v4
+      uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 #v5.0.4
       with:
         path: ./dependencies
         key: swt-jface-lwjgl3zip-tools-linux-v5
     - name: Set up JDK 25
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 #v5.2.0
       with:
         distribution: 'zulu'
         java-version: 25
@@ -88,7 +88,7 @@ jobs:
     - name: Set GDK_BACKEND env variable to x11
       run: sh set_gdk_backend.sh
     - name: Archive linux installer for gtk3-x64
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       id: artifact-upload-step2
       with:
         name: LDPartEditor_linux_x64
@@ -102,7 +102,7 @@ jobs:
     - name: Calculate SHA
       run: shasum -a 256 LDPartEditor_linux_x64.zip > LDPartEditor_linux_x64_sha256_checksum.txt
     - name: Archive checksum
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
         name: LDPartEditor_linux_x64_sha256_checksum
         path: LDPartEditor_linux_x64_sha256_checksum.txt
@@ -112,14 +112,14 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
     - name: Get dependent binaries from cache
-      uses: actions/cache@v4
+      uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 #v5.0.4
       with:
         path: ./dependencies
         key: swt-jface-lwjgl3zip-tools-macos-arm-v5
     - name: Set up JDK 25
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 #v5.2.0
       with:
         distribution: 'zulu'
         java-version: 25
@@ -133,7 +133,7 @@ jobs:
         fail_on_failure: true
         require_passed_tests: true
     - name: Archive macosx installer for cocoa-x64
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       id: artifact-upload-step3
       with:
         name: LDPartEditor_mac_arm
@@ -147,7 +147,7 @@ jobs:
     - name: Calculate SHA
       run: shasum -a 256 LDPartEditor_mac_arm.zip > LDPartEditor_mac_arm_sha256_checksum.txt
     - name: Archive checksum
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
         name: LDPartEditor_mac_arm_sha256_checksum
         path: LDPartEditor_mac_arm_sha256_checksum.txt
@@ -157,14 +157,14 @@ jobs:
     runs-on: macos-15-intel
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
     - name: Get dependent binaries from cache
-      uses: actions/cache@v4
+      uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 #v5.0.4
       with:
         path: ./dependencies
         key: swt-jface-lwjgl3zip-tools-macos-v5
     - name: Set up JDK 25
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 #v5.2.0
       with:
         distribution: 'zulu'
         java-version: 25
@@ -178,7 +178,7 @@ jobs:
         fail_on_failure: true
         require_passed_tests: true
     - name: Archive macosx installer for cocoa-x64
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       id: artifact-upload-step4
       with:
         name: LDPartEditor_mac_x64
@@ -192,7 +192,7 @@ jobs:
     - name: Calculate SHA
       run: shasum -a 256 LDPartEditor_mac_x64.zip > LDPartEditor_mac_x64_sha256_checksum.txt
     - name: Archive checksum
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
         name: LDPartEditor_mac_x64_sha256_checksum
         path: LDPartEditor_mac_x64_sha256_checksum.txt
