@@ -57,6 +57,7 @@ jobs:
     - name: Archive checksum
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
+        archive: false
         name: LDPartEditor_win32_x64_sha256_checksum
         path: LDPartEditor_win32_x64_sha256_checksum.txt
 
@@ -104,6 +105,7 @@ jobs:
     - name: Archive checksum
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
+        archive: false
         name: LDPartEditor_linux_x64_sha256_checksum
         path: LDPartEditor_linux_x64_sha256_checksum.txt
 
@@ -149,6 +151,7 @@ jobs:
     - name: Archive checksum
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
+        archive: false
         name: LDPartEditor_mac_arm_sha256_checksum
         path: LDPartEditor_mac_arm_sha256_checksum.txt
 
@@ -194,6 +197,7 @@ jobs:
     - name: Archive checksum
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
+        archive: false
         name: LDPartEditor_mac_x64_sha256_checksum
         path: LDPartEditor_mac_x64_sha256_checksum.txt
 
