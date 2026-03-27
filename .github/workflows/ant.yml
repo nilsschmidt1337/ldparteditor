@@ -44,16 +44,15 @@ jobs:
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       id: artifact-upload-step1
       with:
+        archive: false
         name: LDPartEditor_win32_x64
         path: bin/windows/setup
     - name: Output artifact ID
       run:  echo 'Artifact ID is ${{ steps.artifact-upload-step1.outputs.artifact-id }}'
-    - name: Download artifact
-      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step1.outputs.artifact-id }}/zip > LDPartEditor_win32_x64.zip
+    - name: Calculate SHA
+      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step1.outputs.artifact-id }} --jq '.digest' > LDPartEditor_win32_x64_sha256_checksum.txt
       env:
         GH_TOKEN: ${{ github.token }}
-    - name: Calculate SHA
-      run: (certutil -hashfile LDPartEditor_win32_x64.zip SHA256 | findstr /V ":") > LDPartEditor_win32_x64_sha256_checksum.txt
     - name: Archive checksum
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
@@ -92,16 +91,15 @@ jobs:
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       id: artifact-upload-step2
       with:
+        archive: false
         name: LDPartEditor_linux_x64
         path: bin/linux-gtk3/setup
     - name: Output artifact ID
       run:  echo 'Artifact ID is ${{ steps.artifact-upload-step2.outputs.artifact-id }}'
-    - name: Download artifact
-      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step2.outputs.artifact-id }}/zip > LDPartEditor_linux_x64.zip
+    - name: Calculate SHA
+      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step2.outputs.artifact-id }} --jq '.digest' > LDPartEditor_linux_x64_sha256_checksum.txt
       env:
         GH_TOKEN: ${{ github.token }}
-    - name: Calculate SHA
-      run: shasum -a 256 LDPartEditor_linux_x64.zip > LDPartEditor_linux_x64_sha256_checksum.txt
     - name: Archive checksum
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
@@ -142,12 +140,10 @@ jobs:
         path: bin/macosx/setup
     - name: Output artifact ID
       run:  echo 'Artifact ID is ${{ steps.artifact-upload-step3.outputs.artifact-id }}'
-    - name: Download artifact
-      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step3.outputs.artifact-id }}/zip > LDPartEditor_mac_arm.zip
+    - name: Calculate SHA
+      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step3.outputs.artifact-id }} --jq '.digest' > LDPartEditor_mac_arm_sha256_checksum.txt
       env:
         GH_TOKEN: ${{ github.token }}
-    - name: Calculate SHA
-      run: shasum -a 256 LDPartEditor_mac_arm.zip > LDPartEditor_mac_arm_sha256_checksum.txt
     - name: Archive checksum
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
@@ -188,12 +184,10 @@ jobs:
         path: bin/macosx/setup
     - name: Output artifact ID
       run:  echo 'Artifact ID is ${{ steps.artifact-upload-step4.outputs.artifact-id }}'
-    - name: Download artifact
-      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step4.outputs.artifact-id }}/zip > LDPartEditor_mac_x64.zip
+    - name: Calculate SHA
+      run:  gh api /repos/${{ github.repository }}/actions/artifacts/${{ steps.artifact-upload-step4.outputs.artifact-id }} --jq '.digest' > LDPartEditor_mac_x64_sha256_checksum.txt
       env:
         GH_TOKEN: ${{ github.token }}
-    - name: Calculate SHA
-      run: shasum -a 256 LDPartEditor_mac_x64.zip > LDPartEditor_mac_x64_sha256_checksum.txt
     - name: Archive checksum
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v7.0.0
       with:
