@@ -275,6 +275,13 @@ public class Editor3DWindow extends Editor3DDesign {
                     return;
                 }
 
+                // Check if the 3D editor is already up and running
+                TreeItem ptr = treeItemProjectPartsPtr[0];
+                if (!(ptr != null && ptr.getData() != null)) {
+                    autosaveActive = false;
+                    NLogger.debug(Editor3DWindow.class, "Auto-save is not ready (3D editor is not initialized, yet)."); //$NON-NLS-1$
+                }
+
                 if (autosaveActive) {
                     try {
                         // Lock the possibility to disable the "add action"
