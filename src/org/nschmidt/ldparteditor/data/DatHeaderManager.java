@@ -876,7 +876,7 @@ public class DatHeaderManager {
         return false;
     }
 
-    private static final Pattern SUBFILE_NAME = Pattern.compile(".+s\\d+\\.dat"); //$NON-NLS-1$
+    private static final Pattern SUBFILE_NAME = Pattern.compile(".+[^p]s\\d+\\.dat"); //$NON-NLS-1$ don't match ...ps1.dat (pattern files)
 
     private DatType detectFileTypeFromName(String name, String path) {
         if (name.startsWith("s/") || name.startsWith("S/") || name.startsWith("s\\") || name.startsWith("S\\")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
