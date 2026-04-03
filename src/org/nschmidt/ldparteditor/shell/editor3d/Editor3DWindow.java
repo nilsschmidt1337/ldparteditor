@@ -66,7 +66,6 @@ import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.lwjgl.opengl.swt.GLCanvas;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -78,6 +77,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.swt.GLCanvas;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -286,12 +286,17 @@ public class Editor3DWindow extends Editor3DDesign {
                     try {
                         // Lock the possibility to disable the "add action"
                         AddToolItem.lockResetAddAction();
-                        NLogger.debug(Editor3DWindow.class, "Perform auto-save"); //$NON-NLS-1$
-                        NewOpenSaveProjectToolItem.saveAll(false, true);
+                        try {
+                            NLogger.debug(Editor3DWindow.class, "Perform auto-save"); //$NON-NLS-1$
+                            NewOpenSaveProjectToolItem.saveAll(false, true);
 
-                        updateTabs();
-                    } finally {
-                        AddToolItem.unlockResetAddAction();
+                            updateTabs();
+                        } finally {
+                            AddToolItem.unlockResetAddAction();
+                        }
+                    } catch (Exception ex) {
+                        NLogger.error(Editor3DWindow.class, "Error during auto-save"); //$NON-NLS-1$
+                        NLogger.error(Editor3DWindow.class, ex);
                     }
                 } else {
                     NLogger.debug(Editor3DWindow.class, "Auto-save is inactive."); //$NON-NLS-1$

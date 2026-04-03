@@ -33,6 +33,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
@@ -82,6 +84,7 @@ public final class DatFile {
     private final boolean readOnly;
     private final boolean fromPartReview;
     private volatile boolean drawSelection = true;
+    private volatile Lock saveLock = new ReentrantLock();
 
     private final GData drawChainAnchor = new GDataInit(View.DUMMY_REFERENCE);
 
@@ -1602,6 +1605,16 @@ public final class DatFile {
     }
 
     public boolean save() {
+        // This lock is necessary to avoid writing to the file at the same time when auto-save gets triggered.
+        saveLock.lock();
+        try {
+            return saveWithLock();
+        } finally {
+            saveLock.unlock();
+        }
+    }
+
+    private boolean saveWithLock() {
 
         if (readOnly) {
             // Don't save read only files!
@@ -1689,6 +1702,16 @@ public final class DatFile {
     }
 
     public boolean saveForced() {
+        // This lock is necessary to avoid writing to the file at the same time when auto-save gets triggered.
+        saveLock.lock();
+        try {
+            return saveForcedWithLock();
+        } finally {
+            saveLock.unlock();
+        }
+    }
+
+    private boolean saveForcedWithLock() {
         text = getText();
         File newFile = new File(newName);
 
@@ -1739,6 +1762,16 @@ public final class DatFile {
     }
 
     public boolean saveAs(String newName, HeaderUpdate updateHader) {
+        // This lock is necessary to avoid writing to the file at the same time when auto-save gets triggered.
+        saveLock.lock();
+        try {
+            return saveAsWithLock(newName, updateHader);
+        } finally {
+            saveLock.unlock();
+        }
+    }
+
+    private boolean saveAsWithLock(String newName, HeaderUpdate updateHader) {
         text = getText();
         File newFile = new File(newName);
         if (newFile.exists()) {
