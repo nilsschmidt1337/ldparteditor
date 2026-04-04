@@ -18,9 +18,11 @@ package org.nschmidt.ldparteditor.vertexwindow;
 import static org.nschmidt.ldparteditor.helper.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellEvent;
@@ -37,6 +39,7 @@ import org.nschmidt.ldparteditor.composite.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.dialog.round.RoundDialog;
 import org.nschmidt.ldparteditor.enumtype.ManipulatorScope;
 import org.nschmidt.ldparteditor.enumtype.Task;
 import org.nschmidt.ldparteditor.enumtype.TransformationMode;
@@ -44,8 +47,10 @@ import org.nschmidt.ldparteditor.enumtype.View;
 import org.nschmidt.ldparteditor.helper.Cocoa;
 import org.nschmidt.ldparteditor.helper.ShellHelper;
 import org.nschmidt.ldparteditor.helper.composite3d.MouseActions;
+import org.nschmidt.ldparteditor.helper.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resource.ResourceManager;
 import org.nschmidt.ldparteditor.shell.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shell.editor3d.toolitem.AddToolItem;
@@ -53,6 +58,7 @@ import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widget.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widget.NButton;
 import org.nschmidt.ldparteditor.workbench.Theming;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * A window for manipulating the coordinates of a single vertex
@@ -65,6 +71,7 @@ public class VertexWindow extends ApplicationWindow {
     private final BigDecimalSpinner[] spnYPtr = new BigDecimalSpinner[1];
     private final BigDecimalSpinner[] spnZPtr = new BigDecimalSpinner[1];
 
+    private final NButton[] btnRoundPtr = new NButton[1];
     private final NButton[] btnCopyPtr = new NButton[1];
     private final NButton[] btnPastePtr = new NButton[1];
     private final NButton[] btnMergePtr = new NButton[1];
@@ -138,6 +145,19 @@ public class VertexWindow extends ApplicationWindow {
             vm.setXyzOrTranslateOrTransform(selectedVertex, null, TransformationMode.SET, true, true, true, true, true, ManipulatorScope.GLOBAL);
             vm.setVertexToReplace(selectedVertex);
             MouseActions.checkSyncEditMode(vm, df);
+        });
+        widgetUtil(btnRoundPtr[0]).addSelectionListener(e -> {
+            if (Project.getFileToEdit() != null) {
+                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask) && new RoundDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.CANCEL_ID) {
+                    return;
+                }
+
+                final int precision = WorkbenchManager.getUserSettingState().getCoordsPrecision();
+
+                spnXPtr[0].setValue(MathHelper.roundBigDecimalAlways(spnXPtr[0].getValue().setScale(precision, RoundingMode.HALF_UP)));
+                spnYPtr[0].setValue(MathHelper.roundBigDecimalAlways(spnYPtr[0].getValue().setScale(precision, RoundingMode.HALF_UP)));
+                spnZPtr[0].setValue(MathHelper.roundBigDecimalAlways(spnZPtr[0].getValue().setScale(precision, RoundingMode.HALF_UP)));
+            }
         });
     }
 
@@ -238,9 +258,16 @@ public class VertexWindow extends ApplicationWindow {
                 cmpTxt.setLayout(new GridLayout(5, true));
 
                 Label lblVertexData = Theming.label(cmpTxt, SWT.NONE);
-                lblVertexData.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+                lblVertexData.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
                 lblVertexData.setText(I18n.E3D_VERTEX_DATA);
 
+                {
+                    NButton btnRound = new NButton(cmpTxt, Cocoa.getStyle());
+                    this.btnRoundPtr[0] = btnRound;
+                    btnRound.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+                    btnRound.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
+                    btnRound.setToolTipText(I18n.E3D_ROUND + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
+                }
                 {
                     NButton btnCopy = new NButton(cmpTxt, Cocoa.getStyle());
                     this.btnCopyPtr[0] = btnCopy;
