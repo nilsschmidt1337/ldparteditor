@@ -114,9 +114,12 @@ public class SearchWindow extends SearchDesign {
         widgetUtil(btnReplacePtr[0]).addSelectionListener(_ -> replace());
         widgetUtil(btnReplaceAllPtr[0]).addSelectionListener(_ -> replaceAll());
         widgetUtil(btnFindAndReplacePtr[0]).addSelectionListener(_ -> {
-            replace();
+            if (replace()) {
+                // Move the cursor
+                textComposite.setSelectionRange(textComposite.getSelectionRange().x + txtReplacePtr[0].getText().length(), 0);
+            }
+
             find();
-            replace();
         });
 
         txtReplacePtr[0].addFocusListener(new FocusListener() {
@@ -285,8 +288,8 @@ public class SearchWindow extends SearchDesign {
         return result;
     }
 
-    private void replace() {
-        if (textComposite == null || tab != null && !tab.getState().getFileNameObj().getVertexManager().isUpdated()) return;
+    private boolean replace() {
+        if (textComposite == null || tab != null && !tab.getState().getFileNameObj().getVertexManager().isUpdated()) return false;
         setDisabledButtonStatus();
 
         if (btnFindPtr[0].isEnabled()) {
@@ -327,8 +330,11 @@ public class SearchWindow extends SearchDesign {
                 }
 
                 textComposite.showSelection();
+                return true;
             }
         }
+
+        return false;
     }
 
     private void replaceAll() {
@@ -346,7 +352,7 @@ public class SearchWindow extends SearchDesign {
             while (find()) {
                 replace();
                 // Move the cursor
-                textComposite.setSelectionRange(textComposite.getSelectionRange().x + txtFindPtr[0].getText().length(), 0);
+                textComposite.setSelectionRange(textComposite.getSelectionRange().x + txtReplacePtr[0].getText().length(), 0);
                 selectionEnd += delta;
             }
         }
