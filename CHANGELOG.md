@@ -1,3 +1,13 @@
+### 11 Apr 2026
+With the release of 1.9.03 you are able to...
+-  ...use a "rounding vertex button" on the vertex popup window.
+
+The following critical issues are fixed:
+1. Program freezed on "Replace All" (caused by search and replaces like "b" -> "bb")
+2. A pattern file name "...ps1" was detected as a subfile.
+3. Theoretical problem with auto-save when the editor is not fully initialized yet and a practical problem when auto-save saves the file at the same time as a manual save (simultaneous file access).
+
+
 ### 21 Mar 2026
 With the release of 1.9.02 you are able to...
 -  ...toggle the default Rectifier post-processing for SlicerPro.
