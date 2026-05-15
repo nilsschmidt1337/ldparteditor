@@ -223,7 +223,7 @@ public enum NLogger {
      */
     public static synchronized void error(Class<?> clazz, String message) {
         StringBuilder sb = new StringBuilder();
-        sb.append(DEBUG_PREFIX);
+        sb.append(ERROR_PREFIX);
         sb.append(Version.getVersion());
         sb.append("] @"); //$NON-NLS-1$
         sb.append(clazz.getName());
@@ -351,12 +351,12 @@ public enum NLogger {
             systemErr().close();
         }
     }
-    
+
     @SuppressWarnings("java:S106")
     private static PrintStream systemErr() {
         return System.err;
     }
-    
+
     @SuppressWarnings("java:S106")
     private static PrintStream systemOut() {
         return System.out;
