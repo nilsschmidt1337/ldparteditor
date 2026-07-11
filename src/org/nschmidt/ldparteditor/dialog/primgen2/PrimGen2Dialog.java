@@ -445,16 +445,22 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
             switch (cmbDivisionsPtr[0].getSelectionIndex()) {
             case 0:
-                spnDivisionsPtr[0].setValue(8);
-                spnEdgesPerCrossSectionsPtr[0].setValue(8);
+                if (spnDivisionsPtr[0].getValue() != 8) {
+                    spnDivisionsPtr[0].setValue(8);
+                    spnEdgesPerCrossSectionsPtr[0].setValue(8);
+                }
                 break;
             case 1:
-                spnDivisionsPtr[0].setValue(16);
-                spnEdgesPerCrossSectionsPtr[0].setValue(16);
+                if (spnDivisionsPtr[0].getValue() != 16) {
+                    spnDivisionsPtr[0].setValue(16);
+                    spnEdgesPerCrossSectionsPtr[0].setValue(16);
+                }
                 break;
             case 2:
-                spnDivisionsPtr[0].setValue(48);
-                spnEdgesPerCrossSectionsPtr[0].setValue(48);
+                if (spnDivisionsPtr[0].getValue() != 48) {
+                    spnDivisionsPtr[0].setValue(48);
+                    spnEdgesPerCrossSectionsPtr[0].setValue(48);
+                }
                 break;
             default:
                 break;
