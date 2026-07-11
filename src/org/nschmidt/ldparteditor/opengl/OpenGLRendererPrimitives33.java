@@ -45,7 +45,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
     /** The Primitive Composite */
     private final CompositePrimitive cp;
 
-    private GLShader shaderProgram = new GLShader();
+    private GLShader shaderProgramPrimitive = new GLShader();
     private GLShader shaderProgram2D = new GLShader();
     private Callback debugCallback = null;
     private final GLMatrixStack stack = new GLMatrixStack();
@@ -58,13 +58,13 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
     @Override
     public void init() {
 
-        if (shaderProgram.isDefault()) shaderProgram = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (shaderProgramPrimitive.isDefault()) shaderProgramPrimitive = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgram2D.isDefault()) shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
 
         if (NLogger.debugging && debugCallback == null) debugCallback = GLUtil.setupDebugMessageCallback();
 
-        stack.setShader(shaderProgram);
-        shaderProgram.use();
+        stack.setShader(shaderProgramPrimitive);
+        shaderProgramPrimitive.use();
 
         GL11.glClearDepth(1.0f);
         GL11.glClearColor(Colour.primitiveBackgroundColourR, Colour.primitiveBackgroundColourG, Colour.primitiveBackgroundColourB, 1.0f);
@@ -98,7 +98,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
         final Rectangle scaledBounds = cp.getScaledBounds();
         GL11.glViewport(0, 0, scaledBounds.width, scaledBounds.height);
 
-        shaderProgram.use();
+        shaderProgramPrimitive.use();
 
         final FloatBuffer viewBuf = BufferUtils.createFloatBuffer(16);
 
@@ -123,13 +123,13 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
         GLMatrixStack.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoomLevel(), 1000001f * cp.getZoomLevel()).store(projectionBuf);
         projectionBuf.position(0);
 
-        int view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
+        int view = shaderProgramPrimitive.getUniformLocation("view" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(view, false, viewBuf);
 
-        int projection = shaderProgram.getUniformLocation("projection" ); //$NON-NLS-1$
+        int projection = shaderProgramPrimitive.getUniformLocation("projection" ); //$NON-NLS-1$
         GL20.glUniformMatrix4fv(projection, false, projectionBuf);
 
-        int alphaInv = shaderProgram.getUniformLocation("alphaInv"); //$NON-NLS-1$
+        int alphaInv = shaderProgramPrimitive.getUniformLocation("alphaInv"); //$NON-NLS-1$
         GL20.glUniform1f(alphaInv, 0f);
 
         stack.clear();
@@ -285,8 +285,8 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
             for (PGData3 tri : FontLetters.Z) {
                 tri.drawTextGL33(-zAxis.x, zAxis.y, 0f, vaoVbo);
             }
-            PGData3.endDrawTextGL33(shaderProgram, vaoVbo);
-            stack.setShader(shaderProgram);
+            PGData3.endDrawTextGL33(shaderProgramPrimitive, vaoVbo);
+            stack.setShader(shaderProgramPrimitive);
             stack.glPopMatrix();
         }
 
@@ -306,7 +306,7 @@ public class OpenGLRendererPrimitives33 implements OpenGLRendererPrimitives {
     @Override
     public void dispose() {
         // Properly de-allocate all resources once they've outlived their purpose
-        shaderProgram.dispose();
+        shaderProgramPrimitive.dispose();
         shaderProgram2D.dispose();
         if (debugCallback != null) debugCallback.free();
     }

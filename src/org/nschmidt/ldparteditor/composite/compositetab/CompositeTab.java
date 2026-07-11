@@ -104,6 +104,7 @@ import org.nschmidt.ldparteditor.text.Evaluator;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.SyntaxFormatter;
 import org.nschmidt.ldparteditor.text.Win32LnkParser;
+import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 import org.nschmidt.ldparteditor.widget.TreeItem;
 import org.nschmidt.ldparteditor.workbench.Theming;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -782,6 +783,8 @@ public class CompositeTab extends CompositeTabDesign {
                         }
                     }
                 }
+
+                VertexWindow.updateVertexWindow(tabState.getFileNameObj());
             }
         });
 

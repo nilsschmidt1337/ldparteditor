@@ -71,7 +71,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public class OpenGLRenderer33 extends OpenGLRenderer {
 
     private GLShader shaderProgram = new GLShader();
-    private GLShader shaderProgram2 = new GLShader();
+    private GLShader shaderProgramPrimitive = new GLShader();
     private GLShader shaderProgram2D = new GLShader();
     private GLShader shaderProgramCondline = new GLShader();
     private GLShader shaderProgramCondline2 = new GLShader();
@@ -105,7 +105,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             renderMode = 6;
 
         if (shaderProgram.isDefault()) shaderProgram = new GLShader("renderer.vert", "renderer.frag"); //$NON-NLS-1$ //$NON-NLS-2$
-        if (shaderProgram2.isDefault()) shaderProgram2 = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (shaderProgramPrimitive.isDefault()) shaderProgramPrimitive = new GLShader("primitive.vert", "primitive.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgram2D.isDefault()) shaderProgram2D = new GLShader("2D.vert", "2D.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgramCondline.isDefault()) shaderProgramCondline = new GLShader("condline.vert", "condline.frag"); //$NON-NLS-1$ //$NON-NLS-2$
         if (shaderProgramCondline2.isDefault()) shaderProgramCondline2 = new GLShader("condline2.vert", "condline2.frag"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -221,8 +221,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram2D.use();
                 int projection = shaderProgram2D.getUniformLocation("projection" ); //$NON-NLS-1$
                 GL20.glUniformMatrix4fv(projection, false, projectionBuf);
-                shaderProgram2.use();
-                projection = shaderProgram2.getUniformLocation("projection" ); //$NON-NLS-1$
+                shaderProgramPrimitive.use();
+                projection = shaderProgramPrimitive.getUniformLocation("projection" ); //$NON-NLS-1$
                 GL20.glUniformMatrix4fv(projection, false, projectionBuf);
                 shaderProgramCondline.use();
                 projection = shaderProgramCondline.getUniformLocation("projection" ); //$NON-NLS-1$
@@ -256,8 +256,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram2D.use();
                 int view = shaderProgram2D.getUniformLocation("view" ); //$NON-NLS-1$
                 GL20.glUniformMatrix4fv(view, false, viewBuf);
-                shaderProgram2.use();
-                view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
+                shaderProgramPrimitive.use();
+                view = shaderProgramPrimitive.getUniformLocation("view" ); //$NON-NLS-1$
                 GL20.glUniformMatrix4fv(view, false, viewBuf);
                 shaderProgramCondline.use();
                 view = shaderProgramCondline.getUniformLocation("view" ); //$NON-NLS-1$
@@ -338,8 +338,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     shaderProgram2D.use();
                     int view = shaderProgram2D.getUniformLocation("view" ); //$NON-NLS-1$
                     GL20.glUniformMatrix4fv(view, false, viewBuf);
-                    shaderProgram2.use();
-                    view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
+                    shaderProgramPrimitive.use();
+                    view = shaderProgramPrimitive.getUniformLocation("view" ); //$NON-NLS-1$
                     GL20.glUniformMatrix4fv(view, false, viewBuf);
                     shaderProgramCondline.use();
                     view = shaderProgramCondline.getUniformLocation("view" ); //$NON-NLS-1$
@@ -372,7 +372,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             if (ldrawStandardMode) {
                 modelRendererLDrawStandard.draw(stack, shaderProgram, shaderProgramCondline, true);
             } else {
-                modelRenderer.draw(stack, shaderProgram, shaderProgram2, shaderProgramCondline, shaderProgramCondline2, shaderProgram2D, true);
+                modelRenderer.draw(stack, shaderProgram, shaderProgramPrimitive, shaderProgramCondline, shaderProgramCondline2, shaderProgram2D, true);
             }
 
             if (window.getCompositePrimitive().isDoingDND()) {
@@ -381,9 +381,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     Vector4f cur = c3d.getCursorSnapped3D();
                     GL33HelperPrimitives.backupVBOprimitiveArea();
                     GL33HelperPrimitives.createVBOprimitiveArea();
-                    stack.setShader(shaderProgram2);
-                    shaderProgram2.use();
-                    GL20.glUniform1f(shaderProgram2.getUniformLocation("alphaInv"), 0f); //$NON-NLS-1$
+                    stack.setShader(shaderProgramPrimitive);
+                    shaderProgramPrimitive.use();
+                    GL20.glUniform1f(shaderProgramPrimitive.getUniformLocation("alphaInv"), 0f); //$NON-NLS-1$
                     p.drawGL33(stack, cur.x, cur.y, cur.z);
                     stack.setShader(shaderProgram);
                     shaderProgram.use();
@@ -397,12 +397,12 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             if (ldrawStandardMode) {
                 modelRendererLDrawStandard.draw(stack, shaderProgram, shaderProgramCondline, false);
             } else {
-                modelRenderer.draw(stack, shaderProgram, shaderProgram2, shaderProgramCondline, shaderProgramCondline2, shaderProgram2D, false);
+                modelRenderer.draw(stack, shaderProgram, shaderProgramPrimitive, shaderProgramCondline, shaderProgramCondline2, shaderProgram2D, false);
             }
 
-            stack.setShader(shaderProgram2);
-            shaderProgram2.use();
-            GL20.glUniform1f(shaderProgram2.getUniformLocation("alphaInv"), 0f); //$NON-NLS-1$
+            stack.setShader(shaderProgramPrimitive);
+            shaderProgramPrimitive.use();
+            GL20.glUniform1f(shaderProgramPrimitive.getUniformLocation("alphaInv"), 0f); //$NON-NLS-1$
 
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
@@ -1557,8 +1557,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         for (PGData3 tri : FontLetters.Z) {
                             tri.drawTextGL33(zAxis.x, zAxis.y, viewportOriginAxis[0].z, vaoVbo);
                         }
-                        PGData3.endDrawTextGL33(shaderProgram2, vaoVbo);
-                        stack.setShader(shaderProgram2);
+                        PGData3.endDrawTextGL33(shaderProgramPrimitive, vaoVbo);
+                        stack.setShader(shaderProgramPrimitive);
                         GL11.glEnable(GL11.GL_CULL_FACE);
                         GL11.glEnable(GL11.GL_DEPTH_TEST);
                     }
@@ -1603,8 +1603,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     default:
                         break;
                     }
-                    PGData3.endDrawTextGL33(shaderProgram2, vaoVbo);
-                    stack.setShader(shaderProgram2);
+                    PGData3.endDrawTextGL33(shaderProgramPrimitive, vaoVbo);
+                    stack.setShader(shaderProgramPrimitive);
                 }
                 if (Project.getFileToEdit().equals(c3d.getLockableDatFileReference())) {
                     final float r;
@@ -1993,7 +1993,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         modelRenderer.dispose();
         modelRendererLDrawStandard.dispose();
         shaderProgram.dispose();
-        shaderProgram2.dispose();
+        shaderProgramPrimitive.dispose();
         shaderProgram2D.dispose();
         shaderProgramCondline.dispose();
         shaderProgramCondline2.dispose();

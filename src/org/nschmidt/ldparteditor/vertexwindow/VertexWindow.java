@@ -176,6 +176,17 @@ public class VertexWindow extends ApplicationWindow {
         MouseActions.checkSyncEditMode(vm, df);
     }
 
+    public static void updateVertexWindow(DatFile currentDf) {
+        final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
+        if (lastHoveredC3d == null) return;
+
+        final DatFile df = lastHoveredC3d.getLockableDatFileReference();
+
+        if (currentDf.equals(df)) {
+            placeVertexWindow();
+        }
+    }
+
     /**
      * Places the vertex window on the 3D editor
      */
@@ -237,6 +248,7 @@ public class VertexWindow extends ApplicationWindow {
             spnXPtr[0].setValue(selectedVertex.xp);
             spnYPtr[0].setValue(selectedVertex.yp);
             spnZPtr[0].setValue(selectedVertex.zp);
+            spnZPtr[0].getParent().layout();
             isUpdating = false;
         }
     }
