@@ -189,6 +189,7 @@ public class MiscToolItem extends ToolItem {
     private static final NButton[] btnLineToCondlinePtr = new NButton[1];
     private static final NButton[] btnMoveOnLinePtr = new NButton[1];
     private static final NButton[] btnRoundSelectionPtr = new NButton[1];
+    private static final NButton[] btnRound5SelectionPtr = new NButton[1];
 
     private static final NButton[] btnSelect2Ptr = new NButton[1];
 
@@ -382,6 +383,11 @@ public class MiscToolItem extends ToolItem {
         MiscToolItem.btnRoundSelectionPtr[0] = btnRoundSelection;
         btnRoundSelection.setToolTipText(I18n.E3D_ROUND + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
         btnRoundSelection.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_round.png")); //$NON-NLS-1$
+
+        NButton btnRound5Selection = new NButton(miscToolItem, Cocoa.getStyle());
+        MiscToolItem.btnRound5SelectionPtr[0] = btnRound5Selection;
+        btnRound5Selection.setToolTipText(I18n.E3D_ROUND_FIVE_DIGITS);
+        btnRound5Selection.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_round5.png")); //$NON-NLS-1$
 
         final NButton btnSelect = new NButton(miscToolItem, SWT.PUSH | Cocoa.getStyle());
         MiscToolItem.btnSelect2Ptr[0] = btnSelect;
@@ -2683,6 +2689,18 @@ public class MiscToolItem extends ToolItem {
                 UserSettingState userSettings = WorkbenchManager.getUserSettingState();
                 Project.getFileToEdit().getVertexManager()
                 .roundSelection(userSettings.getCoordsPrecision(), userSettings.getTransMatrixPrecision(), MiscToggleToolItem.isMovingAdjacentData(), true, userSettings.isRoundX(), userSettings.isRoundY(), userSettings.isRoundZ());
+            }
+            regainFocus();
+        });
+
+        widgetUtil(btnRound5SelectionPtr[0]).addSelectionListener(e -> {
+            if (Project.getFileToEdit() != null) {
+                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask) && new RoundDialog(Editor3DWindow.getWindow().getShell()).open() == IDialogConstants.CANCEL_ID) {
+                    return;
+                }
+                Project.getFileToEdit().getVertexManager().addSnapshot();
+                Project.getFileToEdit().getVertexManager().backupHideShowState();
+                Project.getFileToEdit().getVertexManager().roundSelection(5, 5, MiscToggleToolItem.isMovingAdjacentData(), true, true, true, true);
             }
             regainFocus();
         });
