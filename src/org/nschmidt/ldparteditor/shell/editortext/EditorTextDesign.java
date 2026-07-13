@@ -110,6 +110,7 @@ class EditorTextDesign extends ApplicationWindow {
     final NButton[] btnBFCswapPtr = new NButton[1];
     final NButton[] btnCompileSubfilePtr = new NButton[1];
     final NButton[] btnRoundSelectionPtr = new NButton[1];
+    final NButton[] btnRound5SelectionPtr = new NButton[1];
     final NButton[] btnTexmapPtr = new NButton[1];
     final NButton[] btnAnnotatePtr = new NButton[1];
     final NButton[] btnMoveMinusXPtr = new NButton[1];
@@ -539,6 +540,12 @@ class EditorTextDesign extends ApplicationWindow {
             this.btnRoundSelectionPtr[0] = btnRoundSelection;
             KeyStateManager.addTooltipText(btnRoundSelection, I18n.EDITORTEXT_ROUND + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY), TextTask.EDITORTEXT_ROUND);
             btnRoundSelection.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_round.png")); //$NON-NLS-1$
+        }
+        {
+            NButton btnRound5Selection = new NButton(toolItemDebug, Cocoa.getStyle());
+            this.btnRound5SelectionPtr[0] = btnRound5Selection;
+            btnRound5Selection.setToolTipText(I18n.EDITORTEXT_ROUND_FIVE_DIGITS);
+            btnRound5Selection.setImage(ResourceManager.getImageInvertedInDarkMode("icon16_round5.png")); //$NON-NLS-1$
         }
 
         {

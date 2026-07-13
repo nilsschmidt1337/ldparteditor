@@ -846,6 +846,7 @@ public final class I18n {
     public static final String EDITORTEXT_READ_ONLY = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_REMOVE_DUPLICATES = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_ROUND = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_ROUND_FIVE_DIGITS = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_SHOW = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_SHOW_HIDE_ERROR_TAB = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_SHOW_SELECTION_IN_3D = EDITORTEXT.getString(getProperty());

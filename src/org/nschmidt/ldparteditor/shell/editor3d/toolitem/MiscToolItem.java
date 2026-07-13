@@ -2700,6 +2700,7 @@ public class MiscToolItem extends ToolItem {
                 }
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().backupHideShowState();
+                Project.getFileToEdit().getVertexManager().selectAll(new SelectorSettings(), true);
                 Project.getFileToEdit().getVertexManager().roundSelection(5, 5, MiscToggleToolItem.isMovingAdjacentData(), true, true, true, true);
             }
             regainFocus();

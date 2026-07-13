@@ -94,6 +94,7 @@ import org.nschmidt.ldparteditor.shell.editor3d.toolitem.NewOpenSaveProjectToolI
 import org.nschmidt.ldparteditor.shell.searchnreplace.SearchWindow;
 import org.nschmidt.ldparteditor.text.Win32LnkParser;
 import org.nschmidt.ldparteditor.workbench.EditorTextWindowState;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WindowState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -1034,6 +1035,31 @@ public class EditorTextWindow extends EditorTextDesign {
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
                 Rounder.round(st, selection.getState(), fromLine, toLine, selection.getState().getFileNameObj());
+                st.forceFocus();
+            }
+        });
+        widgetUtil(btnRound5SelectionPtr[0]).addSelectionListener(_ -> {
+            CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
+            if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
+                if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
+                    return;
+                }
+                NLogger.debug(getClass(), "Rounding whole file.."); //$NON-NLS-1$
+                final StyledText st = selection.getTextComposite();
+                int fromLine = 1;
+                int toLine = st.getLineCount();
+                fromLine++;
+                toLine++;
+                NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
+                final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
+                final int cp = userSettings.getCoordsPrecision();
+                final int mp = userSettings.getTransMatrixPrecision();
+                userSettings.setCoordsPrecision(5);
+                userSettings.setTransMatrixPrecision(5);
+                Rounder.round(st, selection.getState(), fromLine, toLine, selection.getState().getFileNameObj());
+                userSettings.setCoordsPrecision(cp);
+                userSettings.setTransMatrixPrecision(mp);
                 st.forceFocus();
             }
         });
