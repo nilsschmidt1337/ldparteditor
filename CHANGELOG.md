@@ -1,3 +1,12 @@
+### 15 Jul 2026
+With the release of 1.9.04 you are able to...
+-  ...use a "default rounding" button which rounds values with a precision of 5 decimal places (Parts Tracker limit).
+- ...benefit from the fact that PrimGen2 don't reset "cross section edges" when changing the torus type.
+
+The following critical issues is fixed:
+1. A vertex that is selected in the 3D view is not rounded when you round a selection in the text window that contain this vertex.
+
+
 ### 11 Apr 2026
 With the release of 1.9.03 you are able to...
 -  ...use a "rounding vertex button" on the vertex popup window.
