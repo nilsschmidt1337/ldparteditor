@@ -1,3 +1,10 @@
+### 20 Nov 2026
+With the release of 1.9.05 the following critical issue is fixed:
+1. CVE-2026-114938 (called “Java4Shell”) - a security vulnerability which allows memory corruption or potential code execution on CPUs with AVX512 when parsing "0 !DATA" meta commands
+For example "0 !DATA test.png"
+"0 !: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+"0 !LPE PNG 0 0 0 0 0 0 1 1 test.png"
+
 ### 15 Jul 2026
 With the release of 1.9.04 you are able to...
 - ...use a "default rounding" button which rounds values with a precision of 5 decimal places (Parts Tracker limit).
